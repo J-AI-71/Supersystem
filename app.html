@@ -1,12 +1,54 @@
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Link-Reiniger</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px}
+h1{font-size:18px;margin:0 0 8px} textarea,input{width:100%;box-sizing:border-box;padding:10px;font-size:14px}
+textarea{min-height:140px;resize:vertical} .row{margin:10px 0} .btn{padding:10px 12px;font-size:14px}
+.muted{color:#666;font-size:12px}
+</style></head><body>
 <h1>SafeShare – Link-Reiniger</h1>
-<p>Link(s) einfügen → „Säubern“ → „Kopieren“.</p>
-<textarea id="in" style="width:100%;height:140px"></textarea><br>
-<button id="clean">Säubern</button> <button id="copy">Kopieren</button><br>
-<textarea id="out" style="width:100%;height:140px" readonly></textarea>
+<p class="muted">Link(s) einfügen oder <code>?u=DEINLINK</code> an die URL hängen.</p>
+<textarea id="in" placeholder="https://beispiel.de/?utm_source=..."></textarea>
+<div class="row">
+  <button id="clean" class="btn">Säubern</button>
+  <button id="copy" class="btn">Kopieren</button>
+  <button id="open" class="btn">Öffnen</button>
+</div>
+<textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..."></textarea>
+<p class="muted">Bookmarklet: Als Lesezeichen speichern und auf Seiten tippen:
+<a id="bm" href="#">UTM jetzt säubern</a></p>
 <script>
-function cleanOne(s){try{const u=new URL(s.trim());const kill=['fbclid','gclid','mc_cid','mc_eid','igshid','vero_id','wickedid','msclkid'];[...u.searchParams.keys()].forEach(k=>{if(k.startsWith('utm_')||kill.includes(k))u.searchParams.delete(k)});u.hash='';return u.toString()}catch(e){return s.trim()}}
-clean.onclick=()=>{const L=in.value.split('\n').map(x=>x.trim()).filter(Boolean);out.value=L.map(cleanOne).join('\n')}
-copy.onclick=async()=>{if(!out.value)return;try{await navigator.clipboard.writeText(out.value);alert('Kopiert')}catch(e){}}
+function cleanOne(s){
+  try{
+    const u=new URL(s.trim());
+    const kill=['fbclid','gclid','mc_cid','mc_eid','igshid','vero_id','wickedid','msclkid'];
+    [...u.searchParams.keys()].forEach(k=>{ if(k.startsWith('utm_')||kill.includes(k)) u.searchParams.delete(k) });
+    u.hash='';
+    return u.toString();
+  }catch(e){ return s.trim() }
+}
+function runClean(){
+  const lines=document.getElementById('in').value.split('\n').map(x=>x.trim()).filter(Boolean);
+  document.getElementById('out').value = lines.map(cleanOne).join('\n');
+}
+function autoFromQuery(){
+  const p=new URLSearchParams(location.search);
+  const q=p.get('u')||p.get('url');
+  if(q){
+    document.getElementById('in').value = decodeURIComponent(q);
+    runClean(); // sofort bereinigen
+    // optional auto-kopieren, wenn vom Browser erlaubt:
+    if(navigator.clipboard){ navigator.clipboard.writeText(document.getElementById('out').value).catch(()=>{}) }
+  }
+}
+document.getElementById('clean').onclick = runClean;
+document.getElementById('copy').onclick = async ()=>{ const t=document.getElementById('out').value; if(t) try{ await navigator.clipboard.writeText(t); alert('Kopiert') }catch(e){} };
+document.getElementById('open').onclick = ()=>{ const t=document.getElementById('out').value.split('\n').find(Boolean); if(t) location.href=t };
+document.getElementById('in').addEventListener('input', runClean); // Live-Modus beim Tippen/Einfügen
+// Bookmarklet für Auto-Reiniging auf beliebiger Seite:
+const js="javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','mc_cid','mc_eid','igshid','vero_id','wickedid','msclkid'];u.hash='';u.searchParams.forEach(function(v,k){if(k.indexOf('utm_')===0||kill.indexOf(k)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
+document.getElementById('bm').href=js;
+document.addEventListener('DOMContentLoaded', autoFromQuery);
 </script>
+</body></html>
