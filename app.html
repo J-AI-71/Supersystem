@@ -1,13 +1,13 @@
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v15</title>
-<h1>SafeShare – Link-Reiniger <small id=ver>v15</small></h1>
-<textarea id=in style="width:100%;height:120px" placeholder="https://…?utm_source=…"></textarea><br>
-<button id=clean>Säubern</button> <button id=open>Öffnen</button><br>
-<textarea id=out readonly style="width:100%;height:120px"></textarea>
-<script>
-function cleanOne(s){try{const u=new URL(s.trim());const kill=['fbclid','gclid','mc_cid','mc_eid','igshid','vero_id','wickedid','msclkid'];[...u.searchParams.keys()].forEach(k=>{if(k.startsWith('utm_')||kill.includes(k))u.searchParams.delete(k)});u.hash='';return u.toString()}catch(e){return s.trim()}}
-function runClean(){out.value=cleanOne(in.value)}
-function auto(){const p=new URLSearchParams(location.search);const q=p.get('u')||p.get('url');const go=p.get('go')==='1';if(q){in.value=decodeURIComponent(q);runClean();if(go){const first=out.value.split('\n').find(Boolean);if(first)location.replace(first)}}}
-function init(){clean.onclick=runClean;open.onclick=()=>{if(out.value)location.href=out.value};auto()}
-if(document.readyState!=='loading')init();else document.addEventListener('DOMContentLoaded',init);
-</script>
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Link-Reiniger v16</title>
+</head><body>
+<h1>SafeShare – Link-Reiniger <small>v16</small></h1>
+<textarea id="in" style="width:100%;height:120px" placeholder="https://…?utm_source=…"></textarea><br>
+<button id="clean">Säubern</button> <button id="open">Öffnen</button><br>
+<textarea id="out" readonly style="width:100%;height:120px"></textarea>
+<p>Bookmarklet: <a id="bm" href="#">UTM jetzt säubern</a></p>
+<hr>
+<p><a href="https://DEINE-GUMROAD-URL" target="_blank" rel="noopener">Pro unterstützen – 9 € / Jahr</a></p>
+<script src="app.js" defer></script>
+</body></html>
