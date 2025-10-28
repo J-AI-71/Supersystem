@@ -37,9 +37,7 @@ function autoFromQuery(){
   const q=p.get('u')||p.get('url');
   if(q){
     document.getElementById('in').value = decodeURIComponent(q);
-    runClean(); // sofort bereinigen
-    // optional auto-kopieren, wenn vom Browser erlaubt:
-    if(navigator.clipboard){ navigator.clipboard.writeText(document.getElementById('out').value).catch(()=>{}) }
+    runCl
   }
 }
 document.getElementById('clean').onclick = runClean;
