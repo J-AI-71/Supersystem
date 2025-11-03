@@ -5,6 +5,16 @@
   <a href="./datenschutz.html">Datenschutz</a>
 </footer>
 <script src="https://payhip.com/js/payhip.js" defer></script>
+<script>
+(() => {
+  const p = new URLSearchParams(location.search);
+  if (p.get('ui') === 'lite') {
+    const pro = document.getElementById('pro'); if (pro) pro.remove();
+    const s = document.querySelector('script[src*="payhip.com/js/payhip.js"]');
+    if (s) s.remove();
+  }
+})();
+</script>
 <body>
 <!-- PRO-BUTTON START -->
 <div id="pro" style="margin:12px 0">
