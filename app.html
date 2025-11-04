@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v7</title>
+<title>SafeShare – Link-Reiniger v8</title>
 <style>
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.4}
 h1{font-size:18px;margin:0 0 8px}
@@ -10,8 +10,8 @@ textarea{min-height:140px;resize:vertical}
 .muted{color:#666;font-size:12px}
 #out{min-height:140px}
 </style></head><body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v7</small></h1>
-<p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Verschachtelte Links werden entpackt.</p>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v8</small></h1>
+<p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Verschachtelte Links werden tief entpackt.</p>
 
 <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link."></textarea>
 <div style="margin:10px 0;">
@@ -35,24 +35,39 @@ function extractUrls(t){
   return r.length? r : (t||'').split('\n').map(s=>s.trim()).filter(Boolean);
 }
 
-function deepDecode(str){
-  let prev=str||'', curr=str||'';
-  for(let i=0;i<5;i++){
-    try{ curr=decodeURIComponent(prev); }catch(e){ break; }
-    if(curr===prev) break;
-    prev=curr;
+function deepDecode(s){
+  let a=s||'', b=s||'';
+  for(let i=0;i<8;i++){
+    try{ b=decodeURIComponent(a); }catch(e){ break; }
+    if(b===a) break; a=b;
   }
-  return curr;
+  return a;
 }
 
-function unwrapNested(u){
-  // prüfe alle Parameter: mehrfach dekodieren und http(s) extrahieren
-  for(const [k,v] of u.searchParams){
-    const dec=deepDecode(v||'');
-    const m=dec.match(/https?:\/\/[^\s"'<>]+/i);
-    if(m){
-      try{ return new URL(m[0]); }catch(e){}
+function unwrapDeep(u){
+  // bis zu 5 Ebenen entpacken
+  for(let i=0;i<5;i++){
+    // 1) Parameterwerte prüfen
+    let found=null;
+    for(const [k,v] of u.searchParams){
+      const dec=deepDecode(v||'');
+      const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);
+      if(m){ found=m[0]; break; }
     }
+    // 2) Hash prüfen
+    if(!found){
+      const dec=deepDecode(u.hash||'');
+      const m=(dec||'').match(/https?:\/\/[^\s"'<>)]+/i);
+      if(m) found=m[0];
+    }
+    // 3) Gesamte URL (falls in path/search kodiert)
+    if(!found){
+      const dec=deepDecode(u.href);
+      const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);
+      if(m && m[0]!==u.href) found=m[0];
+    }
+    if(!found) break;
+    try{ u=new URL(found); }catch(e){ break; }
   }
   return u;
 }
@@ -64,7 +79,7 @@ function cleanOne(s){
   try{ u=new URL(s); }
   catch(e){ try{ u=new URL('https://'+s); } catch(e2){ return s; } }
 
-  u=unwrapNested(u);
+  u=unwrapDeep(u);
 
   const kill=new Set(['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid']);
   const out=new URL(u.origin+u.pathname);
@@ -73,13 +88,10 @@ function cleanOne(s){
     if(kl.startsWith('utm_')||kill.has(kl)) continue;
     out.searchParams.append(k,v);
   }
-  return out.toString(); // Fragment entfernt
+  return out.toString();
 }
 
-function runClean(){
-  const lines=extractUrls(inEl.value);
-  outEl.value=lines.map(cleanOne).join('\n');
-}
+function runClean(){ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); }
 
 $('clean').onclick=runClean;
 $('copy').onclick=async()=>{const t=outEl.value;if(!t)return;try{await navigator.clipboard.writeText(t);alert('Kopiert')}catch(e){}};
