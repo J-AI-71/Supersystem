@@ -1,99 +1,91 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v5</title>
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Link-Reiniger v6</title>
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.4}
-  h1{font-size:18px;margin:0 0 8px}
-  textarea,input{width:100%;box-sizing:border-box;padding:10px;font-size:14px}
-  textarea{min-height:140px;resize:vertical}
-  .btn{padding:10px 12px;font-size:14px;margin-right:8px}
-  .muted{color:#666;font-size:12px}
-  #out{min-height:140px}
-</style>
-</head>
-<body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v5</small></h1>
-<p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Funktionscodes bleiben.</p>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.4}
+h1{font-size:18px;margin:0 0 8px}
+textarea,input{width:100%;box-sizing:border-box;padding:10px;font-size:14px}
+textarea{min-height:140px;resize:vertical}
+.btn{padding:10px 12px;font-size:14px;margin-right:8px}
+.muted{color:#666;font-size:12px}
+#out{min-height:140px}
+</style></head><body>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v6</small></h1>
+<p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code> u. a. Verschachtelte Links werden entpackt.</p>
 
-<textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird automatisch erkannt."></textarea>
-
+<textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird erkannt."></textarea>
 <div style="margin:10px 0;">
   <button id="clean" class="btn">Säubern</button>
   <button id="copy"  class="btn">Kopieren</button>
   <button id="open"  class="btn">Öffnen</button>
   <button id="clear" class="btn" aria-label="Leeren" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
 </div>
-
 <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..."></textarea>
 
 <p class="muted">Bookmarklet: <a id="bm" href="#">UTM jetzt säubern</a></p>
 <p class="muted"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
 
 <script>
-const $ = id => document.getElementById(id);
-const inEl = $('in');
-const outEl = $('out');
+const $=id=>document.getElementById(id);
+const inEl=$('in'), outEl=$('out');
 
-// robuste Extraktion: findet http/https-Links auch in Fließtext
-function extractUrls(text){
-  const rx = /\bhttps?:\/\/[^\s<>"')]+/gi;
-  const out = [];
-  let m;
-  while((m = rx.exec(text))){ out.push(m[0]); }
-  // Fallback: wenn pro Zeile kein http(s), nimm rohe Zeilen
-  if(out.length===0){
-    return text.split('\n').map(s=>s.trim()).filter(Boolean);
+function extractUrls(t){
+  const rx=/\bhttps?:\/\/[^\s<>"')]+/gi; const r=[]; let m;
+  while((m=rx.exec(t||''))) r.push(m[0]);
+  if(!r.length) return (t||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  return r;
+}
+
+function unwrapNested(u){
+  // entpackt ?u= / ?url= / beliebige param-Werte, die selbst URLs sind
+  for(const [k,v] of u.searchParams){
+    try{
+      const dec=decodeURIComponent(v||'');
+      if(/^https?:\/\//i.test(dec)) return new URL(dec);
+    }catch(e){}
   }
-  return out;
+  return u;
 }
 
 function cleanOne(s){
-  s = (s||'').trim().replace(/[,.;:)]$/,''); // trailing Satzzeichen weg
+  s=(s||'').trim().replace(/[,.;:)\]]$/,'');
   if(!s) return s;
   let u;
-  try { u = new URL(s); }
-  catch(e){
-    try { u = new URL('https://' + s); } catch(e2){ return s; }
+  try{ u=new URL(s); }
+  catch(e){ try{ u=new URL('https://'+s); } catch(e2){ return s; } }
+
+  u=unwrapNested(u);
+
+  const killSet=new Set([
+    'fbclid','gclid','twclid','msclkid',
+    'mc_cid','mc_eid','igshid','vero_id','wickedid',
+    'si','spm','mkt_tok','ref','ref_src','ref_url'
+  ]);
+
+  const out=new URL(u.origin+u.pathname);
+  // Parameter case-insensitiv filtern
+  for(const [k,v] of u.searchParams){
+    const kl=k.toLowerCase();
+    if(kl.startsWith('utm_')||killSet.has(kl)) continue;
+    out.searchParams.append(k,v);
   }
-  const kill = ['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];
-  for (const k of [...u.searchParams.keys()]) {
-    if (k.startsWith('utm_') || kill.includes(k)) u.searchParams.delete(k);
-  }
-  u.hash = '';
-  return u.toString();
+  // Fragment weg
+  return out.toString();
 }
 
 function runClean(){
-  const lines = extractUrls(inEl.value);
-  outEl.value = lines.map(cleanOne).join('\n');
+  const lines=extractUrls(inEl.value);
+  outEl.value=lines.map(cleanOne).join('\n');
 }
 
-$('clean').addEventListener('click', runClean);
-$('copy').addEventListener('click', async ()=>{
-  const t = outEl.value; if(!t) return;
-  try{ await navigator.clipboard.writeText(t); alert('Kopiert'); }catch(e){}
-});
-$('open').addEventListener('click', ()=>{
-  const t = outEl.value.split('\n').find(Boolean);
-  if(t) location.href = t;
-});
-$('clear').addEventListener('click', ()=>{
-  inEl.value = ''; outEl.value = ''; inEl.focus();
-});
+$('clean').onclick=runClean;
+$('copy').onclick=async()=>{const t=outEl.value;if(!t)return;try{await navigator.clipboard.writeText(t);alert('Kopiert')}catch(e){}};
+$('open').onclick=()=>{const t=outEl.value.split('\n').find(Boolean);if(t)location.href=t};
+$('clear').onclick=()=>{inEl.value='';outEl.value='';inEl.focus()};
 
-// Bookmarklet (reinigt aktuelle Seite)
-const js = "javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];u.hash='';u.searchParams.forEach(function(v,k){if(k.indexOf('utm_')===0||kill.indexOf(k)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
-$('bm').href = js;
+$('bm').href="javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid','si','spm','mkt_tok','ref','ref_src','ref_url'];u.hash='';u.searchParams.forEach(function(v,k){if(k.toLowerCase().indexOf('utm_')===0||kill.indexOf(k.toLowerCase())>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
 
-// Auto-Bereinigung per ?u= oder ?url=
-(function(){
-  const p = new URLSearchParams(location.search);
-  const q = p.get('u') || p.get('url');
-  if(q){ inEl.value = decodeURIComponent(q); runClean(); }
-})();
+// Auto per ?u= oder ?url=
+(function(){const p=new URLSearchParams(location.search);const q=p.get('u')||p.get('url');if(q){inEl.value=decodeURIComponent(q);runClean();}})();
 </script>
-</body>
-</html>
+</body></html>
