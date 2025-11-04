@@ -1,90 +1,52 @@
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SafeShare – Link-Reiniger</title>
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.4}
-    h1{font-size:18px;margin:0 0 8px}
-    textarea,input{width:100%;box-sizing:border-box;padding:10px;font-size:14px}
-    textarea{min-height:140px;resize:vertical}
-    .btn{padding:10px 12px;font-size:14px;margin-right:8px}
-    .muted{color:#666;font-size:12px}
-    #out{min-height:140px}
-  </style>
-</head>
-<body>
-  <h1>SafeShare – Link-Reiniger</h1>
-  <p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Funktionscodes bleiben.</p>
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Link-Reiniger</title>
+</head><body>
+<h1>SafeShare – Link-Reiniger</h1>
+<p>Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Funktionscodes bleiben.</p>
 
-  <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link."></textarea>
+<textarea id="in" placeholder="Link(s) hier einfügen. Eine Zeile pro Link." style="width:100%;height:140px"></textarea>
+<div style="margin:10px 0">
+  <button id="clean">Säubern</button>
+  <button id="copy">Kopieren</button>
+  <button id="open">Öffnen</button>
+  <button id="clear" title="Leeren" style="width:38px">×</button>
+</div>
+<textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..." style="width:100%;height:140px"></textarea>
 
-  <div style="margin:10px 0;">
-    <button id="clean" class="btn">Säubern</button>
-    <button id="copy"  class="btn">Kopieren</button>
-    <button id="open"  class="btn">Öffnen</button>
-    <button id="clear" class="btn" aria-label="Leeren" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
-  </div>
+<p style="font-size:12px"><a id="bm" href="#">Bookmarklet: UTM jetzt säubern</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
 
-  <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..."></textarea>
+<script>
+function cleanOne(s){
+  try{
+    const u=new URL(s.trim());
+    const kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];
+    [...u.searchParams.keys()].forEach(k=>{
+      if(k.startsWith('utm_')||kill.includes(k)) u.searchParams.delete(k);
+    });
+    u.hash='';
+    return u.toString();
+  }catch(e){ return s.trim(); }
+}
 
-  <p class="muted">Bookmarklet: <a id="bm" href="#">UTM jetzt säubern</a></p>
-  <p class="muted"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+function runClean(){
+  const lines=in.value.split('\n').map(x=>x.trim()).filter(Boolean);
+  out.value = lines.map(cleanOne).join('\n');
+}
 
-  <script>
-  function cleanOne(s){
-    try{
-      const u = new URL(s.trim());
-      const kill = ['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];
-      [...u.searchParams.keys()].forEach(k=>{
-        if (k.startsWith('utm_') || kill.includes(k)) u.searchParams.delete(k);
-      });
-      u.hash = '';
-      return u.toString();
-    }catch(e){
-      return s.trim();
-    }
-  }
+clean.onclick = runClean;
+copy.onclick  = async ()=>{ if(!out.value) return; try{ await navigator.clipboard.writeText(out.value); alert('Kopiert'); }catch(e){} };
+open.onclick  = ()=>{ const t=out.value.split('\n').find(Boolean); if(t) location.href=t; };
+clear.onclick = ()=>{ in.value=''; out.value=''; in.focus(); };
 
-  function runClean(){
-    const lines = document.getElementById('in').value.split('\n').map(x=>x.trim()).filter(Boolean);
-    document.getElementById('out').value = lines.map(cleanOne).join('\n');
-  }
+const js="javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];u.hash='';u.searchParams.forEach(function(v,k){if(k.indexOf('utm_')===0||kill.indexOf(k)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
+bm.href=js;
 
-  function autoFromQuery(){
-    const p = new URLSearchParams(location.search);
-    const q = p.get('u') || p.get('url');
-    if (q){
-      document.getElementById('in').value = decodeURIComponent(q);
-      runClean();
-      if (navigator.clipboard){
-        navigator.clipboard.writeText(document.getElementById('out').value).catch(()=>{});
-      }
-    }
-  }
-
-  document.getElementById('clean').addEventListener('click', runClean);
-  document.getElementById('copy').addEventListener('click', async ()=>{
-    const t = document.getElementById('out').value;
-    if (!t) return;
-    try{ await navigator.clipboard.writeText(t); alert('Kopiert'); }catch(e){}
-  });
-  document.getElementById('open').addEventListener('click', ()=>{
-    const t = document.getElementById('out').value.split('\n').find(Boolean);
-    if (t) location.href = t;
-  });
-  document.getElementById('clear').addEventListener('click', ()=>{
-    document.getElementById('in').value  = '';
-    document.getElementById('out').value = '';
-    document.getElementById('in').focus();
-  });
-
-  // Bookmarklet (reinigt aktuelle Seite)
-  const js = "javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];u.hash='';u.searchParams.forEach(function(v,k){if(k.indexOf('utm_')===0||kill.indexOf(k)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
-  document.getElementById('bm').href = js;
-
-  document.addEventListener('DOMContentLoaded', autoFromQuery);
-  </script>
-</body>
-</html>
+// Auto-Bereinigung per ?u=
+(function(){
+  const p=new URLSearchParams(location.search);
+  const q=p.get('u')||p.get('url');
+  if(q){ in.value=decodeURIComponent(q); runClean(); }
+})();
+</script>
+</body></html>
