@@ -1,80 +1,90 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger</title>
-<style>
-body{font-family:system-ui;margin:16px}
-input,button,textarea{font-size:16px}
-#out{word-break:break-all}
-.input-wrap{position:relative}
-#in{width:100%;box-sizing:border-box;padding-right:2.5rem}
-#clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);
-  border:0;background:transparent;font-size:22px;line-height:1;width:32px;height:32px;
-  cursor:pointer;opacity:.6}
-#clear:hover{opacity:1}
-#clear.hidden{display:none}
-</style>
-</head><body>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SafeShare – Link-Reiniger</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.4}
+    h1{font-size:18px;margin:0 0 8px}
+    textarea,input{width:100%;box-sizing:border-box;padding:10px;font-size:14px}
+    textarea{min-height:140px;resize:vertical}
+    .btn{padding:10px 12px;font-size:14px;margin-right:8px}
+    .muted{color:#666;font-size:12px}
+    #out{min-height:140px}
+  </style>
+</head>
+<body>
+  <h1>SafeShare – Link-Reiniger</h1>
+  <p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Funktionscodes bleiben.</p>
 
-<!-- PRO: Direktkauf (kein Overlay, kein payhip.js) -->
-<div id="pro" style="margin:12px 0">
-  <a href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener"
-     style="display:inline-block;padding:10px 14px;border:1px solid #333;text-decoration:none">
-    Jetzt kaufen – SafeShare Pro (12 €)
-  </a>
-  <div style="font-size:12px;color:#666;margin-top:4px">
-    Pro = Batch, Auto-Kopie, iOS-Shortcut. 14 Tage Rückgabe.
+  <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link."></textarea>
+
+  <div style="margin:10px 0;">
+    <button id="clean" class="btn">Säubern</button>
+    <button id="copy"  class="btn">Kopieren</button>
+    <button id="open"  class="btn">Öffnen</button>
+    <button id="clear" class="btn" aria-label="Leeren" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
   </div>
-</div>
 
-<label for="in">Link einfügen:</label>
+  <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..."></textarea>
 
-<div style="margin:10px 0;">
-  <button id="clean" class="btn">Säubern</button>
-  <button id="copy"  class="btn">Kopieren</button>
-  <button id="clear" class="btn" aria-label="Leeren" style="width:38px;padding:8px 0">&times;</button>
-</div>
+  <p class="muted">Bookmarklet: <a id="bm" href="#">UTM jetzt säubern</a></p>
+  <p class="muted"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
 
-<button id="clean">Säubern</button>
+  <script>
+  function cleanOne(s){
+    try{
+      const u = new URL(s.trim());
+      const kill = ['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];
+      [...u.searchParams.keys()].forEach(k=>{
+        if (k.startsWith('utm_') || kill.includes(k)) u.searchParams.delete(k);
+      });
+      u.hash = '';
+      return u.toString();
+    }catch(e){
+      return s.trim();
+    }
+  }
 
-<p>Ergebnis:</p>
-<p id="out"></p>
+  function runClean(){
+    const lines = document.getElementById('in').value.split('\n').map(x=>x.trim()).filter(Boolean);
+    document.getElementById('out').value = lines.map(cleanOne).join('\n');
+  }
 
-<script>
-const BAD=new Set(['gclid','fbclid','msclkid','dclid','igshid','mc_eid']);
-function cleanUrl(u){
-  const url=new URL(u);
-  for(const [k] of url.searchParams)
-    if(/^utm_/i.test(k)||BAD.has(k.toLowerCase())) url.searchParams.delete(k);
-  const s=url.searchParams.toString(); url.search=s?('?'+s):''; return url.toString();
-}
-document.getElementById('clean').onclick=()=>{
-  const v=document.getElementById('in').value.trim();
-  let r=''; try{r=cleanUrl(v);}catch(e){}
-  document.getElementById('out').innerHTML=r?`<a href="${r}" target="_blank" rel="noopener">${r}</a>`:'Ungültige URL';
-};
-// Auto-Clean (?u=...)
-(()=>{const p=new URLSearchParams(location.search);const u=p.get('u');
-  if(u){try{
-    const r=cleanUrl(u); document.getElementById('in').value=u;
-    document.getElementById('out').innerHTML=`<a href="${r}" target="_blank" rel="noopener">${r}</a>`;
-  }catch(e){}}
-  // Lite-Modus: Kaufblock ausblenden
-  if(p.get('ui')==='lite'){ document.getElementById('pro')?.remove(); }
-})();
+  function autoFromQuery(){
+    const p = new URLSearchParams(location.search);
+    const q = p.get('u') || p.get('url');
+    if (q){
+      document.getElementById('in').value = decodeURIComponent(q);
+      runClean();
+      if (navigator.clipboard){
+        navigator.clipboard.writeText(document.getElementById('out').value).catch(()=>{});
+      }
+    }
+  }
 
-// X-Button
-const $in=document.getElementById('in'), $out=document.getElementById('out'), $clear=document.getElementById('clear');
-function syncClear(){ $clear.classList.toggle('hidden', !$in.value.trim()); }
-$clear.onclick=()=>{ $in.value=''; $out.textContent=''; $in.focus(); syncClear(); };
-$in.addEventListener('input', syncClear);
-$in.addEventListener('keydown', e=>{ if(e.key==='Escape') $clear.click(); });
-syncClear();
-</script>
+  document.getElementById('clean').addEventListener('click', runClean);
+  document.getElementById('copy').addEventListener('click', async ()=>{
+    const t = document.getElementById('out').value;
+    if (!t) return;
+    try{ await navigator.clipboard.writeText(t); alert('Kopiert'); }catch(e){}
+  });
+  document.getElementById('open').addEventListener('click', ()=>{
+    const t = document.getElementById('out').value.split('\n').find(Boolean);
+    if (t) location.href = t;
+  });
+  document.getElementById('clear').addEventListener('click', ()=>{
+    document.getElementById('in').value  = '';
+    document.getElementById('out').value = '';
+    document.getElementById('in').focus();
+  });
 
-<footer style="font-size:12px;margin-top:16px">
-  Support: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a> ·
-  <a href="./rueckgabe.html">Rückgabe</a> ·
-  <a href="./impressum.html">Impressum</a> ·
-  <a href="./datenschutz.html">Datenschutz</a>
-</footer>
-</body></html>
+  // Bookmarklet (reinigt aktuelle Seite)
+  const js = "javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];u.hash='';u.searchParams.forEach(function(v,k){if(k.indexOf('utm_')===0||kill.indexOf(k)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
+  document.getElementById('bm').href = js;
+
+  document.addEventListener('DOMContentLoaded', autoFromQuery);
+  </script>
+</body>
+</html>
