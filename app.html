@@ -95,7 +95,20 @@ function runClean(){ const lines=extractUrls(inEl.value); outEl.value=lines.map(
 
 $('clean').onclick=runClean;
 $('copy').onclick=async()=>{const t=outEl.value;if(!t)return;try{await navigator.clipboard.writeText(t);alert('Kopiert')}catch(e){}};
-$('open').onclick=()=>{const t=(outEl.value||'').split('\n').find(Boolean); if(t) location.assign(t);};
+$('open').onclick = () => {
+  runClean(); // erst bereinigen
+  const t = (outEl.value || '')
+    .split(/\s+/)
+    .find(x => /^https?:\/\//i.test(x));
+  if (!t) { alert('Kein Ziel gefunden'); return; }
+  const a = document.createElement('a');
+  a.href = t;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
 $('clear').onclick=()=>{inEl.value='';outEl.value='';inEl.focus();};
 
 $('bm').href="javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid'];u.hash='';u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||kill.indexOf(kl)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
