@@ -1,9 +1,21 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Link-Reiniger</title>
-<style>body{font-family:system-ui;margin:16px}input,button,textarea{font-size:16px}#out{word-break:break-all}</style>
+<style>
+body{font-family:system-ui;margin:16px}
+input,button,textarea{font-size:16px}
+#out{word-break:break-all}
+.input-wrap{position:relative}
+#in{width:100%;box-sizing:border-box;padding-right:2.5rem}
+#clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  border:0;background:transparent;font-size:22px;line-height:1;width:32px;height:32px;
+  cursor:pointer;opacity:.6}
+#clear:hover{opacity:1}
+#clear.hidden{display:none}
+</style>
 </head><body>
 
+<!-- PRO: Direktkauf (kein Overlay, kein payhip.js) -->
 <div id="pro" style="margin:12px 0">
   <a href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener"
      style="display:inline-block;padding:10px 14px;border:1px solid #333;text-decoration:none">
@@ -13,6 +25,16 @@
     Pro = Batch, Auto-Kopie, iOS-Shortcut. 14 Tage Rückgabe.
   </div>
 </div>
+
+<label for="in">Link einfügen:</label>
+<div class="input-wrap">
+  <input id="in" placeholder="https://…">
+  <button id="clear" type="button" aria-label="Eingabe löschen" title="Eingabe löschen">×</button>
+</div>
+<button id="clean">Säubern</button>
+
+<p>Ergebnis:</p>
+<p id="out"></p>
 
 <script>
 const BAD=new Set(['gclid','fbclid','msclkid','dclid','igshid','mc_eid']);
@@ -27,20 +49,24 @@ document.getElementById('clean').onclick=()=>{
   let r=''; try{r=cleanUrl(v);}catch(e){}
   document.getElementById('out').innerHTML=r?`<a href="${r}" target="_blank" rel="noopener">${r}</a>`:'Ungültige URL';
 };
-// Auto: ?u=… + Lite: ?ui=lite
-(()=>{
-  const p=new URLSearchParams(location.search);
-  const u=p.get('u');
-  if(u){ try{
-    const r=cleanUrl(u);
-    document.getElementById('in').value=u;
+// Auto-Clean (?u=...)
+(()=>{const p=new URLSearchParams(location.search);const u=p.get('u');
+  if(u){try{
+    const r=cleanUrl(u); document.getElementById('in').value=u;
     document.getElementById('out').innerHTML=`<a href="${r}" target="_blank" rel="noopener">${r}</a>`;
-  }catch(e){} }
-  if(p.get('ui')==='lite'){
-    document.getElementById('pro')?.remove();
-    document.querySelector('script[src*="payhip.com/js/payhip.js"]')?.remove();
-  }
+  }catch(e){}}
+  // Lite-Modus: Kaufblock ausblenden
+  if(p.get('ui')==='lite'){ document.getElementById('pro')?.remove(); }
 })();
+
+// X-Button
+const $in=document.getElementById('in'), $out=document.getElementById('out'), $clear=document.getElementById('clear');
+function syncClear(){ $clear.classList.toggle('hidden', !$in.value.trim()); }
+$clear.onclick=()=>{ $in.value=''; $out.textContent=''; $in.focus(); syncClear(); };
+$in.addEventListener('input', syncClear);
+$in.addEventListener('keydown', e=>{ if(e.key==='Escape') $clear.click(); });
+syncClear();
+</script>
 
 <footer style="font-size:12px;margin-top:16px">
   Support: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a> ·
