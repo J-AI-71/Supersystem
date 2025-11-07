@@ -12,12 +12,14 @@
   .muted{color:#6b7280;font-size:13px}
   input.share{width:100%;max-width:520px;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit}
 </style>
-</head><body>
+</head>
+<body>
 <h1>Danke für deine Unterstützung</h1>
 <p class="muted">Weiter geht’s:</p>
 
 <div class="row">
   <a class="btn" href="app.html">SafeShare öffnen</a>
+  <a class="btn alt" href="https://payhip.com/SafeSharepro" target="_blank" rel="noopener">Projekt unterstützen</a>
 </div>
 
 <p class="muted">Teilen</p>
@@ -30,9 +32,10 @@
 
 <script>
 document.getElementById('copyshare').addEventListener('click', async ()=>{
-  const v = document.getElementById('share').value;
+  const v=document.getElementById('share').value;
   try{ await navigator.clipboard.writeText(v); alert('Kopiert'); }
-  catch(e){ const el = document.getElementById('share'); el.select(); document.execCommand('copy'); }
+  catch(e){ const el=document.getElementById('share'); el.select(); document.execCommand('copy'); }
 });
 </script>
-</body></html>
+</body>
+</html>
