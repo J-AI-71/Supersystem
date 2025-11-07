@@ -7,6 +7,7 @@
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111827">
 
 <style>
@@ -34,7 +35,7 @@
   <button id="clear" class="btn" aria-label="Leeren" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
   <label class="inline muted"><input type="checkbox" id="keepAff" checked>Provisionen behalten</label>
 </div>
-<p class="muted">„1-Klick“ säubert und öffnet sofort im neuen Tab. Wenn der Schalter aus ist, werden auch Affiliate-Parameter entfernt; funktionale Codes wie <code>coupon</code> bleiben.</p>
+<p class="muted">„1-Klick“ säubert und öffnet sofort im neuen Tab. Ist der Schalter aus, werden auch Affiliate-Parameter entfernt; funktionale Codes wie <code>coupon</code> bleiben.</p>
 
 <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..."></textarea>
 
@@ -61,9 +62,7 @@ const kill = new Set([
 
 // Affiliate-/Attributions-Whitelist
 const AFF = {
-  // Namen, die IMMER bleiben (funktional/neutral)
-  baseKeep: new Set(['coupon','code']),
-  // Generische Affiliate-Namen (aktiv, wenn Toggle an)
+  baseKeep: new Set(['coupon','code']), // bleibt immer
   globalNames: new Set([
     'ref','refid','ref_id','referrer',
     'aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign',
@@ -72,15 +71,10 @@ const AFF = {
     'subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid',
     'awinaffid','awinmid'
   ]),
-  // Domain-spezifisch (aktiv, wenn Toggle an)
   byHostRules: [
-    // Amazon
-    { test: h => /(^|\.)amazon\./i.test(h), names: new Set(['tag','ascsubtag']) },
-    // eBay
-    { test: h => /(^|\.)ebay\./i.test(h),   names: new Set(['campid','customid','mkcid','mkevt','mkrid']) },
-    // Rakuten
-    { test: h => /(^|\.)rakuten\./i.test(h), names: new Set(['ranmid','raneaid','ransiteid','ranlinkid']) },
-    // AliExpress
+    { test: h => /(^|\.)amazon\./i.test(h),   names: new Set(['tag','ascsubtag']) },
+    { test: h => /(^|\.)ebay\./i.test(h),     names: new Set(['campid','customid','mkcid','mkevt','mkrid']) },
+    { test: h => /(^|\.)rakuten\./i.test(h),  names: new Set(['ranmid','raneaid','ransiteid','ranlinkid']) },
     { test: h => /(^|\.)aliexpress\./i.test(h), names: new Set(['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key']) }
   ],
   exactPairs: new Set([
@@ -88,7 +82,7 @@ const AFF = {
   ])
 };
 
-// Hilfsfunktionen
+// Utils
 function extractUrls(t){
   const rx = /\bhttps?:\/\/[^\s<>"')]+/gi, r = []; let m;
   while((m = rx.exec(t||''))) r.push(m[0]);
@@ -96,7 +90,7 @@ function extractUrls(t){
 }
 function deepDecode(s){
   let a = s||'', b = s||'';
-  for(let i=0;i<8;i++){ try{ b = decodeURIComponent(a); }catch(_){ break; } if(b===a) break; a=b; }
+  for(let i=0;i<8;i++){ try{ b = decodeURIComponent(a); }catch(_){ break; } if(b === a) break; a = b; }
   return a;
 }
 function unwrapDeep(u){
@@ -120,7 +114,7 @@ function unwrapDeep(u){
   return u;
 }
 function buildKeepNames(host){
-  const keep = new Set(AFF.baseKeep); // coupon, code bleiben immer
+  const keep = new Set(AFF.baseKeep); // coupon, code
   if ($('keepAff')?.checked){
     for (const n of AFF.globalNames) keep.add(n);
     for (const rule of AFF.byHostRules) if (rule.test(host)) for (const n of rule.names) keep.add(n);
@@ -162,7 +156,7 @@ $('copy').onclick  = async () => { const t = outEl.value; if(!t) return; try{ aw
 $('open').onclick  = () => { runClean(); const t = firstOutUrl(); if(!t){ alert('Kein Ziel gefunden'); return; } window.location.assign(t); };
 $('go').onclick    = () => { runClean(); const t = firstOutUrl(); if(!t){ alert('Kein Ziel gefunden'); return; } window.open(t,'_blank','noopener,noreferrer'); };
 $('clear').onclick = () => { inEl.value=''; outEl.value=''; inEl.focus(); };
-$('keepAff').onchange = () => { /* keine Aktion nötig; nächste Reinigung nutzt den Schalter */ };
+$('keepAff').onchange = () => { /* nächste Reinigung nutzt den Schalter */ };
 
 // Bookmarklets
 $('bm').href = "javascript:(function(){try{var u=new URL(location.href);var h=u.hostname.toLowerCase();var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);if((/(^|\\.)amazon\\./i).test(h)){['tag','ascsubtag'].forEach(x=>keep.add(x));}if((/(^|\\.)ebay\\./i).test(h)){['campid','customid','mkcid','mkevt','mkrid'].forEach(x=>keep.add(x));}if((/(^|\\.)rakuten\\./i).test(h)){['ranmid','raneaid','ransiteid','ranlinkid'].forEach(x=>keep.add(x));}if((/(^|\\.)aliexpress\\./i).test(h)){['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'].forEach(x=>keep.add(x));}u.hash='';var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref_src','ref_url','si','spm','mkt_tok'].indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(k=>u.searchParams.delete(k));location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
