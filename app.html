@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v15</title>
+<title>SafeShare – Link-Reiniger v16</title>
 <style>
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.45}
   h1{font-size:18px;margin:0 0 8px}
@@ -15,7 +15,7 @@
 </style>
 </head>
 <body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v15</small></h1>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v16</small></h1>
 <p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Verschachtelte Links werden entpackt. Funktionscodes bleiben.</p>
 
 <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird erkannt."></textarea>
@@ -33,7 +33,6 @@
 
 <p style="margin-top:10px">
   <a href="https://payhip.com/SafeSharepro" target="_blank" rel="noopener" class="btn">Projekt unterstützen</a>
-  <a href="kurzanleitung.html" target="_blank" rel="noopener" class="btn">Kurzanleitung</a>
 </p>
 
 <p class="muted">Bookmarklet: <a id="bm" href="#">UTM jetzt säubern</a></p>
@@ -43,122 +42,49 @@
 const $ = id => document.getElementById(id);
 const inEl = $('in'), outEl = $('out');
 
-// Links robust aus Text extrahieren
 function extractUrls(t){
   const rx = /\bhttps?:\/\/[^\s<>"')]+/gi, r = []; let m;
   while((m = rx.exec(t||''))) r.push(m[0]);
   return r.length ? r : (t||'').split('\n').map(s=>s.trim()).filter(Boolean);
 }
-
-// Mehrfach-Decoding für verschachtelte Redirects
 function deepDecode(s){
   let a = s||'', b = s||'';
-  for(let i=0;i<8;i++){
-    try{ b = decodeURIComponent(a); }catch(_){ break; }
-    if(b === a) break; a = b;
-  }
+  for(let i=0;i<8;i++){ try{ b = decodeURIComponent(a); }catch(_){ break; } if(b===a) break; a=b; }
   return a;
 }
-
-// Entschachteln: prüft Param-Werte, Hash, komplette URL
 function unwrapDeep(u){
   for(let i=0;i<6;i++){
-    let found = null;
-
-    for(const [,v] of u.searchParams){
-      const dec = deepDecode(v||'');
-      const m = dec.match(/https?:\/\/[^\s"'<>)]+/i);
-      if(m){ found = m[0]; break; }
-    }
-    if(!found){
-      const dec = deepDecode(u.hash||'');
-      const m = (dec||'').match(/https?:\/\/[^\s"'<>)]+/i);
-      if(m) found = m[0];
-    }
-    if(!found){
-      const dec = deepDecode(u.href);
-      const m = dec.match(/https?:\/\/[^\s"'<>)]+/i);
-      if(m && m[0] !== u.href) found = m[0];
-    }
-    if(!found) break;
-    try{ u = new URL(found); }catch(_){ break; }
-  }
-  return u;
+    let found=null;
+    for(const [,v] of u.searchParams){ const dec=deepDecode(v||''); const m=dec.match(/https?:\/\/[^\s"'<>)]+/i); if(m){found=m[0];break;} }
+    if(!found){ const dec=deepDecode(u.hash||''); const m=(dec||'').match(/https?:\/\/[^\s"'<>)]+/i); if(m) found=m[0]; }
+    if(!found){ const dec=deepDecode(u.href); const m=dec.match(/https?:\/\/[^\s"'<>)]+/i); if(m && m[0]!==u.href) found=m[0]; }
+    if(!found) break; try{ u=new URL(found); }catch(_){ break; }
+  } return u;
 }
-
-// Reinigung
 function cleanOne(s){
-  s = (s||'').trim().replace(/[,.;:)\]]$/,'');
-  if(!s) return s;
-
-  let u;
-  try{ u = new URL(s); }
-  catch(_){
-    try{ u = new URL('https://' + s); } catch(__){ return s; }
-  }
-
-  u = unwrapDeep(u);
-
-  const kill = new Set([
-    'fbclid','gclid','twclid','msclkid',
-    'mc_cid','mc_eid','igshid','vero_id','wickedid',
-    'ref','ref_src','ref_url','si','spm','mkt_tok'
-  ]);
-
-  const out = new URL(u.origin + u.pathname);
-  for(const [k,v] of u.searchParams){
-    const kl = k.toLowerCase();
-    if(kl.startsWith('utm_') || kill.has(kl)) continue;
-    out.searchParams.append(k, v);
-  }
+  s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
+  let u; try{ u=new URL(s);}catch(_){ try{u=new URL('https://'+s);}catch(__){return s;} }
+  u=unwrapDeep(u);
+  const kill=new Set(['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid','ref','ref_src','ref_url','si','spm','mkt_tok']);
+  const out=new URL(u.origin+u.pathname);
+  for(const [k,v] of u.searchParams){ const kl=k.toLowerCase(); if(kl.startsWith('utm_')||kill.has(kl)) continue; out.searchParams.append(k,v); }
   return out.toString();
 }
+function runClean(){ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); }
+function firstOutUrl(){ return (outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x))||''; }
 
-function runClean(){
-  const lines = extractUrls(inEl.value);
-  outEl.value = lines.map(cleanOne).join('\n');
-}
+$('clean').onclick=runClean;
+$('copy').onclick=async()=>{const t=outEl.value;if(!t)return;try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
+$('open').onclick=()=>{runClean();const t=firstOutUrl();if(!t){alert('Kein Ziel gefunden');return;}window.location.assign(t);};
+$('go').onclick=()=>{runClean();const t=firstOutUrl();if(!t){alert('Kein Ziel gefunden');return;}window.open(t,'_blank','noopener,noreferrer');};
+$('clear').onclick=()=>{inEl.value='';outEl.value='';inEl.focus();};
 
-function firstOutUrl(){
-  return (outEl.value||'').split(/\s+/).find(x => /^https?:\/\//i.test(x)) || '';
-}
+$('bm').href="javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid','ref','ref_src','ref_url','si','spm','mkt_tok'];u.hash='';u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||kill.indexOf(kl)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
 
-// Buttons
-$('clean').onclick = runClean;
-$('copy').onclick  = async () => {
-  const t = outEl.value; if(!t) return;
-  try{ await navigator.clipboard.writeText(t); alert('Kopiert'); }catch(_){}
-};
-$('open').onclick  = () => {
-  runClean();
-  const t = firstOutUrl();
-  if(!t){ alert('Kein Ziel gefunden'); return; }
-  window.location.assign(t);
-};
-$('go').onclick    = () => {
-  runClean();
-  const t = firstOutUrl();
-  if(!t){ alert('Kein Ziel gefunden'); return; }
-  window.open(t,'_blank','noopener,noreferrer');
-};
-$('clear').onclick = () => { inEl.value=''; outEl.value=''; inEl.focus(); };
-
-// Bookmarklet
-$('bm').href = "javascript:(function(){try{var u=new URL(location.href);var kill=['fbclid','gclid','twclid','msclkid','mc_cid','mc_eid','igshid','vero_id','wickedid','ref','ref_src','ref_url','si','spm','mkt_tok'];u.hash='';u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||kill.indexOf(kl)>-1)u.searchParams.delete(k)});location.replace(u.toString())}catch(e){alert('Kein gültiger Link')}})()";
-
-// Auto per ?u= / ?url= sowie optional &open=1
 (function(){
-  const p = new URLSearchParams(location.search);
-  const q = p.get('u') || p.get('url');
-  const ao = p.get('open') || p.get('ao');
-  if(q){
-    inEl.value = decodeURIComponent(q);
-    runClean();
-    if(ao === '1'){
-      const t = firstOutUrl();
-      if(t) window.location.assign(t);
-    }
-  }
+  const p=new URLSearchParams(location.search);
+  const q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao');
+  if(q){ inEl.value=decodeURIComponent(q); runClean(); if(ao==='1'){ const t=firstOutUrl(); if(t) window.location.assign(t); } }
 })();
 </script>
 </body>
