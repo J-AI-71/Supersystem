@@ -177,6 +177,11 @@ $('bmStrict').href = "javascript:(function(){try{var u=new URL(location.href);va
     }
   }
 })();
+
+// Optional: Service Worker registrieren (falls sw.js vorhanden)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
 </script>
 </body>
 </html>
