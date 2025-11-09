@@ -3,12 +3,10 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Link-Reiniger v41</title>
-
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111827">
-
 <style>
   :root{--fg:#111827;--muted:#666;--bd:#ddd}
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.45;color:var(--fg)}
@@ -26,7 +24,7 @@
   details summary{cursor:pointer;user-select:none}
   details[open]{border:1px solid var(--bd);border-radius:6px;padding:8px}
   .row{margin-top:6px}
-  .label{display:inline-block;min-width:150px;font-size:12px;color:var(--muted)}
+  .label{display:inline-block;min-width:150px;font-size:12px;color:#666}
   .chips{display:inline-flex;flex-wrap:wrap;gap:6px}
   .chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid}
   .chip.keep{background:#f0fdf4;border-color:#86efac;color:#065f46}
@@ -49,7 +47,7 @@
   <a id="openA" class="btn disabled" href="#" role="button" rel="noopener noreferrer">Öffnen</a>
   <a id="goA"   class="btn disabled" href="#" target="_blank" rel="noopener noreferrer" role="button">1-Klick</a>
   <button id="clear" class="btn" type="button" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
-  <button id="noref" class="btn" type="button" title="Ziel ohne Referrer öffnen">Referrer-frei</button>
+  <button id="noref" class="btn" type="button" title="Ziel ohne Referer öffnen">Referrer-frei</button>
 </div>
 
 <div class="opts">
@@ -81,16 +79,14 @@
 <details id="help">
   <summary>Kurzanleitung / Buttons</summary>
   <ul style="margin:8px 0 0 18px;font-size:13px">
-    <li><strong>Säubern</strong>: Entfernt Tracking-Parameter, entpackt Redirects, AMP→Canonical, Hash-Clean, sortiert & dedupliziert. Domain-Profile werden angewendet.</li>
-    <li><strong>Öffnen</strong>: Ersten bereinigten Link im selben Tab.</li>
-    <li><strong>1-Klick</strong>: Ersten bereinigten Link im neuen Tab.</li>
-    <li><strong>Referrer-frei</strong>: Ziel ohne Referer-Header öffnen.</li>
-    <li><strong>Kopieren</strong>: Alle bereinigten Links. <strong>(1. Link)</strong>: nur der erste. <strong>Markdown/HTML</strong>: formatierte Varianten.</li>
-    <li><strong>Provisionen behalten</strong>: AN = Affiliate-Keys bleiben (Affiliate-safe). AUS = Strict (auch Affiliate-Keys weg; <code>coupon/code</code> bleiben).</li>
-    <li><strong>Unbekannt</strong> im Status: Klick auf <code>＋</code> lernt neue Keys (nur lokal).</li>
+    <li><strong>Säubern</strong>: Tracker weg, Redirects entpackt, AMP→Canonical, Hash-Clean, sortiert & dedupliziert. Domain-Profile werden angewendet.</li>
+    <li><strong>Öffnen</strong> = gleicher Tab. <strong>1-Klick</strong> = neuer Tab. <strong>Referrer-frei</strong> = ohne Referer-Header.</li>
+    <li><strong>Kopieren</strong> = alle Links. <strong>(1. Link/Markdown/HTML)</strong> = Varianten.</li>
+    <li><strong>Provisionen behalten</strong> = Affiliate-safe. AUS = Strict.</li>
+    <li><strong>Unbekannt</strong> im Status: <code>＋</code> klicken → zur Kill-Liste lernen (lokal).</li>
     <li><strong>Profile</strong>: Domain → safe/strict speichern. Beim Säubern Auto-Umschaltung.</li>
     <li><strong>Export/Import</strong>: Kill-Liste und Profile als JSON sichern/laden.</li>
-    <li><strong>Auto-Parameter</strong>: <code>?u=&lt;url&gt;</code> füllt Eingabe, <code>&amp;open=1</code> öffnet automatisch. <code>?help=1</code> zeigt diese Hilfe offen.</li>
+    <li><strong>Auto</strong>: <code>?u=&lt;url&gt;</code> füllt, <code>&amp;open=1</code> öffnet, <code>?help=1</code> zeigt Hilfe offen.</li>
   </ul>
 </details>
 
@@ -100,120 +96,71 @@
   <a href="bookmarklets.html" class="btn">Bookmarklets</a>
 </p>
 
-<p class="muted">Bookmarklets:
-  <a id="bmSafeSticky"   href="#">Affiliate-safe (Sticky)</a> ·
-  <a id="bmStrictSticky" href="#">Strict (Sticky)</a> ·
-  <a id="bmSafeReload"   href="#">Affiliate-safe (Reload)</a> ·
-  <a id="bmStrictReload" href="#">Strict (Reload)</a>
-</p>
-
 <p class="muted"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
 
 <script>
-/* ---------- Boot + Fehleranzeige + Reset ---------- */
-(function(){
+(function(){ // Fehleranzeige + Reset
   try{
     const p=new URLSearchParams(location.search);
-    if(p.get('reset')==='1'){ localStorage.removeItem('safeshare:v40'); localStorage.removeItem('safeshare:v41'); }
+    if(p.get('reset')==='1'){ localStorage.removeItem('safeshare:v41'); }
   }catch(_){}
-  const s=document.getElementById('status');
-  window.addEventListener('error',e=>{ s.textContent='JS-Fehler: '+e.message; });
+  window.addEventListener('error',e=>{ const s=document.getElementById('status'); if(s) s.textContent='JS-Fehler: '+e.message; });
 })();
 
-// --- Settings (localStorage) ---
 const storeKey='safeshare:v41';
-const defaults={ killUser:[], profiles:{} }; // profiles[host] = "safe"|"strict"
-function loadSettings(){ try{ return {...defaults, ...JSON.parse(localStorage.getItem(storeKey)||'{}')}; }catch(_){ return {...defaults}; } }
-function saveSettings(s){ try{ localStorage.setItem(storeKey, JSON.stringify(s)); }catch(_){} }
-let settings = loadSettings();
+const defaults={ killUser:[], profiles:{} };
+function load(){ try{ return {...defaults, ...JSON.parse(localStorage.getItem(storeKey)||'{}')} }catch(_){ return {...defaults} } }
+function save(s){ try{ localStorage.setItem(storeKey, JSON.stringify(s)); }catch(_){} }
+let settings=load();
 
-// Basis-Trackerliste
-const killBase = new Set([
-  'fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid',
-  'ref_src','ref_url','si','spm','mkt_tok',
-  'wtmc','wt_mc','wt_zmc','zmc','xtor',
-  'client','zx','no_sw_cr'
-]);
-// User-Trackerliste (lernbar)
-let killUser = new Set(settings.killUser||[]);
-function effKill(){ return new Set([...killBase, ...killUser]); }
+const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
+let killUser=new Set(settings.killUser||[]);
+const effKill=()=>new Set([...killBase, ...killUser]);
 
-const $ = id => document.getElementById(id);
-const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
-
-// Affiliate-Whitelist
-const AFF = {
-  baseKeep: new Set(['coupon','code']),
-  globalNames: new Set([
-    'ref','refid','ref_id','referrer',
-    'aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign',
-    'campaign','campaignid','campaign_id',
-    'clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2',
-    'subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid'
-  ]),
-  byHostRules: [
-    { test:h=>/(^|\.)amazon\./i.test(h),   names:new Set(['tag','ascsubtag']) },
-    { test:h=>/(^|\.)ebay\./i.test(h),     names:new Set(['campid','customid','mkcid','mkevt','mkrid']) },
-    { test:h=>/(^|\.)rakuten\./i.test(h),  names:new Set(['ranmid','raneaid','ransiteid','ranlinkid']) },
-    { test:h=>/(^|\.)aliexpress\./i.test(h), names:new Set(['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key']) }
+const AFF={
+  baseKeep:new Set(['coupon','code']),
+  globalNames:new Set(['ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']),
+  byHostRules:[
+    {test:h=>/(^|\.)amazon\./i.test(h),   names:new Set(['tag','ascsubtag'])},
+    {test:h=>/(^|\.)ebay\./i.test(h),     names:new Set(['campid','customid','mkcid','mkevt','mkrid'])},
+    {test:h=>/(^|\.)rakuten\./i.test(h),  names:new Set(['ranmid','raneaid','ransiteid','ranlinkid'])},
+    {test:h=>/(^|\.)aliexpress\./i.test(h), names:new Set(['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'])}
   ],
   exactPairs:new Set([])
 };
 
-let lastInfo=[];
+const $=id=>document.getElementById(id);
+const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
 
-/* ---------- Helpers ---------- */
-function extractUrls(t){
-  const rx=/\bhttps?:\/\/[^\s<>"')]+/gi, r=[]; let m;
-  while((m=rx.exec(t||''))) r.push(m[0]);
-  return r.length? r : (t||'').split('\n').map(s=>s.trim()).filter(Boolean);
-}
-function deepDecode(s){
-  let a=s||'', b=s||'';
-  for(let i=0;i<8;i++){ try{ b=decodeURIComponent(a);}catch(_){ break;} if(b===a) break; a=b; }
-  return a;
-}
+function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
+function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
+
 function unwrapDeep(u){
   try{
-    if(/(^|\.)google\./i.test(u.hostname) && u.pathname.startsWith('/url')){
-      const q=u.searchParams.get('q')||u.searchParams.get('url'); if(q) u=new URL(q);
-    }
-    if(/(^|\.)facebook\./i.test(u.hostname) && u.pathname.startsWith('/l.php')){
-      const q=u.searchParams.get('u'); if(q) u=new URL(q);
-    }
+    if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith('/url')){const q=u.searchParams.get('q')||u.searchParams.get('url'); if(q) u=new URL(q);}
+    if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith('/l.php')){const q=u.searchParams.get('u'); if(q) u=new URL(q);}
   }catch(_){}
   for(let i=0;i<6;i++){
     let found=null;
-    for(const [,v] of u.searchParams){
-      const dec=deepDecode(v||''); const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);
-      if(m){ found=m[0]; break; }
-    }
-    if(!found){
-      const dec=deepDecode(u.hash||''); const m=(dec||'').match(/https?:\/\/[^\s"'<>)]+/i);
-      if(m) found=m[0];
-    }
-    if(!found){
-      const dec=deepDecode(u.href); const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);
-      if(m && m[0]!==u.href) found=m[0];
-    }
-    if(!found) break; try{ u=new URL(found);}catch(_){ break; }
+    for(const [,v] of u.searchParams){const dec=deepDecode(v||'');const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m){found=m[0];break;}}
+    if(!found){const dec=deepDecode(u.hash||'');const m=(dec||'').match(/https?:\/\/[^\s"'<>)]+/i);if(m)found=m[0];}
+    if(!found){const dec=deepDecode(u.href);const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m&&m[0]!==u.href)found=m[0];}
+    if(!found)break; try{u=new URL(found)}catch(_){break;}
   }
   return u;
 }
 function applyAmpCanonical(u){
   try{
     let path=u.pathname.replace(/\/amp\/?$/,'/').replace(/\/amp$/,'/');
-    const sp=u.searchParams;
-    if(sp.has('amp')) sp.delete('amp');
-    if((sp.get('output')||'').toLowerCase()==='amp') sp.delete('output');
+    const sp=u.searchParams; if(sp.has('amp')) sp.delete('amp'); if((sp.get('output')||'').toLowerCase()==='amp') sp.delete('output');
     return new URL(u.origin+path+(sp.size?('?'+sp.toString()):''));
-  }catch(_){ return u; }
+  }catch(_){return u;}
 }
 function buildKeepNames(host){
   const keep=new Set(AFF.baseKeep);
   if($('keepAff')?.checked){
     for(const n of AFF.globalNames) keep.add(n);
-    for(const rule of AFF.byHostRules) if(rule.test(host)) for(const n of rule.names) keep.add(n);
+    for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) keep.add(n);
   }
   return keep;
 }
@@ -224,255 +171,113 @@ function sortAndDedupe(out){
     .forEach(([k,v])=>sorted.searchParams.append(k,v));
   out.search=sorted.search;
 }
-function tallyTrackersFromParams(sp){
-  const set=new Set(); const K=effKill();
-  for(const [k] of sp){ const kl=k.toLowerCase(); if(kl.startsWith('utm_')||K.has(kl)) set.add(kl); }
-  return set;
-}
-function tallyTrackersFromHash(hashStr){
-  const set=new Set(); if(!hashStr) return set;
-  const h=hashStr.replace(/^#/,''); if(!h.includes('=')) return set;
-  const hp=new URLSearchParams(h); const K=effKill();
-  for(const [k] of hp){ const kl=k.toLowerCase(); if(kl.startsWith('utm_')||K.has(kl)) set.add(kl); }
-  return set;
-}
-function sanitizeHash(u, keepNames, removedSet){
-  if(!u.hash) return '';
-  const h=u.hash.replace(/^#/,''); if(!h.includes('=')) return '';
-  const hp=new URLSearchParams(h); const K=effKill();
-  for(const [k,v] of [...hp]){
-    const kl=k.toLowerCase();
-    const isAff = keepNames.has(kl) || AFF.exactPairs.has(`${kl}:${v}`);
-    const isTrack = kl.startsWith('utm_') || K.has(kl);
-    if(isTrack && !isAff){ hp.delete(k); removedSet.add(kl); }
-  }
-  const nh=hp.toString(); return nh ? '#'+nh : '';
-}
-function listUnknownTrackers(u, keepNames){
-  const out=new Set(); const K=effKill();
-  const add=(sp)=>{ for(const [k] of sp){ const kl=k.toLowerCase();
-      if(kl.startsWith('utm_')) { if(!keepNames.has(kl) && !killBase.has(kl) && !killUser.has(kl)) out.add(kl); continue; }
-      if(K.has(kl)) continue;
-      if(/^(wt|xt|mc|pk|trk|trk_|rs|rd|si|spm|scid|ecid|cmp|cid|sid|bid|rid|clid|dclid|xtid)$/i.test(kl)) out.add(kl);
-  }};
-  add(u.searchParams);
-  if(u.hash && u.hash.includes('=')) add(new URLSearchParams(u.hash.replace(/^#/,'')));
-  return out;
-}
+function tallyParams(sp){const set=new Set();const K=effKill();for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||K.has(kl)) set.add(kl);}return set;}
+function tallyHash(hash){const set=new Set();if(!hash)return set;const h=hash.replace(/^#/,'');if(!h.includes('='))return set;const hp=new URLSearchParams(h);const K=effKill();for(const [k] of hp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||K.has(kl)) set.add(kl);}return set;}
+function sanitizeHash(u,keepNames,removed){if(!u.hash)return'';const h=u.hash.replace(/^#/,'');if(!h.includes('='))return'';const hp=new URLSearchParams(h);const K=effKill();for(const [k,v] of [...hp]){const kl=k.toLowerCase();const isAff=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);const isTrack=kl.startsWith('utm_')||K.has(kl);if(isTrack&&!isAff){hp.delete(k);removed.add(kl);}}const nh=hp.toString();return nh?('#'+nh):'';}
+function listUnknown(u,keepNames){const out=new Set();const K=effKill();const add=sp=>{for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')){if(!keepNames.has(kl)&&!killBase.has(kl)&&!killUser.has(kl)) out.add(kl);continue;} if(K.has(kl))continue; if(/^(wt|xt|mc|pk|trk|trk_|rs|rd|si|spm|scid|ecid|cmp|cid|sid|bid|rid|clid|dclid|xtid)$/i.test(kl)) out.add(kl);}}; add(u.searchParams); if(u.hash&&u.hash.includes('=')) add(new URLSearchParams(u.hash.replace(/^#/,''))); return out;}
 
-/* ---------- Profile ---------- */
-function applyProfileFor(host){
-  const m=settings.profiles[host];
-  if(!m) return;
-  const wantSafe = (m==='safe');
-  if(wantSafe!==$('keepAff').checked) $('keepAff').checked = wantSafe;
-}
-
-/* ---------- Core ---------- */
 let lastInfo=[], lastHost='';
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
 
-  // Original-URL (Wrapper-Zählung)
-  let u0; try{ u0=new URL(s);}catch(_){ try{ u0=new URL('https://'+s);}catch(__){ return s; } }
-  const removedOuter     = tallyTrackersFromParams(u0.searchParams);
-  const removedOuterHash = tallyTrackersFromHash(u0.hash);
+  let u0; try{u0=new URL(s);}catch(_){ try{u0=new URL('https://'+s);}catch(__){return s;} }
+  const removedOuter=tallyParams(u0.searchParams);
+  const removedOuterHash=tallyHash(u0.hash);
 
-  // Entpacken + AMP
-  let u=unwrapDeep(u0);
-  u=applyAmpCanonical(u);
+  let u=unwrapDeep(u0); u=applyAmpCanonical(u);
 
   const host=u.hostname.toLowerCase(); lastHost=host;
-  applyProfileFor(host);
   const keepNames=buildKeepNames(host);
 
   const out=new URL(u.origin+u.pathname);
-  const affKept=new Set(), removedNow=new Set();
-  const K=effKill();
+  const affKept=new Set(), removedNow=new Set(); const K=effKill();
 
   for(const [k,v] of u.searchParams){
     const kl=k.toLowerCase();
-    const isAffiliate = keepNames.has(kl) || AFF.exactPairs.has(`${kl}:${v}`);
-    const isTrack  = kl.startsWith('utm_') || K.has(kl);
-    if(isAffiliate){
-      if($('keepAff')?.checked){ out.searchParams.append(k,v); affKept.add(kl); }
-      else { removedNow.add(kl); }
-      continue;
-    }
+    const isAffiliate=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
+    const isTrack=kl.startsWith('utm_')||K.has(kl);
+    if(isAffiliate){ if($('keepAff')?.checked){ out.searchParams.append(k,v); affKept.add(kl);} else removedNow.add(kl); continue; }
     if(isTrack){ removedNow.add(kl); continue; }
     out.searchParams.append(k,v);
   }
-
-  // Hash-Tracker der Ziel-URL
-  out.hash = sanitizeHash(u, keepNames, removedNow);
-
-  // sortieren + deduplizieren
+  out.hash=sanitizeHash(u,keepNames,removedNow);
   sortAndDedupe(out);
 
-  // Unbekannte Kandidaten
-  const unknown = listUnknownTrackers(u, keepNames);
-
-  // Gesamt entfernt
-  const removedTotal = new Set([...removedOuter, ...removedOuterHash, ...removedNow]);
-
-  lastInfo.push({affKept, removed: removedTotal, host, unknown});
+  const unknown=listUnknown(u,keepNames);
+  const removedTotal=new Set([...removedOuter,...removedOuterHash,...removedNow]);
+  lastInfo.push({affKept,removed:removedTotal,host,unknown});
   return out.toString();
 }
 
-function firstOutUrl(){ return (outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x))||''; }
-function chipList(items, cls){ if(!items||!items.size) return '<span class="muted">–</span>'; return Array.from(items).sort().map(x=>`<span class="chip ${cls}">${x}</span>`).join(' '); }
+function firstOut(){ return (outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x))||''; }
+function chips(items,cls){ if(!items||!items.size) return '<span class="muted">–</span>'; return Array.from(items).sort().map(x=>`<span class="chip ${cls}">${x}</span>`).join(' '); }
 
-function summarizeAndAnchors(){
-  const first=firstOutUrl();
-  if(!lastInfo.length){ statusEl.textContent='Status: –'; }
-  else{
-    const kept=new Set(), removed=new Set(), unknown=new Set(); let host='';
-    lastInfo.forEach(i=>{ host=i.host||host; i.affKept.forEach(x=>kept.add(x)); i.removed.forEach(x=>removed.add(x)); (i.unknown||[]).forEach(x=>unknown.add(x)); });
-    const on=$('keepAff')?.checked;
-    let warn=''; try{ const d=(first||'').split('/')[2]||''; if(d && (/xn--/i.test(d)||/^\d{1,3}(\.\d{1,3}){3}$/.test(d))) warn=`<div class="row"><span class="label">Warnung:</span> <span class="chip warn">verdächtige Domain</span></div>`; }catch(_){}
-    const prof=settings.profiles[host] ? ` <span class="badge">Profil: ${settings.profiles[host]}</span>` : '';
-    statusEl.innerHTML =
-      `Modus: Provisionen ${on?'AN':'AUS'} <span class="badge">${on?'Affiliate-safe':'Strict'}</span>${prof}`+
-      `<div class="row"><span class="label">Affiliates erlaubt:</span> <strong>${on?'Ja':'Nein'}</strong></div>`+
-      `<div class="row"><span class="label">Affiliates behalten:</span> <span class="chips">${chipList(kept,'keep')}</span></div>`+
-      `<div class="row"><span class="label">Entfernt:</span> <span class="chips">${chipList(removed,'rm')}</span></div>`+
-      `<div class="row"><span class="label">Unbekannt:</span> <span id="unk" class="chips">${
-         !unknown.size?'<span class="muted">–</span>' :
-         Array.from(unknown).sort().map(k=>`<button class="chip rm" data-add="${k}" title="Zur Kill-Liste hinzufügen">${k} ＋</button>`).join(' ')
-      }</span></div>`+ warn;
+function summarize(){
+  const first=firstOut();
+  if(!lastInfo.length){ statusEl.textContent='Status: –'; return; }
+  const kept=new Set(), removed=new Set(), unknown=new Set(); let host='';
+  lastInfo.forEach(i=>{ host=i.host||host; i.affKept.forEach(x=>kept.add(x)); i.removed.forEach(x=>removed.add(x)); (i.unknown||[]).forEach(x=>unknown.add(x)); });
+  const on=$('keepAff').checked;
+  let warn=''; try{ const d=(first||'').split('/')[2]||''; if(d && (/xn--/i.test(d)||/^\d{1,3}(\.\d{1,3}){3}$/.test(d))) warn=`<div class="row"><span class="label">Warnung:</span> <span class="chip warn">verdächtige Domain</span></div>`; }catch(_){}
+  statusEl.innerHTML =
+    `Modus: Provisionen ${on?'AN':'AUS'} <span class="badge">${on?'Affiliate-safe':'Strict'}</span>`+
+    `<div class="row"><span class="label">Affiliates erlaubt:</span> <strong>${on?'Ja':'Nein'}</strong></div>`+
+    `<div class="row"><span class="label">Affiliates behalten:</span> <span class="chips">${chips(kept,'keep')}</span></div>`+
+    `<div class="row"><span class="label">Entfernt:</span> <span class="chips">${chips(removed,'rm')}</span></div>`+
+    `<div class="row"><span class="label">Unbekannt:</span> <span id="unk" class="chips">${
+       !unknown.size?'<span class="muted">–</span>' :
+       Array.from(unknown).sort().map(k=>`<button class="chip rm" data-add="${k}" title="Zur Kill-Liste hinzufügen">${k} ＋</button>`).join(' ')
+    }</span></div>`+ warn;
 
-    // Host ins Profilfeld vorbelegen
-    try{ const d=(first||'').split('/')[2]||''; if(d){ const pf=$('pfHost'); if(pf && !pf.value) pf.value=d.replace(/^www\./,''); } }catch(_){}
-
-    // Klick auf Unbekannt → zur User-Killliste
-    const unkBox = document.getElementById('unk');
-    if(unkBox){
-      unkBox.onclick = (e)=>{
-        const k = e.target?.dataset?.add; if(!k) return;
-        killUser.add(k); settings.killUser=[...killUser]; saveSettings(settings); runClean();
-      };
-    }
-  }
   if(first){ openA.href=first; openA.classList.remove('disabled'); goA.href=first; goA.classList.remove('disabled'); }
   else{ openA.href='#'; openA.classList.add('disabled'); goA.href='#'; goA.classList.add('disabled'); }
-  updateCopyButtons();
+
+  // Unbekannte Keys lernbar
+  const unk=document.getElementById('unk');
+  if(unk){ unk.onclick=(e)=>{ const k=e.target?.dataset?.add; if(!k) return; killUser.add(k); settings.killUser=[...killUser]; save(settings); run(); }; }
 }
 
-function runClean(){ lastInfo=[]; const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarizeAndAnchors(); }
-function updateCopyButtons(){ const lines=(outEl.value||'').split(/\n+/).map(s=>s.trim()).filter(s=>/^https?:\/\//i.test(s)); $('copy').textContent=lines.length>1?`Kopieren (alle ${lines.length})`:'Kopieren'; $('copyAdv').textContent='Kopieren (1. Link)'; }
-
-/* ---------- UI ---------- */
-$('clean').onclick=runClean;
+function run(){ const lines=extractUrls(inEl.value); lastInfo=[]; outEl.value=lines.map(cleanOne).join('\n'); summarize(); }
+$('clean').onclick=run;
+$('keepAff').onchange=run;
 $('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
-$('clear').onclick=()=>{inEl.value='';outEl.value='';lastInfo=[];summarizeAndAnchors();updateCopyButtons();inEl.focus();};
-$('keepAff').onchange=runClean;
-let tmr=null; inEl.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(runClean,150); });
+$('clear').onclick=()=>{inEl.value='';outEl.value='';lastInfo=[];summarize();inEl.focus();};
+let tmr=null; inEl.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(run,150); });
 
-$('noref').onclick=()=>{ const t=firstOutUrl(); if(!t){alert('Kein Ziel');return;}
+$('noref').onclick=()=>{ const t=firstOut(); if(!t){alert('Kein Ziel');return;}
   const html=`<meta http-equiv="refresh" content="0;url=${t.replace(/"/g,'%22')}">`;
   const url=URL.createObjectURL(new Blob([html],{type:'text/html'}));
   window.open(url,'_blank','noopener,noreferrer'); setTimeout(()=>URL.revokeObjectURL(url),3000);
 };
 
-// Teilen / Kopieren
+// Share/Copy Varianten
 const appLink=location.href.split('?')[0];
-function currentMsg(){ const t=firstOutUrl(); if(!t) return ''; return `Sauberer Link:\n${t}\n— gereinigt mit SafeShare: ${appLink}`; }
-$('share').onclick=async()=>{ runClean(); const msg=currentMsg(); if(!msg){alert('Kein Ziel');return;} const t=firstOutUrl(); if(navigator.share){try{await navigator.share({title:'SafeShare',text:msg,url:t});}catch(_){}} else {try{await navigator.clipboard.writeText(msg);alert('In Zwischenablage');}catch(_){}} };
-$('copyAdv').onclick=async()=>{ runClean(); const t=firstOutUrl(); if(!t){alert('Kein Ziel');return;} try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){} };
-$('copyMd').onclick=async()=>{ const t=firstOutUrl(); if(!t) return alert('Kein Ziel'); try{await navigator.clipboard.writeText(`[Link](${t})`); alert('Markdown kopiert');}catch(_){} };
-$('copyHtml').onclick=async()=>{ const t=firstOutUrl(); if(!t) return alert('Kein Ziel'); try{await navigator.clipboard.writeText(`<a href="${t}">Link</a>`); alert('HTML kopiert');}catch(_){} };
+function currentMsg(){ const t=firstOut(); if(!t) return ''; return `Sauberer Link:\n${t}\n— gereinigt mit SafeShare: ${appLink}`; }
+$('share').onclick=async()=>{ run(); const msg=currentMsg(); if(!msg){alert('Kein Ziel');return;} const t=firstOut(); if(navigator.share){try{await navigator.share({title:'SafeShare',text:msg,url:t});}catch(_){}} else {try{await navigator.clipboard.writeText(msg);alert('In Zwischenablage');}catch(_){} } };
+$('copyAdv').onclick=async()=>{ run(); const t=firstOut(); if(!t){alert('Kein Ziel');return;} try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){} };
+$('copyMd').onclick=async()=>{ const t=firstOut(); if(!t) return alert('Kein Ziel'); try{await navigator.clipboard.writeText(`[Link](${t})`); alert('Markdown kopiert');}catch(_){} };
+$('copyHtml').onclick=async()=>{ const t=firstOut(); if(!t) return alert('Kein Ziel'); try{await navigator.clipboard.writeText(`<a href="${t}">Link</a>`); alert('HTML kopiert');}catch(_){} };
 
 // Export/Import
 $('exp').onclick=()=>{ const blob=new Blob([JSON.stringify(settings,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='safeshare-settings.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500); };
 $('imp').onclick=()=>{ const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json';
   inp.onchange=()=>{ const f=inp.files[0]; if(!f) return;
-    const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); settings={...defaults, ...data}; killUser=new Set(settings.killUser||[]); saveSettings(settings); runClean(); alert('Regeln importiert'); }catch(e){ alert('Ungültige Datei'); } };
+    const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); settings={...defaults, ...data}; killUser=new Set(settings.killUser||[]); save(settings); run(); alert('Regeln importiert'); }catch(e){ alert('Ungültige Datei'); } };
     r.readAsText(f);
   }; inp.click();
 };
 
 // Profile speichern/löschen
-$('pfSafe').onclick=()=>{ const h=$('pfHost').value.trim().toLowerCase(); if(!h) return; settings.profiles[h]='safe'; saveSettings(settings); runClean(); };
-$('pfStrict').onclick=()=>{ const h=$('pfHost').value.trim().toLowerCase(); if(!h) return; settings.profiles[h]='strict'; saveSettings(settings); runClean(); };
-$('pfDel').onclick=()=>{ const h=$('pfHost').value.trim().toLowerCase(); if(!h) return; delete settings.profiles[h]; saveSettings(settings); runClean(); };
+$('pfSafe').onclick=()=>{ const h=$('pfHost').value.trim().toLowerCase(); if(!h) return; settings.profiles[h]='safe'; save(settings); run(); };
+$('pfStrict').onclick=()=>{ const h=$('pfHost').value.trim().toLowerCase(); if(!h) return; settings.profiles[h]='strict'; save(settings); run(); };
+$('pfDel').onclick=()=>{ const h=$('pfHost').value.trim().toLowerCase(); if(!h) return; delete settings.profiles[h]; save(settings); run(); };
 
-/* ---------- Bookmarklets (Sticky + Reload) ---------- */
-(function(){
-  const safeSticky = `javascript:(function(){function c(){
-    try{
-      var u=new URL(location.href),h=u.hostname.toLowerCase();
-      var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);
-      if((/(^|\\.)amazon\\./i).test(h)) ['tag','ascsubtag'].forEach(x=>keep.add(x));
-      if((/(^|\\.)ebay\\./i).test(h))   ['campid','customid','mkcid','mkevt','mkrid'].forEach(x=>keep.add(x));
-      if((/(^|\\.)rakuten\\./i).test(h))['ranmid','raneaid','ransiteid','ranlinkid'].forEach(x=>keep.add(x));
-      if((/(^|\\.)aliexpress\\./i).test(h))['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'].forEach(x=>keep.add(x));
-      var kill=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
-      var out=new URL(u.origin+u.pathname);
-      u.searchParams.forEach((v,k)=>{var kl=k.toLowerCase();var isAff=keep.has(kl);var isTrack=kl.indexOf('utm_')===0||kill.has(kl); if(isAff||!isTrack) out.searchParams.append(k,v);});
-      u.hash=''; var t=out.toString();
-      if(t!==location.href){ if(history.replaceState) history.replaceState(null,'',t); else location.replace(t); }
-    }catch(e){}
-  } c(); var n=0; var id=setInterval(function(){c(); if(++n>20) clearInterval(id);},200); })()`;
-
-  const strictSticky = `javascript:(function(){function c(){
-    try{
-      var u=new URL(location.href);
-      var rm=['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid','tag','ascsubtag','campid','customid','mkcid','mkevt','mkrid','ranmid','raneaid','ransiteid','ranlinkid','aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr'];
-      var out=new URL(u.origin+u.pathname);
-      u.searchParams.forEach((v,k)=>{var kl=k.toLowerCase(); if(kl.indexOf('utm_')===0||rm.indexOf(kl)>-1) return; out.searchParams.append(k,v);});
-      u.hash=''; var t=out.toString();
-      if(t!==location.href){ if(history.replaceState) history.replaceState(null,'',t); else location.replace(t); }
-    }catch(e){}
-  } c(); var n=0; var id=setInterval(function(){c(); if(++n>20) clearInterval(id);},200); })()`;
-
-  const safeReload = `javascript:(function(){try{
-    var u=new URL(location.href),h=u.hostname.toLowerCase();
-    var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);
-    if((/(^|\\.)amazon\\./i).test(h)) ['tag','ascsubtag'].forEach(x=>keep.add(x));
-    if((/(^|\\.)ebay\\./i).test(h))   ['campid','customid','mkcid','mkevt','mkrid'].forEach(x=>keep.add(x));
-    if((/(^|\\.)rakuten\\./i).test(h))['ranmid','raneaid','ransiteid','ranlinkid'].forEach(x=>keep.add(x));
-    if((/(^|\\.)aliexpress\\./i).test(h))['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'].forEach(x=>keep.add(x));
-    var kill=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
-    var out=new URL(u.origin+u.pathname);
-    u.searchParams.forEach((v,k)=>{var kl=k.toLowerCase();var isAff=keep.has(kl);var isTrack=kl.indexOf('utm_')===0||kill.has(kl); if(isAff||!isTrack) out.searchParams.append(k,v);});
-    u.hash=''; var t=out.toString(); if(t!==location.href){ location.replace(t); }
-  }catch(e){} })()`;
-
-  const strictReload = `javascript:(function(){try{
-    var u=new URL(location.href);
-    var rm=['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid','tag','ascsubtag','campid','customid','mkcid','mkevt','mkrid','ranmid','raneaid','ransiteid','ranlinkid','aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr'];
-    var out=new URL(u.origin+u.pathname);
-    u.searchParams.forEach((v,k)=>{var kl=k.toLowerCase(); if(kl.indexOf('utm_')===0||rm.indexOf(kl)>-1) return; out.searchParams.append(k,v);});
-    u.hash=''; var t=out.toString(); if(t!==location.href){ location.replace(t); }
-  }catch(e){} })()`;
-
-  $('bmSafeSticky').href  = safeSticky;
-  $('bmStrictSticky').href= strictSticky;
-  $('bmSafeReload').href  = safeReload;
-  $('bmStrictReload').href= strictReload;
-})();
-
-/* ---------- Auto ?u=… (&open=1) ---------- */
+// Auto ?u=… (&open=1)
 (function(){
   const p=new URLSearchParams(location.search);
   const q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao');
-  if(q){
-    inEl.value=decodeURIComponent(q);
-    runClean();
-    if(ao==='1'){
-      const t=firstOutUrl();
-      if(t) location.href=t;
-    }
-  }
+  if(q){ inEl.value=decodeURIComponent(q); run(); if(ao==='1'){ const t=firstOut(); if(t) location.href=t; } }
 })();
-
-/* ---------- Hilfe auto-open ---------- */
-(function(){
-  const p=new URLSearchParams(location.search);
-  if(p.get('help')==='1'){ const d=document.getElementById('help'); if(d) d.open=true; }
-})();
-
-// Kein Service Worker in v41 (stabil, kein Cache-Problem)
 </script>
 </body>
 </html>
