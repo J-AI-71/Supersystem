@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v35</title>
+<title>SafeShare – Link-Reiniger v36</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
@@ -39,8 +39,8 @@
 </style>
 </head>
 <body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v35</small></h1>
-<p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>, <code>wtmc</code>, <code>wt_mc</code>, <code>xtor</code> u. a. Entschachtelt Redirects. Optional: Affiliate-Provisionen behalten.</p>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v36</small></h1>
+<p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>, <code>wtmc</code>, <code>xtor</code> u. a. Entschachtelt Redirects. Optional: Affiliate-Provisionen behalten.</p>
 
 <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird erkannt."></textarea>
 
@@ -99,7 +99,8 @@ const inEl = $('in'), outEl = $('out'), statusEl = $('status'), openA = $('openA
 // bekannte Tracking-Parameter
 const kill = new Set([
   'fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref_src','ref_url','si','spm','mkt_tok',
-  'wtmc','wt_mc','wt_zmc','zmc','xtor'
+  'wtmc','wt_mc','wt_zmc','zmc','xtor',
+  'client','zx','no_sw_cr' // Google-Startseiten-Parameter, optional entfernen
 ]);
 
 // Affiliate-Whitelists
@@ -263,9 +264,9 @@ $('copyAdv').onclick=async()=>{
 };
 
 // Bookmarklets (inkl. neuer Keys)
-$('bm').href="javascript:(function(){try{var u=new URL(location.href);var h=u.hostname.toLowerCase();var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);if((/(^|\\.)amazon\\./i).test(h)){['tag','ascsubtag'].forEach(function(x){keep.add(x);});}if((/(^|\\.)ebay\\./i).test(h)){['campid','customid','mkcid','mkevt','mkrid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)rakuten\\./i).test(h)){['ranmid','raneaid','ransiteid','ranlinkid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)aliexpress\\./i).test(h)){['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'].forEach(function(x){keep.add(x);});}u.hash='';var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor'].indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
+$('bm').href="javascript:(function(){try{var u=new URL(location.href);var h=u.hostname.toLowerCase();var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);if((/(^|\\.)amazon\\./i).test(h)){['tag','ascsubtag'].forEach(function(x){keep.add(x);});}if((/(^|\\.)ebay\\./i).test(h)){['campid','customid','mkcid','mkevt','mkrid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)rakuten\\./i).test(h)){['ranmid','raneaid','ransiteid','ranlinkid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)aliexpress\\./i).test(h)){['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'].forEach(function(x){keep.add(x);});}u.hash='';var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr'].indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
 
-$('bmStrict').href="javascript:(function(){try{var u=new URL(location.href);u.hash='';var keep=new Set(['coupon','code']);var rm=['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid','tag','ascsubtag','campid','customid','mkcid','mkevt','mkrid','ranmid','raneaid','ransiteid','ranlinkid','aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor'];var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||rm.indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
+$('bmStrict').href="javascript:(function(){try{var u=new URL(location.href);u.hash='';var keep=new Set(['coupon','code']);var rm=['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid','tag','ascsubtag','campid','customid','mkcid','mkevt','mkrid','ranmid','raneaid','ransiteid','ranlinkid','aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr'];var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||rm.indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
 
 // Auto per ?u=… (&open=1 navigiert im selben Tab)
 (function(){
