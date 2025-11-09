@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v37</title>
+<title>SafeShare – Link-Reiniger v38</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
@@ -27,7 +27,6 @@
   details{margin:10px 0}
   details summary{cursor:pointer;user-select:none}
   details[open]{border:1px solid var(--bd);border-radius:6px;padding:8px}
-
   /* Chips */
   .row{margin-top:6px}
   .label{display:inline-block;min-width:150px;font-size:12px;color:var(--muted)}
@@ -35,11 +34,12 @@
   .chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid;line-height:1.6}
   .chip.keep{background:#f0fdf4;border-color:#86efac;color:#065f46}
   .chip.rm{background:#fef2f2;border-color:#fca5a5;color:#7f1d1d}
+  .chip.warn{background:#fff7ed;border-color:#fdba74;color:#7c2d12}
   .badge{display:inline-block;padding:0 6px;border-radius:4px;background:#f3f4f6;margin-left:6px;font-size:12px;color:#374151}
 </style>
 </head>
 <body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v37</small></h1>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v38</small></h1>
 <p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>, <code>wtmc</code>, <code>xtor</code> u. a. Entschachtelt Redirects. Optional: Affiliate-Provisionen behalten.</p>
 
 <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird erkannt."></textarea>
@@ -47,9 +47,10 @@
 <div>
   <button id="clean" class="btn" type="button">Säubern</button>
   <button id="copy"  class="btn" type="button">Kopieren</button>
-  <a id="openA" class="btn disabled" href="#" role="button">Öffnen</a>
-  <a id="goA"   class="btn disabled" href="#" target="_blank" rel="noopener" role="button">1-Klick</a>
+  <a id="openA" class="btn disabled" href="#" role="button" rel="noopener noreferrer">Öffnen</a>
+  <a id="goA"   class="btn disabled" href="#" target="_blank" rel="noopener noreferrer" role="button">1-Klick</a>
   <button id="clear" class="btn" type="button" aria-label="Leeren" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
+  <button id="noref" class="btn" type="button" title="Ziel ohne Referrer öffnen">Referrer-frei</button>
 </div>
 <div class="opts">
   <label class="inline muted"><input type="checkbox" id="keepAff" checked>Provisionen behalten</label>
@@ -68,10 +69,11 @@
 <details id="help">
   <summary>Kurzanleitung / Buttons</summary>
   <ul style="margin:8px 0 0 18px;font-size:13px">
-    <li><strong>Säubern</strong>: Entfernt Tracking-Parameter, entschachtelt Redirects.</li>
-    <li><strong>Kopieren</strong>: Kopiert <em>alle</em> bereinigten Links aus dem Ausgabefeld.</li>
+    <li><strong>Säubern</strong>: Entfernt Tracking-Parameter, entschachtelt Redirects, fixiert AMP → Canonical, sortiert Parameter, säubert Hash-Tracker.</li>
+    <li><strong>Kopieren</strong>: Kopiert <em>alle</em> bereinigten Links.</li>
     <li><strong>Öffnen</strong>: Ersten bereinigten Link im selben Tab öffnen.</li>
     <li><strong>1-Klick</strong>: Ersten bereinigten Link in neuem Tab öffnen.</li>
+    <li><strong>Referrer-frei</strong>: Öffnet Ziel ohne Referer-Header.</li>
     <li><strong>× Leeren</strong>: Eingabe, Ausgabe, Status zurücksetzen.</li>
     <li><strong>Provisionen behalten</strong>: AN = Affiliate-Parameter bleiben; AUS = fast alles weg, <code>coupon/code</code> bleiben.</li>
     <li><strong>Teilen</strong>: Sauberen Link per Share-Sheet teilen; Fallback: kopiert Text.</li>
@@ -85,7 +87,7 @@
   <a href="bookmarklets.html" class="btn">Bookmarklets</a>
 </p>
 
-<p class="muted">Bookmarklets in dieser Seite:
+<p class="muted">Bookmarklets:
   <a id="bmSafeSticky" href="#">Affiliate-safe (Sticky)</a> ·
   <a id="bmStrictSticky" href="#">Strict (Sticky)</a> ·
   <a id="bmSafeReload" href="#">Affiliate-safe (Reload)</a> ·
@@ -126,6 +128,7 @@ const AFF = {
 
 let lastInfo = [];
 
+/* ---------- Helpers ---------- */
 function extractUrls(t){
   const rx=/\bhttps?:\/\/[^\s<>"')]+/gi, r=[]; let m;
   while((m=rx.exec(t||''))) r.push(m[0]);
@@ -137,6 +140,18 @@ function deepDecode(s){
   return a;
 }
 function unwrapDeep(u){
+  // Bekannte Wrapper zuerst
+  try{
+    if(/(^|\.)google\./i.test(u.hostname) && u.pathname.startsWith('/url')){
+      const q = u.searchParams.get('q') || u.searchParams.get('url');
+      if(q) u = new URL(q);
+    }
+    if(/(^|\.)facebook\./i.test(u.hostname) && u.pathname.startsWith('/l.php')){
+      const q = u.searchParams.get('u');
+      if(q) u = new URL(q);
+    }
+  }catch(_){}
+  // Generisch verschachtelt
   for(let i=0;i<6;i++){
     let found=null;
     for(const [,v] of u.searchParams){
@@ -152,7 +167,17 @@ function unwrapDeep(u){
       if(m && m[0]!==u.href) found=m[0];
     }
     if(!found) break; try{ u=new URL(found);}catch(_){ break; }
-  } return u;
+  }
+  return u;
+}
+function applyAmpCanonical(u){
+  try{
+    let path = u.pathname.replace(/\/amp\/?$/,'/').replace(/\/amp$/,'/');
+    const sp = u.searchParams;
+    if(sp.has('amp')) sp.delete('amp');
+    if((sp.get('output')||'').toLowerCase()==='amp') sp.delete('output');
+    return new URL(u.origin + path + (sp.size?('?' + sp.toString()):''));
+  }catch(_){ return u; }
 }
 function buildKeepNames(host){
   const keep=new Set(AFF.baseKeep);
@@ -162,11 +187,35 @@ function buildKeepNames(host){
   }
   return keep;
 }
+function sortAndDedupe(out){
+  const sorted=new URL(out.origin+out.pathname);
+  [...new Set([...out.searchParams].map(([k,v])=>k+'\u0000'+v))]
+    .map(s=>s.split('\u0000')).sort((a,b)=>a[0].localeCompare(b[0]))
+    .forEach(([k,v])=>sorted.searchParams.append(k,v));
+  out.search = sorted.search;
+}
+function sanitizeHash(u, keepNames){
+  if(!u.hash) return '';
+  const h = u.hash.replace(/^#/,'');
+  if(!h.includes('=')) return ''; // Non-structured Hash entfernt
+  const hp = new URLSearchParams(h);
+  for (const [k,v] of [...hp]){
+    const kl=k.toLowerCase();
+    const isAff = keepNames.has(kl) || AFF.exactPairs.has(`${kl}:${v}`);
+    const isTrack = kl.startsWith('utm_') || kill.has(kl);
+    if(isTrack && !isAff) hp.delete(k);
+  }
+  const newHash = hp.toString();
+  return newHash ? '#'+newHash : '';
+}
 
+/* ---------- Core ---------- */
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
   let u; try{ u=new URL(s);}catch(_){ try{ u=new URL('https://'+s);}catch(__){ return s; } }
-  u=unwrapDeep(u);
+
+  u = unwrapDeep(u);
+  u = applyAmpCanonical(u);
 
   const host=u.hostname.toLowerCase();
   const keepNames=buildKeepNames(host);
@@ -178,20 +227,22 @@ function cleanOne(s){
     const kl=k.toLowerCase();
     const isAffiliate = keepNames.has(kl) || AFF.exactPairs.has(`${kl}:${v}`);
     const isTracking  = kl.startsWith('utm_') || kill.has(kl);
-
     if(isAffiliate){
       if ($('keepAff')?.checked){ out.searchParams.append(k,v); affKept.add(kl); }
       else { removed.add(kl); }
       continue;
     }
-    if(isTracking){
-      removed.add(kl);
-      continue;
-    }
+    if(isTracking){ removed.add(kl); continue; }
     out.searchParams.append(k,v);
   }
 
-  lastInfo.push({affKept,removed});
+  // Hash-Tracker bereinigen
+  out.hash = sanitizeHash(u, keepNames);
+
+  // sortieren + deduplizieren
+  sortAndDedupe(out);
+
+  lastInfo.push({affKept,removed,host});
   return out.toString();
 }
 
@@ -208,13 +259,23 @@ function summarizeAndAnchors(){
     statusEl.textContent='Status: –';
   }else{
     const kept=new Set(), removed=new Set();
+    let host = lastInfo[0].host || '';
     lastInfo.forEach(i=>{ i.affKept.forEach(x=>kept.add(x)); i.removed.forEach(x=>removed.add(x)); });
     const on=$('keepAff')?.checked;
+
+    let warn='';
+    try{
+      const d=(first||'').split('/')[2]||'';
+      const idn = /xn--/i.test(d) || /^\d{1,3}(\.\d{1,3}){3}$/.test(d);
+      if(idn) warn = `<div class="row"><span class="label">Warnung:</span> <span class="chip warn">verdächtige Domain</span></div>`;
+    }catch(_){}
+
     statusEl.innerHTML =
       `Modus: Provisionen ${on?'AN':'AUS'} <span class="badge">${on?'Affiliate-safe':'Strict'}</span>`+
       `<div class="row"><span class="label">Affiliates erlaubt:</span> <strong>${on?'Ja':'Nein'}</strong></div>`+
       `<div class="row"><span class="label">Affiliates behalten:</span> <span class="chips">${chipList(kept,'keep')}</span></div>`+
-      `<div class="row"><span class="label">Entfernt:</span> <span class="chips">${chipList(removed,'rm')}</span></div>`;
+      `<div class="row"><span class="label">Entfernt:</span> <span class="chips">${chipList(removed,'rm')}</span></div>`+
+      warn;
   }
   if(first){
     openA.href = first;  openA.classList.remove('disabled');
@@ -239,12 +300,20 @@ function updateCopyButtons(){
   $('copyAdv').textContent = 'Kopieren (1. Link)';
 }
 
-// UI
+/* ---------- UI ---------- */
 $('clean').onclick=runClean;
 $('copy').onclick=async()=>{const t=outEl.value;if(!t)return;try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
 $('clear').onclick=()=>{inEl.value='';outEl.value='';lastInfo=[];summarizeAndAnchors();updateCopyButtons();inEl.focus();};
 $('keepAff').onchange=runClean;
 let tmr=null; inEl.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(runClean,150); });
+
+$('noref').onclick=()=>{ 
+  const t=firstOutUrl(); if(!t){ alert('Kein Ziel'); return; }
+  const html=`<meta http-equiv="refresh" content="0;url=${t.replace(/"/g,'%22')}">`;
+  const url=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  window.open(url,'_blank','noopener,noreferrer');
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+};
 
 // Teilen und Kopieren (1. Link)
 const appLink="https://j-ai-71.github.io/Supersystem/app.html";
