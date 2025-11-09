@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v33</title>
+<title>SafeShare – Link-Reiniger v34</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
@@ -28,7 +28,7 @@
   details summary{cursor:pointer;user-select:none}
   details[open]{border:1px solid var(--bd);border-radius:6px;padding:8px}
 
-  /* Chips für Status */
+  /* Chips */
   .row{margin-top:6px}
   .label{display:inline-block;min-width:150px;font-size:12px;color:var(--muted)}
   .chips{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle}
@@ -39,7 +39,7 @@
 </style>
 </head>
 <body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v33</small></h1>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v34</small></h1>
 <p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Entschachtelt Redirects. Optional: Affiliate-Provisionen behalten.</p>
 
 <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird erkannt."></textarea>
@@ -65,7 +65,6 @@
 <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..."></textarea>
 <div id="status" class="muted">Status: –</div>
 
-<!-- Kurzanleitung -->
 <details id="help">
   <summary>Kurzanleitung / Buttons</summary>
   <ul style="margin:8px 0 0 18px;font-size:13px">
@@ -165,19 +164,26 @@ function cleanOne(s){
   const keepNames=buildKeepNames(host);
 
   const out=new URL(u.origin+u.pathname);
-  const affKept=new Set(), trackRemoved=new Set();
+  const affKept=new Set(), removed=new Set();
 
   for(const [k,v] of u.searchParams){
     const kl=k.toLowerCase();
-    const isTracking=kl.startsWith('utm_')||kill.has(kl);
-    const whitelisted=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
+    const isAffiliate = keepNames.has(kl) || AFF.exactPairs.has(`${kl}:${v}`);
+    const isTracking  = kl.startsWith('utm_') || kill.has(kl);
+
+    if(isAffiliate){
+      if ($('keepAff')?.checked){ out.searchParams.append(k,v); affKept.add(kl); }
+      else { removed.add(kl); }
+      continue;
+    }
     if(isTracking){
-      if(!whitelisted){ trackRemoved.add(kl); continue; }
-      else{ affKept.add(kl); }
+      removed.add(kl);
+      continue;
     }
     out.searchParams.append(k,v);
   }
-  lastInfo.push({affKept,trackRemoved});
+
+  lastInfo.push({affKept,removed});
   return out.toString();
 }
 
@@ -194,12 +200,13 @@ function summarizeAndAnchors(){
     statusEl.textContent='Status: –';
   }else{
     const kept=new Set(), removed=new Set();
-    lastInfo.forEach(i=>{ i.affKept.forEach(x=>kept.add(x)); i.trackRemoved.forEach(x=>removed.add(x)); });
+    lastInfo.forEach(i=>{ i.affKept.forEach(x=>kept.add(x)); i.removed.forEach(x=>removed.add(x)); });
     const on=$('keepAff')?.checked;
     statusEl.innerHTML =
       `Modus: Provisionen ${on?'AN':'AUS'} <span class="badge">${on?'Affiliate-safe':'Strict'}</span>`+
+      `<div class="row"><span class="label">Affiliates erlaubt:</span> <strong>${on?'Ja':'Nein'}</strong></div>`+
       `<div class="row"><span class="label">Affiliates behalten:</span> <span class="chips">${chipList(kept,'keep')}</span></div>`+
-      `<div class="row"><span class="label">Tracking entfernt:</span> <span class="chips">${chipList(removed,'rm')}</span></div>`;
+      `<div class="row"><span class="label">Entfernt:</span> <span class="chips">${chipList(removed,'rm')}</span></div>`;
   }
   if(first){
     openA.href = first;  openA.classList.remove('disabled');
