@@ -1,50 +1,64 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare Bookmarklets</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
-<meta name="theme-color" content="#111827">
 <style>
   :root{--fg:#111827;--muted:#666;--bd:#ddd}
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;line-height:1.5;color:var(--fg)}
   h1{font-size:20px;margin:0 0 8px}
-  p,li{font-size:14px}
-  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;text-decoration:none}
-  .muted{color:var(--muted)}
+  .btn{display:inline-block;padding:8px 10px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;text-decoration:none;cursor:pointer}
   .card{border:1px solid var(--bd);border-radius:8px;padding:12px;margin:10px 0}
+  textarea{width:100%;min-height:86px;box-sizing:border-box;font-size:12px;padding:8px}
+  .muted{color:var(--muted);font-size:12px}
   code{background:#f6f6f6;padding:0 4px;border-radius:4px}
 </style>
 </head>
 <body>
 <h1>SafeShare Bookmarklets</h1>
-<p class="muted">Klicke, ziehe sie in die Lesezeichenleiste oder halte sie auf dem Smartphone lange gedrückt.</p>
-
-<p>
-  <a id="bm" class="btn" href="#">Affiliate-safe</a>
-  <a id="bmStrict" class="btn" href="#">Strict</a>
-</p>
+<p class="muted">Safari auf iOS speichert <code>javascript:</code> nicht direkt. Vorgehen: Lesezeichen anlegen → URL editieren → Code einfügen.</p>
 
 <div class="card">
-  <h2 style="font-size:16px;margin:0 0 8px">Hinweise</h2>
-  <ul>
-    <li>Wirkt auf die <strong>aktuelle Seiten-URL</strong>, nicht auf Eingabefelder.</li>
-    <li>Manche Seiten verhindern „javascript:“-Lesezeichen. In dem Fall die URL in die Adresszeile kopieren und über <code>app.html</code> säubern.</li>
-    <li><em>Affiliate-safe</em> behält u. a. <code>tag</code> (Amazon), <code>campid</code> (eBay). <em>Strict</em> entfernt fast alles außer <code>coupon/code</code>.</li>
-  </ul>
+  <h2 style="font-size:16px;margin:0 0 8px">Affiliate-safe</h2>
+  <p>
+    <a id="bm" class="btn" href="#">Als Lesezeichen ziehen (Desktop)</a>
+    <button class="btn" id="copy1" type="button">Code kopieren</button>
+  </p>
+  <textarea id="t1" readonly></textarea>
+</div>
+
+<div class="card">
+  <h2 style="font-size:16px;margin:0 0 8px">Strict</h2>
+  <p>
+    <a id="bmStrict" class="btn" href="#">Als Lesezeichen ziehen (Desktop)</a>
+    <button class="btn" id="copy2" type="button">Code kopieren</button>
+  </p>
+  <textarea id="t2" readonly></textarea>
+</div>
+
+<div class="card">
+  <h2 style="font-size:16px;margin:0 0 8px">Anleitung iPhone/iPad</h2>
+  <ol class="muted">
+    <li>Teilen → „Lesezeichen hinzufügen“.</li>
+    <li>Safari → Lesezeichen → Bearbeiten → Lesezeichen wählen.</li>
+    <li>URL durch kopierten Code ersetzen → Fertig.</li>
+  </ol>
+  <p class="muted">Chrome/Firefox auf iOS unterstützen Bookmarklets nicht. Nutze Safari.</p>
 </div>
 
 <p class="muted"><a href="app.html">Zur App</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
 
 <script>
-// Setzt die Bookmarklet-Links – identisch zu app.html
-document.getElementById('bm').href=
-"javascript:(function(){try{var u=new URL(location.href);var h=u.hostname.toLowerCase();var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);if((/(^|\\.)amazon\\./i).test(h)){['tag','ascsubtag'].forEach(function(x){keep.add(x);});}if((/(^|\\.)ebay\\./i).test(h)){['campid','customid','mkcid','mkevt','mkrid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)rakuten\\./i).test(h)){['ranmid','raneaid','ransiteid','ranlinkid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)aliexpress\\./i).test(h)){['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'].forEach(function(x){keep.add(x);});}u.hash='';var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref_src','ref_url','si','spm','mkt_tok'].indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
-
-document.getElementById('bmStrict').href=
-"javascript:(function(){try{var u=new URL(location.href);u.hash='';var keep=new Set(['coupon','code']);var rm=['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid','tag','ascsubtag','campid','customid','mkcid','mkevt','mkrid','ranmid','raneaid','ransiteid','ranlinkid','aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key','ref_src','ref_url','si','spm','mkt_tok'];var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||rm.indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
+const code1="javascript:(function(){try{var u=new URL(location.href);var h=u.hostname.toLowerCase();var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);if((/(^|\\.)amazon\\./i).test(h)){['tag','ascsubtag'].forEach(function(x){keep.add(x);});}if((/(^|\\.)ebay\\./i).test(h)){['campid','customid','mkcid','mkevt','mkrid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)rakuten\\./i).test(h)){['ranmid','raneaid','ransiteid','ranlinkid'].forEach(function(x){keep.add(x);});}if((/(^|\\.)aliexpress\\./i).test(h)){['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'].forEach(function(x){keep.add(x);});}u.hash='';var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref_src','ref_url','si','spm','mkt_tok'].indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
+const code2="javascript:(function(){try{var u=new URL(location.href);u.hash='';var keep=new Set(['coupon','code']);var rm=['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid','tag','ascsubtag','campid','customid','mkcid','mkevt','mkrid','ranmid','raneaid','ransiteid','ranlinkid','aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key','ref_src','ref_url','si','spm','mkt_tok'];var del=[];u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.indexOf('utm_')===0||rm.indexOf(kl)>-1){if(!keep.has(kl)) del.push(k);}});del.forEach(function(k){u.searchParams.delete(k);});location.replace(u.toString());}catch(e){alert('Kein gültiger Link');}})()";
+document.getElementById('t1').value=code1;
+document.getElementById('t2').value=code2;
+document.getElementById('bm').href=code1;
+document.getElementById('bmStrict').href=code2;
+document.getElementById('copy1').onclick=()=>navigator.clipboard.writeText(code1).then(()=>alert('Kopiert'));
+document.getElementById('copy2').onclick=()=>navigator.clipboard.writeText(code2).then(()=>alert('Kopiert'));
 </script>
 </body>
 </html>
