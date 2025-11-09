@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v31</title>
+<title>SafeShare – Link-Reiniger v32</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
@@ -24,10 +24,13 @@
   label.inline{display:inline-flex;align-items:center;gap:0}
   label.inline input{margin-right:4px}
   .opts{margin:2px 0 10px}
+  details{margin:10px 0}
+  details summary{cursor:pointer;user-select:none}
+  details[open]{border:1px solid var(--bd);border-radius:6px;padding:8px}
 </style>
 </head>
 <body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v31</small></h1>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v32</small></h1>
 <p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Entschachtelt Redirects. Optional: Affiliate-Provisionen behalten.</p>
 
 <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird erkannt."></textarea>
@@ -52,6 +55,21 @@
 
 <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier..."></textarea>
 <div id="status" class="muted">Status: –</div>
+
+<!-- Kurzanleitung -->
+<details id="help">
+  <summary>Kurzanleitung / Buttons</summary>
+  <ul style="margin:8px 0 0 18px;font-size:13px">
+    <li><strong>Säubern</strong>: Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, entschachtelt Redirects.</li>
+    <li><strong>Kopieren</strong>: Kopiert <em>alle</em> bereinigten Links aus dem Ausgabefeld.</li>
+    <li><strong>Öffnen</strong>: Ersten bereinigten Link im selben Tab öffnen.</li>
+    <li><strong>1-Klick</strong>: Ersten bereinigten Link in neuem Tab öffnen.</li>
+    <li><strong>× Leeren</strong>: Eingabe, Ausgabe, Status zurücksetzen.</li>
+    <li><strong>Provisionen behalten</strong>: AN = Affiliate-Parameter bleiben; AUS = möglichst alles Tracking/Affiliates raus, <code>coupon/code</code> bleiben.</li>
+    <li><strong>Teilen</strong>: Sauberen Link per Share-Sheet teilen; Fallback: kopiert Text.</li>
+    <li><strong>Kopieren (1. Link)</strong>: Kopiert nur den ersten bereinigten Link.</li>
+  </ul>
+</details>
 
 <p style="margin-top:10px">
   <a href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener" class="btn">Projekt unterstützen</a>
@@ -173,7 +191,7 @@ function summarizeAndAnchors(){
     goA.href   = first;  goA.classList.remove('disabled');
   }else{
     openA.href = '#';    openA.classList.add('disabled');
-    goA.href   = '#';    goA.classList.add('disabled');
+  goA.href   = '#';    goA.classList.add('disabled');
   }
   updateCopyButtons();
 }
@@ -188,7 +206,7 @@ function runClean(){
 function updateCopyButtons(){
   const lines=(outEl.value||'').split(/\n+/).map(s=>s.trim()).filter(s=>/^https?:\/\//i.test(s));
   $('copy').textContent = lines.length>1 ? `Kopieren (alle ${lines.length})` : 'Kopieren';
-  $('copyAdv').textContent = lines.length>1 ? 'Kopieren (1. Link)' : 'Kopieren (1. Link)';
+  $('copyAdv').textContent = 'Kopieren (1. Link)';
 }
 
 // UI
@@ -209,7 +227,7 @@ $('share').onclick=async()=>{
   const msg=currentMsg(); if(!msg){ alert('Kein Ziel'); return; }
   const t=firstOutUrl();
   if(navigator.share){ try{ await navigator.share({title:'SafeShare',text:msg,url:t}); }catch(_){ } }
-  else{ try{ await navigator.clipboard.writeText(msg); alert('In Zwischenablage'); }catch(_){} }
+  else{ try{ await navigator.clipboard.writeText(msg); alert('In Zwischenablage'); }catch(_){ } }
 };
 $('copyAdv').onclick=async()=>{
   runClean();
@@ -233,6 +251,12 @@ $('bmStrict').href="javascript:(function(){try{var u=new URL(location.href);u.ha
       if(t) location.href=t;
     }
   }
+})();
+
+// Hilfe automatisch öffnen: .../app.html?help=1
+(function(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('help')==='1'){ const d=document.getElementById('help'); if(d) d.open=true; }
 })();
 
 // Optional Service Worker
