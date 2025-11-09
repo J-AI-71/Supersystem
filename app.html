@@ -81,13 +81,47 @@
 <details id="help">
   <summary>Kurzanleitung / Buttons</summary>
   <ul style="margin:8px 0 0 18px;font-size:13px">
-    <li><strong>Säubern</strong>: Entfernt Tracking-Parameter, entschachtelt Redirects, AMP→Canonical, Hash-Clean, sortiert & dedupliziert.</li>
-    <li><strong>Kopieren</strong>: Kopiert alle bereinigten Links. <strong>Kopieren (1. Link)</strong> nur den ersten.</li>
-    <li><strong>Öffnen</strong> im selben Tab. <strong>1-Klick</strong> im neuen Tab.</li>
-    <li><strong>Referrer-frei</strong>: Ziel ohne Referer-Header öffnen.</li>
-    <li><strong>Provisionen behalten</strong>: AN = Affiliate-Keys bleiben; AUS = Strict (nur <code>coupon/code</code> bleiben).</li>
-    <li><strong>Unbekannt</strong> im Status: Klick auf <code>＋</code> lernt neue Keys (nur lokal).</li>
-    <li><strong>Profile</strong>: Domain → safe/strict speichern. Beim Säubern wird automatisch umgestellt.</li>
+    <li><strong>Säubern</strong>: Entfernt Tracking-Parameter, entpackt Redirects, AMP→Canonical, Hash-Clean, sortiert & dedupliziert. Profile pro Domain werden angewendet.</li>
+    <li><strong>Öffnen</strong>: Ersten bereinigten Link im selben Tab laden.</li>
+    <li><strong>1-Klick</strong>: Ersten bereinigten Link in einem neuen Tab laden.</li>
+    <li><strong>Referrer-frei</strong>: Öffnet das Ziel ohne Referer-Header (kurze Zwischenseite).</li>
+    <li><strong>Kopieren</strong>: Kopiert <em>alle</em> bereinigten Links.</li>
+    <li><strong>Kopieren (1. Link)</strong>: Kopiert nur den ersten bereinigten Link.</li>
+    <li><strong>Kopieren (Markdown)</strong>: Kopiert <code>[Link](URL)</code> für Chat/Docs.</li>
+    <li><strong>Kopieren (HTML)</strong>: Kopiert <code>&lt;a href="URL"&gt;Link&lt;/a&gt;</code> für Webseiten.</li>
+    <li><strong>Teilen</strong>: Teilt den ersten bereinigten Link (Web Share); Fallback: kopiert Text.</li>
+    <li><strong>× Leeren</strong>: Setzt Eingabe, Ausgabe und Status zurück.</li>
+    <li><strong>Provisionen behalten</strong> (Checkbox): AN = Affiliate-Parameter bleiben (Affiliate-safe). AUS = Strict (entfernt auch Affiliate-Keys; <code>coupon/code</code> bleiben).</li>
+  </ul>
+
+  <hr style="border:none;border-top:1px solid #ddd;margin:10px 0">
+
+  <ul style="margin:8px 0 0 18px;font-size:13px">
+    <li><strong>Unbekannt</strong> (Status-Zeile): Zeigt verdächtige Keys. Klick auf <code>＋</code> → zur Kill-Liste hinzufügen (nur lokal).</li>
+    <li><strong>Profil pro Domain</strong>: Domain eintragen → <em>safe speichern</em> oder <em>strict speichern</em>. Beim Säubern wird automatisch umgestellt. <em>Profil löschen</em> entfernt die Regel.</li>
+    <li><strong>Regeln exportieren</strong>: Eigene Kill-Liste und Profile als <code>.json</code> herunterladen.</li>
+    <li><strong>Regeln importieren</strong>: Eine zuvor exportierte <code>.json</code> laden.</li>
+    <li><strong>Bookmarklets</strong>:
+      <ul style="margin:6px 0 0 18px">
+        <li><em>Sticky</em> = entfernt mehrfach ohne Reload (gegen Seiten, die Keys sofort wieder anhängen).</li>
+        <li><em>Reload</em> = lädt die Seite hart neu, hält „sauber“ stabiler.</li>
+        <li>Nutzung: Desktop → Link in Lesezeichenleiste ziehen. iPhone/iPad → Lesezeichen bearbeiten und Code in das URL-Feld einfügen.</li>
+      </ul>
+    </li>
+    <li><strong>Status-Chips</strong>:
+      <ul style="margin:6px 0 0 18px">
+        <li><span style="display:inline-block;padding:2px 8px;border:1px solid #86efac;background:#f0fdf4;border-radius:999px;font-size:12px">Affiliates behalten</span> = stehen gelassene Affiliate-Keys.</li>
+        <li><span style="display:inline-block;padding:2px 8px;border:1px solid #fca5a5;background:#fef2f2;border-radius:999px;font-size:12px">Entfernt</span> = gelöschte Tracking-Keys (inkl. Wrapper/Hash).</li>
+        <li><span style="display:inline-block;padding:2px 8px;border:1px solid #fdba74;background:#fff7ed;border-radius:999px;font-size:12px">Warnung</span> = verdächtige Domain (IDN/IP).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <hr style="border:none;border-top:1px solid #ddd;margin:10px 0">
+
+  <ul style="margin:8px 0 0 18px;font-size:13px">
+    <li><strong>Auto-Parameter</strong>: <code>?u=&lt;url-encodeter Link&gt;</code> füllt die Eingabe, <code>&amp;open=1</code> öffnet danach automatisch.</li>
+    <li><strong>Hilfe</strong>: <code>?help=1</code> öffnet diese Kurzanleitung automatisch.</li>
   </ul>
 </details>
 
@@ -255,7 +289,7 @@ function applyProfileFor(host){
 }
 
 /* ---------- Core ---------- */
-let lastHost='';
+let lastInfo=[], lastHost='';
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
 
