@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Link-Reiniger v28</title>
+<title>SafeShare – Link-Reiniger v29</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
@@ -25,7 +25,7 @@
 </style>
 </head>
 <body>
-<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v28</small></h1>
+<h1>SafeShare – Link-Reiniger <small style="font-weight:normal;color:#666">v29</small></h1>
 <p class="muted">Entfernt <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>. Entschachtelt Redirects. Optional: Affiliate-Provisionen behalten.</p>
 
 <textarea id="in" placeholder="Link(s) einfügen. Eine Zeile pro Link. Beliebiger Text wird erkannt."></textarea>
@@ -41,7 +41,7 @@
 
 <div>
   <button id="share"   class="btn" type="button">Teilen</button>
-  <button id="copyAdv" class="btn" type="button">Kopieren + Hinweis</button>
+  <button id="copyAdv" class="btn" type="button">Kopieren (1. Link)</button>
 </div>
 
 <p class="muted">„1-Klick“ öffnet im neuen Tab. „Öffnen“ im selben Tab.</p>
@@ -187,7 +187,7 @@ $('clear').onclick=()=>{inEl.value='';outEl.value='';lastInfo=[];summarizeAndAnc
 $('keepAff').onchange=runClean;
 let tmr=null; inEl.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(runClean,150); });
 
-// Teilen
+// Teilen (mit Attribution), Kopieren (1. Link, ohne Hinweis)
 const appLink="https://j-ai-71.github.io/Supersystem/app.html";
 function currentMsg(){
   const t=firstOutUrl(); if(!t) return '';
@@ -203,8 +203,7 @@ $('share').onclick=async()=>{
 $('copyAdv').onclick=async()=>{
   runClean();
   const t=firstOutUrl(); if(!t){ alert('Kein Ziel'); return; }
-  const msg=`${t}  (gereinigt mit SafeShare: ${appLink})`;
-  try{ await navigator.clipboard.writeText(msg); alert('Kopiert'); }catch(_){}
+  try{ await navigator.clipboard.writeText(t); alert('Kopiert'); }catch(_){}
 };
 
 // Bookmarklets
