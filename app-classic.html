@@ -15,6 +15,135 @@
   #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
 </style>
 </head>
+
+<!-- SafeShare: Profile + Export/Import Modul -->
+<style>
+  #ss-prof,#ss-back{border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin:14px 0;font:14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#111}
+  #ss-prof h2,#ss-back h2{font-size:16px;margin:0 0 8px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .muted{color:#666;font-size:12px;margin-top:6px}
+  .btn{padding:8px 10px;border:1px solid #ddd;border-radius:6px;background:#f8fafc;cursor:pointer}
+  input[type=text]{padding:8px 10px;border:1px solid #ddd;border-radius:6px;min-width:220px}
+  label.rad{display:inline-flex;align-items:center;gap:6px;margin-right:12px}
+</style>
+
+<section id="ss-prof">
+  <h2>Profil pro Domain</h2>
+  <div class="row">
+    <input id="ss-dom" type="text" placeholder="domain.tld (z. B. amazon.de)">
+    <label class="rad"><input type="radio" name="ss-profmode" value="safe" checked>Safe (Affiliates behalten)</label>
+    <label class="rad"><input type="radio" name="ss-profmode" value="strict">Strict (alles Tracking weg)</label>
+    <button id="ss-save" class="btn" type="button">Speichern</button>
+    <button id="ss-del" class="btn" type="button" title="Profil löschen">Löschen</button>
+  </div>
+  <div id="ss-prof-status" class="muted">–</div>
+</section>
+
+<section id="ss-back">
+  <h2>Export/Import</h2>
+  <div class="row">
+    <button id="ss-exp" class="btn" type="button">Export</button>
+    <label class="btn">Import<input id="ss-imp" type="file" accept="application/json" hidden></label>
+  </div>
+  <div class="muted">Exportiert/Importiert Profile unter <code>ss_profiles</code> aus dem Browser-Speicher.</div>
+</section>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const IN = document.getElementById('in') || document.getElementById('input') || document.querySelector('textarea, input[type=text]');
+  const KEEP = document.getElementById('keepAff') || document.querySelector('input#keepAff');
+  const CLEAN = document.getElementById('clean') || document.querySelector('button#clean');
+
+  const LS_KEY='ss_profiles';
+  const S = {
+    load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(_){ return {}; } },
+    save(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }
+  };
+
+  function hostOfFirstUrl(text){
+    if(!text) return '';
+    const rx=/\bhttps?:\/\/([^\/\s?#:]+)[^\s]*/i;
+    const m = (text+'').match(rx);
+    if(m) return m[1].toLowerCase();
+    try{ const u=new URL(text.includes('://')?text:('https://'+text)); return u.hostname.toLowerCase(); }catch(_){ return ''; }
+  }
+
+  function applyProfileForInput(){
+    if(!IN||!KEEP) return;
+    const host = hostOfFirstUrl(IN.value);
+    if(!host){ $('ss-prof-status').textContent='–'; return; }
+    const prof = S.load()[host];
+    if(prof==='safe'){ KEEP.checked=true; $('ss-prof-status').textContent=`Profil für ${host}: SAFE`; selectRad('safe'); }
+    else if(prof==='strict'){ KEEP.checked=false; $('ss-prof-status').textContent=`Profil für ${host}: STRICT`; selectRad('strict'); }
+    else { $('ss-prof-status').textContent=`Kein Profil für ${host}`; }
+    $('ss-dom').value = host;
+  }
+
+  function selectRad(v){
+    document.querySelectorAll('input[name="ss-profmode"]').forEach(r=>{ r.checked = (r.value===v); });
+  }
+
+  function saveProfile(){
+    const dom = ($('ss-dom').value||'').trim().toLowerCase();
+    if(!dom){ $('ss-prof-status').textContent='Bitte Domain eingeben.'; return; }
+    const mode = document.querySelector('input[name="ss-profmode"]:checked')?.value || 'safe';
+    const map = S.load(); map[dom]=mode; S.save(map);
+    $('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`;
+    applyProfileForInput();
+  }
+
+  function delProfile(){
+    const dom = ($('ss-dom').value||'').trim().toLowerCase();
+    const map = S.load();
+    if(dom && map[dom]){ delete map[dom]; S.save(map); $('ss-prof-status').textContent=`Gelöscht: ${dom}`; }
+    else { $('ss-prof-status').textContent='Nichts zu löschen.'; }
+    applyProfileForInput();
+  }
+
+  function exportProfiles(){
+    const payload = { version:'v1', ts:new Date().toISOString(), profiles:S.load() };
+    const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'safeshare-settings.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 0);
+  }
+
+  function importProfiles(ev){
+    const f = ev.target.files && ev.target.files[0];
+    if(!f) return;
+    const rd = new FileReader();
+    rd.onload = ()=> {
+      try{
+        const obj = JSON.parse(rd.result);
+        if(obj && obj.profiles && typeof obj.profiles==='object'){ S.save(obj.profiles); $('ss-prof-status').textContent='Import ok.'; applyProfileForInput(); }
+        else { $('ss-prof-status').textContent='Datei ungültig.'; }
+      }catch(e){ $('ss-prof-status').textContent='JSON fehlerhaft.'; }
+    };
+    rd.readAsText(f);
+  }
+
+  // Events
+  $('ss-save').onclick=saveProfile;
+  $('ss-del').onclick=delProfile;
+  $('ss-exp').onclick=exportProfiles;
+  $('ss-imp').addEventListener('change', importProfiles);
+
+  if(IN){ IN.addEventListener('input', ()=>{ // Profil live anwenden
+    // kleines Debounce
+    clearTimeout(window.__ss_t); window.__ss_t=setTimeout(applyProfileForInput, 120);
+  }); }
+
+  // Vor dem Säubern Profil anwenden
+  if(CLEAN){ CLEAN.addEventListener('click', applyProfileForInput, {capture:true}); }
+
+  // Initial
+  applyProfileForInput();
+})();
+</script>
+
 <body>
 <h1>SafeShare – Classic</h1>
 <p class="muted">Tracker raus. Optional Affiliate-Parameter behalten.</p>
