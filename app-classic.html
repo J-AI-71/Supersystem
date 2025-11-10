@@ -44,7 +44,7 @@ window.addEventListener('error', e => { const d=document.getElementById('debug')
 /* Konstanten */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
-  baseKeep:new Set(['coupon','code']), // immer behalten, auch Strict
+  baseKeep:new Set(['coupon','code']), // immer behalten
   globalNames:new Set(['ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']),
   byHostRules:[
     {test:h=>/(^|\.)amazon\./i.test(h),     names:new Set(['tag','ascsubtag'])},
@@ -82,7 +82,7 @@ function applyAmpCanonical(u){
   }catch(_){return u;}
 }
 
-/* Neu: Affiliate-Namen immer erkennen, unabhängig von Checkbox */
+/* Affiliate-Namen immer erkennen (Checkbox steuert nur Behalten/Entfernen) */
 function buildAffNames(host){
   const names=new Set(AFF.globalNames);
   for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) names.add(n);
@@ -103,7 +103,7 @@ function sanitizeHash(u,affNames,keepOn,removed){
   const hp=new URLSearchParams(s);
   for(const [k,v] of [...hp]){
     const kl=k.toLowerCase();
-    if(AFF.baseKeep.has(kl)){ continue; } // coupon/code immer behalten
+    if(AFF.baseKeep.has(kl)){ continue; } // coupon/code nie entfernen
     const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
     const isTrack=kl.startsWith('utm_')||killBase.has(kl);
     if((isAff && !keepOn) || (isTrack && !isAff)){ hp.delete(k); removed.add(kl); }
