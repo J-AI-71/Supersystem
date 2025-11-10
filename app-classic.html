@@ -38,16 +38,18 @@
 <div id="debug" class="muted"></div>
 
 <script>
+/* Fehler sichtbar machen */
 window.addEventListener('error', e => { const d=document.getElementById('debug'); if(d) d.textContent='JS-Fehler: '+e.message; });
 
+/* Konstanten */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
-  baseKeep:new Set(['coupon','code']),
+  baseKeep:new Set(['coupon','code']), // immer behalten, auch Strict
   globalNames:new Set(['ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']),
   byHostRules:[
-    {test:h=>/(^|\.)amazon\./i.test(h),   names:new Set(['tag','ascsubtag'])},
-    {test:h=>/(^|\.)ebay\./i.test(h),     names:new Set(['campid','customid','mkcid','mkevt','mkrid'])},
-    {test:h=>/(^|\.)rakuten\./i.test(h),  names:new Set(['ranmid','raneaid','ransiteid','ranlinkid'])},
+    {test:h=>/(^|\.)amazon\./i.test(h),     names:new Set(['tag','ascsubtag'])},
+    {test:h=>/(^|\.)ebay\./i.test(h),       names:new Set(['campid','customid','mkcid','mkevt','mkrid'])},
+    {test:h=>/(^|\.)rakuten\./i.test(h),    names:new Set(['ranmid','raneaid','ransiteid','ranlinkid'])},
     {test:h=>/(^|\.)aliexpress\./i.test(h), names:new Set(['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'])}
   ],
   exactPairs:new Set([])
@@ -55,6 +57,7 @@ const AFF={
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
 
+/* Helpers */
 function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
 function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
 function unwrapDeep(u){
@@ -78,14 +81,14 @@ function applyAmpCanonical(u){
     return new URL(u.origin+path+(sp.size?('?'+sp.toString()):''));
   }catch(_){return u;}
 }
-function buildKeepNames(host, keepOn){
-  const keep=new Set(AFF.baseKeep);
-  if(keepOn){
-    for(const n of AFF.globalNames) keep.add(n);
-    for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) keep.add(n);
-  }
-  return keep;
+
+/* Neu: Affiliate-Namen immer erkennen, unabhängig von Checkbox */
+function buildAffNames(host){
+  const names=new Set(AFF.globalNames);
+  for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) names.add(n);
+  return names;
 }
+
 function sortAndDedupe(out){
   const sorted=new URL(out.origin+out.pathname);
   [...new Set([...out.searchParams].map(([k,v])=>k+'\u0000'+v))]
@@ -95,42 +98,61 @@ function sortAndDedupe(out){
 }
 function tallyParams(sp){const set=new Set();for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
 function tallyHash(h){const set=new Set();if(!h)return set;const s=h.replace(/^#/,'');if(!s.includes('='))return set;for(const [k] of new URLSearchParams(s)){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
-function sanitizeHash(u,keepNames,removed){
+function sanitizeHash(u,affNames,keepOn,removed){
   if(!u.hash)return''; const s=u.hash.replace(/^#/,''); if(!s.includes('='))return'';
   const hp=new URLSearchParams(s);
   for(const [k,v] of [...hp]){
     const kl=k.toLowerCase();
-    const isAff=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
+    if(AFF.baseKeep.has(kl)){ continue; } // coupon/code immer behalten
+    const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
     const isTrack=kl.startsWith('utm_')||killBase.has(kl);
-    if(isTrack&&!isAff){hp.delete(k);removed.add(kl);}
+    if((isAff && !keepOn) || (isTrack && !isAff)){ hp.delete(k); removed.add(kl); }
   }
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
 
+/* Kernlogik */
 let last={kept:new Set(),removed:new Set(),mode:'AN'};
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
   let u0; try{u0=new URL(s);}catch(_){ try{u0=new URL('https://'+s);}catch(__){return s;} }
   const remOuter=tallyParams(u0.searchParams), remOuterH=tallyHash(u0.hash);
   let u=unwrapDeep(u0); u=applyAmpCanonical(u);
-  const keepOn=$('keepAff').checked, host=u.hostname.toLowerCase();
-  const keepNames=buildKeepNames(host, keepOn);
+
+  const keepOn=$('keepAff').checked;
+  const host=u.hostname.toLowerCase();
+  const affNames=buildAffNames(host);
+
   const out=new URL(u.origin+u.pathname);
   const kept=new Set(), removed=new Set([...remOuter,...remOuterH]);
 
   for(const [k,v] of u.searchParams){
     const kl=k.toLowerCase();
-    const isAff=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
+
+    if(AFF.baseKeep.has(kl)){ // coupon/code immer behalten
+      out.searchParams.append(k,v); kept.add(kl); continue;
+    }
+
+    const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
     const isTrack=kl.startsWith('utm_')||killBase.has(kl);
-    if(isAff){ if(keepOn){out.searchParams.append(k,v); kept.add(kl);} else removed.add(kl); continue; }
+
+    if(isAff){
+      if(keepOn){ out.searchParams.append(k,v); kept.add(kl); }
+      else { removed.add(kl); }
+      continue;
+    }
     if(isTrack){ removed.add(kl); continue; }
+
     out.searchParams.append(k,v);
   }
-  out.hash=sanitizeHash(u,keepNames,removed);
+
+  out.hash=sanitizeHash(u,affNames,keepOn,removed);
   sortAndDedupe(out);
+
   last={kept,removed,mode:keepOn?'AN':'AUS'};
   return out.toString();
 }
+
 function summarize(){
   const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x))||'';
   if(first){ openA.href=first; openA.classList.remove('disabled'); goA.href=first; goA.classList.remove('disabled'); }
@@ -139,12 +161,14 @@ function summarize(){
   const rem =Array.from(last.removed).sort().join(', ')||'–';
   statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
 }
+
 function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
 
-document.getElementById('clean').onclick=run;
-document.getElementById('keepAff').onchange=run;
-document.getElementById('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
-document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';const d=$('debug'); if(d) d.textContent='';inEl.focus();};
+/* Events */
+$('clean').onclick=run;
+$('keepAff').onchange=run;
+$('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
+$('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';const d=$('debug'); if(d) d.textContent='';inEl.focus();};
 
 /* Auto ?u=&open=1 – robust */
 document.addEventListener('DOMContentLoaded', function(){
