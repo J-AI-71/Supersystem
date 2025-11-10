@@ -27,9 +27,8 @@
   label.rad{display:inline-flex;align-items:center;gap:6px;margin-right:12px;font-size:14px}
   code{background:#f8fafc;padding:2px 6px;border-radius:6px}
   #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
-  /* Domain-X + Kleinschreibung im Domainfeld */
   .input-wrap{position:relative;display:inline-block}
-  #ss-dom{padding-right:34px; text-transform:lowercase;}
+  #ss-dom{padding-right:34px;text-transform:lowercase}
   #ss-x{
     position:absolute;right:6px;top:50%;transform:translateY(-50%);
     width:26px;height:26px;line-height:24px;text-align:center;
@@ -111,18 +110,18 @@ const AFF={
   exactPairs:new Set([])
 };
 
-/* Shortcuts */
+/* $ + Elements */
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), chipMode=$('chip-mode'), chipProf=$('chip-prof');
 const openNR=$('openNR');
 
-/* ---- Kleinschreibung nur für Hostnamen ---- */
+/* Kleinschreibung: Domainfeld + Eingabefeld */
 function normalizeDomField(){
-  const el = $('ss-dom'); if(!el) return;
-  let v = (el.value||'').trim();
-  if(/:\/\//.test(v) || v.includes('/')){ try{ v=new URL(v.includes('://')?v:('https://'+v)).hostname; }catch(_){ } }
-  v = (v||'').replace(/^www\./,'').toLowerCase();
-  el.value = v;
+  const el=$('ss-dom'); if(!el) return;
+  let v=(el.value||'').trim();
+  if(/:\/\//.test(v)||v.includes('/')){ try{ v=new URL(v.includes('://')?v:('https://'+v)).hostname; }catch(_){ } }
+  v=(v||'').replace(/^www\./,'').toLowerCase();
+  el.value=v;
 }
 ['input','blur','change','paste'].forEach(ev=>{
   const el=$('ss-dom'); if(el) el.addEventListener(ev,()=>setTimeout(normalizeDomField,0));
@@ -131,7 +130,12 @@ function normalizeHostsInTextarea(){
   const rx=/(https?:\/\/[^\s<>"')]+)/ig;
   let t=inEl.value;
   t=t.replace(rx,(url)=>{
-    try{const u=new URL(url); u.hostname=u.hostname.toLowerCase(); return u.toString();}catch(_){return url;}
+    try{
+      const u=new URL(url);
+      u.protocol=(u.protocol||'https:').toLowerCase();
+      u.hostname=u.hostname.toLowerCase();
+      return u.toString();
+    }catch(_){return url;}
   });
   inEl.value=t;
 }
@@ -182,10 +186,10 @@ function sanitizeHash(u,affNames,keepOn,removed){
   const hp=new URLSearchParams(s);
   for(const [k,v] of [...hp]){
     const kl=k.toLowerCase();
-    if(AFF.baseKeep.has(kl)) continue;
     const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
     const isTrack=kl.startsWith('utm_')||killBase.has(kl);
-    if((isAff && !keepOn) || (isTrack && !isAff)){ hp.delete(k); removed.add(kl); }
+    if(isAff && !keepOn){ hp.delete(k); removed.add(kl); continue; }
+    if(isTrack && !isAff){ hp.delete(k); removed.add(kl); continue; }
   }
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
@@ -197,8 +201,9 @@ function cleanOne(s){
   let u0; try{u0=new URL(s);}catch(_){ try{u0=new URL('https://'+s);}catch(__){return s;} }
   const remOuter=tallyParams(u0.searchParams), remOuterH=tallyHash(u0.hash);
   let u=unwrapDeep(u0); u=applyAmpCanonical(u);
+  try{ u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); }catch(_){}
 
-  const keepOn=document.getElementById('keepAff').checked;
+  const keepOn=$('keepAff').checked;
   const host=u.hostname.toLowerCase();
   const affNames=buildAffNames(host);
 
@@ -222,36 +227,31 @@ function cleanOne(s){
 }
 function summarize(){
   const u=firstUrl();
-  document.getElementById('openA').disabled = !u;
-  document.getElementById('goA').disabled   = !u;
-  document.getElementById('openNR').disabled= !u;
+  $('openA').disabled=!u; $('goA').disabled=!u; $('openNR').disabled=!u;
   const kept=Array.from(last.kept).sort().join(', ')||'–';
-  const rem =Array.from(last.removed).sort().join(', ')||'–';
+  const rem=Array.from(last.removed).sort().join(', ')||'–';
   statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
-  document.getElementById('chip-mode').textContent=`Modus: ${last.mode}`;
+  chipMode.textContent=`Modus: ${last.mode}`;
 }
 
 /* Aktionen */
-function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=document.getElementById('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
-document.getElementById('clean').onclick=run;
-document.getElementById('keepAff').onchange=run;
-document.getElementById('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
-document.getElementById('openA').onclick=()=>{const u=firstUrl(); if(u) location.href=u;};
-document.getElementById('goA').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
-document.getElementById('openNR').onclick=()=>{const u=firstUrl(); if(u){ const a=document.createElement('a'); a.href=u; a.target='_blank'; a.rel='noreferrer noopener'; document.body.appendChild(a); a.click(); a.remove(); } };
-document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';document.getElementById('debug').textContent='';document.getElementById('chip-prof').textContent='Profil: –';inEl.focus();};
+function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
+$('clean').onclick=run;
+$('keepAff').onchange=run;
+$('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
+$('openA').onclick=()=>{const u=firstUrl(); if(u) location.href=u;};
+$('goA').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
+$('openNR').onclick=()=>{const u=firstUrl(); if(u){ const a=document.createElement('a'); a.href=u; a.target='_blank'; a.rel='noreferrer noopener'; document.body.appendChild(a); a.click(); a.remove(); }};
+$('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';$('debug').textContent='';chipProf.textContent='Profil: –';inEl.focus();};
 
 /* Profile + Backup */
 const LS_KEY='ss_profiles';
-const S = { load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(_){ return {}; } },
-            save(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); } };
-// Migration → lowercase Keys
+const S={ load(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'{}');}catch(_){return{}}}, save(o){localStorage.setItem(LS_KEY,JSON.stringify(o))} };
 (function migrateProfilesToLower(){
   const map=S.load()||{}; const next={}; let changed=false;
   for(const k in map){ const lk=(k||'').toLowerCase(); next[lk]=map[k]; if(lk!==k) changed=true; }
   if(changed) S.save(next);
 })();
-
 function hostOfFirstUrl(text){
   if(!text) return '';
   const rx=/\bhttps?:\/\/([^\/\s?#:]+)[^\s]*/i;
@@ -261,40 +261,34 @@ function hostOfFirstUrl(text){
 }
 function selectRad(v){ document.querySelectorAll('input[name="ss-profmode"]').forEach(r=>{ r.checked=(r.value===v); }); }
 function applyProfileForInput(){
-  const host = hostOfFirstUrl(inEl.value);
-  if(!host){ document.getElementById('chip-prof').textContent='Profil: –'; document.getElementById('ss-prof-status').textContent='–'; document.getElementById('ss-dom').value=''; return; }
-  const prof = S.load()[host];
-  if(prof==='safe'){ document.getElementById('keepAff').checked=true; document.getElementById('chip-prof').textContent=`Profil: ${host} = SAFE`; document.getElementById('ss-dom').value=host; selectRad('safe'); }
-  else if(prof==='strict'){ document.getElementById('keepAff').checked=false; document.getElementById('chip-prof').textContent=`Profil: ${host} = STRICT`; document.getElementById('ss-dom').value=host; selectRad('strict'); }
-  else { document.getElementById('chip-prof').textContent=`Profil: ${host} = keines`; document.getElementById('ss-dom').value=host; }
-  document.getElementById('chip-mode').textContent=`Modus: ${document.getElementById('keepAff').checked?'SAFE':'STRICT'}`;
+  const host=hostOfFirstUrl(inEl.value);
+  if(!host){ chipProf.textContent='Profil: –'; $('ss-prof-status').textContent='–'; $('ss-dom').value=''; return; }
+  const prof=S.load()[host];
+  if(prof==='safe'){ $('keepAff').checked=true; chipProf.textContent=`Profil: ${host} = SAFE`; $('ss-dom').value=host; selectRad('safe'); }
+  else if(prof==='strict'){ $('keepAff').checked=false; chipProf.textContent=`Profil: ${host} = STRICT`; $('ss-dom').value=host; selectRad('strict'); }
+  else { chipProf.textContent=`Profil: ${host} = keines`; $('ss-dom').value=host; }
+  chipMode.textContent=`Modus: ${$('keepAff').checked?'SAFE':'STRICT'}`;
 }
-document.getElementById('ss-save').onclick=()=>{ normalizeDomField();
-  const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); if(!dom){document.getElementById('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
+$('ss-save').onclick=()=>{ normalizeDomField();
+  const dom=($('ss-dom').value||'').trim().toLowerCase(); if(!dom){$('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
   const mode=document.querySelector('input[name="ss-profmode"]:checked')?.value||'safe';
-  const map=S.load(); map[dom]=mode; S.save(map); document.getElementById('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`; applyProfileForInput(); };
-document.getElementById('ss-del').onclick =()=>{ normalizeDomField();
-  const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); document.getElementById('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { document.getElementById('ss-prof-status').textContent='Nichts zu löschen.'; } applyProfileForInput(); };
-document.getElementById('ss-x').onclick = () => {
-  const dom = (document.getElementById('ss-dom').value||'').trim().toLowerCase();
-  if(dom){
-    const map = S.load();
-    if(map[dom]){ delete map[dom]; S.save(map); document.getElementById('ss-prof-status').textContent = `Gelöscht: ${dom}`; }
-    else { document.getElementById('ss-prof-status').textContent = 'Kein Profil vorhanden.'; }
-  }
-  document.getElementById('ss-dom').value = '';
-  applyProfileForInput();
+  const map=S.load(); map[dom]=mode; S.save(map); $('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`; applyProfileForInput(); };
+$('ss-del').onclick=()=>{ normalizeDomField();
+  const dom=($('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); $('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { $('ss-prof-status').textContent='Nichts zu löschen.'; } applyProfileForInput(); };
+$('ss-x').onclick=()=>{ const dom=($('ss-dom').value||'').trim().toLowerCase();
+  if(dom){ const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); $('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { $('ss-prof-status').textContent='Kein Profil vorhanden.'; } }
+  $('ss-dom').value=''; applyProfileForInput();
 };
 
 /* Autofill */
 document.addEventListener('DOMContentLoaded', function(){
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
-  if(aff==='0'||/^strict$/i.test(aff)) document.getElementById('keepAff').checked=false;
-  if(aff==='1'||/^safe$/i.test(aff))  document.getElementById('keepAff').checked=true;
+  if(aff==='0'||/^strict$/i.test(aff)) $('keepAff').checked=false;
+  if(aff==='1'||/^safe$/i.test(aff))  $('keepAff').checked=true;
   if(q){
     try{q=decodeURIComponent(q);}catch(_){}
-    try{ const u=new URL(q); u.hostname=u.hostname.toLowerCase(); q=u.toString(); }catch(_){}
+    try{ const u=new URL(q); u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); q=u.toString(); }catch(_){}
     inEl.value=q; normalizeHostsInTextarea(); run();
     if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
   }
