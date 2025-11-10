@@ -2,60 +2,41 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare Bookmarklets v38</title>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
+<title>SafeShare – Bookmarklets</title>
 <style>
-  :root{--fg:#111827;--muted:#666;--bd:#ddd}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:var(--fg)}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
   h1{font-size:20px;margin:0 0 8px}
-  .card{border:1px solid var(--bd);border-radius:8px;padding:12px;margin:12px 0}
-  .btn{display:inline-block;padding:8px 10px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;text-decoration:none;cursor:pointer}
-  textarea{width:100%;min-height:90px;box-sizing:border-box;font-size:12px;padding:8px}
-  .muted{color:var(--muted);font-size:12px}
+  p.muted{color:#666}
+  .card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin:12px 0}
+  a.btn{display:inline-block;padding:8px 10px;margin:6px 8px 0 0;border:1px solid #ddd;border-radius:6px;text-decoration:none;color:#111}
+  code{word-break:break-all;background:#f8f9fa;padding:2px 6px;border-radius:6px}
 </style>
 </head>
 <body>
-<h1>SafeShare Bookmarklets v38</h1>
-<p class="muted">iPhone/iPad: Lesezeichen anlegen → URL editieren → Code einfügen. Desktop: in die Lesezeichenleiste ziehen oder „Bearbeiten → URL ersetzen“.</p>
+<h1>Bookmarklets</h1>
+<p class="muted">Desktop: Link in die Lesezeichenleiste ziehen. iPhone/iPad: Lesezeichen anlegen → bearbeiten → URL durch den Code ersetzen.</p>
 
 <div class="card">
-  <h2 style="margin:0 0 6px;font-size:16px">Affiliate-safe (Sticky)</h2>
-  <p>
-    <a id="bm1" class="btn" href="#">Als Lesezeichen ziehen (Desktop)</a>
-    <button id="copy1" class="btn" type="button">Code kopieren</button>
-  </p>
-  <textarea id="t1" readonly></textarea>
+  <strong>Affiliate-safe (Sticky)</strong> – Tracker weg, Affiliate-Keys bleiben. Kein Reload.
+  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);var D=function(s){try{return decodeURIComponent(s)}catch(_){return s}};if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code","ref","refid","ref_id","referrer","aff","affid","aff_id","affiliate","affiliate_id","affsource","affsrc","affname","affcamp","affcampaign","campaign","campaignid","campaign_id","clickid","click_id","irclickid","tduid","admitad_uid","sscid","cjevent","clickref","clickref2","subid","sub_id","sid","u1","u2","u3","u4","u5","pid","aid","awinaffid","awinmid"]);if(/(^|\.)amazon\./i.test(u.hostname)){keep.add("tag");keep.add("ascsubtag")}var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)) {out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}history.replaceState(null,"",out.toString());alert("SafeShare: gereinigt (Affiliate-safe)");}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Affiliate-safe (Sticky)</a></div>
 </div>
 
 <div class="card">
-  <h2 style="margin:0 0 6px;font-size:16px">Strict (Sticky)</h2>
-  <p>
-    <a id="bm2" class="btn" href="#">Als Lesezeichen ziehen (Desktop)</a>
-    <button id="copy2" class="btn" type="button">Code kopieren</button>
-  </p>
-  <textarea id="t2" readonly></textarea>
+  <strong>Affiliate-safe (Reload)</strong> – wie oben, lädt Seite neu.
+  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code","ref","refid","ref_id","referrer","aff","affid","aff_id","affiliate","affiliate_id","affsource","affsrc","affname","affcamp","affcampaign","campaign","campaignid","campaign_id","clickid","click_id","irclickid","tduid","admitad_uid","sscid","cjevent","clickref","clickref2","subid","sub_id","sid","u1","u2","u3","u4","u5","pid","aid","awinaffid","awinmid"]);if(/(^|\.)amazon\./i.test(u.hostname)){keep.add("tag");keep.add("ascsubtag")}var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)) {out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}location.replace(out.toString())}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Affiliate-safe (Reload)</a></div>
 </div>
 
 <div class="card">
-  <h2 style="margin:0 0 6px;font-size:16px">Affiliate-safe (Reload)</h2>
-  <p>
-    <a id="bm3" class="btn" href="#">Als Lesezeichen ziehen (Desktop)</a>
-    <button id="copy3" class="btn" type="button">Code kopieren</button>
-  </p>
-  <textarea id="t3" readonly></textarea>
+  <strong>Strict (Sticky)</strong> – Tracker und Affiliates weg. Kein Reload.
+  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code"]);var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)){out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}history.replaceState(null,"",out.toString());alert("SafeShare: gereinigt (Strict)");}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Strict (Sticky)</a></div>
 </div>
 
 <div class="card">
-  <h2 style="margin:0 0 6px;font-size:16px">Strict (Reload)</h2>
-  <p>
-    <a id="bm4" class="btn" href="#">Als Lesezeichen ziehen (Desktop)</a>
-    <button id="copy4" class="btn" type="button">Code kopieren</button>
-  </p>
-  <textarea id="t4" readonly></textarea>
+  <strong>Strict (Reload)</strong> – wie oben, lädt Seite neu.
+  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code"]);var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)){out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}location.replace(out.toString())}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Strict (Reload)</a></div>
 </div>
 
-<p class="muted"><a href="app.html">Zur App</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
-
-<script>
-const safeSticky=`javascript:(function(){function clean(){try{var u=new URL(location.href),h=u.hostname.toLowerCase();var keep=new Set(['coupon','code','ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']);if((/(^|\\.)amazon\\./i).test(h))['tag','ascsubtag'].forEach(x=>keep.add(x));if((/(^|\\.)ebay\\./i).test(h))['campid','customid','mkcid','mkevt','mkrid'].forEach(x=>keep.add(x));if((/(^|\\.)
+<p class="muted">Hinweis: Funktioniert nicht auf leeren Startseiten, PDF-Views oder Seiten mit sehr strenger CSP. Dann Reload-Version nutzen.</p>
+<p><a class="btn" href="app.html">Zur App</a></p>
+</body>
+</html>
