@@ -146,12 +146,21 @@ document.getElementById('keepAff').onchange=run;
 document.getElementById('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
 document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';const d=$('debug'); if(d) d.textContent='';inEl.focus();};
 
-(function(){
-  const p=new URLSearchParams(location.search);
-  const q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const v=p.get('v');
-  if(q){ inEl.value=decodeURIComponent(q); run(); if(ao==='1'){ const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x)); if(first) location.href=first; } }
-  if(v){ /* Cache-Buster */ }
-})();
+/* Auto ?u=&open=1 – robust */
+document.addEventListener('DOMContentLoaded', function(){
+  const p = new URLSearchParams(location.search);
+  let q = p.get('u') || p.get('url');
+  const ao = p.get('open') || p.get('ao');
+  if (q) {
+    try { q = decodeURIComponent(q); } catch(_){}
+    inEl.value = q;
+    run();
+    if (ao === '1') {
+      const m = (outEl.value||'').match(/https?:\/\/[^\s]+/);
+      if (m) location.href = m[0];
+    }
+  }
+});
 </script>
 </body>
 </html>
