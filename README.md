@@ -130,8 +130,7 @@ app.html?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.s
 ---
 
 ## Lizenz
-
-Trage hier deine Lizenz ein (z. B. MIT).  
+MIT © 2025 J-AI-71 – siehe [LICENSE](./LICENSE)
 
 
 
