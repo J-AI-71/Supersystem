@@ -5,60 +5,27 @@
 <title>SafeShare – Beispiele</title>
 <style>
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
-  h1{font-size:20px;margin:0 0 8px}
-  .ex{border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin:10px 0}
-  code{word-break:break-all}
-  .btn{display:inline-block;padding:8px 10px;margin:6px 8px 0 0;border:1px solid #ddd;border-radius:6px;text-decoration:none;color:#111}
-  .muted{color:#666;font-size:12px}
+  .card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin:10px 0}
+  .btn{display:inline-block;padding:8px 10px;border:1px solid #ddd;border-radius:6px;text-decoration:none;color:#111;background:#f8fafc}
+  code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
 </style>
 </head>
 <body>
 <h1>Beispiele</h1>
-<p class="muted">So säubert SafeShare typische Links.</p>
 
-<div id="list"></div>
+<div class="card">
+  <h3>Amazon Affiliate</h3>
+  <p>Eingabe: <code>https://www.amazon.de/dp/TEST?tag=deintag-21&utm_source=x</code></p>
+  <p>Erwartung Safe: <code>…/TEST?tag=deintag-21</code> · Strict: <code>…/TEST</code></p>
+  <a class="btn" href="app-classic.html?u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">In Classic öffnen</a>
+</div>
 
-<p>
-  <a class="btn" href="app.html">App starten (v41)</a>
-  <a class="btn" href="app-classic.html">Classic starten</a>
-</p>
+<div class="card">
+  <h3>Facebook-Wrapper</h3>
+  <p>Eingabe: <code>https://l.facebook.com/l.php?u=https%3A%2F%2Fnews.site%2Fa%3Futm_medium%3Dcpc&fbclid=ABC</code></p>
+  <p>Erwartung: <code>https://news.site/a</code></p>
+  <a class="btn" href="app-classic.html?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC">In Classic öffnen</a>
+</div>
 
-<script>
-const tests=[
-  {
-    name:'Amazon mit UTM',
-    in:'https://www.amazon.de/dp/TEST?tag=deintag-21&utm_source=x',
-    outSafe:'https://www.amazon.de/dp/TEST?tag=deintag-21',
-    outStrict:'https://www.amazon.de/dp/TEST'
-  },
-  {
-    name:'Facebook Redirect',
-    in:'https://l.facebook.com/l.php?u=https%3A%2F%2Fnews.site%2Fa%3Futm_medium%3Dcpc&fbclid=ABC',
-    outSafe:'https://news.site/a',
-    outStrict:'https://news.site/a'
-  },
-  {
-    name:'Google /url Wrapper',
-    in:'https://www.google.com/url?q=https%3A%2F%2Fblog.example%2Fpost%3Futm_campaign%3Dspring&sa=D&ust=123&usg=AO',
-    outSafe:'https://blog.example/post',
-    outStrict:'https://blog.example/post'
-  }
-];
-
-const el=document.getElementById('list');
-tests.forEach(t=>{
-  const div=document.createElement('div'); div.className='ex';
-  div.innerHTML=`<strong>${t.name}</strong>
-    <div><span class="muted">Vorher:</span><br><code>${t.in}</code></div>
-    <div style="margin-top:6px"><span class="muted">Nachher (Affiliate-safe):</span><br><code>${t.outSafe}</code></div>
-    <div style="margin-top:6px"><span class="muted">Nachher (Strict):</span><br><code>${t.outStrict}</code></div>
-    <div style="margin-top:8px">
-      <a class="btn" href="app.html?u=${encodeURIComponent(t.in)}" target="_blank" rel="noopener">Test in App</a>
-      <a class="btn" href="${t.outSafe}" target="_blank" rel="noopener">Öffnen (safe)</a>
-      <a class="btn" href="${t.outStrict}" target="_blank" rel="noopener">Öffnen (strict)</a>
-    </div>`;
-  el.appendChild(div);
-});
-</script>
 </body>
 </html>
