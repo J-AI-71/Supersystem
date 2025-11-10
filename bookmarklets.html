@@ -3,31 +3,66 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Bookmarklets</title>
+<meta name="description" content="Drag-and-drop Bookmarklets für SafeShare.">
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
-  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid #ddd;border-radius:8px;text-decoration:none;color:#111;background:#f8fafc}
-  .muted{color:#666}
-  code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
-  ol{padding-left:18px}
+  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
+  h1{font-size:22px;margin:0 0 6px}
+  .muted{color:var(--muted);font-size:13px}
+  .card{border:1px solid var(--bd);border-radius:12px;padding:14px;margin-top:12px;background:#fff}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px}
+  a.bm{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:#f8fafc;text-decoration:none;color:#111827;cursor:grab}
+  .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:nowrap;overflow:auto;border:1px solid var(--bd);border-radius:8px;padding:8px;background:#f8fafc}
+  button{padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:#fff;cursor:pointer}
+  .mini{font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
-<h1>Bookmarklets</h1>
-<p class="muted">Als Lesezeichen speichern. Auf einer Seite klicken → URL wird in SafeShare gereinigt und geöffnet.</p>
+<h1>SafeShare – Bookmarklets</h1>
+<p class="muted">Ziehe die Buttons in die Lesezeichenleiste. Tippe sie auf Seiten mit langen Tracking-Links.</p>
 
-<h2>1-Klick Lesezeichen</h2>
-<p>
-  <a class="btn" href='javascript:location.href="https://j-ai-71.github.io/Supersystem/app-classic.html?ao=1&aff=1&u="+encodeURIComponent(location.href)'>Affiliate-safe (aktueller Tab)</a>
-  <a class="btn" href='javascript:location.href="https://j-ai-71.github.io/Supersystem/app-classic.html?ao=1&aff=0&u="+encodeURIComponent(location.href)'>Strict (aktueller Tab)</a>
-</p>
+<div class="card">
+  <h2 style="margin:0 0 6px;font-size:16px">Affiliate-safe</h2>
+  <p class="mini">Behält Affiliate-Parameter. Öffnet den bereinigten Link automatisch.</p>
+  <div class="row">
+    <a class="bm" id="bmSafe" href="#">SafeShare (SAFE)</a>
+    <button id="copySafe">Code kopieren</button>
+  </div>
+  <div class="code" id="codeSafe"></div>
+</div>
 
-<h2>iPhone/iPad Hinweis</h2>
-<ol>
-  <li>Diese Seite teilen → „Zum Home-Bildschirm“ ist optional.</li>
-  <li>Link lange drücken → „Zu Lesezeichen hinzufügen“.</li>
-  <li>Auf einer Zielseite das Lesezeichen antippen.</li>
-</ol>
+<div class="card">
+  <h2 style="margin:0 0 6px;font-size:16px">Strict</h2>
+  <p class="mini">Entfernt alles Tracking inkl. Affiliate-Parameter.</p>
+  <div class="row">
+    <a class="bm" id="bmStrict" href="#">SafeShare (STRICT)</a>
+    <button id="copyStrict">Code kopieren</button>
+  </div>
+  <div class="code" id="codeStrict"></div>
+</div>
 
-<p class="muted">Technik: leitet auf <code>app-classic.html</code> mit Parametern <code>?u=</code>, <code>aff=</code>, <code>ao=1</code> um.</p>
+<div class="card">
+  <h2 style="margin:0 0 6px;font-size:16px">Hinweise</h2>
+  <ul class="mini">
+    <li>iPhone/iPad: Lesezeichen anlegen, danach URL manuell mit dem Code ersetzen.</li>
+    <li>Android/Chrome: Button in die Lesezeichenleiste ziehen.</li>
+    <li>Der Code leitet zu <code>app.html</code> und öffnet dort den bereinigten Link in 1-Klick.</li>
+  </ul>
+</div>
+
+<script>
+const APP = new URL('app.html', location.href).href;
+const mk = (aff)=>"javascript:(function(){try{var u=encodeURIComponent(location.href);var t='"+APP+"'+'?ao=1&aff="+aff+"&u='+u;location.href=t;}catch(e){alert('SafeShare Fehler: '+e.message);}})()";
+const s1 = mk(1), s0 = mk(0);
+
+document.getElementById('bmSafe').setAttribute('href', s1);
+document.getElementById('bmStrict').setAttribute('href', s0);
+document.getElementById('codeSafe').textContent = s1;
+document.getElementById('codeStrict').textContent = s0;
+
+document.getElementById('copySafe').onclick = ()=>navigator.clipboard?.writeText(s1);
+document.getElementById('copyStrict').onclick = ()=>navigator.clipboard?.writeText(s0);
+</script>
 </body>
 </html>
