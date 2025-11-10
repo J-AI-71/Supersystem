@@ -2,79 +2,91 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic</title>
+<title>SafeShare – App v41</title>
+<meta name="description" content="Links ohne Tracking. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain.">
 <style>
-  :root{--bd:#ddd;--fg:#111;--muted:#666}
+  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46;--chip:#ecfdf5}
   *{box-sizing:border-box}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:var(--fg)}
-  textarea{width:100%;padding:10px;font-size:14px;border:1px solid var(--bd);border-radius:6px}
-  #in{min-height:120px} #out{min-height:140px;margin-top:8px}
-  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;background:#fff;color:var(--fg);cursor:pointer}
-  .btn[disabled]{opacity:.5;pointer-events:none}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
+  h1{font-size:20px;margin:0 0 8px}
   .muted{color:var(--muted);font-size:12px}
-  #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:6px}
-  #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
-  /* Profil + Export/Import Panel */
-  .panel{border:1px solid var(--bd);border-radius:10px;padding:12px;margin-top:14px}
+  .row{margin:10px 0}
+  textarea{width:100%;min-height:120px;padding:10px;border:1px solid var(--bd);border-radius:8px;font-size:14px}
+  #out{min-height:140px;margin-top:8px}
+  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 0 0;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);cursor:pointer}
+  .btn.small{padding:6px 8px;font-size:12px}
+  .btn[disabled]{opacity:.5;pointer-events:none}
+  #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:8px;font-size:12px}
+  #chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .chip{background:var(--chip);border:1px solid #a7f3d0;color:var(--ok);border-radius:999px;padding:2px 10px;font-size:12px}
+  #panels{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+  .panel{border:1px solid var(--bd);border-radius:10px;padding:12px}
   .panel h2{font-size:16px;margin:0 0 8px}
   .rowflex{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   input[type=text]{padding:8px 10px;border:1px solid var(--bd);border-radius:8px;min-width:220px}
-  .btn.small{padding:6px 8px;font-size:12px}
   label.rad{display:inline-flex;align-items:center;gap:6px;margin-right:12px;font-size:14px}
+  code{background:#f8fafc;padding:2px 6px;border-radius:6px}
+  #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
 </style>
 </head>
 <body>
-<h1>SafeShare – Classic</h1>
-<p class="muted">Tracker raus. Optional Affiliate-Parameter behalten.</p>
+
+<h1>SafeShare – App v41</h1>
+<p class="muted">Tracker raus. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain.</p>
+
+<div id="chips">
+  <span id="chip-mode" class="chip">Modus: SAFE</span>
+  <span id="chip-prof" class="chip">Profil: –</span>
+</div>
 
 <textarea id="in" placeholder="Link(s) hier einfügen …"></textarea>
 
-<div>
+<div class="row">
   <button id="clean" class="btn" type="button">Säubern</button>
   <button id="copy"  class="btn" type="button">Kopieren</button>
   <button id="openA" class="btn" type="button" disabled>Öffnen</button>
   <button id="goA"   class="btn" type="button" disabled>1-Klick (neu)</button>
-  <button id="clear" class="btn" type="button" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
+  <button id="openNR" class="btn" type="button" title="In neuem Tab ohne Referrer öffnen" disabled>Referrer-frei (neu)</button>
+  <button id="clear" class="btn" type="button" title="Leeren" style="width:42px;padding:8px 0">&times;</button>
 </div>
 
 <label class="muted" style="display:inline-flex;align-items:center">
-  <input id="keepAff" type="checkbox" checked style="margin-right:6px">Provisionen behalten
+  <input id="keepAff" type="checkbox" checked style="margin-right:6px">Provisionen behalten (SAFE)
 </label>
 
 <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier …"></textarea>
 <div id="status" class="muted">Status: –</div>
 <div id="debug" class="muted"></div>
 
-<!-- Profil pro Domain -->
-<section class="panel" id="profPanel">
-  <h2>Profil pro Domain</h2>
-  <div class="rowflex">
-    <input id="ss-dom" type="text" placeholder="domain.tld (z. B. amazon.de)">
-    <label class="rad"><input type="radio" name="ss-profmode" value="safe" checked>Safe (Affiliates behalten)</label>
-    <label class="rad"><input type="radio" name="ss-profmode" value="strict">Strict (alles Tracking weg)</label>
-  </div>
-  <div class="rowflex">
-    <button id="ss-save" class="btn small" type="button">Speichern</button>
-    <button id="ss-del"  class="btn small" type="button">Löschen</button>
-  </div>
-  <div id="ss-prof-status" class="muted">–</div>
-</section>
+<div id="panels">
+  <section class="panel" id="profPanel">
+    <h2>Profil pro Domain</h2>
+    <div class="rowflex">
+      <input id="ss-dom" type="text" placeholder="domain.tld (z. B. amazon.de)">
+      <label class="rad"><input type="radio" name="ss-profmode" value="safe" checked>Safe</label>
+      <label class="rad"><input type="radio" name="ss-profmode" value="strict">Strict</label>
+    </div>
+    <div class="rowflex">
+      <button id="ss-save" class="btn small" type="button">Speichern</button>
+      <button id="ss-del"  class="btn small" type="button">Löschen</button>
+    </div>
+    <div id="ss-prof-status" class="muted">–</div>
+  </section>
 
-<!-- Export / Import -->
-<section class="panel" id="backupPanel">
-  <h2>Export / Import</h2>
-  <div class="rowflex">
-    <button id="ss-exp" class="btn small" type="button">Export</button>
-    <label class="btn small" style="cursor:pointer">Import<input id="ss-imp" type="file" accept="application/json" hidden></label>
-  </div>
-  <p class="muted">Exportiert/Importiert Profile unter <code>ss_profiles</code> aus dem Browser-Speicher.</p>
-</section>
+  <section class="panel" id="backupPanel">
+    <h2>Export / Import</h2>
+    <div class="rowflex">
+      <button id="ss-exp" class="btn small" type="button">Export</button>
+      <label class="btn small" style="cursor:pointer">Import<input id="ss-imp" type="file" accept="application/json" hidden></label>
+    </div>
+    <p class="muted">Exportiert/Importiert Profile unter <code>ss_profiles</code>.</p>
+  </section>
+</div>
 
 <script>
-/* Fehler sichtbar machen */
 window.addEventListener('error', e => { const d=document.getElementById('debug'); if(d) d.textContent='JS-Fehler: '+e.message; });
 
-/* Konstanten */
+/* ---- Clean-Engine ---- */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -87,10 +99,11 @@ const AFF={
   ],
   exactPairs:new Set([])
 };
-const $=id=>document.getElementById(id);
-const inEl=$('in'), outEl=$('out'), statusEl=$('status');
 
-/* Helpers */
+const $=id=>document.getElementById(id);
+const inEl=$('in'), outEl=$('out'), statusEl=$('status'), chipMode=$('chip-mode'), chipProf=$('chip-prof');
+const openNR=$('openNR');
+
 function firstUrl(){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); return m?m[0]:''; }
 function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
 function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
@@ -143,7 +156,7 @@ function sanitizeHash(u,affNames,keepOn,removed){
 }
 
 /* Kernlogik */
-let last={kept:new Set(),removed:new Set(),mode:'AN'};
+let last={kept:new Set(),removed:new Set(),mode:'SAFE'};
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
   let u0; try{u0=new URL(s);}catch(_){ try{u0=new URL('https://'+s);}catch(__){return s;} }
@@ -166,40 +179,35 @@ function cleanOne(s){
     if(isTrack){ removed.add(kl); continue; }
     out.searchParams.append(k,v);
   }
+
   out.hash=sanitizeHash(u,affNames,keepOn,removed);
   sortAndDedupe(out);
 
-  last={kept,removed,mode:keepOn?'AN':'AUS'};
+  last={kept,removed,mode:keepOn?'SAFE':'STRICT'};
   return out.toString();
 }
 function summarize(){
   const u=firstUrl();
   document.getElementById('openA').disabled = !u;
   document.getElementById('goA').disabled   = !u;
+  document.getElementById('openNR').disabled= !u;
   const kept=Array.from(last.kept).sort().join(', ')||'–';
   const rem =Array.from(last.removed).sort().join(', ')||'–';
   statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
+  document.getElementById('chip-mode').textContent=`Modus: ${last.mode}`;
 }
-function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=document.getElementById('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
 
-/* Buttons */
+/* Aktionen */
+function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=document.getElementById('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
 document.getElementById('clean').onclick=run;
 document.getElementById('keepAff').onchange=run;
 document.getElementById('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
 document.getElementById('openA').onclick=()=>{const u=firstUrl(); if(u) location.href=u;};
 document.getElementById('goA').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
-document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';document.getElementById('debug').textContent='';inEl.focus();};
+document.getElementById('openNR').onclick=()=>{const u=firstUrl(); if(u){ const a=document.createElement('a'); a.href=u; a.target='_blank'; a.rel='noreferrer noopener'; document.body.appendChild(a); a.click(); a.remove(); } };
+document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';document.getElementById('debug').textContent='';document.getElementById('chip-prof').textContent='Profil: –';inEl.focus();};
 
-/* Auto-Param: ?u=&ao=1&aff=0|1 */
-document.addEventListener('DOMContentLoaded', function(){
-  const p=new URLSearchParams(location.search);
-  let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
-  if(aff==='0'||/^strict$/i.test(aff)) document.getElementById('keepAff').checked=false;
-  if(aff==='1'||/^safe$/i.test(aff))  document.getElementById('keepAff').checked=true;
-  if(q){ try{q=decodeURIComponent(q);}catch(_){ } inEl.value=q; run(); if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; } }
-});
-
-/* ----- Profile + Export/Import ----- */
+/* ---- Profile + Backup ---- */
 const LS_KEY='ss_profiles';
 const S = { load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(_){ return {}; } },
             save(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); } };
@@ -213,11 +221,12 @@ function hostOfFirstUrl(text){
 function selectRad(v){ document.querySelectorAll('input[name="ss-profmode"]').forEach(r=>{ r.checked=(r.value===v); }); }
 function applyProfileForInput(){
   const host = hostOfFirstUrl(inEl.value);
-  if(!host){ document.getElementById('ss-prof-status').textContent='–'; document.getElementById('ss-dom').value=''; return; }
+  if(!host){ document.getElementById('chip-prof').textContent='Profil: –'; document.getElementById('ss-prof-status').textContent='–'; return; }
   const prof = S.load()[host];
-  if(prof==='safe'){ document.getElementById('keepAff').checked=true; document.getElementById('ss-prof-status').textContent=`Profil: ${host} → SAFE`; document.getElementById('ss-dom').value=host; selectRad('safe'); }
-  else if(prof==='strict'){ document.getElementById('keepAff').checked=false; document.getElementById('ss-prof-status').textContent=`Profil: ${host} → STRICT`; document.getElementById('ss-dom').value=host; selectRad('strict'); }
-  else { document.getElementById('ss-prof-status').textContent=`Kein Profil für ${host}`; document.getElementById('ss-dom').value=host; }
+  if(prof==='safe'){ document.getElementById('keepAff').checked=true; document.getElementById('chip-prof').textContent=`Profil: ${host} = SAFE`; document.getElementById('ss-dom').value=host; selectRad('safe'); }
+  else if(prof==='strict'){ document.getElementById('keepAff').checked=false; document.getElementById('chip-prof').textContent=`Profil: ${host} = STRICT`; document.getElementById('ss-dom').value=host; selectRad('strict'); }
+  else { document.getElementById('chip-prof').textContent=`Profil: ${host} = keines`; document.getElementById('ss-dom').value=host; }
+  document.getElementById('chip-mode').textContent=`Modus: ${document.getElementById('keepAff').checked?'SAFE':'STRICT'}`;
 }
 document.getElementById('ss-save').onclick=()=>{ const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); if(!dom){document.getElementById('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
   const mode=document.querySelector('input[name="ss-profmode"]:checked')?.value||'safe';
@@ -229,7 +238,19 @@ document.getElementById('ss-imp').addEventListener('change', ev=>{ const f=ev.ta
     try{ const obj=JSON.parse(rd.result); if(obj&&obj.profiles&&typeof obj.profiles==='object'){ S.save(obj.profiles); document.getElementById('ss-prof-status').textContent='Import ok.'; applyProfileForInput(); } else { document.getElementById('ss-prof-status').textContent='Datei ungültig.'; } }
     catch(e){ document.getElementById('ss-prof-status').textContent='JSON fehlerhaft.'; }
   }; rd.readAsText(f); });
-inEl.addEventListener('input', ()=>{ clearTimeout(window.__ss_t); window.__ss_t=setTimeout(applyProfileForInput,120); });
+
+/* ---- Autofill: ?u= & ao=1 & aff=0|1 ---- */
+document.addEventListener('DOMContentLoaded', function(){
+  const p=new URLSearchParams(location.search);
+  let q=p.get('u')||p.get('url');
+  const ao=p.get('open')||p.get('ao');
+  const aff=p.get('aff')||p.get('mode');
+  if(aff==='0'||/^strict$/i.test(aff)) document.getElementById('keepAff').checked=false;
+  if(aff==='1'||/^safe$/i.test(aff))   document.getElementById('keepAff').checked=true;
+  if(q){ try{q=decodeURIComponent(q);}catch(_){ } inEl.value=q; run();
+    if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
+  }
+});
 </script>
 </body>
 </html>
