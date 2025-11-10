@@ -2,8 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v41</title>
-<meta name="description" content="Links ohne Tracking. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain.">
+<title>SafeShare – App v42</title>
+<meta name="description" content="Links ohne Tracking. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain. Sticky-Modus. Reload.">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46;--chip:#ecfdf5}
   *{box-sizing:border-box}
@@ -38,8 +38,8 @@
 </head>
 <body>
 
-<h1>SafeShare – App v41</h1>
-<p class="muted">Tracker raus. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain.</p>
+<h1>SafeShare – App v42</h1>
+<p class="muted">Tracker raus. Affiliates optional. Referrer-frei. Profile. <strong>Sticky</strong> und <strong>Reload</strong> wieder da.</p>
 
 <div id="chips">
   <span id="chip-mode" class="chip">Modus: SAFE</span>
@@ -49,17 +49,25 @@
 <textarea id="in" placeholder="Link(s) hier einfügen …"></textarea>
 
 <div class="row">
-  <button id="clean" class="btn" type="button">Säubern</button>
-  <button id="copy"  class="btn" type="button">Kopieren</button>
-  <button id="openA" class="btn" type="button" disabled>Öffnen</button>
-  <button id="goA"   class="btn" type="button" disabled>1-Klick (neu)</button>
+  <button id="clean"  class="btn" type="button">Säubern</button>
+  <button id="copy"   class="btn" type="button">Kopieren</button>
+  <button id="openA"  class="btn" type="button" disabled>Öffnen</button>
+  <button id="goA"    class="btn" type="button" disabled>1-Klick (neu)</button>
   <button id="openNR" class="btn" type="button" title="In neuem Tab ohne Referrer öffnen" disabled>Referrer-frei (neu)</button>
-  <button id="clear" class="btn" type="button" title="Leeren" style="width:42px;padding:8px 0">&times;</button>
+  <button id="reload" class="btn" type="button" title="Aktuellen Tab auf bereinigte URL ersetzen" disabled>Reload (ersetzen)</button>
+  <button id="clear"  class="btn" type="button" title="Leeren" style="width:42px;padding:8px 0">&times;</button>
 </div>
 
-<label class="muted" style="display:inline-flex;align-items:center">
-  <input id="keepAff" type="checkbox" checked style="margin-right:6px">Provisionen behalten (SAFE)
-</label>
+<div class="row" style="display:flex;align-items:center;gap:16px">
+  <label class="muted" style="display:inline-flex;align-items:center">
+    <input id="keepAff" type="checkbox" checked style="margin-right:6px">Provisionen behalten (SAFE)
+  </label>
+  <label class="muted" style="display:inline-flex;align-items:center">
+    <input id="sticky" type="checkbox" style="margin-right:6px">Modus merken (Sticky)
+  </label>
+  <button id="setSafe"   class="btn small" type="button" title="SAFE dauerhaft">SAFE (sticky)</button>
+  <button id="setStrict" class="btn small" type="button" title="STRICT dauerhaft">STRICT (sticky)</button>
+</div>
 
 <textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier …"></textarea>
 <div id="status" class="muted">Status: –</div>
@@ -113,7 +121,7 @@ const AFF={
 /* $ + Elements */
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), chipMode=$('chip-mode'), chipProf=$('chip-prof');
-const openNR=$('openNR');
+const openNR=$('openNR'), btnReload=$('reload');
 
 /* Kleinschreibung: Domainfeld + Eingabefeld */
 function normalizeDomField(){
@@ -227,7 +235,7 @@ function cleanOne(s){
 }
 function summarize(){
   const u=firstUrl();
-  $('openA').disabled=!u; $('goA').disabled=!u; $('openNR').disabled=!u;
+  $('openA').disabled=!u; $('goA').disabled=!u; $('openNR').disabled=!u; $('reload').disabled=!u;
   const kept=Array.from(last.kept).sort().join(', ')||'–';
   const rem=Array.from(last.removed).sort().join(', ')||'–';
   statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
@@ -235,14 +243,38 @@ function summarize(){
 }
 
 /* Aktionen */
-function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
+function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); stickyMaybeSave(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
 $('clean').onclick=run;
 $('keepAff').onchange=run;
 $('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
 $('openA').onclick=()=>{const u=firstUrl(); if(u) location.href=u;};
 $('goA').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
 $('openNR').onclick=()=>{const u=firstUrl(); if(u){ const a=document.createElement('a'); a.href=u; a.target='_blank'; a.rel='noreferrer noopener'; document.body.appendChild(a); a.click(); a.remove(); }};
+$('reload').onclick=()=>{const u=firstUrl(); if(u) location.replace(u);};
 $('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';$('debug').textContent='';chipProf.textContent='Profil: –';inEl.focus();};
+
+/* Sticky */
+const LS_STICKY='ss_sticky', LS_MODE='ss_keepAff';
+function stickyLoad(){
+  try{
+    const st = localStorage.getItem(LS_STICKY)==='1';
+    $('sticky').checked = st;
+    if(st){
+      const m = localStorage.getItem(LS_MODE);
+      if(m==='0') $('keepAff').checked=false;
+      if(m==='1') $('keepAff').checked=true;
+    }
+  }catch(_){}
+}
+function stickyMaybeSave(){
+  try{
+    if(!$('sticky').checked) return;
+    localStorage.setItem(LS_MODE, $('keepAff').checked?'1':'0');
+  }catch(_){}
+}
+$('sticky').onchange=()=>{ try{ localStorage.setItem(LS_STICKY, $('sticky').checked?'1':'0'); stickyMaybeSave(); summarize(); }catch(_){} };
+$('setSafe').onclick = ()=>{ $('keepAff').checked=true; localStorage.setItem(LS_STICKY,'1'); localStorage.setItem(LS_MODE,'1'); $('sticky').checked=true; run(); };
+$('setStrict').onclick= ()=>{ $('keepAff').checked=false; localStorage.setItem(LS_STICKY,'1'); localStorage.setItem(LS_MODE,'0'); $('sticky').checked=true; run(); };
 
 /* Profile + Backup */
 const LS_KEY='ss_profiles';
@@ -269,6 +301,8 @@ function applyProfileForInput(){
   else { chipProf.textContent=`Profil: ${host} = keines`; $('ss-dom').value=host; }
   chipMode.textContent=`Modus: ${$('keepAff').checked?'SAFE':'STRICT'}`;
 }
+
+/* Profile Buttons */
 $('ss-save').onclick=()=>{ normalizeDomField();
   const dom=($('ss-dom').value||'').trim().toLowerCase(); if(!dom){$('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
   const mode=document.querySelector('input[name="ss-profmode"]:checked')?.value||'safe';
@@ -282,6 +316,7 @@ $('ss-x').onclick=()=>{ const dom=($('ss-dom').value||'').trim().toLowerCase();
 
 /* Autofill */
 document.addEventListener('DOMContentLoaded', function(){
+  stickyLoad();
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
   if(aff==='0'||/^strict$/i.test(aff)) $('keepAff').checked=false;
