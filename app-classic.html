@@ -4,18 +4,23 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Classic</title>
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
-  textarea{width:100%;box-sizing:border-box;padding:10px;font-size:14px}
-  #in{min-height:120px} #out{min-height:120px}
-  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid #ddd;border-radius:6px;text-decoration:none;color:#111}
-  .muted{color:#666;font-size:12px} .disabled{opacity:.5;pointer-events:none}
+  :root{--bd:#ddd;--fg:#111;--muted:#666}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:var(--fg)}
+  textarea{width:100%;box-sizing:border-box;padding:10px;font-size:14px;border:1px solid var(--bd);border-radius:6px}
+  #in{min-height:120px} #out{min-height:140px;margin-top:8px}
+  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;text-decoration:none;color:var(--fg)}
+  .muted{color:var(--muted);font-size:12px}
+  .disabled{opacity:.5;pointer-events:none}
+  #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:6px}
+  #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
 </style>
 </head>
 <body>
 <h1>SafeShare – Classic</h1>
-<p class="muted">Tracking-Parameter entfernen. Optional Affiliate-Keys behalten.</p>
+<p class="muted">Tracker raus. Optional Affiliates behalten.</p>
 
 <textarea id="in" placeholder="Link(s) hier einfügen …"></textarea>
+
 <div>
   <button id="clean" class="btn" type="button">Säubern</button>
   <button id="copy"  class="btn" type="button">Kopieren</button>
@@ -23,14 +28,23 @@
   <a id="goA"   class="btn disabled" href="#" target="_blank" rel="noopener">1-Klick</a>
   <button id="clear" class="btn" type="button" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
 </div>
+
 <label class="muted" style="display:inline-flex;align-items:center">
   <input id="keepAff" type="checkbox" checked style="margin-right:6px">Provisionen behalten
 </label>
 
-<textarea id="out" readonly placeholder="Bereinigte URL(s) …"></textarea>
+<textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier …"></textarea>
 <div id="status" class="muted">Status: –</div>
+<div id="debug" class="muted"></div>
 
 <script>
+/* Fehlermeldungen sichtbar machen */
+window.addEventListener('error', e => {
+  const d=document.getElementById('debug');
+  d.textContent='JS-Fehler: '+e.message;
+});
+
+/* Hilfsfunktionen */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -51,7 +65,7 @@ function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIC
 function unwrapDeep(u){
   try{
     if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith('/url')){const q=u.searchParams.get('q')||u.searchParams.get('url'); if(q) u=new URL(q);}
-    if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith('/l.php')){const q=u.searchParams.get('u'); if(q) u=new URL(q);}
+    if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith('/l.php')){const q2=u.searchParams.get('u'); if(q2) u=new URL(q2);}
   }catch(_){}
   for(let i=0;i<6;i++){
     let found=null;
@@ -97,6 +111,8 @@ function sanitizeHash(u,keepNames,removed){
   }
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
+
+/* Kernlogik */
 let last={kept:new Set(),removed:new Set(),mode:'AN'};
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
@@ -127,14 +143,23 @@ function summarize(){
   else{ openA.href='#'; openA.classList.add('disabled'); goA.href='#'; goA.classList.add('disabled'); }
   const kept=Array.from(last.kept).sort().join(', ')||'–';
   const rem =Array.from(last.removed).sort().join(', ')||'–';
-  $('status').textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
+  statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
 }
-function run(){ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }
-$('clean').onclick=run; $('keepAff').onchange=run;
+function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }catch(e){ $('debug').textContent='Laufzeitfehler: '+e.message; } }
+
+/* Events */
+$('clean').onclick=run;
+$('keepAff').onchange=run;
 $('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
-$('clear').onclick=()=>{inEl.value='';outEl.value='';$('status').textContent='Status: –';inEl.focus();};
-// Auto ?u=&open=1
-(function(){const p=new URLSearchParams(location.search);const q=p.get('u')||p.get('url');const ao=p.get('open')||p.get('ao');if(q){inEl.value=decodeURIComponent(q);run();if(ao==='1'){const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x));if(first) location.href=first;}}})();
+$('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';$('debug').textContent='';inEl.focus();};
+
+/* Auto ?u=&open=1 */
+(function(){
+  const p=new URLSearchParams(location.search);
+  const q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const v=p.get('v');
+  if(q){ inEl.value=decodeURIComponent(q); run(); if(ao==='1'){ const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x)); if(first) location.href=first; } }
+  if(v){ /* nur Cache-Buster, keine Logik */ }
+})();
 </script>
 </body>
 </html>
