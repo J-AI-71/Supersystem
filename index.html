@@ -5,13 +5,24 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Links ohne Tracking</title>
 <meta name="description" content="SafeShare entfernt Tracking-Parameter (utm_, fbclid, gclid …). Optional Affiliate-Parameter behalten. 1-Klick, Bookmarklets, Profile pro Domain.">
-<meta property="og:title" content="SafeShare – Links ohne Tracking">
-<meta property="og:description" content="Säubere Links. Behalte Affiliates nach Wunsch. 1-Klick.">
-<meta property="og:image" content="safeshare-og-v3b.png?v=78">
-<meta property="og:type" content="website">
-<link rel="icon" href="favicon-32.png?v=78" sizes="32x32">
+
+<!-- Sicherheit -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: https://api.qrserver.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+
+<!-- PWA/Meta -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0ea5e9">
+<link rel="icon" href="favicon-32.png?v=82" sizes="32x32">
+<link rel="apple-touch-icon" href="safeshare-og-v3b.png">
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/index.html">
+
+<!-- OG -->
+<meta property="og:title" content="SafeShare – Links ohne Tracking">
+<meta property="og:description" content="Säubere Links. Behalte Affiliates nach Wunsch. 1-Klick.">
+<meta property="og:image" content="safeshare-og-v3b.png?v=82">
+<meta property="og:type" content="website">
+
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--bg:#ffffff;--accent:#0ea5e9}
   *{box-sizing:border-box}
@@ -21,6 +32,8 @@
   header img{width:44px;height:44px;border-radius:10px}
   header h1{font-size:22px;margin:0}
   header .sub{color:var(--muted);font-size:13px}
+  nav{margin-left:auto;display:flex;gap:12px}
+  nav a{font-size:14px;color:var(--fg);text-decoration:none;border:1px solid var(--bd);padding:6px 10px;border-radius:8px;background:#fff}
   .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center}
   .hero h2{margin:0 0 8px;font-size:26px}
   .hero p{margin:0 0 14px;color:var(--muted)}
@@ -31,7 +44,7 @@
   .muted{color:var(--muted);font-size:13px}
   h3{margin:22px 0 10px;font-size:18px}
   ul{margin:8px 0 0 18px}
-  footer{margin:28px 0 14px;color:var(--muted);font-size:13px}
+  footer{margin:28px 0 14px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .center{display:flex;align-items:center;gap:10px}
   .qr{width:180px;height:180px;border:1px solid var(--bd);border-radius:10px}
@@ -40,18 +53,23 @@
   .chip{border:1px solid var(--bd);border-radius:999px;padding:4px 10px;font-size:12px;background:#f8fafc}
   .section{margin-top:18px}
   .mini{font-size:12px;color:var(--muted)}
-  @media (max-width:860px){ .hero{grid-template-columns:1fr} }
+  @media (max-width:860px){ .hero{grid-template-columns:1fr} nav{margin:12px 0 0 0} }
 </style>
 </head>
 <body>
 <div class="container">
 
   <header>
-    <img src="safeshare-og-v3b.png?v=78" alt="SafeShare">
+    <img src="safeshare-og-v3b.png?v=82" alt="SafeShare">
     <div>
       <h1>SafeShare</h1>
       <div class="sub">Links ohne Tracking. Optional Affiliates behalten.</div>
     </div>
+    <nav>
+      <a href="faq.html">FAQ</a>
+      <a href="changelog.html">Changelog</a>
+      <a href="tools.html">Tools</a>
+    </nav>
   </header>
 
   <section class="hero">
@@ -88,7 +106,7 @@
       <h3>Für wen ist SafeShare?</h3>
       <ul>
         <li>Privacy-Nutzer: Social/Newsletter-Links ohne Tracking.</li>
-        <li>Affiliates: <code>tag</code> & Co. behalten, Rest raus.</li>
+        <li>Affiliates: <code>tag</code> &amp; Co. behalten, Rest raus.</li>
         <li>Redaktionen/Creator: saubere Quellenlinks, referrer-frei öffnen.</li>
       </ul>
     </div>
@@ -134,11 +152,12 @@
       <li><strong>v41</strong>: Referrer-frei, Profile-X, Export/Import.</li>
       <li><strong>v40</strong>: SAFE/STRICT, tiefes Unwrapping, 1-Klick.</li>
     </ul>
+    <p class="mini"><a href="changelog.html">Vollständiges Changelog</a></p>
   </section>
 
-  <footer class="center" style="justify-content:space-between">
+  <footer>
     <div>
-      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="faq.html">FAQ</a> · <a href="changelog.html">Changelog</a>
     </div>
     <div class="mini">© SafeShare</div>
   </footer>
@@ -174,7 +193,7 @@ Wunsch/Problem: `
   // Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', ()=> {
-      navigator.serviceWorker.register('sw.js?v=1').catch(()=>{});
+      navigator.serviceWorker.register('sw.js?v=2').catch(()=>{});
     });
   }
 </script>
