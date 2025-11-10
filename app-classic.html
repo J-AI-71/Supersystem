@@ -5,15 +5,15 @@
 <title>SafeShare – Classic</title>
 <style>
   :root{--bd:#ddd;--fg:#111;--muted:#666}
+  *{box-sizing:border-box}
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:var(--fg)}
-  textarea{width:100%;box-sizing:border-box;padding:10px;font-size:14px;border:1px solid var(--bd);border-radius:6px}
+  textarea{width:100%;padding:10px;font-size:14px;border:1px solid var(--bd);border-radius:6px}
   #in{min-height:120px} #out{min-height:140px;margin-top:8px}
-  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;text-decoration:none;color:var(--fg)}
+  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;background:#fff;color:var(--fg);cursor:pointer}
+  .btn[disabled]{opacity:.5;pointer-events:none}
   .muted{color:var(--muted);font-size:12px}
-  .disabled{opacity:.5;pointer-events:none}
   #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:6px}
   #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
-
   /* Profil + Export/Import Panel */
   .panel{border:1px solid var(--bd);border-radius:10px;padding:12px;margin-top:14px}
   .panel h2{font-size:16px;margin:0 0 8px}
@@ -32,8 +32,8 @@
 <div>
   <button id="clean" class="btn" type="button">Säubern</button>
   <button id="copy"  class="btn" type="button">Kopieren</button>
-  <a id="openA" class="btn disabled" href="#" rel="noopener">Öffnen</a>
-  <a id="goA"   class="btn disabled" href="#" target="_blank" rel="noopener">1-Klick</a>
+  <button id="openA" class="btn" type="button" disabled>Öffnen</button>
+  <button id="goA"   class="btn" type="button" disabled>1-Klick (neu)</button>
   <button id="clear" class="btn" type="button" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
 </div>
 
@@ -88,9 +88,10 @@ const AFF={
   exactPairs:new Set([])
 };
 const $=id=>document.getElementById(id);
-const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
+const inEl=$('in'), outEl=$('out'), statusEl=$('status');
 
 /* Helpers */
+function firstUrl(){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); return m?m[0]:''; }
 function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
 function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
 function unwrapDeep(u){
@@ -100,7 +101,7 @@ function unwrapDeep(u){
   }catch(_){}
   for(let i=0;i<6;i++){
     let found=null;
-    for(const [,v] of u.searchParams){const dec=deepDecode(v||'');const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m){found=m[0]);break;}}
+    for(const [_,v] of u.searchParams){const dec=deepDecode(v||'');const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m){found=m[0];break;}}
     if(!found){const dec=deepDecode(u.hash||'');const m=(dec||'').match(/https?:\/\/[^\s"'<>)]+/i);if(m)found=m[0];}
     if(!found){const dec=deepDecode(u.href);const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m&&m[0]!==u.href)found=m[0];}
     if(!found)break; try{u=new URL(found)}catch(_){break;}
@@ -127,7 +128,7 @@ function sortAndDedupe(out){
   out.search=sorted.search;
 }
 function tallyParams(sp){const set=new Set();for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
-function tallyHash(h){const set=new Set();if(!h)return set;const s=h.replace(/^#/, '');if(!s.includes('='))return set;for(const [k] of new URLSearchParams(s)){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
+function tallyHash(h){const set=new Set();if(!h)return set;const s=h.replace(/^#/,'');if(!s.includes('='))return set;for(const [k] of new URLSearchParams(s)){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
 function sanitizeHash(u,affNames,keepOn,removed){
   if(!u.hash)return''; const s=u.hash.replace(/^#/,''); if(!s.includes('='))return'';
   const hp=new URLSearchParams(s);
@@ -149,7 +150,7 @@ function cleanOne(s){
   const remOuter=tallyParams(u0.searchParams), remOuterH=tallyHash(u0.hash);
   let u=unwrapDeep(u0); u=applyAmpCanonical(u);
 
-  const keepOn=$('keepAff').checked;
+  const keepOn=document.getElementById('keepAff').checked;
   const host=u.hostname.toLowerCase();
   const affNames=buildAffNames(host);
 
@@ -172,35 +173,36 @@ function cleanOne(s){
   return out.toString();
 }
 function summarize(){
-  const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x))||'';
-  if(first){ openA.href=first; openA.classList.remove('disabled'); goA.href=first; goA.classList.remove('disabled'); }
-  else{ openA.href='#'; openA.classList.add('disabled'); goA.href='#'; goA.classList.add('disabled'); }
+  const u=firstUrl();
+  document.getElementById('openA').disabled = !u;
+  document.getElementById('goA').disabled   = !u;
   const kept=Array.from(last.kept).sort().join(', ')||'–';
   const rem =Array.from(last.removed).sort().join(', ')||'–';
   statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
 }
-function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
+function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=document.getElementById('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
 
-/* Events */
-$('clean').onclick=run; $('keepAff').onchange=run;
-$('copy').onclick=async()=>{const m=(outEl.value||'').match(/https?:\/\/[^\s]+/);if(!m)return; try{await navigator.clipboard.writeText(m[0]);alert('Kopiert');}catch(_){}};
-$('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';$('debug').textContent='';inEl.focus();};
+/* Buttons */
+document.getElementById('clean').onclick=run;
+document.getElementById('keepAff').onchange=run;
+document.getElementById('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
+document.getElementById('openA').onclick=()=>{const u=firstUrl(); if(u) location.href=u;};
+document.getElementById('goA').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
+document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';document.getElementById('debug').textContent='';inEl.focus();};
 
 /* Auto-Param: ?u=&ao=1&aff=0|1 */
 document.addEventListener('DOMContentLoaded', function(){
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
-  if(aff==='0'||/^strict$/i.test(aff)) $('keepAff').checked=false;
-  if(aff==='1'||/^safe$/i.test(aff))  $('keepAff').checked=true;
-  if(q){ try{q=decodeURIComponent(q);}catch(_){ } inEl.value=q; run(); if(ao==='1'){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); if(m) location.href=m[0]; } }
+  if(aff==='0'||/^strict$/i.test(aff)) document.getElementById('keepAff').checked=false;
+  if(aff==='1'||/^safe$/i.test(aff))  document.getElementById('keepAff').checked=true;
+  if(q){ try{q=decodeURIComponent(q);}catch(_){ } inEl.value=q; run(); if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; } }
 });
 
 /* ----- Profile + Export/Import ----- */
 const LS_KEY='ss_profiles';
-const S = {
-  load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(_){ return {}; } },
-  save(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }
-};
+const S = { load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(_){ return {}; } },
+            save(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); } };
 function hostOfFirstUrl(text){
   if(!text) return '';
   const rx=/\bhttps?:\/\/([^\/\s?#:]+)[^\s]*/i;
@@ -211,25 +213,23 @@ function hostOfFirstUrl(text){
 function selectRad(v){ document.querySelectorAll('input[name="ss-profmode"]').forEach(r=>{ r.checked=(r.value===v); }); }
 function applyProfileForInput(){
   const host = hostOfFirstUrl(inEl.value);
-  if(!host){ $('ss-prof-status').textContent='–'; $('ss-dom').value=''; return; }
+  if(!host){ document.getElementById('ss-prof-status').textContent='–'; document.getElementById('ss-dom').value=''; return; }
   const prof = S.load()[host];
-  if(prof==='safe'){ $('keepAff').checked=true; $('ss-prof-status').textContent=`Profil: ${host} → SAFE`; $('ss-dom').value=host; selectRad('safe'); }
-  else if(prof==='strict'){ $('keepAff').checked=false; $('ss-prof-status').textContent=`Profil: ${host} → STRICT`; $('ss-dom').value=host; selectRad('strict'); }
-  else { $('ss-prof-status').textContent=`Kein Profil für ${host}`; $('ss-dom').value=host; }
+  if(prof==='safe'){ document.getElementById('keepAff').checked=true; document.getElementById('ss-prof-status').textContent=`Profil: ${host} → SAFE`; document.getElementById('ss-dom').value=host; selectRad('safe'); }
+  else if(prof==='strict'){ document.getElementById('keepAff').checked=false; document.getElementById('ss-prof-status').textContent=`Profil: ${host} → STRICT`; document.getElementById('ss-dom').value=host; selectRad('strict'); }
+  else { document.getElementById('ss-prof-status').textContent=`Kein Profil für ${host}`; document.getElementById('ss-dom').value=host; }
 }
-$('ss-save').onclick=()=>{ const dom=($('ss-dom').value||'').trim().toLowerCase(); if(!dom){$('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
+document.getElementById('ss-save').onclick=()=>{ const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); if(!dom){document.getElementById('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
   const mode=document.querySelector('input[name="ss-profmode"]:checked')?.value||'safe';
-  const map=S.load(); map[dom]=mode; S.save(map); $('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`; applyProfileForInput(); };
-$('ss-del').onclick =()=>{ const dom=($('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); $('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else {$('ss-prof-status').textContent='Nichts zu löschen.';} applyProfileForInput(); };
-$('ss-exp').onclick =()=>{ const payload={version:'v1',ts:new Date().toISOString(),profiles:S.load()}; const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const map=S.load(); map[dom]=mode; S.save(map); document.getElementById('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`; applyProfileForInput(); };
+document.getElementById('ss-del').onclick =()=>{ const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); document.getElementById('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { document.getElementById('ss-prof-status').textContent='Nichts zu löschen.'; } applyProfileForInput(); };
+document.getElementById('ss-exp').onclick =()=>{ const payload={version:'v1',ts:new Date().toISOString(),profiles:S.load()}; const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='safeshare-settings.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),0); };
-$('ss-imp').addEventListener('change', ev=>{ const f=ev.target.files&&ev.target.files[0]; if(!f)return; const rd=new FileReader(); rd.onload=()=>{
-    try{ const obj=JSON.parse(rd.result); if(obj&&obj.profiles&&typeof obj.profiles==='object'){ S.save(obj.profiles); $('ss-prof-status').textContent='Import ok.'; applyProfileForInput(); } else { $('ss-prof-status').textContent='Datei ungültig.'; } }
-    catch(e){ $('ss-prof-status').textContent='JSON fehlerhaft.'; }
+document.getElementById('ss-imp').addEventListener('change', ev=>{ const f=ev.target.files&&ev.target.files[0]; if(!f)return; const rd=new FileReader(); rd.onload=()=>{
+    try{ const obj=JSON.parse(rd.result); if(obj&&obj.profiles&&typeof obj.profiles==='object'){ S.save(obj.profiles); document.getElementById('ss-prof-status').textContent='Import ok.'; applyProfileForInput(); } else { document.getElementById('ss-prof-status').textContent='Datei ungültig.'; } }
+    catch(e){ document.getElementById('ss-prof-status').textContent='JSON fehlerhaft.'; }
   }; rd.readAsText(f); });
-
-/* Live anwenden bei Eingabe */
-inEl.addEventListener('input', ()=>{ clearTimeout(window.__ss_t); window.__ss_t=setTimeout(applyProfileForInput, 120); });
+inEl.addEventListener('input', ()=>{ clearTimeout(window.__ss_t); window.__ss_t=setTimeout(applyProfileForInput,120); });
 </script>
 </body>
 </html>
