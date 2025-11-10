@@ -7,9 +7,11 @@
 <meta name="description" content="SafeShare entfernt Tracking-Parameter (utm_, fbclid, gclid …). Optional Affiliate-Parameter behalten. 1-Klick, Bookmarklets, Profile pro Domain.">
 <meta property="og:title" content="SafeShare – Links ohne Tracking">
 <meta property="og:description" content="Säubere Links. Behalte Affiliates nach Wunsch. 1-Klick.">
-<meta property="og:image" content="safeshare-og-v3b.png?v=74">
+<meta property="og:image" content="safeshare-og-v3b.png?v=78">
 <meta property="og:type" content="website">
-<link rel="icon" href="favicon-32.png?v=74" sizes="32x32">
+<link rel="icon" href="favicon-32.png?v=78" sizes="32x32">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0ea5e9">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--bg:#ffffff;--accent:#0ea5e9}
   *{box-sizing:border-box}
@@ -45,7 +47,7 @@
 <div class="container">
 
   <header>
-    <img src="safeshare-og-v3b.png?v=74" alt="SafeShare">
+    <img src="safeshare-og-v3b.png?v=78" alt="SafeShare">
     <div>
       <h1>SafeShare</h1>
       <div class="sub">Links ohne Tracking. Optional Affiliates behalten.</div>
@@ -128,8 +130,9 @@
   <section class="section card">
     <h3>Mini-Changelog</h3>
     <ul class="mini">
-      <li><strong>v41</strong>: Referrer-frei Button, Profile-X, Export/Import, Host-Kleinschreibung.</li>
-      <li><strong>v40</strong>: Affiliate-safe/Strict, tiefes Unwrapping, 1-Klick.</li>
+      <li><strong>v42</strong>: Sticky, Reload, Kurzanleitung in App.</li>
+      <li><strong>v41</strong>: Referrer-frei, Profile-X, Export/Import.</li>
+      <li><strong>v40</strong>: SAFE/STRICT, tiefes Unwrapping, 1-Klick.</li>
     </ul>
   </section>
 
@@ -154,7 +157,7 @@
     }
   };
 
-  // Feedback → deine Adresse
+  // Feedback
   document.getElementById('btn-fb').onclick = ()=>{
     const body = encodeURIComponent(
 `Feedback zu SafeShare
@@ -167,6 +170,13 @@ Wunsch/Problem: `
       + encodeURIComponent('SafeShare Feedback')
       + '&body=' + body;
   };
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', ()=> {
+      navigator.serviceWorker.register('sw.js?v=1').catch(()=>{});
+    });
+  }
 </script>
 </body>
 </html>
