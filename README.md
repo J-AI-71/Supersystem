@@ -1,41 +1,51 @@
-# SafeShare — Links ohne Tracking
+# SafeShare – Links ohne Tracking
 
-Kleines Web-Tool: entfernt Tracking-Parameter (utm_, gclid, fbclid, …), entpackt Redirects (Google/Facebook), optional Affiliate-Provisionen behalten.
+SafeShare entfernt Tracking-Parameter (`utm_*`, `fbclid`, `gclid`, …), löst Weiterleitungs-Wrapper (z. B. Google `/url?q=`, Facebook `/l.php?u=`), und kann Affiliate-Parameter im **SAFE**-Modus behalten. Alles läuft lokal im Browser, ohne Cookies oder Server-Speicherung.
+
+---
 
 ## Live
-- App (v41): https://j-ai-71.github.io/Supersystem/app.html
-- Classic:   https://j-ai-71.github.io/Supersystem/app-classic.html
-- Start:     https://j-ai-71.github.io/Supersystem/
 
-## Features
-- Entfernt: `utm_*`, `gclid`, `fbclid`, `twclid`, `msclkid`, `wtmc`, `xtor`, u. a.
-- Entschachtelt Redirects, AMP → Canonical, Hash-Cleanup, Sort & Dedupe.
-- Affiliate-safe (AN) oder Strict (AUS).
-- Statuspanel: Behalten/Entfernt. v41: Lern-Killliste + Domain-Profile.
-- Bookmarklets (Sticky/Reload).
+- **App:** https://j-ai-71.github.io/Supersystem/app.html  
+- **Classic:** https://j-ai-71.github.io/Supersystem/app-classic.html  
+- **Startseite:** https://j-ai-71.github.io/Supersystem/index.html  
+- **Bookmarklets:** https://j-ai-71.github.io/Supersystem/bookmarklets.html  
+- **Partner werden:** https://j-ai-71.github.io/Supersystem/partner.html  
+- **Danke:** https://j-ai-71.github.io/Supersystem/danke.html
+
+> Cache-Buster bei Updates: `?v=77` anfügen.
+
+---
 
 ## Schnellstart
-1. Öffne die App → Link einfügen → **Säubern**.
-2. Checkbox **Provisionen behalten** ein = Affiliates bleiben. Aus = Strict.
-3. **Öffnen** (gleicher Tab) oder **1-Klick** (neuer Tab).
 
-## Auto-Parameter
-- `?u=<urlenc-URL>` füllt Eingabe.
-- `&open=1` öffnet nach Säubern.
-- `?help=1` zeigt Hilfe offen.
-- `?reset=1` löscht lokale App-Einstellungen.
-- `&v=42` Cache-Buster.
+1. **App öffnen:** `app.html` oder **Classic** `app-classic.html`.
+2. **Link einfügen → Säubern → Kopieren** oder **Öffnen / 1-Klick**.
+3. Optional:
+   - **SAFE** (Affiliates behalten) oder **STRICT** (alles weg) wählen.
+   - **Profile pro Domain** setzen (SAFE/STRICT) und exportieren/importieren.
+   - **Referrer-frei** öffnen oder **Reload** (aktuellen Tab ersetzen).
 
-## Bookmarklets
-Siehe `bookmarklets.html`. Sticky=ohne Reload, Reload=robuster.
+---
 
-## Monetarisierung
-- Produkt/Support: https://payhip.com/b/VDm3B  
-- Success-Redirect: `/danke.html`  
-- Affiliate-Programm: https://payhip.com/auth/register/af69075ca4efafa
+## Funktionen
 
-## Datenschutz
-Kein Server-Logging. Läuft komplett im Browser.
+- Entfernt: `utm_*`, `fbclid`, `gclid`, `twclid`, `msclkid`, `xtor`, `mkt_tok`, `si`, `spm`, `client`, `zx`, `no_sw_cr`, u. a.  
+- Löst Wrapper: Google `/url?q=`, Facebook `/l.php?u=`, AMP-Pfade.  
+- **SAFE**: typische Affiliate-Parameter bleiben (z. B. Amazon `tag`).  
+- **STRICT**: alles weg, inkl. Affiliate.  
+- **Profile pro Domain**: pro Host SAFE/STRICT vormerken.  
+- **Export/Import**: Profile lokal als JSON sichern.  
+- **Referrer-frei**: im neuen Tab ohne Referrer öffnen.  
+- **Reload**: aktuellen Tab auf bereinigte URL ersetzen.  
+- **Bookmarklets**: 1-Klick-Reinigung direkt von Webseiten.
 
-## Lizenz
-MIT (siehe `LICENSE`).
+---
+
+## URL-Parameter (Automatik)
+
+- `u=` URL-enkodierte Quell-URL  
+- `aff=1|0` → `1` = SAFE, `0` = STRICT  
+- `ao=1` → nach dem Säubern automatisch öffnen
+
+**Beispiel (SAFE + Auto-Open):**
