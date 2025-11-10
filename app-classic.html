@@ -10,17 +10,25 @@
   textarea{width:100%;padding:10px;font-size:14px;border:1px solid var(--bd);border-radius:6px}
   #in{min-height:120px} #out{min-height:140px;margin-top:8px}
   .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;background:#fff;color:var(--fg);cursor:pointer}
+  .btn.small{padding:6px 8px;font-size:12px}
   .btn[disabled]{opacity:.5;pointer-events:none}
   .muted{color:var(--muted);font-size:12px}
   #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:6px}
   #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
-  /* Profil + Export/Import Panel */
+  /* Panels */
   .panel{border:1px solid var(--bd);border-radius:10px;padding:12px;margin-top:14px}
   .panel h2{font-size:16px;margin:0 0 8px}
   .rowflex{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   input[type=text]{padding:8px 10px;border:1px solid var(--bd);border-radius:8px;min-width:220px}
-  .btn.small{padding:6px 8px;font-size:12px}
   label.rad{display:inline-flex;align-items:center;gap:6px;margin-right:12px;font-size:14px}
+  /* Domain-X */
+  .input-wrap{position:relative;display:inline-block}
+  #ss-dom{padding-right:34px}
+  #ss-x{
+    position:absolute;right:6px;top:50%;transform:translateY(-50%);
+    width:26px;height:26px;line-height:24px;text-align:center;
+    border:1px solid var(--bd);border-radius:999px;background:#fff;cursor:pointer
+  }
 </style>
 </head>
 <body>
@@ -45,11 +53,13 @@
 <div id="status" class="muted">Status: –</div>
 <div id="debug" class="muted"></div>
 
-<!-- Profil pro Domain -->
 <section class="panel" id="profPanel">
   <h2>Profil pro Domain</h2>
   <div class="rowflex">
-    <input id="ss-dom" type="text" placeholder="domain.tld (z. B. amazon.de)">
+    <div class="input-wrap">
+      <input id="ss-dom" type="text" placeholder="domain.tld (z. B. amazon.de)">
+      <button id="ss-x" type="button" title="Profil löschen" aria-label="Profil löschen">&times;</button>
+    </div>
     <label class="rad"><input type="radio" name="ss-profmode" value="safe" checked>Safe (Affiliates behalten)</label>
     <label class="rad"><input type="radio" name="ss-profmode" value="strict">Strict (alles Tracking weg)</label>
   </div>
@@ -60,7 +70,6 @@
   <div id="ss-prof-status" class="muted">–</div>
 </section>
 
-<!-- Export / Import -->
 <section class="panel" id="backupPanel">
   <h2>Export / Import</h2>
   <div class="rowflex">
@@ -71,10 +80,9 @@
 </section>
 
 <script>
-/* Fehler sichtbar machen */
 window.addEventListener('error', e => { const d=document.getElementById('debug'); if(d) d.textContent='JS-Fehler: '+e.message; });
 
-/* Konstanten */
+/* Tracking/Affiliate-Listen */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -87,6 +95,8 @@ const AFF={
   ],
   exactPairs:new Set([])
 };
+
+/* Shortcuts */
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status');
 
@@ -142,7 +152,7 @@ function sanitizeHash(u,affNames,keepOn,removed){
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
 
-/* Kernlogik */
+/* Clean */
 let last={kept:new Set(),removed:new Set(),mode:'AN'};
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
@@ -182,7 +192,7 @@ function summarize(){
 }
 function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); }catch(e){ const d=document.getElementById('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
 
-/* Buttons */
+/* UI Events */
 document.getElementById('clean').onclick=run;
 document.getElementById('keepAff').onchange=run;
 document.getElementById('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
@@ -190,7 +200,7 @@ document.getElementById('openA').onclick=()=>{const u=firstUrl(); if(u) location
 document.getElementById('goA').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
 document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';document.getElementById('debug').textContent='';inEl.focus();};
 
-/* Auto-Param: ?u=&ao=1&aff=0|1 */
+/* Auto-Param */
 document.addEventListener('DOMContentLoaded', function(){
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
@@ -199,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function(){
   if(q){ try{q=decodeURIComponent(q);}catch(_){ } inEl.value=q; run(); if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; } }
 });
 
-/* ----- Profile + Export/Import ----- */
+/* Profile + Backup */
 const LS_KEY='ss_profiles';
 const S = { load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(_){ return {}; } },
             save(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); } };
@@ -223,6 +233,16 @@ document.getElementById('ss-save').onclick=()=>{ const dom=(document.getElementB
   const mode=document.querySelector('input[name="ss-profmode"]:checked')?.value||'safe';
   const map=S.load(); map[dom]=mode; S.save(map); document.getElementById('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`; applyProfileForInput(); };
 document.getElementById('ss-del').onclick =()=>{ const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); document.getElementById('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { document.getElementById('ss-prof-status').textContent='Nichts zu löschen.'; } applyProfileForInput(); };
+document.getElementById('ss-x').onclick = () => {
+  const dom = (document.getElementById('ss-dom').value||'').trim().toLowerCase();
+  if(dom){
+    const map = S.load();
+    if(map[dom]){ delete map[dom]; S.save(map); document.getElementById('ss-prof-status').textContent = `Gelöscht: ${dom}`; }
+    else { document.getElementById('ss-prof-status').textContent = 'Kein Profil vorhanden.'; }
+  }
+  document.getElementById('ss-dom').value = '';
+  applyProfileForInput();
+};
 document.getElementById('ss-exp').onclick =()=>{ const payload={version:'v1',ts:new Date().toISOString(),profiles:S.load()}; const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='safeshare-settings.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),0); };
 document.getElementById('ss-imp').addEventListener('change', ev=>{ const f=ev.target.files&&ev.target.files[0]; if(!f)return; const rd=new FileReader(); rd.onload=()=>{
