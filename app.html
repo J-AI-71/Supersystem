@@ -4,6 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – App v42</title>
 <meta name="description" content="Links ohne Tracking. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain. Sticky-Modus. Reload. Mit Kurzanleitung.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0ea5e9">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46;--chip:#ecfdf5}
   *{box-sizing:border-box}
@@ -169,7 +171,7 @@
 <script>
 window.addEventListener('error', e => { const d=document.getElementById('debug'); if(d) d.textContent='JS-Fehler: '+e.message; });
 
-/* Listen */
+/* Kill-/Aff-Regeln */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -183,12 +185,12 @@ const AFF={
   exactPairs:new Set([])
 };
 
-/* $ + Elements */
+/* $ */
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), chipMode=$('chip-mode'), chipProf=$('chip-prof');
 const openNR=$('openNR'), btnReload=$('reload');
 
-/* Kleinschreibung: Domainfeld + Eingabefeld */
+/* Kleinschreibung */
 function normalizeDomField(){
   const el=$('ss-dom'); if(!el) return;
   let v=(el.value||'').trim();
@@ -379,9 +381,12 @@ $('ss-x').onclick=()=>{ const dom=($('ss-dom').value||'').trim().toLowerCase();
   $('ss-dom').value=''; applyProfileForInput();
 };
 
-/* Autofill */
+/* Autofill + SW */
 document.addEventListener('DOMContentLoaded', function(){
+  // Sticky laden
   stickyLoad();
+
+  // URL-Parameter
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
   if(aff==='0'||/^strict$/i.test(aff)) $('keepAff').checked=false;
@@ -391,6 +396,11 @@ document.addEventListener('DOMContentLoaded', function(){
     try{ const u=new URL(q); u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); q=u.toString(); }catch(_){}
     inEl.value=q; normalizeHostsInTextarea(); run();
     if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
+  }
+
+  // Service Worker
+  if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
+    navigator.serviceWorker.register('sw.js?v=1').catch(()=>{});
   }
 });
 </script>
