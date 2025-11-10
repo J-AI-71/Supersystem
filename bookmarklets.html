@@ -5,38 +5,29 @@
 <title>SafeShare – Bookmarklets</title>
 <style>
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
-  h1{font-size:20px;margin:0 0 8px}
-  p.muted{color:#666}
-  .card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin:12px 0}
-  a.btn{display:inline-block;padding:8px 10px;margin:6px 8px 0 0;border:1px solid #ddd;border-radius:6px;text-decoration:none;color:#111}
-  code{word-break:break-all;background:#f8f9fa;padding:2px 6px;border-radius:6px}
+  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid #ddd;border-radius:8px;text-decoration:none;color:#111;background:#f8fafc}
+  .muted{color:#666}
+  code{background:#f3f4f6;padding:2px 6px;border-radius:6px}
+  ol{padding-left:18px}
 </style>
 </head>
 <body>
 <h1>Bookmarklets</h1>
-<p class="muted">Desktop: Link in die Lesezeichenleiste ziehen. iPhone/iPad: Lesezeichen anlegen → bearbeiten → URL durch den Code ersetzen.</p>
+<p class="muted">Als Lesezeichen speichern. Auf einer Seite klicken → URL wird in SafeShare gereinigt und geöffnet.</p>
 
-<div class="card">
-  <strong>Affiliate-safe (Sticky)</strong> – Tracker weg, Affiliate-Keys bleiben. Kein Reload.
-  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);var D=function(s){try{return decodeURIComponent(s)}catch(_){return s}};if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code","ref","refid","ref_id","referrer","aff","affid","aff_id","affiliate","affiliate_id","affsource","affsrc","affname","affcamp","affcampaign","campaign","campaignid","campaign_id","clickid","click_id","irclickid","tduid","admitad_uid","sscid","cjevent","clickref","clickref2","subid","sub_id","sid","u1","u2","u3","u4","u5","pid","aid","awinaffid","awinmid"]);if(/(^|\.)amazon\./i.test(u.hostname)){keep.add("tag");keep.add("ascsubtag")}var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)) {out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}history.replaceState(null,"",out.toString());alert("SafeShare: gereinigt (Affiliate-safe)");}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Affiliate-safe (Sticky)</a></div>
-</div>
+<h2>1-Klick Lesezeichen</h2>
+<p>
+  <a class="btn" href='javascript:location.href="https://j-ai-71.github.io/Supersystem/app-classic.html?ao=1&aff=1&u="+encodeURIComponent(location.href)'>Affiliate-safe (aktueller Tab)</a>
+  <a class="btn" href='javascript:location.href="https://j-ai-71.github.io/Supersystem/app-classic.html?ao=1&aff=0&u="+encodeURIComponent(location.href)'>Strict (aktueller Tab)</a>
+</p>
 
-<div class="card">
-  <strong>Affiliate-safe (Reload)</strong> – wie oben, lädt Seite neu.
-  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code","ref","refid","ref_id","referrer","aff","affid","aff_id","affiliate","affiliate_id","affsource","affsrc","affname","affcamp","affcampaign","campaign","campaignid","campaign_id","clickid","click_id","irclickid","tduid","admitad_uid","sscid","cjevent","clickref","clickref2","subid","sub_id","sid","u1","u2","u3","u4","u5","pid","aid","awinaffid","awinmid"]);if(/(^|\.)amazon\./i.test(u.hostname)){keep.add("tag");keep.add("ascsubtag")}var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)) {out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}location.replace(out.toString())}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Affiliate-safe (Reload)</a></div>
-</div>
+<h2>iPhone/iPad Hinweis</h2>
+<ol>
+  <li>Diese Seite teilen → „Zum Home-Bildschirm“ ist optional.</li>
+  <li>Link lange drücken → „Zu Lesezeichen hinzufügen“.</li>
+  <li>Auf einer Zielseite das Lesezeichen antippen.</li>
+</ol>
 
-<div class="card">
-  <strong>Strict (Sticky)</strong> – Tracker und Affiliates weg. Kein Reload.
-  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code"]);var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)){out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}history.replaceState(null,"",out.toString());alert("SafeShare: gereinigt (Strict)");}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Strict (Sticky)</a></div>
-</div>
-
-<div class="card">
-  <strong>Strict (Reload)</strong> – wie oben, lädt Seite neu.
-  <div><a class="btn" href='javascript:(function(){try{var u=new URL(location.href);if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith("/url")){var q=u.searchParams.get("q")||u.searchParams.get("url");if(q)u=new URL(q)}if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith("/l.php")){var q2=u.searchParams.get("u");if(q2)u=new URL(q2)}var keep=new Set(["coupon","code"]);var kill=new Set(["fbclid","gclid","twclid","msclkid","igshid","vero_id","wickedid","dclid","ref_src","ref_url","si","spm","mkt_tok","wtmc","wt_mc","wt_zmc","zmc","xtor"]);var out=new URL(u.origin+u.pathname);u.searchParams.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl))return; if(keep.has(kl)){out.searchParams.append(k,v);return;} out.searchParams.append(k,v)});if(u.hash&&u.hash.includes("=")){var hp=new URLSearchParams(u.hash.replace(/^#/,""));var nh=new URLSearchParams();hp.forEach(function(v,k){var kl=k.toLowerCase();if(kl.startsWith("utm_")||kill.has(kl)){return} nh.append(k,v)});var hs=nh.toString();if(hs) out.hash="#"+hs}else{out.hash=""}location.replace(out.toString())}catch(e){alert("SafeShare Fehler: "+e.message)}})()'>Strict (Reload)</a></div>
-</div>
-
-<p class="muted">Hinweis: Funktioniert nicht auf leeren Startseiten, PDF-Views oder Seiten mit sehr strenger CSP. Dann Reload-Version nutzen.</p>
-<p><a class="btn" href="app.html">Zur App</a></p>
+<p class="muted">Technik: leitet auf <code>app-classic.html</code> mit Parametern <code>?u=</code>, <code>aff=</code>, <code>ao=1</code> um.</p>
 </body>
 </html>
