@@ -27,9 +27,9 @@
   label.rad{display:inline-flex;align-items:center;gap:6px;margin-right:12px;font-size:14px}
   code{background:#f8fafc;padding:2px 6px;border-radius:6px}
   #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
-  /* Domain-X */
+  /* Domain-X + Kleinschreibung im Domainfeld */
   .input-wrap{position:relative;display:inline-block}
-  #ss-dom{padding-right:34px}
+  #ss-dom{padding-right:34px; text-transform:lowercase;}
   #ss-x{
     position:absolute;right:6px;top:50%;transform:translateY(-50%);
     width:26px;height:26px;line-height:24px;text-align:center;
@@ -115,6 +115,28 @@ const AFF={
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), chipMode=$('chip-mode'), chipProf=$('chip-prof');
 const openNR=$('openNR');
+
+/* ---- Kleinschreibung nur für Hostnamen ---- */
+function normalizeDomField(){
+  const el = $('ss-dom'); if(!el) return;
+  let v = (el.value||'').trim();
+  if(/:\/\//.test(v) || v.includes('/')){ try{ v=new URL(v.includes('://')?v:('https://'+v)).hostname; }catch(_){ } }
+  v = (v||'').replace(/^www\./,'').toLowerCase();
+  el.value = v;
+}
+['input','blur','change','paste'].forEach(ev=>{
+  const el=$('ss-dom'); if(el) el.addEventListener(ev,()=>setTimeout(normalizeDomField,0));
+});
+function normalizeHostsInTextarea(){
+  const rx=/(https?:\/\/[^\s<>"')]+)/ig;
+  let t=inEl.value;
+  t=t.replace(rx,(url)=>{
+    try{const u=new URL(url); u.hostname=u.hostname.toLowerCase(); return u.toString();}catch(_){return url;}
+  });
+  inEl.value=t;
+}
+inEl.addEventListener('paste', ()=>setTimeout(normalizeHostsInTextarea,0));
+inEl.addEventListener('blur', normalizeHostsInTextarea);
 
 /* Helpers */
 function firstUrl(){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); return m?m[0]:''; }
@@ -223,6 +245,13 @@ document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statu
 const LS_KEY='ss_profiles';
 const S = { load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(_){ return {}; } },
             save(obj){ localStorage.setItem(LS_KEY, JSON.stringify(obj)); } };
+// Migration → lowercase Keys
+(function migrateProfilesToLower(){
+  const map=S.load()||{}; const next={}; let changed=false;
+  for(const k in map){ const lk=(k||'').toLowerCase(); next[lk]=map[k]; if(lk!==k) changed=true; }
+  if(changed) S.save(next);
+})();
+
 function hostOfFirstUrl(text){
   if(!text) return '';
   const rx=/\bhttps?:\/\/([^\/\s?#:]+)[^\s]*/i;
@@ -233,17 +262,19 @@ function hostOfFirstUrl(text){
 function selectRad(v){ document.querySelectorAll('input[name="ss-profmode"]').forEach(r=>{ r.checked=(r.value===v); }); }
 function applyProfileForInput(){
   const host = hostOfFirstUrl(inEl.value);
-  if(!host){ document.getElementById('chip-prof').textContent='Profil: –'; document.getElementById('ss-prof-status').textContent='–'; return; }
+  if(!host){ document.getElementById('chip-prof').textContent='Profil: –'; document.getElementById('ss-prof-status').textContent='–'; document.getElementById('ss-dom').value=''; return; }
   const prof = S.load()[host];
   if(prof==='safe'){ document.getElementById('keepAff').checked=true; document.getElementById('chip-prof').textContent=`Profil: ${host} = SAFE`; document.getElementById('ss-dom').value=host; selectRad('safe'); }
   else if(prof==='strict'){ document.getElementById('keepAff').checked=false; document.getElementById('chip-prof').textContent=`Profil: ${host} = STRICT`; document.getElementById('ss-dom').value=host; selectRad('strict'); }
   else { document.getElementById('chip-prof').textContent=`Profil: ${host} = keines`; document.getElementById('ss-dom').value=host; }
   document.getElementById('chip-mode').textContent=`Modus: ${document.getElementById('keepAff').checked?'SAFE':'STRICT'}`;
 }
-document.getElementById('ss-save').onclick=()=>{ const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); if(!dom){document.getElementById('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
+document.getElementById('ss-save').onclick=()=>{ normalizeDomField();
+  const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); if(!dom){document.getElementById('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
   const mode=document.querySelector('input[name="ss-profmode"]:checked')?.value||'safe';
   const map=S.load(); map[dom]=mode; S.save(map); document.getElementById('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`; applyProfileForInput(); };
-document.getElementById('ss-del').onclick =()=>{ const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); document.getElementById('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { document.getElementById('ss-prof-status').textContent='Nichts zu löschen.'; } applyProfileForInput(); };
+document.getElementById('ss-del').onclick =()=>{ normalizeDomField();
+  const dom=(document.getElementById('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); document.getElementById('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { document.getElementById('ss-prof-status').textContent='Nichts zu löschen.'; } applyProfileForInput(); };
 document.getElementById('ss-x').onclick = () => {
   const dom = (document.getElementById('ss-dom').value||'').trim().toLowerCase();
   if(dom){
@@ -258,12 +289,13 @@ document.getElementById('ss-x').onclick = () => {
 /* Autofill */
 document.addEventListener('DOMContentLoaded', function(){
   const p=new URLSearchParams(location.search);
-  let q=p.get('u')||p.get('url');
-  const ao=p.get('open')||p.get('ao');
-  const aff=p.get('aff')||p.get('mode');
+  let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
   if(aff==='0'||/^strict$/i.test(aff)) document.getElementById('keepAff').checked=false;
-  if(aff==='1'||/^safe$/i.test(aff))   document.getElementById('keepAff').checked=true;
-  if(q){ try{q=decodeURIComponent(q);}catch(_){ } inEl.value=q; run();
+  if(aff==='1'||/^safe$/i.test(aff))  document.getElementById('keepAff').checked=true;
+  if(q){
+    try{q=decodeURIComponent(q);}catch(_){}
+    try{ const u=new URL(q); u.hostname=u.hostname.toLowerCase(); q=u.toString(); }catch(_){}
+    inEl.value=q; normalizeHostsInTextarea(); run();
     if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
   }
 });
