@@ -86,7 +86,7 @@
     <li><strong>Unbekannt</strong> im Status: <code>＋</code> klicken → zur Kill-Liste lernen (lokal).</li>
     <li><strong>Profile</strong>: Domain → safe/strict speichern. Beim Säubern Auto-Umschaltung.</li>
     <li><strong>Export/Import</strong>: Kill-Liste und Profile als JSON sichern/laden.</li>
-    <li><strong>Auto</strong>: <code>?u=&lt;url&gt;</code> füllt, <code>&amp;open=1</code> öffnet, <code>?help=1</code> zeigt Hilfe offen.</li>
+    <li><strong>Auto</strong>: <code>?u=&lt;url&gt;</code> füllt, <code>&amp;open=1</code> öffnet, <code>?help=1</code> zeigt Hilfe offen, <code>?reset=1</code> löscht lokale Einstellungen.</li>
   </ul>
 </details>
 
@@ -99,12 +99,14 @@
 <p class="muted"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
 
 <script>
-(function(){ // Fehleranzeige + Reset
+(function(){ // Reset + Fehlermeldungen
   try{
     const p=new URLSearchParams(location.search);
     if(p.get('reset')==='1'){ localStorage.removeItem('safeshare:v41'); }
   }catch(_){}
-  window.addEventListener('error',e=>{ const s=document.getElementById('status'); if(s) s.textContent='JS-Fehler: '+e.message; });
+  window.addEventListener('error',e=>{
+    const s=document.getElementById('status'); if(s) s.textContent='JS-Fehler: '+e.message;
+  });
 })();
 
 const storeKey='safeshare:v41';
@@ -132,7 +134,10 @@ const AFF={
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
 
-function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
+function extractUrls(t){
+  const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);
+  return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);
+}
 function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
 
 function unwrapDeep(u){
@@ -156,14 +161,17 @@ function applyAmpCanonical(u){
     return new URL(u.origin+path+(sp.size?('?'+sp.toString()):''));
   }catch(_){return u;}
 }
-function buildKeepNames(host){
+
+// PATCH: buildKeepNames nutzt keepOn (Profil/Checkbox)
+function buildKeepNames(host, keepOn){
   const keep=new Set(AFF.baseKeep);
-  if($('keepAff')?.checked){
+  if(keepOn){
     for(const n of AFF.globalNames) keep.add(n);
     for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) keep.add(n);
   }
   return keep;
 }
+
 function sortAndDedupe(out){
   const sorted=new URL(out.origin+out.pathname);
   [...new Set([...out.searchParams].map(([k,v])=>k+'\u0000'+v))]
@@ -173,10 +181,35 @@ function sortAndDedupe(out){
 }
 function tallyParams(sp){const set=new Set();const K=effKill();for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||K.has(kl)) set.add(kl);}return set;}
 function tallyHash(hash){const set=new Set();if(!hash)return set;const h=hash.replace(/^#/,'');if(!h.includes('='))return set;const hp=new URLSearchParams(h);const K=effKill();for(const [k] of hp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||K.has(kl)) set.add(kl);}return set;}
-function sanitizeHash(u,keepNames,removed){if(!u.hash)return'';const h=u.hash.replace(/^#/,'');if(!h.includes('='))return'';const hp=new URLSearchParams(h);const K=effKill();for(const [k,v] of [...hp]){const kl=k.toLowerCase();const isAff=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);const isTrack=kl.startsWith('utm_')||K.has(kl);if(isTrack&&!isAff){hp.delete(k);removed.add(kl);}}const nh=hp.toString();return nh?('#'+nh):'';}
-function listUnknown(u,keepNames){const out=new Set();const K=effKill();const add=sp=>{for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')){if(!keepNames.has(kl)&&!killBase.has(kl)&&!killUser.has(kl)) out.add(kl);continue;} if(K.has(kl))continue; if(/^(wt|xt|mc|pk|trk|trk_|rs|rd|si|spm|scid|ecid|cmp|cid|sid|bid|rid|clid|dclid|xtid)$/i.test(kl)) out.add(kl);}}; add(u.searchParams); if(u.hash&&u.hash.includes('=')) add(new URLSearchParams(u.hash.replace(/^#/,''))); return out;}
+function sanitizeHash(u,keepNames,removed){
+  if(!u.hash)return'';
+  const h=u.hash.replace(/^#/,'');
+  if(!h.includes('='))return'';
+  const hp=new URLSearchParams(h);const K=effKill();
+  for(const [k,v] of [...hp]){
+    const kl=k.toLowerCase();
+    const isAff=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
+    const isTrack=kl.startsWith('utm_')||K.has(kl);
+    if(isTrack&&!isAff){hp.delete(k);removed.add(kl);}
+  }
+  const nh=hp.toString();return nh?('#'+nh):'';
+}
+function listUnknown(u,keepNames){
+  const out=new Set();const K=effKill();
+  const add=sp=>{
+    for(const [k] of sp){
+      const kl=k.toLowerCase();
+      if(kl.startsWith('utm_')){ if(!keepNames.has(kl)&&!killBase.has(kl)&&!killUser.has(kl)) out.add(kl); continue; }
+      if(K.has(kl)) continue;
+      if(/^(wt|xt|mc|pk|trk|trk_|rs|rd|si|spm|scid|ecid|cmp|cid|sid|bid|rid|clid|dclid|xtid)$/i.test(kl)) out.add(kl);
+    }
+  };
+  add(u.searchParams);
+  if(u.hash&&u.hash.includes('=')) add(new URLSearchParams(u.hash.replace(/^#/,'')));
+  return out;
+}
 
-let lastInfo=[], lastHost='';
+let lastInfo=[];
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
 
@@ -186,8 +219,12 @@ function cleanOne(s){
 
   let u=unwrapDeep(u0); u=applyAmpCanonical(u);
 
-  const host=u.hostname.toLowerCase(); lastHost=host;
-  const keepNames=buildKeepNames(host);
+  const host=u.hostname.toLowerCase();
+
+  // PATCH: Profil > Checkbox
+  const prof = (settings.profiles||{})[host] || (settings.profiles||{})['www.'+host] || null;
+  const keepOn = prof ? (prof==='safe') : ($('keepAff')?.checked);
+  const keepNames=buildKeepNames(host, keepOn);
 
   const out=new URL(u.origin+u.pathname);
   const affKept=new Set(), removedNow=new Set(); const K=effKill();
@@ -196,7 +233,7 @@ function cleanOne(s){
     const kl=k.toLowerCase();
     const isAffiliate=keepNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
     const isTrack=kl.startsWith('utm_')||K.has(kl);
-    if(isAffiliate){ if($('keepAff')?.checked){ out.searchParams.append(k,v); affKept.add(kl);} else removedNow.add(kl); continue; }
+    if(isAffiliate){ if(keepOn){ out.searchParams.append(k,v); affKept.add(kl);} else removedNow.add(kl); continue; }
     if(isTrack){ removedNow.add(kl); continue; }
     out.searchParams.append(k,v);
   }
@@ -205,7 +242,7 @@ function cleanOne(s){
 
   const unknown=listUnknown(u,keepNames);
   const removedTotal=new Set([...removedOuter,...removedOuterHash,...removedNow]);
-  lastInfo.push({affKept,removed:removedTotal,host,unknown});
+  lastInfo.push({affKept,removed:removedTotal,host,unknown,keepOn,prof});
   return out.toString();
 }
 
@@ -213,15 +250,22 @@ function firstOut(){ return (outEl.value||'').split(/\s+/).find(x=>/^https?:\/\/
 function chips(items,cls){ if(!items||!items.size) return '<span class="muted">–</span>'; return Array.from(items).sort().map(x=>`<span class="chip ${cls}">${x}</span>`).join(' '); }
 
 function summarize(){
-  const first=firstOut();
   if(!lastInfo.length){ statusEl.textContent='Status: –'; return; }
-  const kept=new Set(), removed=new Set(), unknown=new Set(); let host='';
-  lastInfo.forEach(i=>{ host=i.host||host; i.affKept.forEach(x=>kept.add(x)); i.removed.forEach(x=>removed.add(x)); (i.unknown||[]).forEach(x=>unknown.add(x)); });
-  const on=$('keepAff').checked;
-  let warn=''; try{ const d=(first||'').split('/')[2]||''; if(d && (/xn--/i.test(d)||/^\d{1,3}(\.\d{1,3}){3}$/.test(d))) warn=`<div class="row"><span class="label">Warnung:</span> <span class="chip warn">verdächtige Domain</span></div>`; }catch(_){}
+  const kept=new Set(), removed=new Set(), unknown=new Set();
+  let host='', keepOn=false, prof=null;
+  lastInfo.forEach(i=>{ host=i.host||host; keepOn=i.keepOn; prof=i.prof||null; i.affKept.forEach(x=>kept.add(x)); i.removed.forEach(x=>removed.add(x)); (i.unknown||[]).forEach(x=>unknown.add(x)); });
+
+  const badge = keepOn ? 'Affiliate-safe' : 'Strict';
+  const via = prof ? ` (Profil: ${prof})` : '';
+  let warn=''; try{
+    const first=firstOut();
+    const d=(first||'').split('/')[2]||'';
+    if(d && (/xn--/i.test(d)||/^\d{1,3}(\.\d{1,3}){3}$/.test(d))) warn=`<div class="row"><span class="label">Warnung:</span> <span class="chip warn">verdächtige Domain</span></div>`;
+  }catch(_){}
+
   statusEl.innerHTML =
-    `Modus: Provisionen ${on?'AN':'AUS'} <span class="badge">${on?'Affiliate-safe':'Strict'}</span>`+
-    `<div class="row"><span class="label">Affiliates erlaubt:</span> <strong>${on?'Ja':'Nein'}</strong></div>`+
+    `Modus: Provisionen ${keepOn?'AN':'AUS'} <span class="badge">${badge}${via}</span>`+
+    `<div class="row"><span class="label">Affiliates erlaubt:</span> <strong>${keepOn?'Ja':'Nein'}</strong></div>`+
     `<div class="row"><span class="label">Affiliates behalten:</span> <span class="chips">${chips(kept,'keep')}</span></div>`+
     `<div class="row"><span class="label">Entfernt:</span> <span class="chips">${chips(removed,'rm')}</span></div>`+
     `<div class="row"><span class="label">Unbekannt:</span> <span id="unk" class="chips">${
@@ -229,10 +273,10 @@ function summarize(){
        Array.from(unknown).sort().map(k=>`<button class="chip rm" data-add="${k}" title="Zur Kill-Liste hinzufügen">${k} ＋</button>`).join(' ')
     }</span></div>`+ warn;
 
+  const first=firstOut();
   if(first){ openA.href=first; openA.classList.remove('disabled'); goA.href=first; goA.classList.remove('disabled'); }
   else{ openA.href='#'; openA.classList.add('disabled'); goA.href='#'; goA.classList.add('disabled'); }
 
-  // Unbekannte Keys lernbar
   const unk=document.getElementById('unk');
   if(unk){ unk.onclick=(e)=>{ const k=e.target?.dataset?.add; if(!k) return; killUser.add(k); settings.killUser=[...killUser]; save(settings); run(); }; }
 }
@@ -240,6 +284,7 @@ function summarize(){
 function run(){ const lines=extractUrls(inEl.value); lastInfo=[]; outEl.value=lines.map(cleanOne).join('\n'); summarize(); }
 $('clean').onclick=run;
 $('keepAff').onchange=run;
+
 $('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
 $('clear').onclick=()=>{inEl.value='';outEl.value='';lastInfo=[];summarize();inEl.focus();};
 let tmr=null; inEl.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(run,150); });
