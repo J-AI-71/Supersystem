@@ -38,13 +38,8 @@
 <div id="debug" class="muted"></div>
 
 <script>
-/* Fehlermeldungen sichtbar machen */
-window.addEventListener('error', e => {
-  const d=document.getElementById('debug');
-  d.textContent='JS-Fehler: '+e.message;
-});
+window.addEventListener('error', e => { document.getElementById('debug').textContent='JS-Fehler: '+e.message; });
 
-/* Hilfsfunktionen */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -57,6 +52,7 @@ const AFF={
   ],
   exactPairs:new Set([])
 };
+
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
 
@@ -112,7 +108,6 @@ function sanitizeHash(u,keepNames,removed){
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
 
-/* Kernlogik */
 let last={kept:new Set(),removed:new Set(),mode:'AN'};
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
@@ -147,18 +142,15 @@ function summarize(){
 }
 function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }catch(e){ $('debug').textContent='Laufzeitfehler: '+e.message; } }
 
-/* Events */
 $('clean').onclick=run;
 $('keepAff').onchange=run;
 $('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
 $('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';$('debug').textContent='';inEl.focus();};
 
-/* Auto ?u=&open=1 */
 (function(){
   const p=new URLSearchParams(location.search);
-  const q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const v=p.get('v');
+  const q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao');
   if(q){ inEl.value=decodeURIComponent(q); run(); if(ao==='1'){ const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x)); if(first) location.href=first; } }
-  if(v){ /* nur Cache-Buster, keine Logik */ }
 })();
 </script>
 </body>
