@@ -1,115 +1,161 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  <title>SafeShare – Links ohne Tracking. Affiliates optional behalten.</title>
-  <meta name="description" content="Entfernt utm_, gclid, fbclid, twclid und Co. Entschachtelt Redirects. Öffnet saubere Links. Optional Affiliate-Provisionen behalten.">
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
-  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
-  <meta name="theme-color" content="#111827">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Links ohne Tracking.">
-  <meta property="og:description" content="Säubert Tracking-Parameter. Entpackt Redirects. Affiliates optional behalten.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/safeshare-og-v3b.png">
-  <meta property="og:image:alt" content="SafeShare – Link Cleaner">
-  <meta property="og:site_name" content="SafeShare">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SafeShare – Links ohne Tracking.">
-  <meta name="twitter:description" content="Säubert Tracking-Parameter. Entpackt Redirects. Affiliates optional behalten.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/safeshare-og-v3b.png">
-
-  <!-- Icons/Manifest -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
-  <link rel="manifest" href="manifest.webmanifest">
-
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"SoftwareApplication",
-    "name":"SafeShare",
-    "applicationCategory":"UtilitiesApplication",
-    "operatingSystem":"Web",
-    "isAccessibleForFree": true,
-    "url":"https://j-ai-71.github.io/Supersystem/",
-    "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},
-    "description":"Link-Reiniger: entfernt Tracking-Parameter, entpackt Redirects, optional Affiliate-Provisionen behalten.",
-    "publisher":{"@type":"Organization","name":"SafeShare"}
-  }
-  </script>
-
-  <style>
-    :root{--fg:#111827;--muted:#6b7280;--bd:#e5e7eb}
-    *{box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:20px;color:var(--fg);line-height:1.45}
-    h1{font-size:24px;margin:0 0 6px}
-    h2{font-size:18px;margin:0 0 8px}
-    p.muted{color:var(--muted);margin:6px 0 14px}
-    .btn{display:inline-block;padding:10px 14px;margin:6px 8px 0 0;border:1px solid var(--bd);border-radius:8px;text-decoration:none;color:var(--fg)}
-    .row{margin:10px 0}
-    .foot{margin-top:18px}
-    .pill{display:inline-block;font-size:12px;color:#065f46;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle}
-    code{background:#f8f9fa;padding:2px 6px;border-radius:6px}
-    ul{margin:0;padding-left:18px}
-    img.demo{max-width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Classic</title>
+<style>
+  :root{--bd:#ddd;--fg:#111;--muted:#666}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:var(--fg)}
+  textarea{width:100%;box-sizing:border-box;padding:10px;font-size:14px;border:1px solid var(--bd);border-radius:6px}
+  #in{min-height:120px} #out{min-height:140px;margin-top:8px}
+  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 6px 0;border:1px solid var(--bd);border-radius:6px;text-decoration:none;color:var(--fg)}
+  .muted{color:var(--muted);font-size:12px}
+  .disabled{opacity:.5;pointer-events:none}
+  #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:6px}
+  #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
+</style>
 </head>
 <body>
+<h1>SafeShare – Classic</h1>
+<p class="muted">Tracker raus. Optional Affiliate-Parameter behalten.</p>
 
-  <h1>SafeShare <span class="pill">ohne Tracking</span></h1>
-  <p class="muted">Links säubern. Redirects entpacken. Optional Affiliate-Provisionen behalten.</p>
+<textarea id="in" placeholder="Link(s) hier einfügen …"></textarea>
 
-  <div class="row">
-    <a class="btn" href="app-classic.html?v=62">Classic starten</a>
-    <a class="btn" href="app.html?v=62">App starten (v41)</a>
-    <a class="btn" href="beispiele.html">Beispiele</a>
-    <a class="btn" href="bookmarklets.html">Bookmarklets</a>
-  </div>
+<div>
+  <button id="clean" class="btn" type="button">Säubern</button>
+  <button id="copy"  class="btn" type="button">Kopieren</button>
+  <a id="openA" class="btn disabled" href="#" rel="noopener">Öffnen</a>
+  <a id="goA"   class="btn disabled" href="#" target="_blank" rel="noopener">1-Klick</a>
+  <button id="clear" class="btn" type="button" title="Leeren" style="width:38px;padding:8px 0">&times;</button>
+</div>
 
-  <div class="row">
-    <a class="btn" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Projekt unterstützen</a>
-    <a class="btn" href="https://payhip.com/auth/register/af69075ca4efafa" target="_blank" rel="noopener">Partner werden</a>
-  </div>
+<label class="muted" style="display:inline-flex;align-items:center">
+  <input id="keepAff" type="checkbox" checked style="margin-right:6px">Provisionen behalten
+</label>
 
-  <div class="row">
-    <h2>Schnelltest</h2>
-    <p class="muted">Öffnet Classic mit vorbefüllten Beispiel-Links.</p>
-    <a class="btn" href="app-classic.html?v=62&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">Amazon-Beispiel</a>
-    <a class="btn" href="app-classic.html?v=62&u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC">Facebook-Wrapper</a>
-  </div>
+<textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier …"></textarea>
+<div id="status" class="muted">Status: –</div>
+<div id="debug" class="muted"></div>
 
-  <section id="changelog" style="margin-top:18px">
-    <h2>Was ist neu?</h2>
-    <ul>
-      <li><strong>2025-11-10</strong> · <em>Classic</em>: stabile Affiliate-Erkennung, robustes <code>?u=</code>-Autofill, Checkbox steuert Strict/Safe.</li>
-      <li><strong>v41</strong> · Profil pro Domain (safe/strict), Export/Import, Referrer-frei-Öffnen.</li>
-      <li>Neu: Bookmarklets-Seite, OG-Bild <code>safeshare-og-v3b.png</code>, <code>robots.txt</code> + <code>sitemap.xml</code>.</li>
-    </ul>
-  </section>
+<script>
+window.addEventListener('error', e => { const d=document.getElementById('debug'); if(d) d.textContent='JS-Fehler: '+e.message; });
 
-  <section id="demo" style="margin-top:18px">
-    <h2>Kurzdemo</h2>
-    <p class="muted" style="margin:0 0 10px">10-Sekunden-GIF: Classic mit Safe/Strict und Wrapper-Entschachteln.</p>
-    <img class="demo" src="demo-safeshare.gif" alt="SafeShare Kurzdemo">
-    <p class="muted" style="margin:8px 0 0">Falls das GIF noch fehlt, einfach später hochladen (Datei: <code>demo-safeshare.gif</code> ins Repo-Root).</p>
-  </section>
+const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
+const AFF={
+  baseKeep:new Set(['coupon','code']),
+  globalNames:new Set(['ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']),
+  byHostRules:[
+    {test:h=>/(^|\.)amazon\./i.test(h),     names:new Set(['tag','ascsubtag'])},
+    {test:h=>/(^|\.)ebay\./i.test(h),       names:new Set(['campid','customid','mkcid','mkevt','mkrid'])},
+    {test:h=>/(^|\.)rakuten\./i.test(h),    names:new Set(['ranmid','raneaid','ransiteid','ranlinkid'])},
+    {test:h=>/(^|\.)aliexpress\./i.test(h), names:new Set(['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'])}
+  ],
+  exactPairs:new Set([])
+};
+const $=id=>document.getElementById(id);
+const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
 
-  <div class="foot">
-    <p class="muted">
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a> ·
-      <a href="app.html?help=1">Hilfe</a> ·
-      <a href="mailto:support@safeshare.example">Fehler melden</a>
-    </p>
-  </div>
+function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
+function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
+function unwrapDeep(u){
+  try{
+    if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith('/url')){const q=u.searchParams.get('q')||u.searchParams.get('url'); if(q) u=new URL(q);}
+    if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith('/l.php')){const q2=u.searchParams.get('u'); if(q2) u=new URL(q2);}
+  }catch(_){}
+  for(let i=0;i<6;i++){
+    let found=null;
+    for(const [,v] of u.searchParams){const dec=deepDecode(v||'');const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m){found=m[0];break;}}
+    if(!found){const dec=deepDecode(u.hash||'');const m=(dec||'').match(/https?:\/\/[^\s"'<>)]+/i);if(m)found=m[0];}
+    if(!found){const dec=deepDecode(u.href);const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m&&m[0]!==u.href)found=m[0];}
+    if(!found)break; try{u=new URL(found)}catch(_){break;}
+  }
+  return u;
+}
+function applyAmpCanonical(u){
+  try{
+    let path=u.pathname.replace(/\/amp\/?$/,'/').replace(/\/amp$/,'/');
+    const sp=u.searchParams; if(sp.has('amp')) sp.delete('amp'); if((sp.get('output')||'').toLowerCase()==='amp') sp.delete('output');
+    return new URL(u.origin+path+(sp.size?('?'+sp.toString()):''));
+  }catch(_){return u;}
+}
 
+/* Affiliate-Namen immer erkennen */
+function buildAffNames(host){
+  const names=new Set(AFF.globalNames);
+  for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) names.add(n);
+  return names;
+}
+function sortAndDedupe(out){
+  const sorted=new URL(out.origin+out.pathname);
+  [...new Set([...out.searchParams].map(([k,v])=>k+'\u0000'+v))]
+    .map(s=>s.split('\u0000')).sort((a,b)=>a[0].localeCompare(b[0]))
+    .forEach(([k,v])=>sorted.searchParams.append(k,v));
+  out.search=sorted.search;
+}
+function tallyParams(sp){const set=new Set();for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
+function tallyHash(h){const set=new Set();if(!h)return set;const s=h.replace(/^#/,'');if(!s.includes('='))return set;for(const [k] of new URLSearchParams(s)){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
+function sanitizeHash(u,affNames,keepOn,removed){
+  if(!u.hash)return''; const s=u.hash.replace(/^#/,''); if(!s.includes('='))return'';
+  const hp=new URLSearchParams(s);
+  for(const [k,v] of [...hp]){
+    const kl=k.toLowerCase();
+    if(AFF.baseKeep.has(kl)) continue;
+    const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
+    const isTrack=kl.startsWith('utm_')||killBase.has(kl);
+    if((isAff && !keepOn) || (isTrack && !isAff)){ hp.delete(k); removed.add(kl); }
+  }
+  const nh=hp.toString(); return nh?('#'+nh):'';
+}
+
+/* Kernlogik */
+let last={kept:new Set(),removed:new Set(),mode:'AN'};
+function cleanOne(s){
+  s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
+  let u0; try{u0=new URL(s);}catch(_){ try{u0=new URL('https://'+s);}catch(__){return s;} }
+  const remOuter=tallyParams(u0.searchParams), remOuterH=tallyHash(u0.hash);
+  let u=unwrapDeep(u0); u=applyAmpCanonical(u);
+  const keepOn=$('keepAff').checked, host=u.hostname.toLowerCase();
+  const affNames=buildAffNames(host);
+  const out=new URL(u.origin+u.pathname);
+  const kept=new Set(), removed=new Set([...remOuter,...remOuterH]);
+
+  for(const [k,v] of u.searchParams){
+    const kl=k.toLowerCase();
+    if(AFF.baseKeep.has(kl)){ out.searchParams.append(k,v); kept.add(kl); continue; }
+    const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
+    const isTrack=kl.startsWith('utm_')||killBase.has(kl);
+    if(isAff){ if(keepOn){out.searchParams.append(k,v); kept.add(kl);} else removed.add(kl); continue; }
+    if(isTrack){ removed.add(kl); continue; }
+    out.searchParams.append(k,v);
+  }
+  out.hash=sanitizeHash(u,affNames,keepOn,removed);
+  sortAndDedupe(out);
+  last={kept,removed,mode:keepOn?'AN':'AUS'};
+  return out.toString();
+}
+function summarize(){
+  const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x))||'';
+  if(first){ openA.href=first; openA.classList.remove('disabled'); goA.href=first; goA.classList.remove('disabled'); }
+  else{ openA.href='#'; openA.classList.add('disabled'); goA.href='#'; goA.classList.add('disabled'); }
+  const kept=Array.from(last.kept).sort().join(', ')||'–';
+  const rem =Array.from(last.removed).sort().join(', ')||'–';
+  statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
+}
+function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
+
+/* Events */
+$('clean').onclick=run; $('keepAff').onchange=run;
+$('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
+$('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';const d=$('debug'); if(d) d.textContent='';inEl.focus();};
+
+/* Auto-Param: ?u=&ao=1&aff=0|1 */
+document.addEventListener('DOMContentLoaded', function(){
+  const p=new URLSearchParams(location.search);
+  let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
+  if(aff==='0'||/^strict$/i.test(aff)) $('keepAff').checked=false;
+  if(aff==='1'||/^safe$/i.test(aff)) $('keepAff').checked=true;
+  if(q){ try{q=decodeURIComponent(q);}catch(_){ } inEl.value=q; run(); if(ao==='1'){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); if(m) location.href=m[0]; } }
+});
+</script>
 </body>
 </html>
