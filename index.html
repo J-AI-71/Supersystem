@@ -1,75 +1,170 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SafeShare – Links ohne Tracking. Affiliates optional.</title>
-  <meta name="description" content="Entfernt utm_, gclid, fbclid, twclid. Entschachtelt Redirects. Optional Affiliate-Parameter behalten.">
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
-  <meta name="theme-color" content="#111827">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Links ohne Tracking.">
-  <meta property="og:description" content="Säubert Tracking-Parameter. Entpackt Redirects. Affiliates optional behalten.">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/safeshare-og-v3b.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="safeshare-180.png">
-  <link rel="manifest" href="manifest.webmanifest">
-  <style>
-    :root{--fg:#111827;--muted:#6b7280;--bd:#e5e7eb}
-    *{box-sizing:border-box} body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:20px;color:var(--fg);line-height:1.45}
-    h1{font-size:24px;margin:0 0 6px} h2{font-size:18px;margin:0 0 8px} p.muted{color:var(--muted);margin:6px 0 14px}
-    .btn{display:inline-block;padding:10px 14px;margin:6px 8px 0 0;border:1px solid var(--bd);border-radius:8px;text-decoration:none;color:var(--fg)}
-    .pill{display:inline-block;font-size:12px;color:#065f46;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle}
-    .row{margin:10px 0} .foot{margin-top:18px} code{background:#f8f9fa;padding:2px 6px;border-radius:6px}
-    img.demo{max-width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Links ohne Tracking</title>
+<meta name="description" content="SafeShare entfernt Tracking-Parameter (utm_, fbclid, gclid …). Optional Affiliate-Parameter behalten. 1-Klick, Bookmarklets, Profile pro Domain.">
+<meta property="og:title" content="SafeShare – Links ohne Tracking">
+<meta property="og:description" content="Säubere Links. Behalte Affiliates nach Wunsch. 1-Klick.">
+<meta property="og:image" content="safeshare-og-v3b.png?v=74">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon-32.png?v=74" sizes="32x32">
+<style>
+  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--bg:#ffffff;--accent:#0ea5e9}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg);background:var(--bg)}
+  .container{max-width:980px;margin:0 auto;padding:20px}
+  header{display:flex;align-items:center;gap:14px;padding:16px 0}
+  header img{width:44px;height:44px;border-radius:10px}
+  header h1{font-size:22px;margin:0}
+  header .sub{color:var(--muted);font-size:13px}
+  .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center}
+  .hero h2{margin:0 0 8px;font-size:26px}
+  .hero p{margin:0 0 14px;color:var(--muted)}
+  .card{border:1px solid var(--bd);border-radius:12px;padding:14px;background:#fff}
+  .btn{display:inline-block;padding:12px 14px;margin:6px 10px 0 0;border:1px solid var(--bd);border-radius:10px;background:#fff;color:var(--fg);text-decoration:none;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.small{padding:8px 10px;font-size:13px}
+  .muted{color:var(--muted);font-size:13px}
+  h3{margin:22px 0 10px;font-size:18px}
+  ul{margin:8px 0 0 18px}
+  footer{margin:28px 0 14px;color:var(--muted);font-size:13px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .center{display:flex;align-items:center;gap:10px}
+  .qr{width:180px;height:180px;border:1px solid var(--bd);border-radius:10px}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .chip{border:1px solid var(--bd);border-radius:999px;padding:4px 10px;font-size:12px;background:#f8fafc}
+  .section{margin-top:18px}
+  .mini{font-size:12px;color:var(--muted)}
+  @media (max-width:860px){ .hero{grid-template-columns:1fr} }
+</style>
 </head>
 <body>
-  <h1>SafeShare <span class="pill">ohne Tracking</span></h1>
-  <p class="muted">Links säubern. Redirects entpacken. Optional Affiliate-Parameter behalten.</p>
+<div class="container">
 
-  <div class="row">
-    <a class="btn" href="app-classic.html?v=63">Classic starten</a>
-    <a class="btn" href="app.html?v=63">App starten (v41/Beta)</a>
-    <a class="btn" href="beispiele.html?v=63">Beispiele</a>
-    <a class="btn" href="bookmarklets.html?v=63">Bookmarklets</a>
-  </div>
+  <header>
+    <img src="safeshare-og-v3b.png?v=74" alt="SafeShare">
+    <div>
+      <h1>SafeShare</h1>
+      <div class="sub">Links ohne Tracking. Optional Affiliates behalten.</div>
+    </div>
+  </header>
 
-  <div class="row">
-    <a class="btn" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Projekt unterstützen</a>
-    <a class="btn" href="https://payhip.com/auth/register/af69075ca4efafa" target="_blank" rel="noopener">Partner werden</a>
-  </div>
+  <section class="hero">
+    <div class="card">
+      <h2>Einfügen. Säubern. Teilen.</h2>
+      <p>Entfernt <span class="kbd">utm_</span>, <span class="kbd">fbclid</span>, <span class="kbd">gclid</span>, löst Wrapper, Option „Affiliate-safe“. 1-Klick.</p>
+      <div>
+        <a class="btn primary" href="app.html">Zur App</a>
+        <a class="btn" href="app-classic.html">Classic</a>
+        <a class="btn" id="btn-share" href="#">Weiterempfehlen</a>
+      </div>
+      <div class="chips">
+        <span class="chip">1-Klick öffnen</span>
+        <span class="chip">Affiliate-safe / Strict</span>
+        <span class="chip">Referrer-frei (in App)</span>
+        <span class="chip">Profile pro Domain</span>
+        <span class="chip">Bookmarklets</span>
+      </div>
+    </div>
 
-  <div class="row">
-    <h2>Schnelltest</h2>
-    <p class="muted">Öffnet Classic mit vorbefüllten Beispielen.</p>
-    <a class="btn" href="app-classic.html?v=63&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">Amazon-Beispiel</a>
-    <a class="btn" href="app-classic.html?v=63&u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC">Facebook-Wrapper</a>
-  </div>
+    <div class="card">
+      <h3>Auf dem Smartphone öffnen</h3>
+      <p class="mini">Scannen und als Home-App sichern.</p>
+      <img class="qr" alt="QR zu SafeShare" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Fapp.html">
+      <div style="margin-top:10px">
+        <a class="btn small" href="bookmarklets.html">Bookmarklets installieren</a>
+        <a class="btn small" href="partner.html">Partner werden</a>
+      </div>
+    </div>
+  </section>
 
-  <section id="changelog" style="margin-top:18px">
-    <h2>Was ist neu?</h2>
-    <ul style="margin:0;padding-left:18px;line-height:1.45">
-      <li><strong>2025-11-10</strong> · <em>Classic</em>: stabile Affiliate-Erkennung, robustes <code>?u=</code> Autofill, Checkbox steuert Strict/Safe.</li>
-      <li><strong>v41</strong> · Profil pro Domain (safe/strict), Export/Import, Referrer-frei öffnen.</li>
-      <li>Neu: Bookmarklets-Seite, OG-Bild <code>safeshare-og-v3b.png</code>, Basis-SEO.</li>
+  <section class="section grid2">
+    <div class="card">
+      <h3>Für wen ist SafeShare?</h3>
+      <ul>
+        <li>Privacy-Nutzer: Social/Newsletter-Links ohne Tracking.</li>
+        <li>Affiliates: <code>tag</code> & Co. behalten, Rest raus.</li>
+        <li>Redaktionen/Creator: saubere Quellenlinks, referrer-frei öffnen.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Was macht es genau?</h3>
+      <ul>
+        <li>Entfernt: <span class="kbd">utm_*</span>, <span class="kbd">fbclid</span>, <span class="kbd">gclid</span>, u. a.</li>
+        <li>Löst Wrapper: Google <span class="kbd">/url?q=</span>, Facebook <span class="kbd">/l.php?u=</span>, AMP-Pfad.</li>
+        <li>Affiliate-safe: z. B. Amazon <span class="kbd">tag</span> bleibt auf Wunsch erhalten.</li>
+      </ul>
+      <p class="mini">Keine Serverlogs. Keine Cookies. Einstellungen bleiben nur lokal im Browser.</p>
+    </div>
+  </section>
+
+  <section class="section card">
+    <h3>Schnellstart</h3>
+    <ol>
+      <li>Öffne die <a href="app.html">App</a> oder <a href="app-classic.html">Classic</a>.</li>
+      <li>Link einfügen → <span class="kbd">Säubern</span> → <span class="kbd">Kopieren</span> / <span class="kbd">1-Klick</span>.</li>
+      <li>Optional: Profile pro Domain setzen (SAFE/STRICT) und Export/Import nutzen.</li>
+    </ol>
+  </section>
+
+  <section class="section grid2">
+    <div class="card">
+      <h3>Unterstützen</h3>
+      <p><a class="btn" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener noreferrer">Projekt unterstützen</a></p>
+      <p class="mini">Nach dem Kauf: Redirect zu <code>danke.html</code>.</p>
+    </div>
+    <div class="card">
+      <h3>Feedback</h3>
+      <div class="center">
+        <button class="btn" id="btn-fb">Feedback senden</button>
+        <span class="mini">Öffnet dein Mail-Programm mit vorgefülltem Text.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section card">
+    <h3>Mini-Changelog</h3>
+    <ul class="mini">
+      <li><strong>v41</strong>: Referrer-frei Button, Profile-X, Export/Import, Host-Kleinschreibung.</li>
+      <li><strong>v40</strong>: Affiliate-safe/Strict, tiefes Unwrapping, 1-Klick.</li>
     </ul>
   </section>
 
-  <section id="demo" style="margin-top:18px">
-    <h2>Kurzdemo</h2>
-    <p class="muted" style="margin:0 0 10px">10-Sekunden-GIF: Classic Safe/Strict und Wrapper-Entschachteln.</p>
-    <img class="demo" src="demo-safeshare.gif" alt="SafeShare Kurzdemo">
-    <p class="muted" style="margin:8px 0 0">Falls GIF fehlt, später hochladen (Datei: <code>demo-safeshare.gif</code> im Repo-Root).</p>
-  </section>
+  <footer class="center" style="justify-content:space-between">
+    <div>
+      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+    </div>
+    <div class="mini">© SafeShare</div>
+  </footer>
 
-  <div class="foot">
-    <p class="muted">
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a> ·
-      <a href="partner.html">Partner</a> ·
-      <a href="mailto:support@safeshare.example">Fehler melden</a>
-    </p>
-  </div>
+</div>
+
+<script>
+  // Teilen
+  document.getElementById('btn-share').onclick = (e)=>{
+    e.preventDefault();
+    const url = new URL('app.html', location.href).href;
+    const data = {title:'SafeShare', text:'Links ohne Tracking. 1-Klick.', url};
+    if(navigator.share){ navigator.share(data).catch(()=>{}); }
+    else {
+      navigator.clipboard?.writeText(url).then(()=>alert('Link kopiert: '+url)).catch(()=>location.href=url);
+    }
+  };
+
+  // Feedback
+  document.getElementById('btn-fb').onclick = ()=>{
+    const body = encodeURIComponent(
+`Feedback zu SafeShare
+
+Gerät/Browser: 
+Schritt/Seite: index.html
+Wunsch/Problem: `
+    );
+    location.href = 'mailto:?subject='+encodeURIComponent('SafeShare Feedback')+'&body='+body;
+  };
+</script>
 </body>
 </html>
