@@ -4,6 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Classic</title>
 <meta name="description" content="Links ohne Tracking. Classic: Einfügen, Säubern, Kopieren, Öffnen, 1-Klick.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0ea5e9">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
   *{box-sizing:border-box}
@@ -26,7 +28,7 @@
 <h1>SafeShare – Classic</h1>
 <p class="muted">Einfügen → <strong>Säubern</strong> → <strong>Kopieren</strong> oder <strong>Öffnen</strong>. Optional Affiliates behalten.</p>
 
-<textarea id="in" placeholder="Link(s) hier einfügen …"></textarea>
+<textarea id="in" placeholder="link(s) hier einfügen …"></textarea>
 
 <div class="row">
   <button id="clean" class="btn" type="button">Säubern</button>
@@ -42,7 +44,7 @@
   </label>
 </div>
 
-<textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier …"></textarea>
+<textarea id="out" readonly placeholder="bereinigte url(s) erscheinen hier …"></textarea>
 <div id="status" class="muted">Status: –</div>
 
 <details>
@@ -193,7 +195,7 @@ function normalizeHostsInTextarea(){
 inEl.addEventListener('paste', ()=>setTimeout(normalizeHostsInTextarea,0));
 inEl.addEventListener('blur', normalizeHostsInTextarea);
 
-/* Autofill via URL-Parameter */
+/* Autofill + SW */
 document.addEventListener('DOMContentLoaded', ()=>{
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
@@ -204,6 +206,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
     try{ const u=new URL(q); u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); q=u.toString(); }catch(_){}
     inEl.value=q; normalizeHostsInTextarea(); run();
     if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
+  }
+
+  if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
+    navigator.serviceWorker.register('sw.js?v=1').catch(()=>{});
   }
 });
 </script>
