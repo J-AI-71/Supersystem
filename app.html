@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – App v42</title>
-<meta name="description" content="Links ohne Tracking. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain. Sticky-Modus. Reload.">
+<meta name="description" content="Links ohne Tracking. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain. Sticky-Modus. Reload. Mit Kurzanleitung.">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46;--chip:#ecfdf5}
   *{box-sizing:border-box}
@@ -34,12 +34,14 @@
     width:26px;height:26px;line-height:24px;text-align:center;
     border:1px solid var(--bd);border-radius:999px;background:#fff;cursor:pointer
   }
+  details summary{cursor:pointer;font-weight:600;margin:6px 0}
+  ul.compact{margin:6px 0 0 18px}
 </style>
 </head>
 <body>
 
 <h1>SafeShare – App v42</h1>
-<p class="muted">Tracker raus. Affiliates optional. Referrer-frei. Profile. <strong>Sticky</strong> und <strong>Reload</strong> wieder da.</p>
+<p class="muted">Tracker raus. Affiliates optional. Referrer-frei. Profile. <strong>Sticky</strong> und <strong>Reload</strong>. Mit Kurzanleitung.</p>
 
 <div id="chips">
   <span id="chip-mode" class="chip">Modus: SAFE</span>
@@ -98,6 +100,69 @@
       <label class="btn small" style="cursor:pointer">Import<input id="ss-imp" type="file" accept="application/json" hidden></label>
     </div>
     <p class="muted">Exportiert/Importiert Profile unter <code>ss_profiles</code>.</p>
+  </section>
+
+  <!-- KURZANLEITUNG -->
+  <section class="panel" id="guidePanel">
+    <h2>Kurzanleitung</h2>
+
+    <details open>
+      <summary>Buttons kurz erklärt</summary>
+      <ul class="compact">
+        <li><strong>Säubern</strong>: entfernt <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, löst Wrapper (Google/Facebook/AMP). Modus siehe Checkbox.</li>
+        <li><strong>Kopieren</strong>: kopiert die <em>erste</em> bereinigte URL aus dem Ergebnisfeld.</li>
+        <li><strong>Öffnen</strong>: lädt die bereinigte URL im selben Tab.</li>
+        <li><strong>1-Klick (neu)</strong>: öffnet im neuen Tab.</li>
+        <li><strong>Referrer-frei (neu)</strong>: neuer Tab ohne Referrer (<code>rel="noreferrer"</code>).</li>
+        <li><strong>Reload (ersetzen)</strong>: ersetzt den aktuellen Tab durch die bereinigte URL.</li>
+        <li><strong>×</strong>: leert das Eingabefeld. Das <strong>×</strong> beim Profil löscht das Profil.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>SAFE vs. STRICT</summary>
+      <ul class="compact">
+        <li><strong>SAFE</strong>: Tracking weg, typische Affiliate-Parameter bleiben (z. B. Amazon <code>tag</code>).</li>
+        <li><strong>STRICT</strong>: alles weg, inkl. Affiliate.</li>
+        <li><strong>Sticky</strong>: merkt den Modus global, bis du ihn änderst.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Profile pro Domain</summary>
+      <ul class="compact">
+        <li>Domain eintragen → <strong>SAFE</strong> oder <strong>STRICT</strong> → <strong>Speichern</strong>.</li>
+        <li>Beim Einfügen einer URL zieht SafeShare das Profil automatisch.</li>
+        <li><strong>Löschen</strong> oder <strong>×</strong> entfernt das Profil.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Bookmarklets</summary>
+      <ul class="compact">
+        <li><a href="bookmarklets.html">bookmarklets.html</a> öffnen.</li>
+        <li>„SAFE“ oder „STRICT“ in die Lesezeichenleiste ziehen.</li>
+        <li>Auf einer Seite mit langem Link anklicken → SafeShare bereinigt und öffnet.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>URL-Parameter für Automatik</summary>
+      <ul class="compact">
+        <li><code>?u=</code> die zu reinigende URL (URL-enkodiert).</li>
+        <li><code>&aff=1</code> = SAFE, <code>&aff=0</code> = STRICT.</li>
+        <li><code>&ao=1</code> = nach dem Säubern automatisch öffnen.</li>
+        <li>Beispiel: <code>app.html?aff=1&ao=1&u=&lt;ENCODED&gt;</code></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Fehlersuche</summary>
+      <ul class="compact">
+        <li>Status zeigt „Affiliates behalten“ und „Entfernt“.</li>
+        <li>Wenn nichts passiert: andere Domain testen, Modus wechseln, hart neu laden (<code>Ctrl/Cmd+Shift+R</code>).</li>
+      </ul>
+    </details>
   </section>
 </div>
 
