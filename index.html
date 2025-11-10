@@ -73,7 +73,7 @@
     <div class="card">
       <h3>Auf dem Smartphone öffnen</h3>
       <p class="mini">Scannen und als Home-App sichern.</p>
-      <img class="qr" alt="QR zu SafeShare" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Fapp.html">
+      <img class="qr" alt="QR zu SafeShare" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://j-ai-71.github.io/Supersystem/app.html">
       <div style="margin-top:10px">
         <a class="btn small" href="bookmarklets.html">Bookmarklets installieren</a>
         <a class="btn small" href="partner.html">Partner werden</a>
@@ -154,7 +154,7 @@
     }
   };
 
-  // Feedback
+  // Feedback → deine Adresse
   document.getElementById('btn-fb').onclick = ()=>{
     const body = encodeURIComponent(
 `Feedback zu SafeShare
@@ -163,7 +163,9 @@ Gerät/Browser:
 Schritt/Seite: index.html
 Wunsch/Problem: `
     );
-    location.href = 'mailto:?subject='+encodeURIComponent('SafeShare Feedback')+'&body='+body;
+    location.href = 'mailto:support.safeshare@proton.me?subject='
+      + encodeURIComponent('SafeShare Feedback')
+      + '&body=' + body;
   };
 </script>
 </body>
