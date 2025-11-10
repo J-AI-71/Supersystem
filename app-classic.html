@@ -38,10 +38,8 @@
 <div id="debug" class="muted"></div>
 
 <script>
-/* Fehler sichtbar machen */
 window.addEventListener('error', e => { const d=document.getElementById('debug'); if(d) d.textContent='JS-Fehler: '+e.message; });
 
-/* Konstanten */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -57,7 +55,6 @@ const AFF={
 const $=id=>document.getElementById(id);
 const inEl=$('in'), outEl=$('out'), statusEl=$('status'), openA=$('openA'), goA=$('goA');
 
-/* Helpers */
 function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
 function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
 function unwrapDeep(u){
@@ -110,7 +107,6 @@ function sanitizeHash(u,keepNames,removed){
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
 
-/* Kernlogik */
 let last={kept:new Set(),removed:new Set(),mode:'AN'};
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
@@ -145,20 +141,17 @@ function summarize(){
 }
 function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
 
-/* Events */
-$('clean').onclick=run;
-$('keepAff').onchange=run;
-$('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
-$('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';const d=$('debug'); if(d) d.textContent='';inEl.focus();};
+document.getElementById('clean').onclick=run;
+document.getElementById('keepAff').onchange=run;
+document.getElementById('copy').onclick=async()=>{const t=outEl.value;if(!t)return; try{await navigator.clipboard.writeText(t);alert('Kopiert');}catch(_){}};
+document.getElementById('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';const d=$('debug'); if(d) d.textContent='';inEl.focus();};
 
-/* Auto ?u=&open=1 */
 (function(){
   const p=new URLSearchParams(location.search);
   const q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const v=p.get('v');
   if(q){ inEl.value=decodeURIComponent(q); run(); if(ao==='1'){ const first=(outEl.value||'').split(/\s+/).find(x=>/^https?:\/\//i.test(x)); if(first) location.href=first; } }
-  if(v){ /* nur Cache-Buster */ }
+  if(v){ /* Cache-Buster */ }
 })();
 </script>
 </body>
 </html>
-<!-- EOF -->
