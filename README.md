@@ -49,3 +49,95 @@ SafeShare entfernt Tracking-Parameter (`utm_*`, `fbclid`, `gclid`, …), löst W
 - `ao=1` → nach dem Säubern automatisch öffnen
 
 **Beispiel (SAFE + Auto-Open):**
+/app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx
+
+Erwartet:
+- **SAFE** → `https://www.amazon.de/dp/TEST?tag=deintag-21`
+- **STRICT** → `https://www.amazon.de/dp/TEST`
+
+---
+
+## Bookmarklets
+
+Seite: https://j-ai-71.github.io/Supersystem/bookmarklets.html
+
+- **Desktop:** Button „SAFE“ oder „STRICT“ in die Lesezeichenleiste ziehen.  
+- **iOS:** Lesezeichen anlegen → URL des Lesezeichens durch den Code ersetzen.  
+- Anwendung: Auf einer Seite mit langem Tracking-Link das Lesezeichen antippen → SafeShare säubert und öffnet.
+
+---
+
+## Testlinks
+
+- **Amazon SAFE:**  
+
+app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_medium%3Demail
+
+
+app.html?aff=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx
+
+- **Amazon STRICT:**  
+
+app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_medium%3Demail
+
+- **Facebook-Wrapper:**  
+
+app.html?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC
+
+---
+
+## Dateien
+
+- `index.html` – Landing, QR, CTAs, Changelog  
+- `app.html` – Vollversion mit Profilen, Sticky, Reload, Kurzanleitung  
+- `app-classic.html` – schlanke Version ohne Profile/Sticky  
+- `bookmarklets.html` – Bookmarklets „SAFE/STRICT“  
+- `partner.html` – Affiliate-Infos und Bewerbungslink  
+- `danke.html` – Erfolgsseite nach Kauf/Tip  
+- `impressum.html`, `datenschutz.html` – rechtliche Seiten  
+- Assets: `safeshare-og-v3b.png`, `favicon-32.png`
+
+---
+
+## Entwicklung
+
+- **Vanilla JS**, keine Abhängigkeiten, alles clientseitig.  
+- Hosting über **GitHub Pages** (Repo → Settings → Pages → Branch `main`/`docs`).  
+- Änderungen deployen per Commit auf `main` und hart neu laden (`Ctrl/Cmd+Shift+R`).
+
+---
+
+## Changelog (Kurz)
+
+- **v42**: Sticky-Modus, Reload, Kurzanleitung im App-UI, Host-Kleinschreibung.  
+- **v41**: Referrer-frei, Profile-X, Export/Import.  
+- **v40**: SAFE/STRICT, tiefes Unwrapping, 1-Klick.
+
+---
+
+## Datenschutz
+
+- Keine Cookies. Keine Analytics.  
+- Verarbeitung ausschließlich im Browser.  
+- Profile werden nur lokal im **LocalStorage** gespeichert.  
+- Zahlungen/Provisionen: über **Payhip** gemäß deren Richtlinien.
+
+---
+
+## Support
+
+- E-Mail: **support.safeshare@proton.me**  
+- Produkt/Tip: https://payhip.com/b/VDm3B  
+- Partner werden: https://j-ai-71.github.io/Supersystem/partner.html
+
+---
+
+## Lizenz
+
+Trage hier deine Lizenz ein (z. B. MIT).  
+
+
+
+
+
+
