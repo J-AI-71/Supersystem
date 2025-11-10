@@ -1,41 +1,21 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Danke – SafeShare</title>
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:24px;color:#111}
-  .row{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
-  .btn{appearance:none;border:0;border-radius:8px;padding:10px 12px;background:#111;color:#fff;text-decoration:none;font-weight:600}
-  .btn.alt{background:#e5e7eb;color:#111}
-  .muted{color:#6b7280;font-size:13px}
-  input.share{width:100%;max-width:520px;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
+  .btn{display:inline-block;padding:10px 14px;margin:6px 8px 0 0;border:1px solid #ddd;border-radius:8px;text-decoration:none;color:#111}
+  p.muted{color:#666}
 </style>
 </head>
 <body>
 <h1>Danke für deine Unterstützung</h1>
-<p class="muted">Weiter geht’s:</p>
-
-<div class="row">
-  <a class="btn" href="app.html">SafeShare öffnen</a>
-  <a class="btn alt" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Projekt unterstützen</a>
-</div>
-
-<p class="muted">Teilen</p>
-<div class="row">
-  <input id="share" class="share" value="https://j-ai-71.github.io/Supersystem/" readonly>
-  <button id="copyshare" class="btn alt" type="button">Kopieren</button>
-</div>
-
-<p class="muted"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
-
-<script>
-document.getElementById('copyshare').addEventListener('click', async ()=>{
-  const v=document.getElementById('share').value;
-  try{ await navigator.clipboard.writeText(v); alert('Kopiert'); }
-  catch(e){ const el=document.getElementById('share'); el.select(); document.execCommand('copy'); }
-});
-</script>
+<p class="muted">Du kannst SafeShare sofort benutzen.</p>
+<p>
+  <a class="btn" href="app.html">App starten (v41)</a>
+  <a class="btn" href="app-classic.html">Classic starten</a>
+  <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+</p>
 </body>
 </html>
