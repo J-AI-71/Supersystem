@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – FAQ</title>
+<meta name="description" content="Häufige Fragen zu SafeShare: SAFE vs. STRICT, Bookmarklets, Profile, Offline, Datenschutz.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0ea5e9">
+<style>
+  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg);max-width:980px}
+  h1{font-size:22px;margin:0 0 10px}
+  h2{font-size:18px;margin:18px 0 8px}
+  .muted{color:var(--muted);font-size:13px}
+  .card{border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
+  details summary{cursor:pointer;font-weight:600}
+  code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
+  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
+  ul{margin:6px 0 0 18px}
+</style>
+</head>
+<body>
+<h1>SafeShare – FAQ</h1>
+<p class="muted">Kurz, konkret, ohne Tracking.</p>
+
+<div class="card">
+  <h2>Grundlagen</h2>
+  <details open>
+    <summary>Was ist der Unterschied zwischen SAFE und STRICT?</summary>
+    <ul>
+      <li><strong>SAFE</strong>: Tracking-Parameter weg. Typische Affiliate-Parameter bleiben (z. B. Amazon <code>tag</code>).</li>
+      <li><strong>STRICT</strong>: Alles weg. Auch Affiliate-Parameter.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Welche Parameter werden entfernt?</summary>
+    <p>Beispiele: <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, <code>twclid</code>, <code>msclkid</code>, <code>xtor</code>, <code>mkt_tok</code>, <code>si</code>, <code>spm</code>, <code>client</code>, <code>zx</code>, <code>no_sw_cr</code>. Außerdem im Hash, wenn dort Key-Value-Paare stehen.</p>
+  </details>
+
+  <details>
+    <summary>Welche Wrapper/Weiterleitungen werden aufgelöst?</summary>
+    <ul>
+      <li>Google: <code>/url?q=</code> oder <code>/url?url=</code></li>
+      <li>Facebook: <code>/l.php?u=</code></li>
+      <li>AMP-Pfade: entfernt <code>/amp</code>, <code>?amp</code>, <code>output=amp</code></li>
+      <li>Verschachtelte Links in Parametern und Hash werden mehrfach entfaltet.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Was sind „Profile pro Domain“?</summary>
+    <p>Regel pro Host speichern: <strong>SAFE</strong> oder <strong>STRICT</strong>. Beim Einfügen zieht die App automatisch das Profil. Export/Import als JSON möglich.</p>
+  </details>
+
+  <details>
+    <summary>Wozu „Referrer-frei“ und „Reload“?</summary>
+    <ul>
+      <li><strong>Referrer-frei</strong>: Öffnet im neuen Tab ohne Referrer-Header.</li>
+      <li><strong>Reload</strong>: Ersetzt den aktuellen Tab durch die bereinigte URL (<code>location.replace</code>).</li>
+    </ul>
+  </details>
+</div>
+
+<div class="card">
+  <h2>Bedienung</h2>
+  <details>
+    <summary>Wie funktionieren die Bookmarklets?</summary>
+    <p>Button von <a href="bookmarklets.html">bookmarklets.html</a> in die Lesezeichenleiste ziehen. Auf Seiten mit langen URLs klicken. iOS: Lesezeichen-URL durch den Code ersetzen.</p>
+  </details>
+
+  <details>
+    <summary>Auto-Parameter für Direktaufrufe?</summary>
+    <ul>
+      <li><code>?u=</code> URL-enkodiert</li>
+      <li><code>&aff=1|0</code> SAFE/STRICT</li>
+      <li><code>&ao=1</code> automatisch öffnen</li>
+    </ul>
+    <p>Beispiel: <code>app.html?aff=1&ao=1&u=&lt;ENCODED&gt;</code></p>
+  </details>
+
+  <details>
+    <summary>Warum sehe ich nach Updates noch altes Verhalten?</summary>
+    <p>Browser-Cache/Service Worker. Lösung: <strong>hart neu laden</strong> (<code>Ctrl/Cmd+Shift+R</code>) oder <a href="tools.html">Tools</a> → Caches löschen / SW abmelden. Optional <code>?v=NN</code> an die URL hängen.</p>
+  </details>
+
+  <details>
+    <summary>Speichert SafeShare Daten?</summary>
+    <p>Nein. Verarbeitung läuft lokal. Profile/Sticky nur im <code>localStorage</code> deines Browsers.</p>
+  </details>
+
+  <details>
+    <summary>Warum sollte ich Affiliates ausschalten?</summary>
+    <p>Audit, Journalismus, Compliance, neutrale Weitergabe ohne monetäre Kennung. STANDARD bleibt SAFE für Creator.</p>
+  </details>
+</div>
+
+<div class="card">
+  <h2>Grenzen</h2>
+  <details>
+    <summary>Was kann SafeShare nicht?</summary>
+    <ul>
+      <li>Tracker in der <em>Pfadstruktur</em> statt in Parametern werden nicht generell erkannt.</li>
+      <li>Server-seitige Weiterleitungen können erst beim Öffnen folgen.</li>
+      <li>Exotische, proprietäre Affiliate-Schemata evtl. nicht abgedeckt.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Wie schlage ich neue Regeln vor?</summary>
+    <p>Mail an <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a> mit Beispiel-URL und gewünschtem Ergebnis.</p>
+  </details>
+</div>
+
+<p><a class="btn" href="index.html">Startseite</a> <a class="btn" href="app.html">Zur App</a></p>
+</body>
+</html>
