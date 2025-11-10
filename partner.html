@@ -1,22 +1,157 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Partner – SafeShare</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Partner werden</title>
+<meta name="description" content="Werde SafeShare-Partner. Bewerben, Link erhalten, empfehlen, Provision erhalten.">
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
-  .btn{display:inline-block;padding:10px 14px;margin:6px 8px 0 0;border:1px solid #ddd;border-radius:8px;text-decoration:none;color:#111}
-  .muted{color:#666}
-  ul{padding-left:18px}
+  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg);background:#fff}
+  .wrap{max-width:980px;margin:0 auto;padding:20px}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  header img{width:44px;height:44px;border-radius:10px}
+  header h1{margin:0;font-size:22px}
+  header .muted{color:var(--muted);font-size:13px}
+  .card{border:1px solid var(--bd);border-radius:12px;padding:16px;background:#fff;margin-top:14px}
+  .btn{display:inline-block;padding:12px 14px;margin:6px 10px 0 0;border:1px solid var(--bd);border-radius:10px;background:#fff;color:var(--fg);text-decoration:none;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.small{padding:8px 10px;font-size:13px}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
+  .mini{font-size:12px;color:var(--muted)}
+  ul{margin:8px 0 0 18px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:860px){ .grid{grid-template-columns:1fr} }
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px}
+  .pill{display:inline-block;border:1px solid var(--bd);border-radius:999px;padding:4px 10px;font-size:12px;margin-right:6px;background:#f8fafc}
 </style>
 </head>
 <body>
-<h1>Partnerprogramm</h1>
-<p class="muted">Provision z. B. 30–40 % pro Verkauf über deinen Link.</p>
-<p><a class="btn" href="https://payhip.com/auth/register/af69075ca4efafa" target="_blank" rel="noopener">Jetzt Partner werden</a></p>
-<ul>
-  <li>Nach Anmeldung siehst du deinen Produkt-Link im Payhip-Dashboard.</li>
-  <li>Teilen, Provision erhalten. Abrechnung über Payhip.</li>
-</ul>
+<div class="wrap">
+
+  <header>
+    <img src="safeshare-og-v3b.png" alt="SafeShare">
+    <div>
+      <h1>Partner werden</h1>
+      <div class="muted">Empfehlen. Menschen helfen. Provision erhalten.</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="card">
+    <p><span class="pill">Provision: aktuell 40 %</span><span class="pill">Auszahlung über Payhip</span><span class="pill">Cookie-frei App</span></p>
+    <div class="row">
+      <a class="btn primary" id="btn-apply" href="https://payhip.com/auth/register/af69075ca4efafa" target="_blank" rel="noopener">Jetzt bewerben</a>
+      <button class="btn" id="copy-apply">Bewerbungslink kopieren</button>
+      <a class="btn" href="index.html">Zurück zur Startseite</a>
+    </div>
+    <p class="mini">Hinweis: Die finale Provision stellst du im Payhip-Dashboard ein. Wert kann sich ändern.</p>
+  </div>
+
+  <!-- Ablauf -->
+  <div class="grid">
+    <div class="card">
+      <h2 style="margin:0 0 6px;font-size:18px">So funktioniert’s</h2>
+      <ol>
+        <li>Bewerben über den Link oben.</li>
+        <li>Freigabe durch SafeShare (Auto-Freigabe möglich).</li>
+        <li>In Payhip erscheint dein persönlicher Produkt-Link.</li>
+        <li>Du teilst deinen Link. Kommt es zum Kauf, erhältst du Provision.</li>
+      </ol>
+      <p class="mini">Dein persönlicher Link steht nach Freigabe in deinem Payhip-Konto unter <span class="kbd">Affiliates</span>.</p>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 6px;font-size:18px">Material</h2>
+      <div class="row">
+        <a class="btn" id="open-app" href="app.html">Zur App</a>
+        <a class="btn" href="app-classic.html">Classic</a>
+        <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+      </div>
+      <div class="row">
+        <button class="btn small" id="copy-app">App-Link kopieren</button>
+        <button class="btn small" id="share-app">Weiterempfehlen</button>
+      </div>
+      <p class="mini">Tipp: Verlinke direkt die App oder nutze deinen Payhip-Produktlink, sobald freigeschaltet.</p>
+    </div>
+  </div>
+
+  <!-- Test / Qualität -->
+  <div class="card">
+    <h2 style="margin:0 0 6px;font-size:18px">Test: Affiliates bleiben erhalten</h2>
+    <p>In der App <strong>SAFE</strong> nutzen. Beispiel:</p>
+    <ol>
+      <li>Füge einen Affiliate-Link ein (z. B. von Payhip aus deinem Affiliate-Bereich).</li>
+      <li><span class="kbd">Säubern</span> → es sollten nur Tracking-Parameter verschwinden. Affiliate-Parameter bleibt.</li>
+      <li>Schalte auf <strong>STRICT</strong>, wenn du alles entfernen willst.</li>
+    </ol>
+    <p class="mini">SafeShare entfernt <span class="kbd">utm_*</span>, <span class="kbd">fbclid</span>, <span class="kbd">gclid</span>, löst Redirect-Wrapper, behält in SAFE fallweise Affiliate-Parameter gängiger Plattformen.</p>
+  </div>
+
+  <!-- FAQ -->
+  <div class="grid">
+    <div class="card">
+      <h2 style="margin:0 0 6px;font-size:18px">FAQ</h2>
+      <p><strong>Brauche ich ein Konto?</strong><br>Ja, für die Provision brauchst du ein Payhip-Affiliate-Konto.</p>
+      <p><strong>Wie erhalte ich meinen Partner-Link?</strong><br>Nach Freigabe zeigt Payhip deinen individuellen Link im Affiliate-Bereich an.</p>
+      <p><strong>Wie wird getrackt?</strong><br>Tracking und Auszahlungen laufen über Payhip. SafeShare selbst setzt keine Cookies.</p>
+      <p><strong>Wann wird ausgezahlt?</strong><br>Nach Payhip-Regeln. Prüfe dein Payhip-Dashboard.</p>
+    </div>
+    <div class="card">
+      <h2 style="margin:0 0 6px;font-size:18px">Kontakt</h2>
+      <p>Fragen oder Sondervereinbarung?</p>
+      <div class="row">
+        <button class="btn" id="btn-mail">E-Mail senden</button>
+        <button class="btn" id="btn-copy-mail">Adresse kopieren</button>
+      </div>
+      <p class="mini" id="mailtxt">hello@safeshare.example</p>
+    </div>
+  </div>
+
+  <!-- Rechtliches Hinweisfeld -->
+  <div class="card">
+    <p class="mini">Rechtlich: Kennzeichne Affiliate-Links nach geltendem Recht. Beachte die Richtlinien der Plattformen, auf denen du teilst.</p>
+  </div>
+
+  <footer class="card" style="display:flex;justify-content:space-between;align-items:center">
+    <div class="mini">© SafeShare</div>
+    <div>
+      <a class="btn small" href="impressum.html">Impressum</a>
+      <a class="btn small" href="datenschutz.html">Datenschutz</a>
+      <a class="btn small" href="index.html">Start</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Konstanten
+  const APPLY = "https://payhip.com/auth/register/af69075ca4efafa";
+  const APPURL = new URL('app.html', location.href).href;
+  const MAIL = document.getElementById('mailtxt').textContent.trim();
+
+  // Copy/Bewerben
+  document.getElementById('copy-apply').onclick = () =>
+    navigator.clipboard?.writeText(APPLY).then(()=>alert('Bewerbungslink kopiert'));
+
+  // App-Links
+  document.getElementById('copy-app').onclick = () =>
+    navigator.clipboard?.writeText(APPURL).then(()=>alert('App-Link kopiert: '+APPURL));
+
+  document.getElementById('share-app').onclick = ()=>{
+    const data={title:'SafeShare',text:'Links ohne Tracking. 1-Klick.',url:APPURL};
+    if(navigator.share){ navigator.share(data).catch(()=>{}); }
+    else { navigator.clipboard?.writeText(APPURL).then(()=>alert('Link kopiert')); }
+  };
+
+  // Mail
+  document.getElementById('btn-mail').onclick = ()=>{
+    const body = encodeURIComponent('Hallo SafeShare,\n\nich möchte Partner werden / habe Fragen:\n');
+    location.href = 'mailto:'+encodeURIComponent(MAIL)+'?subject='+encodeURIComponent('SafeShare Partnerprogramm')+'&body='+body;
+  };
+  document.getElementById('btn-copy-mail').onclick = ()=>navigator.clipboard?.writeText(MAIL).then(()=>alert('Adresse kopiert: '+MAIL));
+</script>
 </body>
 </html>
