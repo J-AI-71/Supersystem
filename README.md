@@ -73,9 +73,6 @@ Seite: https://j-ai-71.github.io/Supersystem/bookmarklets.html
 
 app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_medium%3Demail
 
-
-app.html?aff=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx
-
 - **Amazon STRICT:**  
 
 app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_medium%3Demail
