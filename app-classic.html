@@ -4,8 +4,19 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Classic</title>
 <meta name="description" content="Links ohne Tracking. Classic: Einfügen, Säubern, Kopieren, Öffnen, 1-Klick.">
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- Sicherheit -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+
+<!-- PWA/Meta -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0ea5e9">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="safeshare-og-v3b.png">
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app-classic.html">
+
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
   *{box-sizing:border-box}
@@ -19,8 +30,10 @@
   .btn.small{padding:6px 8px;font-size:12px}
   .btn[disabled]{opacity:.5;pointer-events:none}
   #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:8px;font-size:12px}
-  code{background:#f8fafc;padding:2px 6px;border-radius:6px}
+  code{background:#f8fafc;padding:2px 6px;border-radius:6px;border:1px solid var(--bd)}
   details summary{cursor:pointer;font-weight:600;margin:6px 0}
+  /* Klickbarkeit sicherstellen */
+  button, a.btn { pointer-events:auto }
 </style>
 </head>
 <body>
@@ -50,16 +63,19 @@
 <details>
   <summary>Kurzanleitung</summary>
   <ul class="muted" style="margin:6px 0 0 18px">
-    <li><strong>Säubern</strong>: entfernt <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, löst Wrapper (Google/Facebook/AMP).</li>
+    <li><strong>Säubern</strong>: entfernt <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>; löst Wrapper (Google/Facebook/AMP).</li>
     <li><strong>SAFE</strong> (Haken an): Affiliates bleiben. <strong>STRICT</strong> (Haken aus): alles weg, auch Affiliates.</li>
-    <li>URL-Parameter: <code>?u=</code> (enkodiert), <code>&aff=1|0</code>, <code>&ao=1</code> für Auto-Öffnen.</li>
+    <li>URL-Parameter: <code>?u=</code> (enkodiert), <code>&aff=1|0</code> oder <code>&mode=safe|strict</code>, <code>&ao=1</code> für Auto-Öffnen.</li>
   </ul>
 </details>
 
 <script>
-window.addEventListener('error', e=>{console.warn('JS-Fehler:',e.message);});
+/* ===== Elemente ===== */
+const $=id=>document.getElementById(id);
+const inEl=$('in'), outEl=$('out'), keepAff=$('keepAff'), statusEl=$('status');
+const btnClean=$('clean'), btnCopy=$('copy'), btnOpen=$('open'), btnOpenNew=$('openNew'), btnClear=$('clear');
 
-/* Kill-Listen und Affiliate-Regeln */
+/* ===== Sets/Regeln ===== */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -73,12 +89,7 @@ const AFF={
   exactPairs:new Set([])
 };
 
-/* Elemente */
-const $=id=>document.getElementById(id);
-const inEl=$('in'), outEl=$('out'), keepAff=$('keepAff'), statusEl=$('status');
-const btnClean=$('clean'), btnCopy=$('copy'), btnOpen=$('open'), btnOpenNew=$('openNew'), btnClear=$('clear');
-
-/* Helpers */
+/* ===== Helpers ===== */
 function firstUrl(){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); return m?m[0]:''; }
 function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
 function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
@@ -130,7 +141,7 @@ function sanitizeHash(u,affNames,keepOn,removed){
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
 
-/* Clean */
+/* ===== Clean ===== */
 let last={kept:new Set(),removed:new Set(),mode:'SAFE'};
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
@@ -169,16 +180,16 @@ function summarize(){
   statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
 }
 
-/* Aktionen */
+/* ===== Aktionen ===== */
 function run(){ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }
-$('clean').onclick=run;
+btnClean.onclick=run;
 keepAff.onchange=run;
-$('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
-$('open').onclick =()=>{const u=firstUrl(); if(u) location.href=u;};
-$('openNew').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
-$('clear').onclick =()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';btnCopy.disabled=btnOpen.disabled=btnOpenNew.disabled=true;inEl.focus();};
+btnCopy.onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
+btnOpen.onclick =()=>{const u=firstUrl(); if(u) location.href=u;};
+btnOpenNew.onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
+btnClear.onclick =()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';btnCopy.disabled=btnOpen.disabled=btnOpenNew.disabled=true;inEl.focus();};
 
-/* Normalisiere Hosts in Eingabe */
+/* Hosts in Eingabe normalisieren */
 function normalizeHostsInTextarea(){
   const rx=/(https?:\/\/[^\s<>"')]+)/ig;
   let t=inEl.value;
@@ -195,7 +206,7 @@ function normalizeHostsInTextarea(){
 inEl.addEventListener('paste', ()=>setTimeout(normalizeHostsInTextarea,0));
 inEl.addEventListener('blur', normalizeHostsInTextarea);
 
-/* Autofill + SW */
+/* ===== Boot ===== */
 document.addEventListener('DOMContentLoaded', ()=>{
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
@@ -207,9 +218,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     inEl.value=q; normalizeHostsInTextarea(); run();
     if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
   }
-
-  if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
-    navigator.serviceWorker.register('sw.js?v=1').catch(()=>{});
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js?v=3').catch(()=>{});
   }
 });
 </script>
