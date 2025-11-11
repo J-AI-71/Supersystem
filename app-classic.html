@@ -1,227 +1,98 @@
-<!doctype html>
-<html lang="de">
-<head>
+<!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Classic</title>
-<meta name="description" content="Links ohne Tracking. Classic: Einfügen, Säubern, Kopieren, Öffnen, 1-Klick.">
-<!-- SPDX-License-Identifier: MIT -->
-
-<!-- Sicherheit -->
+<meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen. SAFE/STRICT Umschalter.">
 <meta http-equiv="Content-Security-Policy"
-      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
-
-<!-- PWA/Meta -->
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0ea5e9">
-<link rel="icon" href="favicon-32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="safeshare-og-v3b.png">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app-classic.html">
-
+ content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
+<link rel="icon" href="favicon-32.png">
 <style>
-  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
-  *{box-sizing:border-box}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-  h1{font-size:20px;margin:0 0 8px}
-  .muted{color:var(--muted);font-size:12px}
-  .row{margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  textarea{width:100%;min-height:120px;padding:10px;border:1px solid var(--bd);border-radius:8px;font-size:14px}
-  #out{min-height:120px;margin-top:8px}
-  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);cursor:pointer}
-  .btn.small{padding:6px 8px;font-size:12px}
-  .btn[disabled]{opacity:.5;pointer-events:none}
-  #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:8px;font-size:12px}
-  code{background:#f8fafc;padding:2px 6px;border-radius:6px;border:1px solid var(--bd)}
-  details summary{cursor:pointer;font-weight:600;margin:6px 0}
-  /* Klickbarkeit sicherstellen */
-  button, a.btn { pointer-events:auto }
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9}
+*{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
+h1{margin:0 0 8px;font-size:20px}.muted{color:var(--muted);font-size:12px}
+.card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
+input[type=text]{width:100%;padding:10px 36px 10px 10px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
+.clearX{position:relative}.clearX button{position:absolute;right:8px;top:8px;border:1px solid var(--bd);border-radius:8px;background:#fff;padding:6px 8px;cursor:pointer}
+.badge{display:inline-block;border:1px solid var(--bd);border-radius:999px;padding:3px 8px;font-size:12px;background:#f8fafc;margin-right:6px}
 </style>
-</head>
-<body>
-
+</head><body>
 <h1>SafeShare – Classic</h1>
-<p class="muted">Einfügen → <strong>Säubern</strong> → <strong>Kopieren</strong> oder <strong>Öffnen</strong>. Optional Affiliates behalten.</p>
+<p class="muted">Minimalansicht ohne Profile.</p>
 
-<textarea id="in" placeholder="link(s) hier einfügen …"></textarea>
-
-<div class="row">
-  <button id="clean" class="btn" type="button">Säubern</button>
-  <button id="copy"  class="btn" type="button" disabled>Kopieren</button>
-  <button id="open"  class="btn" type="button" disabled>Öffnen</button>
-  <button id="openNew" class="btn" type="button" disabled>1-Klick (neu)</button>
-  <button id="clear" class="btn small" type="button" title="Leeren">&times;</button>
+<div class="card">
+  <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
+  <div class="muted" id="modeInfo">Modus: <strong>SAFE</strong></div>
 </div>
 
-<div class="row">
-  <label class="muted" style="display:inline-flex;align-items:center;gap:6px">
-    <input id="keepAff" type="checkbox" checked> Provisionen behalten (SAFE)
-  </label>
+<div class="card clearX">
+  <input id="in" type="text" inputmode="url" placeholder="Link hier einfügen…">
+  <button id="btnClear" aria-label="Feld leeren">×</button>
+  <div class="row" style="margin-top:8px">
+    <button class="btn primary" id="btnClean">Säubern</button>
+    <button class="btn" id="btnCopy">Kopieren</button>
+    <button class="btn" id="btnOpen">Öffnen</button>
+    <button class="btn" id="btnOpenNew">1-Klick</button>
+  </div>
+  <p class="muted" style="margin-top:6px">„1-Klick“ = neuer Tab. „Öffnen“ = gleicher Tab.</p>
 </div>
 
-<textarea id="out" readonly placeholder="bereinigte url(s) erscheinen hier …"></textarea>
-<div id="status" class="muted">Status: –</div>
-
-<details>
-  <summary>Kurzanleitung</summary>
-  <ul class="muted" style="margin:6px 0 0 18px">
-    <li><strong>Säubern</strong>: entfernt <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>; löst Wrapper (Google/Facebook/AMP).</li>
-    <li><strong>SAFE</strong> (Haken an): Affiliates bleiben. <strong>STRICT</strong> (Haken aus): alles weg, auch Affiliates.</li>
-    <li>URL-Parameter: <code>?u=</code> (enkodiert), <code>&aff=1|0</code> oder <code>&mode=safe|strict</code>, <code>&ao=1</code> für Auto-Öffnen.</li>
-  </ul>
-</details>
+<div class="card">
+  <div id="outURL" class="kbd">–</div>
+  <div style="margin-top:8px">
+    <span class="badge" id="bMode">Modus: SAFE</span>
+  </div>
+</div>
 
 <script>
-/* ===== Elemente ===== */
-const $=id=>document.getElementById(id);
-const inEl=$('in'), outEl=$('out'), keepAff=$('keepAff'), statusEl=$('status');
-const btnClean=$('clean'), btnCopy=$('copy'), btnOpen=$('open'), btnOpenNew=$('openNew'), btnClear=$('clear');
+const $ = s => document.querySelector(s);
+const elIn = $('#in'), elSafe = $('#ckSafe');
+function update(){ $('#modeInfo').innerHTML = 'Modus: <strong>'+(elSafe.checked?'SAFE':'STRICT')+'</strong>'; $('#bMode').textContent='Modus: '+(elSafe.checked?'SAFE':'STRICT'); }
+function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
+function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
 
-/* ===== Sets/Regeln ===== */
-const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
-const AFF={
-  baseKeep:new Set(['coupon','code']),
-  globalNames:new Set(['ref','refid','ref_id','referrer','aff','affid','aff_id','affiliate','affiliate_id','affsource','affsrc','affname','affcamp','affcampaign','campaign','campaignid','campaign_id','clickid','click_id','irclickid','tduid','admitad_uid','sscid','cjevent','clickref','clickref2','subid','sub_id','sid','u1','u2','u3','u4','u5','pid','aid','awinaffid','awinmid']),
-  byHostRules:[
-    {test:h=>/(^|\.)amazon\./i.test(h),     names:new Set(['tag','ascsubtag'])},
-    {test:h=>/(^|\.)ebay\./i.test(h),       names:new Set(['campid','customid','mkcid','mkevt','mkrid'])},
-    {test:h=>/(^|\.)rakuten\./i.test(h),    names:new Set(['ranmid','raneaid','ransiteid','ranlinkid'])},
-    {test:h=>/(^|\.)aliexpress\./i.test(h), names:new Set(['aff_fcid','aff_fsk','aff_platform','aff_trace_key','aff_short_key'])}
-  ],
-  exactPairs:new Set([])
-};
-
-/* ===== Helpers ===== */
-function firstUrl(){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); return m?m[0]:''; }
-function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
-function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
-function unwrapDeep(u){
-  try{
-    if(/(^|\.)google\./i.test(u.hostname)&&u.pathname.startsWith('/url')){const q=u.searchParams.get('q')||u.searchParams.get('url'); if(q) u=new URL(q);}
-    if(/(^|\.)facebook\./i.test(u.hostname)&&u.pathname.startsWith('/l.php')){const q2=u.searchParams.get('u'); if(q2) u=new URL(q2);}
-  }catch(_){}
-  for(let i=0;i<6;i++){
-    let found=null;
-    for(const [_,v] of u.searchParams){const dec=deepDecode(v||'');const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m){found=m[0];break;}}
-    if(!found){const dec=deepDecode(u.hash||'');const m=(dec||'').match(/https?:\/\/[^\s"'<>)]+/i);if(m)found=m[0];}
-    if(!found){const dec=deepDecode(u.href);const m=dec.match(/https?:\/\/[^\s"'<>)]+/i);if(m&&m[0]!==u.href)found=m[0];}
-    if(!found)break; try{u=new URL(found)}catch(_){break;}
+function affiliateKeysForHost(host){ if(/\bamazon\./.test(host.toLowerCase())) return new Set(['tag']); return new Set(); }
+function unwrap(u){
+  let url=new URL(u); let changed=true, hops=0;
+  while(changed && hops<5){ changed=false; hops++;
+    const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
+    if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
+    if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
+    for(const k of ['url','u','redirect','redir','r','target','to','link']){ const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; break; } }
+    if(changed) continue;
+    if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
+    if(sp.has('amp')){ sp.delete('amp'); changed=true; }
   }
-  return u;
+  return url;
 }
-function applyAmpCanonical(u){
-  try{
-    let path=u.pathname.replace(/\/amp\/?$/,'/').replace(/\/amp$/,'/');
-    const sp=u.searchParams; if(sp.has('amp')) sp.delete('amp'); if((sp.get('output')||'').toLowerCase()==='amp') sp.delete('output');
-    return new URL(u.origin+path+(sp.size?('?'+sp.toString()):''));
-  }catch(_){return u;}
-}
-function buildAffNames(host){
-  const names=new Set(AFF.globalNames);
-  for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) names.add(n);
-  return names;
-}
-function sortAndDedupe(out){
-  const sorted=new URL(out.origin+out.pathname);
-  [...new Set([...out.searchParams].map(([k,v])=>k+'\u0000'+v))]
-    .map(s=>s.split('\u0000')).sort((a,b)=>a[0].localeCompare(b[0]))
-    .forEach(([k,v])=>sorted.searchParams.append(k,v));
-  out.search=sorted.search;
-}
-function tallyParams(sp){const set=new Set();for(const [k] of sp){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
-function tallyHash(h){const set=new Set();if(!h)return set;const s=h.replace(/^#/,'');if(!s.includes('='))return set;for(const [k] of new URLSearchParams(s)){const kl=k.toLowerCase();if(kl.startsWith('utm_')||killBase.has(kl)) set.add(kl);}return set;}
-function sanitizeHash(u,affNames,keepOn,removed){
-  if(!u.hash)return''; const s=u.hash.replace(/^#/,''); if(!s.includes('='))return'';
-  const hp=new URLSearchParams(s);
-  for(const [k,v] of [...hp]){
-    const kl=k.toLowerCase();
-    const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
-    const isTrack=kl.startsWith('utm_')||killBase.has(kl);
-    if(isAff && !keepOn){ hp.delete(k); removed.add(kl); continue; }
-    if(isTrack && !isAff){ hp.delete(k); removed.add(kl); continue; }
+function clean(u, keepAff){
+  const url=unwrap(u); url.hostname=url.hostname.toLowerCase();
+  const aff=affiliateKeysForHost(url.hostname);
+  const sp=url.searchParams, keys=[...sp.keys()];
+  const tprefix=['utm_'], texact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid']);
+  for(const k of keys){
+    const lk=k.toLowerCase();
+    const isT = tprefix.some(p=>lk.startsWith(p)) || texact.has(lk);
+    const isA = aff.has(lk);
+    if(isT || (!keepAff && isA)) sp.delete(k);
   }
-  const nh=hp.toString(); return nh?('#'+nh):'';
+  const q=sp.toString();
+  return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
-
-/* ===== Clean ===== */
-let last={kept:new Set(),removed:new Set(),mode:'SAFE'};
-function cleanOne(s){
-  s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
-  let u0; try{u0=new URL(s);}catch(_){ try{u0=new URL('https://'+s);}catch(__){return s;} }
-  const remOuter=tallyParams(u0.searchParams), remOuterH=tallyHash(u0.hash);
-  let u=unwrapDeep(u0); u=applyAmpCanonical(u);
-  try{ u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); }catch(_){}
-
-  const keepOn=keepAff.checked;
-  const host=u.hostname.toLowerCase();
-  const affNames=buildAffNames(host);
-
-  const out=new URL(u.origin+u.pathname);
-  const kept=new Set(), removed=new Set([...remOuter,...remOuterH]);
-
-  for(const [k,v] of u.searchParams){
-    const kl=k.toLowerCase();
-    if(AFF.baseKeep.has(kl)){ out.searchParams.append(k,v); kept.add(kl); continue; }
-    const isAff=affNames.has(kl)||AFF.exactPairs.has(`${kl}:${v}`);
-    const isTrack=kl.startsWith('utm_')||killBase.has(kl);
-    if(isAff){ if(keepOn){out.searchParams.append(k,v); kept.add(kl);} else removed.add(kl); continue; }
-    if(isTrack){ removed.add(kl); continue; }
-    out.searchParams.append(k,v);
-  }
-  out.hash=sanitizeHash(u,affNames,keepOn,removed);
-  sortAndDedupe(out);
-
-  last={kept,removed,mode:keepOn?'SAFE':'STRICT'};
-  return out.toString();
+function doClean(){
+  const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return;}
+  const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return;}
+  const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
 }
-function summarize(){
-  const u=firstUrl();
-  btnCopy.disabled=!u; btnOpen.disabled=!u; btnOpenNew.disabled=!u;
-  const kept=Array.from(last.kept).sort().join(', ')||'–';
-  const rem=Array.from(last.removed).sort().join(', ')||'–';
-  statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
-}
-
-/* ===== Aktionen ===== */
-function run(){ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }
-btnClean.onclick=run;
-keepAff.onchange=run;
-btnCopy.onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
-btnOpen.onclick =()=>{const u=firstUrl(); if(u) location.href=u;};
-btnOpenNew.onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
-btnClear.onclick =()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';btnCopy.disabled=btnOpen.disabled=btnOpenNew.disabled=true;inEl.focus();};
-
-/* Hosts in Eingabe normalisieren */
-function normalizeHostsInTextarea(){
-  const rx=/(https?:\/\/[^\s<>"')]+)/ig;
-  let t=inEl.value;
-  t=t.replace(rx,(url)=>{
-    try{
-      const u=new URL(url);
-      u.protocol=(u.protocol||'https:').toLowerCase();
-      u.hostname=u.hostname.toLowerCase();
-      return u.toString();
-    }catch(_){return url;}
-  });
-  inEl.value=t;
-}
-inEl.addEventListener('paste', ()=>setTimeout(normalizeHostsInTextarea,0));
-inEl.addEventListener('blur', normalizeHostsInTextarea);
-
-/* ===== Boot ===== */
-document.addEventListener('DOMContentLoaded', ()=>{
-  const p=new URLSearchParams(location.search);
-  let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
-  if(aff==='0'||/^strict$/i.test(aff)) keepAff.checked=false;
-  if(aff==='1'||/^safe$/i.test(aff))  keepAff.checked=true;
-  if(q){
-    try{q=decodeURIComponent(q);}catch(_){}
-    try{ const u=new URL(q); u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); q=u.toString(); }catch(_){}
-    inEl.value=q; normalizeHostsInTextarea(); run();
-    if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
-  }
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js?v=3').catch(()=>{});
-  }
-});
+$('#btnClean').onclick=()=>doClean();
+$('#btnCopy').onclick=()=>{const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{});};
+$('#btnOpen').onclick=()=>{const s=doClean(); if(s) location.replace(s);};
+$('#btnOpenNew').onclick=()=>{const s=doClean(); if(s) window.open(s,'_blank');};
+$('#btnClear').onclick=()=>{elIn.value=''; elIn.focus();};
+elSafe.onchange=update; update();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
-</body>
-</html>
+</body></html>
