@@ -107,23 +107,17 @@ const LS_PROFILES = 'ss_profiles_v1';
 function toURLMaybe(s){
   if(!s) return null;
   s = s.trim();
-  // normalize scheme-less
   if (/^www\./i.test(s)) s = 'https://' + s;
   try { return new URL(s); } catch { return null; }
 }
-
 function cloneURL(u){ return new URL(u.toString()); }
-
-function decodeMaybe(v){
-  try{ const d=decodeURIComponent(v); return d; }catch{ return v; }
-}
+function decodeMaybe(v){ try{ return decodeURIComponent(v); }catch{ return v; } }
 
 /* ===== Affiliate Whitelist ===== */
 function affiliateKeysForHost(host){
   host = host.toLowerCase();
   if (/\bamazon\./.test(host)) return new Set(['tag']);
-  // Add more hosts bei Bedarf
-  return new Set(); // default: keine Affiliates außer explizit
+  return new Set();
 }
 
 /* ===== Unwrap & Clean ===== */
@@ -132,7 +126,6 @@ function unwrap(u){
   let changed = true, hops = 0;
   while (changed && hops < 5){
     changed = false; hops++;
-
     const h = url.hostname.toLowerCase();
     const p = url.pathname;
 
@@ -141,13 +134,11 @@ function unwrap(u){
       const q = url.searchParams.get('q');
       try{ url = new URL(q); changed = true; continue; }catch{}
     }
-
     // Facebook l.php?u=
     if (/\bfacebook\.com$/.test(h) && p === '/l.php' && url.searchParams.get('u')){
       const q = url.searchParams.get('u');
       try{ url = new URL(q); changed = true; continue; }catch{}
     }
-
     // Generische redirect-Parameter
     const redirectKeys = ['url','u','redirect','redir','r','target','to','link'];
     for (const k of redirectKeys){
@@ -161,15 +152,8 @@ function unwrap(u){
     if (changed) continue;
 
     // AMP Pfade entfernen
-    if (/\/amp(\/|$)/i.test(p)){
-      url.pathname = p.replace(/\/amp(\/|$)/ig, '$1');
-      changed = true;
-    }
-
-    // amp=1 entfernen
-    if (url.searchParams.has('amp')){
-      url.searchParams.delete('amp'); changed = true;
-    }
+    if (/\/amp(\/|$)/i.test(p)){ url.pathname = p.replace(/\/amp(\/|$)/ig, '$1'); changed = true; }
+    if (url.searchParams.has('amp')){ url.searchParams.delete('amp'); changed = true; }
   }
   return url;
 }
@@ -177,10 +161,7 @@ function unwrap(u){
 function clean(u, keepAffiliates){
   const removed = [];
   const keptAff = [];
-
   let url = unwrap(u);
-
-  // host lowercase
   url.hostname = url.hostname.toLowerCase();
 
   const trackPrefixes = ['utm_'];
@@ -188,49 +169,32 @@ function clean(u, keepAffiliates){
     'fbclid','gclid','dclid','msclkid','twclid','yclid','igshid',
     'mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id',
     'spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome',
-    'ref_src','ref_url'
+    'ref_src','ref_url',
+    // erweitert:
+    'ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd'
   ]);
 
   const affKeys = affiliateKeysForHost(url.hostname);
-
   const sp = url.searchParams;
-  // collect keys to remove to avoid live-iter issues
   const keys = Array.from(sp.keys());
   for (const k of keys){
     const lk = k.toLowerCase();
     const isTrack = trackPrefixes.some(p=>lk.startsWith(p)) || trackExact.has(lk);
     const isAff = affKeys.has(lk);
 
-    if (isTrack){
-      removed.push(k);
-      sp.delete(k);
-      continue;
-    }
-    if (!keepAffiliates && isAff){
-      removed.push(k);
-      sp.delete(k);
-      continue;
-    }
-    if (keepAffiliates && isAff){
-      keptAff.push(k);
-      continue;
-    }
+    if (isTrack){ removed.push(k); sp.delete(k); continue; }
+    if (!keepAffiliates && isAff){ removed.push(k); sp.delete(k); continue; }
+    if (keepAffiliates && isAff){ keptAff.push(k); continue; }
   }
 
-  // Rebuild clean URL
   const q = sp.toString();
   const out = url.origin + url.pathname + (q ? '?' + q : '') + (url.hash || '');
-
   return { url: out, removed, keptAff, host: url.hostname };
 }
 
 /* ===== Profiles (LocalStorage) ===== */
-function loadProfiles(){
-  try{ return JSON.parse(localStorage.getItem(LS_PROFILES) || '{}'); }catch{ return {}; }
-}
-function saveProfiles(obj){
-  localStorage.setItem(LS_PROFILES, JSON.stringify(obj));
-}
+function loadProfiles(){ try{ return JSON.parse(localStorage.getItem(LS_PROFILES) || '{}'); }catch{ return {}; } }
+function saveProfiles(obj){ localStorage.setItem(LS_PROFILES, JSON.stringify(obj)); }
 function renderProfiles(){
   const tbody = byId('tblProfiles').querySelector('tbody');
   tbody.innerHTML = '';
@@ -277,7 +241,6 @@ function doClean(){
   const raw = (elIn.value||'').trim();
   if (!raw){ alert('Bitte einen Link einfügen.'); return; }
   let url = raw;
-  // Weiche: falls nur Domain ohne Schema
   if (/^www\./i.test(url)) url = 'https://' + url;
 
   const u = toURLMaybe(url);
@@ -290,7 +253,7 @@ function doClean(){
   if (prof === 'strict') elSafe.checked = false;
   if (prof === 'safe')   elSafe.checked = true;
 
-  const {url: out, removed, keptAff, host} = clean(u, elSafe.checked);
+  const {url: out, removed, keptAff} = clean(u, elSafe.checked);
 
   byId('outURL').textContent = out;
   byId('rem').textContent = 'Entfernt: ' + (removed.length? removed.join(', '): '–');
@@ -308,7 +271,6 @@ function openTarget(target){
 
   if (target === 'same'){
     if (noRef){
-      // Referrer-frei im selben Tab: über Zwischenseite
       const doc = `<meta name="referrer" content="no-referrer"><meta http-equiv="refresh" content="0;url=${out.replace(/"/g,'%22')}">`;
       const blob = new Blob([doc], {type:'text/html'});
       const u = URL.createObjectURL(blob);
@@ -384,17 +346,15 @@ byId('fileImport').onchange = (e)=>{
 
 /* Defaults laden */
 (function init(){
-  // Sticky Mode
   const m = (localStorage.getItem(LS_MODE)||'').toLowerCase();
   if (m==='safe' || m==='strict'){ elSticky.checked = true; elSafe.checked = (m==='safe'); }
   updateModeLabels();
   renderProfiles();
 
-  // URL-Parameter
   const q = new URLSearchParams(location.search);
   const v = q.get('u') || q.get('url');
-  const aff = q.get('aff');       // 1|0
-  const ao  = q.get('ao');        // 1 = auto open
+  const aff = q.get('aff');  // 1|0
+  const ao  = q.get('ao');   // 1 = auto open
   if (aff==='1') elSafe.checked = true;
   if (aff==='0') elSafe.checked = false;
   updateModeLabels();
@@ -402,10 +362,7 @@ byId('fileImport').onchange = (e)=>{
   if (v){
     elIn.value = decodeMaybe(v);
     const cleaned = doClean();
-    if (ao==='1' && cleaned){
-      // auto-open in neuem Tab
-      openTarget('new');
-    }
+    if (ao==='1' && cleaned){ openTarget('new'); }
   }
 })();
 
