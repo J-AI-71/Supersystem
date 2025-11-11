@@ -2,176 +2,122 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v42</title>
-<meta name="description" content="Links ohne Tracking. Optional Affiliates behalten. Referrer-frei öffnen. Profile pro Domain. Sticky-Modus. Reload. Mit Kurzanleitung.">
+<title>SafeShare – App</title>
+<meta name="description" content="Links ohne Tracking. SAFE/STRICT, Profile pro Domain, Referrer-frei, 1-Klick, Reload.">
+<!-- SPDX-License-Identifier: MIT -->
+
+<!-- Sicherheit -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+
+<!-- PWA/Meta -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0ea5e9">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="safeshare-og-v3b.png">
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
+
 <style>
-  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46;--chip:#ecfdf5}
+  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9;--chip:#f8fafc}
   *{box-sizing:border-box}
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-  h1{font-size:20px;margin:0 0 8px}
+  h1{font-size:22px;margin:0 0 8px}
+  h2{font-size:16px;margin:14px 0 8px}
   .muted{color:var(--muted);font-size:12px}
-  .row{margin:10px 0}
+  .row{margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .card{border:1px solid var(--bd);border-radius:12px;padding:14px}
   textarea{width:100%;min-height:120px;padding:10px;border:1px solid var(--bd);border-radius:8px;font-size:14px}
-  #out{min-height:140px;margin-top:8px}
-  .btn{display:inline-block;padding:10px 12px;margin:6px 8px 0 0;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);cursor:pointer}
+  #out{min-height:120px;margin-top:8px}
+  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);cursor:pointer}
   .btn.small{padding:6px 8px;font-size:12px}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
   .btn[disabled]{opacity:.5;pointer-events:none}
   #status{margin-top:8px;padding:8px;border:1px dashed var(--bd);border-radius:8px;font-size:12px}
-  #chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-  .chip{background:var(--chip);border:1px solid #a7f3d0;color:var(--ok);border-radius:999px;padding:2px 10px;font-size:12px}
-  #panels{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
-  .panel{border:1px solid var(--bd);border-radius:10px;padding:12px}
-  .panel h2{font-size:16px;margin:0 0 8px}
-  .rowflex{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  input[type=text]{padding:8px 10px;border:1px solid var(--bd);border-radius:8px;min-width:220px}
-  label.rad{display:inline-flex;align-items:center;gap:6px;margin-right:12px;font-size:14px}
-  code{background:#f8fafc;padding:2px 6px;border-radius:6px}
-  #debug{white-space:pre-wrap;font-size:12px;color:#7f1d1d;margin-top:6px}
-  .input-wrap{position:relative;display:inline-block}
-  #ss-dom{padding-right:34px;text-transform:lowercase}
-  #ss-x{
-    position:absolute;right:6px;top:50%;transform:translateY(-50%);
-    width:26px;height:26px;line-height:24px;text-align:center;
-    border:1px solid var(--bd);border-radius:999px;background:#fff;cursor:pointer
-  }
+  code{background:#f8fafc;padding:2px 6px;border-radius:6px;border:1px solid var(--bd)}
   details summary{cursor:pointer;font-weight:600;margin:6px 0}
-  ul.compact{margin:6px 0 0 18px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip{background:var(--chip);border:1px solid var(--bd);border-radius:999px;padding:2px 10px;font-size:12px}
+  .list{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--bd);border-radius:999px}
+  .pill b{font-weight:700}
+  input[type=text]{padding:8px;border:1px solid var(--bd);border-radius:8px;width:100%}
+  /* Klickbarkeit sicherstellen */
+  button, a.btn { pointer-events:auto }
 </style>
 </head>
 <body>
 
-<h1>SafeShare – App v42</h1>
-<p class="muted">Tracker raus. Affiliates optional. Referrer-frei. Profile. <strong>Sticky</strong> und <strong>Reload</strong>. Mit Kurzanleitung.</p>
+<h1>SafeShare – App</h1>
+<p class="muted">Einfügen → <strong>Säubern</strong> → <strong>Kopieren</strong> / <strong>Öffnen</strong> / <strong>1-Klick</strong>. Optional Affiliates behalten. Referrer-frei und Reload verfügbar.</p>
 
-<div id="chips">
-  <span id="chip-mode" class="chip">Modus: SAFE</span>
-  <span id="chip-prof" class="chip">Profil: –</span>
+<div class="card" style="margin-bottom:12px">
+  <h2>1) Eingabe</h2>
+  <textarea id="in" placeholder="link(s) hier einfügen …"></textarea>
+  <div class="row">
+    <button id="clean" class="btn primary" type="button">Säubern</button>
+    <button id="copy"  class="btn" type="button" disabled>Kopieren</button>
+    <button id="open"  class="btn" type="button" disabled>Öffnen</button>
+    <button id="openNew" class="btn" type="button" disabled>1-Klick (neu)</button>
+    <button id="openNR" class="btn" type="button" disabled>Referrer-frei</button>
+    <button id="reload" class="btn" type="button" disabled>Reload (Tab)</button>
+    <button id="clear" class="btn small" type="button" title="Leeren">&times;</button>
+  </div>
+
+  <div class="row">
+    <label class="muted" style="display:inline-flex;align-items:center;gap:6px">
+      <input id="keepAff" type="checkbox" checked> Provisionen behalten (SAFE)
+    </label>
+
+    <span class="pill muted" id="modePill">Modus: <b>SAFE</b></span>
+
+    <button id="stickySafe"   class="btn small" type="button" title="Als Standard merken (SAFE)">SAFE merken</button>
+    <button id="stickyStrict" class="btn small" type="button" title="Als Standard merken (STRICT)">STRICT merken</button>
+    <button id="stickyClear"  class="btn small" type="button" title="Standard löschen">Standard löschen</button>
+  </div>
+
+  <textarea id="out" readonly placeholder="bereinigte url(s) erscheinen hier …"></textarea>
+  <div id="status" class="muted">Status: –</div>
+
+  <div class="chips" id="chips"></div>
 </div>
 
-<textarea id="in" placeholder="Link(s) hier einfügen …"></textarea>
-
-<div class="row">
-  <button id="clean"  class="btn" type="button">Säubern</button>
-  <button id="copy"   class="btn" type="button">Kopieren</button>
-  <button id="openA"  class="btn" type="button" disabled>Öffnen</button>
-  <button id="goA"    class="btn" type="button" disabled>1-Klick (neu)</button>
-  <button id="openNR" class="btn" type="button" title="In neuem Tab ohne Referrer öffnen" disabled>Referrer-frei (neu)</button>
-  <button id="reload" class="btn" type="button" title="Aktuellen Tab auf bereinigte URL ersetzen" disabled>Reload (ersetzen)</button>
-  <button id="clear"  class="btn" type="button" title="Leeren" style="width:42px;padding:8px 0">&times;</button>
+<div class="card" style="margin-bottom:12px">
+  <h2>2) Profile pro Domain</h2>
+  <div class="row">
+    <input id="hostField" type="text" placeholder="host.tld" style="max-width:240px">
+    <button id="profSaveSafe" class="btn small" type="button">Profil speichern: SAFE</button>
+    <button id="profSaveStrict" class="btn small" type="button">Profil speichern: STRICT</button>
+    <button id="profDelete" class="btn small" type="button">Profil löschen</button>
+  </div>
+  <div id="profList" class="list muted"></div>
+  <div class="row" style="margin-top:8px">
+    <button id="profExport" class="btn small" type="button">Export</button>
+    <button id="profImport" class="btn small" type="button">Import</button>
+    <input id="importField" type="text" placeholder='JSON hier einfügen …' style="flex:1;min-width:240px">
+  </div>
 </div>
 
-<div class="row" style="display:flex;align-items:center;gap:16px">
-  <label class="muted" style="display:inline-flex;align-items:center">
-    <input id="keepAff" type="checkbox" checked style="margin-right:6px">Provisionen behalten (SAFE)
-  </label>
-  <label class="muted" style="display:inline-flex;align-items:center">
-    <input id="sticky" type="checkbox" style="margin-right:6px">Modus merken (Sticky)
-  </label>
-  <button id="setSafe"   class="btn small" type="button" title="SAFE dauerhaft">SAFE (sticky)</button>
-  <button id="setStrict" class="btn small" type="button" title="STRICT dauerhaft">STRICT (sticky)</button>
-</div>
-
-<textarea id="out" readonly placeholder="Bereinigte URL(s) erscheinen hier …"></textarea>
-<div id="status" class="muted">Status: –</div>
-<div id="debug" class="muted"></div>
-
-<div id="panels">
-  <section class="panel" id="profPanel">
-    <h2>Profil pro Domain</h2>
-    <div class="rowflex">
-      <div class="input-wrap">
-        <input id="ss-dom" type="text" placeholder="domain.tld (z. B. amazon.de)">
-        <button id="ss-x" type="button" title="Profil löschen" aria-label="Profil löschen">&times;</button>
-      </div>
-      <label class="rad"><input type="radio" name="ss-profmode" value="safe" checked>Safe</label>
-      <label class="rad"><input type="radio" name="ss-profmode" value="strict">Strict</label>
-    </div>
-    <div class="rowflex">
-      <button id="ss-save" class="btn small" type="button">Speichern</button>
-      <button id="ss-del"  class="btn small" type="button">Löschen</button>
-    </div>
-    <div id="ss-prof-status" class="muted">–</div>
-  </section>
-
-  <section class="panel" id="backupPanel">
-    <h2>Export / Import</h2>
-    <div class="rowflex">
-      <button id="ss-exp" class="btn small" type="button">Export</button>
-      <label class="btn small" style="cursor:pointer">Import<input id="ss-imp" type="file" accept="application/json" hidden></label>
-    </div>
-    <p class="muted">Exportiert/Importiert Profile unter <code>ss_profiles</code>.</p>
-  </section>
-
-  <!-- KURZANLEITUNG -->
-  <section class="panel" id="guidePanel">
-    <h2>Kurzanleitung</h2>
-
-    <details open>
-      <summary>Buttons kurz erklärt</summary>
-      <ul class="compact">
-        <li><strong>Säubern</strong>: entfernt <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, löst Wrapper (Google/Facebook/AMP). Modus siehe Checkbox.</li>
-        <li><strong>Kopieren</strong>: kopiert die <em>erste</em> bereinigte URL aus dem Ergebnisfeld.</li>
-        <li><strong>Öffnen</strong>: lädt die bereinigte URL im selben Tab.</li>
-        <li><strong>1-Klick (neu)</strong>: öffnet im neuen Tab.</li>
-        <li><strong>Referrer-frei (neu)</strong>: neuer Tab ohne Referrer (<code>rel="noreferrer"</code>).</li>
-        <li><strong>Reload (ersetzen)</strong>: ersetzt den aktuellen Tab durch die bereinigte URL.</li>
-        <li><strong>×</strong>: leert das Eingabefeld. Das <strong>×</strong> beim Profil löscht das Profil.</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>SAFE vs. STRICT</summary>
-      <ul class="compact">
-        <li><strong>SAFE</strong>: Tracking weg, typische Affiliate-Parameter bleiben (z. B. Amazon <code>tag</code>).</li>
-        <li><strong>STRICT</strong>: alles weg, inkl. Affiliate.</li>
-        <li><strong>Sticky</strong>: merkt den Modus global, bis du ihn änderst.</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>Profile pro Domain</summary>
-      <ul class="compact">
-        <li>Domain eintragen → <strong>SAFE</strong> oder <strong>STRICT</strong> → <strong>Speichern</strong>.</li>
-        <li>Beim Einfügen einer URL zieht SafeShare das Profil automatisch.</li>
-        <li><strong>Löschen</strong> oder <strong>×</strong> entfernt das Profil.</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>Bookmarklets</summary>
-      <ul class="compact">
-        <li><a href="bookmarklets.html">bookmarklets.html</a> öffnen.</li>
-        <li>„SAFE“ oder „STRICT“ in die Lesezeichenleiste ziehen.</li>
-        <li>Auf einer Seite mit langem Link anklicken → SafeShare bereinigt und öffnet.</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>URL-Parameter für Automatik</summary>
-      <ul class="compact">
-        <li><code>?u=</code> die zu reinigende URL (URL-enkodiert).</li>
-        <li><code>&aff=1</code> = SAFE, <code>&aff=0</code> = STRICT.</li>
-        <li><code>&ao=1</code> = nach dem Säubern automatisch öffnen.</li>
-        <li>Beispiel: <code>app.html?aff=1&ao=1&u=&lt;ENCODED&gt;</code></li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>Fehlersuche</summary>
-      <ul class="compact">
-        <li>Status zeigt „Affiliates behalten“ und „Entfernt“.</li>
-        <li>Wenn nichts passiert: andere Domain testen, Modus wechseln, hart neu laden (<code>Ctrl/Cmd+Shift+R</code>).</li>
-      </ul>
-    </details>
-  </section>
-</div>
+<details class="card">
+  <summary>Kurzanleitung</summary>
+  <ul class="muted" style="margin:6px 0 0 18px">
+    <li><strong>Säubern</strong>: entfernt <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, löst Wrapper (Google/Facebook/AMP), entfaltet verschachtelte Links.</li>
+    <li><strong>SAFE</strong> (Haken an): Affiliates bleiben (z. B. Amazon <code>tag</code>). <strong>STRICT</strong> (Haken aus): alles weg, auch Affiliates.</li>
+    <li><strong>Öffnen</strong>: gleicher Tab. <strong>1-Klick</strong>: neuer Tab. <strong>Referrer-frei</strong>: neuer Tab ohne Referrer. <strong>Reload</strong>: ersetzt aktuellen Tab.</li>
+    <li><strong>Profile</strong>: pro Host SAFE/STRICT merken. Import/Export als JSON.</li>
+    <li><strong>Auto-Parameter</strong>: <code>?u=&lt;ENCODED&gt;</code>, <code>&aff=1|0</code> oder <code>&mode=safe|strict</code>, <code>&ao=1</code> (auto öffnen).</li>
+  </ul>
+</details>
 
 <script>
-window.addEventListener('error', e => { const d=document.getElementById('debug'); if(d) d.textContent='JS-Fehler: '+e.message; });
+/* ===== Utility/DOM ===== */
+const $=id=>document.getElementById(id);
+const inEl=$('in'), outEl=$('out'), keepAff=$('keepAff'), statusEl=$('status'), chipsEl=$('chips'), modePill=$('modePill');
+const btnClean=$('clean'), btnCopy=$('copy'), btnOpen=$('open'), btnOpenNew=$('openNew'), btnOpenNR=$('openNR'), btnReload=$('reload'), btnClear=$('clear');
+const hostField=$('hostField'), profList=$('profList'), profExport=$('profExport'), profImport=$('profImport'), importField=$('importField');
+const stickySafe=$('stickySafe'), stickyStrict=$('stickyStrict'), stickyClear=$('stickyClear');
+const LSK_PROF='ss_profiles', LSK_STICKY='ss_sticky', LSK_KEEP='ss_keepAff';
 
-/* Kill-/Aff-Regeln */
+/* ===== Regeln ===== */
 const killBase=new Set(['fbclid','gclid','twclid','msclkid','igshid','vero_id','wickedid','dclid','ref_src','ref_url','si','spm','mkt_tok','wtmc','wt_mc','wt_zmc','zmc','xtor','client','zx','no_sw_cr']);
 const AFF={
   baseKeep:new Set(['coupon','code']),
@@ -185,39 +131,10 @@ const AFF={
   exactPairs:new Set([])
 };
 
-/* $ */
-const $=id=>document.getElementById(id);
-const inEl=$('in'), outEl=$('out'), statusEl=$('status'), chipMode=$('chip-mode'), chipProf=$('chip-prof');
-const openNR=$('openNR'), btnReload=$('reload');
+/* ===== State ===== */
+let last={kept:new Set(),removed:new Set(),mode:'SAFE'};
 
-/* Kleinschreibung */
-function normalizeDomField(){
-  const el=$('ss-dom'); if(!el) return;
-  let v=(el.value||'').trim();
-  if(/:\/\//.test(v)||v.includes('/')){ try{ v=new URL(v.includes('://')?v:('https://'+v)).hostname; }catch(_){ } }
-  v=(v||'').replace(/^www\./,'').toLowerCase();
-  el.value=v;
-}
-['input','blur','change','paste'].forEach(ev=>{
-  const el=$('ss-dom'); if(el) el.addEventListener(ev,()=>setTimeout(normalizeDomField,0));
-});
-function normalizeHostsInTextarea(){
-  const rx=/(https?:\/\/[^\s<>"')]+)/ig;
-  let t=inEl.value;
-  t=t.replace(rx,(url)=>{
-    try{
-      const u=new URL(url);
-      u.protocol=(u.protocol||'https:').toLowerCase();
-      u.hostname=u.hostname.toLowerCase();
-      return u.toString();
-    }catch(_){return url;}
-  });
-  inEl.value=t;
-}
-inEl.addEventListener('paste', ()=>setTimeout(normalizeHostsInTextarea,0));
-inEl.addEventListener('blur', normalizeHostsInTextarea);
-
-/* Helpers */
+/* ===== Helpers ===== */
 function firstUrl(){ const m=(outEl.value||'').match(/https?:\/\/[^\s]+/); return m?m[0]:''; }
 function extractUrls(t){const rx=/\bhttps?:\/\/[^\s<>"')]+/gi,r=[];let m;while((m=rx.exec(t||'')))r.push(m[0]);return r.length?r:(t||'').split('\n').map(s=>s.trim()).filter(Boolean);}
 function deepDecode(s){let a=s||'',b=s||'';for(let i=0;i<8;i++){try{b=decodeURIComponent(a)}catch(_){break}if(b===a)break;a=b}return a;}
@@ -242,11 +159,7 @@ function applyAmpCanonical(u){
     return new URL(u.origin+path+(sp.size?('?'+sp.toString()):''));
   }catch(_){return u;}
 }
-function buildAffNames(host){
-  const names=new Set(AFF.globalNames);
-  for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) names.add(n);
-  return names;
-}
+function buildAffNames(host){ const names=new Set(AFF.globalNames); for(const r of AFF.byHostRules) if(r.test(host)) for(const n of r.names) names.add(n); return names; }
 function sortAndDedupe(out){
   const sorted=new URL(out.origin+out.pathname);
   [...new Set([...out.searchParams].map(([k,v])=>k+'\u0000'+v))]
@@ -268,9 +181,18 @@ function sanitizeHash(u,affNames,keepOn,removed){
   }
   const nh=hp.toString(); return nh?('#'+nh):'';
 }
+function writeChips(keptSet, removedSet){
+  const kept=[...keptSet].sort(), rem=[...removedSet].sort();
+  const frag=[];
+  if(kept.length){ frag.push(`<span class="chip">Affiliates behalten: ${kept.join(', ')}</span>`); }
+  if(rem.length){ frag.push(`<span class="chip">Entfernt: ${rem.join(', ')}</span>`); }
+  chipsEl.innerHTML = frag.join('');
+}
+function setModePill(){
+  modePill.innerHTML = `Modus: <b>${keepAff.checked?'SAFE':'STRICT'}</b>`;
+}
 
-/* Clean */
-let last={kept:new Set(),removed:new Set(),mode:'SAFE'};
+/* ===== Clean ===== */
 function cleanOne(s){
   s=(s||'').trim().replace(/[,.;:)\]]$/,''); if(!s) return s;
   let u0; try{u0=new URL(s);}catch(_){ try{u0=new URL('https://'+s);}catch(__){return s;} }
@@ -278,7 +200,7 @@ function cleanOne(s){
   let u=unwrapDeep(u0); u=applyAmpCanonical(u);
   try{ u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); }catch(_){}
 
-  const keepOn=$('keepAff').checked;
+  const keepOn=keepAff.checked;
   const host=u.hostname.toLowerCase();
   const affNames=buildAffNames(host);
 
@@ -298,109 +220,117 @@ function cleanOne(s){
   sortAndDedupe(out);
 
   last={kept,removed,mode:keepOn?'SAFE':'STRICT'};
+  hostField.value = host;
+  writeChips(kept, removed);
   return out.toString();
 }
 function summarize(){
   const u=firstUrl();
-  $('openA').disabled=!u; $('goA').disabled=!u; $('openNR').disabled=!u; $('reload').disabled=!u;
+  btnCopy.disabled=!u; btnOpen.disabled=!u; btnOpenNew.disabled=!u; btnOpenNR.disabled=!u; btnReload.disabled=!u;
   const kept=Array.from(last.kept).sort().join(', ')||'–';
   const rem=Array.from(last.removed).sort().join(', ')||'–';
   statusEl.textContent=`Modus: ${last.mode} · Affiliates behalten: ${kept} · Entfernt: ${rem}`;
-  chipMode.textContent=`Modus: ${last.mode}`;
+  setModePill();
+}
+function run(){ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); }
+
+/* ===== Profiles/Sticky ===== */
+function loadProfiles(){ try{ return JSON.parse(localStorage.getItem(LSK_PROF)||'{}'); }catch(_){ return {}; } }
+function saveProfiles(x){ localStorage.setItem(LSK_PROF, JSON.stringify(x)); renderProfiles(); }
+function renderProfiles(){
+  const map=loadProfiles();
+  const keys=Object.keys(map).sort();
+  if(!keys.length){ profList.innerHTML='<span class="muted">Keine Profile gespeichert.</span>'; return; }
+  profList.innerHTML='';
+  keys.forEach(h=>{
+    const row=document.createElement('div');
+    row.style.display='contents';
+    const left=document.createElement('div');
+    left.textContent = `${h} → ${map[h]}`;
+    const right=document.createElement('div');
+    const x=document.createElement('button');
+    x.className='btn small'; x.textContent='×'; x.title='Profil löschen';
+    x.onclick=()=>{ const m=loadProfiles(); delete m[h]; saveProfiles(m); };
+    right.appendChild(x);
+    profList.appendChild(left); profList.appendChild(right);
+  });
+}
+function applyAutoModeForHost(host){
+  const prof=loadProfiles()[host];
+  const sticky=localStorage.getItem(LSK_STICKY);
+  if(prof==='STRICT'){ keepAff.checked=false; }
+  else if(prof==='SAFE'){ keepAff.checked=true; }
+  else if(sticky==='STRICT'){ keepAff.checked=false; }
+  else if(sticky==='SAFE'){ keepAff.checked=true; }
+  setModePill();
 }
 
-/* Aktionen */
-function run(){ try{ const lines=extractUrls(inEl.value); outEl.value=lines.map(cleanOne).join('\n'); summarize(); applyProfileForInput(); stickyMaybeSave(); }catch(e){ const d=$('debug'); if(d) d.textContent='Laufzeitfehler: '+e.message; } }
-$('clean').onclick=run;
-$('keepAff').onchange=run;
-$('copy').onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
-$('openA').onclick=()=>{const u=firstUrl(); if(u) location.href=u;};
-$('goA').onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
-$('openNR').onclick=()=>{const u=firstUrl(); if(u){ const a=document.createElement('a'); a.href=u; a.target='_blank'; a.rel='noreferrer noopener'; document.body.appendChild(a); a.click(); a.remove(); }};
-$('reload').onclick=()=>{const u=firstUrl(); if(u) location.replace(u);};
-$('clear').onclick=()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';$('debug').textContent='';chipProf.textContent='Profil: –';inEl.focus();};
+/* ===== Actions ===== */
+btnClean.onclick=run;
+keepAff.onchange=()=>{ localStorage.setItem(LSK_KEEP, keepAff.checked?'1':'0'); run(); };
+btnCopy.onclick=async()=>{const u=firstUrl(); if(!u)return; try{await navigator.clipboard.writeText(u);alert('Kopiert');}catch(_){}};
+btnOpen.onclick =()=>{const u=firstUrl(); if(u) location.href=u;};
+btnOpenNew.onclick=()=>{const u=firstUrl(); if(u) window.open(u,'_blank','noopener');};
+btnOpenNR.onclick =()=>{const u=firstUrl(); if(!u) return; window.open(u,'_blank','noreferrer,noopener');};
+btnReload.onclick =()=>{const u=firstUrl(); if(u) location.replace(u);};
+btnClear.onclick =()=>{inEl.value='';outEl.value='';statusEl.textContent='Status: –';chipsEl.innerHTML='';btnCopy.disabled=btnOpen.disabled=btnOpenNew.disabled=btnOpenNR.disabled=btnReload.disabled=true;inEl.focus();};
 
-/* Sticky */
-const LS_STICKY='ss_sticky', LS_MODE='ss_keepAff';
-function stickyLoad(){
-  try{
-    const st = localStorage.getItem(LS_STICKY)==='1';
-    $('sticky').checked = st;
-    if(st){
-      const m = localStorage.getItem(LS_MODE);
-      if(m==='0') $('keepAff').checked=false;
-      if(m==='1') $('keepAff').checked=true;
-    }
-  }catch(_){}
+stickySafe.onclick  =()=>{ localStorage.setItem(LSK_STICKY,'SAFE'); keepAff.checked=true;  setModePill(); };
+stickyStrict.onclick=()=>{ localStorage.setItem(LSK_STICKY,'STRICT'); keepAff.checked=false; setModePill(); };
+stickyClear.onclick =()=>{ localStorage.removeItem(LSK_STICKY); setModePill(); };
+
+$('profSaveSafe').onclick   =()=>{ const h=(hostField.value||'').trim().toLowerCase(); if(!h) return; const m=loadProfiles(); m[h]='SAFE'; saveProfiles(m); };
+$('profSaveStrict').onclick =()=>{ const h=(hostField.value||'').trim().toLowerCase(); if(!h) return; const m=loadProfiles(); m[h]='STRICT'; saveProfiles(m); };
+$('profDelete').onclick     =()=>{ const h=(hostField.value||'').trim().toLowerCase(); if(!h) return; const m=loadProfiles(); delete m[h]; saveProfiles(m); };
+profExport.onclick = async ()=>{ const s=JSON.stringify(loadProfiles()); try{ await navigator.clipboard.writeText(s); alert('Profile kopiert'); }catch(_){ importField.value=s; } };
+profImport.onclick = ()=>{ try{ const obj=JSON.parse(importField.value||'{}'); if(obj && typeof obj==='object'){ saveProfiles(obj); alert('Profile importiert'); } }catch(e){ alert('Import-JSON ungültig'); } };
+
+/* Hosts in Eingabe normalisieren */
+function normalizeHostsInTextarea(){
+  const rx=/(https?:\/\/[^\s<>"')]+)/ig;
+  let t=inEl.value;
+  t=t.replace(rx,(url)=>{
+    try{
+      const u=new URL(url);
+      u.protocol=(u.protocol||'https:').toLowerCase();
+      u.hostname=u.hostname.toLowerCase();
+      return u.toString();
+    }catch(_){return url;}
+  });
+  inEl.value=t;
 }
-function stickyMaybeSave(){
-  try{
-    if(!$('sticky').checked) return;
-    localStorage.setItem(LS_MODE, $('keepAff').checked?'1':'0');
-  }catch(_){}
-}
-$('sticky').onchange=()=>{ try{ localStorage.setItem(LS_STICKY, $('sticky').checked?'1':'0'); stickyMaybeSave(); summarize(); }catch(_){} };
-$('setSafe').onclick = ()=>{ $('keepAff').checked=true; localStorage.setItem(LS_STICKY,'1'); localStorage.setItem(LS_MODE,'1'); $('sticky').checked=true; run(); };
-$('setStrict').onclick= ()=>{ $('keepAff').checked=false; localStorage.setItem(LS_STICKY,'1'); localStorage.setItem(LS_MODE,'0'); $('sticky').checked=true; run(); };
+inEl.addEventListener('paste', ()=>setTimeout(normalizeHostsInTextarea,0));
+inEl.addEventListener('blur', normalizeHostsInTextarea);
 
-/* Profile + Backup */
-const LS_KEY='ss_profiles';
-const S={ load(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'{}');}catch(_){return{}}}, save(o){localStorage.setItem(LS_KEY,JSON.stringify(o))} };
-(function migrateProfilesToLower(){
-  const map=S.load()||{}; const next={}; let changed=false;
-  for(const k in map){ const lk=(k||'').toLowerCase(); next[lk]=map[k]; if(lk!==k) changed=true; }
-  if(changed) S.save(next);
-})();
-function hostOfFirstUrl(text){
-  if(!text) return '';
-  const rx=/\bhttps?:\/\/([^\/\s?#:]+)[^\s]*/i;
-  const m=(text+'').match(rx);
-  if(m) return m[1].toLowerCase();
-  try{ const u=new URL(text.includes('://')?text:('https://'+text)); return u.hostname.toLowerCase(); }catch(_){ return ''; }
-}
-function selectRad(v){ document.querySelectorAll('input[name="ss-profmode"]').forEach(r=>{ r.checked=(r.value===v); }); }
-function applyProfileForInput(){
-  const host=hostOfFirstUrl(inEl.value);
-  if(!host){ chipProf.textContent='Profil: –'; $('ss-prof-status').textContent='–'; $('ss-dom').value=''; return; }
-  const prof=S.load()[host];
-  if(prof==='safe'){ $('keepAff').checked=true; chipProf.textContent=`Profil: ${host} = SAFE`; $('ss-dom').value=host; selectRad('safe'); }
-  else if(prof==='strict'){ $('keepAff').checked=false; chipProf.textContent=`Profil: ${host} = STRICT`; $('ss-dom').value=host; selectRad('strict'); }
-  else { chipProf.textContent=`Profil: ${host} = keines`; $('ss-dom').value=host; }
-  chipMode.textContent=`Modus: ${$('keepAff').checked?'SAFE':'STRICT'}`;
-}
+/* ===== Boot ===== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderProfiles();
+  // sticky remembered?
+  const remembered = localStorage.getItem(LSK_KEEP);
+  if(remembered==='0') keepAff.checked=false;
+  if(remembered==='1') keepAff.checked=true;
 
-/* Profile Buttons */
-$('ss-save').onclick=()=>{ normalizeDomField();
-  const dom=($('ss-dom').value||'').trim().toLowerCase(); if(!dom){$('ss-prof-status').textContent='Bitte Domain eingeben.';return;}
-  const mode=document.querySelector('input[name="ss-profmode"]:checked')?.value||'safe';
-  const map=S.load(); map[dom]=mode; S.save(map); $('ss-prof-status').textContent=`Gespeichert: ${dom} → ${mode.toUpperCase()}`; applyProfileForInput(); };
-$('ss-del').onclick=()=>{ normalizeDomField();
-  const dom=($('ss-dom').value||'').trim().toLowerCase(); const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); $('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { $('ss-prof-status').textContent='Nichts zu löschen.'; } applyProfileForInput(); };
-$('ss-x').onclick=()=>{ const dom=($('ss-dom').value||'').trim().toLowerCase();
-  if(dom){ const map=S.load(); if(map[dom]){ delete map[dom]; S.save(map); $('ss-prof-status').textContent=`Gelöscht: ${dom}`; } else { $('ss-prof-status').textContent='Kein Profil vorhanden.'; } }
-  $('ss-dom').value=''; applyProfileForInput();
-};
-
-/* Autofill + SW */
-document.addEventListener('DOMContentLoaded', function(){
-  // Sticky laden
-  stickyLoad();
-
-  // URL-Parameter
   const p=new URLSearchParams(location.search);
   let q=p.get('u')||p.get('url'); const ao=p.get('open')||p.get('ao'); const aff=p.get('aff')||p.get('mode');
-  if(aff==='0'||/^strict$/i.test(aff)) $('keepAff').checked=false;
-  if(aff==='1'||/^safe$/i.test(aff))  $('keepAff').checked=true;
+  if(aff==='0'||/^strict$/i.test(aff)) keepAff.checked=false;
+  if(aff==='1'||/^safe$/i.test(aff))  keepAff.checked=true;
+
   if(q){
     try{q=decodeURIComponent(q);}catch(_){}
-    try{ const u=new URL(q); u.protocol=(u.protocol||'https:').toLowerCase(); u.hostname=u.hostname.toLowerCase(); q=u.toString(); }catch(_){}
+    try{
+      const u=new URL(q);
+      u.protocol=(u.protocol||'https:').toLowerCase();
+      u.hostname=u.hostname.toLowerCase();
+      q=u.toString();
+      applyAutoModeForHost(u.hostname.toLowerCase());
+      hostField.value=u.hostname.toLowerCase();
+    }catch(_){}
     inEl.value=q; normalizeHostsInTextarea(); run();
     if(ao==='1'){ const u=firstUrl(); if(u) location.href=u; }
   }
 
-  // Service Worker
-  if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
-    navigator.serviceWorker.register('sw.js?v=1').catch(()=>{});
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js?v=3').catch(()=>{});
   }
 });
 </script>
