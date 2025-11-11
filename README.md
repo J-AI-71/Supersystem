@@ -24,6 +24,41 @@ SafeShare entfernt Tracking-Parameter (`utm_*`, `fbclid`, `gclid`, …), löst W
 - sitemap.xml: https://j-ai-71.github.io/Supersystem/sitemap.xml
 - security.txt: https://j-ai-71.github.io/Supersystem/.well-known/security.txt
 
+## Getting Started
+
+### 1) Repo und Pages
+- Repo: **Supersystem** (öffentlich)
+- Dateien in den Root-Ordner `/Supersystem/` legen
+- GitHub Pages: **Settings → Pages → Build from branch → main / /root**
+
+### 2) Edit & Deploy
+- Dateien im Browser ändern: **Add file → Create new file** oder **Upload files**
+- Commit auf `main` reicht. Kein Build, keine Abhängigkeiten
+
+### 3) Cache leeren nach Änderungen
+- `https://j-ai-71.github.io/Supersystem/tools.html?v=100`
+  - **Alle Caches löschen**
+  - **Service Worker abmelden**
+- Seiten mit `?v=100` neu laden
+
+### 4) Schnelltest
+- SAFE:  
+  `app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx`
+- STRICT:  
+  `app.html?aff=0&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_medium%3Demail%26gclid%3D1`
+
+### 5) Struktur
+- HTML: `index.html`, `app.html`, `app-classic.html`, `bookmarklets.html`, `tests.html`, `tools.html`, `partner.html`, `danke.html`, `faq.html`, `changelog.html`, `impressum.html`, `datenschutz.html`
+- Meta: `robots.txt`, `sitemap.xml`, `manifest.webmanifest`, `.well-known/security.txt`, `.nojekyll`
+- Assets: `safeshare-og-v3b.png`, `favicon-32.png`, `favicon.svg`
+- SW: `sw.js`
+- Doku: `README.md`, `LICENSE`, `.github/*`
+
+### 6) Fehlerbehebung
+- Seiten „kleben“ → Tools-Seite verwenden → `?v=` erhöhen
+- `.well-known` 404 → Datei **.nojekyll** existiert?
+- Templates fehlen → Dateien unter `.github/…` anlegen
+
 ## Quickstart
 1. `https://j-ai-71.github.io/Supersystem/app.html` öffnen.  
 2. Link einfügen → **Säubern**.  
