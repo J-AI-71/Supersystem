@@ -1,7 +1,7 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Tools</title>
-<meta name="description" content="Cache löschen, Service Worker abmelden, Lokale Daten zurücksetzen.">
+<meta name="description" content="Cache löschen, Service Worker abmelden, Lokale Daten zurücksetzen, Hard-Reload.">
 <meta http-equiv="Content-Security-Policy"
  content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
@@ -14,29 +14,44 @@ h1{margin:0 0 8px}.muted{color:var(--muted);font-size:12px}
 .btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
 pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
 ul{margin:8px 0 0 18px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 </style></head><body>
 <h1>Tools</h1>
 
 <div class="card">
   <h2>Service Worker</h2>
-  <button class="btn" id="btnSWList">Liste anzeigen</button>
-  <button class="btn" id="btnSWUnreg">Alle abmelden</button>
+  <div class="row">
+    <button class="btn" id="btnSWList" type="button">Liste anzeigen</button>
+    <button class="btn" id="btnSWUnreg" type="button">Alle abmelden</button>
+  </div>
   <pre id="swOut">–</pre>
 </div>
 
 <div class="card">
   <h2>Caches</h2>
-  <button class="btn" id="btnCachesList">Liste anzeigen</button>
-  <button class="btn" id="btnCachesDel">Alle löschen</button>
+  <div class="row">
+    <button class="btn" id="btnCachesList" type="button">Liste anzeigen</button>
+    <button class="btn" id="btnCachesDel" type="button">Alle löschen</button>
+  </div>
   <pre id="cacheOut">–</pre>
 </div>
 
 <div class="card">
   <h2>Lokale Daten</h2>
-  <button class="btn" id="btnLSList">LocalStorage anzeigen</button>
-  <button class="btn" id="btnLSReset">SafeShare-Keys löschen</button>
+  <div class="row">
+    <button class="btn" id="btnLSList" type="button">LocalStorage anzeigen</button>
+    <button class="btn" id="btnLSReset" type="button">SafeShare-Keys löschen</button>
+  </div>
   <pre id="lsOut">–</pre>
   <p class="muted">Betroffene Keys: <code>ss_mode_default</code>, <code>ss_profiles_v1</code>.</p>
+</div>
+
+<div class="card">
+  <h2>Hard-Reload</h2>
+  <div class="row">
+    <button class="btn" id="btnHard" type="button">Alles leeren + neu laden</button>
+  </div>
+  <p class="muted">Löscht SW, Caches, SafeShare-LocalStorage. Lädt Startseite mit Cachebuster.</p>
 </div>
 
 <div class="card">
@@ -89,6 +104,24 @@ $('#btnLSReset').onclick = ()=>{
   localStorage.removeItem('ss_mode_default');
   localStorage.removeItem('ss_profiles_v1');
   $('#lsOut').textContent = 'SafeShare-Keys gelöscht.';
+};
+
+$('#btnHard').onclick = async ()=>{
+  try{
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) await r.unregister();
+    }
+    if('caches' in window){
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k=>caches.delete(k)));
+    }
+    localStorage.removeItem('ss_mode_default');
+    localStorage.removeItem('ss_profiles_v1');
+  }finally{
+    const v = Math.random().toString(36).slice(2);
+    location.href = 'index.html?v='+v;
+  }
 };
 </script>
 </body></html>
