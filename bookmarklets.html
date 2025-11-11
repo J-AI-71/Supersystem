@@ -1,84 +1,96 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Bookmarklets</title>
-<meta name="description" content="Bookmarklets: SAFE (Affiliates behalten) und STRICT (alles entfernen). Mit Test-URL.">
+<meta name="description" content="Bookmarklets: SAFE (Affiliates behalten) und STRICT (alles entfernen). Mit Code-kopieren und Test-URL.">
 <meta http-equiv="Content-Security-Policy"
  content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
 <link rel="icon" href="favicon-32.png">
 <style>
-:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46}
 *{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
 h1{margin:0 0 8px}.muted{color:var(--muted);font-size:12px}
 .card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
 a.bm, .btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
 pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:14px}
 label{font-size:13px;color:var(--muted)}
+kbd{background:#f1f5f9;border:1px solid var(--bd);border-radius:6px;padding:0 6px}
+.notice{color:var(--ok);font-size:12px;margin-left:8px}
 </style></head><body>
 <h1>Bookmarklets</h1>
 
 <div class="card">
   <h2>1) Installieren</h2>
-  <p>Desktop: die Links in die Lesezeichenleiste ziehen.</p>
-  <p>iOS/Android: Lesezeichen anlegen, dann die URL durch den Code ersetzen.</p>
+  <p>Desktop: die Links in die Lesezeichenleiste ziehen. Mobil: Lesezeichen anlegen, dann die URL durch den Code ersetzen.</p>
 </div>
 
 <div class="card">
   <h2>SAFE (Affiliates behalten)</h2>
   <p><a class="bm" href="javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()">SafeShare SAFE</a></p>
-  <details><summary>Code anzeigen</summary>
-<pre>javascript:(()=>{const u=location.href;
-const t='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);
-window.open(t,'_blank');})()</pre>
-  </details>
+  <div class="row" style="margin-top:6px">
+    <button class="btn" id="copySafe" type="button">Code kopieren (SAFE)</button>
+    <span id="okSafe" class="notice" hidden>Kopiert.</span>
+  </div>
+  <pre><code id="codeSafe">javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()</code></pre>
 </div>
 
 <div class="card">
   <h2>STRICT (alles entfernen)</h2>
   <p><a class="bm" href="javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()">SafeShare STRICT</a></p>
-  <details><summary>Code anzeigen</summary>
-<pre>javascript:(()=>{const u=location.href;
-const t='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);
-window.open(t,'_blank');})()</pre>
-  </details>
+  <div class="row" style="margin-top:6px">
+    <button class="btn" id="copyStrict" type="button">Code kopieren (STRICT)</button>
+    <span id="okStrict" class="notice" hidden>Kopiert.</span>
+  </div>
+  <pre><code id="codeStrict">javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()</code></pre>
 </div>
 
 <div class="card">
-  <h2>2) Klick-Test (öffnet die App mit einer Beispiel-URL)</h2>
-  <label for="demoUrl">Beispiel-URL zum Testen:</label>
-  <input id="demoUrl" type="text" inputmode="url"
-         value="https://example.com/a?utm_source=newsletter&gclid=TEST123#top">
+  <h2>2) Klick-Test (App mit Beispiel-URL öffnen)</h2>
+  <label for="demoUrl">Beispiel-URL:</label>
+  <input id="demoUrl" type="text" inputmode="url" value="https://example.com/a?utm_source=newsletter&gclid=TEST123#top">
   <div class="row" style="margin-top:8px">
     <button class="btn" id="testSafe" type="button">Klick-Test SAFE</button>
     <button class="btn" id="testStrict" type="button">Klick-Test STRICT</button>
   </div>
-  <p class="muted">Hinweis: Auf dieser Seite selbst würden Bookmarklets immer wieder diese Seite öffnen. Zum echten Test eine externe Seite aufrufen und dann das Lesezeichen klicken.</p>
+  <p class="muted" style="margin-top:6px">Auf dieser Seite würden Bookmarklets immer wieder diese Seite öffnen. Für den echten Test eine externe Seite laden und dann das Lesezeichen tippen.</p>
 </div>
 
 <div class="card">
   <h2>Hinweise</h2>
   <ul>
-    <li>Pop-up-Blocker kann neue Tabs verhindern. Klick-Test oben nutzt Navigation im selben Tab.</li>
-    <li>Kurzlinks wie <code>pin.it/…</code> leiten serverseitig. Ergebnis erst nach Laden sichtbar.</li>
+    <li>Browser teilen <code>javascript:</code> nicht. Lesezeichen-URL **manuell** durch den Code ersetzen.</li>
+    <li>Pop-up-Blocker kann neue Tabs verhindern. Dann die „Klick-Tests“ oben nutzen.</li>
+    <li>iOS: Lesezeichen anlegen → in Safari unter „Bearbeiten“ die <strong>Adresse</strong> durch den Code ersetzen.</li>
+    <li>Kurzlinks wie <code>pin.it/…</code> leiten serverseitig. Ergebnis sieht man erst nach Laden.</li>
+    <li>Nur gerade Anführungszeichen verwenden, keine typografischen.</li>
   </ul>
 </div>
 
 <script>
-const absApp = 'https://j-ai-71.github.io/Supersystem/app.html';
-const getDemo = ()=> {
-  const v = (document.getElementById('demoUrl').value||'').trim();
-  return v || 'https://example.com/a?utm_source=newsletter&gclid=TEST123#top';
-};
-document.getElementById('testSafe').onclick = ()=>{
-  const u = getDemo();
-  location.href = absApp + '?aff=1&ao=1&u=' + encodeURIComponent(u);
-};
-document.getElementById('testStrict').onclick = ()=>{
-  const u = getDemo();
-  location.href = absApp + '?aff=0&ao=1&u=' + encodeURIComponent(u);
-};
+function copyFrom(codeEl, okEl){
+  const txt = codeEl.textContent.trim();
+  const done = ()=>{ okEl.hidden=false; setTimeout(()=>okEl.hidden=true, 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(()=>{
+      const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+      ta.select(); try{ document.execCommand('copy'); }catch{} document.body.removeChild(ta); done();
+    });
+  }else{
+    const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand('copy'); }catch{} document.body.removeChild(ta); done();
+  }
+}
+document.getElementById('copySafe').onclick = ()=>copyFrom(document.getElementById('codeSafe'), document.getElementById('okSafe'));
+document.getElementById('copyStrict').onclick = ()=>copyFrom(document.getElementById('codeStrict'), document.getElementById('okStrict'));
+
+const absApp='https://j-ai-71.github.io/Supersystem/app.html';
+const getDemo=()=>{const v=(document.getElementById('demoUrl').value||'').trim();return v||'https://example.com/a?utm_source=newsletter&gclid=TEST123#top';};
+document.getElementById('testSafe').onclick = ()=>{ const u=getDemo(); location.href=absApp+'?aff=1&ao=1&u='+encodeURIComponent(u); };
+document.getElementById('testStrict').onclick = ()=>{ const u=getDemo(); location.href=absApp+'?aff=0&ao=1&u='+encodeURIComponent(u); };
+
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
 </body></html>
