@@ -2,9 +2,10 @@
 - …
 
 ### Tests
-- …
+- /Supersystem/tests.html: alle Fälle OK
+- SAFE/STRICT mit Beispiel-URLs geprüft
 
-### Check
-- [ ] Lint/Format ok
-- [ ] /Supersystem/tests.html = OK
+### Checks
 - [ ] Kein CSP-Bruch
+- [ ] Keine externen Libs
+- [ ] README/Changelog aktualisiert (falls nötig)
