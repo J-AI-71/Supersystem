@@ -61,7 +61,11 @@ function unwrap(u){
     const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
     if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
     if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
-    for(const k of ['url','u','redirect','redir','r','target','to','link']){ const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; break; } }
+    for(const k of ['url','u','redirect','redir','r','target','to','link']){
+      const v=sp.get(k); if(!v) continue;
+      const dv=decodeMaybe(decodeMaybe(v));
+      if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; break; }
+    }
     if(changed) continue;
     if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
     if(sp.has('amp')){ sp.delete('amp'); changed=true; }
@@ -72,7 +76,13 @@ function clean(u, keepAff){
   const url=unwrap(u); url.hostname=url.hostname.toLowerCase();
   const aff=affiliateKeysForHost(url.hostname);
   const sp=url.searchParams, keys=[...sp.keys()];
-  const tprefix=['utm_'], texact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid']);
+  const tprefix=['utm_'], texact=new Set([
+    'fbclid','gclid','dclid','msclkid','twclid','yclid','igshid',
+    'mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id',
+    'spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome',
+    'ref_src','ref_url',
+    'ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd'
+  ]);
   for(const k of keys){
     const lk=k.toLowerCase();
     const isT = tprefix.some(p=>lk.startsWith(p)) || texact.has(lk);
