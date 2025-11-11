@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // sw.js v2
-const VER = 'v2::ss';
+const VER = 'v3::ss';
 const ASSETS = [
   './',
   './index.html',
