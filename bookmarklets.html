@@ -1,7 +1,7 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Bookmarklets</title>
-<meta name="description" content="Zwei Bookmarklets: SAFE (Affiliates behalten) und STRICT (alles entfernen).">
+<meta name="description" content="Zwei Bookmarklets: SAFE (Affiliates behalten) und STRICT (alles entfernen). Klick-Tester inkl.">
 <meta http-equiv="Content-Security-Policy"
  content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
@@ -12,12 +12,14 @@
 h1{margin:0 0 8px}.muted{color:var(--muted);font-size:12px}
 .card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
 a.bm{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:grab}
+.btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
 pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 </style></head><body>
 <h1>Bookmarklets</h1>
 
 <div class="card">
-  <h2>1) Ziehen</h2>
+  <h2>1) Installieren</h2>
   <p>Desktop: Link in die Lesezeichenleiste ziehen.</p>
   <p>iOS/Android: Lesezeichen anlegen, danach die URL durch den Code ersetzen.</p>
 </div>
@@ -30,6 +32,9 @@ pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;
 const t='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);
 window.open(t,'_blank');})()</pre>
   </details>
+  <div class="row" style="margin-top:6px">
+    <button class="btn" id="testSafe" type="button">Klick-Test (dieser Tab)</button>
+  </div>
 </div>
 
 <div class="card">
@@ -40,15 +45,28 @@ window.open(t,'_blank');})()</pre>
 const t='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);
 window.open(t,'_blank');})()</pre>
   </details>
+  <div class="row" style="margin-top:6px">
+    <button class="btn" id="testStrict" type="button">Klick-Test (dieser Tab)</button>
+  </div>
 </div>
 
 <div class="card">
   <h2>Hinweise</h2>
   <ul>
-    <li>Pop-up-Blocker kann den neuen Tab verhindern. Dann „gleich“-Links in <a href="tests.html">Tests</a> nutzen.</li>
+    <li>Pop-up-Blocker kann neue Tabs verhindern. Dafür sind die „Klick-Test“-Buttons da.</li>
     <li>Kurzlinks wie <code>pin.it/…</code> leiten serverseitig. Ergebnis erst nach Laden sichtbar.</li>
   </ul>
 </div>
 
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}</script>
+<script>
+document.getElementById('testSafe').onclick = ()=>{
+  const u = location.href;
+  location.href = 'app.html?aff=1&ao=1&u=' + encodeURIComponent(u);
+};
+document.getElementById('testStrict').onclick = ()=>{
+  const u = location.href;
+  location.href = 'app.html?aff=0&ao=1&u=' + encodeURIComponent(u);
+};
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
+</script>
 </body></html>
