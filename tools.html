@@ -1,122 +1,141 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Tools</title>
-<meta name="description" content="Cache löschen, Service Worker abmelden, LocalStorage leeren, Status prüfen.">
-<!-- SPDX-License-Identifier: MIT -->
+<meta name="description" content="Cache leeren, Service Worker abmelden, LocalStorage zurücksetzen, Status prüfen.">
 <meta http-equiv="Content-Security-Policy"
-      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+ content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; frame-ancestors 'none'">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
+<link rel="icon" href="favicon-32.png">
 <style>
-  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
-  *{box-sizing:border-box} body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-  h1{font-size:20px;margin:0 0 8px} .muted{color:var(--muted);font-size:12px}
-  .row{margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);cursor:pointer}
-  .btn.small{padding:6px 8px;font-size:12px} .btn.warn{border-color:#991b1b;color:#991b1b}
-  pre{white-space:pre-wrap;border:1px solid var(--bd);border-radius:8px;padding:10px;background:#f8fafc}
-  code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
-  a.btn{text-decoration:none}
-</style>
-</head>
-<body>
-<h1>SafeShare – Tools</h1>
-<p class="muted">Cache/Service Worker/LocalStorage verwalten. Nutze <code>?v=NN</code> als Cache-Buster.</p>
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46;--bad:#7f1d1d}
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
+h1{margin:0 0 10px} .row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.btn{display:inline-block;border:1px solid var(--bd);border-radius:8px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
+.card{border:1px solid var(--bd);border-radius:10px;padding:12px;margin:12px 0;background:#fff}
+pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:10px;overflow:auto}
+small{color:var(--muted)} .good{color:var(--ok)} .bad{color:var(--bad)}
+</style></head><body>
+<h1>Tools</h1>
+<p><small>Version-Parameter nutzen: <code>?v=NN</code> an jede URL anhängen, um Cache zu umgehen.</small></p>
 
-<div class="row">
-  <button id="btnStatus" class="btn" type="button">Status prüfen</button>
-  <button id="btnClearCaches" class="btn warn" type="button">Alle Caches löschen</button>
-  <button id="btnUnregSW" class="btn warn" type="button">Service Worker abmelden</button>
-  <button id="btnClearLS" class="btn" type="button">LocalStorage löschen</button>
-  <button id="btnNuke" class="btn warn" type="button">Alles löschen (SW+Cache+LS)</button>
-  <button id="btnReload" class="btn" type="button">Neu laden mit Buster</button>
+<div class="card">
+  <h2>Aktionen</h2>
+  <div class="row">
+    <button class="btn" id="btn-caches">Alle Caches löschen</button>
+    <button class="btn" id="btn-sw">Service Worker abmelden</button>
+    <button class="btn" id="btn-ls">LocalStorage leeren</button>
+    <button class="btn" id="btn-ls-profiles">Nur Profile löschen</button>
+    <button class="btn" id="btn-reload">Neu laden mit ?v=Zeit</button>
+  </div>
+  <small>Reihenfolge bei „klebenden“ Seiten: Caches löschen → SW abmelden → Neu laden.</small>
 </div>
 
-<pre id="log">–</pre>
+<div class="card">
+  <h2>Status</h2>
+  <div class="row">
+    <button class="btn" id="btn-status">Status aktualisieren</button>
+  </div>
+  <pre id="out">…</pre>
+</div>
 
-<div class="row">
-  <a class="btn small" href="index.html?v=93">index.html</a>
-  <a class="btn small" href="app.html?v=93">app.html</a>
-  <a class="btn small" href="app-classic.html?v=93">app-classic.html</a>
-  <a class="btn small" href="sitemap.xml?v=93">sitemap.xml</a>
-  <a class="btn small" href="robots.txt?v=93">robots.txt</a>
-  <a class="btn small" href=".well-known/security.txt?v=93">security.txt</a>
+<div class="card">
+  <h2>Direkt zu Kernseiten</h2>
+  <div class="row">
+    <a class="btn" href="index.html">Index</a>
+    <a class="btn" href="app.html">App</a>
+    <a class="btn" href="app-classic.html">Classic</a>
+    <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+    <a class="btn" href="tests.html">Tests</a>
+  </div>
 </div>
 
 <script>
-const logEl = document.getElementById('log');
-const log = (msg)=>{ logEl.textContent = (logEl.textContent==='–'?'':logEl.textContent+'\n') + msg; };
+const $ = sel => document.querySelector(sel);
+const out = $('#out');
 
-async function status(){
-  logEl.textContent=''; 
-  try{
-    const regs = ('serviceWorker' in navigator) ? await navigator.serviceWorker.getRegistrations() : [];
-    log(`SW-Registrations: ${regs.length}`);
-    regs.forEach((r,i)=> log(`  [${i}] scope=${r.scope}`));
-
-    const cacheKeys = await ('caches' in window ? caches.keys() : Promise.resolve([]));
-    log(`Caches: ${cacheKeys.length}`);
-    cacheKeys.forEach(k=> log(`  • ${k}`));
-
-    const est = navigator.storage && navigator.storage.estimate ? await navigator.storage.estimate() : {};
-    if(est && est.usage && est.quota){
-      const pct = ((est.usage/est.quota)*100).toFixed(1);
-      log(`Storage: ${(est.usage/1024/1024).toFixed(2)}MB / ${(est.quota/1024/1024).toFixed(2)}MB (${pct}%)`);
-    }
-
-    log(`LocalStorage Keys: ${Object.keys(localStorage).length}`);
-    Object.keys(localStorage).forEach(k=>log(`  - ${k}`));
-  }catch(e){ log('Status-Fehler: '+e.message); }
-}
-
-async function clearCaches(){
-  if(!('caches' in window)) return log('Kein Cache-API verfügbar.');
+async function listCaches(){
+  if(!('caches' in self)) return {caches:false};
   const keys = await caches.keys();
-  let n=0;
-  for(const k of keys){ try{ await caches.delete(k); n++; }catch(e){ log(`Fehler beim Löschen ${k}: ${e.message}`); } }
-  log(`Caches gelöscht: ${n}`);
+  return {caches:true, keys};
 }
 
 async function unregisterSW(){
-  if(!('serviceWorker' in navigator)) return log('Kein Service Worker verfügbar.');
+  if(!('serviceWorker' in navigator)) return {sw:false};
   const regs = await navigator.serviceWorker.getRegistrations();
-  let n=0;
-  for(const r of regs){ try{ await r.unregister(); n++; }catch(e){ log(`Unregister-Fehler: ${e.message}`); } }
-  log(`Service Worker abgemeldet: ${n}`);
+  const names = [];
+  for(const r of regs){ names.push(r.scope); await r.unregister().catch(()=>{}); }
+  return {sw:true, unregistered:names};
 }
 
-function clearLS(){
+async function clearAllCaches(){
+  if(!('caches' in self)) return {caches:false};
+  const keys = await caches.keys();
+  let ok=[], fail=[];
+  for(const k of keys){
+    try{ await caches.delete(k); ok.push(k); }catch{ fail.push(k); }
+  }
+  return {caches:true, deleted:ok, failed:fail};
+}
+
+function clearLocal(){
+  try{ localStorage.clear(); return true; }catch{ return false; }
+}
+
+function clearProfilesOnly(){
   try{
-    const n = Object.keys(localStorage).length;
-    localStorage.clear();
-    log(`LocalStorage gelöscht: ${n} Keys`);
-  }catch(e){ log('LocalStorage-Fehler: '+e.message); }
+    const del=[];
+    for(let i=localStorage.length-1;i>=0;i--){
+      const k=localStorage.key(i);
+      if(!k) continue;
+      const key = k.toLowerCase();
+      if(key.includes('profile') || key.includes('profiles') || key.includes('safeshare')){
+        del.push(k); localStorage.removeItem(k);
+      }
+    }
+    return del;
+  }catch{ return []; }
 }
 
-async function nukeAll(){
-  await unregisterSW();
-  await clearCaches();
-  clearLS();
-  log('Alles gelöscht. Jetzt Seite neu laden.');
-}
-
-function reloadWithBuster(){
+function reloadWithBust(){
   const u = new URL(location.href);
-  const n = Date.now().toString().slice(-6);
-  u.searchParams.set('v', n);
-  location.href = u.toString();
+  u.searchParams.set('v', Date.now().toString());
+  location.replace(u.toString());
 }
 
-document.getElementById('btnStatus').onclick = status;
-document.getElementById('btnClearCaches').onclick = clearCaches;
-document.getElementById('btnUnregSW').onclick = unregisterSW;
-document.getElementById('btnClearLS').onclick = clearLS;
-document.getElementById('btnNuke').onclick = nukeAll;
-document.getElementById('btnReload').onclick = reloadWithBuster;
+async function status(){
+  const data = {
+    url: location.href,
+    sw: 'serviceWorker' in navigator,
+    ls: (()=>{ try{return Object.keys(localStorage).length;}catch{return 'n/a';} })(),
+    caches: await listCaches()
+  };
+  if ('serviceWorker' in navigator){
+    const regs = await navigator.serviceWorker.getRegistrations();
+    data.swRegistrations = regs.map(r=>({scope:r.scope, active:!!r.active, installing:!!r.installing, waiting:!!r.waiting}));
+  }
+  out.textContent = JSON.stringify(data,null,2);
+}
 
-// Auto-Status beim Laden
-document.addEventListener('DOMContentLoaded', status);
+$('#btn-caches').onclick = async ()=>{
+  const res = await clearAllCaches();
+  await status();
+  alert('Caches gelöscht.');
+};
+$('#btn-sw').onclick = async ()=>{
+  const res = await unregisterSW();
+  await status();
+  alert('Service Worker abgemeldet.');
+};
+$('#btn-ls').onclick = ()=>{
+  clearLocal(); status(); alert('LocalStorage geleert.');
+};
+$('#btn-ls-profiles').onclick = ()=>{
+  const del = clearProfilesOnly(); status(); alert('Profile gelöscht: '+del.length);
+};
+$('#btn-reload').onclick = reloadWithBust;
+$('#btn-status').onclick = status;
+
+status();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
-</body>
-</html>
+</body></html>
