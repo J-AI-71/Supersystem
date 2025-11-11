@@ -9,7 +9,7 @@
 <style>
 :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9;--bg:#fff;--ok:#065f46;--bad:#7f1d1d}
 *{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg);background:var(--bg)}
-h1{margin:0 0 8px;font-size:20px} .muted{color:var(--muted);font-size:12px}
+h1{margin:0 0 8px;font-size:20px}.muted{color:var(--muted);font-size:12px}
 .card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 input[type=text]{width:100%;padding:10px 36px 10px 10px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
@@ -18,7 +18,7 @@ input[type=text]{width:100%;padding:10px 36px 10px 10px;border:1px solid var(--b
 .btn.small{padding:8px 10px;font-size:13px}
 .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
 .badge{display:inline-block;border:1px solid var(--bd);border-radius:999px;padding:3px 8px;font-size:12px;background:#f8fafc;margin-right:6px}
-.good{color:var(--ok)} .bad{color:var(--bad)}
+.good{color:var(--ok)}.bad{color:var(--bad)}
 ul{margin:6px 0 0 18px}
 .clearX{position:relative}
 .clearX button{position:absolute;right:8px;top:8px;border:1px solid var(--bd);border-radius:8px;background:#fff;padding:6px 8px;cursor:pointer}
@@ -26,9 +26,12 @@ ul{margin:6px 0 0 18px}
 @media (max-width:860px){.grid2{grid-template-columns:1fr}}
 pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
 table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);padding:6px;font-size:12px}
+/* Button-Layout robust */
+.row.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (min-width:720px){.row.btns{grid-template-columns:repeat(4,auto)}}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v44</span></h1>
+<h1>SafeShare – App <span class="muted">v45</span></h1>
 <p class="muted">Säubert Links. Optional Affiliates behalten. Kein Tracking, keine Serverlogs.</p>
 
 <div class="card">
@@ -44,7 +47,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 <div class="card clearX">
   <input id="in" type="text" inputmode="url" placeholder="Link hier einfügen…">
   <button id="btnClear" aria-label="Feld leeren">×</button>
-  <div class="row" style="margin-top:8px">
+  <div class="row btns" style="margin-top:8px">
     <button class="btn primary" id="btnClean">Säubern</button>
     <button class="btn" id="btnCopy">Kopieren</button>
     <button class="btn" id="btnOpen">Öffnen</button>
@@ -128,21 +131,31 @@ function unwrap(u){
     changed = false; hops++;
     const h = url.hostname.toLowerCase();
     const p = url.pathname;
+    const sp = url.searchParams;
 
     // Google /url?q=
-    if ((h.endsWith('google.com') || h.endsWith('google.de')) && p === '/url' && url.searchParams.get('q')){
-      const q = url.searchParams.get('q');
+    if ((h.endsWith('google.com') || h.endsWith('google.de')) && p === '/url' && sp.get('q')){
+      const q = sp.get('q');
       try{ url = new URL(q); changed = true; continue; }catch{}
     }
     // Facebook l.php?u=
-    if (/\bfacebook\.com$/.test(h) && p === '/l.php' && url.searchParams.get('u')){
-      const q = url.searchParams.get('u');
+    if (/\bfacebook\.com$/.test(h) && p === '/l.php' && sp.get('u')){
+      const q = sp.get('u');
       try{ url = new URL(q); changed = true; continue; }catch{}
     }
+    // Pinterest-Wrapper (outbound-redirect/url= | r/pin/.../link= | away/to=)
+    if (/\bpinterest\./.test(h)){
+      const cand = sp.get('url') || sp.get('link') || sp.get('to');
+      if (cand){
+        const dv = decodeMaybe(decodeMaybe(cand));
+        if (/^https?:\/\//i.test(dv)){
+          try{ url = new URL(dv); changed = true; continue; }catch{}
+        }
+      }
+    }
     // Generische redirect-Parameter
-    const redirectKeys = ['url','u','redirect','redir','r','target','to','link'];
-    for (const k of redirectKeys){
-      const v = url.searchParams.get(k);
+    for (const k of ['url','u','redirect','redir','r','target','to','link']){
+      const v = sp.get(k);
       if (!v) continue;
       const dv = decodeMaybe(decodeMaybe(v));
       if (/^https?:\/\//i.test(dv)){
@@ -153,7 +166,7 @@ function unwrap(u){
 
     // AMP Pfade entfernen
     if (/\/amp(\/|$)/i.test(p)){ url.pathname = p.replace(/\/amp(\/|$)/ig, '$1'); changed = true; }
-    if (url.searchParams.has('amp')){ url.searchParams.delete('amp'); changed = true; }
+    if (sp.has('amp')){ sp.delete('amp'); changed = true; }
   }
   return url;
 }
@@ -170,7 +183,6 @@ function clean(u, keepAffiliates){
     'mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id',
     'spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome',
     'ref_src','ref_url',
-    // erweitert:
     'ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd'
   ]);
 
