@@ -1,122 +1,122 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Tools</title>
-<meta name="description" content="Wartung und Diagnose für SafeShare.">
+<meta name="description" content="Cache löschen, Service Worker abmelden, LocalStorage leeren, Status prüfen.">
+<!-- SPDX-License-Identifier: MIT -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
-  *{box-sizing:border-box}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-  h1{font-size:22px;margin:0 0 10px}
-  .muted{color:var(--muted);font-size:13px}
-  .card{border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:#fff;color:var(--fg);cursor:pointer}
-  code, .kbd{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
-  textarea{width:100%;min-height:90px;padding:10px;border:1px solid var(--bd);border-radius:8px;font-size:13px}
-  #log{white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:12px;color:#374151;background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px}
+  *{box-sizing:border-box} body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
+  h1{font-size:20px;margin:0 0 8px} .muted{color:var(--muted);font-size:12px}
+  .row{margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);cursor:pointer}
+  .btn.small{padding:6px 8px;font-size:12px} .btn.warn{border-color:#991b1b;color:#991b1b}
+  pre{white-space:pre-wrap;border:1px solid var(--bd);border-radius:8px;padding:10px;background:#f8fafc}
+  code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
+  a.btn{text-decoration:none}
 </style>
 </head>
 <body>
 <h1>SafeShare – Tools</h1>
-<p class="muted">Wartung, Reset, Diagnose.</p>
+<p class="muted">Cache/Service Worker/LocalStorage verwalten. Nutze <code>?v=NN</code> als Cache-Buster.</p>
 
-<div class="card">
-  <h3>Status</h3>
-  <div class="row">
-    <button class="btn" id="chk">Status prüfen</button>
-    <button class="btn" id="listCaches">Caches auflisten</button>
-  </div>
-  <div id="log" style="margin-top:10px">–</div>
+<div class="row">
+  <button id="btnStatus" class="btn" type="button">Status prüfen</button>
+  <button id="btnClearCaches" class="btn warn" type="button">Alle Caches löschen</button>
+  <button id="btnUnregSW" class="btn warn" type="button">Service Worker abmelden</button>
+  <button id="btnClearLS" class="btn" type="button">LocalStorage löschen</button>
+  <button id="btnNuke" class="btn warn" type="button">Alles löschen (SW+Cache+LS)</button>
+  <button id="btnReload" class="btn" type="button">Neu laden mit Buster</button>
 </div>
 
-<div class="card">
-  <h3>Reset</h3>
-  <div class="row">
-    <button class="btn" id="clrLS">LocalStorage (Profile/Sticky) löschen</button>
-    <button class="btn" id="clrCaches">Alle Caches löschen</button>
-    <button class="btn" id="unsw">Service Worker abmelden</button>
-  </div>
-  <p class="muted">Danach hart neu laden: <span class="kbd">Ctrl/Cmd+Shift+R</span> oder <code>?v=NN</code> anhängen.</p>
-</div>
+<pre id="log">–</pre>
 
-<div class="card">
-  <h3>Schnelltests</h3>
-  <div class="row">
-    <button class="btn" id="tSafe">Amazon SAFE</button>
-    <button class="btn" id="tStrict">Amazon STRICT</button>
-    <button class="btn" id="tFB">Facebook-Wrapper</button>
-  </div>
-  <p class="muted">Öffnet die App mit vorkonfigurierten Parametern.</p>
+<div class="row">
+  <a class="btn small" href="index.html?v=93">index.html</a>
+  <a class="btn small" href="app.html?v=93">app.html</a>
+  <a class="btn small" href="app-classic.html?v=93">app-classic.html</a>
+  <a class="btn small" href="sitemap.xml?v=93">sitemap.xml</a>
+  <a class="btn small" href="robots.txt?v=93">robots.txt</a>
+  <a class="btn small" href=".well-known/security.txt?v=93">security.txt</a>
 </div>
-
-<div class="card">
-  <h3>Eigene URL testen</h3>
-  <textarea id="u" placeholder="https://…"></textarea>
-  <div class="row">
-    <button class="btn" id="goSafe">In App öffnen (SAFE)</button>
-    <button class="btn" id="goStrict">In App öffnen (STRICT)</button>
-  </div>
-</div>
-
-<p class="muted"><a href="index.html">Startseite</a> · <a href="app.html">App</a> · <a href="app-classic.html">Classic</a></p>
 
 <script>
-const log = (m)=>{ const el=document.getElementById('log'); el.textContent = (el.textContent==='–'?'':el.textContent+'\n') + m; };
+const logEl = document.getElementById('log');
+const log = (msg)=>{ logEl.textContent = (logEl.textContent==='–'?'':logEl.textContent+'\n') + msg; };
 
-document.getElementById('chk').onclick = async ()=>{
-  log('Navigator.onLine: '+navigator.onLine);
-  if('serviceWorker' in navigator){
-    const r = await navigator.serviceWorker.getRegistrations();
-    log('SW Registrations: '+r.length);
-    r.forEach((reg,i)=> log('  ['+i+'] '+(reg.active?'active':'-')+' '+(reg.scope||'')));
-  } else log('Service Worker: nicht unterstützt');
-  log('LocalStorage Keys: '+Object.keys(localStorage).join(', ')||'–');
-};
+async function status(){
+  logEl.textContent=''; 
+  try{
+    const regs = ('serviceWorker' in navigator) ? await navigator.serviceWorker.getRegistrations() : [];
+    log(`SW-Registrations: ${regs.length}`);
+    regs.forEach((r,i)=> log(`  [${i}] scope=${r.scope}`));
 
-document.getElementById('listCaches').onclick = async ()=>{
-  if(!('caches' in window)) return log('Cache API: nicht verfügbar');
-  const keys = await caches.keys();
-  log('Caches: '+(keys.join(', ')||'–'));
-};
+    const cacheKeys = await ('caches' in window ? caches.keys() : Promise.resolve([]));
+    log(`Caches: ${cacheKeys.length}`);
+    cacheKeys.forEach(k=> log(`  • ${k}`));
 
-document.getElementById('clrLS').onclick = ()=>{
-  ['ss_profiles','ss_sticky','ss_keepAff'].forEach(k=>localStorage.removeItem(k));
-  log('LocalStorage gelöscht: ss_profiles, ss_sticky, ss_keepAff');
-};
+    const est = navigator.storage && navigator.storage.estimate ? await navigator.storage.estimate() : {};
+    if(est && est.usage && est.quota){
+      const pct = ((est.usage/est.quota)*100).toFixed(1);
+      log(`Storage: ${(est.usage/1024/1024).toFixed(2)}MB / ${(est.quota/1024/1024).toFixed(2)}MB (${pct}%)`);
+    }
 
-document.getElementById('clrCaches').onclick = async ()=>{
-  if(!('caches' in window)) return log('Cache API: nicht verfügbar');
-  const keys = await caches.keys();
-  await Promise.all(keys.map(k=>caches.delete(k)));
-  log('Alle Caches gelöscht: '+(keys.join(', ')||'–'));
-};
-
-document.getElementById('unsw').onclick = async ()=>{
-  if(!('serviceWorker' in navigator)) return log('Service Worker: nicht verfügbar');
-  const regs = await navigator.serviceWorker.getRegistrations();
-  await Promise.all(regs.map(r=>r.unregister()));
-  log('Alle Service Worker abgemeldet: '+regs.length);
-};
-
-function toApp(params){
-  const u = new URL('app.html', location.href);
-  Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));
-  location.href = u.href;
+    log(`LocalStorage Keys: ${Object.keys(localStorage).length}`);
+    Object.keys(localStorage).forEach(k=>log(`  - ${k}`));
+  }catch(e){ log('Status-Fehler: '+e.message); }
 }
-document.getElementById('tSafe').onclick   = ()=>toApp({aff:'1', u:'https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx'});
-document.getElementById('tStrict').onclick = ()=>toApp({aff:'0', u:'https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_medium%3Demail'});
-document.getElementById('tFB').onclick     = ()=>toApp({u:'https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC'});
 
-document.getElementById('goSafe').onclick = ()=>{
-  const s=document.getElementById('u').value.trim(); if(!s) return;
-  location.href = 'app.html?aff=1&u='+encodeURIComponent(s);
-};
-document.getElementById('goStrict').onclick = ()=>{
-  const s=document.getElementById('u').value.trim(); if(!s) return;
-  location.href = 'app.html?aff=0&u='+encodeURIComponent(s);
-};
+async function clearCaches(){
+  if(!('caches' in window)) return log('Kein Cache-API verfügbar.');
+  const keys = await caches.keys();
+  let n=0;
+  for(const k of keys){ try{ await caches.delete(k); n++; }catch(e){ log(`Fehler beim Löschen ${k}: ${e.message}`); } }
+  log(`Caches gelöscht: ${n}`);
+}
+
+async function unregisterSW(){
+  if(!('serviceWorker' in navigator)) return log('Kein Service Worker verfügbar.');
+  const regs = await navigator.serviceWorker.getRegistrations();
+  let n=0;
+  for(const r of regs){ try{ await r.unregister(); n++; }catch(e){ log(`Unregister-Fehler: ${e.message}`); } }
+  log(`Service Worker abgemeldet: ${n}`);
+}
+
+function clearLS(){
+  try{
+    const n = Object.keys(localStorage).length;
+    localStorage.clear();
+    log(`LocalStorage gelöscht: ${n} Keys`);
+  }catch(e){ log('LocalStorage-Fehler: '+e.message); }
+}
+
+async function nukeAll(){
+  await unregisterSW();
+  await clearCaches();
+  clearLS();
+  log('Alles gelöscht. Jetzt Seite neu laden.');
+}
+
+function reloadWithBuster(){
+  const u = new URL(location.href);
+  const n = Date.now().toString().slice(-6);
+  u.searchParams.set('v', n);
+  location.href = u.toString();
+}
+
+document.getElementById('btnStatus').onclick = status;
+document.getElementById('btnClearCaches').onclick = clearCaches;
+document.getElementById('btnUnregSW').onclick = unregisterSW;
+document.getElementById('btnClearLS').onclick = clearLS;
+document.getElementById('btnNuke').onclick = nukeAll;
+document.getElementById('btnReload').onclick = reloadWithBuster;
+
+// Auto-Status beim Laden
+document.addEventListener('DOMContentLoaded', status);
 </script>
 </body>
 </html>
