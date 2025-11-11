@@ -3,45 +3,70 @@
 <title>SafeShare – Tests</title>
 <meta name="description" content="Schnelltests öffnen die App mit vorbereiteten Fällen.">
 <meta http-equiv="Content-Security-Policy"
- content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
+ content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; frame-ancestors 'none'">
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
 <link rel="icon" href="favicon-32.png">
 <style>
-:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}*{box-sizing:border-box}
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
+*{box-sizing:border-box}
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);padding:8px;font-size:14px}
-.muted{color:var(--muted);font-size:12px}.btn{display:inline-block;border:1px solid var(--bd);border-radius:8px;padding:6px 10px;text-decoration:none;color:var(--fg)}
+h1{margin:0 0 8px}
+p.muted{color:var(--muted);font-size:12px;margin:0 0 12px}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid var(--bd);padding:8px;font-size:14px;vertical-align:top}
+a.btn{display:inline-block;border:1px solid var(--bd);border-radius:8px;padding:6px 10px;text-decoration:none;color:var(--fg);background:#fff}
+code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
 </style></head><body>
 <h1>Tests</h1>
-<p class="muted">Klicke „Start“. Erwartung steht rechts. Ergebnis siehst du in der App („Entfernt:“/„Affiliates behalten:“).</p>
+<p class="muted">Klicke „Start“. Erwartung steht rechts. Ergebnis siehst du in der App („Entfernt:“ / „Affiliates behalten:“).</p>
+
 <table>
 <tr><th>Fall</th><th>Start</th><th>Erwartung</th></tr>
+
 <tr>
   <td>SAFE behält Amazon <code>tag</code></td>
   <td><a class="btn" target="_blank" href="app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">Start</a></td>
   <td><code>tag</code> bleibt, <code>utm_*</code> weg</td>
 </tr>
+
 <tr>
   <td>STRICT entfernt alles</td>
   <td><a class="btn" target="_blank" href="app.html?aff=0&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_medium%3Demail%26gclid%3D1">Start</a></td>
   <td>nur <code>https://example.com/a</code></td>
 </tr>
+
 <tr>
-  <td>Google-Wrapper</td>
+  <td>Google-Wrapper auflösen</td>
   <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%26gclid%3D1">Start</a></td>
   <td><code>https://shop.de/a</code></td>
 </tr>
+
 <tr>
-  <td>Facebook-Wrapper</td>
+  <td>Facebook-Wrapper auflösen</td>
   <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC">Start</a></td>
   <td><code>https://news.site/a</code></td>
 </tr>
+
 <tr>
-  <td>AMP entfernen</td>
+  <td>AMP-Pfad entfernen</td>
   <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fexample.com%2Famp%2Fstory%3Futm_source%3Dmail">Start</a></td>
   <td><code>/amp</code> weg, <code>utm_*</code> weg</td>
 </tr>
+
+<tr>
+  <td>Verschachtelt (innerer Link in Param)</td>
+  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">Start</a></td>
+  <td><code>https://shop.de/a</code></td>
+</tr>
+
+<tr>
+  <td>Strict gegen Affiliates (Amazon)</td>
+  <td><a class="btn" target="_blank" href="app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_campaign%3Dx">Start</a></td>
+  <td><code>tag</code> entfernt</td>
+</tr>
+
 </table>
+
 <script>
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
