@@ -41,10 +41,10 @@ SafeShare entfernt Tracking-Parameter (`utm_*`, `fbclid`, `gclid`, …), löst W
 **iOS Safari:** Lesezeichen speichern → bearbeiten → URL ersetzen.
 
 - Affiliate-safe:
-javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);})();
+javascript:(()=>{const u=location.href;location.href=‘https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u=’+encodeURIComponent(u);})();
 
 - Strict:
-javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);})();
+javascript:(()=>{const u=location.href;location.href=‘https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u=’+encodeURIComponent(u);})();
 
 ## URL-Parameter (App-API)
 - `u` oder `url`: zu reinigende URL (url-enkodiert)  
