@@ -26,27 +26,26 @@ ul{margin:6px 0 0 18px}
 @media (max-width:860px){.grid2{grid-template-columns:1fr}}
 pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
 table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);padding:6px;font-size:12px}
-/* Buttons: nie überlappen */
-.row.btns{
+/* Buttons: eigene Grid-Zeile, nie überlappen */
+.btn-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:8px;
-  grid-auto-rows:minmax(44px,auto);
 }
-.row.btns .btn{
+.btn-grid .btn{
   width:100%;
   text-align:center;
   white-space:nowrap;
 }
 @media (min-width:760px){
-  .row.btns{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 @media (max-width:390px){
-  .row.btns{grid-template-columns:1fr}
+  .btn-grid{grid-template-columns:1fr}
 }
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v46</span></h1>
+<h1>SafeShare – App <span class="muted">v47</span></h1>
 <p class="muted">Säubert Links. Optional Affiliates behalten. Kein Tracking, keine Serverlogs.</p>
 
 <div class="card">
@@ -62,7 +61,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 <div class="card clearX">
   <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
   <button id="btnClear" aria-label="Feld leeren">×</button>
-  <div class="row btns" style="margin-top:8px">
+  <div class="btn-grid" style="margin-top:8px">
     <button class="btn primary" id="btnClean">Säubern</button>
     <button class="btn" id="btnCopy">Kopieren</button>
     <button class="btn" id="btnOpen">Öffnen</button>
@@ -116,271 +115,138 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 </div>
 
 <script>
-/* ===== Utility ===== */
 const $ = s => document.querySelector(s);
 const byId = id => document.getElementById(id);
 const LS_MODE = 'ss_mode_default';
 const LS_PROFILES = 'ss_profiles_v1';
 
-function toURLMaybe(s){
-  if(!s) return null;
-  s = s.trim();
-  if (/^www\./i.test(s)) s = 'https://' + s;
-  try { return new URL(s); } catch { return null; }
-}
+function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
 function cloneURL(u){ return new URL(u.toString()); }
 function decodeMaybe(v){ try{ return decodeURIComponent(v); }catch{ return v; } }
 
-/* ===== Affiliate Whitelist ===== */
-function affiliateKeysForHost(host){
-  host = host.toLowerCase();
-  if (/\bamazon\./.test(host)) return new Set(['tag']);
-  return new Set();
-}
+function affiliateKeysForHost(host){ host=host.toLowerCase(); if(/\bamazon\./.test(host)) return new Set(['tag']); return new Set(); }
 
-/* ===== Unwrap & Clean ===== */
 function unwrap(u){
-  let url = cloneURL(u);
-  let changed = true, hops = 0;
+  let url = cloneURL(u); let changed = true, hops = 0;
   while (changed && hops < 5){
     changed = false; hops++;
-    const h = url.hostname.toLowerCase();
-    const p = url.pathname;
-    const sp = url.searchParams;
-
-    if ((h.endsWith('google.com') || h.endsWith('google.de')) && p === '/url' && sp.get('q')){
-      const q = sp.get('q'); try{ url = new URL(q); changed = true; continue; }catch{}
-    }
-    if (/\bfacebook\.com$/.test(h) && p === '/l.php' && sp.get('u')){
-      const q = sp.get('u'); try{ url = new URL(q); changed = true; continue; }catch{}
-    }
+    const h = url.hostname.toLowerCase(), p = url.pathname, sp = url.searchParams;
+    if ((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ try{ url=new URL(sp.get('q')); changed=true; continue; }catch{} }
+    if (/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ try{ url=new URL(sp.get('u')); changed=true; continue; }catch{} }
     if (/\bpinterest\./.test(h)){
-      const cand = sp.get('url') || sp.get('link') || sp.get('to');
-      if (cand){
-        const dv = decodeMaybe(decodeMaybe(cand));
-        if (/^https?:\/\//i.test(dv)){ try{ url = new URL(dv); changed = true; continue; }catch{} }
-      }
+      const cand = sp.get('url')||sp.get('link')||sp.get('to');
+      if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} } }
     }
-    for (const k of ['url','u','redirect','redir','r','target','to','link']){
-      const v = sp.get(k); if (!v) continue;
-      const dv = decodeMaybe(decodeMaybe(v));
-      if (/^https?:\/\//i.test(dv)){ try{ url = new URL(dv); changed = true; break; }catch{} }
+    for(const k of ['url','u','redirect','redir','r','target','to','link']){
+      const v=sp.get(k); if(!v) continue;
+      const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; break; }catch{} }
     }
-    if (changed) continue;
-
-    if (/\/amp(\/|$)/i.test(p)){ url.pathname = p.replace(/\/amp(\/|$)/ig, '$1'); changed = true; }
-    if (sp.has('amp')){ sp.delete('amp'); changed = true; }
+    if(changed) continue;
+    if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
+    if(sp.has('amp')){ sp.delete('amp'); changed=true; }
   }
   return url;
 }
 
 function clean(u, keepAffiliates){
-  const removed = [];
-  const keptAff = [];
-  let url = unwrap(u);
-  url.hostname = url.hostname.toLowerCase();
-
-  const trackPrefixes = ['utm_'];
-  const trackExact = new Set([
-    'fbclid','gclid','dclid','msclkid','twclid','yclid','igshid',
-    'mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id',
-    'spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome',
-    'ref_src','ref_url',
-    'ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd'
-  ]);
-
-  const affKeys = affiliateKeysForHost(url.hostname);
-  const sp = url.searchParams;
-  const keys = Array.from(sp.keys());
-  for (const k of keys){
-    const lk = k.toLowerCase();
+  const removed=[], keptAff=[]; let url=unwrap(u);
+  url.hostname=url.hostname.toLowerCase();
+  const trackPrefixes=['utm_'];
+  const trackExact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
+  const affKeys=affiliateKeysForHost(url.hostname);
+  const sp=url.searchParams, keys=[...sp.keys()];
+  for(const k of keys){
+    const lk=k.toLowerCase();
     const isTrack = trackPrefixes.some(p=>lk.startsWith(p)) || trackExact.has(lk);
     const isAff = affKeys.has(lk);
-
-    if (isTrack){ removed.push(k); sp.delete(k); continue; }
-    if (!keepAffiliates && isAff){ removed.push(k); sp.delete(k); continue; }
-    if (keepAffiliates && isAff){ keptAff.push(k); continue; }
+    if(isTrack){ removed.push(k); sp.delete(k); continue; }
+    if(!keepAffiliates && isAff){ removed.push(k); sp.delete(k); continue; }
+    if(keepAffiliates && isAff){ keptAff.push(k); continue; }
   }
-
-  const q = sp.toString();
-  const out = url.origin + url.pathname + (q ? '?' + q : '') + (url.hash || '');
-  return { url: out, removed, keptAff, host: url.hostname };
+  const q=sp.toString();
+  const out=url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
+  return {url:out, removed, keptAff, host:url.hostname};
 }
 
-/* ===== Profiles (LocalStorage) ===== */
-function loadProfiles(){ try{ return JSON.parse(localStorage.getItem(LS_PROFILES) || '{}'); }catch{ return {}; } }
+function loadProfiles(){ try{ return JSON.parse(localStorage.getItem(LS_PROFILES)||'{}'); }catch{ return {}; } }
 function saveProfiles(obj){ localStorage.setItem(LS_PROFILES, JSON.stringify(obj)); }
 function renderProfiles(){
-  const tbody = byId('tblProfiles').querySelector('tbody');
-  tbody.innerHTML = '';
-  const p = loadProfiles();
-  const hosts = Object.keys(p).sort();
-  if (!hosts.length){
-    const tr = document.createElement('tr');
-    tr.innerHTML = '<td colspan="3" class="muted">Keine Profile gespeichert.</td>';
-    tbody.appendChild(tr);
-    return;
-  }
-  for (const h of hosts){
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${h}</td><td>${p[h]==='safe'?'SAFE':'STRICT'}</td><td><button class="btn small" data-del="${h}">X</button></td>`;
+  const tbody=byId('tblProfiles').querySelector('tbody'); tbody.innerHTML='';
+  const p=loadProfiles(), hosts=Object.keys(p).sort();
+  if(!hosts.length){ const tr=document.createElement('tr'); tr.innerHTML='<td colspan="3" class="muted">Keine Profile gespeichert.</td>'; tbody.appendChild(tr); return; }
+  for(const h of hosts){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${h}</td><td>${p[h]==='safe'?'SAFE':'STRICT'}</td><td><button class="btn small" data-del="${h}">X</button></td>`;
     tbody.appendChild(tr);
   }
   tbody.querySelectorAll('button[data-del]').forEach(b=>{
-    b.onclick = ()=>{
-      const host = b.getAttribute('data-del');
-      const p = loadProfiles();
-      delete p[host]; saveProfiles(p); renderProfiles();
-    };
+    b.onclick=()=>{ const host=b.getAttribute('data-del'); const p=loadProfiles(); delete p[host]; saveProfiles(p); renderProfiles(); };
   });
 }
 
-/* ===== UI Wire ===== */
-const elIn = byId('in');
-const elSafe = byId('ckSafe');
-const elSticky = byId('ckSticky');
-const elReload = byId('ckReload');
-const elNoref = byId('ckNoref');
+const elIn=byId('in'), elSafe=byId('ckSafe'), elSticky=byId('ckSticky'), elReload=byId('ckReload'), elNoref=byId('ckNoref');
 
 function updateModeLabels(){
-  const safe = elSafe.checked;
-  byId('modeInfo').innerHTML = `Modus: <strong>${safe?'SAFE':'STRICT'}</strong> · Affiliates behalten: <strong>${safe?'ja':'nein'}</strong>`;
-  byId('bMode').textContent = 'Modus: ' + (safe?'SAFE':'STRICT');
-  byId('bAff').textContent = 'Affiliates behalten: ' + (safe?'ja':'nein');
-  if (elSticky.checked){
-    localStorage.setItem(LS_MODE, safe?'safe':'strict');
-  }
+  const safe=elSafe.checked;
+  byId('modeInfo').innerHTML=`Modus: <strong>${safe?'SAFE':'STRICT'}</strong> · Affiliates behalten: <strong>${safe?'ja':'nein'}</strong>`;
+  byId('bMode').textContent='Modus: '+(safe?'SAFE':'STRICT');
+  byId('bAff').textContent='Affiliates behalten: '+(safe?'ja':'nein');
+  if(elSticky.checked){ localStorage.setItem(LS_MODE, safe?'safe':'strict'); }
 }
 
 function doClean(){
-  const raw = (elIn.value||'').trim();
-  if (!raw){ alert('Bitte einen Link einfügen.'); return; }
-  let url = raw;
-  if (/^www\./i.test(url)) url = 'https://' + url;
+  const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte einen Link einfügen.'); return; }
+  let url=raw; if(/^www\./i.test(url)) url='https://'+url;
+  const u=toURLMaybe(url); if(!u){ alert('Ungültige URL.'); return; }
 
-  const u = toURLMaybe(url);
-  if (!u){ alert('Ungültige URL.'); return; }
+  const profiles=loadProfiles(); const tmp=unwrap(u); const prof=profiles[tmp.hostname.toLowerCase()];
+  if(prof==='strict') elSafe.checked=false; if(prof==='safe') elSafe.checked=true;
 
-  // Profile-Autoselect
-  const profiles = loadProfiles();
-  const tmp = unwrap(u);
-  const prof = profiles[tmp.hostname.toLowerCase()];
-  if (prof === 'strict') elSafe.checked = false;
-  if (prof === 'safe')   elSafe.checked = true;
-
-  const {url: out, removed, keptAff} = clean(u, elSafe.checked);
-
-  byId('outURL').textContent = out;
-  byId('rem').textContent = 'Entfernt: ' + (removed.length? removed.join(', '): '–');
-  byId('kept').textContent = 'Affiliates behalten: ' + (keptAff.length? keptAff.join(', '): '–');
-
-  updateModeLabels();
-  return out;
+  const {url:out, removed, keptAff}=clean(u, elSafe.checked);
+  byId('outURL').textContent=out;
+  byId('rem').textContent='Entfernt: '+(removed.length?removed.join(', '):'–');
+  byId('kept').textContent='Affiliates behalten: '+(keptAff.length?keptAff.join(', '):'–');
+  updateModeLabels(); return out;
 }
 
 function openTarget(target){
-  const out = doClean();
-  if (!out) return;
-  const noRef = elNoref.checked;
-  const doReload = elReload.checked;
-
-  if (target === 'same'){
-    if (noRef){
-      const doc = `<meta name="referrer" content="no-referrer"><meta http-equiv="refresh" content="0;url=${out.replace(/"/g,'%22')}">`;
-      const blob = new Blob([doc], {type:'text/html'});
-      const u = URL.createObjectURL(blob);
-      location.replace(u);
-    }else{
-      location.replace(out);
-      if (doReload) setTimeout(()=>location.reload(), 50);
-    }
+  const out=doClean(); if(!out) return;
+  const noRef=elNoref.checked, doReload=elReload.checked;
+  if(target==='same'){
+    if(noRef){
+      const doc=`<meta name="referrer" content="no-referrer"><meta http-equiv="refresh" content="0;url=${out.replace(/"/g,'%22')}">`;
+      const blob=new Blob([doc],{type:'text/html'}); const u=URL.createObjectURL(blob); location.replace(u);
+    }else{ location.replace(out); if(doReload) setTimeout(()=>location.reload(),50); }
   }else{
-    if (noRef) window.open(out, '_blank', 'noopener,noreferrer');
-    else window.open(out, '_blank');
+    if(noRef) window.open(out,'_blank','noopener,noreferrer'); else window.open(out,'_blank');
   }
 }
 
-byId('btnClean').onclick = ()=>doClean();
-byId('btnCopy').onclick = ()=>{
-  const out = doClean(); if (!out) return;
-  navigator.clipboard && navigator.clipboard.writeText(out).catch(()=>{});
-};
-byId('btnOpen').onclick = ()=>openTarget('same');
-byId('btnOpenNew').onclick = ()=>openTarget('new');
-byId('btnCopyOut').onclick = ()=>{
-  const t = byId('outURL').textContent || '';
-  if (t) navigator.clipboard.writeText(t).catch(()=>{});
-};
-byId('btnOpenOut').onclick = ()=>openTarget('new');
-byId('btnClear').onclick = ()=>{ elIn.value=''; elIn.focus(); };
+byId('btnClean').onclick=()=>doClean();
+byId('btnCopy').onclick=()=>{ const out=doClean(); if(!out) return; navigator.clipboard&&navigator.clipboard.writeText(out).catch(()=>{}); };
+byId('btnOpen').onclick=()=>openTarget('same');
+byId('btnOpenNew').onclick=()=>openTarget('new');
+byId('btnCopyOut').onclick=()=>{ const t=byId('outURL').textContent||''; if(t) navigator.clipboard.writeText(t).catch(()=>{}); };
+byId('btnOpenOut').onclick=()=>openTarget('new');
+byId('btnClear').onclick=()=>{ elIn.value=''; elIn.focus(); };
 
-elSafe.onchange = updateModeLabels;
-elSticky.onchange = ()=>{
-  if (elSticky.checked) localStorage.setItem(LS_MODE, elSafe.checked?'safe':'strict');
-  else localStorage.removeItem(LS_MODE);
-};
-[elReload, elNoref].forEach(x=>x.onchange=()=>{})
+elSafe.onchange=updateModeLabels;
+elSticky.onchange=()=>{ if(elSticky.checked) localStorage.setItem(LS_MODE, elSafe.checked?'safe':'strict'); else localStorage.removeItem(LS_MODE); };
+[elReload, elNoref].forEach(x=>x.onchange=()=>{});
 
-/* Profile Buttons */
-byId('btnSaveProfile').onclick = ()=>{
-  const out = doClean(); if (!out) return;
-  const target = new URL(out);
-  const p = loadProfiles();
-  p[target.hostname.toLowerCase()] = elSafe.checked ? 'safe':'strict';
-  saveProfiles(p); renderProfiles();
-  alert('Profil gespeichert für '+target.hostname);
-};
-byId('btnDelProfile').onclick = ()=>{
-  const out = doClean(); if (!out) return;
-  const target = new URL(out);
-  const p = loadProfiles();
-  delete p[target.hostname.toLowerCase()];
-  saveProfiles(p); renderProfiles();
-  alert('Profil gelöscht für '+target.hostname);
-};
-byId('btnExport').onclick = ()=>{
-  const data = JSON.stringify(loadProfiles(), null, 2);
-  const blob = new Blob([data], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'safeshare-profiles.json';
-  a.click();
-};
-byId('fileImport').onchange = (e)=>{
-  const f = e.target.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = ()=>{
-    try{
-      const obj = JSON.parse(String(r.result||'{}'));
-      if (!obj || typeof obj!=='object') throw 0;
-      saveProfiles(obj); renderProfiles(); alert('Import ok.');
-    }catch{ alert('Import fehlgeschlagen.'); }
-  };
-  r.readAsText(f);
-};
+byId('btnSaveProfile').onclick=()=>{ const out=doClean(); if(!out) return; const t=new URL(out); const p=loadProfiles(); p[t.hostname.toLowerCase()]=elSafe.checked?'safe':'strict'; saveProfiles(p); renderProfiles(); alert('Profil gespeichert für '+t.hostname); };
+byId('btnDelProfile').onclick=()=>{ const out=doClean(); if(!out) return; const t=new URL(out); const p=loadProfiles(); delete p[t.hostname.toLowerCase()]; saveProfiles(p); renderProfiles(); alert('Profil gelöscht für '+t.hostname); };
+byId('btnExport').onclick=()=>{ const data=JSON.stringify(loadProfiles(),null,2); const blob=new Blob([data],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='safeshare-profiles.json'; a.click(); };
+byId('fileImport').onchange=(e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(String(r.result||'{}')); if(!obj||typeof obj!=='object') throw 0; saveProfiles(obj); renderProfiles(); alert('Import ok.'); }catch{ alert('Import fehlgeschlagen.'); } }; r.readAsText(f); };
 
-/* Defaults laden */
 (function init(){
-  const m = (localStorage.getItem(LS_MODE)||'').toLowerCase();
-  if (m==='safe' || m==='strict'){ elSticky.checked = true; elSafe.checked = (m==='safe'); }
-  updateModeLabels();
-  renderProfiles();
-
-  const q = new URLSearchParams(location.search);
-  const v = q.get('u') || q.get('url');
-  const aff = q.get('aff');  // 1|0
-  const ao  = q.get('ao');   // 1 = auto open
-  if (aff==='1') elSafe.checked = true;
-  if (aff==='0') elSafe.checked = false;
-  updateModeLabels();
-
-  if (v){
-    elIn.value = decodeMaybe(v);
-    const cleaned = doClean();
-    if (ao==='1' && cleaned){ openTarget('new'); }
-  }
+  const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
+  if(m==='safe'||m==='strict'){ byId('ckSticky').checked=true; elSafe.checked=(m==='safe'); }
+  updateModeLabels(); renderProfiles();
+  const q=new URLSearchParams(location.search); const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
+  if(aff==='1') elSafe.checked=true; if(aff==='0') elSafe.checked=false; updateModeLabels();
+  if(v){ elIn.value=decodeMaybe(v); const cleaned=doClean(); if(ao==='1'&&cleaned){ openTarget('new'); } }
 })();
-
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
 </body></html>
