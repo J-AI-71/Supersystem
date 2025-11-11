@@ -1,39 +1,24 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App</title>
-<meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile pro Domain. 1-Klick.">
-<meta http-equiv="Content-Security-Policy"
- content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; frame-ancestors 'none'">
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
+<title>SafeShare – App v53</title>
+<meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <link rel="icon" href="favicon-32.png">
 <style>
-:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9;--ok:#065f46;--bad:#7f1d1d}
-*{box-sizing:border-box}
-body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg);background:#fff}
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9;--ok:#065f46}
+*{box-sizing:border-box} body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
 h1{margin:0 0 8px;font-size:20px}.muted{color:var(--muted);font-size:12px}
 .card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
 input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
 .btn{border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;color:var(--fg);cursor:pointer;text-align:center}
-.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn.small{padding:8px 10px;font-size:13px}
 .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
 .badge{display:inline-block;border:1px solid var(--bd);border-radius:999px;padding:3px 8px;font-size:12px;background:#f8fafc;margin-right:6px}
-.good{color:var(--ok)}.bad{color:var(--bad)}
-table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);padding:6px;font-size:12px}
-pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
+.good{color:var(--ok)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:860px){.grid2{grid-template-columns:1fr}}
-
-/* Eingabezeile ohne absolute Positionierung */
-.io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-
-/* Button-Zeile: stabiles Grid, keine .row/.flex-Abhängigkeit */
-.btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
-@media (min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media (max-width:390px){.btn-grid{grid-template-columns:1fr}}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v52</span></h1>
+<h1>SafeShare – App <span class="muted">v53</span></h1>
 <p class="muted">Säubert Links. Optional Affiliates behalten. Kein Tracking, keine Serverlogs.</p>
 
 <div class="card">
@@ -47,19 +32,10 @@ pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;
 </div>
 
 <div class="card">
-  <!-- IO-Zeile: Input + X ohne absolute Elemente -->
-  <div class="io">
-    <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
-    <button id="btnClear" type="button" class="btn" aria-label="Feld leeren">×</button>
-  </div>
+  <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
 
-  <!-- Stabile Button-Leiste -->
-  <div class="btn-grid">
-    <button class="btn primary" id="btnClean"   type="button">Säubern</button>
-    <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
-    <button class="btn"          id="btnOpen"    type="button">Öffnen</button>
-    <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
-  </div>
+  <!-- Shadow-DOM Buttonleiste: keine Überschneidungen mehr -->
+  <safe-buttons></safe-buttons>
 
   <p class="muted" style="margin-top:6px">„1-Klick“ = neuer Tab. „Öffnen“ = gleicher Tab. Optional referrer-frei.</p>
 </div>
@@ -95,24 +71,42 @@ pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;
   </div>
 </div>
 
-<div class="card">
-  <h2 style="margin:0 0 6px">Kurzanleitung Buttons</h2>
-  <ul>
-    <li><span class="kbd">Säubern</span>: bereinigt den Link und zeigt das Ergebnis.</li>
-    <li><span class="kbd">Kopieren</span>: kopiert das bereinigte Ergebnis.</li>
-    <li><span class="kbd">Öffnen</span>: lädt das Ergebnis im aktuellen Tab.</li>
-    <li><span class="kbd">1-Klick</span>: öffnet das Ergebnis in neuem Tab. Mit „referrer-frei“ ohne Referrer.</li>
-  </ul>
-</div>
-
 <script>
-const $ = s => document.querySelector(s), byId = id => document.getElementById(id);
+/* ===== Shadow-DOM Buttonleiste ===== */
+class SafeButtons extends HTMLElement{
+  constructor(){
+    super();
+    const root = this.attachShadow({mode:'open'});
+    root.innerHTML = `
+      <style>
+        .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+        @media (min-width:760px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+        @media (max-width:390px){.grid{grid-template-columns:1fr}}
+        .btn{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;background:#fff;color:#111827;cursor:pointer;text-align:center;display:block;width:100%}
+        .primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
+      </style>
+      <div class="grid">
+        <button class="btn primary" id="clean"   type="button">Säubern</button>
+        <button class="btn"          id="copy"    type="button">Kopieren</button>
+        <button class="btn"          id="open"    type="button">Öffnen</button>
+        <button class="btn"          id="openNew" type="button">1-Klick</button>
+      </div>`;
+    const send = detail => window.dispatchEvent(new CustomEvent('ss-action',{detail}));
+    root.getElementById('clean').onclick   = ()=>send('clean');
+    root.getElementById('copy').onclick    = ()=>send('copy');
+    root.getElementById('open').onclick    = ()=>send('open-same');
+    root.getElementById('openNew').onclick = ()=>send('open-new');
+  }
+}
+customElements.define('safe-buttons', SafeButtons);
+
+/* ===== App-Logik ===== */
+const $ = s => document.querySelector(s), byId=id=>document.getElementById(id);
 const LS_MODE='ss_mode_default', LS_PROFILES='ss_profiles_v1';
 
 function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
 function cloneURL(u){ return new URL(u.toString()); }
 function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
-
 function affiliateKeysForHost(host){ host=host.toLowerCase(); if(/\bamazon\./.test(host)) return new Set(['tag']); return new Set(); }
 
 function unwrap(u){
@@ -154,10 +148,12 @@ function clean(u, keepAffiliates){
   return {url:out, removed, keptAff, host:url.hostname};
 }
 
+/* Profile */
 function loadProfiles(){ try{return JSON.parse(localStorage.getItem(LS_PROFILES)||'{}');}catch{return{};} }
 function saveProfiles(o){ localStorage.setItem(LS_PROFILES, JSON.stringify(o)); }
 function renderProfiles(){
-  const tbody=byId('tblProfiles').querySelector('tbody'); tbody.innerHTML='';
+  const tbody=byId('tblProfiles')?.querySelector('tbody'); if(!tbody) return;
+  tbody.innerHTML='';
   const p=loadProfiles(), hosts=Object.keys(p).sort();
   if(!hosts.length){ const tr=document.createElement('tr'); tr.innerHTML='<td colspan="3" class="muted">Keine Profile gespeichert.</td>'; tbody.appendChild(tr); return; }
   for(const h of hosts){
@@ -170,8 +166,8 @@ function renderProfiles(){
   });
 }
 
+/* UI */
 const elIn=byId('in'), elSafe=byId('ckSafe'), elSticky=byId('ckSticky'), elReload=byId('ckReload'), elNoref=byId('ckNoref');
-
 function updateModeLabels(){
   const safe=elSafe.checked;
   byId('modeInfo').innerHTML=`Modus: <strong>${safe?'SAFE':'STRICT'}</strong> · Affiliates behalten: <strong>${safe?'ja':'nein'}</strong>`;
@@ -184,10 +180,8 @@ function doClean(){
   const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte einen Link einfügen.'); return; }
   let url=raw; if(/^www\./i.test(url)) url='https://'+url;
   const u=toURLMaybe(url); if(!u){ alert('Ungültige URL.'); return; }
-
   const profiles=loadProfiles(); const tmp=unwrap(u); const prof=profiles[tmp.hostname.toLowerCase()];
   if (prof==='strict') elSafe.checked=false; if (prof==='safe') elSafe.checked=true;
-
   const {url:out, removed, keptAff}=clean(u, elSafe.checked);
   byId('outURL').textContent=out;
   byId('rem')  && (byId('rem').textContent  = 'Entfernt: ' + (removed.length? removed.join(', '): '–'));
@@ -211,18 +205,22 @@ function openTarget(target){
   }
 }
 
-/* Clicks */
-byId('btnClean').onclick   = ()=>doClean();
-byId('btnCopy').onclick    = ()=>{ const out=doClean(); if(!out) return; navigator.clipboard&&navigator.clipboard.writeText(out).catch(()=>{}); };
-byId('btnOpen').onclick    = ()=>openTarget('same');
-byId('btnOpenNew').onclick = ()=>openTarget('new');
-byId('btnCopyOut') && (byId('btnCopyOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t) navigator.clipboard.writeText(t).catch(()=>{}); });
-byId('btnOpenOut') && (byId('btnOpenOut').onclick = ()=>openTarget('new'));
-byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); };
+/* Shadow-Buttons → App-Handler */
+window.addEventListener('ss-action',(e)=>{
+  const a=e.detail;
+  if(a==='clean') doClean();
+  else if(a==='copy'){ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); }
+  else if(a==='open-same') openTarget('same');
+  else if(a==='open-new')  openTarget('new');
+});
+
+/* Ergebnis-Buttons */
+byId('btnCopyOut') && (byId('btnCopyOut').onclick=()=>{ const t=byId('outURL').textContent||''; if(t) navigator.clipboard.writeText(t).catch(()=>{}); });
+byId('btnOpenOut') && (byId('btnOpenOut').onclick=()=>openTarget('new'));
 
 /* Defaults */
 (function init(){
-  const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
+  const m=(localStorage.getItem('ss_mode_default')||'').toLowerCase();
   if (m==='safe'||m==='strict'){ elSticky.checked=true; elSafe.checked=(m==='safe'); }
   updateModeLabels(); renderProfiles();
 
@@ -234,6 +232,5 @@ byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); };
 
   if (v){ elIn.value=decodeMaybe(v); const cleaned=doClean(); if(ao==='1'&&cleaned){ openTarget('new'); } }
 })();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
 </body></html>
