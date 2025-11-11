@@ -1,74 +1,43 @@
-<!doctype html>
-<html lang="de">
-<head>
+<!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Changelog</title>
-<meta name="description" content="Änderungsprotokoll zu SafeShare.">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0ea5e9">
+<meta name="description" content="Änderungen nach Versionen.">
+<meta http-equiv="Content-Security-Policy"
+ content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
+<link rel="icon" href="favicon-32.png">
 <style>
-  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
-  *{box-sizing:border-box}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg);max-width:860px}
-  h1{font-size:22px;margin:0 0 10px}
-  h2{font-size:18px;margin:16px 0 6px}
-  .muted{color:var(--muted);font-size:13px}
-  .card{border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
-  ul{margin:6px 0 0 18px}
-  code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
-  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
-</style>
-</head>
-<body>
-<h1>SafeShare – Changelog</h1>
-<p class="muted">Stand: 10.11.2025</p>
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
+h1{margin:0 0 8px}.card{border:1px solid var(--bd);border-radius:8px;padding:12px;margin:10px 0}.muted{color:var(--muted)}
+</style></head><body>
+<h1>Changelog</h1>
 
-<div class="card">
-  <h2>v42</h2>
-  <ul>
-    <li>Kurzanleitung direkt im App-UI.</li>
-    <li>Sticky-Modus (SAFE/STRICT merken) + Set-Buttons.</li>
-    <li>Reload-Button (aktuellen Tab mit bereinigter URL ersetzen).</li>
-    <li>Host-Kleinschreibung beim Einfügen normalisiert.</li>
-  </ul>
-</div>
+<div class="card"><h2>v43</h2><ul>
+<li>Inline-SVG-Logo auf Start</li>
+<li>Tools-Seite ergänzt</li>
+<li>Service Worker v4</li>
+</ul></div>
 
-<div class="card">
-  <h2>v41</h2>
-  <ul>
-    <li>Referrer-frei öffnen (neuer Tab ohne Referrer).</li>
-    <li>Profile pro Domain inkl. „×“ löschen.</li>
-    <li>Export/Import der Profile (<code>ss_profiles</code>).</li>
-  </ul>
-</div>
+<div class="card"><h2>v42</h2><ul>
+<li>Sticky SAFE/STRICT</li>
+<li>Reload-Öffnen</li>
+<li>Kurzanleitung in App</li>
+</ul></div>
 
-<div class="card">
-  <h2>v40</h2>
-  <ul>
-    <li>SAFE/STRICT Grundlogik.</li>
-    <li>Tiefes Unwrapping: Google/Facebook/verschachtelte Links, AMP-Bereinigung.</li>
-    <li>1-Klick Öffnen, Kopieren.</li>
-  </ul>
-</div>
+<div class="card"><h2>v41</h2><ul>
+<li>Referrer-frei öffnen</li>
+<li>Profile löschen (X), Export/Import</li>
+</ul></div>
 
-<div class="card">
-  <h2>Infrastruktur</h2>
-  <ul>
-    <li><strong>PWA</strong>: <code>manifest.webmanifest</code>, <code>sw.js</code> (Offline-Cache).</li>
-    <li><strong>SEO</strong>: <code>sitemap.xml</code>, <code>robots.txt</code>, OG-Tags.</li>
-    <li><strong>Hilfsseiten</strong>: <code>bookmarklets.html</code>, <code>partner.html</code>, <code>danke.html</code>, <code>tools.html</code>, <code>404.html</code>.</li>
-  </ul>
-</div>
+<div class="card"><h2>v40</h2><ul>
+<li>SAFE/STRICT-Modus</li>
+<li>Tiefes Unwrapping, AMP-Fix</li>
+<li>1-Klick öffnen</li>
+</ul></div>
 
-<div class="card">
-  <h2>Update-Hinweise</h2>
-  <ul>
-    <li>Nach UI/JS-Änderungen hart neu laden: <code>Ctrl/Cmd+Shift+R</code>.</li>
-    <li>Cache-Buster anhängen: <code>?v=NN</code>.</li>
-    <li>Service-Worker-Version bumpen: in <code>sw.js</code> die Konstante <code>VER</code> ändern (z. B. <code>'v2::ss'</code>), deployen, Seite neu laden.</li>
-  </ul>
-</div>
+<p class="muted">Lizenz: MIT · Kontakt: support.safeshare@proton.me</p>
 
-<p><a class="btn" href="index.html">Startseite</a> <a class="btn" href="app.html">Zur App</a></p>
-</body>
-</html>
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
+</script>
+</body></html>
