@@ -33,6 +33,7 @@ SafeShare entfernt Tracking-Parameter (`utm_*`, `fbclid`, `gclid`, …), löst W
 ## Ein-Klick-Tester
 - SAFE (Affiliates bleiben):  
   `https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx`
+
 - STRICT (alles weg):  
   `https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_campaign%253Dx%26fbclid%3DABC`
 
