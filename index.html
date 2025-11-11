@@ -1,243 +1,72 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Links ohne Tracking</title>
-<meta name="description" content="SafeShare entfernt Tracking-Parameter (utm_, fbclid, gclid …), löst Wrapper und kann Affiliate-Parameter auf Wunsch behalten. 1-Klick, Classic, Bookmarklets, Profile.">
-<!-- SPDX-License-Identifier: MIT -->
-
-<!-- Sicherheit -->
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Start</title>
+<meta name="description" content="SafeShare säubert Links: utm_*, fbclid, gclid … Entfernt Wrapper. SAFE/STRICT. Bookmarklets.">
 <meta http-equiv="Content-Security-Policy"
-      content="default-src 'self'; img-src 'self' data: https://api.qrserver.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
-
-<!-- PWA/Meta -->
+ content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; frame-ancestors 'none'">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0ea5e9">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" href="favicon-32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="safeshare-og-v3b.png">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/index.html">
-<link rel="search" type="application/opensearchdescription+xml" title="SafeShare" href="opensearch.xml">
-
-<!-- OG -->
-<meta property="og:title" content="SafeShare – Links ohne Tracking">
-<meta property="og:description" content="Säubere Links. Behalte Affiliates nach Wunsch. 1-Klick.">
-<meta property="og:image" content="safeshare-og-v3b.png">
-<meta property="og:type" content="website">
-
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – Links ohne Tracking">
-<meta name="twitter:description" content="Säubere Links. Behalte Affiliates nach Wunsch. 1-Klick.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/safeshare-og-v3b.png">
-
-<!-- JSON-LD -->
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"SoftwareApplication",
-  "name":"SafeShare",
-  "applicationCategory":"UtilitiesApplication",
-  "operatingSystem":"Web",
-  "description":"Links ohne Tracking. SAFE/STRICT, 1-Klick, Profile, Bookmarklets.",
-  "url":"https://j-ai-71.github.io/Supersystem/index.html",
-  "image":"https://j-ai-71.github.io/Supersystem/safeshare-og-v3b.png",
-  "author":{"@type":"Organization","name":"SafeShare"},
-  "offers":{"@type":"Offer","price":"0.00","priceCurrency":"EUR","url":"https://payhip.com/b/VDm3B"}
-}
-</script>
-
+<link rel="icon" href="favicon-32.png">
 <style>
-  :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--bg:#ffffff;--accent:#0ea5e9}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg);background:var(--bg)}
-  .container{max-width:980px;margin:0 auto;padding:20px}
-  header{display:flex;align-items:center;gap:14px;padding:16px 0}
-  header h1{font-size:22px;margin:0}
-  header .sub{color:var(--muted);font-size:13px}
-  nav{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
-  nav a{font-size:14px;color:var(--fg);text-decoration:none;border:1px solid var(--bd);padding:6px 10px;border-radius:8px;background:#fff}
-  .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center}
-  .hero h2{margin:0 0 8px;font-size:26px}
-  .hero p{margin:0 0 14px;color:var(--muted)}
-  .card{border:1px solid var(--bd);border-radius:12px;padding:14px;background:#fff}
-  .btn{display:inline-block;padding:12px 14px;margin:6px 10px 0 0;border:1px solid var(--bd);border-radius:10px;background:#fff;color:var(--fg);text-decoration:none;cursor:pointer}
-  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .btn.small{padding:8px 10px;font-size:13px}
-  .muted{color:var(--muted);font-size:13px}
-  h3{margin:22px 0 10px;font-size:18px}
-  ul{margin:8px 0 0 18px}
-  footer{margin:28px 0 14px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .qr{width:180px;height:180px;border:1px solid var(--bd);border-radius:10px}
-  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .chip{border:1px solid var(--bd);border-radius:999px;padding:4px 10px;font-size:12px;background:#f8fafc}
-  .section{margin-top:18px}
-  .mini{font-size:12px;color:var(--muted)}
-  /* Klickbarkeit sicherstellen */
-  button, a.btn { pointer-events:auto }
-  header, section, .card { position:relative; z-index:1 }
-  @media (max-width:860px){ .hero{grid-template-columns:1fr} nav{margin:12px 0 0 0} }
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
+*{box-sizing:border-box}
+body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
+h1{margin:0 0 8px;font-size:22px}
+.muted{color:var(--muted);font-size:12px}
+.card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(140px,1fr));gap:8px}
+@media (min-width:720px){.grid{grid-template-columns:repeat(4,minmax(160px,1fr))}}
+code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
+a.bm{display:inline-block;border:1px dashed var(--bd);border-radius:10px;padding:8px 10px;background:#fff;text-decoration:none;color:var(--fg);cursor:grab}
 </style>
-</head>
-<body>
-<div class="container">
+</head><body>
+<h1>SafeShare <span class="muted">v45</span></h1>
+<p class="muted">Links säubern. Optional Affiliates behalten. Keine Serverlogs.</p>
 
-  <header>
-    <!-- Inline-SVG Logo -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 160 160" aria-label="SafeShare">
-      <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ecfdf5"/><stop offset="1" stop-color="#e6fffb"/></linearGradient></defs>
-      <rect x="8" y="8" width="144" height="144" rx="28" fill="url(#g)" stroke="#d1fae5" stroke-width="2"/>
-      <g stroke="#22c55e" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <rect x="36" y="66" width="56" height="32" rx="16" transform="rotate(-30 64 82)"/>
-        <rect x="68" y="66" width="56" height="32" rx="16" transform="rotate(30 96 82)"/>
-      </g>
-    </svg>
-    <div>
-      <h1>SafeShare</h1>
-      <div class="sub">Links ohne Tracking. Optional Affiliates behalten.</div>
-    </div>
-    <nav>
-      <a href="app.html">App</a>
-      <a href="app-classic.html">Classic</a>
-      <a href="bookmarklets.html">Bookmarklets</a>
-      <a href="tools.html">Tools</a>
-      <a href="tests.html">Tests</a>
-    </nav>
-  </header>
+<div class="card">
+  <h2 style="margin:0 0 8px">Schnellstart</h2>
+  <div class="grid">
+    <a class="btn" href="app.html">App</a>
+    <a class="btn" href="app-classic.html">Classic</a>
+    <a class="btn" href="tests.html">Tests</a>
+    <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+    <a class="btn" href="tools.html">Tools</a>
+    <a class="btn" href="partner.html">Partner</a>
+    <a class="btn" href="danke.html">Danke</a>
+    <a class="btn" href="faq.html">FAQ</a>
+  </div>
+</div>
 
-  <section class="hero">
-    <div class="card">
-      <h2>Einfügen. Säubern. Teilen.</h2>
-      <p>Entfernt <span class="kbd">utm_*</span>, <span class="kbd">fbclid</span>, <span class="kbd">gclid</span>; löst Wrapper; Option „Affiliate-safe“. 1-Klick.</p>
-      <div>
-        <a class="btn primary" href="app.html">Zur App</a>
-        <a class="btn" href="app-classic.html">Classic</a>
-        <a class="btn" id="btn-share" href="app.html">Weiterempfehlen</a>
-      </div>
-      <div class="chips">
-        <span class="chip">1-Klick öffnen</span>
-        <span class="chip">Affiliate-safe / Strict</span>
-        <span class="chip">Referrer-frei (in App)</span>
-        <span class="chip">Profile pro Domain</span>
-        <span class="chip">Bookmarklets</span>
-      </div>
-    </div>
+<div class="card">
+  <h2 style="margin:0 0 6px">Bookmarklets – direkt hier ziehen</h2>
+  <p class="muted">Desktop: in die Lesezeichenleiste ziehen. Mobil: nutze die Seite <a href="bookmarklets.html">Bookmarklets</a>.</p>
+  <div class="row" style="margin-top:6px">
+    <a class="bm" href="javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()">SafeShare SAFE</a>
+    <a class="bm" href="javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()">SafeShare STRICT</a>
+  </div>
+</div>
 
-    <div class="card">
-      <h3>Auf dem Smartphone öffnen</h3>
-      <p class="mini">Scannen und als Home-App sichern.</p>
-      <img class="qr" alt="QR zu SafeShare" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://j-ai-71.github.io/Supersystem/app.html">
-      <div style="margin-top:10px">
-        <a class="btn small" href="bookmarklets.html">Bookmarklets installieren</a>
-        <a class="btn small" href="partner.html">Partner werden</a>
-      </div>
-    </div>
-  </section>
+<div class="card">
+  <h2 style="margin:0 0 6px">Hinweise</h2>
+  <ul style="margin:6px 0 0 18px">
+    <li>SAFE behält definierte Affiliate-Parameter (z. B. Amazon <code>tag</code>), STRICT entfernt alles.</li>
+    <li>Unterstützt u. a. <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, <code>ttclid</code>, <code>wbraid</code>, <code>gbraid</code>, <code>epik</code>, <code>ef_id</code>, <code>pk_campaign</code>/<code>pk_kwd</code>.</li>
+    <li>Wrapper wie Google <code>/url?q=</code>, Facebook <code>/l.php?u=</code>, Pinterest Outbound werden entpackt.</li>
+  </ul>
+</div>
 
-  <section class="section grid2">
-    <div class="card">
-      <h3>Für wen ist SafeShare?</h3>
-      <ul>
-        <li>Privacy-Nutzer: Social/Newsletter-Links ohne Tracking.</li>
-        <li>Affiliates: <code>tag</code> &amp; Co. behalten, Rest raus.</li>
-        <li>Redaktionen/Creator: saubere Quellenlinks, referrer-frei öffnen.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Was macht es genau?</h3>
-      <ul>
-        <li>Entfernt: <span class="kbd">utm_*</span>, <span class="kbd">fbclid</span>, <span class="kbd">gclid</span>, u. a.</li>
-        <li>Löst Wrapper: Google <span class="kbd">/url?q=</span>, Facebook <span class="kbd">/l.php?u=</span>, AMP-Pfad.</li>
-        <li>Affiliate-safe: z. B. Amazon <span class="kbd">tag</span> bleibt auf Wunsch erhalten.</li>
-      </ul>
-      <p class="mini">Keine Serverlogs. Keine Cookies. Einstellungen nur lokal.</p>
-    </div>
-  </section>
-
-  <section class="section card">
-    <h3>Schnellstart</h3>
-    <ol>
-      <li>Öffne die <a href="app.html">App</a> oder <a href="app-classic.html">Classic</a>.</li>
-      <li>Link einfügen → <span class="kbd">Säubern</span> → <span class="kbd">Kopieren</span> / <span class="kbd">1-Klick</span>.</li>
-      <li>Optional: Profile pro Domain setzen (SAFE/STRICT) und Export/Import nutzen.</li>
-    </ol>
-  </section>
-
-  <section class="section grid2">
-    <div class="card">
-      <h3>Unterstützen</h3>
-      <p><a class="btn" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener noreferrer">Projekt unterstützen</a></p>
-      <p class="mini">Nach dem Kauf: Redirect zu <code>danke.html</code>.</p>
-    </div>
-    <div class="card">
-      <h3>Feedback</h3>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <button class="btn" id="btn-fb">Feedback senden</button>
-        <span class="mini">Öffnet dein Mail-Programm mit vorgefülltem Text.</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="section card">
-    <h3>Mini-Changelog</h3>
-    <ul class="mini">
-      <li><strong>v44</strong>: App/Classic aktualisiert, Tests v2, OpenSearch, SVG-Favicon.</li>
-      <li><strong>v43</strong>: Inline-SVG-Logo, Tools-Link, SW v4.</li>
-      <li><strong>v42</strong>: Sticky, Reload, Kurzanleitung in App.</li>
-      <li><strong>v41</strong>: Referrer-frei, Profile-X, Export/Import.</li>
-      <li><strong>v40</strong>: SAFE/STRICT, tiefes Unwrapping, 1-Klick.</li>
-    </ul>
-    <p class="mini"><a href="changelog.html">Vollständiges Changelog</a></p>
-  </section>
-
-  <footer>
-    <div>
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a> ·
-      <a href="faq.html">FAQ</a> ·
-      <a href="changelog.html">Changelog</a> ·
-      <a href="LICENSE">Lizenz (MIT)</a>
-    </div>
-    <div class="mini">Kontakt: support.safeshare@proton.me · © SafeShare</div>
-  </footer>
-
+<div class="card">
+  <div class="row">
+    <a class="btn" href="impressum.html">Impressum</a>
+    <a class="btn" href="datenschutz.html">Datenschutz</a>
+    <a class="btn" href="changelog.html">Changelog</a>
+  </div>
+  <p class="muted" style="margin-top:8px">Kontakt: support.safeshare@proton.me</p>
 </div>
 
 <script>
-  // Share mit Fallback
-  const s = document.getElementById('btn-share');
-  s.onclick = (e)=>{
-    e.preventDefault();
-    const url = new URL('app.html', location.href).href;
-    const data = {title:'SafeShare', text:'Links ohne Tracking. 1-Klick.', url};
-    if (navigator.share) navigator.share(data).catch(()=>{ location.href=url; });
-    else location.href = url;
-  };
-
-  // Feedback Mail
-  document.getElementById('btn-fb').onclick = ()=>{
-    const body = encodeURIComponent(
-`Feedback zu SafeShare
-
-Gerät/Browser:
-Schritt/Seite: index.html
-Beispiel-URL:
-Wunsch/Problem: `
-    );
-    location.href = 'mailto:support.safeshare@proton.me?subject='
-      + encodeURIComponent('SafeShare Feedback')
-      + '&body=' + body;
-  };
-
-  // Service Worker v4
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', ()=> {
-      navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});
-    });
-  }
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
-</body>
-</html>
+</body></html>
