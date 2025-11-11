@@ -17,84 +17,123 @@ code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius
 h2{margin:18px 0 8px}
 </style></head><body>
 <h1>Tests</h1>
-<p class="muted">„Start“ öffnet die App mit dem jeweiligen Fall. Erwartung steht rechts.</p>
+<p class="muted">„Start“ öffnet die App mit dem Fall. Falls Pop-up blockiert: die Variante „gleich“ nutzen.</p>
 
 <h2>Basis</h2>
 <table>
-<tr><th>Fall</th><th>Start</th><th>Erwartung</th></tr>
+<tr><th>Fall</th><th>Start (neu)</th><th>Start (gleich)</th><th>Erwartung</th></tr>
 <tr>
   <td>SAFE behält Amazon <code>tag</code></td>
-  <td><a class="btn" target="_blank" href="app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">gleich</a></td>
   <td><code>tag</code> bleibt, <code>utm_*</code> weg</td>
 </tr>
 <tr>
   <td>STRICT entfernt alles</td>
-  <td><a class="btn" target="_blank" href="app.html?aff=0&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_medium%3Demail%26gclid%3D1">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_medium%3Demail%26gclid%3D1">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_medium%3Demail%26gclid%3D1">gleich</a></td>
   <td><code>https://example.com/a</code></td>
 </tr>
 <tr>
   <td>Google-Wrapper</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%26gclid%3D1">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%26gclid%3D1">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%26gclid%3D1">gleich</a></td>
   <td><code>https://shop.de/a</code></td>
 </tr>
 <tr>
   <td>Facebook-Wrapper</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_medium%253Dcpc%26fbclid%3DABC">gleich</a></td>
   <td><code>https://news.site/a</code></td>
 </tr>
 <tr>
   <td>AMP entfernen</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fexample.com%2Famp%2Fstory%3Futm_source%3Dmail">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fexample.com%2Famp%2Fstory%3Futm_source%3Dmail">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fexample.com%2Famp%2Fstory%3Futm_source%3Dmail">gleich</a></td>
   <td><code>/amp</code> weg, <code>utm_*</code> weg</td>
 </tr>
 <tr>
   <td>Verschachtelt (innerer Link in Param)</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">gleich</a></td>
   <td><code>https://shop.de/a</code></td>
 </tr>
 </table>
 
 <h2>Weitere Tracker (Erwartung: entfernt)</h2>
 <table>
-<tr><th>Parameter</th><th>Start</th><th>Erwartung</th></tr>
+<tr><th>Parameter</th><th>Start (neu)</th><th>Start (gleich)</th><th>Erwartung</th></tr>
 <tr>
   <td><code>ttclid</code> (TikTok)</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fsite.tld%2Fx%3Fttclid%3Dabc123%26utm_source%3Dx">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fsite.tld%2Fx%3Fttclid%3Dabc123%26utm_source%3Dx">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fsite.tld%2Fx%3Fttclid%3Dabc123%26utm_source%3Dx">gleich</a></td>
   <td><code>https://site.tld/x</code></td>
 </tr>
 <tr>
   <td><code>wbraid</code>, <code>gbraid</code> (Google Ads)</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fshop.tld%2Fbuy%3Fwbraid%3D1%26gbraid%3D2%26utm_medium%3Demail">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fshop.tld%2Fbuy%3Fwbraid%3D1%26gbraid%3D2%26utm_medium%3Demail">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fshop.tld%2Fbuy%3Fwbraid%3D1%26gbraid%3D2%26utm_medium%3Demail">gleich</a></td>
   <td><code>https://shop.tld/buy</code></td>
 </tr>
 <tr>
   <td><code>epik</code> (Pinterest)</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fbrand.tld%2Fpost%3Fepik%3Dxyz%26utm_campaign%3Dy">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fbrand.tld%2Fpost%3Fepik%3Dxyz%26utm_campaign%3Dy">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fbrand.tld%2Fpost%3Fepik%3Dxyz%26utm_campaign%3Dy">gleich</a></td>
   <td><code>https://brand.tld/post</code></td>
 </tr>
 <tr>
   <td><code>ef_id</code> (Adobe)</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fenterprise.tld%2Fcase%3Fef_id%3Dabc%26utm_term%3Dz">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fenterprise.tld%2Fcase%3Fef_id%3Dabc%26utm_term%3Dz">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fenterprise.tld%2Fcase%3Fef_id%3Dabc%26utm_term%3Dz">gleich</a></td>
   <td><code>https://enterprise.tld/case</code></td>
 </tr>
 <tr>
   <td><code>pk_campaign</code>, <code>pk_kwd</code> (Matomo)</td>
-  <td><a class="btn" target="_blank" href="app.html?u=https%3A%2F%2Fcms.tld%2Fnews%3Fpk_campaign%3Dmail%26pk_kwd%3Dtest">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fcms.tld%2Fnews%3Fpk_campaign%3Dmail%26pk_kwd%3Dtest">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?u=https%3A%2F%2Fcms.tld%2Fnews%3Fpk_campaign%3Dmail%26pk_kwd%3Dtest">gleich</a></td>
   <td><code>https://cms.tld/news</code></td>
 </tr>
 </table>
 
 <h2>Affiliate-Konflikte</h2>
 <table>
-<tr><th>Fall</th><th>Start</th><th>Erwartung</th></tr>
+<tr><th>Fall</th><th>Start (neu)</th><th>Start (gleich)</th><th>Erwartung</th></tr>
 <tr>
   <td>Amazon STRICT (Affiliate weg)</td>
-  <td><a class="btn" target="_blank" href="app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26ref_src%3Dabc">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26ref_src%3Dabc">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26ref_src%3Dabc">gleich</a></td>
   <td><code>https://www.amazon.de/dp/TEST</code></td>
 </tr>
 <tr>
   <td>Amazon SAFE (Affiliate bleibt)</td>
-  <td><a class="btn" target="_blank" href="app.html?aff=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26fbclid%3D1">Start</a></td>
+  <td><a class="btn" target="_blank" rel="noopener"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26fbclid%3D1">Start</a></td>
+  <td><a class="btn" target="_self"
+    href="https://j-ai-71.github.io/Supersystem/app.html?aff=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26fbclid%3D1">gleich</a></td>
   <td><code>tag</code> bleibt, <code>fbclid</code> weg</td>
 </tr>
 </table>
