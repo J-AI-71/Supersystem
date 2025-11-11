@@ -1,122 +1,54 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Bookmarklets</title>
-<meta name="description" content="Bookmarklets zum Säubern von Links: Affiliate-safe oder Strict. Mit Kopier-Buttons, Zieh-Links, Kurzanleitung und Tastenkürzeln.">
+<meta name="description" content="Zwei Bookmarklets: SAFE (Affiliates behalten) und STRICT (alles entfernen).">
 <meta http-equiv="Content-Security-Policy"
- content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; img-src 'self' data:; frame-ancestors 'none'">
+ content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
 <link rel="icon" href="favicon-32.png">
 <style>
-:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9}
-*{box-sizing:border-box}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-h1{font-size:22px;margin:0 0 6px}
-h2{font-size:18px;margin:12px 0 6px}
-.muted{color:var(--muted);font-size:12px}
-.card{border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0;background:#fff}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);text-decoration:none;cursor:pointer}
-.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-.draglet{cursor:grab}
-.drag{margin-left:6px;text-decoration:underline;cursor:grab;font-weight:600}
-textarea{width:100%;min-height:70px;padding:8px;border:1px solid var(--bd);border-radius:8px;font-family:ui-monospace,Menlo,Consolas,monospace}
-code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
-.howto li{margin:6px 0}
-kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);border-radius:6px;padding:1px 6px}
-.warn{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:8px}
-</style>
-</head>
-<body>
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
+h1{margin:0 0 8px}.muted{color:var(--muted);font-size:12px}
+.card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
+a.bm{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:grab}
+pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
+</style></head><body>
 <h1>Bookmarklets</h1>
-<p class="muted">Desktop: Link in die Lesezeichenleiste ziehen oder Rechtsklick → „Zu Lesezeichen hinzufügen“. iOS: Code kopieren und als Lesezeichen-URL einsetzen.</p>
 
-<!-- SAFE -->
 <div class="card">
-  <h2>Affiliate-safe (Provisionen bleiben)</h2>
-  <div class="row">
-    <a class="btn primary draglet"
-       href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=1&amp;ao=1&amp;u='+encodeURIComponent(u);})();">
-       In Lesezeichenleiste ziehen
-    </a>
-    <a class="drag"
-       href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=1&amp;ao=1&amp;u='+encodeURIComponent(u);})();">
-       Affiliate-safe (ziehen)
-    </a>
-    <button class="btn" type="button" id="copySafe">Code kopieren</button>
-  </div>
-  <p class="muted">Öffnet die aktuelle Seite in SafeShare. Tracking weg, Affiliate-Keys bleiben.</p>
-  <textarea id="safeCode" readonly>javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);})();</textarea>
+  <h2>1) Ziehen</h2>
+  <p>Desktop: Link in die Lesezeichenleiste ziehen.</p>
+  <p>iOS/Android: Lesezeichen anlegen, danach die URL durch den Code ersetzen.</p>
 </div>
 
-<!-- STRICT -->
 <div class="card">
-  <h2>Strict (alles weg, auch Affiliates)</h2>
-  <div class="row">
-    <a class="btn primary draglet"
-       href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=0&amp;ao=1&amp;u='+encodeURIComponent(u);})();">
-       In Lesezeichenleiste ziehen
-    </a>
-    <a class="drag"
-       href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=0&amp;ao=1&amp;u='+encodeURIComponent(u);})();">
-       Strict (ziehen)
-    </a>
-    <button class="btn" type="button" id="copyStrict">Code kopieren</button>
-  </div>
-  <p class="muted">Entfernt Tracking plus Affiliate-Parameter.</p>
-  <textarea id="strictCode" readonly>javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);})();</textarea>
+  <h2>SAFE (Affiliates behalten)</h2>
+  <p><a class="bm" href="javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()">SafeShare SAFE</a></p>
+  <details><summary>Code anzeigen</summary>
+<pre>javascript:(()=>{const u=location.href;
+const t='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);
+window.open(t,'_blank');})()</pre>
+  </details>
 </div>
 
-<!-- INSTALLATION DESKTOP -->
 <div class="card">
-  <h2>Installation Desktop</h2>
-  <ol class="howto">
-    <li>Lesezeichenleiste einblenden:
-      <ul>
-        <li>Chrome: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> / <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd></li>
-        <li>Safari macOS: Darstellung → „Favoritenleiste einblenden“</li>
-        <li>Firefox: Ansicht → Symbolleisten → „Lesezeichen-Symbolleiste → Immer anzeigen“</li>
-      </ul>
-    </li>
-    <li>Oben „ziehen“-Link mit der Maus in die Leiste ziehen. Alternativ: Rechtsklick → „Zu Lesezeichen hinzufügen“.</li>
-    <li>Test: Seite mit Tracking öffnen → Lesezeichen anklicken.</li>
-  </ol>
+  <h2>STRICT (alles entfernen)</h2>
+  <p><a class="bm" href="javascript:(()=>{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);window.open(t,'_blank');})()">SafeShare STRICT</a></p>
+  <details><summary>Code anzeigen</summary>
+<pre>javascript:(()=>{const u=location.href;
+const t='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);
+window.open(t,'_blank');})()</pre>
+  </details>
 </div>
 
-<!-- INSTALLATION iOS -->
 <div class="card">
-  <h2>Installation iOS (Safari)</h2>
-  <ol class="howto">
-    <li>Beliebige Seite als Lesezeichen speichern.</li>
-    <li>In den Lesezeichen auf <strong>Bearbeiten</strong> → Eintrag wählen.</li>
-    <li>Den <strong>URL</strong>-Wert komplett durch den kopierten Code ersetzen (beginnend mit <code>javascript:</code>).</li>
-    <li>Speichern. Danach auf jeder Seite per Lesezeichen ausführen.</li>
-  </ol>
-  <p class="warn"><strong>Hinweis:</strong> Kein Drag-and-Drop auf iOS. Achte auf gerade Anführungszeichen <code>'</code> und keine Leerzeichen vor <code>javascript:</code>.</p>
-</div>
-
-<!-- TASTENKÜRZEL & TIPPS -->
-<div class="card">
-  <h2>Tastenkürzel & Tipps</h2>
+  <h2>Hinweise</h2>
   <ul>
-    <li>Es gibt keine offiziellen Hotkeys direkt für Lesezeichen. Workaround: Lesezeichen weit links in die Leiste ziehen, kurzer Name, z. B. „S-Safe“ und „S-Strict“.</li>
-    <li>In Chrome/Firefox kann die Leiste per <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> / <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> schnell ein-/ausgeblendet werden.</li>
-    <li>Problem „öffnet als Suche“: In den Lesezeichen prüfen, dass die URL wirklich mit <code>javascript:</code> beginnt, ohne Zeilenumbruch.</li>
+    <li>Pop-up-Blocker kann den neuen Tab verhindern. Dann „gleich“-Links in <a href="tests.html">Tests</a> nutzen.</li>
+    <li>Kurzlinks wie <code>pin.it/…</code> leiten serverseitig. Ergebnis erst nach Laden sichtbar.</li>
   </ul>
 </div>
 
-<script>
-function copyFrom(id){
-  const ta=document.getElementById(id);
-  ta.focus(); ta.select(); ta.setSelectionRange(0, ta.value.length);
-  try{ document.execCommand('copy'); }catch(_){}
-  if(navigator.clipboard){ navigator.clipboard.writeText(ta.value).catch(()=>{}); }
-  alert('Kopiert');
-}
-document.getElementById('copySafe').onclick  = ()=>copyFrom('safeCode');
-document.getElementById('copyStrict').onclick= ()=>copyFrom('strictCode');
-
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});
-}
-</script>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}</script>
 </body></html>
