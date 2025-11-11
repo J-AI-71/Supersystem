@@ -3,50 +3,80 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Bookmarklets</title>
-<meta name="description" content="Bookmarklets für SafeShare: SAFE und STRICT.">
+<meta name="description" content="Bookmarklets zum Säubern von Links: Affiliate-safe oder Strict. Mit Kopier-Buttons.">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; img-src 'self' data:">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0ea5e9">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9}
-  *{box-sizing:border-box}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-  h1{font-size:22px;margin:0 0 10px}
-  .muted{color:var(--muted);font-size:13px}
+  *{box-sizing:border-box} body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
+  h1{font-size:22px;margin:0 0 6px} .muted{color:var(--muted);font-size:12px}
   .card{border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-block;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--fg);text-decoration:none;cursor:pointer}
   .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-  textarea{width:100%;min-height:90px;padding:10px;border:1px solid var(--bd);border-radius:8px;font-size:13px}
+  textarea{width:100%;min-height:70px;padding:8px;border:1px solid var(--bd);border-radius:8px;font-family:ui-monospace,Menlo,Consolas,monospace}
   code{background:#f8fafc;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
+  .howto li{margin:6px 0}
 </style>
 </head>
 <body>
 <h1>SafeShare – Bookmarklets</h1>
-<p class="muted">Ziehe die Buttons in die Lesezeichenleiste. Auf einer Seite mit langem Link anklicken.</p>
+<p class="muted">Ziehen → Ablegen in Lesezeichenleiste. Oder Code kopieren und als Lesezeichen-URL einfügen.</p>
 
 <div class="card">
-  <h3>Drag & Drop</h3>
+  <h2>Affiliate-safe (Provisionen bleiben)</h2>
   <div class="row">
-    <a class="btn primary" href="javascript:(function(){try{var s='',t=window.getSelection?String(getSelection()):'';if(t&&/^https?:\/\//i.test(t))s=t;else s=location.href;var base='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u=';location.href=base+encodeURIComponent(s)}catch(e){alert('SafeShare SAFE: '+e.message)}})()">SafeShare SAFE</a>
-    <a class="btn" href="javascript:(function(){try{var s='',t=window.getSelection?String(getSelection()):'';if(t&&/^https?:\/\//i.test(t))s=t;else s=location.href;var base='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u=';location.href=base+encodeURIComponent(s)}catch(e){alert('SafeShare STRICT: '+e.message)}})()">SafeShare STRICT</a>
+    <!-- Ziehen: echtes Bookmarklet -->
+    <a class="btn primary" draggable="true"
+       href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=1&amp;ao=1&amp;u='+encodeURIComponent(u);})();">
+       In Lesezeichenleiste ziehen
+    </a>
+    <button class="btn" type="button" id="copySafe">Code kopieren</button>
   </div>
-  <p class="muted">SAFE behält Affiliate-Parameter (z. B. <code>tag</code>), STRICT entfernt alles.</p>
+  <p class="muted">Aktuelle Seite wird in SafeShare geöffnet, Affiliate-Parameter bleiben erhalten, Rest wird entfernt.</p>
+  <textarea id="safeCode" readonly>javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u='+encodeURIComponent(u);})();</textarea>
 </div>
 
 <div class="card">
-  <h3>iOS Anleitung</h3>
-  <ol class="muted">
-    <li>Beliebige Seite als Lesezeichen speichern.</li>
-    <li>Im Lesezeichen den <strong>Namen</strong> ändern (z. B. „SafeShare SAFE“).</li>
-    <li>Die <strong>URL</strong> des Lesezeichens durch den Code unten ersetzen.</li>
-  </ol>
-  <p><strong>SAFE-Code:</strong></p>
-  <textarea readonly>javascript:(function(){try{var s='',t=window.getSelection?String(getSelection()):'';if(t&&/^https?:\/\//i.test(t))s=t;else s=location.href;var base='https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u=';location.href=base+encodeURIComponent(s)}catch(e){alert('SafeShare SAFE: '+e.message)}})()</textarea>
-  <p><strong>STRICT-Code:</strong></p>
-  <textarea readonly>javascript:(function(){try{var s='',t=window.getSelection?String(getSelection()):'';if(t&&/^https?:\/\//i.test(t))s=t;else s=location.href;var base='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u=';location.href=base+encodeURIComponent(s)}catch(e){alert('SafeShare STRICT: '+e.message)}})()</textarea>
+  <h2>Strict (alles weg, auch Affiliates)</h2>
+  <div class="row">
+    <a class="btn" draggable="true"
+       href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=0&amp;ao=1&amp;u='+encodeURIComponent(u);})();">
+       In Lesezeichenleiste ziehen
+    </a>
+    <button class="btn" type="button" id="copyStrict">Code kopieren</button>
+  </div>
+  <p class="muted">Entfernt Tracking und Affiliate-Parameter.</p>
+  <textarea id="strictCode" readonly>javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u='+encodeURIComponent(u);})();</textarea>
 </div>
 
-<div class="row">
-  <a class="btn" href="index.html">Zur Startseite</a>
-  <a class="btn" href="app.html">Zur App</a>
+<div class="card">
+  <h2>iOS Safari – Kurz-Anleitung</h2>
+  <ol class="howto">
+    <li>Beliebige Seite als Lesezeichen speichern.</li>
+    <li>Im Lesezeichen auf **Bearbeiten** → Eintrag wählen.</li>
+    <li>Den **URL-Wert** durch den kopierten Code ersetzen.</li>
+    <li>Speichern. Danach auf jeder Seite per Lesezeichen ausführen.</li>
+  </ol>
 </div>
+
+<script>
+  function copyFrom(id){
+    const ta=document.getElementById(id);
+    ta.select(); ta.setSelectionRange(0, 99999);
+    try{ document.execCommand('copy'); }catch(_){}
+    if(navigator.clipboard){ navigator.clipboard.writeText(ta.value).catch(()=>{}); }
+    alert('Kopiert');
+  }
+  document.getElementById('copySafe').onclick  = ()=>copyFrom('safeCode');
+  document.getElementById('copyStrict').onclick= ()=>copyFrom('strictCode');
+
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js?v=3').catch(()=>{});
+  }
+</script>
 </body>
 </html>
