@@ -4,17 +4,33 @@ SafeShare entfernt Tracking-Parameter (`utm_*`, `fbclid`, `gclid`, …), löst W
 
 ---
 
-## Live
+---
 
-- **App:** https://j-ai-71.github.io/Supersystem/app.html  
-- **Classic:** https://j-ai-71.github.io/Supersystem/app-classic.html  
-- **Startseite:** https://j-ai-71.github.io/Supersystem/index.html  
-- **Bookmarklets:** https://j-ai-71.github.io/Supersystem/bookmarklets.html  
-- **Partner werden:** https://j-ai-71.github.io/Supersystem/partner.html  
-- **Danke:** https://j-ai-71.github.io/Supersystem/danke.html
+## Live-Links
+- Start: https://j-ai-71.github.io/Supersystem/index.html
+- App: https://j-ai-71.github.io/Supersystem/app.html
+- Classic: https://j-ai-71.github.io/Supersystem/app-classic.html
+- Bookmarklets: https://j-ai-71.github.io/Supersystem/bookmarklets.html
+- Tools: https://j-ai-71.github.io/Supersystem/tools.html
+- Tests: https://j-ai-71.github.io/Supersystem/tests.html
+- Impressum: https://j-ai-71.github.io/Supersystem/impressum.html
+- Datenschutz: https://j-ai-71.github.io/Supersystem/datenschutz.html
+- robots.txt: https://j-ai-71.github.io/Supersystem/robots.txt
+- sitemap.xml: https://j-ai-71.github.io/Supersystem/sitemap.xml
+- security.txt: https://j-ai-71.github.io/Supersystem/.well-known/security.txt
 
-> Cache-Buster bei Updates: `?v=77` anfügen.
+## Quickstart
+1. `/Supersystem/app.html` öffnen.
+2. Link einfügen → **Säubern**.
+3. **Kopieren**, **Öffnen**, **1-Klick**, optional **Referrer-frei**.
+4. Haken „Provisionen behalten“ = SAFE, aus = STRICT.
 
+## Ein-Klick-Tester
+- SAFE: `https://j-ai-71.github.io/Supersystem/app.html?aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx`
+- STRICT: `https://j-ai-71.github.io/Supersystem/app.html?aff=0&ao=1&u=https%3A%2F%2Fl.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fnews.site%252Fa%253Futm_campaign%253Dx%26fbclid%3DABC`
+
+## Bookmarklets
+**Affiliate-safe**
 ---
 
 ## Schnellstart
