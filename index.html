@@ -14,14 +14,14 @@
 <!-- PWA/Meta -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0ea5e9">
-<link rel="icon" href="favicon-32.png?v=83" sizes="32x32">
+<link rel="icon" href="favicon-32.png?v=91" sizes="32x32">
 <link rel="apple-touch-icon" href="safeshare-og-v3b.png">
 <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/index.html">
 
 <!-- OG -->
 <meta property="og:title" content="SafeShare – Links ohne Tracking">
 <meta property="og:description" content="Säubere Links. Behalte Affiliates nach Wunsch. 1-Klick.">
-<meta property="og:image" content="safeshare-og-v3b.png?v=83">
+<meta property="og:image" content="safeshare-og-v3b.png?v=91">
 <meta property="og:type" content="website">
 
 <style>
@@ -54,6 +54,11 @@
   .chip{border:1px solid var(--bd);border-radius:999px;padding:4px 10px;font-size:12px;background:#f8fafc}
   .section{margin-top:18px}
   .mini{font-size:12px;color:var(--muted)}
+
+  /* Klickbarkeit sicherstellen */
+  button, a.btn { pointer-events:auto }
+  header, section, .card { position:relative; z-index:1 }
+
   @media (max-width:860px){ .hero{grid-template-columns:1fr} nav{margin:12px 0 0 0} }
 </style>
 </head>
@@ -61,7 +66,7 @@
 <div class="container">
 
   <header>
-    <img src="safeshare-og-v3b.png?v=83" alt="SafeShare">
+    <img src="safeshare-og-v3b.png?v=91" alt="SafeShare">
     <div>
       <h1>SafeShare</h1>
       <div class="sub">Links ohne Tracking. Optional Affiliates behalten.</div>
@@ -80,7 +85,7 @@
       <div>
         <a class="btn primary" href="app.html">Zur App</a>
         <a class="btn" href="app-classic.html">Classic</a>
-        <a class="btn" id="btn-share" href="#">Weiterempfehlen</a>
+        <a class="btn" id="btn-share" href="app.html">Weiterempfehlen</a>
       </div>
       <div class="chips">
         <span class="chip">1-Klick öffnen</span>
@@ -170,15 +175,14 @@
 </div>
 
 <script>
-  // Teilen
-  document.getElementById('btn-share').onclick = (e)=>{
+  // Share mit Fallback
+  const s = document.getElementById('btn-share');
+  s.onclick = (e)=>{
     e.preventDefault();
     const url = new URL('app.html', location.href).href;
     const data = {title:'SafeShare', text:'Links ohne Tracking. 1-Klick.', url};
-    if(navigator.share){ navigator.share(data).catch(()=>{}); }
-    else {
-      navigator.clipboard?.writeText(url).then(()=>alert('Link kopiert: '+url)).catch(()=>location.href=url);
-    }
+    if (navigator.share) navigator.share(data).catch(()=>{ location.href=url; });
+    else location.href = url;
   };
 
   // Feedback
@@ -195,10 +199,10 @@ Wunsch/Problem: `
       + '&body=' + body;
   };
 
-  // Service Worker
+  // Service Worker v3
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', ()=> {
-      navigator.serviceWorker.register('sw.js?v=2').catch(()=>{});
+      navigator.serviceWorker.register('sw.js?v=3').catch(()=>{});
     });
   }
 </script>
