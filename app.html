@@ -26,12 +26,27 @@ ul{margin:6px 0 0 18px}
 @media (max-width:860px){.grid2{grid-template-columns:1fr}}
 pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
 table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);padding:6px;font-size:12px}
-/* Button-Layout robust */
-.row.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media (min-width:720px){.row.btns{grid-template-columns:repeat(4,auto)}}
+/* Buttons: nie überlappen */
+.row.btns{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  grid-auto-rows:minmax(44px,auto);
+}
+.row.btns .btn{
+  width:100%;
+  text-align:center;
+  white-space:nowrap;
+}
+@media (min-width:760px){
+  .row.btns{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:390px){
+  .row.btns{grid-template-columns:1fr}
+}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v45</span></h1>
+<h1>SafeShare – App <span class="muted">v46</span></h1>
 <p class="muted">Säubert Links. Optional Affiliates behalten. Kein Tracking, keine Serverlogs.</p>
 
 <div class="card">
@@ -45,7 +60,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 </div>
 
 <div class="card clearX">
-  <input id="in" type="text" inputmode="url" placeholder="Link hier einfügen…">
+  <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
   <button id="btnClear" aria-label="Feld leeren">×</button>
   <div class="row btns" style="margin-top:8px">
     <button class="btn primary" id="btnClean">Säubern</button>
@@ -133,38 +148,26 @@ function unwrap(u){
     const p = url.pathname;
     const sp = url.searchParams;
 
-    // Google /url?q=
     if ((h.endsWith('google.com') || h.endsWith('google.de')) && p === '/url' && sp.get('q')){
-      const q = sp.get('q');
-      try{ url = new URL(q); changed = true; continue; }catch{}
+      const q = sp.get('q'); try{ url = new URL(q); changed = true; continue; }catch{}
     }
-    // Facebook l.php?u=
     if (/\bfacebook\.com$/.test(h) && p === '/l.php' && sp.get('u')){
-      const q = sp.get('u');
-      try{ url = new URL(q); changed = true; continue; }catch{}
+      const q = sp.get('u'); try{ url = new URL(q); changed = true; continue; }catch{}
     }
-    // Pinterest-Wrapper (outbound-redirect/url= | r/pin/.../link= | away/to=)
     if (/\bpinterest\./.test(h)){
       const cand = sp.get('url') || sp.get('link') || sp.get('to');
       if (cand){
         const dv = decodeMaybe(decodeMaybe(cand));
-        if (/^https?:\/\//i.test(dv)){
-          try{ url = new URL(dv); changed = true; continue; }catch{}
-        }
+        if (/^https?:\/\//i.test(dv)){ try{ url = new URL(dv); changed = true; continue; }catch{} }
       }
     }
-    // Generische redirect-Parameter
     for (const k of ['url','u','redirect','redir','r','target','to','link']){
-      const v = sp.get(k);
-      if (!v) continue;
+      const v = sp.get(k); if (!v) continue;
       const dv = decodeMaybe(decodeMaybe(v));
-      if (/^https?:\/\//i.test(dv)){
-        try{ url = new URL(dv); changed = true; break; }catch{}
-      }
+      if (/^https?:\/\//i.test(dv)){ try{ url = new URL(dv); changed = true; break; }catch{} }
     }
     if (changed) continue;
 
-    // AMP Pfade entfernen
     if (/\/amp(\/|$)/i.test(p)){ url.pathname = p.replace(/\/amp(\/|$)/ig, '$1'); changed = true; }
     if (sp.has('amp')){ sp.delete('amp'); changed = true; }
   }
