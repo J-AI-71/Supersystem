@@ -1,141 +1,94 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Tools</title>
-<meta name="description" content="Cache leeren, Service Worker abmelden, LocalStorage zurücksetzen, Status prüfen.">
+<meta name="description" content="Cache löschen, Service Worker abmelden, Lokale Daten zurücksetzen.">
 <meta http-equiv="Content-Security-Policy"
- content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; frame-ancestors 'none'">
+ content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
 <link rel="icon" href="favicon-32.png">
 <style>
-:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--ok:#065f46;--bad:#7f1d1d}
+:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280}
 *{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:var(--fg)}
-h1{margin:0 0 10px} .row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
-.btn{display:inline-block;border:1px solid var(--bd);border-radius:8px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
-.card{border:1px solid var(--bd);border-radius:10px;padding:12px;margin:12px 0;background:#fff}
-pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:10px;overflow:auto}
-small{color:var(--muted)} .good{color:var(--ok)} .bad{color:var(--bad)}
+h1{margin:0 0 8px}.muted{color:var(--muted);font-size:12px}
+.card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
+.btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
+pre{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:8px;overflow:auto}
+ul{margin:8px 0 0 18px}
 </style></head><body>
 <h1>Tools</h1>
-<p><small>Version-Parameter nutzen: <code>?v=NN</code> an jede URL anhängen, um Cache zu umgehen.</small></p>
 
 <div class="card">
-  <h2>Aktionen</h2>
-  <div class="row">
-    <button class="btn" id="btn-caches">Alle Caches löschen</button>
-    <button class="btn" id="btn-sw">Service Worker abmelden</button>
-    <button class="btn" id="btn-ls">LocalStorage leeren</button>
-    <button class="btn" id="btn-ls-profiles">Nur Profile löschen</button>
-    <button class="btn" id="btn-reload">Neu laden mit ?v=Zeit</button>
-  </div>
-  <small>Reihenfolge bei „klebenden“ Seiten: Caches löschen → SW abmelden → Neu laden.</small>
+  <h2>Service Worker</h2>
+  <button class="btn" id="btnSWList">Liste anzeigen</button>
+  <button class="btn" id="btnSWUnreg">Alle abmelden</button>
+  <pre id="swOut">–</pre>
 </div>
 
 <div class="card">
-  <h2>Status</h2>
-  <div class="row">
-    <button class="btn" id="btn-status">Status aktualisieren</button>
-  </div>
-  <pre id="out">…</pre>
+  <h2>Caches</h2>
+  <button class="btn" id="btnCachesList">Liste anzeigen</button>
+  <button class="btn" id="btnCachesDel">Alle löschen</button>
+  <pre id="cacheOut">–</pre>
 </div>
 
 <div class="card">
-  <h2>Direkt zu Kernseiten</h2>
-  <div class="row">
-    <a class="btn" href="index.html">Index</a>
-    <a class="btn" href="app.html">App</a>
-    <a class="btn" href="app-classic.html">Classic</a>
-    <a class="btn" href="bookmarklets.html">Bookmarklets</a>
-    <a class="btn" href="tests.html">Tests</a>
-  </div>
+  <h2>Lokale Daten</h2>
+  <button class="btn" id="btnLSList">LocalStorage anzeigen</button>
+  <button class="btn" id="btnLSReset">SafeShare-Keys löschen</button>
+  <pre id="lsOut">–</pre>
+  <p class="muted">Betroffene Keys: <code>ss_mode_default</code>, <code>ss_profiles_v1</code>.</p>
+</div>
+
+<div class="card">
+  <h2>Schnellzugriff</h2>
+  <a class="btn" href="app.html">App</a>
+  <a class="btn" href="app-classic.html">Classic</a>
+  <a class="btn" href="tests.html">Tests</a>
+  <a class="btn" href="bookmarklets.html">Bookmarklets</a>
 </div>
 
 <script>
-const $ = sel => document.querySelector(sel);
-const out = $('#out');
+const $ = s=>document.querySelector(s);
 
-async function listCaches(){
-  if(!('caches' in self)) return {caches:false};
-  const keys = await caches.keys();
-  return {caches:true, keys};
-}
-
-async function unregisterSW(){
-  if(!('serviceWorker' in navigator)) return {sw:false};
+$('#btnSWList').onclick = async ()=>{
+  if(!('serviceWorker' in navigator)) return $('#swOut').textContent='SW nicht unterstützt.';
   const regs = await navigator.serviceWorker.getRegistrations();
-  const names = [];
-  for(const r of regs){ names.push(r.scope); await r.unregister().catch(()=>{}); }
-  return {sw:true, unregistered:names};
-}
+  $('#swOut').textContent = regs.length? regs.map(r=>r.scope).join('\n') : 'keine Registrierungen';
+};
 
-async function clearAllCaches(){
-  if(!('caches' in self)) return {caches:false};
+$('#btnSWUnreg').onclick = async ()=>{
+  if(!('serviceWorker' in navigator)) return $('#swOut').textContent='SW nicht unterstützt.';
+  const regs = await navigator.serviceWorker.getRegistrations();
+  for (const r of regs) await r.unregister();
+  $('#swOut').textContent = 'Alle SW abgemeldet.';
+};
+
+$('#btnCachesList').onclick = async ()=>{
+  if(!('caches' in window)) return $('#cacheOut').textContent='Cache API nicht verfügbar.';
   const keys = await caches.keys();
-  let ok=[], fail=[];
-  for(const k of keys){
-    try{ await caches.delete(k); ok.push(k); }catch{ fail.push(k); }
+  $('#cacheOut').textContent = keys.length? keys.join('\n') : 'keine Caches';
+};
+
+$('#btnCachesDel').onclick = async ()=>{
+  if(!('caches' in window)) return $('#cacheOut').textContent='Cache API nicht verfügbar.';
+  const keys = await caches.keys();
+  await Promise.all(keys.map(k=>caches.delete(k)));
+  $('#cacheOut').textContent = 'Alle Caches gelöscht.';
+};
+
+$('#btnLSList').onclick = ()=>{
+  const out = [];
+  for (let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    out.push(k+': '+localStorage.getItem(k));
   }
-  return {caches:true, deleted:ok, failed:fail};
-}
-
-function clearLocal(){
-  try{ localStorage.clear(); return true; }catch{ return false; }
-}
-
-function clearProfilesOnly(){
-  try{
-    const del=[];
-    for(let i=localStorage.length-1;i>=0;i--){
-      const k=localStorage.key(i);
-      if(!k) continue;
-      const key = k.toLowerCase();
-      if(key.includes('profile') || key.includes('profiles') || key.includes('safeshare')){
-        del.push(k); localStorage.removeItem(k);
-      }
-    }
-    return del;
-  }catch{ return []; }
-}
-
-function reloadWithBust(){
-  const u = new URL(location.href);
-  u.searchParams.set('v', Date.now().toString());
-  location.replace(u.toString());
-}
-
-async function status(){
-  const data = {
-    url: location.href,
-    sw: 'serviceWorker' in navigator,
-    ls: (()=>{ try{return Object.keys(localStorage).length;}catch{return 'n/a';} })(),
-    caches: await listCaches()
-  };
-  if ('serviceWorker' in navigator){
-    const regs = await navigator.serviceWorker.getRegistrations();
-    data.swRegistrations = regs.map(r=>({scope:r.scope, active:!!r.active, installing:!!r.installing, waiting:!!r.waiting}));
-  }
-  out.textContent = JSON.stringify(data,null,2);
-}
-
-$('#btn-caches').onclick = async ()=>{
-  const res = await clearAllCaches();
-  await status();
-  alert('Caches gelöscht.');
+  $('#lsOut').textContent = out.length? out.join('\n') : 'LocalStorage leer.';
 };
-$('#btn-sw').onclick = async ()=>{
-  const res = await unregisterSW();
-  await status();
-  alert('Service Worker abgemeldet.');
-};
-$('#btn-ls').onclick = ()=>{
-  clearLocal(); status(); alert('LocalStorage geleert.');
-};
-$('#btn-ls-profiles').onclick = ()=>{
-  const del = clearProfilesOnly(); status(); alert('Profile gelöscht: '+del.length);
-};
-$('#btn-reload').onclick = reloadWithBust;
-$('#btn-status').onclick = status;
 
-status();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
+$('#btnLSReset').onclick = ()=>{
+  localStorage.removeItem('ss_mode_default');
+  localStorage.removeItem('ss_profiles_v1');
+  $('#lsOut').textContent = 'SafeShare-Keys gelöscht.';
+};
 </script>
 </body></html>
