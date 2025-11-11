@@ -1,58 +1,53 @@
-// SPDX-License-Identifier: MIT
-// sw.js v2
-const VER = 'v3::ss';
+/* SafeShare SW v4 */
+const VER = 'v4::ss';
 const ASSETS = [
-  './',
-  './index.html',
-  './app.html',
-  './app-classic.html',
-  './bookmarklets.html',
-  './partner.html',
-  './danke.html',
-  './impressum.html',
-  './datenschutz.html',
-  './faq.html',
-  './changelog.html',
-  './tools.html',
-  './tests.html',
-  './404.html',
-  './safeshare-og-v3b.png',
-  './favicon-32.png',
-  './manifest.webmanifest'
+  './', './index.html', './app.html', './app-classic.html',
+  './bookmarklets.html', './tools.html', './tests.html',
+  './faq.html', './changelog.html', './partner.html', './danke.html',
+  './impressum.html', './datenschutz.html',
+  './manifest.webmanifest', './robots.txt', './sitemap.xml',
+  './favicon-32.png', './safeshare-og-v3b.png'
 ];
 
 self.addEventListener('install', e=>{
-  e.waitUntil(caches.open(VER).then(c=>c.addAll(ASSETS)));
+  e.waitUntil(caches.open(VER).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
 
 self.addEventListener('activate', e=>{
   e.waitUntil(
-    caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==VER).map(k=>caches.delete(k))))
+    caches.keys().then(keys=>Promise.all(keys.map(k=>k!==VER?caches.delete(k):null)))
+      .then(()=>self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// App-Seiten: network-first, sonst cache-first
+/* HTML: network-first, Fallback Cache. Sonst: cache-first. */
 self.addEventListener('fetch', e=>{
-  const url = new URL(e.request.url);
-  const isApp = /\/(app|app-classic)\.html$/i.test(url.pathname);
-  if (isApp) {
+  const req = e.request;
+  const url = new URL(req.url);
+
+  if (req.method!=='GET' || url.origin!==location.origin) return;
+
+  const isHTML = req.headers.get('accept')?.includes('text/html') || url.pathname.endsWith('.html') || req.mode==='navigate';
+
+  if (isHTML) {
     e.respondWith(
-      fetch(e.request).then(res=>{
-        const copy = res.clone();
-        caches.open(VER).then(c=>c.put(e.request, copy));
-        return res;
-      }).catch(()=>caches.match(e.request))
+      fetch(req).then(r=>{
+        const cc = r.clone();
+        caches.open(VER).then(c=>c.put(req, cc)).catch(()=>{});
+        return r;
+      }).catch(()=>caches.match(req).then(r=>r || caches.match('./index.html')))
     );
-  } else {
-    e.respondWith(
-      caches.match(e.request).then(hit=> hit || fetch(e.request).then(res=>{
-        if (res.ok && e.request.method==='GET') {
-          const copy = res.clone();
-          caches.open(VER).then(c=>c.put(e.request, copy));
-        }
-        return res;
-      }))
-    );
+    return;
   }
+
+  e.respondWith(
+    caches.match(req).then(cached=>{
+      if (cached) return cached;
+      return fetch(req).then(r=>{
+        const cc = r.clone();
+        caches.open(VER).then(c=>c.put(req, cc)).catch(()=>{});
+        return r;
+      });
+    })
+  );
 });
