@@ -2,57 +2,38 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SafeShare – Classic</title>
 <meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen. SAFE/STRICT Umschalter.">
-<meta http-equiv="Content-Security-Policy"
- content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'">
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0ea5e9">
 <link rel="icon" href="favicon-32.png">
 <style>
 :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9}
-*{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
+*{box-sizing:border-box} body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
 h1{margin:0 0 8px;font-size:20px}.muted{color:var(--muted);font-size:12px}
 .card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
-input[type=text]{width:100%;padding:10px 36px 10px 10px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--fg);cursor:pointer}
+input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
+.btn{border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;color:var(--fg);cursor:pointer;text-align:center}
 .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
-.clearX{position:relative}.clearX button{position:absolute;right:8px;top:8px;border:1px solid var(--bd);border-radius:8px;background:#fff;padding:6px 8px;cursor:pointer}
-.badge{display:inline-block;border:1px solid var(--bd);border-radius:999px;padding:3px 8px;font-size:12px;background:#f8fafc;margin-right:6px}
-/* Buttons: eigene Grid-Zeile */
-.btn-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-}
-.btn-grid .btn{
-  width:100%;
-  text-align:center;
-  white-space:nowrap;
-}
-@media (min-width:760px){
-  .btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-}
-@media (max-width:390px){
-  .btn-grid{grid-template-columns:1fr}
-}
+
+/* stabile Button-Zeile, keine row/flex-Abhängigkeit */
+.btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+@media (min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:390px){.btn-grid{grid-template-columns:1fr}}
 </style>
 </head><body>
-<h1>SafeShare – Classic <span class="muted">v47</span></h1>
+<h1>SafeShare – Classic <span class="muted">v52</span></h1>
 <p class="muted">Minimalansicht ohne Profile.</p>
 
 <div class="card">
   <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
-  <div class="muted" id="modeInfo">Modus: <strong>SAFE</strong></div>
+  <div class="muted" id="modeInfo" style="margin-top:6px">Modus: <strong>SAFE</strong></div>
 </div>
 
-<div class="card clearX">
+<div class="card">
   <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
-  <button id="btnClear" aria-label="Feld leeren">×</button>
-  <div class="btn-grid" style="margin-top:8px">
-    <button class="btn primary" id="btnClean">Säubern</button>
-    <button class="btn" id="btnCopy">Kopieren</button>
-    <button class="btn" id="btnOpen">Öffnen</button>
-    <button class="btn" id="btnOpenNew">1-Klick</button>
+  <div class="btn-grid">
+    <button class="btn primary" id="btnClean"   type="button">Säubern</button>
+    <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
+    <button class="btn"          id="btnOpen"    type="button">Öffnen</button>
+    <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
   </div>
   <p class="muted" style="margin-top:6px">„1-Klick“ = neuer Tab. „Öffnen“ = gleicher Tab.</p>
 </div>
@@ -60,30 +41,27 @@ input[type=text]{width:100%;padding:10px 36px 10px 10px;border:1px solid var(--b
 <div class="card">
   <div id="outURL" class="kbd">–</div>
   <div style="margin-top:8px">
-    <span class="badge" id="bMode">Modus: SAFE</span>
+    <span class="kbd" id="bMode">Modus: SAFE</span>
   </div>
 </div>
 
 <script>
-const $ = s => document.querySelector(s);
-const elIn = $('#in'), elSafe = $('#ckSafe');
-function update(){ $('#modeInfo').innerHTML = 'Modus: <strong>'+(elSafe.checked?'SAFE':'STRICT')+'</strong>'; $('#bMode').textContent='Modus: '+(elSafe.checked?'SAFE':'STRICT'); }
+const $=s=>document.querySelector(s);
+const elIn=$('#in'), elSafe=$('#ckSafe');
+function update(){ $('#modeInfo').innerHTML='Modus: <strong>'+(elSafe.checked?'SAFE':'STRICT')+'</strong>'; $('#bMode').textContent='Modus: '+(elSafe.checked?'SAFE':'STRICT'); }
 function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
 function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
 function affiliateKeysForHost(host){ if(/\bamazon\./.test(host.toLowerCase())) return new Set(['tag']); return new Set(); }
 function unwrap(u){
-  let url=new URL(u); let changed=true, hops=0;
-  while(changed && hops<5){ changed=false; hops++;
+  let url=new URL(u); let changed=true,hops=0;
+  while(changed&&hops<5){ changed=false;hops++;
     const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
     if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
     if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
-    if(/\bpinterest\./.test(h)){
-      const cand=sp.get('url')||sp.get('link')||sp.get('to');
-      if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} } }
-    }
+    if(/\bpinterest\./.test(h)){ const cand=sp.get('url')||sp.get('link')||sp.get('to'); if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} } }
     for(const k of ['url','u','redirect','redir','r','target','to','link']){
       const v=sp.get(k); if(!v) continue;
-      const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; break; }
+      const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; break; }catch{} }
     }
     if(changed) continue;
     if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
@@ -106,16 +84,14 @@ function clean(u, keepAff){
   return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
 function doClean(){
-  const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return;}
-  const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return;}
+  const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte Link einfügen.'); return; }
+  const u=toURLMaybe(raw); if(!u){ alert('Ungültige URL.'); return; }
   const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
 }
 $('#btnClean').onclick=()=>doClean();
-$('#btnCopy').onclick=()=>{const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{});};
-$('#btnOpen').onclick=()=>{const s=doClean(); if(s) location.replace(s);};
-$('#btnOpenNew').onclick=()=>{const s=doClean(); if(s) window.open(s,'_blank');};
-$('#btnClear').onclick=()=>{elIn.value=''; elIn.focus();};
+$('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
+$('#btnOpen').onclick  =()=>{ const s=doClean(); if(s) location.replace(s); };
+$('#btnOpenNew').onclick=()=>{ const s=doClean(); if(s) window.open(s,'_blank'); };
 elSafe.onchange=update; update();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
 </body></html>
