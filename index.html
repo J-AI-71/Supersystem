@@ -8,13 +8,11 @@
   <!-- GitHub Pages Projektpfad -->
   <base href="/Supersystem/">
 
-  <!-- Manifest + Icons -->
+  <!-- PWA / Icons -->
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="logo.svg">
-  <meta name="theme-color" content="#0b6ef7">
-
-  <!-- iOS A2HS -->
   <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta name="theme-color" content="#0b6ef7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="SafeShare">
@@ -25,24 +23,47 @@
   <style>
     :root { --max: 900px; --gap: 1rem; --radius: 12px; }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: Canvas; color: CanvasText; }
-    body { font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; padding: 2rem 1rem 4rem; display: grid; place-items: start center; }
-    main { width: 100%; max-width: var(--max); }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: Canvas; color: CanvasText;
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
+      min-height: 100dvh;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    main { width: 100%; max-width: var(--max); flex: 1 0 auto; padding: 2rem 1rem; }
     header { display: grid; grid-template-columns: 56px 1fr auto; gap: 1rem; align-items: center; }
-    header h1 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
-    header p { margin: .1rem 0 0 0; opacity: .8; }
+    header h1 { margin: 0 0 .25rem 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+    header p { margin: 0 0 0 0; opacity: .8; }
     .logo { width: 56px; height: 56px; }
-    .card { border: 1px solid color-mix(in oklab, CanvasText 15%, transparent); border-radius: var(--radius); padding: 1rem; margin: 1rem 0; background: color-mix(in oklab, Canvas 92%, CanvasText 0%); }
+    .card {
+      border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
+      border-radius: var(--radius);
+      padding: 1rem; margin: 1rem 0;
+      background: color-mix(in oklab, Canvas 92%, CanvasText 0%);
+    }
     nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
-    nav a { display: block; padding: .75rem 1rem; border-radius: 10px; text-decoration: none; border: 1px solid color-mix(in oklab, CanvasText 12%, transparent); }
+    nav a {
+      display: block; padding: .75rem 1rem; border-radius: 10px; text-decoration: none;
+      border: 1px solid color-mix(in oklab, CanvasText 12%, transparent);
+    }
     nav a:hover, nav a:focus-visible { outline: none; border-color: color-mix(in oklab, CanvasText 25%, transparent); }
     .hint { font-size: .92rem; opacity: .85; }
     code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace; font-size: .95em; }
-    footer { margin-top: 2rem; opacity: .8; font-size: .9rem; display: flex; flex-wrap: wrap; gap: .75rem; }
+    details { margin-top: .5rem; }
     .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem; border:1px solid color-mix(in oklab, CanvasText 20%, transparent); border-radius:10px; background:none; cursor:pointer; }
     .btn[hidden] { display:none; }
-    details { margin-top: .5rem; }
     .ok { color: green; } .warn { color: #b8860b; }
+
+    /* Sichtbarer, sticky Footer mit Safe-Area */
+    footer {
+      width: 100%; max-width: var(--max);
+      position: sticky; bottom: 0;
+      padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
+      display: flex; flex-wrap: wrap; gap: .75rem; align-items: center;
+      border-top: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
+      background: color-mix(in oklab, Canvas 92%, CanvasText 0%);
+    }
+    footer a { color: currentColor; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -67,11 +88,11 @@
         </ul>
       </nav>
       <p class="hint">
-        Hinweis: Projektpfad ist <span class="mono">/Supersystem/</span>. Diese Seite setzt <span class="mono">&lt;base href="/Supersystem/"&gt;</span>.
+        Projektpfad: <span class="mono">/Supersystem/</span>. Diese Seite nutzt <span class="mono">&lt;base href="/Supersystem/"&gt;</span>.
       </p>
       <details>
         <summary>Pfad-Diagnose</summary>
-        <div id="diag" class="mono">Lade…</div>
+        <pre id="diag" class="mono">lade…</pre>
       </details>
     </section>
 
@@ -79,19 +100,19 @@
       <h2>Schnellstart</h2>
       <ol>
         <li>Öffne <strong>App</strong> für das Reinigen einzelner Links.</li>
-        <li>Nutze <strong>Bookmarklets</strong>, um per Lesezeichen direkt zu säubern.</li>
-        <li>Teste in <strong>Tests</strong> mit Beispiel-URLs.</li>
+        <li>Nutze <strong>Bookmarklets</strong> für die Lesezeichenleiste.</li>
+        <li>Teste <strong>Tests</strong> mit Beispiel-URLs.</li>
       </ol>
       <p class="hint">Keine Server-Logs. Keine Cookies. Verarbeitung im Browser.</p>
-      <p class="hint" id="iosHint" hidden>iOS: Teilen-Menü → „Zum Home-Bildschirm“ für Installation.</p>
+      <p class="hint" id="iosHint" hidden>iOS: Teilen-Menü → „Zum Home-Bildschirm“, um zu installieren.</p>
     </section>
-
-    <footer>
-      <a href="impressum.html">Impressum</a>
-      <a href="datenschutz.html">Datenschutz</a>
-      <span>© <span id="year"></span> SafeShare</span>
-    </footer>
   </main>
+
+  <footer>
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <span>© <span id="year"></span> SafeShare</span>
+  </footer>
 
   <script>
     // Jahr
@@ -104,11 +125,11 @@
       var ok = base === expected;
       var el = document.getElementById('diag');
       el.textContent = [
-        'origin: ' + location.origin,
+        'origin:   ' + location.origin,
         'pathname: ' + location.pathname,
-        'base.href: ' + base,
+        'base.href:' + base,
         'expected: ' + expected,
-        'status: ' + (ok ? 'OK' : 'WARN')
+        'status:   ' + (ok ? 'OK' : 'WARN')
       ].join('\n');
       el.className = 'mono ' + (ok ? 'ok' : 'warn');
     })();
@@ -130,7 +151,7 @@
       }
     });
 
-    // iOS Hinweis
+    // iOS-Hinweis
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     if (isIOS && !isStandalone) document.getElementById('iosHint').hidden = false;
