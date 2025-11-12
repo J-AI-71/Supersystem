@@ -9,11 +9,13 @@
     body{font-family:system-ui;margin:0;background:#0b0b0b;color:#eaeaea}
     .wrap{max-width:860px;margin:auto;padding:20px}
     input,textarea{width:100%;padding:.7rem;border-radius:10px;border:1px solid #2a2a2a;background:#111;color:#eaeaea}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .btn{padding:.7rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600}
     .btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
     .mut{color:#9a9a9a}
     .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:12px}
+    .code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+    a.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
   </style>
 </head>
 <body>
@@ -42,17 +44,55 @@
     </div>
   </div>
 
-  <p class="mut" style="margin-top:12px"><a class="mut" href="index.html">Zurück</a> · <a class="mut" href="tools.html">Tools</a></p>
+  <!-- NEU: Bookmarklets in der App -->
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">Bookmarklets</h3>
+    <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: Link lange tippen → Lesezeichen, dann die URL des Lesezeichens mit dem Code ersetzen.</p>
+
+    <div class="row">
+      <a class="bm" id="bm1"
+         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
+         Clean & Open
+      </a>
+      <input id="code1" class="code" readonly>
+      <button class="btn alt" data-copy="#code1">Kopieren</button>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <a class="bm" id="bm2"
+         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">
+         Clean & Stay
+      </a>
+      <input id="code2" class="code" readonly>
+      <button class="btn alt" data-copy="#code2">Kopieren</button>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <a class="bm" id="bm3"
+         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">
+         Clean & Copy
+      </a>
+      <input id="code3" class="code" readonly>
+      <button class="btn alt" data-copy="#code3">Kopieren</button>
+    </div>
+  </div>
+
+  <p class="mut" style="margin-top:12px">
+    <a class="mut" href="index.html">Zurück</a> ·
+    <a class="mut" href="bookmarklets.html">Bookmarklets-Seite</a> ·
+    <a class="mut" href="tools.html">Tools</a>
+  </p>
 </div>
 
 <script>
-// Payhip-Redirect: /app.html#pro=1
+// Pro via Payhip: /app.html#pro=1
 if (location.hash.includes('pro=1')) {
   localStorage.setItem('ss2_pro','1');
   history.replaceState(null,'',location.pathname);
   alert('Pro aktiviert');
 }
 
+// Cleaner
 const TRACKERS=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","vero_id","igshid","si","spm"]);
 function cleanUrl(raw){
   try{
@@ -70,13 +110,15 @@ function cleanUrl(raw){
   }catch{return raw;}
 }
 
-const hasPro=()=>localStorage.getItem('ss2_pro')==='1';
+// Pro-Gate
+const hasPro = ()=> localStorage.getItem('ss2_pro')==='1';
 function requirePro(){ if(hasPro()) return true; alert('Pro-Funktion. Bitte Pro aktivieren.'); return false; }
 document.getElementById('pro').onclick=()=>{
   const key=prompt('Pro-Schlüssel eingeben:'); if(!key) return;
   localStorage.setItem('ss2_pro','1'); alert('Pro aktiviert.');
 };
 
+// Single
 const inp=document.getElementById('inp'), out=document.getElementById('out');
 document.getElementById('cleanOpen').onclick=()=>{
   const src=inp.value.trim(); if(!src){out.textContent='Bitte URL eingeben.'; return;}
@@ -86,16 +128,17 @@ document.getElementById('cleanOpen').onclick=()=>{
 };
 document.getElementById('copy').onclick=async()=>{
   const src=inp.value.trim(); if(!src) return;
-  const dst=cleanUrl(src); await navigator.clipboard.writeText(dst);
+  const dst=cleanUrl(src); try{ await navigator.clipboard.writeText(dst);}catch{}
   out.textContent='Kopiert:\n'+dst;
 };
 document.getElementById('share').onclick=async()=>{
   const src=inp.value.trim(); if(!src) return;
   const dst=cleanUrl(src);
   if(navigator.share){ try{ await navigator.share({title:'SafeShare', url:dst}); }catch(e){} }
-  else { await navigator.clipboard.writeText(dst); alert('In Zwischenablage kopiert.'); }
+  else { try{ await navigator.clipboard.writeText(dst);}catch{} alert('In Zwischenablage kopiert.'); }
 };
 
+// Bulk
 document.getElementById('bulkClean').onclick=()=>{
   if(!requirePro()) return;
   const lines=document.getElementById('bulk').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
@@ -103,10 +146,27 @@ document.getElementById('bulkClean').onclick=()=>{
 };
 document.getElementById('bulkCopy').onclick=async()=>{
   if(!requirePro()) return;
-  await navigator.clipboard.writeText(document.getElementById('bulk').value);
+  try{ await navigator.clipboard.writeText(document.getElementById('bulk').value);}catch{}
   alert('Liste kopiert.');
 };
 
+// Bookmarklets: Codes in Inputs spiegeln + Kopier-Buttons
+['#bm1','#bm2','#bm3'].forEach((sel,i)=>{
+  const a=document.querySelector(sel);
+  const input=document.getElementById('code'+(i+1));
+  input.value=a.getAttribute('href');
+});
+document.querySelectorAll('[data-copy]').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const sel=btn.getAttribute('data-copy');
+    const el=document.querySelector(sel);
+    try{ await navigator.clipboard.writeText(el.value); btn.textContent='Kopiert'; }
+    catch{ el.select(); document.execCommand('copy'); btn.textContent='Kopiert'; }
+    setTimeout(()=>btn.textContent='Kopieren',1200);
+  });
+});
+
+// SW registrieren
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
