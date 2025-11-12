@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Tests v167</title>
+<title>SafeShare – Tests v168</title>
 <link rel="icon" href="favicon-32.png">
-<meta name="description" content="Schnelltests für SafeShare. AUTO (ao=1) oder MANUELL (ao=0).">
+<meta name="description" content="Schnelltests mit eigenen Zielseiten. AUTO (ao=1) oder MANUELL (ao=0).">
 <style>
   :root{--bd:#e5e7eb;--fg:#111827;--accent:#0ea5e9;--muted:#6b7280}
   *{box-sizing:border-box}
@@ -17,18 +17,51 @@
   @media(max-width:740px){.grid{grid-template-columns:1fr}}
   .row{display:flex;gap:8px;flex-wrap:wrap}
   a.btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--fg);background:#fff}
-  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
   .kbd{font:12px ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);border-radius:6px;padding:2px 6px}
 </style>
 </head>
 <body>
-<h1>SafeShare – Tests <span class="kbd">v167</span></h1>
+<h1>SafeShare – Tests <span class="kbd">v168</span></h1>
 <p class="small">
   AUTO nutzt <span class="kbd">ao=1</span> und leitet im selben Tab weiter. Wenn geblockt, MANUELL testen:
   App öffnet sich mit vorgefüllter URL, dann in der App „Ergebnis-Link öffnen“ tippen.
 </p>
 
 <div class="grid">
+  <div class="card">
+    <h3>UTM entfernen → eigene Unterseite</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Fdest%2Fnews.html%3Futm_source%3Dtwitter%26x%3D1">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Fdest%2Fnews.html%3Futm_source%3Dtwitter%26x%3D1">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: …/dest/news.html?x=1</p>
+  </div>
+
+  <div class="card">
+    <h3>Google /url → eigene Unterseite</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fpost.html%253Futm_medium%253Demail%26sa%3DD">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fpost.html%253Futm_medium%253Demail%26sa%3DD">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: …/dest/post.html</p>
+  </div>
+
+  <div class="card">
+    <h3>Verschachtelt (redir → eigene Unterseite)</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fa.html%253Futm_campaign%253Dx%2526fbclid%253Dabc">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fa.html%253Futm_campaign%253Dx%2526fbclid%253Dabc">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: …/dest/a.html</p>
+  </div>
+
   <div class="card">
     <h3>Amazon SAFE (tag bleibt)</h3>
     <div class="row">
@@ -49,50 +82,6 @@
          href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=0&ao=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">MANUELL</a>
     </div>
     <p class="kbd">Erwartet: https://www.amazon.de/dp/TEST</p>
-  </div>
-
-  <div class="card">
-    <h3>UTM entfernen</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dtwitter%26x%3D1">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dtwitter%26x%3D1">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: https://example.com/?x=1</p>
-  </div>
-
-  <div class="card">
-    <h3>Google /url → Ziel</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fexample.com%252Fnews%253Futm_medium%253Demail%26sa%3DD">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fexample.com%252Fnews%253Futm_medium%253Demail%26sa%3DD">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: https://example.com/news</p>
-  </div>
-
-  <div class="card">
-    <h3>Verschachtelt (redir → shop)</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: https://shop.de/a</p>
-  </div>
-
-  <div class="card">
-    <h3>Pinterest-Outlink</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.pinterest.de%2Fpin%2F123%2F%3Furl%3Dhttps%253A%252F%252Fexample.com%252Fpost%253Futm_medium%253Dsocial">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.pinterest.de%2Fpin%2F123%2F%3Furl%3Dhttps%253A%252F%252Fexample.com%252Fpost%253Futm_medium%253Dsocial">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: https://example.com/post</p>
   </div>
 </div>
 
