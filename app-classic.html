@@ -1,25 +1,26 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v162</title>
-<meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen (neuer Tab). SAFE/STRICT Umschalter.">
+<title>SafeShare – Classic v164</title>
+<meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen (neuer Tab). SAFE/STRICT.">
 <link rel="icon" href="favicon-32.png">
 <style>
 *{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
 h1{margin:0 0 8px;font-size:20px}.muted{color:#6b7280;font-size:12px}
 .card{border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#fff;margin:10px 0}
-input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:15px}
+input[type=url]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:15px}
 .btn{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;background:#fff;color:#111827;cursor:pointer;text-align:center}
+a.btn{text-decoration:none;display:inline-block}
 .btn.primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
 .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
 .btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
 @media(min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
 #io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-#log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
+#outURL{word-break:break-all}
 </style>
 </head><body>
-<h1>SafeShare – Classic <span class="muted">v162</span></h1>
-<p class="muted">Kein Auto-Open. Öffnen nur per Klick.</p>
+<h1>SafeShare – Classic <span class="muted">v164</span></h1>
+<p class="muted">Ergebnis ist klickbarer Link.</p>
 
 <div class="card">
   <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
@@ -28,47 +29,43 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 
 <div class="card">
   <div id="io">
-    <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
+    <input id="in" type="url" inputmode="url" placeholder="link hier einfügen…">
     <button id="btnClear" type="button" class="btn" aria-label="Feld leeren">×</button>
   </div>
   <div class="btn-grid">
     <button class="btn primary" id="btnClean"   type="button">Säubern</button>
     <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
-    <button class="btn"          id="btnOpen"    type="button">Ergebnis öffnen (neu)</button>
-    <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
+    <button class="btn"          id="btnOpen"    type="button">Ergebnis öffnen</button>
+    <button class="btn"          id="btnOne"     type="button">1-Klick</button>
   </div>
-  <div id="log"></div>
 </div>
 
 <div class="card">
   <div id="outURL" class="kbd">–</div>
+  <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+    <a id="outA" class="btn primary" href="#" target="_blank" rel="noopener">Ergebnis-Link öffnen</a>
+  </div>
   <div style="margin-top:8px"><span class="kbd" id="bMode">Modus: SAFE</span></div>
 </div>
 
 <script>
-const $=s=>document.querySelector(s); const log=(m)=>{ const el=$('#log'); if(el) el.textContent=(el.textContent?el.textContent+"\n":"")+m; };
-const elIn=$('#in'), elSafe=$('#ckSafe');
-
-function update(){ $('#modeInfo').innerHTML='Modus: <strong>'+(elSafe.checked?'SAFE':'STRICT')+'</strong>'; $('#bMode').textContent='Modus: '+(elSafe.checked?'SAFE':'STRICT'); }
+const $=s=>document.querySelector(s);
 function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
 function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
 function affiliateKeysForHost(host){ host=host.toLowerCase(); if(/\bamazon\./.test(host)) return new Set(['tag']); return new Set(); }
-
 function unwrap(u){
   let url=new URL(u.toString()); let changed=true,hops=0;
-  try{
-    while(changed&&hops<5){
-      changed=false;hops++;
-      const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
-      if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
-      if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
-      if(/\bpinterest\./.test(h)){ const c=sp.get('url')||sp.get('link')||sp.get('to'); if(c){ const dv=decodeMaybe(decodeMaybe(c)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; continue; } } }
-      for(const k of ['url','u','redirect','redir','r','target','to','link']){ const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; break; } }
-      if(changed) continue;
-      if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
-      if(sp.has('amp')){ sp.delete('amp'); changed=true; }
-    }
-  }catch(e){ log('unwrap: '+e.message); }
+  while(changed&&hops<5){
+    changed=false;hops++;
+    const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
+    if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
+    if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
+    if(/\bpinterest\./.test(h)){ const c=sp.get('url')||sp.get('link')||sp.get('to'); if(c){ const dv=decodeMaybe(decodeMaybe(c)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; continue; } } }
+    for(const k of ['url','u','redirect','redir','r','target','to','link']){ const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv)); changed=true; break; } }
+    if(changed) continue;
+    if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
+    if(url.searchParams.has('amp')){ url.searchParams.delete('amp'); changed=true; }
+  }
   return url;
 }
 function clean(u, keepAff){
@@ -76,45 +73,29 @@ function clean(u, keepAff){
   const sp=url.searchParams, keys=[...sp.keys()];
   const tprefix=['utm_'], texact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
   const aff=affiliateKeysForHost(url.hostname);
-  try{
-    for(const k of keys){
-      const lk=k.toLowerCase();
-      const isT=tprefix.some(p=>lk.startsWith(p))||texact.has(lk);
-      const isA=aff.has(lk);
-      if(isT || (!keepAff && isA)) sp.delete(k);
-    }
-  }catch(e){ log('clean: '+e.message); }
+  for(const k of keys){
+    const lk=k.toLowerCase();
+    const isT=tprefix.some(p=>lk.startsWith(p))||texact.has(lk);
+    const isA=aff.has(lk);
+    if(isT || (!keepAff && isA)) sp.delete(k);
+  }
   if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){ if (sp.has('v')) sp.delete('v'); }
   const q=sp.toString();
   return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
 function doClean(){
-  try{
-    const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return null;}
-    const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return null;}
-    const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
-  }catch(e){ log('doClean: '+e.message); return null; }
+  const raw=($('#in').value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return null;}
+  const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return null;}
+  const out=clean(u, $('#ckSafe').checked); $('#outURL').textContent=out; const a=$('#outA'); a.href=out; a.target='_blank'; a.rel='noopener';
+  $('#modeInfo').innerHTML='Modus: <strong>'+($('#ckSafe').checked?'SAFE':'STRICT')+'</strong>'; $('#bMode').textContent='Modus: '+($('#ckSafe').checked?'SAFE':'STRICT');
+  return out;
 }
-/* Popup-sicheres Öffnen */
-function openNew(){ const s=$('#outURL').textContent||doClean(); if(!s||s==='–') return;
-  const w=window.open('about:blank','_blank'); if(!w){ const a=document.createElement('a'); a.href=s; a.target='_blank'; a.rel='noopener'; a.click(); return; }
-  try{ w.opener=null; }catch{} w.location=s;
-}
+function openViaLink(){ const a=$('#outA'); if(!a.href || a.href==='#'){ const s=doClean(); if(!s) return; } a.click(); }
 $('#btnClean').onclick=()=>doClean();
-$('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return;
-  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(s).catch(()=>{}); }
-  else { const ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch{} document.body.removeChild(ta); }
-};
-$('#btnOpen').onclick  =()=>openNew();
-$('#btnOpenNew').onclick=()=>{ const s=doClean(); if(s) openNew(); };
-$('#btnClear').onclick =()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
-elSafe.onchange=update; update();
-(function(){
-  const q=new URLSearchParams(location.search);
-  const v=q.get('u')||q.get('url'); const aff=q.get('aff');
-  if(aff==='1') elSafe.checked=true; if(aff==='0') elSafe.checked=false; update();
-  if(v){ $('#in').value=decodeMaybe(v); doClean(); }  // kein Auto-Open
-})();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=7').catch(()=>{});}
+$('#btnCopy').onclick =()=>{ const s=doClean(); if(s) navigator.clipboard?.writeText(s).catch(()=>{}); };
+$('#btnOpen').onclick  =()=>openViaLink();
+$('#btnOne').onclick   =()=>{ const s=doClean(); if(s) openViaLink(); };
+$('#btnClear').onclick =()=>{ $('#in').value=''; $('#in').focus(); $('#outURL').textContent='–'; $('#outA').href='#'; };
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=8').catch(()=>{});}
 </script>
 </body></html>
