@@ -2,64 +2,108 @@
 <html lang="de">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/"><title>Bookmarklets · SafeShare2</title>
+  <base href="/Supersystem/">
+  <title>Bookmarklets · SafeShare2</title>
+  <link rel="icon" href="assets/logo.png?v=2025-11-12">
   <style>
-    body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.45 system-ui}
-    .wrap{max-width:900px;margin:auto;padding:28px 16px}
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui}
+    .wrap{max-width:920px;margin:auto;padding:28px 16px}
+    h1{margin:0 0 8px;font-size:26px}
+    .mut{color:var(--mut)}
     .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-    .bm{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600}
-    .btn{padding:.6rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600;margin-left:8px}
-    input.code{width:100%;margin-top:8px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-    .mut{color:#9a9a9a}
+    .bm{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;
+        border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+    input.code{flex:1;min-width:280px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+    button.copy{padding:.6rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600}
+    ul{margin:8px 0 0 18px}
+    a{color:#eaeaea}
   </style>
 </head>
 <body>
 <div class="wrap">
-  <h1 style="margin:0 0 8px">Bookmarklets</h1>
-  <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: Link lange tippen → „Zu Lesezeichen hinzufügen“. Falls dein Browser die Links blockt, nutze den Kopieren-Button.</p>
+  <h1>Bookmarklets</h1>
+  <p class="mut">
+    Desktop: Link in die Lesezeichenleiste ziehen. <br>
+    iOS/Android: Link lange tippen → „Zu Lesezeichen hinzufügen“, dann URL des Lesezeichens öffnen und ggf. den Code unten hineinkopieren.
+  </p>
 
+  <!-- 1) Clean & Open -->
   <div class="card">
     <h3 style="margin:0 0 8px">1) Clean & Open (über SafeShare)</h3>
     <a class="bm" id="a1"
-       href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">SafeShare Clean & Open</a>
-    <button class="btn" data-copy="1">Kopieren</button>
-    <input class="code" id="c1" readonly>
+       href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
+       SafeShare Clean & Open
+    </a>
+    <div class="row">
+      <input class="code" id="c1" readonly>
+      <button class="copy" data-id="1">Kopieren</button>
+    </div>
   </div>
 
+  <!-- 2) Clean & Stay -->
   <div class="card">
     <h3 style="margin:0 0 8px">2) Clean & Stay</h3>
     <a class="bm" id="a2"
-       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">Clean & Stay</a>
-    <button class="btn" data-copy="2">Kopieren</button>
-    <input class="code" id="c2" readonly>
+       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">
+       Clean & Stay
+    </a>
+    <div class="row">
+      <input class="code" id="c2" readonly>
+      <button class="copy" data-id="2">Kopieren</button>
+    </div>
   </div>
 
+  <!-- 3) Clean & Copy -->
   <div class="card">
     <h3 style="margin:0 0 8px">3) Clean & Copy</h3>
     <a class="bm" id="a3"
-       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">Clean & Copy</a>
-    <button class="btn" data-copy="3">Kopieren</button>
-    <input class="code" id="c3" readonly>
+       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">
+       Clean & Copy
+    </a>
+    <div class="row">
+      <input class="code" id="c3" readonly>
+      <button class="copy" data-id="3">Kopieren</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <strong>Hinweise</strong>
+    <ul>
+      <li>macOS Safari: Lesezeichenleiste einblenden → <em>Ansicht → Favoritenleiste einblenden</em>.</li>
+      <li>Chrome/Edge: <em>Strg/⌘+Shift+B</em> zeigt die Leiste.</li>
+      <li>Firefox: Beim Speichern ggf. sicherstellen, dass die URL mit <code>javascript:</code> beginnt.</li>
+      <li>iOS Safari: Langes Tippen → Lesezeichen. Danach Lesezeichen bearbeiten und sicherstellen, dass die URL mit <code>javascript:</code> beginnt.</li>
+    </ul>
   </div>
 
   <p class="mut" style="margin-top:16px"><a href="index.html" class="mut">Zurück</a></p>
 </div>
 
 <script>
-const ids=[1,2,3];
-ids.forEach(i=>{
-  const a=document.getElementById('a'+i), c=document.getElementById('c'+i);
-  c.value=a.getAttribute('href'); // zeigt den Code an
+// Codefelder füllen
+['1','2','3'].forEach(i=>{
+  const a=document.getElementById('a'+i);
+  const c=document.getElementById('c'+i);
+  c.value=a.getAttribute('href');
 });
-document.querySelectorAll('button[data-copy]').forEach(btn=>{
+
+// Kopieren
+document.querySelectorAll('button.copy').forEach(btn=>{
   btn.addEventListener('click', async ()=>{
-    const i=btn.getAttribute('data-copy');
+    const i=btn.getAttribute('data-id');
     const v=document.getElementById('c'+i).value;
     try{ await navigator.clipboard.writeText(v); btn.textContent='Kopiert'; }
     catch{ const el=document.getElementById('c'+i); el.select(); document.execCommand('copy'); btn.textContent='Kopiert'; }
     setTimeout(()=>btn.textContent='Kopieren',1200);
   });
 });
+
+// SW-Registrierung
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
+}
 </script>
 </body>
 </html>
