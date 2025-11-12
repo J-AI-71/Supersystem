@@ -1,6 +1,68 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Redirect entschachteln – SafeShare</title><meta name="description" content="Verschachtelte Weiterleitungen lösen. Saubere Ziel-URL extrahieren.">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html"></head><body>
-<h1>Redirects entschachteln</h1><p>SafeShare extrahiert verschachtelte Ziel-Links aus Parametern und Hashes.</p>
-<p><a href="app.html">Jetzt Link reinigen</a></p><p><a href="datenschutz.html">Datenschutz</a> · <a href="impressum.html">Impressum</a></p>
-</body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>Weiterleitung · SafeShare2</title>
+  <link rel="icon" href="assets/logo.png">
+  <style>
+    body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.45 system-ui}
+    .wrap{max-width:760px;margin:auto;padding:28px 16px}
+    .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px}
+    .btn{display:inline-block;padding:.8rem 1.1rem;background:#29c07e;color:#07130c;border-radius:10px;text-decoration:none;font-weight:600}
+    .mut{color:#9a9a9a}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h2>SafeShare sichert deinen Link</h2>
+  <div class="card">
+    <p id="status">Reinige…</p>
+    <p><a id="go" class="btn" href="#" rel="noopener">Jetzt öffnen</a></p>
+    <p class="mut">Hinweis: Gängige Tracking-Parameter werden entfernt. Kein Nutzer-Tracking.</p>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <strong>Unterstütze dieses Projekt</strong>
+    <p>Hol dir SafeShare Pro für Bulk-Cleaning und eigene Regeln.</p>
+    <p>
+      <!-- ERSETZEN: deine Payhip-Links -->
+      <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro kaufen</a>
+      <a class="btn" href="app.html" style="background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a">App öffnen</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function clean(u){
+  try{
+    const x=new URL(u);
+    const trackers=["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"];
+    if(/amazon\./.test(x.hostname)){["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"].forEach(k=>x.searchParams.delete(k)); x.hash="";}
+    trackers.forEach(k=>{ if(x.searchParams.has(k)) x.searchParams.delete(k); });
+    x.pathname=x.pathname.replace(/\/{2,}/g,"/");
+    if(x.pathname!=="/"&&x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
+    return x.toString();
+  }catch{return u}
+}
+
+const q = new URL(location.href).searchParams.get('u');
+if(!q){
+  document.getElementById('status').textContent='Fehler: Kein Ziel übergeben.';
+}else{
+  const dst=clean(q);
+  document.getElementById('status').textContent='Ziel: '+dst;
+  const a=document.getElementById('go');
+  a.href=dst; a.target="_self";
+  // iOS-sicher im selben Tab
+  setTimeout(()=>{ location.href = dst; }, 1200);
+}
+
+// SW registrieren
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
+}
+</script>
+</body>
+</html>
