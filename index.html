@@ -3,56 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SafeShare • Supersystem</title>
+  <title>SafeShare</title>
 
-  <!-- Wichtig für GitHub Pages unter /Supersystem/ -->
+  <!-- GitHub Pages Projektpfad -->
   <base href="/Supersystem/">
 
-  <meta name="description" content="SafeShare: Links säubern, Tracking entfernen, lokal im Browser.">
+  <!-- Manifest + Icons -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <meta name="theme-color" content="#0b6ef7">
+
+  <!-- iOS A2HS -->
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SafeShare">
+
+  <meta name="description" content="SafeShare: Links säubern, Tracking entfernen. Lokal im Browser.">
   <meta name="color-scheme" content="light dark">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛡️</text></svg>">
 
   <style>
     :root { --max: 900px; --gap: 1rem; --radius: 12px; }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
-      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
-      padding: 2rem 1rem 4rem;
-      display: grid;
-      place-items: start center;
-      color: CanvasText;
-      background: Canvas;
-    }
+    html, body { margin: 0; padding: 0; background: Canvas; color: CanvasText; }
+    body { font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; padding: 2rem 1rem 4rem; display: grid; place-items: start center; }
     main { width: 100%; max-width: var(--max); }
-    header h1 { margin: 0 0 .25rem 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
-    header p { margin: 0 0 1rem 0; opacity: .8; }
-    .card {
-      border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
-      border-radius: var(--radius);
-      padding: 1rem;
-      margin: 1rem 0;
-      background: color-mix(in oklab, Canvas 92%, CanvasText 0%);
-    }
+    header { display: grid; grid-template-columns: 56px 1fr auto; gap: 1rem; align-items: center; }
+    header h1 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+    header p { margin: .1rem 0 0 0; opacity: .8; }
+    .logo { width: 56px; height: 56px; }
+    .card { border: 1px solid color-mix(in oklab, CanvasText 15%, transparent); border-radius: var(--radius); padding: 1rem; margin: 1rem 0; background: color-mix(in oklab, Canvas 92%, CanvasText 0%); }
     nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
-    nav a {
-      display: block; padding: .75rem 1rem; border-radius: 10px; text-decoration: none;
-      border: 1px solid color-mix(in oklab, CanvasText 12%, transparent);
-    }
+    nav a { display: block; padding: .75rem 1rem; border-radius: 10px; text-decoration: none; border: 1px solid color-mix(in oklab, CanvasText 12%, transparent); }
     nav a:hover, nav a:focus-visible { outline: none; border-color: color-mix(in oklab, CanvasText 25%, transparent); }
     .hint { font-size: .92rem; opacity: .85; }
     code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace; font-size: .95em; }
-    footer { margin-top: 2rem; opacity: .7; font-size: .9rem; }
+    footer { margin-top: 2rem; opacity: .8; font-size: .9rem; display: flex; flex-wrap: wrap; gap: .75rem; }
+    .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem; border:1px solid color-mix(in oklab, CanvasText 20%, transparent); border-radius:10px; background:none; cursor:pointer; }
+    .btn[hidden] { display:none; }
     details { margin-top: .5rem; }
-    .ok { color: green; }
-    .warn { color: #b8860b; }
+    .ok { color: green; } .warn { color: #b8860b; }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <h1>SafeShare</h1>
-      <p>Links säubern. Tracking entfernen. Lokal im Browser.</p>
+      <img class="logo" src="logo.svg" alt="SafeShare Logo">
+      <div>
+        <h1>SafeShare</h1>
+        <p>Links säubern. Tracking entfernen. Lokal im Browser.</p>
+      </div>
+      <button id="installBtn" class="btn" hidden>Auf Gerät installieren</button>
     </header>
 
     <section class="card">
@@ -66,7 +67,7 @@
         </ul>
       </nav>
       <p class="hint">
-        Hinweis für GitHub Pages-Projektseiten: Basis-Pfad ist <span class="mono">/Supersystem/</span>. Diese Seite setzt <span class="mono">&lt;base href="/Supersystem/"&gt;</span>.
+        Hinweis: Projektpfad ist <span class="mono">/Supersystem/</span>. Diese Seite setzt <span class="mono">&lt;base href="/Supersystem/"&gt;</span>.
       </p>
       <details>
         <summary>Pfad-Diagnose</summary>
@@ -79,13 +80,16 @@
       <ol>
         <li>Öffne <strong>App</strong> für das Reinigen einzelner Links.</li>
         <li>Nutze <strong>Bookmarklets</strong>, um per Lesezeichen direkt zu säubern.</li>
-        <li>Überprüfe mit <strong>Tests</strong> Beispiel-Links <em>(Input → Output)</em>.</li>
+        <li>Teste in <strong>Tests</strong> mit Beispiel-URLs.</li>
       </ol>
-      <p class="hint">Alles läuft offline im Browser. Keine Server-Logs. Keine Drittanbieter.</p>
+      <p class="hint">Keine Server-Logs. Keine Cookies. Verarbeitung im Browser.</p>
+      <p class="hint" id="iosHint" hidden>iOS: Teilen-Menü → „Zum Home-Bildschirm“ für Installation.</p>
     </section>
 
     <footer>
-      <p>© <span id="year"></span> SafeShare • Supersystem</p>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <span>© <span id="year"></span> SafeShare</span>
     </footer>
   </main>
 
@@ -93,13 +97,13 @@
     // Jahr
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Diagnose: zeigt, ob base-Pfad korrekt ist
+    // Diagnose Base/Scope
     (function () {
       var base = document.querySelector('base')?.href || '(kein base)';
       var expected = location.origin + '/Supersystem/';
       var ok = base === expected;
       var el = document.getElementById('diag');
-      el.innerHTML = [
+      el.textContent = [
         'origin: ' + location.origin,
         'pathname: ' + location.pathname,
         'base.href: ' + base,
@@ -109,12 +113,34 @@
       el.className = 'mono ' + (ok ? 'ok' : 'warn');
     })();
 
-    // Optional: Service Worker registrieren, wenn vorhanden
+    // PWA Install (Android/Desktop)
+    let deferredPrompt;
+    const btn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      btn.hidden = false;
+    });
+    btn?.addEventListener('click', async () => {
+      btn.hidden = true;
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      }
+    });
+
+    // iOS Hinweis
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isIOS && !isStandalone) document.getElementById('iosHint').hidden = false;
+
+    // Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(function(){});
+      navigator.serviceWorker.register('sw.js').catch(()=>{});
     }
   </script>
 
-  <noscript>JavaScript ist deaktiviert. Navigation funktioniert trotzdem, Bookmarklets benötigen jedoch JS.</noscript>
+  <noscript>JavaScript ist deaktiviert. Installation und Bookmarklets benötigen JS.</noscript>
 </body>
 </html>
