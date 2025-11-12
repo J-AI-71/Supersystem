@@ -1,53 +1,23 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – 404</title>
-<meta name="robots" content="noindex">
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Weiterleitung</title>
+<meta http-equiv="refresh" content="0; url=app.html">
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:16px;color:#111827}
-  .card{border:1px solid #e5e7eb;border-radius:12px;padding:16px;max-width:640px}
-  .muted{color:#6b7280;font-size:13px}
-  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  .btn{display:inline-block;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;text-decoration:none;color:#111827;cursor:pointer}
-  code{background:#f8fafc;border:1px solid #e5e7eb;padding:2px 6px;border-radius:6px}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;margin:24px;color:#111827}
+.kbd{font:12px ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
 </style>
-</head>
-<body>
-<div class="card">
-  <h1>Seite nicht gefunden</h1>
-  <p class="muted">Ich leite dich gleich weiter.</p>
-  <div class="row">
-    <a class="btn" href="index.html">Startseite</a>
-    <a class="btn" href="app.html">Zur App</a>
-    <a class="btn" href="app-classic.html">Classic</a>
-  </div>
-  <p class="muted" id="hint"></p>
-</div>
+</head><body>
+<p>Seite nicht gefunden. Leite zur App weiter… <span class="kbd">app.html</span></p>
 <script>
 (function(){
-  // Wenn ?u=… vorhanden, direkt zur App mit Parametern weiterleiten
-  const p=new URLSearchParams(location.search);
-  const q=p.get('u')||p.get('url');
-  if(q){
-    const aff=p.get('aff')||'';
-    const ao =p.get('ao') ||'';
-    const next=new URL('app.html', location.href);
-    if(aff) next.searchParams.set('aff',aff);
-    if(ao)  next.searchParams.set('ao',ao);
-    next.searchParams.set('u', q);
-    location.replace(next.href);
-    return;
-  }
-  // Sonst heuristisch: auf app.html oder index.html
-  const path=location.pathname.toLowerCase();
-  const base=location.origin+location.pathname.replace(/[^\/]+$/,'');
-  let target='index.html';
-  if(/app-classic|classic/.test(path)) target='app-classic.html';
-  else if(/app/.test(path)) target='app.html';
-  document.getElementById('hint').textContent='Gehe zu '+target+' …';
-  setTimeout(()=>location.replace(base+target), 900);
+  const here = location.pathname.toLowerCase();
+  if (here.endsWith('/app.html')) return;
+  const target = 'app.html' + (location.search || '');
+  location.replace(target);
 })();
 </script>
-</body>
-</html>
+<noscript>
+<p><a href="app.html">Hier klicken, falls nichts passiert.</a></p>
+</noscript>
+</body></html>
