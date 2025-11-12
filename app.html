@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v157</title>
+<title>SafeShare – App v158</title>
 <meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -19,10 +19,13 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:860px){.grid2{grid-template-columns:1fr}}
 #io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+@media(min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v157</span></h1>
-<p class="muted">Säubert Links. Optional Affiliates behalten. Öffnen-Buttons starten immer neuen Tab.</p>
+<h1>SafeShare – App <span class="muted">v158</span></h1>
+<p class="muted">Säubert Links. Optional Affiliates behalten. Öffnen-Buttons starten neuen Tab.</p>
 
 <div class="card">
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -40,10 +43,14 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
     <button id="btnClear" type="button" class="btn" aria-label="Feld leeren">×</button>
   </div>
 
-  <!-- Buttonleiste im Shadow-DOM -->
-  <safe-buttons></safe-buttons>
-
-  <p class="muted" style="margin-top:6px">„Öffnen (neu)“ und „1-Klick“ öffnen immer im neuen Tab. Mit „referrer-frei“ ohne Referrer.</p>
+  <!-- sichtbare Button-Leiste -->
+  <div class="btn-grid">
+    <button class="btn primary" id="btnClean"   type="button">Säubern</button>
+    <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
+    <button class="btn"          id="btnOpen"    type="button">Öffnen (neu)</button>
+    <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
+  </div>
+  <p class="muted" style="margin-top:6px">„Öffnen (neu)“ und „1-Klick“ → neuer Tab. Mit „referrer-frei“ ohne Referrer.</p>
 </div>
 
 <div class="grid2">
@@ -81,43 +88,13 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
   <h2 style="margin:0 0 6px">Kurzanleitung Buttons</h2>
   <ul>
     <li><span class="kbd">Säubern</span>: bereinigt den Link und zeigt das Ergebnis.</li>
-    <li><span class="kbd">Kopieren</span>: kopiert das bereinigte Ergebnis.</li>
+    <li><span class="kbd">Kopieren</span>: kopiert das Ergebnis.</li>
     <li><span class="kbd">Öffnen (neu)</span>: Ergebnis im neuen Tab.</li>
-    <li><span class="kbd">1-Klick</span>: säubern + im neuen Tab öffnen.</li>
+    <li><span class="kbd">1-Klick</span>: säubern + im neuen Tab öffnen. Optional ohne Referrer.</li>
   </ul>
 </div>
 
 <script>
-/* ===== Shadow-DOM Buttonleiste ===== */
-class SafeButtons extends HTMLElement{
-  constructor(){
-    super();
-    const root=this.attachShadow({mode:'open'});
-    root.innerHTML=`
-      <style>
-        .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
-        @media (min-width:760px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-        @media (max-width:390px){.grid{grid-template-columns:1fr}}
-        .btn{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;background:#fff;color:#111827;cursor:pointer;text-align:center;display:block;width:100%}
-        .primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
-      </style>
-      <div class="grid">
-        <button class="btn primary" id="clean"   type="button">Säubern</button>
-        <button class="btn"          id="copy"    type="button">Kopieren</button>
-        <button class="btn"          id="open"    type="button">Öffnen (neu)</button>
-        <button class="btn"          id="openNew" type="button">1-Klick</button>
-      </div>`;
-    const send = detail => window.dispatchEvent(new CustomEvent('ss-action',{detail}));
-    root.getElementById('clean').onclick   = ()=>send('clean');
-    root.getElementById('copy').onclick    = ()=>send('copy');
-    // Beide öffnen-Buttons senden "open-new"
-    root.getElementById('open').onclick    = ()=>send('open-new');
-    root.getElementById('openNew').onclick = ()=>send('open-new');
-  }
-}
-customElements.define('safe-buttons', SafeButtons);
-
-/* ===== App-Logik ===== */
 const $=s=>document.querySelector(s), byId=id=>document.getElementById(id);
 const LS_MODE='ss_mode_default', LS_PROFILES='ss_profiles_v1';
 
@@ -168,7 +145,7 @@ function clean(u, keepAffiliates){
     if(keepAffiliates && isAff){ keptAff.push(k); continue; }
   }
 
-  // auf eigener Domain Cachebuster ?v entfernen
+  // nur eigene Seite: Cachebuster v entfernen
   if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
     if (sp.has('v')){ sp.delete('v'); removed.push('v'); }
   }
@@ -178,6 +155,7 @@ function clean(u, keepAffiliates){
   return {url:out, removed, keptAff, host:url.hostname};
 }
 
+/* Profile */
 function loadProfiles(){ try{return JSON.parse(localStorage.getItem(LS_PROFILES)||'{}');}catch{return{};} }
 function saveProfiles(o){ localStorage.setItem(LS_PROFILES, JSON.stringify(o)); }
 function renderProfiles(){
@@ -206,7 +184,7 @@ function updateModeLabels(){
 }
 
 function doClean(){
-  const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte einen Link einfügen.'); return; }
+  const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte Link einfügen.'); return; }
   let url=raw; if(/^www\./i.test(url)) url='https://'+url;
   const u=toURLMaybe(url); if(!u){ alert('Ungültige URL.'); return; }
 
@@ -224,32 +202,25 @@ function doClean(){
 function openNewTab(out){
   const noRef=elNoref.checked;
   if(noRef) window.open(out,'_blank','noopener,noreferrer'); else window.open(out,'_blank');
-  if(elReload.checked) setTimeout(()=>{},0); // nur Platzhalter, Reload ist für Same-Tab irrelevant
 }
 
-/* Events */
-window.addEventListener('ss-action',(e)=>{
-  const a=e.detail;
-  if(a==='clean') doClean();
-  else if(a==='copy'){ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); }
-  else if(a==='open-new'){ const s=doClean(); if(s) openNewTab(s); }
-});
-byId('btnCopyOut') && (byId('btnCopyOut').onclick=()=>{ const t=byId('outURL').textContent||''; if(t) navigator.clipboard.writeText(t).catch(()=>{}); });
-byId('btnOpenOut') && (byId('btnOpenOut').onclick=()=>{ const t=byId('outURL').textContent||''; if(t) openNewTab(t); });
-byId('btnClear').onclick=()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('rem')&&(byId('rem').textContent='Entfernt: –'); byId('kept')&&(byId('kept').textContent='Affiliates behalten: –'); };
+byId('btnClean').onclick   = ()=>doClean();
+byId('btnCopy').onclick    = ()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
+byId('btnOpen').onclick    = ()=>{ const s=doClean(); if(s) openNewTab(s); };
+byId('btnOpenNew').onclick = ()=>{ const s=doClean(); if(s) openNewTab(s); };
+byId('btnCopyOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t) navigator.clipboard.writeText(t).catch(()=>{}); };
+byId('btnOpenOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t) openNewTab(t); };
+byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('rem').textContent='Entfernt: –'; byId('kept').textContent='Affiliates behalten: –'; };
 
-/* Init */
 (function init(){
   const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
   if(m==='safe'||m==='strict'){ byId('ckSticky').checked=true; elSafe.checked=(m==='safe'); }
   updateModeLabels(); renderProfiles();
-
   const q=new URLSearchParams(location.search);
   const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
   if(aff==='1') elSafe.checked=true;
   if(aff==='0') elSafe.checked=false;
   updateModeLabels();
-
   if(v){ elIn.value=decodeMaybe(v); const cleaned=doClean(); if(ao==='1'&&cleaned){ openNewTab(cleaned); } }
 })();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
