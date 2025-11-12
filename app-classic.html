@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v165</title>
+<title>SafeShare – Classic v166</title>
 <meta name="description" content="Minimal: Link einfügen, säubern, 1-Klick. Ergebnis als Link öffnen.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -18,8 +18,8 @@ a.btn{text-decoration:none;display:inline-block}
 #outURL{word-break:break-all}
 </style>
 </head><body>
-<h1>SafeShare – Classic <span class="muted">v165</span></h1>
-<p class="muted">Nur ein Öffnen unten als Link. Oben „1-Klick“.</p>
+<h1>SafeShare – Classic <span class="muted">v166</span></h1>
+<p class="muted">`ao=1` → nach dem Säubern automatische Weiterleitung im selben Tab.</p>
 
 <div class="card">
   <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
@@ -93,6 +93,14 @@ $('#btnClean').onclick=()=>doClean();
 $('#btnCopy').onclick =()=>{ const s=doClean(); if(s) navigator.clipboard?.writeText(s).catch(()=>{}); };
 $('#btnOne').onclick  =()=>{ const s=doClean(); if(s) openViaLink(); };
 $('#btnClear').onclick=()=>{ $('#in').value=''; $('#in').focus(); $('#outURL').textContent='–'; $('#outA').href='#'; };
+
+/* ao=1: same-tab weiterleiten */
+(function(){
+  const q=new URLSearchParams(location.search);
+  const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
+  if(aff==='1') $('#ckSafe').checked=true; if(aff==='0') $('#ckSafe').checked=false;
+  if(v){ $('#in').value=decodeMaybe(v); const out=doClean(); if(ao==='1'&&out){ location.replace(out); } }
+})();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=8').catch(()=>{});}
 </script>
 </body></html>
