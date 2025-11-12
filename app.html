@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>SafeShare2 · App</title>
-  <link rel="icon" href="assets/logo.png">
+  <link rel="icon" href="assets/logo.png?v=2025-11-12">
   <style>
     body{font-family:system-ui;margin:0;background:#0b0b0b;color:#eaeaea}
     .wrap{max-width:860px;margin:auto;padding:20px}
@@ -46,7 +46,7 @@
 </div>
 
 <script>
-// Pro per Payhip-Redirect aktivieren: https://…/app.html#pro=1
+// Pro per Payhip-Redirect aktivieren: /app.html#pro=1
 if (location.hash.includes('pro=1')) {
   localStorage.setItem('ss2_pro','1');
   history.replaceState(null,'',location.pathname);
@@ -84,7 +84,6 @@ const inp=document.getElementById('inp'), out=document.getElementById('out');
 document.getElementById('cleanOpen').onclick=()=>{
   const src=inp.value.trim(); if(!src){out.textContent='Bitte URL eingeben.'; return;}
   const dst=cleanUrl(src); out.textContent=src+"\n→ "+dst;
-  // iOS-sicher: echtes <a> im Klick
   const a=document.createElement('a'); a.href=dst; a.target='_blank'; a.rel='noopener';
   document.body.appendChild(a); a.click(); a.remove();
 };
@@ -112,7 +111,7 @@ document.getElementById('bulkCopy').onclick=async()=>{
   alert('Liste kopiert.');
 };
 
-// SW registrieren
+// SW registrieren mit Version
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
