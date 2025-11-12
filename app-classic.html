@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v154</title>
+<title>SafeShare – Classic v156</title>
 <meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen. SAFE/STRICT Umschalter.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -16,7 +16,7 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 @media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
 #io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 </style></head><body>
-<h1>SafeShare – Classic <span class="muted">v154</span></h1>
+<h1>SafeShare – Classic <span class="muted">v156</span></h1>
 <p class="muted">Minimalansicht ohne Profile.</p>
 
 <div class="card">
@@ -73,12 +73,19 @@ function clean(u, keepAff){
   const aff=affiliateKeysForHost(url.hostname);
   const sp=url.searchParams, keys=[...sp.keys()];
   const tprefix=['utm_'], texact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
+
   for(const k of keys){
     const lk=k.toLowerCase();
-    const isT=tprefix.some(p=>lk.startsWith(p))||texact.has(lk);
-    const isA=aff.has(lk);
+    const isT = tprefix.some(p=>lk.startsWith(p)) || texact.has(lk);
+    const isA = aff.has(lk);
     if(isT || (!keepAff && isA)) sp.delete(k);
   }
+
+  // nur eigene Domain: „v“ entfernen
+  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
+    if (sp.has('v')) sp.delete('v');
+  }
+
   const q=sp.toString();
   return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
