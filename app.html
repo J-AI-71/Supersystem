@@ -1,7 +1,7 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v163</title>
-<meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. 1-Klick.">
+<title>SafeShare – App v164</title>
+<meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <link rel="icon" href="favicon-32.png">
 <style>
 :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9;--ok:#065f46;--bad:#7f1d1d}
@@ -27,13 +27,14 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 #outURL{word-break:break-all}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v163</span></h1>
-<p class="muted">Ergebnis ist klickbarer Link. iPad-sicher.</p>
+<h1>SafeShare – App <span class="muted">v164</span></h1>
+<p class="muted">Ergebnis ist klickbarer Link. Profil-Buttons gefixt (funktionieren auch ohne vorher „Säubern“).</p>
 
 <div class="card">
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
     <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
     <label><input id="ckSticky" type="checkbox"> als Standard merken</label>
+    <label><input id="ckReload" type="checkbox"> nach Öffnen neu laden</label>
     <label><input id="ckNoref" type="checkbox"> referrer-frei öffnen</label>
   </div>
   <div class="muted" id="modeInfo" style="margin-top:6px">Modus: <strong>SAFE</strong> · Affiliates behalten: <strong>ja</strong></div>
@@ -81,7 +82,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
       <label class="btn small"><input type="file" id="fileImport" hidden> Import</label>
     </div>
     <table id="tblProfiles" style="margin-top:8px"><thead><tr><th>Domain</th><th>Modus</th><th>Aktion</th></tr></thead><tbody></tbody></table>
-    <p class="muted">Gespeichert nur lokal in deinem Browser.</p>
+    <p class="muted">Gespeichert lokal im Browser.</p>
   </div>
 </div>
 
@@ -89,7 +90,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 const $=s=>document.querySelector(s), byId=id=>document.getElementById(id);
 const LS_MODE='ss_mode_default', LS_PROFILES='ss_profiles_v1';
 const log=(m)=>{ const el=byId('log'); if(el) el.textContent=(el.textContent?el.textContent+"\n":"")+m; };
-window.onerror=(m,s,l,c,e)=>{log('JS-Fehler: '+m);};
+window.onerror=(m)=>log('JS-Fehler: '+m);
 
 function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
 function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
@@ -102,7 +103,7 @@ function unwrap(u){
     const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
     if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
     if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
-    if(/\bpinterest\./.test(h)){ const cand=sp.get('url')||sp.get('link')||sp.get('to'); if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; continue; } } }
+    if(/\bpinterest\./.test(h)){ const c=sp.get('url')||sp.get('link')||sp.get('to'); if(c){ const dv=decodeMaybe(decodeMaybe(c)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; continue; } } }
     for(const k of ['url','u','redirect','redir','r','target','to','link']){ const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; break; } }
     if(changed) continue;
     if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
@@ -134,6 +135,13 @@ function clean(u, keepAffiliates){
   return {url:out, removed, keptAff, host:url.hostname};
 }
 
+/* Host aus Eingabe ableiten (für Profil-Buttons auch ohne „Säubern“) */
+function hostFromInput(){
+  const raw=(byId('in').value||'').trim(); if(!raw) return null;
+  const u=toURLMaybe(raw); if(!u) return null;
+  return unwrap(u).hostname.toLowerCase();
+}
+
 /* Profile */
 function loadProfiles(){ try{return JSON.parse(localStorage.getItem(LS_PROFILES)||'{}');}catch{return{};} }
 function saveProfiles(o){ localStorage.setItem(LS_PROFILES, JSON.stringify(o)); }
@@ -153,7 +161,7 @@ function renderProfiles(){
 }
 
 /* UI-State */
-const elIn=byId('in'), elSafe=byId('ckSafe'), elSticky=byId('ckSticky'), elNoref=byId('ckNoref');
+const elIn=byId('in'), elSafe=byId('ckSafe'), elSticky=byId('ckSticky'), elReload=byId('ckReload'), elNoref=byId('ckNoref');
 let lastHost=null;
 function updateModeLabels(){
   const safe=elSafe.checked;
@@ -179,22 +187,45 @@ function doClean(){
   return out;
 }
 
-/* Öffnen prioritär über <a> */
+/* Öffnen via <a> (iPad-sicher) */
 function openViaLink(){
-  const a=byId('outA'); if(!a.href || a.href==='#'){ const s=doClean(); if(!s) return; }
-  a.click(); // Nutzer-Geste → iPad erlaubt
+  const a=byId('outA');
+  if(!a.href || a.href==='#'){ const s=doClean(); if(!s) return; }
+  a.click();
 }
 
 /* Buttons */
 byId('btnClean').onclick   = ()=>doClean();
-byId('btnCopy').onclick    = ()=>{ const s=doClean(); if(!s) return; navigator.clipboard?.writeText(s).catch(()=>{}); };
+byId('btnCopy').onclick    = ()=>{ const s=doClean(); if(!s) return; (navigator.clipboard?.writeText(s)).catch?.(()=>{}); };
 byId('btnOpen').onclick    = ()=>openViaLink();
 byId('btnOne').onclick     = ()=>{ const s=doClean(); if(s) openViaLink(); };
-byId('btnCopyOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t&&t!=='–') navigator.clipboard?.writeText(t).catch(()=>{}); };
+byId('btnCopyOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t&&t!=='–') (navigator.clipboard?.writeText(t)).catch?.(()=>{}); };
 byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('outA').href='#'; byId('rem').textContent='Entfernt: –'; byId('kept').textContent='Affiliates behalten: –'; };
 
-(function init(){
-  log('JS OK'); const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
+/* Profil-Buttons – jetzt robust */
+byId('btnSaveProfile').onclick=()=>{
+  const host = lastHost || hostFromInput();
+  if(!host){ alert('Kein Host erkennbar. Bitte Link einfügen.'); return; }
+  const p=loadProfiles(); p[host]=elSafe.checked?'safe':'strict'; saveProfiles(p); renderProfiles(); log('Profil gespeichert: '+host+' → '+(elSafe.checked?'SAFE':'STRICT'));
+};
+byId('btnDelProfile').onclick=()=>{
+  const host = lastHost || hostFromInput();
+  if(!host){ alert('Kein Host erkennbar.'); return; }
+  const p=loadProfiles(); delete p[host]; saveProfiles(p); renderProfiles(); log('Profil gelöscht: '+host);
+};
+byId('btnExport').onclick=()=>{
+  const blob=new Blob([JSON.stringify(loadProfiles(),null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=u; a.download='safeshare-profiles.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(u),800);
+};
+byId('fileImport').onchange=(e)=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(String(r.result||'{}')); if(typeof obj==='object'){ saveProfiles(obj); renderProfiles(); log('Profile importiert.'); } }catch{ alert('Import fehlgeschlagen'); } };
+  r.readAsText(f);
+};
+
+/* Init */
+(function(){
+  const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
   if(m==='safe'||m==='strict'){ byId('ckSticky').checked=true; elSafe.checked=(m==='safe'); }
   updateModeLabels(); renderProfiles();
   const q=new URLSearchParams(location.search);
