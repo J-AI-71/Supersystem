@@ -1,7 +1,7 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v164</title>
-<meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen (neuer Tab). SAFE/STRICT.">
+<title>SafeShare – Classic v165</title>
+<meta name="description" content="Minimal: Link einfügen, säubern, 1-Klick. Ergebnis als Link öffnen.">
 <link rel="icon" href="favicon-32.png">
 <style>
 *{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
@@ -12,15 +12,14 @@ input[type=url]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:1
 a.btn{text-decoration:none;display:inline-block}
 .btn.primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
 .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
-.btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
-@media(min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.btn-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
 @media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
 #io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 #outURL{word-break:break-all}
 </style>
 </head><body>
-<h1>SafeShare – Classic <span class="muted">v164</span></h1>
-<p class="muted">Ergebnis ist klickbarer Link.</p>
+<h1>SafeShare – Classic <span class="muted">v165</span></h1>
+<p class="muted">Nur ein Öffnen unten als Link. Oben „1-Klick“.</p>
 
 <div class="card">
   <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
@@ -33,10 +32,9 @@ a.btn{text-decoration:none;display:inline-block}
     <button id="btnClear" type="button" class="btn" aria-label="Feld leeren">×</button>
   </div>
   <div class="btn-grid">
-    <button class="btn primary" id="btnClean"   type="button">Säubern</button>
-    <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
-    <button class="btn"          id="btnOpen"    type="button">Ergebnis öffnen</button>
-    <button class="btn"          id="btnOne"     type="button">1-Klick</button>
+    <button class="btn primary" id="btnClean" type="button">Säubern</button>
+    <button class="btn" id="btnCopy" type="button">Kopieren</button>
+    <button class="btn" id="btnOne"  type="button">1-Klick</button>
   </div>
 </div>
 
@@ -61,7 +59,7 @@ function unwrap(u){
     if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
     if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
     if(/\bpinterest\./.test(h)){ const c=sp.get('url')||sp.get('link')||sp.get('to'); if(c){ const dv=decodeMaybe(decodeMaybe(c)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; continue; } } }
-    for(const k of ['url','u','redirect','redir','r','target','to','link']){ const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv)); changed=true; break; } }
+    for(const k of ['url','u','redirect','redir','r','target','to','link']){ const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ url=new URL(dv); changed=true; break; } }
     if(changed) continue;
     if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
     if(url.searchParams.has('amp')){ url.searchParams.delete('amp'); changed=true; }
@@ -93,9 +91,8 @@ function doClean(){
 function openViaLink(){ const a=$('#outA'); if(!a.href || a.href==='#'){ const s=doClean(); if(!s) return; } a.click(); }
 $('#btnClean').onclick=()=>doClean();
 $('#btnCopy').onclick =()=>{ const s=doClean(); if(s) navigator.clipboard?.writeText(s).catch(()=>{}); };
-$('#btnOpen').onclick  =()=>openViaLink();
-$('#btnOne').onclick   =()=>{ const s=doClean(); if(s) openViaLink(); };
-$('#btnClear').onclick =()=>{ $('#in').value=''; $('#in').focus(); $('#outURL').textContent='–'; $('#outA').href='#'; };
+$('#btnOne').onclick  =()=>{ const s=doClean(); if(s) openViaLink(); };
+$('#btnClear').onclick=()=>{ $('#in').value=''; $('#in').focus(); $('#outURL').textContent='–'; $('#outA').href='#'; };
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=8').catch(()=>{});}
 </script>
 </body></html>
