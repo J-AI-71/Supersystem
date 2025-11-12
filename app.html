@@ -1,175 +1,305 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SafeShare • App</title>
+
+  <!-- Wichtig: Projektpfad auf GitHub Pages -->
   <base href="/Supersystem/">
-  <title>SafeShare2 · App</title>
-  <link rel="icon" href="assets/logo.png?v=2025-11-12">
+
+  <!-- PWA-Grundlagen -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <meta name="theme-color" content="#0b6ef7">
+  <meta name="color-scheme" content="light dark">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="SafeShare">
+
   <style>
-    body{font-family:system-ui;margin:0;background:#0b0b0b;color:#eaeaea}
-    .wrap{max-width:860px;margin:auto;padding:20px}
-    input,textarea{width:100%;padding:.7rem;border-radius:10px;border:1px solid #2a2a2a;background:#111;color:#eaeaea}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .btn{padding:.7rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600}
-    .btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-    .mut{color:#9a9a9a}
-    .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:12px}
-    .code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-    a.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
+    :root { --max: 900px; --gap: 1rem; --radius: 12px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: Canvas; color: CanvasText; }
+    body { font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
+           padding: 1.5rem 1rem 3rem; display: grid; place-items: start center; }
+    main { width: 100%; max-width: var(--max); }
+    header { display: grid; grid-template-columns: 56px 1fr auto; gap: 1rem; align-items: center; margin-bottom: .5rem; }
+    header h1 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.1rem); }
+    header p { margin: .15rem 0 0 0; opacity: .8; }
+    .logo { width: 56px; height: 56px; }
+    .card { border: 1px solid color-mix(in oklab, CanvasText 15%, transparent); border-radius: var(--radius); padding: 1rem; margin: 1rem 0;
+            background: color-mix(in oklab, Canvas 92%, CanvasText 0%); }
+    .row { display: grid; grid-template-columns: 1fr auto; gap: .6rem; align-items: center; }
+    .row-3 { display: grid; grid-template-columns: 1fr auto auto auto; gap: .6rem; align-items: center; }
+    input[type="url"], input[type="text"], textarea {
+      width: 100%; padding: .7rem .9rem; border-radius: 10px;
+      border: 1px solid color-mix(in oklab, CanvasText 18%, transparent); background: Canvas; color: CanvasText;
+    }
+    input[readonly] { opacity: .95; }
+    .btn {
+      display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem; border:1px solid color-mix(in oklab, CanvasText 20%, transparent);
+      border-radius:10px; background:none; cursor:pointer; white-space: nowrap; text-decoration: none; color: inherit;
+    }
+    .btn[hidden] { display:none; }
+    .hint { font-size: .92rem; opacity: .85; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace; font-size: .95em; }
+    details { margin-top: .5rem; }
+    .chips { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.5rem; }
+    .chip { padding:.35rem .6rem; border-radius:999px; border:1px solid color-mix(in oklab, CanvasText 20%, transparent); cursor:pointer; font-size:.9rem; }
+    footer { margin-top: 1.5rem; opacity: .8; font-size: .9rem; display:flex; gap:.75rem; flex-wrap:wrap; }
+    .ok { color: green; } .warn { color: #b8860b; }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <h2>SafeShare App</h2>
+  <main>
+    <header>
+      <img class="logo" src="logo.svg" alt="SafeShare Logo">
+      <div>
+        <h1>SafeShare • App</h1>
+        <p>URL einfügen → säubern → öffnen/teilen/kopieren. Läuft lokal im Browser.</p>
+      </div>
+      <a class="btn" href="index.html">Start</a>
+    </header>
 
-  <div class="card">
-    <label>Link
-      <input id="inp" type="url" inputmode="url" placeholder="https://…">
-    </label>
-    <div class="row" style="margin-top:8px">
-      <button id="cleanOpen" class="btn">Säubern & öffnen</button>
-      <button id="copy" class="btn alt">Kopieren</button>
-      <button id="share" class="btn alt">Teilen</button>
-      <button id="pro" class="btn alt">Pro aktivieren</button>
-    </div>
-    <pre id="out" class="mut" style="white-space:pre-wrap;margin-top:8px"></pre>
-  </div>
+    <!-- Eingabe -->
+    <section class="card" aria-labelledby="eingabe">
+      <h2 id="eingabe">Eingabe</h2>
+      <div class="row">
+        <input id="inUrl" type="url" inputmode="url" placeholder="https://…  Link hier einfügen oder einfügen + Enter" autocomplete="off">
+        <button id="cleanBtn" class="btn" type="button">Säubern</button>
+      </div>
+      <div class="chips" id="examples">
+        <button class="chip" data-url="https://example.com/?utm_source=newsletter&fbclid=abc123">UTM entfernen</button>
+        <button class="chip" data-url="https://www.google.com/url?q=https%3A%2F%2Fexample.org%2Fpost%3Futm_medium%3Dsocial&sa=D">Google-Redirect</button>
+        <button class="chip" data-url="https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.net%2F%3Fgclid%3Dxyz">Facebook-Redirect</button>
+        <button class="chip" data-url="https://www.instagram.com/reel/xyz/?utm_source=ig_web_copy_link&igsh=abc">Instagram</button>
+      </div>
+      <p class="hint">Tipp: Einfügen und Enter drückten. Domains ohne Protokoll werden automatisch zu <span class="mono">https://</span> ergänzt.</p>
+    </section>
 
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bulk (Pro)</h3>
-    <textarea id="bulk" rows="6" placeholder="Eine URL pro Zeile"></textarea>
-    <div class="row" style="margin-top:8px">
-      <button id="bulkClean" class="btn">Liste säubern</button>
-      <button id="bulkCopy" class="btn alt">Liste kopieren</button>
-    </div>
-  </div>
+    <!-- Ausgabe + Aktionen -->
+    <section class="card" aria-labelledby="ausgabe">
+      <h2 id="ausgabe">Ausgabe</h2>
+      <div class="row-3">
+        <input id="outUrl" type="url" readonly aria-label="Bereinigte URL">
+        <a id="openBtn" class="btn" target="_blank" rel="noopener">Öffnen</a>
+        <button id="copyBtn" class="btn" type="button">Kopieren</button>
+        <button id="shareBtn" class="btn" type="button" hidden>Teilen</button>
+      </div>
+      <details>
+        <summary>Was wird entfernt?</summary>
+        <p class="hint">Beispiele: <span class="mono">utm_*</span>, <span class="mono">fbclid</span>, <span class="mono">gclid</span>, <span class="mono">igshid</span>, <span class="mono">mc_eid</span>, <span class="mono">spm</span>, <span class="mono">vero_id</span>, u. a. Außerdem werden verschachtelte Redirect-Ziele aus Parametern wie <span class="mono">url</span>, <span class="mono">u</span>, <span class="mono">q</span>, <span class="mono">destination</span> extrahiert.</p>
+      </details>
+    </section>
 
-  <!-- NEU: Bookmarklets in der App -->
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bookmarklets</h3>
-    <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: Link lange tippen → Lesezeichen, dann die URL des Lesezeichens mit dem Code ersetzen.</p>
+    <!-- Diagnose / Technik -->
+    <section class="card">
+      <h2>Diagnose</h2>
+      <pre id="diag" class="mono">bereit…</pre>
+      <p class="hint" id="iosHint" hidden>iOS: Zum Teilen nutze den System-Dialog über den Button „Teilen“. Für Installation: Teilen-Menü → „Zum Home-Bildschirm“.</p>
+    </section>
 
-    <div class="row">
-      <a class="bm" id="bm1"
-         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
-         Clean & Open
-      </a>
-      <input id="code1" class="code" readonly>
-      <button class="btn alt" data-copy="#code1">Kopieren</button>
-    </div>
+    <footer>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <span>© <span id="year"></span> SafeShare</span>
+    </footer>
+  </main>
 
-    <div class="row" style="margin-top:8px">
-      <a class="bm" id="bm2"
-         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">
-         Clean & Stay
-      </a>
-      <input id="code2" class="code" readonly>
-      <button class="btn alt" data-copy="#code2">Kopieren</button>
-    </div>
+  <script>
+  // ---- Utils ---------------------------------------------------------------
 
-    <div class="row" style="margin-top:8px">
-      <a class="bm" id="bm3"
-         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">
-         Clean & Copy
-      </a>
-      <input id="code3" class="code" readonly>
-      <button class="btn alt" data-copy="#code3">Kopieren</button>
-    </div>
-  </div>
+  // Robustes Normalisieren: fügt https:// hinzu, wenn Schema fehlt.
+  function normalizeInput(raw) {
+    const s = String(raw || '').trim();
+    if (!s) return '';
+    if (/^[a-z]+:\/\//i.test(s)) return s;
+    if (/^[\w.-]+\.[a-z]{2,}(?:[/:?#]|$)/i.test(s)) return 'https://' + s;
+    return s; // kann auch Text sein; URL-Parser wird später ggf. scheitern
+  }
 
-  <p class="mut" style="margin-top:12px">
-    <a class="mut" href="index.html">Zurück</a> ·
-    <a class="mut" href="bookmarklets.html">Bookmarklets-Seite</a> ·
-    <a class="mut" href="tools.html">Tools</a>
-  </p>
-</div>
+  // Liste bekannter Tracking-Parameter (Name-Matches)
+  const TRACK_PARAM_RULES = [
+    /^utm_/i, /^icid$/i, /^mc_eid$/i, /^mkt_tok$/i, /^fbclid$/i, /^gclid$/i, /^dclid$/i,
+    /^yclid$/i, /^gbraid$/i, /^wbraid$/i, /^ttclid$/i, /^twclid$/i, /^igshid$/i,
+    /^si$/i, /^spm$/i, /^vero_id$/i, /^aff_id$/i, /^affid$/i, /^ref$/i, /^ref_id$/i,
+    /^campaign$/i, /^source$/i, /^pk_[a-z]+$/i, /^sc_.+/i, /^msclkid$/i, /^_hs/i,
+    /^soc_.*$/i, /^sr_[a-z]+$/i
+  ];
 
-<script>
-// Pro via Payhip: /app.html#pro=1
-if (location.hash.includes('pro=1')) {
-  localStorage.setItem('ss2_pro','1');
-  history.replaceState(null,'',location.pathname);
-  alert('Pro aktiviert');
-}
+  function isTrackingParam(name) {
+    return TRACK_PARAM_RULES.some(rx => rx.test(name));
+  }
 
-// Cleaner
-const TRACKERS=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","vero_id","igshid","si","spm"]);
-function cleanUrl(raw){
-  try{
-    const u=new URL(String(raw).trim());
-    if(/\bamazon\.(de|com|co\.uk|it|fr|es)\b/.test(u.hostname)){
-      ["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"].forEach(k=>u.searchParams.delete(k));
-      if(u.hash) u.hash="";
+  // Entfernt Tracking-Parameter aus URLSearchParams
+  function stripParams(urlObj) {
+    const sp = urlObj.searchParams;
+    // Entferne Tracking-Parameter
+    for (const name of Array.from(sp.keys())) {
+      if (isTrackingParam(name)) sp.delete(name);
     }
-    for(const k of [...u.searchParams.keys()]){
-      if(k.startsWith("utm_")||TRACKERS.has(k)) u.searchParams.delete(k);
+    // Sort optional stabilisieren
+    const kept = new URLSearchParams(sp); // Kopie
+    urlObj.search = kept.toString() ? '?' + kept.toString() : '';
+    // Hash-Bereinigung, falls Fragment Query-ähnlich ist
+    if (urlObj.hash && /[=&]/.test(urlObj.hash)) {
+      const frag = urlObj.hash.replace(/^#/, '');
+      const fragParams = new URLSearchParams(frag);
+      let changed = false;
+      for (const k of Array.from(fragParams.keys())) {
+        if (isTrackingParam(k)) { fragParams.delete(k); changed = true; }
+      }
+      if (changed) {
+        const s = fragParams.toString();
+        urlObj.hash = s ? '#' + s : '';
+      }
     }
-    u.pathname=u.pathname.replace(/\/{2,}/g,"/");
-    if(u.pathname!=="/"&&u.pathname.endsWith("/")) u.pathname=u.pathname.slice(0,-1);
-    return u.toString();
-  }catch{return raw;}
-}
+    return urlObj;
+  }
 
-// Pro-Gate
-const hasPro = ()=> localStorage.getItem('ss2_pro')==='1';
-function requirePro(){ if(hasPro()) return true; alert('Pro-Funktion. Bitte Pro aktivieren.'); return false; }
-document.getElementById('pro').onclick=()=>{
-  const key=prompt('Pro-Schlüssel eingeben:'); if(!key) return;
-  localStorage.setItem('ss2_pro','1'); alert('Pro aktiviert.');
-};
+  // Extrahiert Ziel-URL aus typischen Redirect-Parametern
+  const REDIR_PARAM_CANDIDATES = ['url','u','q','target','to','dest','destination','redirect','redir','r','next','continue','continueUrl','link','l'];
 
-// Single
-const inp=document.getElementById('inp'), out=document.getElementById('out');
-document.getElementById('cleanOpen').onclick=()=>{
-  const src=inp.value.trim(); if(!src){out.textContent='Bitte URL eingeben.'; return;}
-  const dst=cleanUrl(src); out.textContent=src+"\n→ "+dst;
-  const a=document.createElement('a'); a.href=dst; a.target='_blank'; a.rel='noopener';
-  document.body.appendChild(a); a.click(); a.remove();
-};
-document.getElementById('copy').onclick=async()=>{
-  const src=inp.value.trim(); if(!src) return;
-  const dst=cleanUrl(src); try{ await navigator.clipboard.writeText(dst);}catch{}
-  out.textContent='Kopiert:\n'+dst;
-};
-document.getElementById('share').onclick=async()=>{
-  const src=inp.value.trim(); if(!src) return;
-  const dst=cleanUrl(src);
-  if(navigator.share){ try{ await navigator.share({title:'SafeShare', url:dst}); }catch(e){} }
-  else { try{ await navigator.clipboard.writeText(dst);}catch{} alert('In Zwischenablage kopiert.'); }
-};
+  function extractNested(u) {
+    try {
+      const urlObj = new URL(u);
+      // Spezielle Host-Pfade (Google, Facebook, LinkedIn, etc.)
+      const h = urlObj.hostname;
+      const p = urlObj.pathname;
+      if (/^www\.google\./i.test(h) && (p.startsWith('/url') || p.startsWith('/amp/s/'))) {
+        // /url?url=... oder ?q=...
+        for (const key of ['url','q']) {
+          const v = urlObj.searchParams.get(key);
+          if (v) return v;
+        }
+      }
+      if (/^l\.facebook\.com$/i.test(h) || /^www\.facebook\.com$/i.test(h)) {
+        const v = urlObj.searchParams.get('u');
+        if (v) return v;
+      }
+      if (/^lnkd\.in$/i.test(h) || /^www\.linkedin\.com$/i.test(h)) {
+        // oft ?url= oder ?redirect=
+        for (const key of ['url','redirect']) {
+          const v = urlObj.searchParams.get(key);
+          if (v) return v;
+        }
+      }
+      // Generisch: erster passende Kandidat
+      for (const key of REDIR_PARAM_CANDIDATES) {
+        const v = urlObj.searchParams.get(key);
+        if (v && /^[a-z]+:\/\//i.test(v)) return v;
+      }
+      return u;
+    } catch { return u; }
+  }
 
-// Bulk
-document.getElementById('bulkClean').onclick=()=>{
-  if(!requirePro()) return;
-  const lines=document.getElementById('bulk').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  document.getElementById('bulk').value=lines.map(cleanUrl).join('\n');
-};
-document.getElementById('bulkCopy').onclick=async()=>{
-  if(!requirePro()) return;
-  try{ await navigator.clipboard.writeText(document.getElementById('bulk').value);}catch{}
-  alert('Liste kopiert.');
-};
+  // Hauptfunktion: entpackt Redirects und entfernt Tracking (mehrere Durchläufe)
+  function cleanUrl(input) {
+    let current = normalizeInput(input);
+    if (!current) return '';
+    // Max. 3 Durchläufe, um Verschachtelungen zu entpacken
+    for (let i = 0; i < 3; i++) {
+      const nested = extractNested(current);
+      if (nested !== current) current = nested; else break;
+    }
+    // URL parsen und bereinigen
+    let urlObj;
+    try { urlObj = new URL(current); }
+    catch { return current; } // Falls keine gültige URL, unverändert zurück
+    stripParams(urlObj);
 
-// Bookmarklets: Codes in Inputs spiegeln + Kopier-Buttons
-['#bm1','#bm2','#bm3'].forEach((sel,i)=>{
-  const a=document.querySelector(sel);
-  const input=document.getElementById('code'+(i+1));
-  input.value=a.getAttribute('href');
-});
-document.querySelectorAll('[data-copy]').forEach(btn=>{
-  btn.addEventListener('click', async ()=>{
-    const sel=btn.getAttribute('data-copy');
-    const el=document.querySelector(sel);
-    try{ await navigator.clipboard.writeText(el.value); btn.textContent='Kopiert'; }
-    catch{ el.select(); document.execCommand('copy'); btn.textContent='Kopiert'; }
-    setTimeout(()=>btn.textContent='Kopieren',1200);
+    // Entferne leere ? und überflüssige & oder ?#
+    let out = urlObj.toString();
+    out = out.replace(/\?($|#)/, '$1').replace(/\?#/, '#');
+    return out;
+  }
+
+  // ---- UI/Flow -------------------------------------------------------------
+
+  const $in = document.getElementById('inUrl');
+  const $out = document.getElementById('outUrl');
+  const $clean = document.getElementById('cleanBtn');
+  const $open = document.getElementById('openBtn');
+  const $copy = document.getElementById('copyBtn');
+  const $share = document.getElementById('shareBtn');
+  const $diag = document.getElementById('diag');
+  const $examples = document.getElementById('examples');
+
+  function setOutput(url) {
+    $out.value = url || '';
+    // Korrekte Weiterleitung: Button zeigt IMMER auf die bereinigte URL
+    $open.href = url || 'about:blank';
+    $open.target = '_blank';
+    $open.rel = 'noopener';
+    // Share-Button nur zeigen, wenn URL vorhanden
+    $share.hidden = !(url && navigator.share);
+  }
+
+  function runClean() {
+    const raw = $in.value;
+    const cleaned = cleanUrl(raw);
+    setOutput(cleaned);
+    $diag.textContent = [
+      'Input : ' + (raw || '—'),
+      'Result: ' + (cleaned || '—'),
+      'Share : ' + (navigator.share ? 'unterstützt' : 'nicht verfügbar'),
+      'Scope : ' + (document.querySelector('base')?.href || '(kein base)'),
+    ].join('\n');
+  }
+
+  // Events
+  $clean.addEventListener('click', runClean);
+  $in.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); runClean(); }
   });
-});
+  $examples.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-url]');
+    if (!t) return;
+    $in.value = t.dataset.url;
+    runClean();
+  });
 
-// SW registrieren
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
-}
-</script>
+  $copy.addEventListener('click', async () => {
+    const url = $out.value;
+    if (!url) return;
+    try {
+      await navigator.clipboard.writeText(url);
+      $copy.textContent = 'Kopiert';
+      setTimeout(() => { $copy.textContent = 'Kopieren'; }, 1200);
+    } catch {
+      // Fallback: markieren
+      $out.select();
+      document.execCommand?.('copy');
+    }
+  });
+
+  $share.addEventListener('click', async () => {
+    const url = $out.value;
+    if (!url || !navigator.share) return;
+    try {
+      await navigator.share({ title: 'SafeShare', url });
+    } catch { /* abgebrochen */ }
+  });
+
+  // iOS-Hinweis
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if (isIOS && !isStandalone) document.getElementById('iosHint').hidden = false;
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
+
+  // Jahr
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Initial
+  setOutput('');
+  $diag.textContent = 'bereit…';
+  </script>
+
+  <noscript>JavaScript ist deaktiviert. Die App benötigt JavaScript.</noscript>
 </body>
 </html>
