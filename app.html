@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v159</title>
+<title>SafeShare – App v160</title>
 <meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -25,8 +25,8 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 #log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v159</span></h1>
-<p class="muted">Säubert Links. Öffnen-Buttons starten neuen Tab. Optional referrer-frei.</p>
+<h1>SafeShare – App <span class="muted">v160</span></h1>
+<p class="muted">Säubert Links. „Öffnen (neu)“ und „1-Klick“ starten neuen Tab. Optional referrer-frei.</p>
 
 <div class="card">
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -43,13 +43,14 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
     <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
     <button id="btnClear" type="button" class="btn" aria-label="Feld leeren">×</button>
   </div>
+
   <div class="btn-grid">
     <button class="btn primary" id="btnClean"   type="button">Säubern</button>
     <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
     <button class="btn"          id="btnOpen"    type="button">Öffnen (neu)</button>
     <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
   </div>
-  <p class="muted" style="margin-top:6px">„Öffnen (neu)“ und „1-Klick“ → neuer Tab.</p>
+  <p class="muted" style="margin-top:6px">„1-Klick“ = säubern + im neuen Tab öffnen.</p>
   <div id="log"></div>
 </div>
 
@@ -85,47 +86,54 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 </div>
 
 <script>
+/* ===== Utils ===== */
 const $=s=>document.querySelector(s), byId=id=>document.getElementById(id);
 const LS_MODE='ss_mode_default', LS_PROFILES='ss_profiles_v1';
-const log=(m)=>{ const el=byId('log'); if(el) el.textContent = (el.textContent?el.textContent+"\n":"") + m; };
+const log=(m)=>{ const el=byId('log'); if(el) el.textContent=(el.textContent?el.textContent+"\n":"")+m; };
 
 function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{ return null; } }
+function cloneURL(u){ return new URL(u.toString()); }
 function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{ return v; } }
 
+/* ===== Regeln ===== */
 function affiliateKeysForHost(host){ host=host.toLowerCase(); if(/\bamazon\./.test(host)) return new Set(['tag']); return new Set(); }
 
 function unwrap(u){
-  let url=new URL(u.toString()); let changed=true, hops=0;
+  let url=cloneURL(u), changed=true, hops=0;
   try{
     while(changed && hops<5){
       changed=false; hops++;
       const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
 
+      // Google /url?q=
       if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){
         try{ url=new URL(sp.get('q')); changed=true; continue; }catch{}
       }
+      // Facebook /l.php?u=
       if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){
         try{ url=new URL(sp.get('u')); changed=true; continue; }catch{}
       }
+      // Pinterest outbound
       if(/\bpinterest\./.test(h)){
         const cand=sp.get('url')||sp.get('link')||sp.get('to');
         if(cand){
           const dv=decodeMaybe(decodeMaybe(cand));
-          if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{}
-          }
+          if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} }
         }
       }
-      const keys=['url','u','redirect','redir','r','target','to','link'];
-      for(const k of keys){
+      // generische Redirect-Parameter
+      for(const k of ['url','u','redirect','redir','r','target','to','link']){
         const v=sp.get(k); if(!v) continue;
         const dv=decodeMaybe(decodeMaybe(v));
         if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; break; }catch{} }
       }
       if(changed) continue;
+
+      // AMP → Canonical
       if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
       if(sp.has('amp')){ sp.delete('amp'); changed=true; }
     }
-  }catch(e){ log('unwrap-Fehler: '+e.message); }
+  }catch(e){ log('unwrap: '+e.message); }
   return url;
 }
 
@@ -133,8 +141,8 @@ function clean(u, keepAffiliates){
   const removed=[], keptAff=[];
   let url=unwrap(u);
   url.hostname=url.hostname.toLowerCase();
-  const sp=url.searchParams;
 
+  const sp=url.searchParams;
   const trackPrefixes=['utm_'];
   const trackExact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
   const affKeys=affiliateKeysForHost(url.hostname);
@@ -148,8 +156,9 @@ function clean(u, keepAffiliates){
       if(!keepAffiliates && isAff){ removed.push(k); sp.delete(k); continue; }
       if(keepAffiliates && isAff){ keptAff.push(k); continue; }
     }
-  }catch(e){ log('clean-Fehler: '+e.message); }
+  }catch(e){ log('clean: '+e.message); }
 
+  // Domain-spezifisch: Cachebuster v nur auf eigener Seite entfernen
   if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
     if (sp.has('v')){ sp.delete('v'); removed.push('v'); }
   }
@@ -159,6 +168,7 @@ function clean(u, keepAffiliates){
   return {url:out, removed, keptAff, host:url.hostname};
 }
 
+/* ===== Profile ===== */
 function loadProfiles(){ try{return JSON.parse(localStorage.getItem(LS_PROFILES)||'{}');}catch{return{};} }
 function saveProfiles(o){ localStorage.setItem(LS_PROFILES, JSON.stringify(o)); }
 function renderProfiles(){
@@ -176,13 +186,23 @@ function renderProfiles(){
   });
 }
 
+/* ===== UI-State ===== */
 const elIn=byId('in'), elSafe=byId('ckSafe'), elSticky=byId('ckSticky'), elReload=byId('ckReload'), elNoref=byId('ckNoref');
+let lastHost=null;
+
 function updateModeLabels(){
   const safe=elSafe.checked;
   byId('modeInfo').innerHTML=`Modus: <strong>${safe?'SAFE':'STRICT'}</strong> · Affiliates behalten: <strong>${safe?'ja':'nein'}</strong>`;
   byId('bMode')&&(byId('bMode').textContent='Modus: '+(safe?'SAFE':'STRICT'));
   byId('bAff') &&(byId('bAff').textContent ='Affiliates behalten: '+(safe?'ja':'nein'));
   if(elSticky.checked){ localStorage.setItem(LS_MODE, safe?'safe':'strict'); }
+}
+
+function currentHostFromInput(){
+  const raw=(elIn.value||'').trim(); if(!raw) return null;
+  let s=raw; if(/^www\./i.test(s)) s='https://'+s;
+  const u=toURLMaybe(s); if(!u) return null;
+  return unwrap(u).hostname.toLowerCase();
 }
 
 function doClean(){
@@ -194,14 +214,15 @@ function doClean(){
     const profiles=loadProfiles(); const tmp=unwrap(u); const prof=profiles[tmp.hostname.toLowerCase()];
     if(prof==='strict') elSafe.checked=false; if(prof==='safe') elSafe.checked=true;
 
-    const {url:out,removed,keptAff}=clean(u, elSafe.checked);
+    const {url:out,removed,keptAff,host}=clean(u, elSafe.checked);
+    lastHost=host;
     byId('outURL').textContent=out;
     byId('rem')  &&(byId('rem').textContent  ='Entfernt: '+(removed.length?removed.join(', '):'–'));
     byId('kept') &&(byId('kept').textContent ='Affiliates behalten: '+(keptAff.length?keptAff.join(', '):'–'));
     updateModeLabels();
     return out;
   }catch(e){
-    log('doClean-Fehler: '+e.message);
+    log('doClean: '+e.message);
     return null;
   }
 }
@@ -209,8 +230,10 @@ function doClean(){
 function openNewTab(out){
   const noRef=elNoref.checked;
   if(noRef) window.open(out,'_blank','noopener,noreferrer'); else window.open(out,'_blank');
+  if(elReload.checked){ /* Same-Tab reload ist hier irrelevant */ }
 }
 
+/* ===== Buttons ===== */
 byId('btnClean').onclick   = ()=>doClean();
 byId('btnCopy').onclick    = ()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
 byId('btnOpen').onclick    = ()=>{ const s=doClean(); if(s) openNewTab(s); };
@@ -219,6 +242,30 @@ byId('btnCopyOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t)
 byId('btnOpenOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t) openNewTab(t); };
 byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('rem')&&(byId('rem').textContent='Entfernt: –'); byId('kept')&&(byId('kept').textContent='Affiliates behalten: –'); };
 
+byId('btnSaveProfile').onclick=()=>{
+  const host = lastHost || currentHostFromInput();
+  if(!host){ alert('Kein Host erkennbar. Bitte zuerst säubern.'); return; }
+  const p=loadProfiles(); p[host]=elSafe.checked?'safe':'strict'; saveProfiles(p); renderProfiles();
+};
+byId('btnDelProfile').onclick=()=>{
+  const host = lastHost || currentHostFromInput();
+  if(!host){ alert('Kein Host erkennbar.'); return; }
+  const p=loadProfiles(); delete p[host]; saveProfiles(p); renderProfiles();
+};
+byId('btnExport').onclick=()=>{
+  const blob=new Blob([JSON.stringify(loadProfiles(),null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=u; a.download='safeshare-profiles.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(u),1000);
+};
+byId('fileImport').onchange=(e)=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  const r=new FileReader(); r.onload=()=>{
+    try{ const obj=JSON.parse(String(r.result||'{}')); if(typeof obj==='object'){ saveProfiles(obj); renderProfiles(); } }
+    catch(err){ alert('Import fehlgeschlagen'); }
+  }; r.readAsText(f);
+};
+
+/* ===== Init ===== */
 (function init(){
   const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
   if(m==='safe'||m==='strict'){ byId('ckSticky').checked=true; elSafe.checked=(m==='safe'); }
@@ -232,6 +279,6 @@ byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); byId('outURL').t
 
   if(v){ elIn.value=decodeMaybe(v); const cleaned=doClean(); if(ao==='1'&&cleaned){ openNewTab(cleaned); } }
 })();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=7').catch(()=>{});}
 </script>
 </body></html>
