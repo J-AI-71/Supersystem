@@ -6,8 +6,8 @@
   <base href="/Supersystem/">
   <title>SafeShare2 · Saubere Links. Weniger Tracking.</title>
   <meta name="theme-color" content="#111111">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="assets/logo.png">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-12">
+  <link rel="icon" href="assets/logo.png?v=2025-11-12">
   <style>
     :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -38,19 +38,19 @@
     <ul>
       <li>Link einfügen → „Säubern & öffnen“.</li>
       <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
-      <li>Teilen über <code>Redirect-entschachteln.html</code> zeigt eine kurze Sponsor-Seite, dann Weiterleitung.</li>
+      <li>Teilen über <code>Redirect-entschachteln.html</code> mit kurzer Sponsor-Seite.</li>
     </ul>
   </div>
 
   <div class="card" style="margin-top:12px">
     <h3 style="margin:0 0 8px">SafeShare Pro</h3>
     <ul>
-      <li>Bulk-Cleaning (Liste von Links).</li>
+      <li>Bulk-Cleaning.</li>
       <li>Eigene Domain-Regeln.</li>
-      <li>Offline nutzbar (PWA).</li>
+      <li>PWA offline.</li>
     </ul>
     <div class="row" style="margin-top:8px">
-      <!-- ERSETZEN: deine Payhip-Links -->
+      <!-- ERSETZEN: Payhip-Links -->
       <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro kaufen</a>
       <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
     </div>
@@ -86,7 +86,7 @@ document.getElementById('install').addEventListener('click', async ()=>{
   deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
 });
 
-// Service Worker registrieren
+// SW registrieren mit Version
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
