@@ -59,9 +59,14 @@
 
   <div class="card" style="margin-top:12px">
     <h3 style="margin:0 0 8px">Bookmarklet</h3>
-    <p>Lange tippen und als Lesezeichen speichern:</p>
-    <p><a class="btn alt" id="bm" href="#">SafeShare Clean</a></p>
-    <p class="mut">Öffnet einen sauberen SafeShare-Weiterleitungslink zur aktuellen Seite.</p>
+    <p>Desktop: in die Lesezeichenleiste ziehen. iOS/Android: lange tippen → „Zu Lesezeichen hinzufügen“.</p>
+    <p>
+      <a class="btn alt"
+         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/Redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
+         SafeShare Clean
+      </a>
+    </p>
+    <p class="mut">Leitet über SafeShare um und säubert die URL.</p>
   </div>
 
   <footer>
@@ -74,12 +79,6 @@
 </div>
 
 <script>
-(function(){
-  const root = location.origin + location.pathname.replace(/index\.html?$/,'');
-  const href = "javascript:(function(){location.href='"+root+"Redirect-entschachteln.html?u='+encodeURIComponent(location.href);})();";
-  document.getElementById('bm').setAttribute('href', href);
-})();
-
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; });
 document.getElementById('install').addEventListener('click', async ()=>{
