@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v165</title>
+<title>SafeShare – App v166</title>
 <meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -25,8 +25,8 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 #log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v165</span></h1>
-<p class="muted">Ein Öffnen. Unten als Link. Oben nur „1-Klick“.</p>
+<h1>SafeShare – App <span class="muted">v166</span></h1>
+<p class="muted">Neu: `ao=1` → nach dem Säubern automatische Weiterleitung im selben Tab.</p>
 
 <div class="card">
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -45,7 +45,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
   <div class="btn-grid">
     <button class="btn primary" id="btnClean" type="button">Säubern</button>
     <button class="btn" id="btnCopy" type="button">Kopieren</button>
-    <button class="btn" id="btnOne" type="button">1-Klick (säubern+öffnen)</button>
+    <button class="btn" id="btnOne"  type="button">1-Klick (säubern+öffnen)</button>
   </div>
   <div id="log"></div>
 </div>
@@ -66,6 +66,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
       <div class="badge" id="rem">Entfernt: –</div>
       <div class="badge" id="kept">Affiliates behalten: –</div>
     </div>
+    <div class="muted" style="margin-top:6px">Ziel-Domain: <span id="hostLbl">–</span></div>
   </div>
 
   <div class="card">
@@ -121,18 +122,20 @@ function clean(u, keepAffiliates){
     if(!keepAffiliates && isAff){ removed.push(k); sp.delete(k); continue; }
     if(keepAffiliates && isAff){ keptAff.push(k); continue; }
   }
-  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
-    if (sp.has('v')){ sp.delete('v'); removed.push('v'); }
-  }
+  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){ if (sp.has('v')) sp.delete('v'); }
   const q=sp.toString();
   const out=url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
   return {url:out, removed, keptAff, host:url.hostname};
 }
 
-/* Host aus Eingabe für Profil-Buttons */
 function hostFromInput(){
   const raw=(byId('in').value||'').trim(); if(!raw) return null;
-  const u=toURLMaybe(raw); if(!u) return null; return unwrap(u).hostname.toLowerCase();
+  const u=toURLMaybe(raw); if(!u) return null;
+  return unwrap(u).hostname.toLowerCase();
+}
+function currentHost(){
+  const href=(byId('outA')?.href)||''; try{ if(href && href!=='#') return new URL(href).hostname.toLowerCase(); }catch{}
+  return hostFromInput();
 }
 
 /* Profile */
@@ -168,6 +171,7 @@ function doClean(){
   const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte einen Link einfügen.'); return null; }
   let url=raw; if(/^www\./i.test(url)) url='https://'+url;
   const u=toURLMaybe(url); if(!u){ alert('Ungültige URL.'); return null; }
+
   const profiles=loadProfiles(); const tmp=unwrap(u); const prof=profiles[tmp.hostname.toLowerCase()];
   if(prof==='strict') elSafe.checked=false; if(prof==='safe') elSafe.checked=true;
 
@@ -177,6 +181,7 @@ function doClean(){
   const a=byId('outA'); a.href=out; a.rel=(elNoref.checked?'noreferrer noopener':'noopener'); a.target='_blank';
   byId('rem').textContent  ='Entfernt: '+(removed.length?removed.join(', '):'–');
   byId('kept').textContent ='Affiliates behalten: '+(keptAff.length?keptAff.join(', '):'–');
+  byId('hostLbl').textContent=host||'–';
   updateModeLabels();
   return out;
 }
@@ -191,12 +196,12 @@ byId('btnClear').onclick=()=>{ elIn.value=''; elIn.focus(); byId('outURL').textC
 
 /* Profil-Buttons */
 byId('btnSaveProfile').onclick=()=>{
-  const host = lastHost || hostFromInput();
-  if(!host){ alert('Kein Host erkennbar. Bitte Link einfügen.'); return; }
+  const host=currentHost();
+  if(!host){ alert('Kein Host erkennbar. Bitte Link einfügen oder säubern.'); return; }
   const p=loadProfiles(); p[host]=elSafe.checked?'safe':'strict'; saveProfiles(p); renderProfiles();
 };
 byId('btnDelProfile').onclick=()=>{
-  const host = lastHost || hostFromInput();
+  const host=currentHost();
   if(!host){ alert('Kein Host erkennbar.'); return; }
   const p=loadProfiles(); delete p[host]; saveProfiles(p); renderProfiles();
 };
@@ -210,15 +215,21 @@ byId('fileImport').onchange=(e)=>{
   r.readAsText(f);
 };
 
-/* Init */
+/* Init + ao=1 Auto-Weiterleitung (same tab) */
 (function(){
   const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
   if(m==='safe'||m==='strict'){ byId('ckSticky').checked=true; elSafe.checked=(m==='safe'); }
   updateModeLabels(); renderProfiles();
+
   const q=new URLSearchParams(location.search);
-  const v=q.get('u')||q.get('url'); const aff=q.get('aff');
+  const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
   if(aff==='1') elSafe.checked=true; if(aff==='0') elSafe.checked=false; updateModeLabels();
-  if(v){ byId('in').value=decodeMaybe(v); doClean(); }
+
+  if(v){
+    byId('in').value=decodeMaybe(v);
+    const out=doClean();
+    if(ao==='1' && out){ location.replace(out); } // im selben Tab öffnen
+  }
 })();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=8').catch(()=>{});}
 </script>
