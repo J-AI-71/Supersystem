@@ -1,8 +1,8 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v166</title>
-<meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
+<title>SafeShare – App v169</title>
 <link rel="icon" href="favicon-32.png">
+<meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <style>
 :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9;--ok:#065f46}
 *{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
@@ -25,8 +25,8 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 #log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v166</span></h1>
-<p class="muted">Neu: `ao=1` → nach dem Säubern automatische Weiterleitung im selben Tab.</p>
+<h1>SafeShare – App <span class="muted">v169</span></h1>
+<p class="muted">AUTO robuster: replace → assign → Link-Click. Fallback-Hinweis, wenn geblockt.</p>
 
 <div class="card">
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -185,23 +185,34 @@ function doClean(){
   updateModeLabels();
   return out;
 }
-function openViaLink(){ const a=byId('outA'); if(!a.href || a.href==='#'){ const s=doClean(); if(!s) return; } a.click(); }
+
+/* robuster AUTO-Go */
+function autoGo(out){
+  let done=false;
+  const mark=()=>{ if(!done){ const L=byId('log'); if(L) L.textContent='Auto-Weiterleitung blockiert. Tippe „Ergebnis-Link öffnen“.';
+    const btn=byId('outA'); btn && (btn.className+=' primary'); } };
+
+  try{ location.replace(out); done=true; }catch(e){}
+  setTimeout(()=>{ if(location.href!==out){ try{ location.assign(out); }catch(e){} } },120);
+  setTimeout(()=>{ if(location.href!==out){ const a=document.createElement('a'); a.href=out; a.rel='noopener'; a.target='_self'; document.body.appendChild(a); a.click(); } },260);
+  setTimeout(()=>{ if(location.href!==out){ mark(); } },600);
+}
 
 /* Buttons */
 byId('btnClean').onclick=()=>doClean();
 byId('btnCopy').onclick =()=>{ const s=doClean(); if(!s) return; navigator.clipboard?.writeText(s).catch(()=>{}); };
-byId('btnOne').onclick  =()=>{ const s=doClean(); if(s) openViaLink(); };
+byId('btnOne').onclick  =()=>{ const s=doClean(); if(s){ const ao='0'; if(ao==='1'){ autoGo(s); } else { const a=byId('outA'); a.href=s; a.click(); } } };
 byId('btnCopyOut').onclick=()=>{ const t=byId('outURL').textContent||''; if(t&&t!=='–') navigator.clipboard?.writeText(t).catch(()=>{}); };
 byId('btnClear').onclick=()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('outA').href='#'; byId('rem').textContent='Entfernt: –'; byId('kept').textContent='Affiliates behalten: –'; };
 
 /* Profil-Buttons */
 byId('btnSaveProfile').onclick=()=>{
-  const host=currentHost();
+  const host=currentHost() || lastHost;
   if(!host){ alert('Kein Host erkennbar. Bitte Link einfügen oder säubern.'); return; }
   const p=loadProfiles(); p[host]=elSafe.checked?'safe':'strict'; saveProfiles(p); renderProfiles();
 };
 byId('btnDelProfile').onclick=()=>{
-  const host=currentHost();
+  const host=currentHost() || lastHost;
   if(!host){ alert('Kein Host erkennbar.'); return; }
   const p=loadProfiles(); delete p[host]; saveProfiles(p); renderProfiles();
 };
@@ -215,20 +226,23 @@ byId('fileImport').onchange=(e)=>{
   r.readAsText(f);
 };
 
-/* Init + ao=1 Auto-Weiterleitung (same tab) */
+/* Init + ao=1 */
 (function(){
   const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
   if(m==='safe'||m==='strict'){ byId('ckSticky').checked=true; elSafe.checked=(m==='safe'); }
   updateModeLabels(); renderProfiles();
 
   const q=new URLSearchParams(location.search);
-  const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
+  const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao'); const diag=q.get('diag');
   if(aff==='1') elSafe.checked=true; if(aff==='0') elSafe.checked=false; updateModeLabels();
-
   if(v){
     byId('in').value=decodeMaybe(v);
     const out=doClean();
-    if(ao==='1' && out){ location.replace(out); } // im selben Tab öffnen
+    if(diag==='1'){ log('Ziel: '+out+'\nAUTO: '+(ao==='1'?'AN':'AUS')); }
+    if(ao==='1' && out){
+      // kleiner Delay hilft bei iOS
+      setTimeout(()=>autoGo(out), 80);
+    }
   }
 })();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=8').catch(()=>{});}
