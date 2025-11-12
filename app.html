@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v158</title>
+<title>SafeShare – App v159</title>
 <meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -22,10 +22,11 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 .btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
 @media(min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
+#log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v158</span></h1>
-<p class="muted">Säubert Links. Optional Affiliates behalten. Öffnen-Buttons starten neuen Tab.</p>
+<h1>SafeShare – App <span class="muted">v159</span></h1>
+<p class="muted">Säubert Links. Öffnen-Buttons starten neuen Tab. Optional referrer-frei.</p>
 
 <div class="card">
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -42,15 +43,14 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
     <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
     <button id="btnClear" type="button" class="btn" aria-label="Feld leeren">×</button>
   </div>
-
-  <!-- sichtbare Button-Leiste -->
   <div class="btn-grid">
     <button class="btn primary" id="btnClean"   type="button">Säubern</button>
     <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
     <button class="btn"          id="btnOpen"    type="button">Öffnen (neu)</button>
     <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
   </div>
-  <p class="muted" style="margin-top:6px">„Öffnen (neu)“ und „1-Klick“ → neuer Tab. Mit „referrer-frei“ ohne Referrer.</p>
+  <p class="muted" style="margin-top:6px">„Öffnen (neu)“ und „1-Klick“ → neuer Tab.</p>
+  <div id="log"></div>
 </div>
 
 <div class="grid2">
@@ -84,68 +84,72 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
   </div>
 </div>
 
-<div class="card">
-  <h2 style="margin:0 0 6px">Kurzanleitung Buttons</h2>
-  <ul>
-    <li><span class="kbd">Säubern</span>: bereinigt den Link und zeigt das Ergebnis.</li>
-    <li><span class="kbd">Kopieren</span>: kopiert das Ergebnis.</li>
-    <li><span class="kbd">Öffnen (neu)</span>: Ergebnis im neuen Tab.</li>
-    <li><span class="kbd">1-Klick</span>: säubern + im neuen Tab öffnen. Optional ohne Referrer.</li>
-  </ul>
-</div>
-
 <script>
 const $=s=>document.querySelector(s), byId=id=>document.getElementById(id);
 const LS_MODE='ss_mode_default', LS_PROFILES='ss_profiles_v1';
+const log=(m)=>{ const el=byId('log'); if(el) el.textContent = (el.textContent?el.textContent+"\n":"") + m; };
 
-function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
-function cloneURL(u){ return new URL(u.toString()); }
-function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
+function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{ return null; } }
+function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{ return v; } }
 
 function affiliateKeysForHost(host){ host=host.toLowerCase(); if(/\bamazon\./.test(host)) return new Set(['tag']); return new Set(); }
 
 function unwrap(u){
-  let url=cloneURL(u), changed=true, hops=0;
-  while(changed && hops<5){
-    changed=false; hops++;
-    const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
-    if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ try{url=new URL(sp.get('q')); changed=true; continue;}catch{} }
-    if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ try{url=new URL(sp.get('u')); changed=true; continue;}catch{} }
-    if(/\bpinterest\./.test(h)){
-      const cand=sp.get('url')||sp.get('link')||sp.get('to');
-      if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} }
+  let url=new URL(u.toString()); let changed=true, hops=0;
+  try{
+    while(changed && hops<5){
+      changed=false; hops++;
+      const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
+
+      if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){
+        try{ url=new URL(sp.get('q')); changed=true; continue; }catch{}
+      }
+      if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){
+        try{ url=new URL(sp.get('u')); changed=true; continue; }catch{}
+      }
+      if(/\bpinterest\./.test(h)){
+        const cand=sp.get('url')||sp.get('link')||sp.get('to');
+        if(cand){
+          const dv=decodeMaybe(decodeMaybe(cand));
+          if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{}
+          }
+        }
+      }
+      const keys=['url','u','redirect','redir','r','target','to','link'];
+      for(const k of keys){
+        const v=sp.get(k); if(!v) continue;
+        const dv=decodeMaybe(decodeMaybe(v));
+        if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; break; }catch{} }
+      }
+      if(changed) continue;
+      if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
+      if(sp.has('amp')){ sp.delete('amp'); changed=true; }
     }
-    for(const k of ['url','u','redirect','redir','r','target','to','link']){
-      const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v));
-      if(/^https?:\/\//i.test(dv)){ try{url=new URL(dv); changed=true; break;}catch{} }
-    }
-    if(changed) continue;
-    if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
-    if(sp.has('amp')){ sp.delete('amp'); changed=true; }
-  }
+  }catch(e){ log('unwrap-Fehler: '+e.message); }
   return url;
 }
 
 function clean(u, keepAffiliates){
-  const removed=[], keptAff=[]; let url=unwrap(u);
+  const removed=[], keptAff=[];
+  let url=unwrap(u);
   url.hostname=url.hostname.toLowerCase();
-
   const sp=url.searchParams;
-  const keys=[...sp.keys()];
+
   const trackPrefixes=['utm_'];
   const trackExact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
   const affKeys=affiliateKeysForHost(url.hostname);
 
-  for(const k of keys){
-    const lk=k.toLowerCase();
-    const isTrack = trackPrefixes.some(p=>lk.startsWith(p)) || trackExact.has(lk);
-    const isAff   = affKeys.has(lk);
-    if(isTrack){ removed.push(k); sp.delete(k); continue; }
-    if(!keepAffiliates && isAff){ removed.push(k); sp.delete(k); continue; }
-    if(keepAffiliates && isAff){ keptAff.push(k); continue; }
-  }
+  try{
+    for(const k of [...sp.keys()]){
+      const lk=k.toLowerCase();
+      const isTrack = trackPrefixes.some(p=>lk.startsWith(p)) || trackExact.has(lk);
+      const isAff   = affKeys.has(lk);
+      if(isTrack){ removed.push(k); sp.delete(k); continue; }
+      if(!keepAffiliates && isAff){ removed.push(k); sp.delete(k); continue; }
+      if(keepAffiliates && isAff){ keptAff.push(k); continue; }
+    }
+  }catch(e){ log('clean-Fehler: '+e.message); }
 
-  // nur eigene Seite: Cachebuster v entfernen
   if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
     if (sp.has('v')){ sp.delete('v'); removed.push('v'); }
   }
@@ -155,7 +159,6 @@ function clean(u, keepAffiliates){
   return {url:out, removed, keptAff, host:url.hostname};
 }
 
-/* Profile */
 function loadProfiles(){ try{return JSON.parse(localStorage.getItem(LS_PROFILES)||'{}');}catch{return{};} }
 function saveProfiles(o){ localStorage.setItem(LS_PROFILES, JSON.stringify(o)); }
 function renderProfiles(){
@@ -173,7 +176,6 @@ function renderProfiles(){
   });
 }
 
-/* UI */
 const elIn=byId('in'), elSafe=byId('ckSafe'), elSticky=byId('ckSticky'), elReload=byId('ckReload'), elNoref=byId('ckNoref');
 function updateModeLabels(){
   const safe=elSafe.checked;
@@ -184,19 +186,24 @@ function updateModeLabels(){
 }
 
 function doClean(){
-  const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte Link einfügen.'); return; }
-  let url=raw; if(/^www\./i.test(url)) url='https://'+url;
-  const u=toURLMaybe(url); if(!u){ alert('Ungültige URL.'); return; }
+  try{
+    const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte einen Link einfügen.'); return; }
+    let url=raw; if(/^www\./i.test(url)) url='https://'+url;
+    const u=toURLMaybe(url); if(!u){ alert('Ungültige URL.'); return; }
 
-  const profiles=loadProfiles(); const tmp=unwrap(u); const prof=profiles[tmp.hostname.toLowerCase()];
-  if(prof==='strict') elSafe.checked=false; if(prof==='safe') elSafe.checked=true;
+    const profiles=loadProfiles(); const tmp=unwrap(u); const prof=profiles[tmp.hostname.toLowerCase()];
+    if(prof==='strict') elSafe.checked=false; if(prof==='safe') elSafe.checked=true;
 
-  const {url:out,removed,keptAff}=clean(u, elSafe.checked);
-  byId('outURL').textContent=out;
-  byId('rem')  &&(byId('rem').textContent  ='Entfernt: '+(removed.length?removed.join(', '):'–'));
-  byId('kept') &&(byId('kept').textContent ='Affiliates behalten: '+(keptAff.length?keptAff.join(', '):'–'));
-  updateModeLabels();
-  return out;
+    const {url:out,removed,keptAff}=clean(u, elSafe.checked);
+    byId('outURL').textContent=out;
+    byId('rem')  &&(byId('rem').textContent  ='Entfernt: '+(removed.length?removed.join(', '):'–'));
+    byId('kept') &&(byId('kept').textContent ='Affiliates behalten: '+(keptAff.length?keptAff.join(', '):'–'));
+    updateModeLabels();
+    return out;
+  }catch(e){
+    log('doClean-Fehler: '+e.message);
+    return null;
+  }
 }
 
 function openNewTab(out){
@@ -210,17 +217,19 @@ byId('btnOpen').onclick    = ()=>{ const s=doClean(); if(s) openNewTab(s); };
 byId('btnOpenNew').onclick = ()=>{ const s=doClean(); if(s) openNewTab(s); };
 byId('btnCopyOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t) navigator.clipboard.writeText(t).catch(()=>{}); };
 byId('btnOpenOut').onclick = ()=>{ const t=byId('outURL').textContent||''; if(t) openNewTab(t); };
-byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('rem').textContent='Entfernt: –'; byId('kept').textContent='Affiliates behalten: –'; };
+byId('btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('rem')&&(byId('rem').textContent='Entfernt: –'); byId('kept')&&(byId('kept').textContent='Affiliates behalten: –'); };
 
 (function init(){
   const m=(localStorage.getItem(LS_MODE)||'').toLowerCase();
   if(m==='safe'||m==='strict'){ byId('ckSticky').checked=true; elSafe.checked=(m==='safe'); }
   updateModeLabels(); renderProfiles();
+
   const q=new URLSearchParams(location.search);
   const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
   if(aff==='1') elSafe.checked=true;
   if(aff==='0') elSafe.checked=false;
   updateModeLabels();
+
   if(v){ elIn.value=decodeMaybe(v); const cleaned=doClean(); if(ao==='1'&&cleaned){ openNewTab(cleaned); } }
 })();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
