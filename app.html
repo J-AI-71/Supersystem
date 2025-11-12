@@ -46,14 +46,13 @@
 </div>
 
 <script>
-// Pro per Payhip-Redirect aktivieren: /app.html#pro=1
+// Payhip-Redirect: /app.html#pro=1
 if (location.hash.includes('pro=1')) {
   localStorage.setItem('ss2_pro','1');
   history.replaceState(null,'',location.pathname);
   alert('Pro aktiviert');
 }
 
-// Cleaner
 const TRACKERS=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","vero_id","igshid","si","spm"]);
 function cleanUrl(raw){
   try{
@@ -71,15 +70,13 @@ function cleanUrl(raw){
   }catch{return raw;}
 }
 
-// Pro-Gate
-const hasPro = ()=> localStorage.getItem('ss2_pro')==='1';
+const hasPro=()=>localStorage.getItem('ss2_pro')==='1';
 function requirePro(){ if(hasPro()) return true; alert('Pro-Funktion. Bitte Pro aktivieren.'); return false; }
 document.getElementById('pro').onclick=()=>{
   const key=prompt('Pro-Schlüssel eingeben:'); if(!key) return;
   localStorage.setItem('ss2_pro','1'); alert('Pro aktiviert.');
 };
 
-// Single
 const inp=document.getElementById('inp'), out=document.getElementById('out');
 document.getElementById('cleanOpen').onclick=()=>{
   const src=inp.value.trim(); if(!src){out.textContent='Bitte URL eingeben.'; return;}
@@ -99,7 +96,6 @@ document.getElementById('share').onclick=async()=>{
   else { await navigator.clipboard.writeText(dst); alert('In Zwischenablage kopiert.'); }
 };
 
-// Bulk
 document.getElementById('bulkClean').onclick=()=>{
   if(!requirePro()) return;
   const lines=document.getElementById('bulk').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
@@ -111,7 +107,6 @@ document.getElementById('bulkCopy').onclick=async()=>{
   alert('Liste kopiert.');
 };
 
-// SW registrieren mit Version
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
