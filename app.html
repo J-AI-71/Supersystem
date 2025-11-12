@@ -1,11 +1,11 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – App v156</title>
+<title>SafeShare – App v157</title>
 <meta name="description" content="Links säubern: utm_*, fbclid, gclid … entfernen. SAFE/STRICT. Profile. 1-Klick.">
 <link rel="icon" href="favicon-32.png">
 <style>
 :root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9;--ok:#065f46;--bad:#7f1d1d}
-*{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg);background:#fff}
+*{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
 h1{margin:0 0 8px;font-size:20px}.muted{color:var(--muted);font-size:12px}
 .card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
 input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
@@ -21,8 +21,8 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 #io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 </style>
 </head><body>
-<h1>SafeShare – App <span class="muted">v156</span></h1>
-<p class="muted">Säubert Links. Optional Affiliates behalten. Kein Tracking, keine Serverlogs.</p>
+<h1>SafeShare – App <span class="muted">v157</span></h1>
+<p class="muted">Säubert Links. Optional Affiliates behalten. Öffnen-Buttons starten immer neuen Tab.</p>
 
 <div class="card">
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -43,7 +43,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
   <!-- Buttonleiste im Shadow-DOM -->
   <safe-buttons></safe-buttons>
 
-  <p class="muted" style="margin-top:6px">„1-Klick“ = neuer Tab. „Öffnen“ = gleicher Tab. Optional referrer-frei.</p>
+  <p class="muted" style="margin-top:6px">„Öffnen (neu)“ und „1-Klick“ öffnen immer im neuen Tab. Mit „referrer-frei“ ohne Referrer.</p>
 </div>
 
 <div class="grid2">
@@ -52,7 +52,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
     <div id="outURL" class="kbd">–</div>
     <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <button class="btn small" id="btnCopyOut" type="button">Ergebnis kopieren</button>
-      <button class="btn small" id="btnOpenOut" type="button">Ergebnis öffnen</button>
+      <button class="btn small" id="btnOpenOut" type="button">Ergebnis öffnen (neu)</button>
     </div>
     <div style="margin-top:8px">
       <span class="badge" id="bMode">Modus: SAFE</span>
@@ -82,9 +82,8 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
   <ul>
     <li><span class="kbd">Säubern</span>: bereinigt den Link und zeigt das Ergebnis.</li>
     <li><span class="kbd">Kopieren</span>: kopiert das bereinigte Ergebnis.</li>
-    <li><span class="kbd">Öffnen</span>: lädt das Ergebnis im aktuellen Tab.</li>
-    <li><span class="kbd">1-Klick</span>: öffnet das Ergebnis in neuem Tab. Mit „referrer-frei“ ohne Referrer.</li>
-    <li><span class="kbd">Provisionen behalten</span>: SAFE. Aus = STRICT (auch Affiliates weg).</li>
+    <li><span class="kbd">Öffnen (neu)</span>: Ergebnis im neuen Tab.</li>
+    <li><span class="kbd">1-Klick</span>: säubern + im neuen Tab öffnen.</li>
   </ul>
 </div>
 
@@ -105,13 +104,14 @@ class SafeButtons extends HTMLElement{
       <div class="grid">
         <button class="btn primary" id="clean"   type="button">Säubern</button>
         <button class="btn"          id="copy"    type="button">Kopieren</button>
-        <button class="btn"          id="open"    type="button">Öffnen</button>
+        <button class="btn"          id="open"    type="button">Öffnen (neu)</button>
         <button class="btn"          id="openNew" type="button">1-Klick</button>
       </div>`;
     const send = detail => window.dispatchEvent(new CustomEvent('ss-action',{detail}));
     root.getElementById('clean').onclick   = ()=>send('clean');
     root.getElementById('copy').onclick    = ()=>send('copy');
-    root.getElementById('open').onclick    = ()=>send('open-same');
+    // Beide öffnen-Buttons senden "open-new"
+    root.getElementById('open').onclick    = ()=>send('open-new');
     root.getElementById('openNew').onclick = ()=>send('open-new');
   }
 }
@@ -134,7 +134,10 @@ function unwrap(u){
     const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
     if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ try{url=new URL(sp.get('q')); changed=true; continue;}catch{} }
     if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ try{url=new URL(sp.get('u')); changed=true; continue;}catch{} }
-    if(/\bpinterest\./.test(h)){ const cand=sp.get('url')||sp.get('link')||sp.get('to'); if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ try{url=new URL(dv)); changed=true; continue;}catch{} } }
+    if(/\bpinterest\./.test(h)){
+      const cand=sp.get('url')||sp.get('link')||sp.get('to');
+      if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} }
+    }
     for(const k of ['url','u','redirect','redir','r','target','to','link']){
       const v=sp.get(k); if(!v) continue; const dv=decodeMaybe(decodeMaybe(v));
       if(/^https?:\/\//i.test(dv)){ try{url=new URL(dv); changed=true; break;}catch{} }
@@ -147,15 +150,13 @@ function unwrap(u){
 }
 
 function clean(u, keepAffiliates){
-  const removed=[], keptAff=[];
-  let url=unwrap(u);
+  const removed=[], keptAff=[]; let url=unwrap(u);
   url.hostname=url.hostname.toLowerCase();
 
   const sp=url.searchParams;
   const keys=[...sp.keys()];
   const trackPrefixes=['utm_'];
   const trackExact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
-
   const affKeys=affiliateKeysForHost(url.hostname);
 
   for(const k of keys){
@@ -167,7 +168,7 @@ function clean(u, keepAffiliates){
     if(keepAffiliates && isAff){ keptAff.push(k); continue; }
   }
 
-  // Domain-spezifisch: Cachebuster „v“ nur auf eigener Seite entfernen
+  // auf eigener Domain Cachebuster ?v entfernen
   if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
     if (sp.has('v')){ sp.delete('v'); removed.push('v'); }
   }
@@ -177,7 +178,6 @@ function clean(u, keepAffiliates){
   return {url:out, removed, keptAff, host:url.hostname};
 }
 
-/* Profile */
 function loadProfiles(){ try{return JSON.parse(localStorage.getItem(LS_PROFILES)||'{}');}catch{return{};} }
 function saveProfiles(o){ localStorage.setItem(LS_PROFILES, JSON.stringify(o)); }
 function renderProfiles(){
@@ -195,7 +195,7 @@ function renderProfiles(){
   });
 }
 
-/* UI-State */
+/* UI */
 const elIn=byId('in'), elSafe=byId('ckSafe'), elSticky=byId('ckSticky'), elReload=byId('ckReload'), elNoref=byId('ckNoref');
 function updateModeLabels(){
   const safe=elSafe.checked;
@@ -221,19 +221,10 @@ function doClean(){
   return out;
 }
 
-function openTarget(target){
-  const out=doClean(); if(!out) return;
-  const noRef=elNoref.checked, doReload=elReload.checked;
-  if(target==='same'){
-    if(noRef){
-      const doc=`<meta name="referrer" content="no-referrer"><meta http-equiv="refresh" content="0;url=${out.replace(/"/g,'%22')}">`;
-      const blob=new Blob([doc],{type:'text/html'}); const u=URL.createObjectURL(blob); location.replace(u);
-    }else{
-      location.replace(out); if(doReload) setTimeout(()=>location.reload(),50);
-    }
-  }else{
-    if(noRef) window.open(out,'_blank','noopener,noreferrer'); else window.open(out,'_blank');
-  }
+function openNewTab(out){
+  const noRef=elNoref.checked;
+  if(noRef) window.open(out,'_blank','noopener,noreferrer'); else window.open(out,'_blank');
+  if(elReload.checked) setTimeout(()=>{},0); // nur Platzhalter, Reload ist für Same-Tab irrelevant
 }
 
 /* Events */
@@ -241,11 +232,10 @@ window.addEventListener('ss-action',(e)=>{
   const a=e.detail;
   if(a==='clean') doClean();
   else if(a==='copy'){ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); }
-  else if(a==='open-same') openTarget('same');
-  else if(a==='open-new')  openTarget('new');
+  else if(a==='open-new'){ const s=doClean(); if(s) openNewTab(s); }
 });
 byId('btnCopyOut') && (byId('btnCopyOut').onclick=()=>{ const t=byId('outURL').textContent||''; if(t) navigator.clipboard.writeText(t).catch(()=>{}); });
-byId('btnOpenOut') && (byId('btnOpenOut').onclick=()=>openTarget('new'));
+byId('btnOpenOut') && (byId('btnOpenOut').onclick=()=>{ const t=byId('outURL').textContent||''; if(t) openNewTab(t); });
 byId('btnClear').onclick=()=>{ elIn.value=''; elIn.focus(); byId('outURL').textContent='–'; byId('rem')&&(byId('rem').textContent='Entfernt: –'); byId('kept')&&(byId('kept').textContent='Affiliates behalten: –'); };
 
 /* Init */
@@ -260,7 +250,7 @@ byId('btnClear').onclick=()=>{ elIn.value=''; elIn.focus(); byId('outURL').textC
   if(aff==='0') elSafe.checked=false;
   updateModeLabels();
 
-  if(v){ elIn.value=decodeMaybe(v); const cleaned=doClean(); if(ao==='1'&&cleaned){ openTarget('new'); } }
+  if(v){ elIn.value=decodeMaybe(v); const cleaned=doClean(); if(ao==='1'&&cleaned){ openNewTab(cleaned); } }
 })();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=4').catch(()=>{});}
 </script>
