@@ -1,11 +1,13 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v156</title>
-<meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen. SAFE/STRICT Umschalter.">
+<title>SafeShare – Classic v157</title>
+<meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen (neuer Tab). SAFE/STRICT Umschalter.">
 <link rel="icon" href="favicon-32.png">
 <style>
-*{box-sizing:border-box} body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
-h1{margin:0 0 8px;font-size:20px}.muted{color:#6b7280;font-size:12px}
+*{box-sizing:border-box}
+body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827;background:#fff}
+h1{margin:0 0 8px;font-size:20px}
+.muted{color:#6b7280;font-size:12px}
 .card{border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#fff;margin:10px 0}
 input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:15px}
 .btn{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;background:#fff;color:#111827;cursor:pointer;text-align:center}
@@ -15,9 +17,10 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 @media(min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
 #io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-</style></head><body>
-<h1>SafeShare – Classic <span class="muted">v156</span></h1>
-<p class="muted">Minimalansicht ohne Profile.</p>
+</style>
+</head><body>
+<h1>SafeShare – Classic <span class="muted">v157</span></h1>
+<p class="muted">Minimalansicht ohne Profile. Öffnen startet immer einen neuen Tab.</p>
 
 <div class="card">
   <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
@@ -33,10 +36,10 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
   <div class="btn-grid">
     <button class="btn primary" id="btnClean"   type="button">Säubern</button>
     <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
-    <button class="btn"          id="btnOpen"    type="button">Öffnen</button>
+    <button class="btn"          id="btnOpen"    type="button">Öffnen (neu)</button>
     <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
   </div>
-  <p class="muted" style="margin-top:6px">„1-Klick“ = neuer Tab. „Öffnen“ = gleicher Tab.</p>
+  <p class="muted" style="margin-top:6px">„1-Klick“ = säubern + im neuen Tab öffnen.</p>
 </div>
 
 <div class="card">
@@ -47,32 +50,78 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 <script>
 const $=s=>document.querySelector(s);
 const elIn=$('#in'), elSafe=$('#ckSafe');
-function update(){ $('#modeInfo').innerHTML='Modus: <strong>'+(elSafe.checked?'SAFE':'STRICT')+'</strong>'; $('#bMode').textContent='Modus: '+(elSafe.checked?'SAFE':'STRICT'); }
-function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
-function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
-function affiliateKeysForHost(host){ if(/\bamazon\./.test(host.toLowerCase())) return new Set(['tag']); return new Set(); }
+
+function update(){
+  $('#modeInfo').innerHTML='Modus: <strong>'+(elSafe.checked?'SAFE':'STRICT')+'</strong>';
+  $('#bMode').textContent='Modus: '+(elSafe.checked?'SAFE':'STRICT');
+}
+
+function toURLMaybe(s){
+  if(!s) return null;
+  s=s.trim();
+  if(/^www\./i.test(s)) s='https://'+s;
+  try{ return new URL(s); }catch{ return null; }
+}
+
+function decodeMaybe(v){ try{ return decodeURIComponent(v); }catch{ return v; } }
+
+function affiliateKeysForHost(host){
+  host=host.toLowerCase();
+  if(/\bamazon\./.test(host)) return new Set(['tag']);
+  return new Set();
+}
+
 function unwrap(u){
-  let url=new URL(u); let changed=true,hops=0;
-  while(changed&&hops<5){ changed=false;hops++;
-    const h=url.hostname.toLowerCase(), p=url.pathname, sp=url.searchParams;
-    if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){ url=new URL(sp.get('q')); changed=true; continue; }
-    if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){ url=new URL(sp.get('u')); changed=true; continue; }
-    if(/\bpinterest\./.test(h)){ const cand=sp.get('url')||sp.get('link')||sp.get('to'); if(cand){ const dv=decodeMaybe(decodeMaybe(cand)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} } }
+  let url=new URL(u.toString());
+  let changed=true, hops=0;
+  while(changed && hops<5){
+    changed=false; hops++;
+    const h=url.hostname.toLowerCase();
+    const p=url.pathname;
+    const sp=url.searchParams;
+
+    // Google /url?q=
+    if((h.endsWith('google.com')||h.endsWith('google.de')) && p==='/url' && sp.get('q')){
+      try{ url=new URL(sp.get('q')); changed=true; continue; }catch{}
+    }
+    // Facebook /l.php?u=
+    if(/\bfacebook\.com$/.test(h) && p==='/l.php' && sp.get('u')){
+      try{ url=new URL(sp.get('u')); changed=true; continue; }catch{}
+    }
+    // Pinterest outbound
+    if(/\bpinterest\./.test(h)){
+      const cand=sp.get('url')||sp.get('link')||sp.get('to');
+      if(cand){
+        const dv=decodeMaybe(decodeMaybe(cand));
+        if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; continue; }catch{} }
+      }
+    }
+    // generische Redirect-Parameter
     for(const k of ['url','u','redirect','redir','r','target','to','link']){
       const v=sp.get(k); if(!v) continue;
-      const dv=decodeMaybe(decodeMaybe(v)); if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; break; }catch{} }
+      const dv=decodeMaybe(decodeMaybe(v));
+      if(/^https?:\/\//i.test(dv)){ try{ url=new URL(dv); changed=true; break; }catch{} }
     }
     if(changed) continue;
+
+    // AMP → Canonical
     if(/\/amp(\/|$)/i.test(p)){ url.pathname=p.replace(/\/amp(\/|$)/ig,'$1'); changed=true; }
     if(sp.has('amp')){ sp.delete('amp'); changed=true; }
   }
   return url;
 }
+
 function clean(u, keepAff){
-  const url=unwrap(u); url.hostname=url.hostname.toLowerCase();
+  const url=unwrap(u);
+  url.hostname=url.hostname.toLowerCase();
+
+  const sp=url.searchParams;
+  const keys=[...sp.keys()];
+
+  const tprefix=['utm_'];
+  const texact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
+
   const aff=affiliateKeysForHost(url.hostname);
-  const sp=url.searchParams, keys=[...sp.keys()];
-  const tprefix=['utm_'], texact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
 
   for(const k of keys){
     const lk=k.toLowerCase();
@@ -81,24 +130,53 @@ function clean(u, keepAff){
     if(isT || (!keepAff && isA)) sp.delete(k);
   }
 
-  // nur eigene Domain: „v“ entfernen
-  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
-    if (sp.has('v')) sp.delete('v');
+  // Nur eigene Seite: Cachebuster ?v entfernen
+  if(url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
+    if(sp.has('v')) sp.delete('v');
   }
 
   const q=sp.toString();
   return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
+
 function doClean(){
-  const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return;}
-  const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return;}
-  const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
+  const raw=(elIn.value||'').trim();
+  if(!raw){ alert('Bitte Link einfügen.'); return; }
+  const u=toURLMaybe(raw);
+  if(!u){ alert('Ungültige URL.'); return; }
+  const out=clean(u, elSafe.checked);
+  $('#outURL').textContent=out;
+  update();
+  return out;
 }
-$('#btnClean').onclick=()=>doClean();
-$('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
-$('#btnOpen').onclick  =()=>{ const s=doClean(); if(s) location.replace(s); };
-$('#btnOpenNew').onclick=()=>{ const s=doClean(); if(s) window.open(s,'_blank'); };
-$('#btnClear').onclick =()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
+
+function openNewTab(){
+  const s=doClean(); if(!s) return;
+  window.open(s,'_blank');
+}
+
+/* Buttons */
+$('#btnClean').onclick   = ()=>doClean();
+$('#btnCopy').onclick    = ()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
+$('#btnOpen').onclick    = ()=>openNewTab();
+$('#btnOpenNew').onclick = ()=>openNewTab();
+$('#btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
+
 elSafe.onchange=update; update();
+
+/* Query-Params unterstützen (für Tests-Links) */
+(function initFromQS(){
+  const q=new URLSearchParams(location.search);
+  const v=q.get('u')||q.get('url');
+  const aff=q.get('aff');
+  const ao=q.get('ao'); // 1 = auto open
+  if(aff==='1') elSafe.checked=true;
+  if(aff==='0') elSafe.checked=false;
+  update();
+  if(v){
+    elIn.value=decodeMaybe(v);
+    if(ao==='1'){ openNewTab(); } else { doClean(); }
+  }
+})();
 </script>
 </body></html>
