@@ -5,87 +5,67 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>SafeShare2 · Bookmarklets</title>
-  <link rel="icon" href="assets/logo.png">
+  <link rel="icon" href="assets/logo.png?v=2025-11-12">
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
     .wrap{max-width:860px;margin:auto;padding:28px 16px}
     h1{font-size:26px;margin:0 0 8px}
     p.mut{color:var(--mut)}
     .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
     .bm{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;margin:6px 8px 0 0}
-    code{background:#000;padding:.1rem .3rem;border-radius:6px}
     a{color:#eaeaea}
   </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Bookmarklets</h1>
-  <p class="mut">iOS/Android: Link lange tippen → „Zu Lesezeichen hinzufügen“. Desktop: Link in die Lesezeichenleiste ziehen.</p>
+  <p class="mut">iOS/Android: Link lange tippen → „Zu Lesezeichen hinzufügen“.</p>
 
   <div class="card">
-    <h3 style="margin:0 0 8px">1) Clean & Open (über Wrapper, Monetize)</h3>
+    <h3 style="margin:0 0 8px">Clean & Open (Monetize)</h3>
     <a id="bm_wrap" class="bm" href="#">SafeShare Clean & Open</a>
-    <p class="mut">Leitet zur Seite <code>Redirect-entschachteln.html</code> und dann weiter zum gereinigten Ziel.</p>
   </div>
 
   <div class="card">
-    <h3 style="margin:0 0 8px">2) Clean & Stay (ohne Wrapper)</h3>
+    <h3 style="margin:0 0 8px">Clean & Stay</h3>
     <a id="bm_stay" class="bm" href="#">Clean & Stay</a>
-    <p class="mut">Reinigt die aktuelle URL und lädt dieselbe Seite ohne Tracking-Parameter neu.</p>
   </div>
 
   <div class="card">
-    <h3 style="margin:0 0 8px">3) Clean & Copy (ohne Wrapper)</h3>
+    <h3 style="margin:0 0 8px">Clean & Copy</h3>
     <a id="bm_copy" class="bm" href="#">Clean & Copy</a>
-    <p class="mut">Reinigt die aktuelle URL und zeigt sie zum Kopieren an. Versucht zusätzlich in die Zwischenablage zu kopieren.</p>
   </div>
 
   <p class="mut" style="margin-top:16px"><a href="index.html">Zurück</a></p>
 </div>
 
 <script>
-// Root absolut, damit das Bookmarklet außerhalb deiner Domain funktioniert
-const ROOT = 'https://j-ai-71.github.io/Supersystem/';
-const WRAPPER = ROOT + 'Redirect-entschachteln.html';
+const ROOT='https://j-ai-71.github.io/Supersystem/';
+const WRAP=ROOT+'Redirect-entschachteln.html';
 
-// --- 1) Wrapper-Bookmarklet (Monetize) ---
+// 1) Wrapper
 (function(){
-  const code = "location.href='"+WRAPPER+"?u='+encodeURIComponent(location.href)";
-  const href = "javascript:(function(){"+code+"})()";
-  document.getElementById('bm_wrap').setAttribute('href', href);
+  const code="location.href='"+WRAP+"?u='+encodeURIComponent(location.href)";
+  document.getElementById('bm_wrap').href="javascript:(function(){"+code+"})()";
 })();
 
-// Gemeinsamer Cleaner (inline-minified für Bookmarklets 2/3)
-const CLEAN_SNIPPET =
-"try{var u=new URL(location.href);" +
-"var t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];" +
-"if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash='';}" +
-"t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});" +
-"u.pathname=u.pathname.replace(/\\/{2,}/g,'/');" +
-"if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);" +
-"var s=u.toString();" +
-"}catch(e){var s=location.href;}";
+// Cleaner snippet
+const SNIP="try{var u=new URL(location.href);var t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash='';}t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString();}catch(e){var s=location.href;}";
 
-// --- 2) Clean & Stay (ohne Wrapper) ---
+// 2) Stay
 (function(){
-  const code = CLEAN_SNIPPET + "location.href=s;";
-  const href = "javascript:(function(){"+code+"})()";
-  document.getElementById('bm_stay').setAttribute('href', href);
+  const code=SNIP+"location.href=s;";
+  document.getElementById('bm_stay').href="javascript:(function(){"+code+"})()";
 })();
 
-// --- 3) Clean & Copy (ohne Wrapper) ---
+// 3) Copy
 (function(){
-  const code = CLEAN_SNIPPET +
-    "try{navigator.clipboard&&navigator.clipboard.writeText(s);}catch(e){}" +
-    "prompt('Clean URL:',s);";
-  const href = "javascript:(function(){"+code+"})()";
-  document.getElementById('bm_copy').setAttribute('href', href);
+  const code=SNIP+"try{navigator.clipboard&&navigator.clipboard.writeText(s);}catch(e){};prompt('Clean URL:',s);";
+  document.getElementById('bm_copy').href="javascript:(function(){"+code+"})()";
 })();
-</script>
 
-<!-- optional: SW-Registrierung für diese Seite -->
-<script>
+// SW registrieren
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
