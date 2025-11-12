@@ -29,7 +29,7 @@
 
   <div class="row" style="margin:16px 0 24px">
     <a class="btn" href="app.html">App starten</a>
-    <a class="btn alt" href="redirect.html?u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
+    <a class="btn alt" href="Redirect-entschachteln.html?u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
     <a class="btn alt" id="install">Auf Gerät installieren</a>
   </div>
 
@@ -38,7 +38,7 @@
     <ul>
       <li>Link einfügen → „Säubern & öffnen“.</li>
       <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
-      <li>Teilen über <code>redirect.html</code> zeigt eine kurze Sponsor-Seite, dann Weiterleitung.</li>
+      <li>Teilen über <code>Redirect-entschachteln.html</code> zeigt eine kurze Sponsor-Seite, dann Weiterleitung.</li>
     </ul>
   </div>
 
@@ -71,10 +71,10 @@
 </div>
 
 <script>
-// Bookmarklet setzen
+// Bookmarklet auf Redirect-entschachteln.html setzen
 (function(){
   const root = location.origin + location.pathname.replace(/index\.html?$/,'');
-  const href = "javascript:(function(){location.href='"+root+"redirect.html?u='+encodeURIComponent(location.href);})();";
+  const href = "javascript:(function(){location.href='"+root+"Redirect-entschachteln.html?u='+encodeURIComponent(location.href);})();";
   document.getElementById('bm').setAttribute('href', href);
 })();
 
@@ -86,7 +86,7 @@ document.getElementById('install').addEventListener('click', async ()=>{
   deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
 });
 
-// SW registrieren
+// Service Worker registrieren
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
