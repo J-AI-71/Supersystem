@@ -1,75 +1,100 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Schnelltests v160</title>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SafeShare – Tests v167</title>
 <link rel="icon" href="favicon-32.png">
+<meta name="description" content="Schnelltests für SafeShare. AUTO (ao=1) oder MANUELL (ao=0).">
 <style>
-*{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
-h1{margin:0 0 8px;font-size:20px}.muted{color:#6b7280;font-size:12px}
-.card{border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:10px 0;background:#fff}
-.grid{display:grid;gap:10px}
-@media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
-.row{border:1px solid #e5e7eb;border-radius:10px;padding:10px}
-.btn{display:inline-block;border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;background:#fff;color:#111827;text-decoration:none;margin-right:8px}
-.kbd{font:12px ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
-pre{white-space:pre-wrap;word-break:break-word;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:8px}
+  :root{--bd:#e5e7eb;--fg:#111827;--accent:#0ea5e9;--muted:#6b7280}
+  *{box-sizing:border-box}
+  body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
+  h1{margin:0 0 8px;font-size:20px}
+  p.small{color:var(--muted);font-size:12px;margin:6px 0 14px}
+  .card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:740px){.grid{grid-template-columns:1fr}}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  a.btn{display:inline-block;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--fg);background:#fff}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .kbd{font:12px ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);border-radius:6px;padding:2px 6px}
 </style>
-</head><body>
-<h1>SafeShare – Schnelltests <span class="muted">v160</span></h1>
-<p class="muted">Klicke SAFE oder STRICT. Beide öffnen im neuen Tab. Erwartetes Ergebnis steht darunter.</p>
+</head>
+<body>
+<h1>SafeShare – Tests <span class="kbd">v167</span></h1>
+<p class="small">
+  AUTO nutzt <span class="kbd">ao=1</span> und leitet im selben Tab weiter. Wenn geblockt, MANUELL testen:
+  App öffnet sich mit vorgefüllter URL, dann in der App „Ergebnis-Link öffnen“ tippen.
+</p>
 
 <div class="grid">
-
-  <div class="row">
-    <div class="muted">UTM + gclid</div>
-    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_source%3Dmail%26gclid%3D1" target="_blank" rel="noopener">SAFE</a>
-    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_source%3Dmail%26gclid%3D1" target="_blank" rel="noopener">STRICT</a>
-    <pre>Erwartet: https://example.com/a</pre>
+  <div class="card">
+    <h3>Amazon SAFE (tag bleibt)</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: https://www.amazon.de/dp/TEST?tag=deintag-21</p>
   </div>
 
-  <div class="row">
-    <div class="muted">Amazon Affiliate</div>
-    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx" target="_blank" rel="noopener">SAFE</a>
-    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx" target="_blank" rel="noopener">STRICT</a>
-    <pre>SAFE:   https://www.amazon.de/dp/TEST?tag=deintag-21
-STRICT: https://www.amazon.de/dp/TEST</pre>
+  <div class="card">
+    <h3>Amazon STRICT (tag entfernt)</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=0&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=0&ao=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: https://www.amazon.de/dp/TEST</p>
   </div>
 
-  <div class="row">
-    <div class="muted">Google /url?q= Wrapper</div>
-    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_medium%253D1" target="_blank" rel="noopener">SAFE</a>
-    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_medium%253D1" target="_blank" rel="noopener">STRICT</a>
-    <pre>Erwartet: https://shop.de/a</pre>
+  <div class="card">
+    <h3>UTM entfernen</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dtwitter%26x%3D1">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dtwitter%26x%3D1">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: https://example.com/?x=1</p>
   </div>
 
-  <div class="row">
-    <div class="muted">Pinterest outbound</div>
-    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fwww.pinterest.com%2Foutbound-redirect%2F%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Fepik%253D1%2526utm_source%253Dpin" target="_blank" rel="noopener">SAFE</a>
-    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fwww.pinterest.com%2Foutbound-redirect%2F%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Fepik%253D1%2526utm_source%253Dpin" target="_blank" rel="noopener">STRICT</a>
-    <pre>Erwartet: https://shop.de/a</pre>
+  <div class="card">
+    <h3>Google /url → Ziel</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fexample.com%252Fnews%253Futm_medium%253Demail%26sa%3DD">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fexample.com%252Fnews%253Futm_medium%253Demail%26sa%3DD">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: https://example.com/news</p>
   </div>
 
-  <div class="row">
-    <div class="muted">Verschachtelt (redir → url=…)</div>
-    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc" target="_blank" rel="noopener">SAFE</a>
-    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc" target="_blank" rel="noopener">STRICT</a>
-    <pre>Erwartet: https://shop.de/a</pre>
+  <div class="card">
+    <h3>Verschachtelt (redir → shop)</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: https://shop.de/a</p>
   </div>
 
-  <div class="row">
-    <div class="muted">AMP → Canonical</div>
-    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fsite.de%2Fartikel%2Famp%2F%3Futm_campaign%3Dx" target="_blank" rel="noopener">SAFE</a>
-    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fsite.de%2Fartikel%2Famp%2F%3Futm_campaign%3Dx" target="_blank" rel="noopener">STRICT</a>
-    <pre>Erwartet: https://site.de/artikel/</pre>
+  <div class="card">
+    <h3>Pinterest-Outlink</h3>
+    <div class="row">
+      <a class="btn primary" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.pinterest.de%2Fpin%2F123%2F%3Furl%3Dhttps%253A%252F%252Fexample.com%252Fpost%253Futm_medium%253Dsocial">AUTO</a>
+      <a class="btn" target="_self"
+         href="https://j-ai-71.github.io/Supersystem/app.html?v=166&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.pinterest.de%2Fpin%2F123%2F%3Furl%3Dhttps%253A%252F%252Fexample.com%252Fpost%253Futm_medium%253Dsocial">MANUELL</a>
+    </div>
+    <p class="kbd">Erwartet: https://example.com/post</p>
   </div>
-
-  <div class="row">
-    <div class="muted">Eigene Seite: Cachebuster v entfernen</div>
-    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Ftests.html%3Fv%3D160" target="_blank" rel="noopener">SAFE</a>
-    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Ftests.html%3Fv%3D160" target="_blank" rel="noopener">STRICT</a>
-    <pre>Erwartet: https://j-ai-71.github.io/Supersystem/tests.html</pre>
-  </div>
-
 </div>
 
-<p class="muted">Tipp: <span class="kbd">?diag=1</span> an <span class="kbd">app.html</span> anhängen, um das Fehler-Log zu sehen.</p>
-</body></html>
+</body>
+</html>
