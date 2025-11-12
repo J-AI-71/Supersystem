@@ -1,76 +1,108 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Tests v169</title>
-<link rel="icon" href="favicon-32.png">
-<style>
-body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
-h1{margin:0 0 10px;font-size:20px}.card{border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#fff;margin:10px 0}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-a.btn{display:inline-block;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;text-decoration:none}
-.btn.primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
-.kbd{font:12px ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:720px){.grid{grid-template-columns:1fr}}
-.small{color:#6b7280;font-size:12px;margin-top:6px}
-</style>
-</head><body>
-<h1>SafeShare – Tests <span class="kbd">v169</span></h1>
-<p class="small">AUTO (ao=1) nutzt die neue robuste Weiterleitung. Wenn geblockt, MANUELL klicken und in der App „Ergebnis-Link öffnen“.</p>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>SafeShare2 · Tests</title>
+  <style>
+    body{font-family:system-ui;margin:0;background:#0b0b0b;color:#eaeaea}
+    .wrap{max-width:980px;margin:auto;padding:20px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{border:1px solid #1f1f1f;padding:8px;vertical-align:top}
+    th{background:#111}
+    .ok{color:#29c07e;font-weight:600}
+    .fail{color:#ff7575;font-weight:600}
+    .btn{padding:.6rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600;margin-right:8px}
+    .mut{color:#9a9a9a}
+    textarea{width:100%;height:120px;background:#111;color:#eaeaea;border:1px solid #2a2a2a;border-radius:10px;padding:.7rem}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h2>SafeShare2 · Tests</h2>
+  <p class="mut">Vergleicht Original vs. Clean und prüft Weiterleitung.</p>
 
-<div class="grid">
-  <div class="card">
-    <h3>UTM → eigene Unterseite</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=1&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Fdest%2Fnews.html%3Futm_source%3Dtwitter%26x%3D1">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=0&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Fdest%2Fnews.html%3Futm_source%3Dtwitter%26x%3D1">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: …/dest/news.html?x=1</p>
+  <textarea id="cases"></textarea>
+  <div style="margin:8px 0">
+    <button id="run" class="btn">Tests ausführen</button>
+    <a class="btn" href="index.html">Zurück</a>
   </div>
 
-  <div class="card">
-    <h3>Google /url → eigene Unterseite</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fpost.html%253Futm_medium%253Demail%26sa%3DD">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fpost.html%253Futm_medium%253Demail%26sa%3DD">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: …/dest/post.html</p>
-  </div>
-
-  <div class="card">
-    <h3>Verschachtelt (redir → eigene Unterseite)</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fa.html%253Futm_campaign%253Dx%2526fbclid%253Dabc">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=0&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fj-ai-71.github.io%252FSupersystem%252Fdest%252Fa.html%253Futm_campaign%253Dx%2526fbclid%253Dabc">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: …/dest/a.html</p>
-  </div>
-
-  <div class="card">
-    <h3>Amazon SAFE (tag bleibt)</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=1&ao=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: https://www.amazon.de/dp/TEST?tag=deintag-21</p>
-  </div>
-
-  <div class="card">
-    <h3>Amazon STRICT (tag entfernt)</h3>
-    <div class="row">
-      <a class="btn primary" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=0&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">AUTO</a>
-      <a class="btn" target="_self"
-         href="https://j-ai-71.github.io/Supersystem/app.html?v=169&diag=1&aff=0&ao=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">MANUELL</a>
-    </div>
-    <p class="kbd">Erwartet: https://www.amazon.de/dp/TEST</p>
-  </div>
+  <table id="tbl">
+    <thead><tr>
+      <th>#</th><th>Original</th><th>Clean</th><th>Diff</th><th>Status</th><th>Open</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
 </div>
-</body></html>
+
+<script>
+// gleiche Clean-Funktion wie in app.html
+const TRACKERS=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","vero_id","igshid","si","spm"]);
+function cleanUrl(raw){
+  try{
+    const u=new URL(String(raw).trim());
+    if(/\bamazon\.(de|com|co\.uk|it|fr|es)\b/.test(u.hostname)){
+      ["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"].forEach(k=>u.searchParams.delete(k));
+      if(u.hash) u.hash="";
+    }
+    for(const k of [...u.searchParams.keys()]){
+      if(k.startsWith("utm_")||TRACKERS.has(k)) u.searchParams.delete(k);
+    }
+    u.pathname=u.pathname.replace(/\/{2,}/g,"/");
+    if(u.pathname!=="/"&&u.pathname.endsWith("/")) u.pathname=u.pathname.slice(0,-1);
+    return u.toString();
+  }catch{return raw;}
+}
+
+// Standardfälle
+const DEFAULTS = [
+ "https://www.amazon.de/abc?tag=aff-21&ref=abc#hash",
+ "https://example.com/path/?utm_source=x&utm_medium=y&id=42#sec",
+ "https://www.google.com/search?q=test&gclid=ABC123",
+ "https://www.instagram.com/p/123/?igshid=MzRlODBiNWFlZA==",
+ "https://shop.tld/prod?utm_campaign=fall&utm_id=7&cid=999",
+ "https://example.com///a//b///?x=1&utm_term=z",
+];
+document.getElementById('cases').value = DEFAULTS.join("\n");
+
+function diff(a,b){
+  if(a===b) return "";
+  try{
+    const ua=new URL(a), ub=new URL(b);
+    let d=[];
+    if(ua.hostname!==ub.hostname) d.push("Host: "+ua.hostname+" → "+ub.hostname);
+    if(ua.pathname!==ub.pathname) d.push("Path: "+ua.pathname+" → "+ub.pathname);
+    if(ua.search!==ub.search) d.push("Query: "+ua.search+" → "+ub.search);
+    if(ua.hash!==ub.hash) d.push("Hash: "+ua.hash+" → "+ub.hash);
+    return d.join("\n");
+  }catch{return "changed";}
+}
+
+document.getElementById('run').onclick=()=>{
+  const tbody=document.querySelector('#tbl tbody'); tbody.innerHTML="";
+  const lines=document.getElementById('cases').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  lines.forEach((src,i)=>{
+    const dst=cleanUrl(src);
+    const tr=document.createElement('tr');
+    const changed = src!==dst;
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td><div style="max-width:280px;word-break:break-all">${src}</div></td>
+      <td><div style="max-width:280px;word-break:break-all">${dst}</div></td>
+      <td><pre style="white-space:pre-wrap;max-width:260px">${diff(src,dst)}</pre></td>
+      <td class="${changed?'ok':'fail'}">${changed?'bereinigt':'keine Änderung'}</td>
+      <td><a target="_blank" rel="noopener" href="Redirect-entschachteln.html?u=${encodeURIComponent(src)}">Wrap</a> ·
+          <a target="_blank" rel="noopener" href="${dst}">Open</a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+};
+
+// SW registrieren
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
+}
+</script>
+</body>
+</html>
