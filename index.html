@@ -2,92 +2,119 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SafeShare • Supersystem</title>
+
+  <!-- Wichtig für GitHub Pages unter /Supersystem/ -->
   <base href="/Supersystem/">
-  <title>SafeShare2 · Saubere Links. Weniger Tracking.</title>
-  <meta name="theme-color" content="#111111">
-  <link rel="manifest" href="manifest.webmanifest?v=2025-11-12">
-  <link rel="icon" href="assets/logo.png?v=2025-11-12">
+
+  <meta name="description" content="SafeShare: Links säubern, Tracking entfernen, lokal im Browser.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛡️</text></svg>">
+
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    .wrap{max-width:860px;margin:auto;padding:32px 16px}
-    h1{font-size:28px;margin:0 0 8px}
-    .mut{color:var(--mut)}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{display:inline-block;padding:.8rem 1.1rem;background:var(--pri);color:#07130c;border:0;border-radius:10px;text-decoration:none;font-weight:600}
-    .btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
-    .card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
-    ul{margin:8px 0 0 18px}
-    footer{margin-top:40px;font-size:13px;color:var(--mut)}
+    :root { --max: 900px; --gap: 1rem; --radius: 12px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
+      padding: 2rem 1rem 4rem;
+      display: grid;
+      place-items: start center;
+      color: CanvasText;
+      background: Canvas;
+    }
+    main { width: 100%; max-width: var(--max); }
+    header h1 { margin: 0 0 .25rem 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+    header p { margin: 0 0 1rem 0; opacity: .8; }
+    .card {
+      border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin: 1rem 0;
+      background: color-mix(in oklab, Canvas 92%, CanvasText 0%);
+    }
+    nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+    nav a {
+      display: block; padding: .75rem 1rem; border-radius: 10px; text-decoration: none;
+      border: 1px solid color-mix(in oklab, CanvasText 12%, transparent);
+    }
+    nav a:hover, nav a:focus-visible { outline: none; border-color: color-mix(in oklab, CanvasText 25%, transparent); }
+    .hint { font-size: .92rem; opacity: .85; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace; font-size: .95em; }
+    footer { margin-top: 2rem; opacity: .7; font-size: .9rem; }
+    details { margin-top: .5rem; }
+    .ok { color: green; }
+    .warn { color: #b8860b; }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>SafeShare2</h1>
-  <p class="mut">Saubere Links ohne UTM, gclid, fbclid und Co. Teilen ohne Ballast.</p>
+  <main>
+    <header>
+      <h1>SafeShare</h1>
+      <p>Links säubern. Tracking entfernen. Lokal im Browser.</p>
+    </header>
 
-  <div class="row" style="margin:16px 0 24px">
-    <a class="btn" href="app.html">App starten</a>
-    <a class="btn alt" href="redirect-entschachteln.html?u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
-    <a class="btn alt" href="bookmarklets.html">Bookmarklets</a>
-    <a class="btn alt" id="install">Auf Gerät installieren</a>
-  </div>
+    <section class="card">
+      <h2>Navigation</h2>
+      <nav aria-label="Hauptnavigation">
+        <ul>
+          <li><a href="app.html">App</a></li>
+          <li><a href="app-classic.html">App Classic</a></li>
+          <li><a href="bookmarklets.html" title="Ziehbare Links für die Lesezeichenleiste">Bookmarklets</a></li>
+          <li><a href="tests.html">Tests</a></li>
+        </ul>
+      </nav>
+      <p class="hint">
+        Hinweis für GitHub Pages-Projektseiten: Basis-Pfad ist <span class="mono">/Supersystem/</span>. Diese Seite setzt <span class="mono">&lt;base href="/Supersystem/"&gt;</span>.
+      </p>
+      <details>
+        <summary>Pfad-Diagnose</summary>
+        <div id="diag" class="mono">Lade…</div>
+      </details>
+    </section>
 
-  <div class="card">
-    <h3 style="margin:0 0 8px">So funktioniert’s</h3>
-    <ul>
-      <li>Link einfügen → „Säubern & öffnen“.</li>
-      <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
-      <li>Teilen über <code>redirect-entschachteln.html</code> mit kurzer Sponsor-Seite.</li>
-    </ul>
-  </div>
+    <section class="card">
+      <h2>Schnellstart</h2>
+      <ol>
+        <li>Öffne <strong>App</strong> für das Reinigen einzelner Links.</li>
+        <li>Nutze <strong>Bookmarklets</strong>, um per Lesezeichen direkt zu säubern.</li>
+        <li>Überprüfe mit <strong>Tests</strong> Beispiel-Links <em>(Input → Output)</em>.</li>
+      </ol>
+      <p class="hint">Alles läuft offline im Browser. Keine Server-Logs. Keine Drittanbieter.</p>
+    </section>
 
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">SafeShare Pro</h3>
-    <ul>
-      <li>Bulk-Cleaning.</li>
-      <li>Eigene Domain-Regeln.</li>
-      <li>PWA offline.</li>
-    </ul>
-    <div class="row" style="margin-top:8px">
-      <!-- ERSETZEN: deine Payhip-Links -->
-      <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro kaufen</a>
-      <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
-    </div>
-  </div>
+    <footer>
+      <p>© <span id="year"></span> SafeShare • Supersystem</p>
+    </footer>
+  </main>
 
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bookmarklet</h3>
-    <p>Desktop: in die Lesezeichenleiste ziehen. iOS/Android: lange tippen → „Zu Lesezeichen hinzufügen“.</p>
-    <p>
-      <a class="btn alt"
-         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
-         SafeShare Clean
-      </a>
-    </p>
-    <p class="mut">Leitet über SafeShare um und säubert die URL.</p>
-  </div>
+  <script>
+    // Jahr
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  <footer>
-    <a href="tools.html" class="mut">Tools</a> ·
-    <a href="bookmarklets.html" class="mut">Bookmarklets</a> ·
-    <a href="tests.html" class="mut">Tests</a> ·
-    <a href="app.html" class="mut">App</a> ·
-    <span>© SafeShare</span>
-  </footer>
-</div>
+    // Diagnose: zeigt, ob base-Pfad korrekt ist
+    (function () {
+      var base = document.querySelector('base')?.href || '(kein base)';
+      var expected = location.origin + '/Supersystem/';
+      var ok = base === expected;
+      var el = document.getElementById('diag');
+      el.innerHTML = [
+        'origin: ' + location.origin,
+        'pathname: ' + location.pathname,
+        'base.href: ' + base,
+        'expected: ' + expected,
+        'status: ' + (ok ? 'OK' : 'WARN')
+      ].join('\n');
+      el.className = 'mono ' + (ok ? 'ok' : 'warn');
+    })();
 
-<script>
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; });
-document.getElementById('install').addEventListener('click', async ()=>{
-  if(!deferredPrompt){ alert('Installation nicht verfügbar.'); return; }
-  deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
-});
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
-}
-</script>
+    // Optional: Service Worker registrieren, wenn vorhanden
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    }
+  </script>
+
+  <noscript>JavaScript ist deaktiviert. Navigation funktioniert trotzdem, Bookmarklets benötigen jedoch JS.</noscript>
 </body>
 </html>
