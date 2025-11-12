@@ -1,41 +1,95 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Links ohne Tracking</title>
-<meta name="description" content="Entfernt utm_*, fbclid, gclid, msclkid… Behalte optional Affiliate-Parameter.">
-<link rel="icon" href="favicon-32.png">
-<style>
-*{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
-h1{margin:0 0 8px;font-size:22px} .muted{color:#6b7280}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
-@media(min-width:860px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.btn{display:block;text-align:center;border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;color:#111827;text-decoration:none}
-.btn.primary{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
-.card{border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#fff;margin:10px 0}
-.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
-</style></head><body>
-<h1>SafeShare <span class="muted">v154</span></h1>
-<p class="muted">Säubert Links. Optional Affiliate-Parameter behalten. Kein Tracking, keine Serverlogs.</p>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>SafeShare2 · Saubere Links. Weniger Tracking.</title>
+  <meta name="theme-color" content="#111111">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/logo.png">
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:860px;margin:auto;padding:32px 16px}
+    h1{font-size:28px;margin:0 0 8px}
+    .mut{color:var(--mut)}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:.8rem 1.1rem;background:var(--pri);color:#07130c;border:0;border-radius:10px;text-decoration:none;font-weight:600}
+    .btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
+    .card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
+    ul{margin:8px 0 0 18px}
+    footer{margin-top:40px;font-size:13px;color:var(--mut)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>SafeShare2</h1>
+  <p class="mut">Saubere Links ohne UTM, gclid, fbclid und Co. Teilen ohne Ballast.</p>
 
-<div class="grid" style="margin:12px 0">
-  <a class="btn primary" href="app.html?v=154">App öffnen</a>
-  <a class="btn" href="app-classic.html?v=154">Classic öffnen</a>
-  <a class="btn" href="tests.html?v=154">Schnelltests</a>
-  <a class="btn" href="tools.html?v=154">Cache/ServiceWorker</a>
-  <a class="btn" href="partner.html?v=154">Partner werden</a>
-  <a class="btn" href="danke.html?v=154">Danke</a>
+  <div class="row" style="margin:16px 0 24px">
+    <a class="btn" href="app.html">App starten</a>
+    <a class="btn alt" href="redirect.html?u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
+    <a class="btn alt" id="install">Auf Gerät installieren</a>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 8px">So funktioniert’s</h3>
+    <ul>
+      <li>Link einfügen → „Säubern & öffnen“.</li>
+      <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
+      <li>Teilen über <code>redirect.html</code> zeigt eine kurze Sponsor-Seite, dann Weiterleitung.</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">SafeShare Pro</h3>
+    <ul>
+      <li>Bulk-Cleaning (Liste von Links).</li>
+      <li>Eigene Domain-Regeln.</li>
+      <li>Offline nutzbar (PWA).</li>
+    </ul>
+    <div class="row" style="margin-top:8px">
+      <!-- Ersetze diese beiden URLs durch deine Payhip-Links -->
+      <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro kaufen</a>
+      <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">Bookmarklet</h3>
+    <p>Lange tippen und als Lesezeichen speichern:</p>
+    <p><a class="btn alt" id="bm" href="#">SafeShare Clean</a></p>
+    <p class="mut">Öffnet einen sauberen SafeShare-Weiterleitungslink zur aktuellen Seite.</p>
+  </div>
+
+  <footer>
+    <a href="tools.html" class="mut">Tools</a> ·
+    <a href="app.html" class="mut">App</a> ·
+    <span>© SafeShare</span>
+  </footer>
 </div>
 
-<div class="card">
-  <b>Bookmarklet</b>
-  <p class="muted">Zieh diesen Link in deine Lesezeichenleiste. Klick auf einer Seite → öffnet SafeShare mit der aktuellen URL.</p>
-  <p><a class="btn" href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=1&u='+encodeURIComponent(u);})();">SafeShare (SAFE)</a></p>
-  <p class="muted">Variante STRICT (alles weg, auch Affiliates):</p>
-  <p><a class="btn" href="javascript:(()=>{const u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?aff=0&u='+encodeURIComponent(u);})();">SafeShare (STRICT)</a></p>
-</div>
+<script>
+// Bookmarklet setzen
+(function(){
+  const root = location.origin + location.pathname.replace(/index\.html?$/,'');
+  const href = "javascript:(function(){location.href='"+root+"redirect.html?u='+encodeURIComponent(location.href);})();";
+  document.getElementById('bm').setAttribute('href', href);
+})();
 
-<div class="card">
-  <b>Was wird entfernt?</b>
-  <p><span class="kbd">utm_*</span>, <span class="kbd">fbclid</span>, <span class="kbd">gclid</span>, <span class="kbd">msclkid</span>, <span class="kbd">twclid</span>, <span class="kbd">wbraid</span>, <span class="kbd">gbraid</span>, …</p>
-  <p>Wrapper lösen: Google <span class="kbd">/url?q=</span>, Facebook <span class="kbd">/l.php?u=</span>, Pinterest-Outbounds, AMP → Canonical.</p>
-</div>
-</body></html>
+// PWA Install
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; });
+document.getElementById('install').addEventListener('click', async ()=>{
+  if(!deferredPrompt){ alert('Installation nicht verfügbar.'); return; }
+  deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
+});
+
+// SW registrieren
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
+}
+</script>
+</body>
+</html>
