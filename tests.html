@@ -1,73 +1,75 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Tests v154</title>
+<title>SafeShare – Schnelltests v160</title>
 <link rel="icon" href="favicon-32.png">
 <style>
-body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
-h1{margin:0 0 8px;font-size:20px}.muted{color:#6b7280}
-table{border-collapse:collapse;width:100%}td,th{border:1px solid #e5e7eb;padding:8px;font-size:13px}
-a.btn{display:inline-block;border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;text-decoration:none;color:#111827;margin-right:6px}
-.badge{background:#f8fafc;border:1px solid #e5e7eb;border-radius:999px;padding:2px 8px}
-.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
-</style></head><body>
-<h1>SafeShare – Tests <span class="muted">v154</span></h1>
-<p class="muted">Click auf SAFE/STRICT öffnet die App mit vorgefüllter URL.</p>
-<table>
-<thead><tr><th>Fall</th><th>Original</th><th>Erwartet</th><th>Öffnen</th></tr></thead>
-<tbody>
-<tr>
-  <td>UTM+gclid</td>
-  <td class="kbd">https://example.com/a?utm_source=mail&gclid=1</td>
-  <td class="kbd">https://example.com/a</td>
-  <td>
-    <a class="btn" href="app.html?v=154&aff=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_source%3Dmail%26gclid%3D1">SAFE</a>
-    <a class="btn" href="app.html?v=154&aff=0&u=https%3A%2F%2Fexample.com%2Fa%3Futm_source%3Dmail%26gclid%3D1">STRICT</a>
-  </td>
-</tr>
-<tr>
-  <td>Amazon Affiliate</td>
-  <td class="kbd">https://www.amazon.de/dp/TEST?tag=deintag-21&utm_source=x</td>
-  <td class="kbd">SAFE: <b>…/dp/TEST?tag=deintag-21</b><br>STRICT: <b>…/dp/TEST</b></td>
-  <td>
-    <a class="btn" href="app.html?v=154&aff=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">SAFE</a>
-    <a class="btn" href="app.html?v=154&aff=0&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx">STRICT</a>
-  </td>
-</tr>
-<tr>
-  <td>Google Redirect</td>
-  <td class="kbd">https://www.google.com/url?q=https%3A%2F%2Fshop.de%2Fa%3Futm_medium%3D1</td>
-  <td class="kbd">https://shop.de/a</td>
-  <td>
-    <a class="btn" href="app.html?v=154&aff=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_medium%253D1">SAFE</a>
-    <a class="btn" href="app.html?v=154&aff=0&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_medium%253D1">STRICT</a>
-  </td>
-</tr>
-<tr>
-  <td>Facebook Redirect</td>
-  <td class="kbd">https://www.facebook.com/l.php?u=https%3A%2F%2Fshop.de%2Fa%3Ffbclid%3Dx</td>
-  <td class="kbd">https://shop.de/a</td>
-  <td>
-    <a class="btn" href="app.html?v=154&aff=1&u=https%3A%2F%2Fwww.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fshop.de%252Fa%253Ffbclid%253Dx">SAFE</a>
-    <a class="btn" href="app.html?v=154&aff=0&u=https%3A%2F%2Fwww.facebook.com%2Fl.php%3Fu%3Dhttps%253A%252F%252Fshop.de%252Fa%253Ffbclid%253Dx">STRICT</a>
-  </td>
-</tr>
-<tr>
-  <td>Pinterest Outbound</td>
-  <td class="kbd">https://www.pinterest.com/outbound-redirect/?url=https%3A%2F%2Fshop.de%2Fa%3Fepik%3D1%26utm_source%3Dpin</td>
-  <td class="kbd">https://shop.de/a</td>
-  <td>
-    <a class="btn" href="app.html?v=154&aff=1&u=https%3A%2F%2Fwww.pinterest.com%2Foutbound-redirect%2F%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Fepik%253D1%2526utm_source%253Dpin">SAFE</a>
-    <a class="btn" href="app.html?v=154&aff=0&u=https%3A%2F%2Fwww.pinterest.com%2Foutbound-redirect%2F%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Fepik%253D1%2526utm_source%253Dpin">STRICT</a>
-  </td>
-</tr>
-<tr>
-  <td>AMP → Canonical</td>
-  <td class="kbd">https://site.de/artikel/amp/?utm_campaign=x</td>
-  <td class="kbd">https://site.de/artikel/</td>
-  <td>
-    <a class="btn" href="app.html?v=154&aff=1&u=https%3A%2F%2Fsite.de%2Fartikel%2Famp%2F%3Futm_campaign%3Dx">SAFE</a>
-    <a class="btn" href="app.html?v=154&aff=0&u=https%3A%2F%2Fsite.de%2Fartikel%2Famp%2F%3Futm_campaign%3Dx">STRICT</a>
-  </td>
-</tr>
-</tbody></table>
+*{box-sizing:border-box}body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
+h1{margin:0 0 8px;font-size:20px}.muted{color:#6b7280;font-size:12px}
+.card{border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:10px 0;background:#fff}
+.grid{display:grid;gap:10px}
+@media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+.row{border:1px solid #e5e7eb;border-radius:10px;padding:10px}
+.btn{display:inline-block;border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;background:#fff;color:#111827;text-decoration:none;margin-right:8px}
+.kbd{font:12px ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
+pre{white-space:pre-wrap;word-break:break-word;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:8px}
+</style>
+</head><body>
+<h1>SafeShare – Schnelltests <span class="muted">v160</span></h1>
+<p class="muted">Klicke SAFE oder STRICT. Beide öffnen im neuen Tab. Erwartetes Ergebnis steht darunter.</p>
+
+<div class="grid">
+
+  <div class="row">
+    <div class="muted">UTM + gclid</div>
+    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_source%3Dmail%26gclid%3D1" target="_blank" rel="noopener">SAFE</a>
+    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fexample.com%2Fa%3Futm_source%3Dmail%26gclid%3D1" target="_blank" rel="noopener">STRICT</a>
+    <pre>Erwartet: https://example.com/a</pre>
+  </div>
+
+  <div class="row">
+    <div class="muted">Amazon Affiliate</div>
+    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx" target="_blank" rel="noopener">SAFE</a>
+    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FTEST%3Ftag%3Ddeintag-21%26utm_source%3Dx" target="_blank" rel="noopener">STRICT</a>
+    <pre>SAFE:   https://www.amazon.de/dp/TEST?tag=deintag-21
+STRICT: https://www.amazon.de/dp/TEST</pre>
+  </div>
+
+  <div class="row">
+    <div class="muted">Google /url?q= Wrapper</div>
+    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_medium%253D1" target="_blank" rel="noopener">SAFE</a>
+    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_medium%253D1" target="_blank" rel="noopener">STRICT</a>
+    <pre>Erwartet: https://shop.de/a</pre>
+  </div>
+
+  <div class="row">
+    <div class="muted">Pinterest outbound</div>
+    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fwww.pinterest.com%2Foutbound-redirect%2F%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Fepik%253D1%2526utm_source%253Dpin" target="_blank" rel="noopener">SAFE</a>
+    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fwww.pinterest.com%2Foutbound-redirect%2F%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Fepik%253D1%2526utm_source%253Dpin" target="_blank" rel="noopener">STRICT</a>
+    <pre>Erwartet: https://shop.de/a</pre>
+  </div>
+
+  <div class="row">
+    <div class="muted">Verschachtelt (redir → url=…)</div>
+    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc" target="_blank" rel="noopener">SAFE</a>
+    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fredir.site%2Fgo%3Furl%3Dhttps%253A%252F%252Fshop.de%252Fa%253Futm_campaign%253Dx%2526fbclid%253Dabc" target="_blank" rel="noopener">STRICT</a>
+    <pre>Erwartet: https://shop.de/a</pre>
+  </div>
+
+  <div class="row">
+    <div class="muted">AMP → Canonical</div>
+    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fsite.de%2Fartikel%2Famp%2F%3Futm_campaign%3Dx" target="_blank" rel="noopener">SAFE</a>
+    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fsite.de%2Fartikel%2Famp%2F%3Futm_campaign%3Dx" target="_blank" rel="noopener">STRICT</a>
+    <pre>Erwartet: https://site.de/artikel/</pre>
+  </div>
+
+  <div class="row">
+    <div class="muted">Eigene Seite: Cachebuster v entfernen</div>
+    <a class="btn" href="app.html?v=160&aff=1&ao=1&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Ftests.html%3Fv%3D160" target="_blank" rel="noopener">SAFE</a>
+    <a class="btn" href="app.html?v=160&aff=0&ao=1&u=https%3A%2F%2Fj-ai-71.github.io%2FSupersystem%2Ftests.html%3Fv%3D160" target="_blank" rel="noopener">STRICT</a>
+    <pre>Erwartet: https://j-ai-71.github.io/Supersystem/tests.html</pre>
+  </div>
+
+</div>
+
+<p class="muted">Tipp: <span class="kbd">?diag=1</span> an <span class="kbd">app.html</span> anhängen, um das Fehler-Log zu sehen.</p>
 </body></html>
