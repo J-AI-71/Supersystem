@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v160</title>
+<title>SafeShare – Classic v161</title>
 <meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen (neuer Tab). SAFE/STRICT Umschalter.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -10,7 +10,7 @@ h1{margin:0 0 8px;font-size:20px}.muted{color:#6b7280;font-size:12px}
 input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:15px}
 .btn{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;background:#fff;color:#111827;cursor:pointer;text-align:center}
 .btn.primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
-.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;padding:1px 6px;border-radius:6px;font-size:12px}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:2px 6px}
 .btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
 @media(min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
@@ -18,8 +18,8 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 #log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
 </style>
 </head><body>
-<h1>SafeShare – Classic <span class="muted">v160</span></h1>
-<p class="muted">Minimalansicht. Öffnen startet neuen Tab.</p>
+<h1>SafeShare – Classic <span class="muted">v161</span></h1>
+<p class="muted">„Öffnen (neu)“ und „1-Klick“ sind popup-sicher.</p>
 
 <div class="card">
   <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
@@ -71,7 +71,6 @@ function unwrap(u){
   }catch(e){ log('unwrap: '+e.message); }
   return url;
 }
-
 function clean(u, keepAff){
   const url=unwrap(u); url.hostname=url.hostname.toLowerCase();
   const sp=url.searchParams, keys=[...sp.keys()];
@@ -85,16 +84,10 @@ function clean(u, keepAff){
       if(isT || (!keepAff && isA)) sp.delete(k);
     }
   }catch(e){ log('clean: '+e.message); }
-
-  // Nur eigene Seite: Cachebuster ?v entfernen
-  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
-    if (sp.has('v')) sp.delete('v');
-  }
-
+  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){ if (sp.has('v')) sp.delete('v'); }
   const q=sp.toString();
   return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
-
 function doClean(){
   try{
     const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return;}
@@ -102,15 +95,22 @@ function doClean(){
     const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
   }catch(e){ log('doClean: '+e.message); return null; }
 }
-function openNew(){ const s=doClean(); if(s) window.open(s,'_blank'); }
-
-$('#btnClean').onclick   = ()=>doClean();
-$('#btnCopy').onclick    = ()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
-$('#btnOpen').onclick    = ()=>openNew();
-$('#btnOpenNew').onclick = ()=>openNew();
-$('#btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
+/* Popup-sicheres Öffnen */
+function openNew(){
+  const s=doClean(); if(!s) return;
+  const w = window.open('about:blank','_blank');
+  if(!w){
+    const a=document.createElement('a'); a.href=s; a.target='_blank'; a.rel='noopener'; a.click(); return;
+  }
+  try{ w.opener=null; }catch{}
+  w.location = s;
+}
+$('#btnClean').onclick=()=>doClean();
+$('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
+$('#btnOpen').onclick  =()=>openNew();
+$('#btnOpenNew').onclick=()=>openNew();
+$('#btnClear').onclick =()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
 elSafe.onchange=update; update();
-
 (function(){
   const q=new URLSearchParams(location.search);
   const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
