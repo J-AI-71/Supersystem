@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v161</title>
+<title>SafeShare – Classic v162</title>
 <meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen (neuer Tab). SAFE/STRICT Umschalter.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -18,8 +18,8 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 #log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
 </style>
 </head><body>
-<h1>SafeShare – Classic <span class="muted">v161</span></h1>
-<p class="muted">„Öffnen (neu)“ und „1-Klick“ sind popup-sicher.</p>
+<h1>SafeShare – Classic <span class="muted">v162</span></h1>
+<p class="muted">Kein Auto-Open. Öffnen nur per Klick.</p>
 
 <div class="card">
   <label><input id="ckSafe" type="checkbox" checked> Provisionen behalten <span class="muted">(SAFE)</span></label>
@@ -34,7 +34,7 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
   <div class="btn-grid">
     <button class="btn primary" id="btnClean"   type="button">Säubern</button>
     <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
-    <button class="btn"          id="btnOpen"    type="button">Öffnen (neu)</button>
+    <button class="btn"          id="btnOpen"    type="button">Ergebnis öffnen (neu)</button>
     <button class="btn"          id="btnOpenNew" type="button">1-Klick</button>
   </div>
   <div id="log"></div>
@@ -90,32 +90,30 @@ function clean(u, keepAff){
 }
 function doClean(){
   try{
-    const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return;}
-    const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return;}
+    const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return null;}
+    const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return null;}
     const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
   }catch(e){ log('doClean: '+e.message); return null; }
 }
 /* Popup-sicheres Öffnen */
-function openNew(){
-  const s=doClean(); if(!s) return;
-  const w = window.open('about:blank','_blank');
-  if(!w){
-    const a=document.createElement('a'); a.href=s; a.target='_blank'; a.rel='noopener'; a.click(); return;
-  }
-  try{ w.opener=null; }catch{}
-  w.location = s;
+function openNew(){ const s=$('#outURL').textContent||doClean(); if(!s||s==='–') return;
+  const w=window.open('about:blank','_blank'); if(!w){ const a=document.createElement('a'); a.href=s; a.target='_blank'; a.rel='noopener'; a.click(); return; }
+  try{ w.opener=null; }catch{} w.location=s;
 }
 $('#btnClean').onclick=()=>doClean();
-$('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
+$('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return;
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(s).catch(()=>{}); }
+  else { const ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch{} document.body.removeChild(ta); }
+};
 $('#btnOpen').onclick  =()=>openNew();
-$('#btnOpenNew').onclick=()=>openNew();
+$('#btnOpenNew').onclick=()=>{ const s=doClean(); if(s) openNew(); };
 $('#btnClear').onclick =()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
 elSafe.onchange=update; update();
 (function(){
   const q=new URLSearchParams(location.search);
-  const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
+  const v=q.get('u')||q.get('url'); const aff=q.get('aff');
   if(aff==='1') elSafe.checked=true; if(aff==='0') elSafe.checked=false; update();
-  if(v){ elIn.value=decodeMaybe(v); if(ao==='1') openNew(); else doClean(); }
+  if(v){ $('#in').value=decodeMaybe(v); doClean(); }  // kein Auto-Open
 })();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=7').catch(()=>{});}
 </script>
