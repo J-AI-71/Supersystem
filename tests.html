@@ -37,7 +37,6 @@
 </div>
 
 <script>
-// gleiche Clean-Funktion wie in app.html
 const TRACKERS=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","vero_id","igshid","si","spm"]);
 function cleanUrl(raw){
   try{
@@ -55,14 +54,13 @@ function cleanUrl(raw){
   }catch{return raw;}
 }
 
-// Standardfälle
 const DEFAULTS = [
  "https://www.amazon.de/abc?tag=aff-21&ref=abc#hash",
  "https://example.com/path/?utm_source=x&utm_medium=y&id=42#sec",
  "https://www.google.com/search?q=test&gclid=ABC123",
  "https://www.instagram.com/p/123/?igshid=MzRlODBiNWFlZA==",
  "https://shop.tld/prod?utm_campaign=fall&utm_id=7&cid=999",
- "https://example.com///a//b///?x=1&utm_term=z",
+ "https://example.com///a//b///?x=1&utm_term=z"
 ];
 document.getElementById('cases').value = DEFAULTS.join("\n");
 
@@ -99,7 +97,6 @@ document.getElementById('run').onclick=()=>{
   });
 };
 
-// SW registrieren
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
