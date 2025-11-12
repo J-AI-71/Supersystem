@@ -1,25 +1,22 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic</title>
+<title>SafeShare – Classic v154</title>
 <meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen. SAFE/STRICT Umschalter.">
 <link rel="icon" href="favicon-32.png">
 <style>
-:root{--bd:#e5e7eb;--fg:#111827;--muted:#6b7280;--accent:#0ea5e9}
-*{box-sizing:border-box} body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:var(--fg)}
-h1{margin:0 0 8px;font-size:20px}.muted{color:var(--muted);font-size:12px}
-.card{border:1px solid var(--bd);border-radius:12px;padding:12px;background:#fff;margin:10px 0}
-input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
-.btn{border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;color:var(--fg);cursor:pointer;text-align:center}
-.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12px}
-
-/* stabile Button-Zeile, keine row/flex-Abhängigkeit */
+*{box-sizing:border-box} body{margin:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#111827}
+h1{margin:0 0 8px;font-size:20px}.muted{color:#6b7280;font-size:12px}
+.card{border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#fff;margin:10px 0}
+input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:15px}
+.btn{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;background:#fff;color:#111827;cursor:pointer;text-align:center}
+.btn.primary{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid #e5e7eb;padding:1px 6px;border-radius:6px;font-size:12px}
 .btn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
-@media (min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media (max-width:390px){.btn-grid{grid-template-columns:1fr}}
-</style>
-</head><body>
-<h1>SafeShare – Classic <span class="muted">v52</span></h1>
+@media(min-width:760px){.btn-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:390px){.btn-grid{grid-template-columns:1fr}}
+#io{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+</style></head><body>
+<h1>SafeShare – Classic <span class="muted">v154</span></h1>
 <p class="muted">Minimalansicht ohne Profile.</p>
 
 <div class="card">
@@ -28,7 +25,11 @@ input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radiu
 </div>
 
 <div class="card">
-  <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
+  <div id="io">
+    <input id="in" type="text" inputmode="url" placeholder="link hier einfügen…">
+    <button id="btnClear" type="button" class="btn" aria-label="Feld leeren">×</button>
+  </div>
+
   <div class="btn-grid">
     <button class="btn primary" id="btnClean"   type="button">Säubern</button>
     <button class="btn"          id="btnCopy"    type="button">Kopieren</button>
@@ -40,9 +41,7 @@ input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radiu
 
 <div class="card">
   <div id="outURL" class="kbd">–</div>
-  <div style="margin-top:8px">
-    <span class="kbd" id="bMode">Modus: SAFE</span>
-  </div>
+  <div style="margin-top:8px"><span class="kbd" id="bMode">Modus: SAFE</span></div>
 </div>
 
 <script>
@@ -76,22 +75,23 @@ function clean(u, keepAff){
   const tprefix=['utm_'], texact=new Set(['fbclid','gclid','dclid','msclkid','twclid','yclid','igshid','mc_eid','mc_cid','oly_anon_id','oly_enc_id','vero_conv','vero_id','spm','sc_channel','sc_campaign','sc_content','sc_medium','sc_outcome','ref_src','ref_url','ttclid','wbraid','gbraid','epik','ef_id','pk_campaign','pk_kwd']);
   for(const k of keys){
     const lk=k.toLowerCase();
-    const isT = tprefix.some(p=>lk.startsWith(p)) || texact.has(lk);
-    const isA = aff.has(lk);
+    const isT=tprefix.some(p=>lk.startsWith(p))||texact.has(lk);
+    const isA=aff.has(lk);
     if(isT || (!keepAff && isA)) sp.delete(k);
   }
   const q=sp.toString();
   return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
 function doClean(){
-  const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte Link einfügen.'); return; }
-  const u=toURLMaybe(raw); if(!u){ alert('Ungültige URL.'); return; }
+  const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return;}
+  const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return;}
   const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
 }
 $('#btnClean').onclick=()=>doClean();
 $('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
 $('#btnOpen').onclick  =()=>{ const s=doClean(); if(s) location.replace(s); };
 $('#btnOpenNew').onclick=()=>{ const s=doClean(); if(s) window.open(s,'_blank'); };
+$('#btnClear').onclick =()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
 elSafe.onchange=update; update();
 </script>
 </body></html>
