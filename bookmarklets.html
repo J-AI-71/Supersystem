@@ -2,44 +2,64 @@
 <html lang="de">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Bookmarklets · SafeShare2</title>
-  <link rel="icon" href="assets/logo.png?v=2025-11-12">
+  <base href="/Supersystem/"><title>Bookmarklets · SafeShare2</title>
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui}
+    body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.45 system-ui}
     .wrap{max-width:900px;margin:auto;padding:28px 16px}
     .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
     .bm{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600}
-    .mut{color:var(--mut)}
+    .btn{padding:.6rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600;margin-left:8px}
+    input.code{width:100%;margin-top:8px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+    .mut{color:#9a9a9a}
   </style>
 </head>
 <body>
 <div class="wrap">
   <h1 style="margin:0 0 8px">Bookmarklets</h1>
-  <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: lange tippen → „Zu Lesezeichen hinzufügen“.</p>
+  <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: Link lange tippen → „Zu Lesezeichen hinzufügen“. Falls dein Browser die Links blockt, nutze den Kopieren-Button.</p>
 
   <div class="card">
     <h3 style="margin:0 0 8px">1) Clean & Open (über SafeShare)</h3>
-    <a class="bm" href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">SafeShare Clean & Open</a>
+    <a class="bm" id="a1"
+       href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">SafeShare Clean & Open</a>
+    <button class="btn" data-copy="1">Kopieren</button>
+    <input class="code" id="c1" readonly>
   </div>
 
   <div class="card">
     <h3 style="margin:0 0 8px">2) Clean & Stay</h3>
-    <a class="bm" href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">Clean & Stay</a>
+    <a class="bm" id="a2"
+       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">Clean & Stay</a>
+    <button class="btn" data-copy="2">Kopieren</button>
+    <input class="code" id="c2" readonly>
   </div>
 
   <div class="card">
     <h3 style="margin:0 0 8px">3) Clean & Copy</h3>
-    <a class="bm" href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">Clean & Copy</a>
+    <a class="bm" id="a3"
+       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">Clean & Copy</a>
+    <button class="btn" data-copy="3">Kopieren</button>
+    <input class="code" id="c3" readonly>
   </div>
 
-  <p class="mut" style="margin-top:16px"><a href="index.html">Zurück</a></p>
+  <p class="mut" style="margin-top:16px"><a href="index.html" class="mut">Zurück</a></p>
 </div>
+
 <script>
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
-}
+const ids=[1,2,3];
+ids.forEach(i=>{
+  const a=document.getElementById('a'+i), c=document.getElementById('c'+i);
+  c.value=a.getAttribute('href'); // zeigt den Code an
+});
+document.querySelectorAll('button[data-copy]').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const i=btn.getAttribute('data-copy');
+    const v=document.getElementById('c'+i).value;
+    try{ await navigator.clipboard.writeText(v); btn.textContent='Kopiert'; }
+    catch{ const el=document.getElementById('c'+i); el.select(); document.execCommand('copy'); btn.textContent='Kopiert'; }
+    setTimeout(()=>btn.textContent='Kopieren',1200);
+  });
+});
 </script>
 </body>
 </html>
