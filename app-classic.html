@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare – Classic v159</title>
+<title>SafeShare – Classic v160</title>
 <meta name="description" content="Minimal: Link einfügen, säubern, kopieren, öffnen (neuer Tab). SAFE/STRICT Umschalter.">
 <link rel="icon" href="favicon-32.png">
 <style>
@@ -18,7 +18,7 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 #log{margin-top:8px;font:12px ui-monospace,Menlo,Consolas,monospace;color:#7f1d1d;white-space:pre-wrap}
 </style>
 </head><body>
-<h1>SafeShare – Classic <span class="muted">v159</span></h1>
+<h1>SafeShare – Classic <span class="muted">v160</span></h1>
 <p class="muted">Minimalansicht. Öffnen startet neuen Tab.</p>
 
 <div class="card">
@@ -46,12 +46,14 @@ input[type=text]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:
 </div>
 
 <script>
-const $=s=>document.querySelector(s);
-const elIn=$('#in'), elSafe=$('#ckSafe'); const log=(m)=>{ const el=$('#log'); if(el) el.textContent=(el.textContent?el.textContent+"\n":"")+m; };
+const $=s=>document.querySelector(s); const log=(m)=>{ const el=$('#log'); if(el) el.textContent=(el.textContent?el.textContent+"\n":"")+m; };
+const elIn=$('#in'), elSafe=$('#ckSafe');
+
 function update(){ $('#modeInfo').innerHTML='Modus: <strong>'+(elSafe.checked?'SAFE':'STRICT')+'</strong>'; $('#bMode').textContent='Modus: '+(elSafe.checked?'SAFE':'STRICT'); }
 function toURLMaybe(s){ if(!s) return null; s=s.trim(); if(/^www\./i.test(s)) s='https://'+s; try{return new URL(s);}catch{return null;} }
 function decodeMaybe(v){ try{return decodeURIComponent(v);}catch{return v;} }
 function affiliateKeysForHost(host){ host=host.toLowerCase(); if(/\bamazon\./.test(host)) return new Set(['tag']); return new Set(); }
+
 function unwrap(u){
   let url=new URL(u.toString()); let changed=true,hops=0;
   try{
@@ -69,6 +71,7 @@ function unwrap(u){
   }catch(e){ log('unwrap: '+e.message); }
   return url;
 }
+
 function clean(u, keepAff){
   const url=unwrap(u); url.hostname=url.hostname.toLowerCase();
   const sp=url.searchParams, keys=[...sp.keys()];
@@ -82,29 +85,38 @@ function clean(u, keepAff){
       if(isT || (!keepAff && isA)) sp.delete(k);
     }
   }catch(e){ log('clean: '+e.message); }
-  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){ if (sp.has('v')) sp.delete('v'); }
+
+  // Nur eigene Seite: Cachebuster ?v entfernen
+  if (url.hostname==='j-ai-71.github.io' && url.pathname.startsWith('/Supersystem/')){
+    if (sp.has('v')) sp.delete('v');
+  }
+
   const q=sp.toString();
   return url.origin+url.pathname+(q?('?'+q):'')+(url.hash||'');
 }
+
 function doClean(){
   try{
-    const raw=(elIn.value||'').trim(); if(!raw){ alert('Bitte Link einfügen.'); return; }
-    const u=toURLMaybe(raw); if(!u){ alert('Ungültige URL.'); return; }
+    const raw=(elIn.value||'').trim(); if(!raw){alert('Bitte Link einfügen.'); return;}
+    const u=toURLMaybe(raw); if(!u){alert('Ungültige URL.'); return;}
     const out=clean(u, elSafe.checked); $('#outURL').textContent=out; update(); return out;
   }catch(e){ log('doClean: '+e.message); return null; }
 }
 function openNew(){ const s=doClean(); if(s) window.open(s,'_blank'); }
-$('#btnClean').onclick=()=>doClean();
-$('#btnCopy').onclick =()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
-$('#btnOpen').onclick  =()=>openNew();
-$('#btnOpenNew').onclick=()=>openNew();
-$('#btnClear').onclick =()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
+
+$('#btnClean').onclick   = ()=>doClean();
+$('#btnCopy').onclick    = ()=>{ const s=doClean(); if(!s) return; navigator.clipboard&&navigator.clipboard.writeText(s).catch(()=>{}); };
+$('#btnOpen').onclick    = ()=>openNew();
+$('#btnOpenNew').onclick = ()=>openNew();
+$('#btnClear').onclick   = ()=>{ elIn.value=''; elIn.focus(); $('#outURL').textContent='–'; };
 elSafe.onchange=update; update();
+
 (function(){
   const q=new URLSearchParams(location.search);
   const v=q.get('u')||q.get('url'); const aff=q.get('aff'); const ao=q.get('ao');
   if(aff==='1') elSafe.checked=true; if(aff==='0') elSafe.checked=false; update();
   if(v){ elIn.value=decodeMaybe(v); if(ao==='1') openNew(); else doClean(); }
 })();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=7').catch(()=>{});}
 </script>
 </body></html>
