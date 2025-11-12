@@ -1,47 +1,61 @@
 <!doctype html>
-<meta charset="utf-8">
-<base href="/Supersystem/">
-<title>Bookmarklets · SafeShare2</title>
-<body style="font:16px system-ui;background:#0b0b0b;color:#eaeaea;margin:0">
-<div style="max-width:900px;margin:auto;padding:28px 16px">
-  <h1 style="margin:0 0 8px">Bookmarklets</h1>
-  <p style="color:#9a9a9a">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: lange tippen → Lesezeichen.</p>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>Bookmarklets · SafeShare2</title>
+  <link rel="icon" href="assets/logo.png?v=2025-11-12">
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:900px;margin:auto;padding:28px 16px}
+    h1{margin:0 0 8px;font-size:26px}
+    .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+    .bm{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600}
+    .mut{color:var(--mut)}
+    a{color:#eaeaea}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bookmarklets</h1>
+  <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: Link lange tippen → „Zu Lesezeichen hinzufügen“.</p>
 
-  <div style="background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px">
-    <h3 style="margin:0 0 8px">1) Clean & Open (Monetize)</h3>
-    <p>
-      <a style="display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600"
-         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/Redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
-         SafeShare Clean & Open
-      </a>
-    </p>
+  <div class="card">
+    <h3 style="margin:0 0 8px">1) Clean & Open (über SafeShare)</h3>
+    <a class="bm"
+       href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
+       SafeShare Clean & Open
+    </a>
+    <p class="mut">Leitet über SafeShare um und öffnet danach das bereinigte Ziel.</p>
   </div>
 
-  <div style="background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px">
+  <div class="card">
     <h3 style="margin:0 0 8px">2) Clean & Stay</h3>
-    <p>
-      <a style="display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600"
-         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">
-         Clean & Stay
-      </a>
-    </p>
+    <a class="bm"
+       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">
+       Clean & Stay
+    </a>
+    <p class="mut">Bereinigt die aktuelle URL und lädt dieselbe Seite neu.</p>
   </div>
 
-  <div style="background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px">
+  <div class="card">
     <h3 style="margin:0 0 8px">3) Clean & Copy</h3>
-    <p>
-      <a style="display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600"
-         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString();try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){}}catch(e){};prompt('Clean URL:',s)})();">
-         Clean & Copy
-      </a>
-    </p>
+    <a class="bm"
+       href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};t.forEach(function(k){if(u.searchParams.has(k))u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">
+       Clean & Copy
+    </a>
+    <p class="mut">Zeigt die bereinigte URL und kopiert sie nach Möglichkeit.</p>
   </div>
 
-  <p style="color:#9a9a9a;margin-top:16px"><a href="index.html" style="color:#9a9a9a">Zurück</a></p>
+  <p class="mut" style="margin-top:16px"><a href="index.html">Zurück</a></p>
 </div>
+
 <script>
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
 </script>
 </body>
+</html>
