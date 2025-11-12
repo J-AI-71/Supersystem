@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Weiterleitung · SafeShare2</title>
   <link rel="icon" href="assets/logo.png?v=2025-11-12">
@@ -46,18 +45,15 @@ function clean(u){
     return x.toString();
   }catch{return u}
 }
-const q = new URL(location.href).searchParams.get('u');
+const q=new URL(location.href).searchParams.get('u');
 if(!q){
   document.getElementById('status').textContent='Fehler: Kein Ziel übergeben.';
 }else{
   const dst=clean(q);
   document.getElementById('status').textContent='Ziel: '+dst;
-  const a=document.getElementById('go');
-  a.href=dst; a.target="_self";
-  setTimeout(()=>{ location.href = dst; }, 1200);
+  const a=document.getElementById('go'); a.href=dst; a.target="_self";
+  setTimeout(()=>{ location.href=dst; },1200);
 }
-
-// SW registrieren mit Version
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-12');
 }
