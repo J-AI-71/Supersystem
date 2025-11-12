@@ -1,0 +1,38 @@
+<!doctype html><meta charset="utf-8"><title>Icon-Generator</title>
+<base href="/Supersystem/">
+<style>body{font:16px/1.5 system-ui;padding:2rem;max-width:700px;margin:auto}button{padding:.6rem 1rem;border:1px solid #999;border-radius:10px;background:none;cursor:pointer}</style>
+<h1>SafeShare Icon-Generator</h1>
+<p>Erzeugt PNGs aus <code>logo.svg</code> in 180, 192 und 512 px.</p>
+<label><input id="bg" type="checkbox" checked> weißen Hintergrund füllen (empfohlen für iOS)</label>
+<p><button id="go">PNG-Dateien erzeugen</button></p>
+<pre id="out">Bereit…</pre>
+<script>
+(async function(){
+  const log = (...m)=>out.textContent += "\\n" + m.join(" ");
+  const sizes = [180,192,512];
+  async function make() {
+    out.textContent = "Starte…";
+    const resp = await fetch('logo.svg'); if(!resp.ok){log('logo.svg nicht gefunden');return}
+    const svgText = await resp.text();
+    for (const size of sizes) {
+      const svgUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+      const img = new Image(); img.crossOrigin = 'anonymous'; img.src = svgUrl;
+      await new Promise(r=>img.onload=r);
+      const c = document.createElement('canvas'); c.width = c.height = size;
+      const ctx = c.getContext('2d');
+      if (bg.checked) { ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size); }
+      // zentriert maximal einpassen
+      const scale = Math.min(size / img.width * 512, size / img.height * 512);
+      // img.width/height sind 0 bei SVG; zeichne einfach volles ViewBox
+      ctx.drawImage(img, 0, 0, size, size);
+      const a = document.createElement('a');
+      a.download = `icon-${size}.png`;
+      a.href = c.toDataURL('image/png');
+      a.click();
+      log('Erzeugt:', a.download);
+    }
+    log('Fertig. Lade die Dateien in', 'Supersystem/icons/');
+  }
+  go.addEventListener('click', make);
+})();
+</script>
