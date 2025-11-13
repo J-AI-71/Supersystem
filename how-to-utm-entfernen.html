@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>UTM entfernen: Anleitung in 60 Sekunden | SafeShare</title>
+<meta name="description" content="So entfernst du UTM, gclid, fbclid in 60 Sekunden – App, Bookmarklet, Beispiel.">
+<link rel="icon" href="assets/logo.png">
+<style>body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}.wrap{max-width:860px;margin:auto;padding:28px 16px}.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}.mut{color:#9a9a9a}.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}ol{margin:8px 0 0 18px}</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>UTM entfernen – so geht’s</h1>
+
+  <div class="card">
+    <h2 style="margin:0 0 6px">Methode A: App</h2>
+    <ol>
+      <li>App öffnen: <a href="app.html">SafeShare</a></li>
+      <li>Link einfügen → „Säubern & öffnen“</li>
+      <li>Optional: „Kopieren“ oder „Teilen“</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 6px">Methode B: Bookmarklet</h2>
+    <ol>
+      <li><a href="bookmarklets.html">Bookmarklet</a> holen</li>
+      <li>Desktop: in Lesezeichenleiste ziehen</li>
+      <li>iOS: lang tippen → Lesezeichen → URL durch <code>javascript:</code>-Code ersetzen</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 6px">Beispiel</h2>
+    <p><code>https://shop.tld/prod?utm_source=newsletter&utm_campaign=herbst&gclid=XYZ</code><br>→ <strong>https://shop.tld/prod</strong></p>
+  </div>
+
+  <p class="mut" style="margin-top:12px"><a href="index.html">Start</a></p>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Was wird entfernt?","acceptedAnswer":{"@type":"Answer","text":"UTM-Parameter (utm_*), gclid, fbclid u. a.; Domain-Sonderfälle wie Amazon werden berücksichtigt."}},
+{"@type":"Question","name":"Muss ich etwas installieren?","acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare läuft im Browser; das Bookmarklet ist nur ein Lesezeichen."}},
+{"@type":"Question","name":"Ist das kostenlos?","acceptedAnswer":{"@type":"Answer","text":"Die Basisfunktionen sind kostenlos; Pro bietet Bulk-Cleaning und Team-Optionen."}}
+]}
+</script>
+<script>if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js?v=2025-11-13-05')}</script>
+</body>
+</html>
