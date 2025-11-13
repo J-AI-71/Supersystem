@@ -1,108 +1,64 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/">
-<title>Weiterleitung · SafeShare</title>
-<meta name="referrer" content="no-referrer">
+<base href="/Supersystem/"><title>Status · SafeShare</title>
 <link rel="icon" href="assets/logo.png?v=2025-11-13-07">
 <style>
-body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}
-.w{max-width:760px;margin:auto;padding:28px 16px}.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px}
-.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
-.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-input.code{width:100%;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-.mut{color:#9a9a9a}
+body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.5 system-ui}.w{max-width:860px;margin:auto;padding:24px 16px}
+h1{margin:0 0 10px}.ok{color:#29c07e}.bad{color:#ff6b6b}.card{background:#111;border:1px solid #1f1f1f;border-radius:10px;padding:12px;margin-top:10px}
+code{background:#000;padding:.1rem .3rem;border-radius:6px}
 </style></head><body><div class="w">
-<h1 style="margin:0 0 10px">Weiterleitung</h1>
-<div class="card">
-  <p id="info" class="mut">Bereite Ziel-URL vor …</p>
-  <input id="url" class="code" readonly value="">
-  <p style="margin-top:10px">
-    <a id="open" class="btn pri" href="#">Jetzt öffnen</a>
-    <button id="copy" class="btn alt" type="button">Kopieren</button>
-    <a class="btn alt" href="bookmarklets.html">Bookmarklet</a>
-  </p>
-</div>
-<p class="mut" style="margin-top:12px">Warum diese Seite? Wir entfernen Marketing-Parameter (<code>utm_*</code>, <code>gclid</code>, <code>fbclid</code> …) und entschnüren verschachtelte Redirects (z. B. <code>url=…</code>, <code>u=…</code>, <code>q=…</code>).</p>
-<p class="mut"><a href="index.html">Start</a></p>
+<h1>Status</h1>
+<div id="list" class="card">Prüfe …</div>
+<p style="margin-top:8px"><a href="tools.html" class="ok">Tools</a> · <a href="index.html" class="ok">Start</a></p>
 </div>
 <script>
-// Flags (Publisher/Whitelist) aus URL & LocalStorage
-function getFlags(){
-  const sp=new URL(location.href).searchParams;
-  const publisher = sp.get('publisher')==='1' || sp.get('mode')==='publisher' || localStorage.getItem('ss_mode')==='publisher';
-  const wl = new Set((sp.get('wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
-  (localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(x=>wl.add(x));
-  return {publisher, wl};
-}
-// N-mal verschachtelte Redirect-Parameter rausziehen
-function unwrap(u){
-  try{
-    let s = u, loops=0;
-    while(loops++<5){
-      const url = new URL(s);
-      const p = url.searchParams;
-      const candidates = ['url','u','link','q','target','to','dest'];
-      let found=null;
-      for(const k of candidates){ if(p.has(k)){ found = p.get(k); break; } }
-      if(!found) return s;
-      // Mehrfach decodieren
-      try{
-        let tmp = found;
-        for(let i=0;i<3;i++) tmp = decodeURIComponent(tmp);
-        s = tmp;
-      }catch{ s = found; }
-      // Schema ergänzen falls fehlt
-      if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)){ s = 'https://' + s.replace(/^\/+/, ''); }
-    }
-    return s;
-  }catch{ return u; }
-}
-// Säubern inkl. Whitelist
-function clean(u){
-  try{
-    const x=new URL(u);
-    const T=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"]);
-    const {publisher, wl}=getFlags();
-    // Amazon-Sonderfälle
-    if(/amazon\./.test(x.hostname)){
-      const AFF=["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"];
-      AFF.forEach(k=>{ if(!(publisher && wl.has(k))) x.searchParams.delete(k); });
-      if(!(publisher && wl.has('#'))) x.hash="";
-    }
-    // Allgemein
-    for(const k of [...x.searchParams.keys()]){
-      const isTracker = k.startsWith('utm_') || T.has(k);
-      if(isTracker && !(publisher && wl.has(k))) x.searchParams.delete(k);
-    }
-    x.pathname=x.pathname.replace(/\/{2,}/g,"/");
-    if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
-    return x.toString();
-  }catch{ return u; }
-}
-// --- Main
-(function(){
-  const sp=new URL(location.href).searchParams;
-  let u = sp.get('u') || sp.get('url') || sp.get('link') || '';
-  if(!u) { document.getElementById('info').textContent='Keine Ziel-URL übergeben.'; return; }
-  // mehrfach decodieren + Schema fixen
-  try{ for(let i=0;i<3;i++) u=decodeURIComponent(u) }catch{}
-  if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(u)){ u='https://'+u.replace(/^\/+/, ''); }
-  // verschachtelte Redirects abwickeln
-  u = unwrap(u);
-  // säubern
-  const c = clean(u);
-  const input=document.getElementById('url'); input.value=c;
-  document.getElementById('open').href=c;
-  document.getElementById('info').textContent='Ziel vorbereitet.';
+(async function(){
+  const res=[];
+  // 1) Base
+  const expected = location.origin + '/Supersystem/';
+  const actual = document.baseURI;
+  res.push({name:'<base href>', ok: actual===expected, info:`${actual}`});
 
-  // Auto-Redirect (wenn kein wait=1)
-  if(!(sp.get('wait')==='1')) location.replace(c);
+  // 2) Redirect-Datei erreichbar
+  try{
+    const r=await fetch('redirect-entschachteln.html',{cache:'no-store'});
+    res.push({name:'redirect-entschachteln.html', ok:r.ok, info:`HTTP ${r.status}`});
+  }catch(e){ res.push({name:'redirect-entschachteln.html', ok:false, info:String(e)}) }
 
-  // Copy
-  document.getElementById('copy').onclick=async()=>{
-    try{ await navigator.clipboard.writeText(c); document.getElementById('copy').textContent='Kopiert'; setTimeout(()=>document.getElementById('copy').textContent='Kopieren',1200); }
-    catch{ prompt('Clean URL:', c); }
-  };
+  // 3) Alias erreichbar
+  try{
+    const r=await fetch('Redirect-entschachteln.html',{cache:'no-store'});
+    res.push({name:'Redirect-entschachteln.html (Alias)', ok:r.ok, info:`HTTP ${r.status}`});
+  }catch(e){ res.push({name:'Redirect-entschachteln.html (Alias)', ok:false, info:String(e)}) }
+
+  // 4) Service Worker
+  const sw = 'serviceWorker' in navigator;
+  res.push({name:'Service Worker unterstützt', ok: sw, info: sw?'ja':'nein'});
+  if(sw){
+    const reg = await navigator.serviceWorker.getRegistration();
+    res.push({name:'SW registriert', ok: !!reg, info: reg? (reg.active && reg.active.scriptURL):'—'});
+    res.push({name:'SW kontrolliert Seite', ok: !!navigator.serviceWorker.controller, info: navigator.serviceWorker.controller?'ja':'nein'});
+  }
+
+  // 5) Manifest
+  try{
+    const r=await fetch('manifest.webmanifest',{cache:'no-store'});
+    res.push({name:'Manifest', ok:r.ok, info:`HTTP ${r.status}`});
+  }catch(e){ res.push({name:'Manifest', ok:false, info:String(e)}) }
+
+  // 6) Bookmarklets-Quelle
+  try{
+    const r=await fetch('js/bookmarklets.js',{cache:'no-store'});
+    res.push({name:'js/bookmarklets.js', ok:r.ok, info:`HTTP ${r.status}`});
+  }catch(e){ res.push({name:'js/bookmarklets.js', ok:false, info:String(e)}) }
+
+  // Render
+  const el=document.getElementById('list'); el.innerHTML='';
+  res.forEach(r=>{
+    const p=document.createElement('p');
+    p.innerHTML = `<strong>${r.name}:</strong> <span class="${r.ok?'ok':'bad'}">${r.ok?'OK':'Fehler'}</span> <span class="mut">— ${r.info}</span>`;
+    el.appendChild(p);
+  });
 })();
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-07'); }
 </script></body></html>
