@@ -1,0 +1,73 @@
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/"><title>Bulk-Cleaning · SafeShare Pro</title>
+<link rel="icon" href="assets/logo.png?v=2025-11-13-10">
+<style>
+body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}
+.w{max-width:960px;margin:auto;padding:28px 16px}.mut{color:#9a9a9a}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+textarea{width:100%;min-height:180px;padding:.8rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.4 ui-monospace,Menlo,Consolas,monospace}
+pre{white-space:pre-wrap;background:#000;border:1px solid #2a2a2a;border-radius:10px;padding:10px}
+.btn{display:inline-block;padding:.65rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
+.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
+</style></head><body><div class="w">
+<h1>Bulk-Cleaning</h1>
+<div class="card">
+  <p class="mut">Füge pro Zeile eine URL ein. Ausgabe erscheint unten – bereit zum Kopieren.</p>
+  <textarea id="in" placeholder="https://example.com/?utm_source=...\nhttps://www.amazon.de/dp/..."></textarea>
+  <p style="margin-top:10px">
+    <button id="run" class="btn pri" type="button">Liste säubern</button>
+    <button id="copy" class="btn alt" type="button">Ausgabe kopieren</button>
+  </p>
+  <pre id="out" aria-live="polite"></pre>
+  <p class="mut" id="hint" style="display:none;margin-top:8px">Pro ist nicht aktiv. Aktivieren unter <a href="pro.html">pro.html</a>.</p>
+</div>
+<p class="mut" style="margin-top:12px"><a href="app.html">App</a> · <a href="index.html">Start</a></p>
+</div>
+<script>
+// --- Pro-Check (Soft-Gate) ---
+const proOn = localStorage.getItem('ss2_pro')==='1';
+if(!proOn){ document.getElementById('hint').style.display='block'; }
+
+// --- Flags/Whitelist (Team-Setup) ---
+function getFlags(){ const pub=localStorage.getItem('ss_mode')==='publisher';
+  const wl=new Set((localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
+  return {publisher:pub, wl};
+}
+// --- Entschachteln ---
+function unwrap(u){ try{ let s=u,loops=0; while(loops++<5){
+  const url=new URL(s),p=url.searchParams; const keys=['url','u','link','q','target','to','dest'];
+  let k=null,v=null; for(const key of keys){ if(p.has(key)){k=key; v=p.get(key); break;} } if(!k) return s;
+  try{ for(let i=0;i<3;i++) v=decodeURIComponent(v);}catch{} if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(v)) v='https://'+v.replace(/^\/+/, '');
+  s=v; } return s; }catch{ return u; } }
+// --- Säubern ---
+function clean(u){ try{
+  const x=new URL(u); const {publisher,wl}=getFlags();
+  const T=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"]);
+  if(/amazon\./.test(x.hostname)){
+    ["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"].forEach(k=>{
+      if(!(publisher && wl.has(k))) x.searchParams.delete(k);
+    });
+    if(x.hash && !(publisher && wl.has('#'))) x.hash="";
+  }
+  for(const k of [...x.searchParams.keys()]){
+    const isT=k.startsWith('utm_')||T.has(k);
+    if(isT && !(publisher && wl.has(k))) x.searchParams.delete(k);
+  }
+  x.pathname=x.pathname.replace(/\/{2,}/g,'/'); if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
+  return x.toString();
+}catch{ return u; } }
+// --- Run ---
+document.getElementById('run').onclick=()=>{
+  const lines=document.getElementById('in').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  const out=lines.map(line=>{
+    let v=line; try{ for(let i=0;i<3;i++) v=decodeURIComponent(v);}catch{} if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(v)) v='https://'+v.replace(/^\/+/, '');
+    return clean(unwrap(v));
+  });
+  document.getElementById('out').textContent=out.join('\n');
+};
+document.getElementById('copy').onclick=async()=>{
+  try{ await navigator.clipboard.writeText(document.getElementById('out').textContent||''); }catch{ alert('Kopieren nicht möglich.'); }
+};
+if('serviceWorker'in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-10'); }
+</script></body></html>
