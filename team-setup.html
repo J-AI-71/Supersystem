@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Team-Setup · SafeShare</title>
+<link rel="icon" href="assets/logo.png?v=2025-11-13-08">
+<style>
+  body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.5 system-ui}
+  .w{max-width:760px;margin:auto;padding:24px 16px}
+  .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+  label{display:block;margin:.4rem 0 .2rem}
+  input[type="text"]{width:100%;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  button{padding:.65rem 1rem;border-radius:10px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;font-weight:600}
+  .ok{color:#29c07e}.mut{color:#9a9a9a}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>Team-Voreinstellung</h1>
+  <p class="mut">Setzt lokale Richtlinien auf diesem Gerät. Danach genügen normale Links ohne <code>publisher</code>/<code>wl</code> in der URL.</p>
+
+  <div class="card">
+    <label><input type="checkbox" id="publisher"> Publisher-Modus aktivieren</label>
+    <label for="wl">Whitelist erlaubter Parameter (Komma-getrennt)</label>
+    <input id="wl" type="text" placeholder="z. B. tag,ref,ascsubtag">
+    <div class="row">
+      <button id="save">Speichern</button>
+      <button id="clear">Zurücksetzen</button>
+      <button id="test">Test öffnen</button>
+    </div>
+    <p id="state" class="mut" style="margin-top:10px">Lade Status …</p>
+  </div>
+
+  <p class="mut" style="margin-top:10px"><a href="index.html">Start</a> · <a href="redirect-entschachteln.html?wait=1&u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FB000000%3Ftag%3Daff-21%26ref%3Dabc%26utm_source%3Dmail">Beispiel-Redirect</a></p>
+</div>
+
+<script>
+function loadState(){
+  const mode = localStorage.getItem('ss_mode')==='publisher';
+  const wl   = localStorage.getItem('ss_wl')||'';
+  document.getElementById('publisher').checked = mode;
+  document.getElementById('wl').value = wl;
+  document.getElementById('state').innerHTML =
+    `Status: Modus = <strong>${mode?'publisher':'normal'}</strong>; Whitelist = <code>${(wl||'—').replace(/&/g,'&amp;')}</code>`;
+}
+document.getElementById('save').onclick = ()=>{
+  const mode = document.getElementById('publisher').checked ? 'publisher' : '';
+  const wl   = (document.getElementById('wl').value||'').trim();
+  if(mode) localStorage.setItem('ss_mode', mode); else localStorage.removeItem('ss_mode');
+  if(wl)   localStorage.setItem('ss_wl', wl);    else localStorage.removeItem('ss_wl');
+  loadState();
+};
+document.getElementById('clear').onclick = ()=>{
+  ['ss_mode','ss_wl'].forEach(k=>localStorage.removeItem(k));
+  loadState();
+};
+document.getElementById('test').onclick = ()=>{
+  // Ohne publisher/wl in der URL – sollte durch lokale Voreinstellung wirken
+  location.href = 'redirect-entschachteln.html?wait=1&details=1&u=' +
+    encodeURIComponent('https://www.amazon.de/dp/B000000?tag=aff-21&ref=abc&utm_source=mail');
+};
+loadState();
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-08'); }
+</script>
+</body>
+</html>
