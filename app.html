@@ -5,54 +5,50 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
 <title>SafeShare – Links reinigen</title>
-<link rel="icon" href="assets/logo.png?v=2025-11-13-08">
 <link rel="manifest" href="manifest.webmanifest?v=2025-11-13-08">
+<link rel="icon" href="assets/logo.png?v=2025-11-13-08">
 <meta name="theme-color" content="#111111">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
 html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:860px;margin:auto;padding:28px 16px}
-h1{margin:0 0 8px;font-size:28px}.mut{color:var(--mut)}
+h1{margin:0 0 8px;font-size:28px}
+.mut{color:var(--mut)}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
 .btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
-.btn.pri{background:var(--pri);color:#07130c}.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
+.btn.pri{background:var(--pri);color:#07130c}
+.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-
-/* Eingabeleiste + Clear-Button */
-.group{position:relative}
-input.url{width:100%;padding:.8rem 3rem .8rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:16px/1.3 ui-monospace,Menlo,Consolas,monospace}
-button.clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:9px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;font-size:18px;line-height:1;font-weight:700;cursor:pointer;display:none}
-button.clear:focus{outline:2px solid var(--pri)}
-/* iOS native Clear-X ausblenden (wir nutzen den eigenen Button) */
-input[type="search"]::-webkit-search-cancel-button{-webkit-appearance:none}
-
-/* Ergebnisfeld */
+input.url{width:100%;padding:.8rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:16px/1.3 ui-monospace,Menlo,Consolas,monospace}
 input.out{width:100%;margin-top:10px;padding:.7rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.3 ui-monospace,Menlo,Consolas,monospace}
 small.help{display:block;margin-top:6px;color:var(--mut)}
+/* wichtig: kein CSS, das das native iOS-X versteckt */
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>SafeShare</h1>
-  <p class="mut">UTM, gclid, fbclid & Co. entfernen. Lokal im Browser.</p>
+  <p class="mut">UTM, gclid, fbclid & Co. entfernen – lokal im Browser.</p>
 
   <div class="card">
     <label for="in" class="mut">Link</label>
-    <div class="group">
-      <input id="in" class="url" type="search" inputmode="url" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="URL einfügen oder tippen …">
-      <button id="clear" class="clear" type="button" aria-label="Eingabe löschen" title="Eingabe löschen">×</button>
-    </div>
+    <!-- type="search" → zeigt das native iOS „X“ zum Leeren -->
+    <input id="in" class="url" type="search" inputmode="url" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="URL einfügen oder tippen …">
     <small class="help">Tipp: Einfügen, Enter drücken – oder „Säubern &amp; öffnen“.</small>
 
     <div class="row" style="margin-top:12px">
       <button id="cleanOpen" class="btn pri" type="button">Säubern & öffnen</button>
       <button id="copy" class="btn alt" type="button">Kopieren</button>
       <button id="share" class="btn alt" type="button">Teilen</button>
-      <a class="btn alt" href="redirect-entschachteln.html?wait=1&details=1&u=" id="inspect" target="_blank" rel="noopener">Prüfen</a>
+      <a id="inspect" class="btn alt" href="redirect-entschachteln.html?wait=1&details=1&u=" target="_blank" rel="noopener">Prüfen</a>
     </div>
 
     <input id="out" class="out" readonly placeholder="Ergebnis erscheint hier …">
-    <details id="logBox" class="mut" style="margin-top:8px;display:none"><summary>Was wurde geändert?</summary><div id="log"></div></details>
+
+    <details id="logBox" class="mut" style="margin-top:8px;display:none">
+      <summary>Was wurde geändert?</summary>
+      <div id="log"></div>
+    </details>
   </div>
 
   <p class="mut" style="margin-top:12px">
@@ -64,14 +60,14 @@ small.help{display:block;margin-top:6px;color:var(--mut)}
 </div>
 
 <script>
-/* ---------- Flags (Publisher/Whitelist) aus LocalStorage ---------- */
+/* ---------- Team-Flags (Publisher/Whitelist) ---------- */
 function getFlags(){
-  const publisher = localStorage.getItem('ss_mode')==='publisher';
-  const wl = new Set((localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
+  const publisher = localStorage.getItem('ss_mode') === 'publisher';
+  const wl = new Set((localStorage.getItem('ss_wl') || '').split(',').map(s=>s.trim()).filter(Boolean));
   return {publisher, wl};
 }
 
-/* ---------- Entschachteln (bis 5 Ebenen) ---------- */
+/* ---------- Redirect-Ebenen entschnüren (bis 5) ---------- */
 function unwrapWithLog(u){
   const steps=[];
   try{
@@ -91,7 +87,7 @@ function unwrapWithLog(u){
   }catch{ return {url:u, steps}; }
 }
 
-/* ---------- Säubern inkl. Whitelist ---------- */
+/* ---------- Tracking säubern inkl. Whitelist ---------- */
 function cleanWithLog(u){
   const notes=[], removed=[], kept=[]; let hashDropped=false, pathNorm=false;
   const {publisher, wl}=getFlags();
@@ -118,6 +114,7 @@ function cleanWithLog(u){
       }
     }
 
+    // Pfad normalisieren
     const before=x.pathname;
     x.pathname=x.pathname.replace(/\/{2,}/g,'/');
     if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
@@ -134,39 +131,23 @@ function cleanWithLog(u){
   }
 }
 
-/* ---------- UI-Logik ---------- */
+/* ---------- UI ---------- */
 const $in = document.getElementById('in');
-const $clear = document.getElementById('clear');
 const $out = document.getElementById('out');
 const $logBox = document.getElementById('logBox');
 const $log = document.getElementById('log');
 const $inspect = document.getElementById('inspect');
 
-function showClear(){
-  $clear.style.display = $in.value ? 'inline-flex' : 'none';
-}
-$in.addEventListener('input', showClear);
-$in.addEventListener('keydown', (e)=>{
-  if(e.key==='Escape'){ e.preventDefault(); clearInput(); }
-  if(e.key==='Enter'){ e.preventDefault(); cleanAndOpen(false); }
-});
-
-function clearInput(){
-  $in.value=''; showClear(); $out.value=''; $logBox.style.display='none'; $in.focus();
-}
-$clear.addEventListener('click', clearInput);
-
-/* Hauptaktion */
-function cleanAndOpen(openAfter){
-  let v=$in.value.trim();
-  if(!v) return;
+function clean(vRaw){
+  let v=vRaw.trim();
+  if(!v) return null;
   try{ for(let i=0;i<3;i++) v=decodeURIComponent(v); }catch{}
   if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(v)) v='https://'+v.replace(/^\/+/, '');
 
   const un = unwrapWithLog(v);
   const cl = cleanWithLog(un.url);
 
-  // Ausgabe + Protokoll
+  // Ergebnis + Protokoll
   $out.value = cl.url;
   const lines = [];
   if(un.steps.length) lines.push('Entschachtelung: '+un.steps.join(' → '));
@@ -175,31 +156,31 @@ function cleanAndOpen(openAfter){
   $log.innerHTML = '<ul style="margin:.2rem 0 0 18px">'+lines.map(x=>`<li>${x.replace(/&/g,'&amp;')}</li>`).join('')+'</ul>';
   $logBox.style.display='block';
 
-  // Prüf-Link aktualisieren
-  $inspect.href = 'redirect-entschachteln.html?wait=1&details=1&u=' + encodeURIComponent(v);
+  // Prüf-Link zeigt die UNGEREINIGTE Eingabe (damit die Seite die Schritte demonstriert)
+  $inspect.href = 'redirect-entschachteln.html?wait=1&details=1&u=' + encodeURIComponent(vRaw);
 
-  if(openAfter) location.href = cl.url;
+  return cl.url;
 }
 
-document.getElementById('cleanOpen').addEventListener('click', ()=>cleanAndOpen(true));
+document.getElementById('cleanOpen').addEventListener('click', ()=>{
+  const url = clean($in.value); if(url) location.href = url;
+});
 document.getElementById('copy').addEventListener('click', async ()=>{
-  if(!$out.value) cleanAndOpen(false);
-  try{ await navigator.clipboard.writeText($out.value||$in.value); }catch{ prompt('Copy:', $out.value||$in.value); }
+  const url = clean($in.value) || $in.value.trim();
+  if(!url) return;
+  try{ await navigator.clipboard.writeText(url); }catch{ prompt('Copy:', url); }
 });
 document.getElementById('share').addEventListener('click', async ()=>{
-  if(!$out.value) cleanAndOpen(false);
-  if(navigator.share){
-    try{ await navigator.share({title:'Sauberer Link', url:$out.value}); }catch{}
-  }else{
-    alert('Teilen wird von diesem Browser nicht unterstützt. Bitte Link kopieren.');
-  }
+  const url = clean($in.value) || $in.value.trim();
+  if(!url) return;
+  if(navigator.share){ try{ await navigator.share({title:'Sauberer Link', url}); }catch{} }
+  else { alert('Teilen wird von diesem Browser nicht unterstützt. Bitte Link kopieren.'); }
+});
+$in.addEventListener('keydown', (e)=>{
+  if(e.key==='Enter'){ e.preventDefault(); const url = clean($in.value); if(url) location.href=url; }
 });
 
-/* PWA */
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-08'); }
-
-/* Initial */
-showClear();
 </script>
 </body>
 </html>
