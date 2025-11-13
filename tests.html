@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>SafeShare2 · Tests</title>
   <style>
@@ -69,7 +70,6 @@ function diff(a,b){
   try{
     const ua=new URL(a), ub=new URL(b);
     let d=[];
-    if(ua.hostname!==ub.hostname) d.push("Host: "+ua.hostname+" → "+ub.hostname);
     if(ua.pathname!==ub.pathname) d.push("Path: "+ua.pathname+" → "+ub.pathname);
     if(ua.search!==ub.search) d.push("Query: "+ua.search+" → "+ub.search);
     if(ua.hash!==ub.hash) d.push("Hash: "+ua.hash+" → "+ub.hash);
@@ -90,7 +90,7 @@ document.getElementById('run').onclick=()=>{
       <td><div style="max-width:280px;word-break:break-all">${dst}</div></td>
       <td><pre style="white-space:pre-wrap;max-width:260px">${diff(src,dst)}</pre></td>
       <td class="${changed?'ok':'fail'}">${changed?'bereinigt':'keine Änderung'}</td>
-      <td><a target="_blank" rel="noopener" href="Redirect-entschachteln.html?u=${encodeURIComponent(src)}">Wrap</a> ·
+      <td><a target="_blank" rel="noopener" href="redirect-entschachteln.html?u=${encodeURIComponent(src)}">Wrap</a> ·
           <a target="_blank" rel="noopener" href="${dst}">Open</a></td>
     `;
     tbody.appendChild(tr);
@@ -98,7 +98,7 @@ document.getElementById('run').onclick=()=>{
 };
 
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-12');
+  navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
 }
 </script>
 </body>
