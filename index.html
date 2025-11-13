@@ -136,5 +136,18 @@ input.code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px so
   // Service Worker registrieren
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-11'); }
 </script>
+  <!-- Bookmarklet-Renderer + Pro-Badge -->
+<script src="js/bookmarklets.js?v=2025-11-13-11"></script>
+<script>
+  if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');
+  (function(){
+    const on = localStorage.getItem('ss2_pro')==='1';
+    const b = document.getElementById('pro-badge');
+    if(b) b.textContent = on ? 'aktiv' : 'nicht aktiv';
+  })();
+</script>
+<!-- SW-Registrierung: immer als LETZTES -->
+<script src="js/sw-register.js?v=2025-11-13-12"></script>
+</body></html>
 </body>
 </html>
