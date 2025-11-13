@@ -1,46 +1,70 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/"><title>SafeShare Pro</title>
+<!-- /Supersystem/pro.html -->
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>SafeShare Pro</title>
 <link rel="icon" href="assets/logo.png?v=2025-11-13-10">
+<meta name="theme-color" content="#111111">
 <style>
-body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}
-.w{max-width:860px;margin:auto;padding:28px 16px}.mut{color:#9a9a9a}
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui}
+.w{max-width:860px;margin:auto;padding:28px 16px}
+h1{margin:0 0 8px}
+.mut{color:var(--mut)}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
 .btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
-.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-ul{margin:8px 0 0 18px}
+.btn.pri{background:#29c07e;color:#07130c}
+.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
 .badge{display:inline-block;background:#1b1b1b;border:1px solid #2a2a2a;padding:.2rem .5rem;border-radius:8px;margin-left:8px}
-</style></head><body><div class="w">
-<h1>SafeShare Pro <span id="state" class="badge">nicht aktiv</span></h1>
-<div class="card">
-  <h3 style="margin:0 0 6px">Enthalten</h3>
-  <ul>
-    <li>Bulk-Cleaning (Liste einfügen → alles säubern)</li>
-    <li>Team-Whitelist (Publisher-Modus) – lokal</li>
-    <li>PWA-Offline (optional, nur eigene Seiten)</li>
-  </ul>
-  <p style="margin-top:8px">
-    <!-- ERSETZEN: echte Payhip-Kauf-URL und Success-Redirect unten -->
-    <a class="btn pri" href="https://payhip.com/" target="_blank" rel="noopener">Jetzt freischalten</a>
-    <a class="btn alt" href="bulk-clean.html">Bulk-Cleaning testen</a>
+ul{margin:8px 0 0 18px}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>SafeShare Pro <span id="state" class="badge">nicht aktiv</span></h1>
+
+  <div class="card">
+    <h3 style="margin:0 0 6px">Enthalten</h3>
+    <ul>
+      <li>Bulk-Cleaning (mehrere URLs auf einmal säubern)</li>
+      <li>Team-Whitelist (Publisher-Modus, lokal)</li>
+      <li>PWA-Offline (optional, nur eigene Seiten)</li>
+    </ul>
+    <p style="margin-top:8px">
+      <!-- ERSETZEN: echte Payhip-URL -->
+      <a class="btn pri" href="https://payhip.com/" target="_blank" rel="noopener">Jetzt freischalten</a>
+      <a class="btn alt" href="bulk-clean.html">Bulk-Cleaning testen</a>
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 6px">Aktivierung</h3>
+    <p class="mut">Nach dem Kauf leitet Payhip auf die Aktivierungsseite.</p>
+    <p>
+      <a class="btn alt" href="pro-activate.html?pro=1">Manuell aktivieren</a>
+      <button id="deactivate" class="btn alt" type="button">Deaktivieren</button>
+    </p>
+  </div>
+
+  <p class="mut" style="margin-top:12px">
+    <a href="index.html">Start</a> · <a href="app.html">App</a> · <a href="team-setup.html">Team-Setup</a>
   </p>
-</div>
-
-<div class="card">
-  <h3 style="margin:0 0 6px">Aktivierung</h3>
-  <p class="mut">Nach dem Kauf sendet Payhip dich auf die Aktivierungsseite zurück.</p>
-  <p><a class="btn alt" href="pro-activate.html?pro=1">Manuell aktivieren</a>
-     <button id="deactivate" class="btn alt" type="button">Deaktivieren</button></p>
-</div>
-
-<p class="mut" style="margin-top:12px"><a href="index.html">Start</a> · <a href="app.html">App</a> · <a href="team-setup.html">Team-Setup</a></p>
 </div>
 <script>
 function updateState(){
   const on = localStorage.getItem('ss2_pro')==='1';
-  document.getElementById('state').textContent = on?'aktiv':'nicht aktiv';
+  const badge = document.getElementById('state');
+  if (badge) badge.textContent = on ? 'aktiv' : 'nicht aktiv';
 }
-document.getElementById('deactivate').onclick=()=>{ localStorage.removeItem('ss2_pro'); updateState(); };
+document.getElementById('deactivate').onclick = () => {
+  localStorage.removeItem('ss2_pro');
+  updateState();
+};
 updateState();
 if('serviceWorker'in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-10'); }
-</script></body></html>
+</script>
+</body>
+</html>
