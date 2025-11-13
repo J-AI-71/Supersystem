@@ -2,51 +2,40 @@
 (function(){
   'use strict';
 
-  // Einzige Stelle, an der du die Version erhöhst
+  // Nur hier die Version erhöhen
   const VER = '2025-11-13-12';
-
   if (!('serviceWorker' in navigator)) return;
 
-  // Einmalige Auto-Reload-Logik nach Aktivierung der neuen SW
-  let refreshing = false;
+  // Bereits neu geladen? (pro Version nur 1x)
+  const url = new URL(location.href);
+  const already = url.searchParams.get('sw') === VER;
+  let refreshed = sessionStorage.getItem('ss_sw_refreshed') === VER;
+
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshing) return;
-    refreshing = true;
+    if (refreshed || already) return;           // verhindert Reload-Schleife
+    refreshed = true;
+    sessionStorage.setItem('ss_sw_refreshed', VER);
     const u = new URL(location.href);
     u.searchParams.set('sw', VER);
     location.replace(u.toString());
   });
 
-  async function registerSW(){
-    try{
+  (async () => {
+    try {
       const reg = await navigator.serviceWorker.register('./sw.js?v='+encodeURIComponent(VER));
 
-      // Falls bereits eine neue (waiting) SW vorhanden ist → sofort aktivieren
+      // Neue, wartende SW sofort aktivieren
       if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
 
-      // Während der Installation auf "installed" warten und dann aktivieren
-      if (reg.installing){
-        reg.installing.addEventListener('statechange', () => {
-          if (reg.installing && reg.installing.state === 'installed' && navigator.serviceWorker.controller){
-            reg.installing.postMessage({type:'SKIP_WAITING'});
-          }
-        });
-      }
-
-      // Zukunft: wenn später Updates gefunden werden
       reg.addEventListener('updatefound', () => {
         const nw = reg.installing;
         if (!nw) return;
         nw.addEventListener('statechange', () => {
-          if (nw.state === 'installed' && navigator.serviceWorker.controller){
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) {
             nw.postMessage({type:'SKIP_WAITING'});
           }
         });
       });
-    }catch(e){
-      // optional: console.warn('SW register failed', e);
-    }
-  }
-
-  registerSW();
+    } catch(e) { /* optional: console.warn(e) */ }
+  })();
 })();
