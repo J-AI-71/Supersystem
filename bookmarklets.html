@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Bookmarklets · SafeShare2</title>
-  <link rel="icon" href="assets/logo.png?v=2025-11-13-01">
+  <title>Bookmarklets · SafeShare</title>
+  <link rel="icon" href="assets/logo.png?v=2025-11-13-02">
   <style>
     :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui}
@@ -23,41 +23,18 @@
 <body>
 <div class="wrap">
   <h1>Bookmarklets</h1>
-  <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: Link lange tippen → Lesezeichen. Wenn der Browser blockt, Code kopieren und als URL des Lesezeichens einfügen.</p>
+  <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. Mobile: Code kopieren und als URL eines Lesezeichens einfügen.</p>
 
-  <div class="card">
-    <h3 style="margin:0 0 8px">1) Clean & Open (über SafeShare)</h3>
-    <a class="bm" id="a1" href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">SafeShare Clean & Open</a>
-    <div class="row"><input class="code" id="c1" readonly><button class="copy" data-id="1">Kopieren</button></div>
-  </div>
-
-  <div class="card">
-    <h3 style="margin:0 0 8px">2) Clean & Stay</h3>
-    <a class="bm" id="a2" href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">Clean & Stay</a>
-    <div class="row"><input class="code" id="c2" readonly><button class="copy" data-id="2">Kopieren</button></div>
-  </div>
-
-  <div class="card">
-    <h3 style="margin:0 0 8px">3) Clean & Copy</h3>
-    <a class="bm" id="a3" href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">Clean & Copy</a>
-    <div class="row"><input class="code" id="c3" readonly><button class="copy" data-id="3">Kopieren</button></div>
-  </div>
+  <div id="bm-page"></div>
 
   <p class="mut" style="margin-top:16px"><a href="index.html" class="mut">Zurück</a></p>
 </div>
+
+<script src="js/bookmarklets.js?v=2025-11-13-02"></script>
 <script>
-// Codes anzeigen + kopieren
-['1','2','3'].forEach(i=>{ document.getElementById('c'+i).value = document.getElementById('a'+i).getAttribute('href'); });
-document.querySelectorAll('button.copy').forEach(btn=>{
-  btn.addEventListener('click', async ()=>{
-    const i=btn.getAttribute('data-id'), v=document.getElementById('c'+i).value;
-    try{ await navigator.clipboard.writeText(v); btn.textContent='Kopiert'; }
-    catch{ const el=document.getElementById('c'+i); el.select(); document.execCommand('copy'); btn.textContent='Kopiert'; }
-    setTimeout(()=>btn.textContent='Kopieren',1200);
-  });
-});
+renderBookmarkletsPage('bm-page');
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
+  navigator.serviceWorker.register('./sw.js?v=2025-11-13-02');
 }
 </script>
 </body>
