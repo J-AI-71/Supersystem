@@ -6,12 +6,12 @@
   <base href="/Supersystem/">
   <title>SafeShare · Saubere Links. Weniger Tracking.</title>
   <meta name="theme-color" content="#111111">
-  <link rel="manifest" href="manifest.webmanifest?v=2025-11-13-02">
-  <link rel="icon" href="assets/logo.png?v=2025-11-13-02">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-13-06">
+  <link rel="icon" href="assets/logo.png?v=2025-11-13-06">
   <style>
     :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    .wrap{max-width:860px;margin:auto;padding:32px 16px}
+    .wrap{max-width:960px;margin:auto;padding:32px 16px}
     h1{font-size:28px;margin:0 0 8px}
     .mut{color:var(--mut)}
     .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
@@ -20,8 +20,13 @@
     .card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
     ul{margin:8px 0 0 18px}
     footer{margin-top:40px;font-size:13px;color:var(--mut)}
+    /* Bookmarklet UI */
     .bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
     input.code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+    /* Zielgruppen-Grid */
+    .gridZ{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;padding:0;margin:8px 0 0;list-style:none}
+    .pill{display:block;padding:.6rem .8rem;border:1px solid #2a2a2a;border-radius:10px;background:#1b1b1b;color:#eaeaea;text-decoration:none;font-weight:600}
+    .pill small{display:block;color:#9a9a9a;font-weight:400;margin-top:2px}
   </style>
 </head>
 <body>
@@ -41,7 +46,7 @@
     <h3 style="margin:0 0 8px">So funktioniert’s</h3>
     <ul>
       <li>Link einfügen → „Säubern & öffnen“.</li>
-      <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
+      <li>Bookmarklet für 1-Klick-Säuberung.</li>
       <li>Teilen über <code>redirect-entschachteln.html</code> mit kurzer Sponsor-Seite.</li>
     </ul>
   </div>
@@ -56,10 +61,30 @@
     <h3 style="margin:0 0 8px">SafeShare Pro</h3>
     <ul><li>Bulk-Cleaning</li><li>Eigene Domain-Regeln</li><li>PWA offline</li></ul>
     <div class="row" style="margin-top:8px">
-      <!-- ERSETZEN: deine Payhip-Links -->
+      <!-- ERSETZEN: echte Payhip-Links -->
       <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro freischalten</a>
       <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
     </div>
+  </div>
+
+  <!-- Zielgruppen-Block -->
+  <div class="card" id="zielgruppen" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">Zielgruppen</h3>
+    <ul class="gridZ" aria-label="Zielgruppen-Auswahl">
+      <li><a class="pill" href="journalismus.html">Journalismus<small>Quellenlinks ohne Tracking</small></a></li>
+      <li><a class="pill" href="ngo.html">NGOs & Initiativen<small>Datensparsam teilen</small></a></li>
+      <li><a class="pill" href="edu.html">Bildung<small>Unterrichtslinks ohne UTM</small></a></li>
+      <li><a class="pill" href="behoerden.html">Behörden & Parlamente<small>Policy-konform verlinken</small></a></li>
+      <li><a class="pill" href="presse.html">PR & Pressestellen<small>PMs ohne Kampagnenrauschen</small></a></li>
+      <li><a class="pill" href="compliance.html">Compliance & DPO<small>Whitelist/Policy für Teams</small></a></li>
+      <li><a class="pill" href="support.html">Support & CS<small>Klarere Hilfelinks</small></a></li>
+      <li><a class="pill" href="hr.html">HR & Recruiting<small>Stellen- & Bewerbungslinks</small></a></li>
+      <li><a class="pill" href="bibliotheken.html">Bibliotheken & Archive<small>Langzeitstabile URLs</small></a></li>
+      <li><a class="pill" href="forschung.html">Forschung & Kliniken<small>Neutrale Quellenlinks</small></a></li>
+      <li><a class="pill" href="opensource.html">Open-Source & Docs<small>UTM-freie Referenzen</small></a></li>
+      <li><a class="pill" href="affiliates.html">Publisher & Deals<small>Affiliate-Whitelist</small></a></li>
+    </ul>
+    <p class="mut" style="margin-top:10px">Mehr Anleitung: <a class="mut" href="how-to-utm-entfernen.html">UTM entfernen in 60 Sekunden</a></p>
   </div>
 
   <footer>
@@ -73,12 +98,13 @@
   </footer>
 </div>
 
-<script src="js/bookmarklets.js?v=2025-11-13-02"></script>
+<!-- Zentrales Bookmarklet-Rendering -->
+<script src="js/bookmarklets.js?v=2025-11-13-06"></script>
 <script>
 // Index: 1 Bookmarklet + Copy-Feld aus zentraler Quelle rendern
 renderBookmarkletsIndex('bm-index');
 
-// Install-Button nur wenn supported; iOS Hinweis sonst
+// Install-Button nur wenn supported; iOS-Hinweis sonst
 let deferredPrompt=null;
 const installBtn=document.getElementById('install');
 window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; installBtn.style.display='inline-block'; });
@@ -86,9 +112,32 @@ const isiOS=/iPad|iPhone|iPod/i.test(navigator.userAgent);
 if(isiOS) document.getElementById('ios-tip').style.display='inline';
 installBtn.addEventListener('click', async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none'; });
 
-// SW
+// Service Worker (Skipper aktiv)
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-13-02');
+  navigator.serviceWorker.register('./sw.js?v=2025-11-13-06');
+}
+</script>
+
+<!-- Optional: ItemList-Schema für Zielgruppen -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ItemList",
+  "name":"SafeShare Zielgruppen",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"url":"https://j-ai-71.github.io/Supersystem/journalismus.html"},
+    {"@type":"ListItem","position":2,"url":"https://j-ai-71.github.io/Supersystem/ngo.html"},
+    {"@type":"ListItem","position":3,"url":"https://j-ai-71.github.io/Supersystem/edu.html"},
+    {"@type":"ListItem","position":4,"url":"https://j-ai-71.github.io/Supersystem/behoerden.html"},
+    {"@type":"ListItem","position":5,"url":"https://j-ai-71.github.io/Supersystem/presse.html"},
+    {"@type":"ListItem","position":6,"url":"https://j-ai-71.github.io/Supersystem/compliance.html"},
+    {"@type":"ListItem","position":7,"url":"https://j-ai-71.github.io/Supersystem/support.html"},
+    {"@type":"ListItem","position":8,"url":"https://j-ai-71.github.io/Supersystem/hr.html"},
+    {"@type":"ListItem","position":9,"url":"https://j-ai-71.github.io/Supersystem/bibliotheken.html"},
+    {"@type":"ListItem","position":10,"url":"https://j-ai-71.github.io/Supersystem/forschung.html"},
+    {"@type":"ListItem","position":11,"url":"https://j-ai-71.github.io/Supersystem/opensource.html"},
+    {"@type":"ListItem","position":12,"url":"https://j-ai-71.github.io/Supersystem/affiliates.html"}
+  ]
 }
 </script>
 </body>
