@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>SafeShare2 · Status</title>
   <style>
@@ -34,7 +35,6 @@
   const base=(baseEl&&baseEl.getAttribute('href'))||'(kein <base>)';
   add('Base HREF', `<code>${base}</code>`, base==='/Supersystem/'||/\/Supersystem\/$/.test(base));
 
-  // Pfad/Origin
   add('Origin', `<code>${location.origin}</code>`, true);
   add('Pfad', `<code>${location.pathname}</code>`, true);
 
@@ -53,24 +53,22 @@
     const regs=await navigator.serviceWorker.getRegistrations();
     add('SW Registrierungen', regs.length, regs.length<=1);
     if(regs[0]){
-      add('SW Script', `<code>${new URL(regs[0].active?.scriptURL||regs[0].scriptURL).pathname}</code>`, true);
+      const scr = new URL((regs[0].active?.scriptURL)||regs[0].scriptURL).pathname;
+      add('SW Script', `<code>${scr}</code>`, /\/Supersystem\/sw\.js/.test(scr));
     }
   }
 
   // Redirect-Dateien erreichbar?
-  async function head(url){
-    try{ const r=await fetch(url,{method:'HEAD',cache:'no-store'}); return r.status; }catch(e){ return 0; }
-  }
+  async function head(url){ try{ const r=await fetch(url,{method:'HEAD',cache:'no-store'}); return r.status; }catch(e){ return 0; } }
   const small = await head('redirect-entschachteln.html');
   const large = await head('Redirect-entschachteln.html');
   add('redirect-entschachteln.html', small?('HTTP '+small):'nicht erreichbar', small===200);
   add('Redirect-entschachteln.html (Alias)', large?('HTTP '+large):'nicht erreichbar', large===200);
 
-  // Bookmarklet-Ziehbarkeit grob (Desktop vs. Touch)
+  // Ziehbarkeit grob
   const canDrag = !('ontouchstart' in window);
   add('Drag & Drop (Bookmarklet)', canDrag?'Desktop OK':'Touch-Gerät – Ziehen nicht möglich', canDrag);
 
-  // Ausgabe
   document.querySelector('#t tbody').innerHTML=rows.join('');
 })();
 </script>
