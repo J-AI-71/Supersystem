@@ -1,168 +1,205 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>SafeShare2 · App</title>
-  <link rel="icon" href="assets/logo.png?v=2025-11-13-01">
-  <style>
-    body{font-family:system-ui;margin:0;background:#0b0b0b;color:#eaeaea}
-    .wrap{max-width:860px;margin:auto;padding:20px}
-    input,textarea{width:100%;padding:.7rem;border-radius:10px;border:1px solid #2a2a2a;background:#111;color:#eaeaea}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .btn{padding:.7rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600}
-    .btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-    .mut{color:#9a9a9a}
-    .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:12px}
-    .code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-    a.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>SafeShare – Links reinigen</title>
+<link rel="icon" href="assets/logo.png?v=2025-11-13-08">
+<link rel="manifest" href="manifest.webmanifest?v=2025-11-13-08">
+<meta name="theme-color" content="#111111">
+<style>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:860px;margin:auto;padding:28px 16px}
+h1{margin:0 0 8px;font-size:28px}.mut{color:var(--mut)}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
+.btn.pri{background:var(--pri);color:#07130c}.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* Eingabeleiste + Clear-Button */
+.group{position:relative}
+input.url{width:100%;padding:.8rem 3rem .8rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:16px/1.3 ui-monospace,Menlo,Consolas,monospace}
+button.clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:9px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;font-size:18px;line-height:1;font-weight:700;cursor:pointer;display:none}
+button.clear:focus{outline:2px solid var(--pri)}
+/* iOS native Clear-X ausblenden (wir nutzen den eigenen Button) */
+input[type="search"]::-webkit-search-cancel-button{-webkit-appearance:none}
+
+/* Ergebnisfeld */
+input.out{width:100%;margin-top:10px;padding:.7rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.3 ui-monospace,Menlo,Consolas,monospace}
+small.help{display:block;margin-top:6px;color:var(--mut)}
+</style>
 </head>
 <body>
 <div class="wrap">
-  <h2>SafeShare App</h2>
+  <h1>SafeShare</h1>
+  <p class="mut">UTM, gclid, fbclid & Co. entfernen. Lokal im Browser.</p>
 
   <div class="card">
-    <label>Link
-      <input id="inp" type="url" inputmode="url" placeholder="https://…">
-    </label>
-    <div class="row" style="margin-top:8px">
-      <button id="cleanOpen" class="btn">Säubern & öffnen</button>
-      <button id="copy" class="btn alt">Kopieren</button>
-      <button id="share" class="btn alt">Teilen</button>
-      <button id="pro" class="btn alt">Pro aktivieren</button>
+    <label for="in" class="mut">Link</label>
+    <div class="group">
+      <input id="in" class="url" type="search" inputmode="url" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="URL einfügen oder tippen …">
+      <button id="clear" class="clear" type="button" aria-label="Eingabe löschen" title="Eingabe löschen">×</button>
     </div>
-    <pre id="out" class="mut" style="white-space:pre-wrap;margin-top:8px"></pre>
-  </div>
+    <small class="help">Tipp: Einfügen, Enter drücken – oder „Säubern &amp; öffnen“.</small>
 
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bulk (Pro)</h3>
-    <textarea id="bulk" rows="6" placeholder="Eine URL pro Zeile"></textarea>
-    <div class="row" style="margin-top:8px">
-      <button id="bulkClean" class="btn">Liste säubern</button>
-      <button id="bulkCopy" class="btn alt">Liste kopieren</button>
-    </div>
-  </div>
-
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bookmarklets</h3>
-    <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. iOS/Android: Link lange tippen → Lesezeichen, dann die URL des Lesezeichens mit dem Code ersetzen.</p>
-
-    <div class="row">
-      <a class="bm" id="bm1"
-         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">Clean & Open</a>
-      <input id="code1" class="code" readonly>
-      <button class="btn alt" data-copy="#code1">Kopieren</button>
+    <div class="row" style="margin-top:12px">
+      <button id="cleanOpen" class="btn pri" type="button">Säubern & öffnen</button>
+      <button id="copy" class="btn alt" type="button">Kopieren</button>
+      <button id="share" class="btn alt" type="button">Teilen</button>
+      <a class="btn alt" href="redirect-entschachteln.html?wait=1&details=1&u=" id="inspect" target="_blank" rel="noopener">Prüfen</a>
     </div>
 
-    <div class="row" style="margin-top:8px">
-      <a class="bm" id="bm2"
-         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();">Clean & Stay</a>
-      <input id="code2" class="code" readonly>
-      <button class="btn alt" data-copy="#code2">Kopieren</button>
-    </div>
-
-    <div class="row" style="margin-top:8px">
-      <a class="bm" id="bm3"
-         href="javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();">Clean & Copy</a>
-      <input id="code3" class="code" readonly>
-      <button class="btn alt" data-copy="#code3">Kopieren</button>
-    </div>
+    <input id="out" class="out" readonly placeholder="Ergebnis erscheint hier …">
+    <details id="logBox" class="mut" style="margin-top:8px;display:none"><summary>Was wurde geändert?</summary><div id="log"></div></details>
   </div>
 
   <p class="mut" style="margin-top:12px">
-    <a class="mut" href="index.html">Zurück</a> ·
-    <a class="mut" href="bookmarklets.html">Bookmarklets-Seite</a> ·
-    <a class="mut" href="tools.html">Tools</a>
+    <a href="bookmarklets.html" class="mut">Bookmarklets</a> ·
+    <a href="tests.html" class="mut">Tests</a> ·
+    <a href="team-setup.html" class="mut">Team-Setup</a> ·
+    <a href="index.html" class="mut">Start</a>
   </p>
 </div>
 
 <script>
-// Pro via Payhip: /app.html#pro=1
-if (location.hash.includes('pro=1')) {
-  localStorage.setItem('ss2_pro','1');
-  history.replaceState(null,'',location.pathname);
-  alert('Pro aktiviert');
+/* ---------- Flags (Publisher/Whitelist) aus LocalStorage ---------- */
+function getFlags(){
+  const publisher = localStorage.getItem('ss_mode')==='publisher';
+  const wl = new Set((localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
+  return {publisher, wl};
 }
 
-const TRACKERS=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","vero_id","igshid","si","spm"]);
-function cleanUrl(raw){
+/* ---------- Entschachteln (bis 5 Ebenen) ---------- */
+function unwrapWithLog(u){
+  const steps=[];
   try{
-    const u=new URL(String(raw).trim());
-    if(/\bamazon\.(de|com|co\.uk|it|fr|es)\b/.test(u.hostname)){
-      ["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"].forEach(k=>u.searchParams.delete(k));
-      if(u.hash) u.hash="";
+    let s=u, loops=0;
+    while(loops++<5){
+      const url=new URL(s), p=url.searchParams;
+      const keys=['url','u','link','q','target','to','dest']; let key=null,val=null;
+      for(const k of keys){ if(p.has(k)){ key=k; val=p.get(k); break; } }
+      if(!key) return {url:s, steps};
+      steps.push(`Entschachtelt: „${key}=“ gefunden`);
+      try{ for(let i=0;i<3;i++) val=decodeURIComponent(val); }catch{}
+      if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(val)) val='https://'+val.replace(/^\/+/, '');
+      s=val;
     }
-    for(const k of [...u.searchParams.keys()]){
-      if(k.startsWith("utm_")||TRACKERS.has(k)) u.searchParams.delete(k);
-    }
-    u.pathname=u.pathname.replace(/\/{2,}/g,"/");
-    if(u.pathname!=="/"&&u.pathname.endsWith("/")) u.pathname=u.pathname.slice(0,-1);
-    return u.toString();
-  }catch{return raw;}
+    steps.push('Maximal 5 Ebenen entschachtelt.');
+    return {url:s, steps};
+  }catch{ return {url:u, steps}; }
 }
 
-// Pro-Gate
-const hasPro=()=>localStorage.getItem('ss2_pro')==='1';
-function requirePro(){ if(hasPro()) return true; alert('Pro-Funktion. Bitte Pro aktivieren.'); return false; }
-document.getElementById('pro').onclick=()=>{
-  const key=prompt('Pro-Schlüssel eingeben:'); if(!key) return;
-  localStorage.setItem('ss2_pro','1'); alert('Pro aktiviert.');
-};
+/* ---------- Säubern inkl. Whitelist ---------- */
+function cleanWithLog(u){
+  const notes=[], removed=[], kept=[]; let hashDropped=false, pathNorm=false;
+  const {publisher, wl}=getFlags();
+  try{
+    const x=new URL(u);
+    const TRACK=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"]);
 
-// Single
-const inp=document.getElementById('inp'), out=document.getElementById('out');
-document.getElementById('cleanOpen').onclick=()=>{
-  const src=inp.value.trim(); if(!src){out.textContent='Bitte URL eingeben.'; return;}
-  const dst=cleanUrl(src); out.textContent=src+"\n→ "+dst;
-  const a=document.createElement('a'); a.href=dst; a.target='_blank'; a.rel='noopener';
-  document.body.appendChild(a); a.click(); a.remove();
-};
-document.getElementById('copy').onclick=async()=>{
-  const src=inp.value.trim(); if(!src) return;
-  const dst=cleanUrl(src); try{ await navigator.clipboard.writeText(dst);}catch{}
-  out.textContent='Kopiert:\n'+dst;
-};
-document.getElementById('share').onclick=async()=>{
-  const src=inp.value.trim(); if(!src) return;
-  const dst=cleanUrl(src);
-  if(navigator.share){ try{ await navigator.share({title:'SafeShare', url:dst}); }catch(e){} }
-  else { try{ await navigator.clipboard.writeText(dst);}catch{} alert('In Zwischenablage kopiert.'); }
-};
+    // Amazon-Sonderfälle
+    if(/amazon\./.test(x.hostname)){
+      const AFF=["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"];
+      AFF.forEach(k=>{
+        if(publisher && wl.has(k)){ if(x.searchParams.has(k)) kept.push(k); }
+        else if(x.searchParams.has(k)){ removed.push(k); x.searchParams.delete(k); }
+      });
+      if(x.hash && !(publisher && wl.has('#'))){ hashDropped=true; x.hash=""; }
+    }
 
-// Bulk
-document.getElementById('bulkClean').onclick=()=>{
-  if(!requirePro()) return;
-  const lines=document.getElementById('bulk').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  document.getElementById('bulk').value=lines.map(cleanUrl).join('\n');
-};
-document.getElementById('bulkCopy').onclick=async()=>{
-  if(!requirePro()) return;
-  try{ await navigator.clipboard.writeText(document.getElementById('bulk').value);}catch{}
-  alert('Liste kopiert.');
-};
+    // Allgemeine Tracker
+    for(const k of [...x.searchParams.keys()]){
+      const isTracker = k.startsWith('utm_') || TRACK.has(k);
+      if(isTracker){
+        if(publisher && wl.has(k)) kept.push(k);
+        else { removed.push(k); x.searchParams.delete(k); }
+      }
+    }
 
-// Bookmarklet-Codes spiegeln + kopieren
-['#bm1','#bm2','#bm3'].forEach((sel,i)=>{
-  const a=document.querySelector(sel);
-  const input=document.getElementById('code'+(i+1));
-  input.value=a.getAttribute('href');
-});
-document.querySelectorAll('[data-copy]').forEach(btn=>{
-  btn.addEventListener('click', async ()=>{
-    const sel=btn.getAttribute('data-copy');
-    const el=document.querySelector(sel);
-    try{ await navigator.clipboard.writeText(el.value); btn.textContent='Kopiert'; }
-    catch{ el.select(); document.execCommand('copy'); btn.textContent='Kopiert'; }
-    setTimeout(()=>btn.textContent='Kopieren',1200);
-  });
-});
+    const before=x.pathname;
+    x.pathname=x.pathname.replace(/\/{2,}/g,'/');
+    if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
+    if(x.pathname!==before) pathNorm=true;
 
-// SW registrieren
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
+    if(removed.length) notes.push(`Entfernt: ${removed.join(', ')}`);
+    if(kept.length)    notes.push(`Behalten (Whitelist): ${kept.join(', ')}`);
+    if(hashDropped)    notes.push('Hash entfernt (Amazon-Standard).');
+    if(pathNorm)       notes.push('Pfad normalisiert (// und trailing Slash).');
+
+    return {url:x.toString(), notes};
+  }catch{
+    return {url:u, notes:['Konnte nicht geparst werden – unverändert']};
+  }
 }
+
+/* ---------- UI-Logik ---------- */
+const $in = document.getElementById('in');
+const $clear = document.getElementById('clear');
+const $out = document.getElementById('out');
+const $logBox = document.getElementById('logBox');
+const $log = document.getElementById('log');
+const $inspect = document.getElementById('inspect');
+
+function showClear(){
+  $clear.style.display = $in.value ? 'inline-flex' : 'none';
+}
+$in.addEventListener('input', showClear);
+$in.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape'){ e.preventDefault(); clearInput(); }
+  if(e.key==='Enter'){ e.preventDefault(); cleanAndOpen(false); }
+});
+
+function clearInput(){
+  $in.value=''; showClear(); $out.value=''; $logBox.style.display='none'; $in.focus();
+}
+$clear.addEventListener('click', clearInput);
+
+/* Hauptaktion */
+function cleanAndOpen(openAfter){
+  let v=$in.value.trim();
+  if(!v) return;
+  try{ for(let i=0;i<3;i++) v=decodeURIComponent(v); }catch{}
+  if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(v)) v='https://'+v.replace(/^\/+/, '');
+
+  const un = unwrapWithLog(v);
+  const cl = cleanWithLog(un.url);
+
+  // Ausgabe + Protokoll
+  $out.value = cl.url;
+  const lines = [];
+  if(un.steps.length) lines.push('Entschachtelung: '+un.steps.join(' → '));
+  if(cl.notes.length) lines.push(...cl.notes);
+  if(!lines.length)   lines.push('Keine Änderungen notwendig.');
+  $log.innerHTML = '<ul style="margin:.2rem 0 0 18px">'+lines.map(x=>`<li>${x.replace(/&/g,'&amp;')}</li>`).join('')+'</ul>';
+  $logBox.style.display='block';
+
+  // Prüf-Link aktualisieren
+  $inspect.href = 'redirect-entschachteln.html?wait=1&details=1&u=' + encodeURIComponent(v);
+
+  if(openAfter) location.href = cl.url;
+}
+
+document.getElementById('cleanOpen').addEventListener('click', ()=>cleanAndOpen(true));
+document.getElementById('copy').addEventListener('click', async ()=>{
+  if(!$out.value) cleanAndOpen(false);
+  try{ await navigator.clipboard.writeText($out.value||$in.value); }catch{ prompt('Copy:', $out.value||$in.value); }
+});
+document.getElementById('share').addEventListener('click', async ()=>{
+  if(!$out.value) cleanAndOpen(false);
+  if(navigator.share){
+    try{ await navigator.share({title:'Sauberer Link', url:$out.value}); }catch{}
+  }else{
+    alert('Teilen wird von diesem Browser nicht unterstützt. Bitte Link kopieren.');
+  }
+});
+
+/* PWA */
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-08'); }
+
+/* Initial */
+showClear();
 </script>
 </body>
-</html>0
+</html>
