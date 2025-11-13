@@ -1,90 +1,28 @@
 <!doctype html>
-<html lang="de">
-<meta charset="utf-8">
+<html lang="de"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SafeShare • Health Check</title>
+<title>SafeShare • Health Lite</title>
 <base href="/Supersystem/">
 <style>
-  body{font:16px/1.6 system-ui;padding:20px;max-width:980px;margin:auto;color:CanvasText;background:Canvas}
+  body{font:16px/1.6 system-ui;padding:20px;max-width:900px;margin:auto;color:CanvasText;background:Canvas}
   table{border-collapse:collapse;width:100%} th,td{border:1px solid #ccc;padding:.6rem .7rem;text-align:left}
   th{background:color-mix(in oklab,Canvas 92%,CanvasText 0%)}
-  .ok{color:#137333;font-weight:600} .bad{color:#b00020;font-weight:600} .warn{color:#b8860b;font-weight:600}
+  .ok{color:#137333;font-weight:600}.bad{color:#b00020;font-weight:600}
   code{font-family:ui-monospace,Menlo,Consolas,monospace}
-  .small{opacity:.8;font-size:.92rem}
 </style>
-<h1>SafeShare • Health Check</h1>
-<p class="small">Prüft <code>logo.svg</code>, Icons, Manifest, Service-Worker, Footer-Links und App-Share.</p>
-<table id="tbl"><thead><tr><th>Check</th><th>Ergebnis</th><th>Details</th></tr></thead><tbody></tbody></table>
-<p class="small">Tipps: Bei Rot zuerst Pfad/Dateiname prüfen. Danach Service-Worker-Cache im <code>sw.js</code> bumpen und hart neu laden.</p>
+<h1>SafeShare • Health Lite</h1>
+<table id="t"><thead><tr><th>Ressource</th><th>Status</th><th>HTTP</th></tr></thead><tbody></tbody></table>
 <script>
-(async () => {
-  const rows = document.querySelector('#tbl tbody');
-  const add = (name, ok, detail, cls) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${name}</td><td class="${cls|| (ok?'ok':'bad')}">${ok?'OK':'FEHLER'}</td><td><pre class="small" style="margin:0;white-space:pre-wrap">${detail||''}</pre></td>`;
+(async()=>{
+  const rows=document.querySelector('#t tbody');
+  const list=['index.html','app.html','logo.svg','manifest.webmanifest',
+              'icons/icon-180.png','icons/icon-192.png','icons/icon-512.png','sw.js'];
+  for (const p of list){
+    let ok=false, code='—';
+    try{ const r=await fetch(p+'?v=20251113a',{cache:'no-store'}); ok=r.ok; code=r.status; }catch{ code='ERR'; }
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><code>${p}</code></td><td class="${ok?'ok':'bad'}">${ok?'OK':'FEHLER'}</td><td>${code}</td>`;
     rows.appendChild(tr);
-  };
-
-  async function exists(url) {
-    try { const r = await fetch(url, {cache:'no-store'}); return {ok:r.ok, status:r.status, text: await r.text().catch(()=>''), url}; }
-    catch(e){ return {ok:false, status:'ERR', text:String(e), url}; }
   }
-
-  // 1) Logo
-  let r = await exists('logo.svg');
-  add('logo.svg', r.ok, `${r.url} → ${r.status}`);
-
-  // 2) Icons
-  for (const s of [180,192,512]) {
-    const rr = await fetch(`icons/icon-${s}.png`, {cache:'no-store'}).then(x=>({ok:x.ok,status:x.status,url:x.url})).catch(()=>({ok:false,status:'ERR'}));
-    add(`icons/icon-${s}.png`, rr.ok, `icons/icon-${s}.png → ${rr.status}`);
-  }
-
-  // 3) Manifest
-  let mOk=false, mDet='';
-  try {
-    const m = await fetch('manifest.webmanifest', {cache:'no-store'});
-    if (!m.ok) throw new Error('HTTP '+m.status);
-    const j = await m.json();
-    mOk = j && j.start_url==='/Supersystem/' && j.scope==='/Supersystem/' &&
-          Array.isArray(j.icons) && j.icons.some(i=>/icon-192\.png$/.test(i.src)) && j.icons.some(i=>/icon-512\.png$/.test(i.src));
-    mDet = JSON.stringify(j, null, 2);
-  } catch(e){ mDet = String(e); }
-  add('manifest.webmanifest', mOk, mDet, mOk?'ok':'warn');
-
-  // 4) Service Worker
-  let swDet='', swOk=false;
-  if ('serviceWorker' in navigator) {
-    try {
-      const reg = await navigator.serviceWorker.register('sw.js');
-      swOk = !!(reg && (reg.active||reg.installing||reg.waiting));
-      const swTxt = await fetch('sw.js', {cache:'no-store'}).then(r=>r.ok?r.text():'(sw.js nicht erreichbar)').catch(()=>'(fetch sw.js fehlgeschlagen)');
-      const m = swTxt && swTxt.match(/CACHE\s*=\s*['"]([^'"]+)['"]/);
-      swDet = `registered: ${swOk}\n` + (m?`cache key: ${m[1]}`:'cache key: (nicht gefunden)');
-    } catch(e){ swDet = 'register-Fehler: '+e; }
-  } else swDet='Navigator hat keinen ServiceWorker';
-  add('Service Worker', swOk, swDet, swOk?'ok':'warn');
-
-  // 5) Footer-Links auf Index
-  try {
-    const html = await fetch('index.html', {cache:'no-store'}).then(r=>r.text());
-    const hasImpr = /href\s*=\s*["']impressum\.html["']/.test(html);
-    const hasDS   = /href\s*=\s*["']datenschutz\.html["']/.test(html);
-    add('Footer: Impressum-Link', hasImpr, hasImpr?'gefunden in index.html':'nicht gefunden', hasImpr?'ok':'bad');
-    add('Footer: Datenschutz-Link', hasDS, hasDS?'gefunden in index.html':'nicht gefunden', hasDS?'ok':'bad');
-  } catch(e){ add('Footer-Links', false, String(e)); }
-
-  // 6) App-Share-Fähigkeit
-  const shareCap = !!navigator.share;
-  add('Web Share API', shareCap, shareCap?'navigator.share vorhanden':'kein System-Share (Desktop Safari/iOS älter)');
-
-  // 7) Base/Scope-Diagnose
-  const baseHref = (document.querySelector('base')||{}).href || '(kein base)';
-  add('Base-Href', /\/Supersystem\/$/.test(baseHref), baseHref, /\/Supersystem\/$/.test(baseHref)?'ok':'warn');
-
-  // 8) iOS Install-Hinweis
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  add('iOS Installierbar', isIOS ? !standalone : true, isIOS ? (standalone?'bereits installiert':'Teilen → „Zum Home-Bildschirm“') : 'Nicht iOS', 'ok');
 })();
 </script>
