@@ -1,76 +1,108 @@
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>SafeShare2 · Status</title>
-  <style>
-    body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.45 system-ui}
-    .wrap{max-width:860px;margin:auto;padding:20px}
-    .ok{color:#29c07e;font-weight:600}
-    .bad{color:#ff7b7b;font-weight:600}
-    code{background:#111;padding:.2rem .4rem;border-radius:6px}
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    td,th{border:1px solid #1f1f1f;padding:8px;vertical-align:top}
-    th{background:#111}
-    .mut{color:#9a9a9a}
-    .btn{display:inline-block;padding:.6rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none}
-  </style>
-</head>
-<body>
-<div class="wrap">
-  <h2>Status</h2>
-  <table id="t"><tbody></tbody></table>
-  <p class="mut" style="margin-top:12px">
-    <a class="btn" href="index.html">Start</a>
-    <a class="btn" href="bookmarklets.html">Bookmarklets</a>
-    <a class="btn" href="tools.html">Tools</a>
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Weiterleitung · SafeShare</title>
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="assets/logo.png?v=2025-11-13-07">
+<style>
+body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}
+.w{max-width:760px;margin:auto;padding:28px 16px}.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px}
+.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
+.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
+input.code{width:100%;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+.mut{color:#9a9a9a}
+</style></head><body><div class="w">
+<h1 style="margin:0 0 10px">Weiterleitung</h1>
+<div class="card">
+  <p id="info" class="mut">Bereite Ziel-URL vor …</p>
+  <input id="url" class="code" readonly value="">
+  <p style="margin-top:10px">
+    <a id="open" class="btn pri" href="#">Jetzt öffnen</a>
+    <button id="copy" class="btn alt" type="button">Kopieren</button>
+    <a class="btn alt" href="bookmarklets.html">Bookmarklet</a>
   </p>
 </div>
+<p class="mut" style="margin-top:12px">Warum diese Seite? Wir entfernen Marketing-Parameter (<code>utm_*</code>, <code>gclid</code>, <code>fbclid</code> …) und entschnüren verschachtelte Redirects (z. B. <code>url=…</code>, <code>u=…</code>, <code>q=…</code>).</p>
+<p class="mut"><a href="index.html">Start</a></p>
+</div>
 <script>
-(async function(){
-  const rows=[], add=(k,v,ok)=>rows.push(`<tr><th>${k}</th><td class="${ok===false?'bad':ok===true?'ok':''}">${v}</td></tr>`);
-  const baseEl=document.querySelector('base');
-  const base=(baseEl&&baseEl.getAttribute('href'))||'(kein <base>)';
-  add('Base HREF', `<code>${base}</code>`, base==='/Supersystem/'||/\/Supersystem\/$/.test(base));
-
-  add('Origin', `<code>${location.origin}</code>`, true);
-  add('Pfad', `<code>${location.pathname}</code>`, true);
-
-  // Browserumgebung
-  const ua=navigator.userAgent;
-  const inApp = /(FBAN|FBAV|Instagram|Line|WeChat|MiuiBrowser|TikTok|Twitter|Pinterest|LinkedIn)/i.test(ua);
-  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
-  add('User-Agent', `<code>${ua}</code>`, true);
-  add('In-App Browser', inApp?'Ja':'Nein', !inApp);
-  add('PWA/Standalone', standalone?'Ja':'Nein', true);
-
-  // Service Worker
-  const hasSW = 'serviceWorker' in navigator;
-  add('Service Worker API', hasSW?'Vorhanden':'Fehlt', hasSW);
-  if(hasSW){
-    const regs=await navigator.serviceWorker.getRegistrations();
-    add('SW Registrierungen', regs.length, regs.length<=1);
-    if(regs[0]){
-      const scr = new URL((regs[0].active?.scriptURL)||regs[0].scriptURL).pathname;
-      add('SW Script', `<code>${scr}</code>`, /\/Supersystem\/sw\.js/.test(scr));
+// Flags (Publisher/Whitelist) aus URL & LocalStorage
+function getFlags(){
+  const sp=new URL(location.href).searchParams;
+  const publisher = sp.get('publisher')==='1' || sp.get('mode')==='publisher' || localStorage.getItem('ss_mode')==='publisher';
+  const wl = new Set((sp.get('wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
+  (localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(x=>wl.add(x));
+  return {publisher, wl};
+}
+// N-mal verschachtelte Redirect-Parameter rausziehen
+function unwrap(u){
+  try{
+    let s = u, loops=0;
+    while(loops++<5){
+      const url = new URL(s);
+      const p = url.searchParams;
+      const candidates = ['url','u','link','q','target','to','dest'];
+      let found=null;
+      for(const k of candidates){ if(p.has(k)){ found = p.get(k); break; } }
+      if(!found) return s;
+      // Mehrfach decodieren
+      try{
+        let tmp = found;
+        for(let i=0;i<3;i++) tmp = decodeURIComponent(tmp);
+        s = tmp;
+      }catch{ s = found; }
+      // Schema ergänzen falls fehlt
+      if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)){ s = 'https://' + s.replace(/^\/+/, ''); }
     }
-  }
+    return s;
+  }catch{ return u; }
+}
+// Säubern inkl. Whitelist
+function clean(u){
+  try{
+    const x=new URL(u);
+    const T=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"]);
+    const {publisher, wl}=getFlags();
+    // Amazon-Sonderfälle
+    if(/amazon\./.test(x.hostname)){
+      const AFF=["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"];
+      AFF.forEach(k=>{ if(!(publisher && wl.has(k))) x.searchParams.delete(k); });
+      if(!(publisher && wl.has('#'))) x.hash="";
+    }
+    // Allgemein
+    for(const k of [...x.searchParams.keys()]){
+      const isTracker = k.startsWith('utm_') || T.has(k);
+      if(isTracker && !(publisher && wl.has(k))) x.searchParams.delete(k);
+    }
+    x.pathname=x.pathname.replace(/\/{2,}/g,"/");
+    if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
+    return x.toString();
+  }catch{ return u; }
+}
+// --- Main
+(function(){
+  const sp=new URL(location.href).searchParams;
+  let u = sp.get('u') || sp.get('url') || sp.get('link') || '';
+  if(!u) { document.getElementById('info').textContent='Keine Ziel-URL übergeben.'; return; }
+  // mehrfach decodieren + Schema fixen
+  try{ for(let i=0;i<3;i++) u=decodeURIComponent(u) }catch{}
+  if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(u)){ u='https://'+u.replace(/^\/+/, ''); }
+  // verschachtelte Redirects abwickeln
+  u = unwrap(u);
+  // säubern
+  const c = clean(u);
+  const input=document.getElementById('url'); input.value=c;
+  document.getElementById('open').href=c;
+  document.getElementById('info').textContent='Ziel vorbereitet.';
 
-  // Redirect-Dateien erreichbar?
-  async function head(url){ try{ const r=await fetch(url,{method:'HEAD',cache:'no-store'}); return r.status; }catch(e){ return 0; } }
-  const small = await head('redirect-entschachteln.html');
-  const large = await head('Redirect-entschachteln.html');
-  add('redirect-entschachteln.html', small?('HTTP '+small):'nicht erreichbar', small===200);
-  add('Redirect-entschachteln.html (Alias)', large?('HTTP '+large):'nicht erreichbar', large===200);
+  // Auto-Redirect (wenn kein wait=1)
+  if(!(sp.get('wait')==='1')) location.replace(c);
 
-  // Ziehbarkeit grob
-  const canDrag = !('ontouchstart' in window);
-  add('Drag & Drop (Bookmarklet)', canDrag?'Desktop OK':'Touch-Gerät – Ziehen nicht möglich', canDrag);
-
-  document.querySelector('#t tbody').innerHTML=rows.join('');
+  // Copy
+  document.getElementById('copy').onclick=async()=>{
+    try{ await navigator.clipboard.writeText(c); document.getElementById('copy').textContent='Kopiert'; setTimeout(()=>document.getElementById('copy').textContent='Kopieren',1200); }
+    catch{ prompt('Clean URL:', c); }
+  };
 })();
-</script>
-</body>
-</html>
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-07'); }
+</script></body></html>
