@@ -1,21 +1,37 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/"><title>Pro aktiviert</title>
+<!-- /Supersystem/pro-activate.html -->
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Pro aktiviert</title>
 <link rel="icon" href="assets/logo.png?v=2025-11-13-10">
-<style>body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}.w{max-width:720px;margin:auto;padding:28px 16px}
-.ok{color:#29c07e}.mut{color:#9a9a9a}.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+<meta name="theme-color" content="#111111">
+<style>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui}
+.w{max-width:720px;margin:auto;padding:28px 16px}
+.ok{color:#29c07e}
+.mut{color:#9a9a9a}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
 .btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0;background:#29c07e;color:#07130c}
-</style></head><body><div class="w">
-<h1 class="ok">Pro aktiviert</h1>
-<div class="card">
-  <p>Danke. SafeShare Pro ist auf diesem Gerät freigeschaltet.</p>
-  <p><a class="btn" href="app.html#pro=1">Zur App</a></p>
-  <p class="mut">Hinweis: Die Freischaltung ist lokal (dieses Browser-Profil).</p>
-</div>
-<p class="mut" style="margin-top:12px"><a href="pro.html">Zurück</a></p>
+</style>
+</head>
+<body>
+<div class="w">
+  <h1 class="ok">Pro aktiviert</h1>
+  <div class="card">
+    <p>Danke. SafeShare Pro ist auf diesem Gerät freigeschaltet.</p>
+    <p><a class="btn" href="app.html#pro=1">Zur App</a></p>
+    <p class="mut">Hinweis: Die Freischaltung gilt lokal in diesem Browser-Profil.</p>
+  </div>
+  <p class="mut" style="margin-top:12px"><a href="pro.html">Zurück</a></p>
 </div>
 <script>
 const sp=new URL(location.href).searchParams;
 if(sp.get('pro')==='1'){ localStorage.setItem('ss2_pro','1'); }
 if('serviceWorker'in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-10'); }
-</script></body></html>
+</script>
+</body>
+</html>
