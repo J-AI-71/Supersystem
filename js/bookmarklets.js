@@ -1,51 +1,72 @@
-// v2025-11-13-02 – zentrale Bookmarklet-Quelle
+// /Supersystem/js/bookmarklets.js
 (function(){
-  const ROOT = new URL((document.querySelector('base')?.getAttribute('href')||'/'), location.origin).href;
-  const BM = [
+  const BASE = 'https://j-ai-71.github.io/Supersystem/';
+
+  function makeCleanCurrent(){
+    // Leitet die aktuelle Seite durch den SafeShare-Wrapper
+    const target = BASE + 'redirect-entschachteln.html?u=';
+    return 'javascript:(()=>{try{const u=location.href;location.href="'+target+'"+encodeURIComponent(u)}catch(e){alert("Fehler: "+e)}})()';
+  }
+
+  const BOOKMARKLETS = [
     {
-      title: "Clean & Open (über SafeShare)",
-      href: "javascript:location.href='"+ROOT+"redirect-entschachteln.html?u='+encodeURIComponent(location.href)"
-    },
-    {
-      title: "Clean & Stay",
-      href: "javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);location.href=u.toString()}catch(e){}})();"
-    },
-    {
-      title: "Clean & Copy",
-      href: "javascript:(function(){try{var u=new URL(location.href),t=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','gclid','fbclid','msclkid','yclid','mc_cid','mc_eid','_hsenc','_hsmi','igshid','si','spm'];if(/amazon\\./.test(u.hostname)){['tag','ascsubtag','ref','pf_rd_r','pf_rd_p'].forEach(function(k){u.searchParams.delete(k)});u.hash=''};u.searchParams.forEach(function(_,k){if(/^utm_/.test(k)||t.indexOf(k)>-1)u.searchParams.delete(k)});u.pathname=u.pathname.replace(/\\/{2,}/g,'/');if(u.pathname!=='/'&&u.pathname.endsWith('/'))u.pathname=u.pathname.slice(0,-1);var s=u.toString()}catch(e){var s=location.href}try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(_){ }prompt('Clean URL:',s)})();"
+      id:'clean',
+      name:'SafeShare – Clean',
+      desc:'Aktuelle Seite sofort sauber öffnen (UTM/gclid/fbclid entfernen, Redirects entschnüren).',
+      code: makeCleanCurrent()
     }
+    // Platz für weitere Bookmarklets
   ];
 
-  function mkEl(tag, attrs={}, text){ const el=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); if(text) el.appendChild(document.createTextNode(text)); return el; }
-  async function copy(txt, btn){ try{ await navigator.clipboard.writeText(txt); btn.textContent='Kopiert'; }catch{ /* Fallback UI handled by input selection outside */ } setTimeout(()=>btn.textContent='Kopieren',1200); }
+  function el(tag,attrs={},text){
+    const n=document.createElement(tag);
+    Object.entries(attrs).forEach(([k,v])=>{ if(k==='class') n.className=v; else n.setAttribute(k,v); });
+    if(text!=null) n.textContent=text;
+    return n;
+  }
 
-  // Für Index: nur erstes Bookmarklet + Kopierfeld
-  window.renderBookmarkletsIndex = function(containerId){
-    const root=document.getElementById(containerId); if(!root) return;
-    const b=BM[0];
-    const row=mkEl('div', {class:'row'});
-    const a =mkEl('a', {class:'bm', href:b.href}, 'SafeShare Clean & Open');
-    const inp=mkEl('input', {class:'code', readonly:''}); inp.value=b.href;
-    const btn=mkEl('button', {class:'btn alt', type:'button'}, 'Kopieren');
-    btn.addEventListener('click', ()=>{ inp.select(); document.execCommand('copy'); btn.textContent='Kopiert'; setTimeout(()=>btn.textContent='Kopieren',1200); copy(inp.value, btn); });
-    row.append(a, inp, btn);
-    root.append(row);
-  };
+  function copyNameAndCode(name, code, btn){
+    const payload = `${name}\n${code}`;
+    (async()=>{
+      try{
+        await navigator.clipboard.writeText(payload);
+        if(btn){ const t=btn.textContent; btn.textContent='Kopiert'; setTimeout(()=>btn.textContent=t,1200); }
+      }catch{
+        prompt('Name + Code (erste Zeile = Name, zweite Zeile = Code):', payload);
+      }
+    })();
+  }
 
-  // Für bookmarklets.html: alle drei + Kopierfelder
-  window.renderBookmarkletsPage = function(containerId){
-    const root=document.getElementById(containerId); if(!root) return;
-    BM.forEach((b, i)=>{
-      const card=mkEl('div', {class:'card'});
-      card.append(mkEl('h3', {style:'margin:0 0 8px'}, (i+1)+') '+b.title));
-      const a=mkEl('a', {class:'bm', href:b.href}, b.title);
-      const row=mkEl('div', {class:'row'});
-      const inp=mkEl('input', {class:'code', readonly:''}); inp.value=b.href;
-      const btn=mkEl('button', {class:'copy'}, 'Kopieren');
-      btn.addEventListener('click', ()=>{ inp.select(); document.execCommand('copy'); btn.textContent='Kopiert'; setTimeout(()=>btn.textContent='Kopieren',1200); copy(inp.value, btn); });
-      row.append(inp, btn);
-      card.append(a, row);
-      root.append(card);
-    });
-  };
+  function renderItem(bm){
+    const wrap=el('div',{class:'row',style:'align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap'});
+    const a=el('a',{href:bm.code,draggable:'true',class:'bm'},bm.name);
+    const input=el('input',{type:'text',class:'code',value:bm.code,readonly:'readonly'});
+    const btn=el('button',{},'Name+Code kopieren');
+    btn.onclick=()=>copyNameAndCode(bm.name,bm.code,btn);
+    const p=el('p',{},bm.desc); p.className='mut'; p.style.margin='4px 0 0';
+    const col=el('div',{style:'flex:1;min-width:280px'});
+    col.appendChild(input); col.appendChild(p);
+    wrap.appendChild(a); wrap.appendChild(col); wrap.appendChild(btn);
+    return wrap;
+  }
+
+  // Index: ein kompakter Block
+  function renderBookmarkletsIndex(targetId){
+    const root=document.getElementById(targetId);
+    if(!root) return;
+    root.innerHTML='';
+    root.appendChild(renderItem(BOOKMARKLETS[0]));
+  }
+
+  // Volle Seite: Liste
+  function renderBookmarkletsPage(targetId){
+    const root=document.getElementById(targetId);
+    if(!root) return;
+    root.innerHTML='';
+    BOOKMARKLETS.forEach(b=> root.appendChild(renderItem(b)));
+  }
+
+  // Public API
+  window.renderBookmarkletsIndex = renderBookmarkletsIndex;
+  window.renderBookmarkletsPage  = renderBookmarkletsPage;
 })();
