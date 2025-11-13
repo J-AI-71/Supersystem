@@ -1,41 +1,43 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Bookmarklets · SafeShare</title>
-  <link rel="icon" href="assets/logo.png?v=2025-11-13-02">
-  <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui}
-    .wrap{max-width:920px;margin:auto;padding:28px 16px}
-    h1{margin:0 0 8px;font-size:26px}
-    .mut{color:var(--mut)}
-    .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-    .bm{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
-    input.code{flex:1;min-width:280px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-    button.copy{padding:.6rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600}
-    a{color:#eaeaea}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Bookmarklets · SafeShare</title>
+<link rel="icon" href="assets/logo.png?v=2025-11-13-08">
+<style>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:960px;margin:auto;padding:28px 16px}
+h1{margin:0 0 8px;font-size:28px}.mut{color:var(--mut)}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
+input.code{flex:1;min-width:280px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+button{padding:.6rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;font-weight:600}
+</style>
 </head>
 <body>
 <div class="wrap">
   <h1>Bookmarklets</h1>
-  <p class="mut">Desktop: Link in die Lesezeichenleiste ziehen. Mobile: Code kopieren und als URL eines Lesezeichens einfügen.</p>
+  <p class="mut">Desktop: den Button in die Lesezeichenleiste ziehen. iPhone/iPad: „Name+Code kopieren“ → neues Lesezeichen anlegen → Name (1. Zeile) und URL (2. Zeile) einsetzen.</p>
 
-  <div id="bm-page"></div>
+  <div class="card" id="bm-list">Lade …</div>
 
-  <p class="mut" style="margin-top:16px"><a href="index.html" class="mut">Zurück</a></p>
+  <p class="mut" style="margin-top:12px">
+    <a href="index.html" class="mut">Start</a> ·
+    <a href="app.html" class="mut">App</a> ·
+    <a href="tests.html" class="mut">Tests</a>
+  </p>
 </div>
 
-<script src="js/bookmarklets.js?v=2025-11-13-02"></script>
+<script src="js/bookmarklets.js?v=2025-11-13-08"></script>
 <script>
-renderBookmarkletsPage('bm-page');
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-13-02');
-}
+  // Liste rendern (inkl. Button „Name+Code kopieren“)
+  renderBookmarkletsPage('bm-list');
+  // Optional SW-Register (einheitlich mit der App)
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-08'); }
 </script>
 </body>
 </html>
