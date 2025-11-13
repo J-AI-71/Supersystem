@@ -2,166 +2,92 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SafeShare</title>
-
-  <!-- GitHub Pages Projektpfad -->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-
-  <!-- PWA / Icons -->
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
-<link rel="apple-touch-icon" href="icons/icon-180.png">
-<link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0b6ef7">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="SafeShare">
-
-  <meta name="description" content="SafeShare: Links säubern, Tracking entfernen. Lokal im Browser.">
-  <meta name="color-scheme" content="light dark">
-
+  <title>SafeShare2 · Saubere Links. Weniger Tracking.</title>
+  <meta name="theme-color" content="#111111">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-13-01">
+  <link rel="icon" href="assets/logo.png?v=2025-11-13-01">
   <style>
-    :root { --max: 900px; --gap: 1rem; --radius: 12px; }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
-    body {
-      background: Canvas; color: CanvasText;
-      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
-      min-height: 100dvh;
-      display: flex; flex-direction: column; align-items: center;
-    }
-    main { width: 100%; max-width: var(--max); flex: 1 0 auto; padding: 2rem 1rem; }
-    header { display: grid; grid-template-columns: 56px 1fr auto; gap: 1rem; align-items: center; }
-    header h1 { margin: 0 0 .25rem 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
-    header p { margin: 0 0 0 0; opacity: .8; }
-    .logo { width: 56px; height: 56px; }
-    .card {
-      border: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
-      border-radius: var(--radius);
-      padding: 1rem; margin: 1rem 0;
-      background: color-mix(in oklab, Canvas 92%, CanvasText 0%);
-    }
-    nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
-    nav a {
-      display: block; padding: .75rem 1rem; border-radius: 10px; text-decoration: none;
-      border: 1px solid color-mix(in oklab, CanvasText 12%, transparent);
-    }
-    nav a:hover, nav a:focus-visible { outline: none; border-color: color-mix(in oklab, CanvasText 25%, transparent); }
-    .hint { font-size: .92rem; opacity: .85; }
-    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace; font-size: .95em; }
-    details { margin-top: .5rem; }
-    .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem; border:1px solid color-mix(in oklab, CanvasText 20%, transparent); border-radius:10px; background:none; cursor:pointer; }
-    .btn[hidden] { display:none; }
-    .ok { color: green; } .warn { color: #b8860b; }
-
-    /* Sichtbarer, sticky Footer mit Safe-Area */
-    footer {
-      width: 100%; max-width: var(--max);
-      position: sticky; bottom: 0;
-      padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
-      display: flex; flex-wrap: wrap; gap: .75rem; align-items: center;
-      border-top: 1px solid color-mix(in oklab, CanvasText 15%, transparent);
-      background: color-mix(in oklab, Canvas 92%, CanvasText 0%);
-    }
-    footer a { color: currentColor; text-decoration: underline; }
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:860px;margin:auto;padding:32px 16px}
+    h1{font-size:28px;margin:0 0 8px}
+    .mut{color:var(--mut)}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:.8rem 1.1rem;background:var(--pri);color:#07130c;border:0;border-radius:10px;text-decoration:none;font-weight:600}
+    .btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
+    .card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
+    ul{margin:8px 0 0 18px}
+    footer{margin-top:40px;font-size:13px;color:var(--mut)}
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <img class="logo" src="logo.svg" alt="SafeShare Logo">
-      <div>
-        <h1>SafeShare</h1>
-        <p>Links säubern. Tracking entfernen. Lokal im Browser.</p>
-      </div>
-      <button id="installBtn" class="btn" hidden>Auf Gerät installieren</button>
-    </header>
+<div class="wrap">
+  <h1>SafeShare2</h1>
+  <p class="mut">Saubere Links ohne UTM, gclid, fbclid und Co. Teilen ohne Ballast.</p>
 
-    <section class="card">
-      <h2>Navigation</h2>
-      <nav aria-label="Hauptnavigation">
-        <ul>
-          <li><a href="app.html">App</a></li>
-          <li><a href="app-classic.html">App Classic</a></li>
-          <li><a href="bookmarklets.html" title="Ziehbare Links für die Lesezeichenleiste">Bookmarklets</a></li>
-          <li><a href="tests.html">Tests</a></li>
-        </ul>
-      </nav>
-      <p class="hint">
-        Projektpfad: <span class="mono">/Supersystem/</span>. Diese Seite nutzt <span class="mono">&lt;base href="/Supersystem/"&gt;</span>.
-      </p>
-      <details>
-        <summary>Pfad-Diagnose</summary>
-        <pre id="diag" class="mono">lade…</pre>
-      </details>
-    </section>
+  <div class="row" style="margin:16px 0 24px">
+    <a class="btn" href="app.html">App starten</a>
+    <a class="btn alt" href="redirect-entschachteln.html?u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
+    <a class="btn alt" href="bookmarklets.html">Bookmarklets</a>
+    <a class="btn alt" id="install">Auf Gerät installieren</a>
+  </div>
 
-    <section class="card">
-      <h2>Schnellstart</h2>
-      <ol>
-        <li>Öffne <strong>App</strong> für das Reinigen einzelner Links.</li>
-        <li>Nutze <strong>Bookmarklets</strong> für die Lesezeichenleiste.</li>
-        <li>Teste <strong>Tests</strong> mit Beispiel-URLs.</li>
-      </ol>
-      <p class="hint">Keine Server-Logs. Keine Cookies. Verarbeitung im Browser.</p>
-      <p class="hint" id="iosHint" hidden>iOS: Teilen-Menü → „Zum Home-Bildschirm“, um zu installieren.</p>
-    </section>
-  </main>
+  <div class="card">
+    <h3 style="margin:0 0 8px">So funktioniert’s</h3>
+    <ul>
+      <li>Link einfügen → „Säubern & öffnen“.</li>
+      <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
+      <li>Teilen über <code>redirect-entschachteln.html</code> mit kurzer Sponsor-Seite.</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">SafeShare Pro</h3>
+    <ul>
+      <li>Bulk-Cleaning.</li>
+      <li>Eigene Domain-Regeln.</li>
+      <li>PWA offline.</li>
+    </ul>
+    <div class="row" style="margin-top:8px">
+      <!-- ERSETZEN: Payhip-Links -->
+      <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro kaufen</a>
+      <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">Bookmarklet</h3>
+    <p>Desktop: in die Lesezeichenleiste ziehen. iOS/Android: lange tippen → „Zu Lesezeichen hinzufügen“.</p>
+    <p>
+      <a class="btn alt"
+         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
+         SafeShare Clean
+      </a>
+    </p>
+    <p class="mut">Leitet über SafeShare um und säubert die URL.</p>
+  </div>
 
   <footer>
-    <a href="impressum.html">Impressum</a>
-    <a href="datenschutz.html">Datenschutz</a>
-    <span>© <span id="year"></span> SafeShare</span>
+    <a href="tools.html" class="mut">Tools</a> ·
+    <a href="bookmarklets.html" class="mut">Bookmarklets</a> ·
+    <a href="tests.html" class="mut">Tests</a> ·
+    <a href="app.html" class="mut">App</a> ·
+    <span>© SafeShare</span>
   </footer>
+</div>
 
-  <script>
-    // Jahr
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Diagnose Base/Scope
-    (function () {
-      var base = document.querySelector('base')?.href || '(kein base)';
-      var expected = location.origin + '/Supersystem/';
-      var ok = base === expected;
-      var el = document.getElementById('diag');
-      el.textContent = [
-        'origin:   ' + location.origin,
-        'pathname: ' + location.pathname,
-        'base.href:' + base,
-        'expected: ' + expected,
-        'status:   ' + (ok ? 'OK' : 'WARN')
-      ].join('\n');
-      el.className = 'mono ' + (ok ? 'ok' : 'warn');
-    })();
-
-    // PWA Install (Android/Desktop)
-    let deferredPrompt;
-    const btn = document.getElementById('installBtn');
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      btn.hidden = false;
-    });
-    btn?.addEventListener('click', async () => {
-      btn.hidden = true;
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-      }
-    });
-
-    // iOS-Hinweis
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    if (isIOS && !isStandalone) document.getElementById('iosHint').hidden = false;
-
-    // Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(()=>{});
-    }
-  </script>
-
-  <noscript>JavaScript ist deaktiviert. Installation und Bookmarklets benötigen JS.</noscript>
+<script>
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; });
+document.getElementById('install').addEventListener('click', async ()=>{
+  if(!deferredPrompt){ alert('Installation nicht verfügbar.'); return; }
+  deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
+});
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
+}
+</script>
 </body>
 </html>
