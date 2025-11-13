@@ -20,7 +20,6 @@
     .card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
     ul{margin:8px 0 0 18px}
     footer{margin-top:40px;font-size:13px;color:var(--mut)}
-    input.code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
   </style>
 </head>
 <body>
@@ -30,7 +29,6 @@
 
   <div class="row" style="margin:16px 0 24px">
     <a class="btn" href="app.html">App starten</a>
-    <!-- zeigt den Wrapper-Screen sicher an -->
     <a class="btn alt" href="redirect-entschachteln.html?wait=1&u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
     <a class="btn alt" href="bookmarklets.html">Bookmarklets</a>
     <a class="btn alt" id="install" style="display:none">Auf Gerät installieren</a>
@@ -41,18 +39,9 @@
     <h3 style="margin:0 0 8px">So funktioniert’s</h3>
     <ul>
       <li>Link einfügen → „Säubern & öffnen“.</li>
-      <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
+      <li>Bookmarklets für 1-Klick-Säuberung (eigene Seite).</li>
       <li>Teilen über <code>redirect-entschachteln.html</code> mit kurzer Sponsor-Seite.</li>
     </ul>
-  </div>
-
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bookmarklet – sofort kopierbar</h3>
-    <p class="mut">Desktop: Link kann gezogen werden (in der <a class="mut" href="bookmarklets.html">Bookmarklet-Seite</a>). Mobile: Code kopieren und in die URL eines Lesezeichens einsetzen.</p>
-    <div class="row">
-      <input id="bm1" class="code" readonly>
-      <button class="btn alt" id="copyBm1">Kopieren</button>
-    </div>
   </div>
 
   <div class="card" style="margin-top:12px">
@@ -79,19 +68,6 @@
 </div>
 
 <script>
-// Bookmarklet-Code (Clean & Open) generieren und kopierbar machen
-(function(){
-  const ROOT = new URL(document.querySelector('base').getAttribute('href'), location.origin).href;
-  const STR = "javascript:location.href='"+ROOT+"redirect-entschachteln.html?u='+encodeURIComponent(location.href)";
-  const input = document.getElementById('bm1'); input.value = STR;
-  document.getElementById('copyBm1').onclick = async ()=>{
-    try{ await navigator.clipboard.writeText(STR); document.getElementById('copyBm1').textContent='Kopiert'; }
-    catch{ input.select(); document.execCommand('copy'); document.getElementById('copyBm1').textContent='Kopiert'; }
-    setTimeout(()=>document.getElementById('copyBm1').textContent='Kopieren',1200);
-  };
-})();
-
-// Install-Button: nur zeigen, wenn supported; iOS bekommt Hinweis
 let deferredPrompt=null;
 const installBtn=document.getElementById('install');
 window.addEventListener('beforeinstallprompt', e=>{
@@ -103,8 +79,6 @@ installBtn.addEventListener('click', async ()=>{
   if(!deferredPrompt) return;
   deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none';
 });
-
-// SW
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
 }
