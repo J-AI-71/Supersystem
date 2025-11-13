@@ -1,5 +1,5 @@
 // SafeShare SW — v1 2025-11-12
-const CACHE = 'safeshare-v8-20251112';
+const CACHE = 'safeshare-v8-20251113';
 const ASSETS = [
   './',
   'index.html',
