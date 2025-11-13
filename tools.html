@@ -1,42 +1,53 @@
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Tools · SafeShare2</title>
-  <link rel="icon" href="assets/logo.png?v=2025-11-13-01">
-  <style>
-    body{font-family:system-ui;background:#0b0b0b;color:#eaeaea;margin:0}
-    .wrap{max-width:720px;margin:auto;padding:20px}
-    .btn{padding:.6rem 1rem;border:0;border-radius:10px;background:#29c07e;color:#07130c;font-weight:600;margin-right:8px}
-    .mut{color:#9a9a9a}
-    pre{white-space:pre-wrap;margin-top:12px;color:#9a9a9a}
-  </style>
-</head>
-<body>
-<div class="wrap">
-  <h2>Tools</h2>
-  <button class="btn" id="sw">Service Worker abmelden</button>
-  <button class="btn" id="cache" style="background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a">Caches löschen</button>
-  <pre id="log"></pre>
-  <p class="mut"><a href="index.html" class="mut">Zurück</a></p>
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/"><title>Tools · SafeShare</title>
+<link rel="icon" href="assets/logo.png?v=2025-11-13-07">
+<style>body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.5 system-ui}.w{max-width:860px;margin:auto;padding:24px 16px}
+h1{margin:0 0 10px}.mut{color:#9a9a9a}.row{display:flex;gap:10px;flex-wrap:wrap}
+button{padding:.6rem 1rem;border-radius:10px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;font-weight:600}
+pre{background:#111;border:1px solid #1f1f1f;border-radius:10px;padding:12px;overflow:auto}
+</style></head><body><div class="w">
+<h1>Tools</h1>
+<p class="mut">Service Worker & Cache verwalten</p>
+<div class="row">
+  <button id="sw-unreg">Service Worker abmelden</button>
+  <button id="sw-update">Auf neue Version umschalten</button>
+  <button id="cache-list">Caches anzeigen</button>
+  <button id="cache-clear">Alle Caches löschen</button>
+  <button id="pro-clear">Pro-Status & Team-Flags löschen</button>
+</div>
+<pre id="out" style="margin-top:12px"></pre>
+<p class="mut" style="margin-top:8px"><a href="status.html">Status-Check</a> · <a href="index.html">Start</a></p>
 </div>
 <script>
-const log = msg => document.getElementById('log').textContent += msg + '\n';
-document.getElementById('sw').onclick=()=>{
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.getRegistrations().then(rs=>{rs.forEach(r=>r.unregister()); log('SW abgemeldet: '+rs.length);});
-  } else log('Kein SW');
+const out = document.getElementById('out');
+function log(...a){ out.textContent += a.join(' ')+'\n'; }
+document.getElementById('sw-unreg').onclick = async () => {
+  if(!('serviceWorker' in navigator)) return log('Kein SW-Support.');
+  const regs = await navigator.serviceWorker.getRegistrations();
+  if(!regs.length) return log('Kein SW registriert.');
+  await Promise.all(regs.map(r=>r.unregister()));
+  log('SW abgemeldet.'); 
 };
-document.getElementById('cache').onclick=async()=>{
-  if(!('caches' in window)) return log('Keine Cache-API');
-  const names = await caches.keys(); for(const n of names){ await caches.delete(n); }
-  log('Caches gelöscht: '+names.length);
+document.getElementById('sw-update').onclick = async () => {
+  const reg = await navigator.serviceWorker.getRegistration();
+  if(!reg) return log('Kein SW registriert.');
+  await reg.update();
+  if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+  log('Update signalisiert. Seite lädt bei Controllerwechsel neu.');
 };
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
-}
-</script>
-</body>
-</html>
+document.getElementById('cache-list').onclick = async () => {
+  if(!('caches' in window)) return log('Keine Cache-API.');
+  const keys = await caches.keys(); log('Caches:', JSON.stringify(keys));
+};
+document.getElementById('cache-clear').onclick = async () => {
+  if(!('caches' in window)) return log('Keine Cache-API.');
+  const keys = await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k)));
+  log('Alle Caches gelöscht.');
+};
+document.getElementById('pro-clear').onclick = () => {
+  ['ss2_pro','ss_wl','ss_mode'].forEach(k=>localStorage.removeItem(k));
+  log('Lokale Flags entfernt.');
+};
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-07'); }
+</script></body></html>
