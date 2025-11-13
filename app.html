@@ -1,3 +1,4 @@
+<!-- /Supersystem/app.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -5,14 +6,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
 <title>SafeShare – Links reinigen</title>
-<link rel="manifest" href="manifest.webmanifest?v=2025-11-13-08">
-<link rel="icon" href="assets/logo.png?v=2025-11-13-08">
+<link rel="manifest" href="manifest.webmanifest?v=2025-11-13-10">
+<link rel="icon" href="assets/logo.png?v=2025-11-13-10">
 <meta name="theme-color" content="#111111">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
 html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:860px;margin:auto;padding:28px 16px}
-h1{margin:0 0 8px;font-size:28px}
+h1{margin:0 0 4px;font-size:28px}
 .mut{color:var(--mut)}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
 .btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
@@ -22,17 +23,18 @@ h1{margin:0 0 8px;font-size:28px}
 input.url{width:100%;padding:.8rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:16px/1.3 ui-monospace,Menlo,Consolas,monospace}
 input.out{width:100%;margin-top:10px;padding:.7rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.3 ui-monospace,Menlo,Consolas,monospace}
 small.help{display:block;margin-top:6px;color:var(--mut)}
-/* wichtig: KEIN CSS einfügen, das das native iOS-X (search-cancel) versteckt */
+/* wichtig: kein CSS einfügen, das das native iOS-X (search-cancel) versteckt */
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>SafeShare</h1>
+  <p id="pro-state" class="mut" style="margin:-4px 0 6px">Pro: nicht aktiv · <a class="mut" href="pro.html">freischalten</a></p>
   <p class="mut">UTM, gclid, fbclid & Co. entfernen – lokal im Browser.</p>
 
   <div class="card">
     <label for="in" class="mut">Link</label>
-    <!-- type="search" → zeigt das native iOS-„X“ zum Leeren -->
+    <!-- type="search" → nativer iOS-Löschbutton („X“) -->
     <input id="in" class="url" type="search" inputmode="url" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="URL einfügen oder tippen …">
     <small class="help">Tipp: Einfügen, Enter drücken – oder „Säubern &amp; öffnen“.</small>
 
@@ -60,14 +62,21 @@ small.help{display:block;margin-top:6px;color:var(--mut)}
 </div>
 
 <script>
-/* ---------- Team-Flags (Publisher/Whitelist) ---------- */
+/* Pro-Badge */
+(function(){
+  const el = document.getElementById('pro-state'); if(!el) return;
+  const on = localStorage.getItem('ss2_pro')==='1';
+  el.innerHTML = on ? 'Pro: aktiv' : 'Pro: nicht aktiv · <a class="mut" href="pro.html">freischalten</a>';
+})();
+
+/* Team-Flags (Publisher/Whitelist) */
 function getFlags(){
-  const publisher = localStorage.getItem('ss_mode') === 'publisher';
-  const wl = new Set((localStorage.getItem('ss_wl') || '').split(',').map(s=>s.trim()).filter(Boolean));
+  const publisher = localStorage.getItem('ss_mode')==='publisher';
+  const wl = new Set((localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
   return {publisher, wl};
 }
 
-/* ---------- Redirect-Ebenen entschnüren (bis 5) ---------- */
+/* Entschachteln (bis 5 Ebenen) */
 function unwrapWithLog(u){
   const steps=[];
   try{
@@ -87,7 +96,7 @@ function unwrapWithLog(u){
   }catch{ return {url:u, steps}; }
 }
 
-/* ---------- Tracking säubern inkl. Whitelist ---------- */
+/* Tracking säubern inkl. Whitelist */
 function cleanWithLog(u){
   const notes=[], removed=[], kept=[]; let hashDropped=false, pathNorm=false;
   const {publisher, wl}=getFlags();
@@ -131,7 +140,7 @@ function cleanWithLog(u){
   }
 }
 
-/* ---------- UI ---------- */
+/* UI */
 const $in = document.getElementById('in');
 const $out = document.getElementById('out');
 const $logBox = document.getElementById('logBox');
@@ -156,7 +165,7 @@ function clean(vRaw){
   $log.innerHTML = '<ul style="margin:.2rem 0 0 18px">'+lines.map(x=>`<li>${x.replace(/&/g,'&amp;')}</li>`).join('')+'</ul>';
   $logBox.style.display='block';
 
-  // Prüf-Link zeigt die UNGEREINIGTE Eingabe (damit die Seite die Schritte demonstriert)
+  // „Prüfen“-Link zeigt die UNGEREINIGTE Eingabe
   $inspect.href = 'redirect-entschachteln.html?wait=1&details=1&u=' + encodeURIComponent(vRaw);
 
   return cl.url;
@@ -166,13 +175,11 @@ document.getElementById('cleanOpen').addEventListener('click', ()=>{
   const url = clean($in.value); if(url) location.href = url;
 });
 document.getElementById('copy').addEventListener('click', async ()=>{
-  const url = clean($in.value) || $in.value.trim();
-  if(!url) return;
+  const url = clean($in.value) || $in.value.trim(); if(!url) return;
   try{ await navigator.clipboard.writeText(url); }catch{ prompt('Copy:', url); }
 });
 document.getElementById('share').addEventListener('click', async ()=>{
-  const url = clean($in.value) || $in.value.trim();
-  if(!url) return;
+  const url = clean($in.value) || $in.value.trim(); if(!url) return;
   if(navigator.share){ try{ await navigator.share({title:'Sauberer Link', url}); }catch{} }
   else { alert('Teilen wird von diesem Browser nicht unterstützt. Bitte Link kopieren.'); }
 });
@@ -180,7 +187,7 @@ $in.addEventListener('keydown', (e)=>{
   if(e.key==='Enter'){ e.preventDefault(); const url = clean($in.value); if(url) location.href=url; }
 });
 
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-08'); }
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-10'); }
 </script>
 </body>
 </html>
