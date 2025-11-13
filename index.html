@@ -6,8 +6,8 @@
   <base href="/Supersystem/">
   <title>SafeShare · Saubere Links. Weniger Tracking.</title>
   <meta name="theme-color" content="#111111">
-  <link rel="manifest" href="manifest.webmanifest?v=2025-11-13-01">
-  <link rel="icon" href="assets/logo.png?v=2025-11-13-01">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-13-02">
+  <link rel="icon" href="assets/logo.png?v=2025-11-13-02">
   <style>
     :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -20,6 +20,8 @@
     .card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
     ul{margin:8px 0 0 18px}
     footer{margin-top:40px;font-size:13px;color:var(--mut)}
+    .bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
+    input.code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
   </style>
 </head>
 <body>
@@ -39,20 +41,21 @@
     <h3 style="margin:0 0 8px">So funktioniert’s</h3>
     <ul>
       <li>Link einfügen → „Säubern & öffnen“.</li>
-      <li>Bookmarklets für 1-Klick-Säuberung (eigene Seite).</li>
+      <li>Bookmarklet speichern für 1-Klick-Säuberung.</li>
       <li>Teilen über <code>redirect-entschachteln.html</code> mit kurzer Sponsor-Seite.</li>
     </ul>
   </div>
 
   <div class="card" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">Bookmarklet (Kurzform)</h3>
+    <p class="mut">Desktop: in die Lesezeichenleiste ziehen. Mobile: Code kopieren und als URL des Lesezeichens einfügen.</p>
+    <div id="bm-index"></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <h3 style="margin:0 0 8px">SafeShare Pro</h3>
-    <ul>
-      <li>Bulk-Cleaning</li>
-      <li>Eigene Domain-Regeln</li>
-      <li>PWA offline</li>
-    </ul>
+    <ul><li>Bulk-Cleaning</li><li>Eigene Domain-Regeln</li><li>PWA offline</li></ul>
     <div class="row" style="margin-top:8px">
-      <!-- ERSETZEN: deine Payhip-Links -->
       <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro freischalten</a>
       <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
     </div>
@@ -67,20 +70,22 @@
   </footer>
 </div>
 
+<script src="js/bookmarklets.js?v=2025-11-13-02"></script>
 <script>
+// Index: 1 Bookmarklet + Copy
+renderBookmarkletsIndex('bm-index');
+
+// Install-Button nur wenn supported; iOS Hinweis sonst
 let deferredPrompt=null;
 const installBtn=document.getElementById('install');
-window.addEventListener('beforeinstallprompt', e=>{
-  e.preventDefault(); deferredPrompt=e; installBtn.style.display='inline-block';
-});
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; installBtn.style.display='inline-block'; });
 const isiOS=/iPad|iPhone|iPod/i.test(navigator.userAgent);
 if(isiOS) document.getElementById('ios-tip').style.display='inline';
-installBtn.addEventListener('click', async ()=>{
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none';
-});
+installBtn.addEventListener('click', async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none'; });
+
+// SW
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
+  navigator.serviceWorker.register('./sw.js?v=2025-11-13-02');
 }
 </script>
 </body>
