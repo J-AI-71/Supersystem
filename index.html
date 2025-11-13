@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare2 · Saubere Links. Weniger Tracking.</title>
+  <title>SafeShare · Saubere Links. Weniger Tracking.</title>
   <meta name="theme-color" content="#111111">
   <link rel="manifest" href="manifest.webmanifest?v=2025-11-13-01">
   <link rel="icon" href="assets/logo.png?v=2025-11-13-01">
@@ -14,24 +14,27 @@
     .wrap{max-width:860px;margin:auto;padding:32px 16px}
     h1{font-size:28px;margin:0 0 8px}
     .mut{color:var(--mut)}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
     .btn{display:inline-block;padding:.8rem 1.1rem;background:var(--pri);color:#07130c;border:0;border-radius:10px;text-decoration:none;font-weight:600}
     .btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
     .card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
     ul{margin:8px 0 0 18px}
     footer{margin-top:40px;font-size:13px;color:var(--mut)}
+    input.code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
   </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>SafeShare2</h1>
+  <h1>SafeShare</h1>
   <p class="mut">Saubere Links ohne UTM, gclid, fbclid und Co. Teilen ohne Ballast.</p>
 
   <div class="row" style="margin:16px 0 24px">
     <a class="btn" href="app.html">App starten</a>
-    <a class="btn alt" href="redirect-entschachteln.html?u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
+    <!-- zeigt den Wrapper-Screen sicher an -->
+    <a class="btn alt" href="redirect-entschachteln.html?wait=1&u=https%3A%2F%2Fexample.com">Beispiel-Share</a>
     <a class="btn alt" href="bookmarklets.html">Bookmarklets</a>
-    <a class="btn alt" id="install">Auf Gerät installieren</a>
+    <a class="btn alt" id="install" style="display:none">Auf Gerät installieren</a>
+    <span id="ios-tip" class="mut" style="display:none">iOS: Teilen → „Zum Home-Bildschirm“</span>
   </div>
 
   <div class="card">
@@ -44,29 +47,26 @@
   </div>
 
   <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">SafeShare Pro</h3>
-    <ul>
-      <li>Bulk-Cleaning.</li>
-      <li>Eigene Domain-Regeln.</li>
-      <li>PWA offline.</li>
-    </ul>
-    <div class="row" style="margin-top:8px">
-      <!-- ERSETZEN: Payhip-Links -->
-      <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro kaufen</a>
-      <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
+    <h3 style="margin:0 0 8px">Bookmarklet – sofort kopierbar</h3>
+    <p class="mut">Desktop: Link kann gezogen werden (in der <a class="mut" href="bookmarklets.html">Bookmarklet-Seite</a>). Mobile: Code kopieren und in die URL eines Lesezeichens einsetzen.</p>
+    <div class="row">
+      <input id="bm1" class="code" readonly>
+      <button class="btn alt" id="copyBm1">Kopieren</button>
     </div>
   </div>
 
   <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bookmarklet</h3>
-    <p>Desktop: in die Lesezeichenleiste ziehen. iOS/Android: lange tippen → „Zu Lesezeichen hinzufügen“.</p>
-    <p>
-      <a class="btn alt"
-         href="javascript:location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)">
-         SafeShare Clean
-      </a>
-    </p>
-    <p class="mut">Leitet über SafeShare um und säubert die URL.</p>
+    <h3 style="margin:0 0 8px">SafeShare Pro</h3>
+    <ul>
+      <li>Bulk-Cleaning</li>
+      <li>Eigene Domain-Regeln</li>
+      <li>PWA offline</li>
+    </ul>
+    <div class="row" style="margin-top:8px">
+      <!-- ERSETZEN: deine Payhip-Links -->
+      <a class="btn" href="https://payhip.com/" target="_blank" rel="noopener">Pro freischalten</a>
+      <a class="btn alt" href="https://payhip.com/" target="_blank" rel="noopener">Mitglied werden</a>
+    </div>
   </div>
 
   <footer>
@@ -79,12 +79,32 @@
 </div>
 
 <script>
+// Bookmarklet-Code (Clean & Open) generieren und kopierbar machen
+(function(){
+  const ROOT = new URL(document.querySelector('base').getAttribute('href'), location.origin).href;
+  const STR = "javascript:location.href='"+ROOT+"redirect-entschachteln.html?u='+encodeURIComponent(location.href)";
+  const input = document.getElementById('bm1'); input.value = STR;
+  document.getElementById('copyBm1').onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(STR); document.getElementById('copyBm1').textContent='Kopiert'; }
+    catch{ input.select(); document.execCommand('copy'); document.getElementById('copyBm1').textContent='Kopiert'; }
+    setTimeout(()=>document.getElementById('copyBm1').textContent='Kopieren',1200);
+  };
+})();
+
+// Install-Button: nur zeigen, wenn supported; iOS bekommt Hinweis
 let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; });
-document.getElementById('install').addEventListener('click', async ()=>{
-  if(!deferredPrompt){ alert('Installation nicht verfügbar.'); return; }
-  deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null;
+const installBtn=document.getElementById('install');
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); deferredPrompt=e; installBtn.style.display='inline-block';
 });
+const isiOS=/iPad|iPhone|iPod/i.test(navigator.userAgent);
+if(isiOS) document.getElementById('ios-tip').style.display='inline';
+installBtn.addEventListener('click', async ()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none';
+});
+
+// SW
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js?v=2025-11-13-01');
 }
