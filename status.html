@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>SafeShare2 · Status</title>
+  <style>
+    body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.45 system-ui}
+    .wrap{max-width:860px;margin:auto;padding:20px}
+    .ok{color:#29c07e;font-weight:600}
+    .bad{color:#ff7b7b;font-weight:600}
+    code{background:#111;padding:.2rem .4rem;border-radius:6px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    td,th{border:1px solid #1f1f1f;padding:8px;vertical-align:top}
+    th{background:#111}
+    .mut{color:#9a9a9a}
+    .btn{display:inline-block;padding:.6rem 1rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h2>Status</h2>
+  <table id="t"><tbody></tbody></table>
+  <p class="mut" style="margin-top:12px">
+    <a class="btn" href="index.html">Start</a>
+    <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+    <a class="btn" href="tools.html">Tools</a>
+  </p>
+</div>
+<script>
+(async function(){
+  const rows=[], add=(k,v,ok)=>rows.push(`<tr><th>${k}</th><td class="${ok===false?'bad':ok===true?'ok':''}">${v}</td></tr>`);
+  const baseEl=document.querySelector('base');
+  const base=(baseEl&&baseEl.getAttribute('href'))||'(kein <base>)';
+  add('Base HREF', `<code>${base}</code>`, base==='/Supersystem/'||/\/Supersystem\/$/.test(base));
+
+  // Pfad/Origin
+  add('Origin', `<code>${location.origin}</code>`, true);
+  add('Pfad', `<code>${location.pathname}</code>`, true);
+
+  // Browserumgebung
+  const ua=navigator.userAgent;
+  const inApp = /(FBAN|FBAV|Instagram|Line|WeChat|MiuiBrowser|TikTok|Twitter|Pinterest|LinkedIn)/i.test(ua);
+  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
+  add('User-Agent', `<code>${ua}</code>`, true);
+  add('In-App Browser', inApp?'Ja':'Nein', !inApp);
+  add('PWA/Standalone', standalone?'Ja':'Nein', true);
+
+  // Service Worker
+  const hasSW = 'serviceWorker' in navigator;
+  add('Service Worker API', hasSW?'Vorhanden':'Fehlt', hasSW);
+  if(hasSW){
+    const regs=await navigator.serviceWorker.getRegistrations();
+    add('SW Registrierungen', regs.length, regs.length<=1);
+    if(regs[0]){
+      add('SW Script', `<code>${new URL(regs[0].active?.scriptURL||regs[0].scriptURL).pathname}</code>`, true);
+    }
+  }
+
+  // Redirect-Dateien erreichbar?
+  async function head(url){
+    try{ const r=await fetch(url,{method:'HEAD',cache:'no-store'}); return r.status; }catch(e){ return 0; }
+  }
+  const small = await head('redirect-entschachteln.html');
+  const large = await head('Redirect-entschachteln.html');
+  add('redirect-entschachteln.html', small?('HTTP '+small):'nicht erreichbar', small===200);
+  add('Redirect-entschachteln.html (Alias)', large?('HTTP '+large):'nicht erreichbar', large===200);
+
+  // Bookmarklet-Ziehbarkeit grob (Desktop vs. Touch)
+  const canDrag = !('ontouchstart' in window);
+  add('Drag & Drop (Bookmarklet)', canDrag?'Desktop OK':'Touch-Gerät – Ziehen nicht möglich', canDrag);
+
+  // Ausgabe
+  document.querySelector('#t tbody').innerHTML=rows.join('');
+})();
+</script>
+</body>
+</html>
