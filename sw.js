@@ -1,5 +1,5 @@
 // SafeShare SW – bump bei jedem Release
-const SW_VERSION = '2025-11-13-11';
+const SW_VERSION = '2025-11-13-12';
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
