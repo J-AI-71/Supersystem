@@ -19,7 +19,7 @@
       desc: 'Aktuelle Seite sauber öffnen (UTM/gclid/fbclid entfernen, Redirects entschnüren).',
       code: makeCleanCurrent()
     }
-    // weitere Bookmarklets können hier ergänzt werden
+    // weitere Bookmarklets hier ergänzen
   ];
 
   // Hilfsfunktionen
@@ -32,23 +32,25 @@
     return n;
   }
 
-  async function copyNameAndCode(name, code, btn){
-    const payload = `${name}\n${code}`;
+  async function copyCode(code, btn){
     try{
-      await navigator.clipboard.writeText(payload);
+      await navigator.clipboard.writeText(code);
       if (btn){ const t=btn.textContent; btn.textContent='Kopiert'; setTimeout(()=>btn.textContent=t,1200); }
     }catch{
-      prompt('Name + Code (1. Zeile = Name, 2. Zeile = Code):', payload);
+      prompt('Code kopieren:', code);
     }
   }
 
   function renderItem(bm){
     const row = el('div', {class:'row', style:'align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap'});
+
     // Ziehen übernimmt den Linktext als Lesezeichen-Namen (Desktop)
     const a = el('a', {href: bm.code, draggable:'true', class:'bm'}, bm.name);
+
     const input = el('input', {type:'text', class:'code', value: bm.code, readonly:'readonly'});
-    const btn = el('button', {}, 'Name+Code kopieren'); // für iOS (Name+URL getrennt)
-    btn.onclick = ()=>copyNameAndCode(bm.name, bm.code, btn);
+    const btn = el('button', {}, 'Code kopieren');
+    btn.onclick = ()=>copyCode(bm.code, btn);
+
     const p = el('p', {class:'mut', style:'margin:4px 0 0'}, bm.desc);
 
     const col = el('div', {style:'flex:1;min-width:280px'});
