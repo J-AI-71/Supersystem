@@ -6,50 +6,87 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
 <title>Bulk-Cleaning · SafeShare Pro</title>
-<link rel="icon" href="assets/logo.png?v=2025-11-13-10">
 <meta name="theme-color" content="#111111">
+<link rel="icon" href="assets/logo.png?v=2025-11-14-01">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 .w{max-width:960px;margin:auto;padding:28px 16px}
+h1{margin:0 0 6px;font-size:28px}
 .mut{color:var(--mut)}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-textarea{width:100%;min-height:180px;padding:.8rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.4 ui-monospace,Menlo,Consolas,monospace}
-pre{white-space:pre-wrap;background:#000;border:1px solid #2a2a2a;border-radius:10px;padding:10px}
-.btn{display:inline-block;padding:.65rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
+label{display:block;margin:8px 0 6px}
+textarea{width:100%;min-height:220px;padding:.8rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.4 ui-monospace,Menlo,Consolas,monospace}
+pre{white-space:pre-wrap;background:#000;border:1px solid #2a2a2a;border-radius:10px;padding:10px;min-height:120px}
+.btn{display:inline-block;padding:.65rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0;cursor:pointer}
 .btn.pri{background:var(--pri);color:#07130c}
-.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
+.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.badge{display:inline-block;background:#1b1b1b;border:1px solid #2a2a2a;padding:.2rem .5rem;border-radius:8px;margin-left:8px}
+small.hint{display:block;margin-top:8px}
+.chk{display:inline-flex;gap:6px;align-items:center;margin-right:14px}
 </style>
 </head>
 <body>
 <div class="w">
-  <h1>Bulk-Cleaning</h1>
+  <h1>Bulk-Cleaning <span id="proBadge" class="badge">nicht aktiv</span></h1>
+  <p class="mut">Mehrere URLs auf einmal säubern. Team-Whitelist & Publisher-Modus werden berücksichtigt (siehe <a href="team-setup.html" class="mut">Team-Setup</a>).</p>
+
   <div class="card">
-    <p class="mut">Füge pro Zeile eine URL ein. Ausgabe erscheint unten – bereit zum Kopieren.</p>
-    <textarea id="in" placeholder="https://example.com/?utm_source=...\nhttps://www.amazon.de/dp/..."></textarea>
-    <p style="margin-top:10px">
+    <label for="in" class="mut">Eingabe (eine URL pro Zeile)</label>
+    <textarea id="in" placeholder="https://example.com/?utm_source=...\nhttps://www.google.com/url?url=https%3A%2F%2Fexample.com%2F...\nhttps://www.amazon.de/dp/B000TEST?tag=partner-21&ref=abc#reviews"></textarea>
+
+    <div class="row" style="margin-top:10px">
+      <span class="chk"><input type="checkbox" id="optUnwrap" checked> <label for="optUnwrap">Redirects entschachteln</label></span>
+      <span class="chk"><input type="checkbox" id="optNormalize" checked> <label for="optNormalize">Pfade normalisieren</label></span>
+    </div>
+
+    <div class="row" style="margin-top:10px">
       <button id="run" class="btn pri" type="button">Liste säubern</button>
       <button id="copy" class="btn alt" type="button">Ausgabe kopieren</button>
-    </p>
+      <button id="clear" class="btn alt" type="button">Eingabe leeren</button>
+      <span id="stats" class="mut" aria-live="polite"></span>
+    </div>
+
     <pre id="out" aria-live="polite"></pre>
-    <p class="mut" id="hint" style="display:none;margin-top:8px">Pro ist nicht aktiv. Aktivieren unter <a href="pro.html">pro.html</a>.</p>
+
+    <small id="proHint" class="hint mut" style="display:none">
+      Pro ist nicht aktiv. Aktivieren unter <a href="pro.html" class="mut">pro.html</a>.
+    </small>
   </div>
-  <p class="mut" style="margin-top:12px"><a href="app.html">App</a> · <a href="index.html">Start</a></p>
+
+  <p class="mut" style="margin-top:12px">
+    <a href="app.html" class="mut">App</a> ·
+    <a href="index.html" class="mut">Start</a> ·
+    <a href="tests.html" class="mut">Tests</a>
+  </p>
 </div>
 
 <script>
-// --- Pro-Check (Soft-Gate) ---
-const proOn = localStorage.getItem('ss2_pro')==='1';
-if(!proOn){ document.getElementById('hint').style.display='block'; }
+/* --- Pro-Badge / Hinweis --- */
+(function(){
+  const on = localStorage.getItem('ss2_pro')==='1';
+  const b  = document.getElementById('proBadge');
+  if (b) b.textContent = on ? 'aktiv' : 'nicht aktiv';
+  if (!on) document.getElementById('proHint').style.display='block';
+})();
 
-// --- Team-Flags/Whitelist (lokal) ---
+/* --- Team-Flags/Whitelist --- */
 function getFlags(){
   const publisher = localStorage.getItem('ss_mode')==='publisher';
   const wl = new Set((localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
   return {publisher, wl};
 }
 
-// --- Entschachteln (bis 5 Ebenen) ---
+/* --- Helpers --- */
+function normalizeSeed(u){
+  let v = (u||'').trim(); if(!v) return '';
+  try{ for(let i=0;i<3;i++) v=decodeURIComponent(v); }catch{}
+  if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(v)) v='https://'+v.replace(/^\/+/, '');
+  return v;
+}
+
+/* --- Redirects entschachteln (bis 5 Ebenen) --- */
 function unwrap(u){
   try{
     let s=u, loops=0;
@@ -66,8 +103,8 @@ function unwrap(u){
   }catch{ return u; }
 }
 
-// --- Säubern + Whitelist ---
-function clean(u){
+/* --- Säubern inkl. Team-Whitelist/Publisher --- */
+function clean(u, opts){
   try{
     const x=new URL(u); const {publisher, wl}=getFlags();
     const T=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"]);
@@ -86,36 +123,65 @@ function clean(u){
       if(isT && !(publisher && wl.has(k))) x.searchParams.delete(k);
     }
 
-    // Pfad normalisieren
-    x.pathname=x.pathname.replace(/\/{2,}/g,'/');
-    if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
+    // Pfad normalisieren (optional)
+    if(opts.normalize){
+      x.pathname=x.pathname.replace(/\/{2,}/g,'/');
+      if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
+    }
 
     return x.toString();
   }catch{ return u; }
 }
 
-// --- Run ---
-document.getElementById('run').onclick=()=>{
-  const lines=document.getElementById('in').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  const out=lines.map(line=>{
-    let v=line; try{ for(let i=0;i<3;i++) v=decodeURIComponent(v); }catch{}
-    if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(v)) v='https://'+v.replace(/^\/+/, '');
-    return clean(unwrap(v));
-  });
-  document.getElementById('out').textContent=out.join('\n');
-};
-document.getElementById('copy').onclick=async()=>{
-  try{ await navigator.clipboard.writeText(document.getElementById('out').textContent||''); }
-  catch{ alert('Kopieren nicht möglich.'); }
-};
+/* --- UI Elemente --- */
+const $in   = document.getElementById('in');
+const $out  = document.getElementById('out');
+const $run  = document.getElementById('run');
+const $copy = document.getElementById('copy');
+const $clear= document.getElementById('clear');
+const $stats= document.getElementById('stats');
+const $optUnwrap    = document.getElementById('optUnwrap');
+const $optNormalize = document.getElementById('optNormalize');
 
-// SW optional
-if('serviceWorker'in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-10'); }
+/* --- Aktionen --- */
+$run.addEventListener('click', ()=>{
+  const lines = ($in.value||'').split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  if(!lines.length){ $out.textContent=''; $stats.textContent=''; return; }
+
+  const opts = { unwrap:$optUnwrap.checked, normalize:$optNormalize.checked };
+  const out = [];
+  for(const raw of lines){
+    let v = normalizeSeed(raw);
+    if(opts.unwrap) v = unwrap(v);
+    v = clean(v, opts);
+    out.push(v);
+  }
+  $out.textContent = out.join('\n');
+  $stats.textContent = `${lines.length} Eingaben → ${out.length} Ausgaben`;
+});
+
+$copy.addEventListener('click', async ()=>{
+  const txt = $out.textContent || '';
+  if(!txt.trim()) return;
+  try{
+    await navigator.clipboard.writeText(txt);
+  }catch{
+    try{
+      const ta=document.createElement('textarea');
+      ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      const ok=document.execCommand('copy'); document.body.removeChild(ta);
+      if(!ok) throw 0;
+    }catch{ prompt('Ausgabe kopieren:', txt); }
+  }
+});
+
+$clear.addEventListener('click', ()=>{
+  $in.value=''; $out.textContent=''; $stats.textContent='';
+});
 </script>
-  <!-- … ggf. seiten-spezifisches JS … -->
 
-<!-- SW-Registrierung: immer als LETZTES -->
+<!-- Zentrale SW-Registrierung (immer zuletzt) -->
 <script src="js/sw-register.js?v=2025-11-13-12"></script>
-</body></html>
 </body>
 </html>
