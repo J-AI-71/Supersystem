@@ -1,4 +1,3 @@
-<!-- /Supersystem/pro.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -6,73 +5,57 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
 <title>SafeShare Pro</title>
-<link rel="icon" href="assets/logo.png?v=2025-11-13-10">
 <meta name="theme-color" content="#111111">
+<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui}
-.w{max-width:860px;margin:auto;padding:28px 16px}
-h1{margin:0 0 8px}
-.mut{color:var(--mut)}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:860px;margin:auto;padding:28px 16px}
+h1{margin:0 0 6px;font-size:28px}.mut{color:var(--mut)}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
-.btn.pri{background:#29c07e;color:#07130c}
-.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
+.btn{display:inline-block;padding:.65rem 1rem;border-radius:10px;border:0;font-weight:600;cursor:pointer;text-decoration:none}
+.btn.pri{background:var(--pri);color:#07130c}
+.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
 .badge{display:inline-block;background:#1b1b1b;border:1px solid #2a2a2a;padding:.2rem .5rem;border-radius:8px;margin-left:8px}
-ul{margin:8px 0 0 18px}
+a.nav{color:#9aead0}
 </style>
 </head>
 <body>
-<div class="w">
+<div class="wrap">
   <h1>SafeShare Pro <span id="state" class="badge">nicht aktiv</span></h1>
 
   <div class="card">
-    <h3 style="margin:0 0 6px">Enthalten</h3>
-    <ul>
-      <li>Bulk-Cleaning (mehrere URLs auf einmal säubern)</li>
-      <li>Team-Whitelist (Publisher-Modus, lokal)</li>
-      <li>PWA-Offline (optional, nur eigene Seiten)</li>
-    </ul>
-    <p style="margin-top:8px">
-      <!-- ERSETZEN: echte Payhip-URL -->
-      <a class="btn pri" href="https://payhip.com/" target="_blank" rel="noopener">Jetzt freischalten</a>
-      <a class="btn alt" href="bulk-clean.html">Bulk-Cleaning testen</a>
-    </p>
-  </div>
+    <p>Pro schaltet Bulk-Cleaning, Team-Whitelist/Publisher-Modus und PWA-Features frei. Aktivierung läuft lokal im Browser.</p>
 
-  <div class="card">
-    <h3 style="margin:0 0 6px">Aktivierung</h3>
-    <p class="mut">Nach dem Kauf leitet Payhip auf die Aktivierungsseite.</p>
     <p>
-      <a class="btn alt" href="pro-activate.html?pro=1">Manuell aktivieren</a>
-      <button id="deactivate" class="btn alt" type="button">Deaktivieren</button>
+      <a class="btn pri" href="pro-activate.html?pro=1">Pro jetzt aktivieren</a>
+      <button id="deactivate" class="btn alt" type="button">Pro deaktivieren</button>
     </p>
+
+    <!-- HIER ist der PDF-Link innerhalb der Karte -->
+    <p class="mut">Kurzanleitung:
+      <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="nav" download>Quickstart (PDF)</a>
+    </p>
+
+    <p class="mut">Nach der Aktivierung zeigt die App/Startseite „Pro: aktiv“.</p>
   </div>
 
   <p class="mut" style="margin-top:12px">
-    <a href="index.html">Start</a> · <a href="app.html">App</a> · <a href="team-setup.html">Team-Setup</a>
+    <a href="index.html" class="nav">Start</a> ·
+    <a href="app.html" class="nav">App</a> ·
+    <a href="bulk-clean.html" class="nav">Bulk-Cleaning</a>
   </p>
 </div>
+
 <script>
 function updateState(){
   const on = localStorage.getItem('ss2_pro')==='1';
-  const badge = document.getElementById('state');
-  if (badge) badge.textContent = on ? 'aktiv' : 'nicht aktiv';
+  const b  = document.getElementById('state');
+  if (b) b.textContent = on ? 'aktiv' : 'nicht aktiv';
 }
-document.getElementById('deactivate').onclick = () => {
-  localStorage.removeItem('ss2_pro');
-  updateState();
-};
+document.getElementById('deactivate').onclick = () => { localStorage.removeItem('ss2_pro'); updateState(); };
 updateState();
-if('serviceWorker'in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-10'); }
 </script>
-  <script src="js/bookmarklets.js?v=2025-11-13-11"></script>
-<script>
-  renderBookmarkletsPage('bm-list');
-</script>
-
-<!-- SW-Registrierung: immer als LETZTES -->
-<script src="js/sw-register.js?v=2025-11-13-12"></script>
-</body></html>
+<script src="js/sw-register.js?v=2025-11-14-05"></script>
 </body>
 </html>
