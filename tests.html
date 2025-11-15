@@ -1,40 +1,44 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/"><title>Tests · SafeShare</title>
-<link rel="icon" href="assets/logo.png?v=2025-11-13-07">
-<style>body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.5 system-ui}.w{max-width:960px;margin:auto;padding:24px 16px}
-table{width:100%;border-collapse:collapse;background:#111;border:1px solid #1f1f1f;border-radius:10px;overflow:hidden}
-td,th{padding:8px;border-bottom:1px solid #1f1f1f} th{text-align:left}
-a.btn{display:inline-block;padding:.4rem .7rem;border-radius:8px;background:#29c07e;color:#07130c;text-decoration:none;font-weight:600}
-a.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-code{background:#000;padding:.1rem .3rem;border-radius:6px}
-</style></head><body><div class="w">
-<h1>Tests</h1>
-<table><thead><tr><th>Original</th><th>Clean</th><th>Aktion</th></tr></thead><tbody id="tb"></tbody></table>
-<p style="margin-top:8px"><a href="index.html" class="alt btn">Start</a></p>
-</div>
-<script>
-const LIST = [
-  'https://example.com/path?utm_source=newsletter&utm_campaign=x&gclid=ABC#frag',
-  'https://www.amazon.de/dp/B000000?tag=aff-21&ref=abc&utm_source=mail',
-  'https://l.facebook.com/l.php?u=https%3A%2F%2Fzeit.de%2F%3Futm_source%3Dmail&h=xyz',
-  'https://www.google.com/url?q=https%3A%2F%2Fwww.bund.de%2F?utm_medium%3Dreferral&sa=D&source=editors&ust=123&usg=AO',
-  'https://youtube.com/watch?v=ID&utm_source=tw&utm_campaign=vid',
-  'https://shop.example.com/p/sku?fbclid=123&utm_term=kauf'
-];
-function row(orig){
-  const url = 'redirect-entschachteln.html?wait=1&u='+encodeURIComponent(orig);
-  const tr = document.createElement('tr');
-  tr.innerHTML = `<td><code>${orig.replace(/&/g,'&amp;')}</code></td>
-    <td><a class="alt btn" href="${url}" target="_blank" rel="noopener">anzeigen</a></td>
-    <td><a class="btn" href="${url.replace('wait=1','')}" target="_blank" rel="noopener">sofort öffnen</a></td>`;
-  return tr;
-}
-const tb=document.getElementById('tb'); LIST.forEach(u=>tb.appendChild(row(u)));
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-07'); }
-</script>
-<!-- … ggf. seiten-spezifisches JS … -->
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Tests · SafeShare</title>
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
+<meta name="robots" content="noindex,follow">
+<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
+<style>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui}
+.wrap{max-width:960px;margin:auto;padding:28px 16px}
+h1{margin:0 0 8px;font-size:26px}.mut{color:var(--mut)}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+a{color:#9aead0}
+code{background:#000;border:1px solid #2a2a2a;border-radius:6px;padding:2px 6px}
+li{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Tests</h1>
+  <div class="card">
+    <ul>
+      <li>UTM: <a href="app.html?u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dnewsletter%26utm_medium%3Demail%26ref%3Dhome">example.com mit UTM</a></li>
+      <li>gclid/fbclid: <a href="app.html?u=https%3A%2F%2Fshop.example.org%2Fproduct%3Fid%3D123%26gclid%3DABC%26fbclid%3DXYZ">shop.example.org</a></li>
+      <li>Google-URL: <a href="app.html?u=https%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26url%3Dhttps%253A%252F%252Fexample.com%252Farticle%253Futm_source%253Dgoogle%2526gclid%253D123">google.com/url</a></li>
+      <li>Amazon: <a href="app.html?u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FB000TEST%3Ftag%3Dpartner-21%26ref%3Dabcde%23reviews">amazon.de</a></li>
+    </ul>
+  </div>
 
-<!-- SW-Registrierung: immer als LETZTES -->
-<script src="js/sw-register.js?v=2025-11-13-12"></script>
-</body></html>
+  <p class="mut" style="margin-top:12px">
+    <a href="index.html">Start</a> ·
+    <a href="app.html">App</a> ·
+    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" download>Quickstart (PDF)</a> ·
+    <a href="impressum.html">Impressum</a> ·
+    <a href="datenschutz.html">Datenschutz</a>
+  </p>
+</div>
+<script src="js/sw-register.js?v=2025-11-14-05"></script>
+</body>
+</html>
