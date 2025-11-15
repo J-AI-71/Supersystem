@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
 <title>Bookmarklets · SafeShare</title>
-<link rel="icon" href="assets/logo.png?v=2025-11-14-03">
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
 html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -23,8 +25,8 @@ a.link{color:#9aead0}
 <div class="wrap">
   <h1>Bookmarklets</h1>
   <p class="mut">
-    Desktop: Button in die Lesezeichenleiste ziehen (Name wird automatisch „SafeShare clean“).<br>
-    iPhone/iPad: <strong>Code kopieren</strong> → Lesezeichen anlegen → im Feld „Adresse/URL“ den kopierten Code einfügen.
+    Desktop: Button „SafeShare clean“ in die Lesezeichenleiste ziehen.<br>
+    iPhone/iPad: <strong>Code kopieren</strong> → Lesezeichen anlegen → im Feld „Adresse/URL“ den Code einfügen.
   </p>
 
   <div class="card" id="bm-list">Lade …</div>
@@ -32,31 +34,18 @@ a.link{color:#9aead0}
   <p class="mut" style="margin-top:12px">
     <a href="index.html" class="link">Start</a> ·
     <a href="app.html" class="link">App</a> ·
-    <a href="tests.html" class="link">Tests</a>
-    <p class="mut" style="margin-top:12px">
-  <a href="bookmarklets.html" class="nav">Bookmarklets</a> ·
-  <a href="team-setup.html" class="nav">Team-Setup</a> ·
-  <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="nav" download>Quickstart (PDF)</a>
-</p>
+    <a href="bulk-clean.html" class="link">Bulk-Cleaning</a> ·
+    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="link" download>Quickstart (PDF)</a> ·
+    <a href="impressum.html" class="link">Impressum</a> ·
+    <a href="datenschutz.html" class="link">Datenschutz</a>
   </p>
 </div>
 
-<!-- Renderer laden -->
-<script src="js/bookmarklets.js?v=2025-11-14-03"
+<script src="js/bookmarklets.js?v=2025-11-14-05"
         onerror="document.getElementById('bm-list').textContent='Fehler: js/bookmarklets.js nicht gefunden';"></script>
 <script>
-  (function(){
-    var box = document.getElementById('bm-list');
-    if (!box) return;
-    if (window.renderBookmarkletsPage) renderBookmarkletsPage('bm-list');
-    else box.textContent = 'Fehler: renderBookmarkletsPage() nicht verfügbar';
-  })();
+  if (window.renderBookmarkletsPage) renderBookmarkletsPage('bm-list');
 </script>
-
-<!-- Zentrale SW-Registrierung (immer zuletzt) -->
-<script src="js/sw-register.js?v=2025-11-14-03"></script>
-<script src="js/bookmarklets.js?v=2025-11-14-03"></script>
-<script>renderBookmarkletsPage('bm-list');</script>
-<script src="js/sw-register.js?v=2025-11-14-03"></script>
+<script src="js/sw-register.js?v=2025-11-14-05"></script>
 </body>
 </html>
