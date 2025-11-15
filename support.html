@@ -3,27 +3,37 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
+<title>Support · SafeShare</title>
 <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/support.html">
-<title>Saubere Hilfelinks für Support & CS | SafeShare</title>
-<meta name="description" content="UTM-freie Antworten in E-Mail und Helpdesk-Makros. Klarere Links, weniger Störfaktoren in Tickets.">
-<link rel="icon" href="assets/logo.png">
-<style>body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}.wrap{max-width:860px;margin:auto;padding:28px 16px}.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}.mut{color:#9a9a9a}.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}</style>
+<meta name="robots" content="index,follow">
+<link rel="icon" href="assets/logo.png?v=2025-11-15-01">
+<style>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+.wrap{max-width:860px;margin:auto;padding:28px 16px}
+h1{margin:0 0 8px;font-size:28px}.mut{color:var(--mut)}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+a{color:#9aead0}
+</style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Klarer verlinken in E-Mails & Helpdesks</h1>
+  <h1>Support</h1>
   <div class="card">
-    <p>Links in Vorlagen/Signaturen ohne Tracking-Parameter. Für Zendesk, Freshdesk, Outlook, Gmail u. a.</p>
-    <p><a class="btn pri" href="app.html">Jetzt testen</a> <a class="btn alt" href="bookmarklets.html">Bookmarklet</a></p>
+    <h3>FAQ</h3>
+    <p><strong>Speichert SafeShare Daten?</strong><br>Nein, alles läuft lokal im Browser. Optional genutzte Einstellungen liegen im <code>localStorage</code> deines Geräts.</p>
+    <p><strong>Wie aktiviere ich Pro?</strong><br>Kauf → Weiterleitung auf <code>pro-activate.html?pro=1</code> → App/Start zeigt „Pro: aktiv“.</p>
+    <p><strong>iOS Bookmarklet?</strong><br>„Code kopieren“ → neues Lesezeichen → JavaScript-Code ins Feld „Adresse/URL“ einfügen.</p>
+    <p><strong>Team/Compliance?</strong><br>„Publisher-Modus“ + Whitelist in <a href="team-setup.html">Team-Setup</a>.</p>
+    <p><strong>Kontakt</strong><br>E-Mail: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a></p>
   </div>
-  <p class="mut" style="margin-top:12px"><a href="index.html">Start</a></p>
+  <p class="mut" style="margin-top:12px">
+    <a href="index.html">Start</a> ·
+    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" download>Quickstart (PDF)</a> ·
+    <a href="impressum.html">Impressum</a> ·
+    <a href="datenschutz.html">Datenschutz</a>
+  </p>
 </div>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Kann das in Makros eingebaut werden?","acceptedAnswer":{"@type":"Answer","text":"Ja. Vorbereitete Links/Bookmarklets lassen sich in Makros und Vorlagen nutzen."}},
-{"@type":"Question","name":"Braucht es Adminrechte?","acceptedAnswer":{"@type":"Answer","text":"Nein. Es ist eine Web-Lösung ohne Installation."}}
-]}
-</script>
-<script>if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js?v=2025-11-13-06')}</script>
+<script src="js/sw-register.js?v=2025-11-15-01"></script>
 </body>
 </html>
