@@ -1,5 +1,5 @@
 // /Supersystem/sw.js
-const VERSION = '2025-11-14-02';
+const VERSION = '2025-11-15-01';
 const CACHE = 'ss-cache-' + VERSION;
 const BYPASS_HTML = new Set([
   '/Supersystem/impressum.html',
@@ -8,7 +8,7 @@ const BYPASS_HTML = new Set([
 
 self.addEventListener('install', e => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE)); // optional: hier nichts vorcachen
+  e.waitUntil(caches.open(CACHE)); // kein Precache nötig
 });
 
 self.addEventListener('activate', e => {
@@ -29,13 +29,14 @@ self.addEventListener('fetch', e => {
 
   const url = new URL(req.url);
   const isHTML = req.destination === 'document' || url.pathname.endsWith('.html');
+  const isPDF  = url.pathname.endsWith('.pdf');
 
-  // HTML: network-first (und Legal-Pages niemals cachen)
-  if (isHTML) {
+  // HTML/PDF: network-first (Legal-Pages nie cachen)
+  if (isHTML || isPDF) {
     e.respondWith((async () => {
       try {
         const fresh = await fetch(req, { cache: 'no-store' });
-        if (!BYPASS_HTML.has(url.pathname)) {
+        if (!isHTML || !BYPASS_HTML.has(url.pathname)) {
           const c = await caches.open(CACHE);
           c.put(req, fresh.clone());
         }
@@ -49,7 +50,7 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Assets: cache-first
+  // Sonstige Assets: cache-first
   e.respondWith((async () => {
     const c = await caches.open(CACHE);
     const hit = await c.match(req);
