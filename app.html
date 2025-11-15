@@ -1,4 +1,3 @@
-<!-- /Supersystem/app.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -6,15 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
 <title>SafeShare – Links reinigen</title>
-<link rel="manifest" href="manifest.webmanifest?v=2025-11-14-01">
-<link rel="icon" href="assets/logo.png?v=2025-11-14-01">
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
+<meta name="robots" content="index,follow">
+<link rel="manifest" href="manifest.webmanifest?v=2025-11-14-05">
+<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
 <meta name="theme-color" content="#111111">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
 html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:860px;margin:auto;padding:28px 16px}
-h1{margin:0 0 4px;font-size:28px}
-.mut{color:var(--mut)}
+h1{margin:0 0 4px;font-size:28px}.mut{color:var(--mut)}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
 .btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0;cursor:pointer}
 .btn.pri{background:var(--pri);color:#07130c}
@@ -35,7 +35,6 @@ a.nav{color:#9aead0}
 
   <div class="card">
     <label for="in" class="mut">Link</label>
-    <!-- type="search" → nativer iOS-Löschbutton („X“) -->
     <input id="in" class="url" type="search" inputmode="url" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="URL einfügen oder tippen …">
     <small class="help">Tipp: Einfügen, Enter drücken – oder „Säubern &amp; öffnen“.</small>
 
@@ -56,180 +55,17 @@ a.nav{color:#9aead0}
 
   <p class="mut" style="margin-top:12px">
     <a href="bookmarklets.html" class="nav">Bookmarklets</a> ·
-    <a href="tests.html" class="nav">Tests</a> ·
+    <a href="bulk-clean.html" class="nav">Bulk-Cleaning</a> ·
     <a href="team-setup.html" class="nav">Team-Setup</a> ·
-    <a href="index.html" class="nav">Start</a>
+    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="nav" download>Quickstart (PDF)</a> ·
+    <a href="index.html" class="nav">Start</a> ·
+    <a href="impressum.html" class="nav">Impressum</a> ·
+    <a href="datenschutz.html" class="nav">Datenschutz</a>
   </p>
 </div>
 
-<script>
-/* Pro-Badge */
-(function(){
-  const el = document.getElementById('pro-state'); if(!el) return;
-  const on = localStorage.getItem('ss2_pro')==='1';
-  el.innerHTML = on ? 'Pro: aktiv' : 'Pro: nicht aktiv · <a class="mut" href="pro.html">freischalten</a>';
-})();
-
-/* Team-Flags (Publisher/Whitelist) */
-function getFlags(){
-  const publisher = localStorage.getItem('ss_mode')==='publisher';
-  const wl = new Set((localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
-  return {publisher, wl};
-}
-
-/* Entschachteln (bis 5 Ebenen) + Protokoll */
-function unwrapWithLog(u){
-  const steps=[];
-  try{
-    let s=u, loops=0;
-    while(loops++<5){
-      const url=new URL(s), p=url.searchParams;
-      const keys=['url','u','link','q','target','to','dest']; let key=null,val=null;
-      for(const k of keys){ if(p.has(k)){ key=k; val=p.get(k); break; } }
-      if(!key) return {url:s, steps};
-      steps.push(`Entschachtelt: „${key}=“ gefunden`);
-      try{ for(let i=0;i<3;i++) val=decodeURIComponent(val); }catch{}
-      if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(val)) val='https://'+val.replace(/^\/+/, '');
-      s=val;
-    }
-    steps.push('Maximal 5 Ebenen entschachtelt.');
-    return {url:s, steps};
-  }catch{ return {url:u, steps}; }
-}
-
-/* Tracking säubern inkl. Whitelist + Protokoll */
-function cleanWithLog(u){
-  const notes=[], removed=[], kept=[]; let hashDropped=false, pathNorm=false;
-  const {publisher, wl}=getFlags();
-  try{
-    const x=new URL(u);
-    const TRACK=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"]);
-
-    // Amazon-Sonderfälle
-    if(/amazon\./.test(x.hostname)){
-      const AFF=["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"];
-      AFF.forEach(k=>{
-        if(publisher && wl.has(k)){ if(x.searchParams.has(k)) kept.push(k); }
-        else if(x.searchParams.has(k)){ removed.push(k); x.searchParams.delete(k); }
-      });
-      if(x.hash && !(publisher && wl.has('#'))){ hashDropped=true; x.hash=""; }
-    }
-
-    // Allgemeine Tracker
-    for(const k of [...x.searchParams.keys()]){
-      const isTracker = k.startsWith('utm_') || TRACK.has(k);
-      if(isTracker){
-        if(publisher && wl.has(k)) kept.push(k);
-        else { removed.push(k); x.searchParams.delete(k); }
-      }
-    }
-
-    // Pfad normalisieren
-    const before=x.pathname;
-    x.pathname=x.pathname.replace(/\/{2,}/g,'/');
-    if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
-    if(x.pathname!==before) pathNorm=true;
-
-    if(removed.length) notes.push(`Entfernt: ${removed.join(', ')}`);
-    if(kept.length)    notes.push(`Behalten (Whitelist): ${kept.join(', ')}`);
-    if(hashDropped)    notes.push('Hash entfernt (Amazon-Standard).');
-    if(pathNorm)       notes.push('Pfad normalisiert (// und trailing Slash).');
-
-    return {url:x.toString(), notes};
-  }catch{
-    return {url:u, notes:['Konnte nicht geparst werden – unverändert']};
-  }
-}
-
-/* UI Refs */
-const $in = document.getElementById('in');
-const $out = document.getElementById('out');
-const $logBox = document.getElementById('logBox');
-const $log = document.getElementById('log');
-
-/* Normalisieren der Eingabe */
-function normalizeSeed(vRaw){
-  let v=vRaw.trim();
-  if(!v) return null;
-  try{ for(let i=0;i<3;i++) v=decodeURIComponent(v); }catch{}
-  if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(v)) v='https://'+v.replace(/^\/+/, '');
-  return v;
-}
-
-/* Haupt-Clean */
-function clean(vRaw){
-  const seed = normalizeSeed(vRaw);
-  if(!seed) return null;
-
-  const un = unwrapWithLog(seed);
-  const cl = cleanWithLog(un.url);
-
-  // Ergebnis + Protokoll
-  $out.value = cl.url;
-  const lines = [];
-  if(un.steps.length) lines.push('Entschachtelung: '+un.steps.join(' → '));
-  if(cl.notes.length) lines.push(...cl.notes);
-  if(!lines.length)   lines.push('Keine Änderungen notwendig.');
-  $log.innerHTML = '<ul style="margin:.2rem 0 0 18px">'+lines.map(x=>`<li>${x.replace(/&/g,'&amp;')}</li>`).join('')+'</ul>';
-  $logBox.style.display='block';
-
-  return cl.url;
-}
-
-/* === Event-Handler: robust === */
-document.getElementById('cleanOpen').addEventListener('click', ()=>{
-  const url = clean($in.value); if(url) location.href = url;
-});
-
-document.getElementById('copy').addEventListener('click', async ()=>{
-  const url = clean($in.value) || $in.value.trim();
-  if(!url) return;
-  try {
-    await navigator.clipboard.writeText(url);
-  } catch {
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = url; ta.style.position='fixed'; ta.style.opacity='0';
-      document.body.appendChild(ta); ta.focus(); ta.select();
-      const ok = document.execCommand('copy');
-      document.body.removeChild(ta);
-      if(!ok) throw new Error('execCommand failed');
-    } catch {
-      prompt('Link kopieren:', url);
-    }
-  }
-});
-
-document.getElementById('share').addEventListener('click', async ()=>{
-  const url = clean($in.value) || $in.value.trim();
-  if(!url) return;
-  if (navigator.share) {
-    try { await navigator.share({title:'Sauberer Link', url}); return; } catch {}
-  }
-  // Fallback: kopieren + Hinweis
-  try { await navigator.clipboard.writeText(url); alert('Link in der Zwischenablage.'); }
-  catch { prompt('Link kopieren:', url); }
-});
-
-// "Prüfen" immer aus aktueller Eingabe öffnen (ohne vorheriges clean())
-document.getElementById('inspect').addEventListener('click', (e)=>{
-  e.preventDefault();
-  const vRaw = $in.value.trim();
-  if(!vRaw) return;
-  const href = 'redirect-entschachteln.html?wait=1&details=1&u=' + encodeURIComponent(vRaw);
-  window.open(href, '_blank', 'noopener');
-});
-
-// Enter-Key: direkt öffnen
-$in.addEventListener('keydown', (e)=>{
-  if(e.key==='Enter'){ e.preventDefault(); const url = clean($in.value); if(url) location.href=url; }
-});
-</script>
-
-<!-- Zentrale SW-Registrierung (immer zuletzt) -->
-<script src="js/sw-register.js?v=2025-11-13-12"></script>
-<script src="js/core.js?v=2025-11-14-03"></script>
-<script src="js/app.js?v=2025-11-14-03"></script>
-<script src="js/sw-register.js?v=2025-11-14-03"></script>
+<script src="js/core.js?v=2025-11-14-05"></script>
+<script src="js/app.js?v=2025-11-14-05"></script>
+<script src="js/sw-register.js?v=2025-11-14-05"></script>
 </body>
 </html>
