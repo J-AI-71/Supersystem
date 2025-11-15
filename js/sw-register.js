@@ -3,7 +3,7 @@
   'use strict';
 
   // Nur hier die Versionskennung erhöhen (gleiche Kennung auch beim <script src="...sw-register.js?v=..."> verwenden)
-  const VER = '2025-11-13-12';
+  <script src="js/sw-register.js?v=2025-11-14-02"></script>
 
   if (!('serviceWorker' in navigator)) return;
 
