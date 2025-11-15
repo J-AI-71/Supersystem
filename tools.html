@@ -1,6 +1,12 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/"><title>Tools · SafeShare</title>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Tools · SafeShare</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
 <style>
 body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}
 .w{max-width:860px;margin:auto;padding:28px 16px}
@@ -8,73 +14,24 @@ h1{margin:0 0 8px}.mut{color:#9a9a9a}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
 .btn{padding:.6rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;font-weight:600;margin-right:8px}
 pre{white-space:pre-wrap;background:#000;border:1px solid #2a2a2a;border-radius:10px;padding:10px}
-</style></head><body><div class="w">
-<h1>Tools</h1>
-<div class="card">
-  <p><button id="sw-unreg" class="btn">Service Worker abmelden</button>
-     <button id="sw-skip"  class="btn">Auf neue Version umschalten</button>
-     <button id="caches-list" class="btn">Caches anzeigen</button>
-     <button id="caches-del"  class="btn">Alle Caches löschen</button></p>
-  <pre id="out" aria-live="polite">Bereit.</pre>
-</div>
-
-<div class="card">
-  <h3 style="margin:0 0 6px">Lokale Einstellungen</h3>
-  <p><button id="ls-show" class="btn">localStorage anzeigen</button>
-     <button id="ls-clear" class="btn">Pro-Status & Team-Flags löschen</button></p>
-</div>
-
-<p class="mut" style="margin-top:12px"><a href="app.html">App</a> · <a href="index.html">Start</a></p>
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>Tools</h1>
+  <div class="card">
+    <p><button id="sw-unreg" class="btn">Service Worker abmelden</button>
+       <button id="caches-del" class="btn">Alle Caches löschen</button>
+       <button id="caches-list" class="btn">Caches anzeigen</button></p>
+    <pre id="out" aria-live="polite">Bereit.</pre>
+  </div>
 </div>
 <script>
 const $=id=>document.getElementById(id); const log=(...a)=>{ $('out').textContent = a.join(' ') };
-
-$('sw-unreg').onclick=async()=>{
-  try{
-    if('serviceWorker' in navigator){
-      const regs=await navigator.serviceWorker.getRegistrations();
-      await Promise.all(regs.map(r=>r.unregister()));
-      log('SW: abgemeldet ('+regs.length+' Registrierungen).');
-    }else log('SW: nicht unterstützt.');
-  }catch(e){ log('Fehler:',e); }
-};
-
-$('sw-skip').onclick=async()=>{
-  try{
-    if('serviceWorker' in navigator){
-      const regs=await navigator.serviceWorker.getRegistrations();
-      regs.forEach(r=>{ r.waiting?.postMessage({type:'SKIP_WAITING'}); });
-      log('An neue Version gesendet (SKIP_WAITING). Neu laden.');
-      location.reload();
-    }
-  }catch(e){ log('Fehler:',e); }
-};
-
-$('caches-list').onclick=async()=>{
-  try{
-    if(!('caches' in window)) return log('Caches: nicht unterstützt.');
-    const keys=await caches.keys();
-    log('Caches:', keys.length?keys.join(', '):'keine');
-  }catch(e){ log('Fehler:',e); }
-};
-
-$('caches-del').onclick=async()=>{
-  try{
-    if(!('caches' in window)) return log('Caches: nicht unterstützt.');
-    const keys=await caches.keys();
-    await Promise.all(keys.map(k=>caches.delete(k)));
-    log('Caches: alle gelöscht.');
-  }catch(e){ log('Fehler:',e); }
-};
-
-$('ls-show').onclick=()=>{
-  const keys=['ss2_pro','ss_mode','ss_wl'];
-  const out=keys.map(k=>k+': '+(localStorage.getItem(k)??'—')).join('\n');
-  log(out||'leer');
-};
-
-$('ls-clear').onclick=()=>{
-  ['ss2_pro','ss_mode','ss_wl'].forEach(k=>localStorage.removeItem(k));
-  log('localStorage: ss2_pro, ss_mode, ss_wl gelöscht.');
-};
-</script></body></html>
+$('sw-unreg').onclick=async()=>{ try{ if('serviceWorker'in navigator){ const r=await navigator.serviceWorker.getRegistrations(); await Promise.all(r.map(x=>x.unregister())); log('SW abgemeldet: '+r.length); } }catch(e){ log('Fehler:',e) } };
+$('caches-del').onclick=async()=>{ try{ if('caches'in window){ const k=await caches.keys(); await Promise.all(k.map(n=>caches.delete(n))); log('Caches gelöscht: '+k.length); } }catch(e){ log('Fehler:',e) } };
+$('caches-list').onclick=async()=>{ try{ if('caches'in window){ const k=await caches.keys(); log('Caches:', k.join(', ')||'keine'); } }catch(e){ log('Fehler:',e) } };
+</script>
+<script src="js/sw-register.js?v=2025-11-14-05"></script>
+</body>
+</html>
