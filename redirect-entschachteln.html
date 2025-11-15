@@ -1,153 +1,66 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
-<title>Weiterleitung · SafeShare</title>
-<meta name="referrer" content="no-referrer">
-<link rel="icon" href="assets/logo.png?v=2025-11-13-08">
+<title>Redirect-Analyse · SafeShare</title>
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
+<meta name="robots" content="noindex,follow">
+<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
 <style>
-body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}
-.w{max-width:760px;margin:auto;padding:28px 16px}
-.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px}
-.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}
-.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-input.code{width:100%;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-.mut{color:#9a9a9a}
-</style></head><body><div class="w">
-<h1 style="margin:0 0 10px">Weiterleitung</h1>
-<div class="card">
-  <p id="info" class="mut">Bereite Ziel-URL vor …</p>
-  <input id="url" class="code" readonly value="">
-  <p style="margin-top:10px">
-    <a id="open" class="btn pri" href="#">Jetzt öffnen</a>
-    <button id="copy" class="btn alt" type="button">Kopieren</button>
-    <a class="btn alt" href="bookmarklets.html">Bookmarklet</a>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+.wrap{max-width:960px;margin:auto;padding:28px 16px}
+h1{margin:0 0 6px;font-size:26px}.mut{color:var(--mut)}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
+code,pre{background:#000;border:1px solid #2a2a2a;border-radius:8px;padding:8px;color:#eaeaea}
+a{color:#9aead0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Redirect-Analyse</h1>
+  <div class="card" id="box">Lade …</div>
+  <p class="mut" style="margin-top:12px">
+    <a href="app.html">Zur App</a> · <a href="index.html">Start</a>
   </p>
 </div>
 
-<!-- Änderungsprotokoll (zusammengeklappt; mit ?details=1 offen) -->
-<div class="card" id="log" style="display:none;margin-top:10px">
-  <details id="logDetails">
-    <summary>Was wurde geändert?</summary>
-    <div id="details" class="mut" style="margin-top:8px"></div>
-  </details>
-</div>
-
-<p class="mut" style="margin-top:12px">
-  Warum diese Seite? Wir entfernen Marketing-Parameter (<code>utm_*</code>, <code>gclid</code>, <code>fbclid</code> …)
-  und lösen verschachtelte Redirects (<code>url=</code>, <code>u=</code>, <code>q=</code>) auf.
-</p>
-<p class="mut"><a href="index.html">Start</a></p>
-</div>
-
+<script src="js/core.js?v=2025-11-14-05"></script>
 <script>
-// Flags (Publisher/Whitelist) aus URL & LocalStorage
-function getFlags(){
-  const sp=new URL(location.href).searchParams;
-  const publisher = sp.get('publisher')==='1' || sp.get('mode')==='publisher' || localStorage.getItem('ss_mode')==='publisher';
-  const wl = new Set((sp.get('wl')||'').split(',').map(s=>s.trim()).filter(Boolean));
-  (localStorage.getItem('ss_wl')||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(x=>wl.add(x));
-  return {publisher, wl};
-}
-
-// Entschachteln mit Log (bis 5 Ebenen)
-function unwrapWithLog(u){
-  const steps=[];
-  try{
-    let s=u, loops=0;
-    while(loops++<5){
-      const url=new URL(s), p=url.searchParams;
-      const keys=['url','u','link','q','target','to','dest']; let key=null,val=null;
-      for(const k of keys){ if(p.has(k)){ key=k; val=p.get(k); break; } }
-      if(!key) return {url:s, steps};
-      steps.push(`Entschachtelt: Parameter „${key}=“ gefunden`);
-      try{ for(let i=0;i<3;i++) val=decodeURIComponent(val); }catch{}
-      if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(val)) val='https://'+val.replace(/^\/+/, '');
-      s=val;
-    }
-    steps.push('Maximal 5 Ebenen entschachtelt.');
-    return {url:s, steps};
-  }catch{ return {url:u, steps}; }
-}
-
-// Säubern inkl. Whitelist + Log
-function cleanWithLog(u){
-  const notes=[], removed=[], kept=[]; let hashDropped=false, pathNorm=false;
-  const {publisher, wl}=getFlags();
-  try{
-    const x=new URL(u);
-    const TRACK=new Set(["utm_source","utm_medium","utm_campaign","utm_term","utm_content","utm_id","gclid","fbclid","msclkid","yclid","mc_cid","mc_eid","_hsenc","_hsmi","igshid","si","spm"]);
-
-    // Amazon-Sonderfälle
-    if(/amazon\./.test(x.hostname)){
-      const AFF=["tag","ascsubtag","ref","pf_rd_r","pf_rd_p"];
-      AFF.forEach(k=>{
-        if(publisher && wl.has(k)){ if(x.searchParams.has(k)) kept.push(k); }
-        else if(x.searchParams.has(k)){ removed.push(k); x.searchParams.delete(k); }
-      });
-      if(x.hash && !(publisher && wl.has('#'))){ hashDropped=true; x.hash=""; }
-    }
-
-    // Allgemein
-    for(const k of [...x.searchParams.keys()]){
-      const isTracker = k.startsWith('utm_') || TRACK.has(k);
-      if(isTracker){
-        if(publisher && wl.has(k)) kept.push(k);
-        else { removed.push(k); x.searchParams.delete(k); }
-      }
-    }
-
-    const before=x.pathname;
-    x.pathname=x.pathname.replace(/\/{2,}/g,'/');
-    if(x.pathname!=="/" && x.pathname.endsWith("/")) x.pathname=x.pathname.slice(0,-1);
-    if(x.pathname!==before) pathNorm=true;
-
-    if(removed.length) notes.push(`Entfernt: ${removed.join(', ')}`);
-    if(kept.length)    notes.push(`Behalten (Whitelist): ${kept.join(', ')}`);
-    if(hashDropped)    notes.push('Hash entfernt (Amazon-Standard).');
-    if(pathNorm)       notes.push('Pfad normalisiert (// und trailing Slash).');
-
-    return {url:x.toString(), notes};
-  }catch{
-    return {url:u, notes:['Konnte nicht geparst werden – unverändert']};
-  }
-}
-
 (function(){
-  const sp=new URL(location.href).searchParams;
-  let u = sp.get('u') || sp.get('url') || sp.get('link') || '';
-  if(!u){ document.getElementById('info').textContent='Keine Ziel-URL übergeben.'; return; }
-  try{ for(let i=0;i<3;i++) u=decodeURIComponent(u); }catch{}
-  if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(u)) u='https://'+u.replace(/^\/+/, '');
+  const box = document.getElementById('box');
+  const sp = new URL(location.href).searchParams;
+  const raw = sp.get('u') || '';
+  if(!raw){ box.textContent='Parameter „u“ fehlt.'; return; }
 
-  const un = unwrapWithLog(u);
-  const cl = cleanWithLog(un.url);
+  const seed = SafeShare.core.normalizeSeed(raw);
+  const un = SafeShare.core.unwrapWithLog(seed);
+  const cl = SafeShare.core.cleanWithLog(un.url);
 
-  // UI
-  document.getElementById('url').value = cl.url;
-  document.getElementById('open').href = cl.url;
-  document.getElementById('info').textContent='Ziel vorbereitet.';
+  const details = sp.get('details')==='1';
+  const wait = sp.get('wait')==='1';
 
-  // Protokoll
-  const lines=[];
-  if(un.steps.length) lines.push('Entschachtelung: '+un.steps.join(' → '));
-  if(cl.notes.length) lines.push(...cl.notes);
-  if(!lines.length)   lines.push('Keine Änderungen notwendig.');
-  document.getElementById('details').innerHTML =
-    '<ul style="margin:0 0 0 18px">'+lines.map(x=>`<li>${x.replace(/&/g,'&amp;')}</li>`).join('')+'</ul>';
-  document.getElementById('log').style.display='block';
-  if(sp.get('details')==='1') document.getElementById('logDetails').setAttribute('open','open');
+  const html = `
+    <p class="mut">Eingabe (roh):</p>
+    <pre>${raw.replace(/&/g,'&amp;')}</pre>
+    <p class="mut">Entschachtelt:</p>
+    <pre>${un.url.replace(/&/g,'&amp;')}</pre>
+    <p class="mut">Ergebnis (gereinigt):</p>
+    <pre>${cl.url.replace(/&/g,'&amp;')}</pre>
+    ${un.steps.length||cl.notes.length?'<p class="mut">Protokoll:</p>':''}
+    ${un.steps.length?('<ul>'+un.steps.map(s=>'<li>'+s+'</li>').join('')+'</ul>'):''}
+    ${cl.notes.length?('<ul>'+cl.notes.map(s=>'<li>'+s+'</li>').join('')+'</ul>'):''}
+    ${!wait?('<p><a href="'+cl.url+'">Jetzt zur bereinigten URL</a></p>'):''}
+  `;
+  box.innerHTML = html;
 
-  // Auto-Redirect (wenn kein wait=1)
-  if(!(sp.get('wait')==='1')) location.replace(cl.url);
-
-  // Kopieren
-  document.getElementById('copy').onclick=async()=>{
-    try{ await navigator.clipboard.writeText(cl.url);
-      document.getElementById('copy').textContent='Kopiert';
-      setTimeout(()=>document.getElementById('copy').textContent='Kopieren',1200);
-    }catch{ prompt('Clean URL:', cl.url); }
-  };
+  if(!wait && !details){
+    setTimeout(()=>{ location.href = cl.url; }, 350);
+  }
 })();
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-08'); }
 </script>
-</body></html>
+<script src="js/sw-register.js?v=2025-11-14-05"></script>
+</body>
+</html>
