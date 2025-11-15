@@ -1,37 +1,26 @@
 // /Supersystem/js/sw-register.js
 (function () {
   'use strict';
-
-  // Nur hier die Versionskennung erhöhen (gleiche Kennung auch beim <script src="...sw-register.js?v=..."> verwenden)
-  <script src="js/sw-register.js?v=2025-11-14-02"></script>
-
+  const VER = '2025-11-14-03';          // nur hier erhöhen
   if (!('serviceWorker' in navigator)) return;
 
-  // Reload-Schleifen verhindern: pro Version nur 1× neu laden
   const url = new URL(location.href);
   const alreadyTagged = url.searchParams.get('sw') === VER;
   let refreshed = sessionStorage.getItem('ss_sw_refreshed') === VER;
 
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshed || alreadyTagged) return; // nichts tun, wenn schon markiert
+    if (refreshed || alreadyTagged) return;
     refreshed = true;
     sessionStorage.setItem('ss_sw_refreshed', VER);
     const u = new URL(location.href);
-    u.searchParams.set('sw', VER);          // markiert diese Version im URL-Query
-    location.replace(u.toString());         // ersetzt den Eintrag in der History
+    u.searchParams.set('sw', VER);
+    location.replace(u.toString());
   });
 
   (async () => {
     try {
-      // SW registrieren (mit Version-Query für sauberes Ausrollen)
       const reg = await navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(VER));
-
-      // Falls bereits eine neue, wartende SW existiert → sofort aktivieren
-      if (reg.waiting) {
-        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-      }
-
-      // Bei künftig gefundenen Updates die neue SW nach Installation sofort aktivieren
+      if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
       reg.addEventListener('updatefound', () => {
         const nw = reg.installing;
         if (!nw) return;
@@ -41,8 +30,6 @@
           }
         });
       });
-    } catch (e) {
-      // Optional: console.warn('SW registration failed:', e);
-    }
+    } catch (e) {}
   })();
 })();
