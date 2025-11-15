@@ -1,8 +1,10 @@
-// SafeShare Embed: <script src=".../embed.js" defer></script>
+// /Supersystem/embed.js
+// Nutzung auf fremden Seiten: <script src="https://j-ai-71.github.io/Supersystem/embed.js" defer></script>
 // <a href="https://example.com/?utm_source=x" data-clean-copy>Sauber kopieren</a>
-// Optional: data-action="copy" (nur kopieren, kein Navigieren)
+// Optional: data-action="copy" (nur kopieren)
 (function(){
-  "use strict";
+  'use strict';
+  function norm(u){ try{ for(let i=0;i<3;i++) u=decodeURIComponent(u); }catch{} if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(u)) u='https://'+u.replace(/^\/+/, ''); return u; }
   function unwrap(u){
     try{
       let s=u, loops=0;
@@ -35,24 +37,19 @@
       return x.toString();
     }catch{ return u; }
   }
-  function norm(u){ try{ for(let i=0;i<3;i++) u=decodeURIComponent(u); }catch{} if(!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(u)) u='https://'+u.replace(/^\/+/, ''); return u; }
-
   function onClick(e){
     const a = e.currentTarget;
     let href = a.getAttribute('href') || '';
     if(!href) return;
     href = clean(unwrap(norm(href)));
-
     const act = a.getAttribute('data-action');
     if(act==='copy'){
       e.preventDefault();
       (async()=>{ try{ await navigator.clipboard.writeText(href); a.textContent='Kopiert'; setTimeout(()=>a.textContent='Sauber kopieren',1200); }catch{} })();
       return;
     }
-    // Standard: vor Navigation säubern
-    a.setAttribute('href', href);
+    a.setAttribute('href', href); // säubern vor Navigation
   }
-
   function init(){
     document.querySelectorAll('a[data-clean-copy]').forEach(a=>{
       a.addEventListener('click', onClick, {capture:true});
