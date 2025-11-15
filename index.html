@@ -1,159 +1,65 @@
-<!-- /Supersystem/index.html -->
 <!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
-<title>SafeShare · Saubere Links. Weniger Tracking.</title>
+<title>SafeShare – Saubere Links ohne Tracking</title>
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
+<meta name="robots" content="index,follow">
 <meta name="theme-color" content="#111111">
-<link rel="manifest" href="manifest.webmanifest?v=2025-11-13-11">
-<link rel="icon" href="assets/logo.png?v=2025-11-13-11">
-<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
-
-<!-- SEO -->
-<meta name="description" content="Saubere Links ohne UTM, gclid, fbclid. Redirects entschachteln. Teilen ohne Ballast.">
-<meta property="og:title" content="SafeShare – Saubere Links. Weniger Tracking.">
-<meta property="og:description" content="Entfernt Trackingparameter und entschachtelt Redirects – lokal im Browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/logo.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "SafeShare",
-  "applicationCategory": "BrowserApplication",
-  "operatingSystem": "iOS, Android, macOS, Windows, Linux",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-  "url": "https://j-ai-71.github.io/Supersystem/",
-  "description": "Saubere Links ohne UTM/gclid/fbclid. Redirects entschachteln."
-}
-</script>
-
+<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
+<link rel="manifest" href="manifest.webmanifest?v=2025-11-14-05">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:960px;margin:auto;padding:32px 16px}
-h1{font-size:28px;margin:0 0 8px}
-.mut{color:var(--mut)}
-.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-block;padding:.8rem 1.1rem;background:var(--pri);color:#07130c;border:0;border-radius:10px;text-decoration:none;font-weight:600}
-.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
-.card{background:#111;padding:16px;border:1px solid #1f1f1f;border-radius:12px}
-ul{margin:8px 0 0 18px}
-footer{margin-top:40px;font-size:13px;color:var(--mut)}
-/* Bookmarklet UI */
-.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
-input.code{flex:1;min-width:260px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-/* Zielgruppen-Grid */
-.gridZ{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;padding:0;margin:8px 0 0;list-style:none}
-.pill{display:block;padding:.6rem .8rem;border:1px solid #2a2a2a;border-radius:10px;background:#1b1b1b;color:#eaeaea;text-decoration:none;font-weight:600}
-.pill small{display:block;color:#9a9a9a;font-weight:400;margin-top:2px}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:960px;margin:auto;padding:28px 16px}
+h1{margin:0 0 6px;font-size:32px}
+p.mut{color:var(--mut)}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:14px}
+a.nav{color:#9aead0}
+.btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:var(--pri);color:#07130c;font-weight:700;text-decoration:none}
+.badge{display:inline-block;background:#1b1b1b;border:1px solid #2a2a2a;padding:.2rem .5rem;border-radius:8px;margin-left:8px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>SafeShare</h1>
-  <p class="mut">Saubere Links ohne UTM, gclid, fbclid und Co. Teilen ohne Ballast.</p>
+  <h1>SafeShare <span id="pro-badge" class="badge">nicht aktiv</span></h1>
+  <p class="mut">UTM, gclid, fbclid & Co. entfernen – lokal im Browser. Keine Server, kein Tracking.</p>
 
-  <div class="row" style="margin:16px 0 24px">
-    <a class="btn" href="app.html">App starten</a>
-    <a class="btn alt" href="redirect-entschachteln.html?wait=1&details=1&u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dnewsletter">Beispiel-Share</a>
-    <a class="btn alt" href="bookmarklets.html">Bookmarklets</a>
+  <div class="row" style="margin:12px 0">
+    <a class="btn" href="app.html">Zur App</a>
+    <a class="btn" href="bookmarklets.html" style="background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a">Bookmarklets</a>
+    <a class="btn" href="pro.html" style="background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a">Pro</a>
   </div>
 
   <div class="card">
-    <h3 style="margin:0 0 8px">So funktioniert’s</h3>
-    <ul>
-      <li>Link einfügen → „Säubern &amp; öffnen“.</li>
-      <li>Bookmarklet für 1-Klick-Säuberung.</li>
-      <li>Teilen über <code>redirect-entschachteln.html</code> mit Änderungsprotokoll.</li>
-    </ul>
-  </div>
-
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Bookmarklet (Kurzform)</h3>
-    <p class="mut">Desktop: in die Lesezeichenleiste ziehen. Mobile: „Name+Code“ kopieren und als Lesezeichen-URL einsetzen.</p>
+    <h2 style="margin:0 0 6px;font-size:20px">Bookmarklet</h2>
+    <p class="mut">Ziehe „SafeShare clean“ in die Lesezeichenleiste (Desktop) oder kopiere den Code (iOS).</p>
     <div id="bm-index">Lade …</div>
   </div>
 
-  <div class="card" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">SafeShare Pro <span id="pro-badge" class="mut">nicht aktiv</span></h3>
-    <ul><li>Bulk-Cleaning</li><li>Team-Whitelist</li><li>PWA-Offline (optional)</li></ul>
-    <div class="row" style="margin-top:8px">
-      <a class="btn" href="pro.html">Details &amp; Aktivierung</a>
-      <a class="btn alt" href="bulk-clean.html">Bulk-Cleaning</a>
-    </div>
-  </div>
-
-  <!-- Zielgruppen -->
-  <div class="card" id="zielgruppen" style="margin-top:12px">
-    <h3 style="margin:0 0 8px">Zielgruppen</h3>
-    <ul class="gridZ" aria-label="Zielgruppen-Auswahl">
-      <li><a class="pill" href="journalismus.html">Journalismus<small>Quellenlinks ohne Tracking</small></a></li>
-      <li><a class="pill" href="ngo.html">NGOs &amp; Initiativen<small>Datensparsam teilen</small></a></li>
-      <li><a class="pill" href="edu.html">Bildung<small>Unterrichtslinks ohne UTM</small></a></li>
-      <li><a class="pill" href="behoerden.html">Behörden &amp; Parlamente<small>Policy-konform verlinken</small></a></li>
-      <li><a class="pill" href="presse.html">PR &amp; Pressestellen<small>PMs ohne Kampagnenrauschen</small></a></li>
-      <li><a class="pill" href="compliance.html">Compliance &amp; DPO<small>Whitelist/Policy für Teams</small></a></li>
-      <li><a class="pill" href="support.html">Support &amp; CS<small>Klarere Hilfelinks</small></a></li>
-      <li><a class="pill" href="hr.html">HR &amp; Recruiting<small>Stellen- &amp; Bewerbungslinks</small></a></li>
-      <li><a class="pill" href="bibliotheken.html">Bibliotheken &amp; Archive<small>Langzeitstabile URLs</small></a></li>
-      <li><a class="pill" href="forschung.html">Forschung &amp; Kliniken<small>Neutrale Quellenlinks</small></a></li>
-      <li><a class="pill" href="opensource.html">Open-Source &amp; Docs<small>UTM-freie Referenzen</small></a></li>
-      <li><a class="pill" href="affiliates.html">Publisher &amp; Deals<small>Affiliate-Whitelist</small></a></li>
-    </ul>
-    <p class="mut" style="margin-top:10px">Mehr Anleitung: <a class="mut" href="how-to-utm-entfernen.html">UTM entfernen in 60 Sekunden</a></p>
-  </div>
-
-  <footer>
-    <a href="tools.html" class="mut">Tools</a> ·
-    <a href="team-setup.html" class="mut">Team-Setup</a> ·
-    <a href="bookmarklets.html" class="mut">Bookmarklets</a> ·
-    <a href="tests.html" class="mut">Tests</a> ·
-    <a href="app.html" class="mut">App</a> ·
-    <a href="pro.html" class="mut">Pro</a> ·
-    <a href="impressum.html" class="mut">Impressum</a> ·
-    <a href="datenschutz.html" class="mut">Datenschutz</a> ·
-    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" download>Quickstart (PDF)</a>
-    <span>© SafeShare</span>
-  </footer>
+  <p class="mut" style="margin-top:14px">
+    <a href="bookmarklets.html" class="nav">Bookmarklets</a> ·
+    <a href="app.html" class="nav">App</a> ·
+    <a href="bulk-clean.html" class="nav">Bulk-Cleaning</a> ·
+    <a href="team-setup.html" class="nav">Team-Setup</a> ·
+    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="nav" download>Quickstart (PDF)</a> ·
+    <a href="impressum.html" class="nav">Impressum</a> ·
+    <a href="datenschutz.html" class="nav">Datenschutz</a>
+  </p>
 </div>
 
-<!-- Bookmarklet-Renderer + Pro-Badge + SW -->
-<script src="js/bookmarklets.js?v=2025-11-13-11"></script>
-<script>
-  // Bookmarklet-Vorschau
-  if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');
-
-  // Pro-Badge setzen
-  (function(){
-    const on = localStorage.getItem('ss2_pro')==='1';
-    const b = document.getElementById('pro-badge');
-    if(b) b.textContent = on ? 'aktiv' : 'nicht aktiv';
-  })();
-
-  // Service Worker registrieren
-  if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-11'); }
-</script>
-  <!-- Bookmarklet-Renderer + Pro-Badge -->
-<script src="js/bookmarklets.js?v=2025-11-13-11"></script>
+<script src="js/bookmarklets.js?v=2025-11-14-05"></script>
 <script>
   if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');
   (function(){
     const on = localStorage.getItem('ss2_pro')==='1';
     const b = document.getElementById('pro-badge');
-    if(b) b.textContent = on ? 'aktiv' : 'nicht aktiv';
+    if (b) b.textContent = on ? 'aktiv' : 'nicht aktiv';
   })();
 </script>
-<!-- SW-Registrierung: immer als LETZTES -->
-<script src="js/bookmarklets.js?v=2025-11-13-12"></script>
-<script>if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');</script>
-<script src="js/sw-register.js?v=2025-11-13-12"></script>
-<script src="js/bookmarklets.js?v=2025-11-14-03"></script>
-<script>if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');</script>
-<script src="js/sw-register.js?v=2025-11-14-03"></script>
-</body></html>
+<script src="js/sw-register.js?v=2025-11-14-05"></script>
 </body>
 </html>
