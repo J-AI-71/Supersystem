@@ -1,4 +1,5 @@
-// Minimal-SW ohne Offline-Fallback
+// /Supersystem/sw.js
+// Minimal-SW: HTML immer Netz; Assets stale-while-revalidate; Icons/OG bypass.
 const VERSION='2025-11-15-13';
 const BYPASS=[/\/assets\/icons\//,/\/assets\/og\.png$/];
 const CNAME = n => `ss-${VERSION}-${n}`;
@@ -12,17 +13,14 @@ self.addEventListener('fetch', e => {
   const u = new URL(req.url);
   const same = u.origin === location.origin;
 
-  // Icons/OG nicht abfangen
   if (same && BYPASS.some(rx => rx.test(u.pathname))) return;
 
-  // HTML: direkt Netz (kein Fallback)
   const isHTML = req.mode === 'navigate' || (req.headers.get('accept')||'').includes('text/html');
   if (same && isHTML) {
-    e.respondWith(fetch(req, {cache:'no-store'}).catch(() => new Response('Offline', {status:503})));
+    e.respondWith(fetch(req, {cache:'no-store'}).catch(()=> new Response('Offline', {status:503})));
     return;
   }
 
-  // Assets: Stale-While-Revalidate
   const isAsset = same && /\.(?:js|css|png|jpg|jpeg|gif|svg|webp|ico|json|webmanifest)$/.test(u.pathname);
   if (isAsset) {
     e.respondWith((async () => {
