@@ -1,8 +1,14 @@
 // /Supersystem/js/sw-register.js
-const VER='2025-11-15-13';
+const VER   = '2025-11-15-13';
+const SCOPE = '/Supersystem/';
+
+function log(m){ try{ console.log('[SW]', m); }catch(_){} }
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js?v='+VER).catch(()=>{});
+    navigator.serviceWorker.register(SCOPE + 'sw.js?v=' + VER, { scope: SCOPE })
+      .then(r => log('registered ' + (r.scope||SCOPE)))
+      .catch(e => log('register FAIL: ' + (e && e.message)));
   });
 }
   (async () => {
