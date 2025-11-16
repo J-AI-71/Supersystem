@@ -1,9 +1,8 @@
 // /Supersystem/js/sw-register.js
-const VER = '2025-11-15-12';
+const VER='2025-11-15-13';
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js?v=' + VER)
-      .catch(()=>{});
+    navigator.serviceWorker.register('sw.js?v='+VER).catch(()=>{});
   });
 }
   (async () => {
