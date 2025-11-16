@@ -1,108 +1,47 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/">
-<title>Status · SafeShare</title>
-<meta name="robots" content="noindex,nofollow">
-<style>
-:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--ok:#2bc27e;--bad:#e05a5a}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui}
-.w{max-width:1100px;margin:auto;padding:28px 16px}
-h1{margin:0 0 10px;font-size:24px}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{border:1px solid #2a2a2a;padding:8px;vertical-align:top}
-th{background:#111}
-.ok{color:var(--ok);font-weight:600}
-.bad{color:var(--bad);font-weight:600}
-.mut{color:var(--mut)}
-code{background:#000;border:1px solid #2a2a2a;border-radius:6px;padding:1px 4px}
-</style>
-</head>
-<body>
-<div class="w">
-  <h1>Status-Check</h1>
-  <p class="mut">Prüft Basis-Tags, SW-Version und Footer-Links. Version erwartet: <code>2025-11-15-01</code></p>
+// SafeShare Status-Check (in der Browser-Konsole auf einer beliebigen Seite ausführen)
+// Prüft: <base>, Referrer-Policy, sw-register-Version, Quickstart-Link, Tools-Link entfernt, canonical
+// Erwartete SW-Version hier ggf. anpassen:
+(() => {
+  const EXPECTED_VER = '2025-11-15-01';
 
-  <table id="t">
-    <thead>
-      <tr>
-        <th>Seite</th>
-        <th>Base</th>
-        <th>SW-Register</th>
-        <th>Quickstart-Link</th>
-        <th>Tools-Link entfernt</th>
-        <th>Hinweis</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  const html = document.documentElement.innerHTML;
 
-  <p class="mut" style="margin-top:12px">Tipp: Bei FAIL → <code>tools.html</code> öffnen, „SW abmelden“ + „Caches löschen“, Seite mit <code>?nocache=2025-11-15-01</code> neu laden.</p>
-</div>
-
-<script>
-(async function(){
-  const VER = '2025-11-15-01';
-  const pages = [
-    'index.html',
-    'app.html',
-    'bookmarklets.html',
-    'bulk-clean.html',
-    'pro.html',
-    'team-setup.html',
-    'support.html',
-    'press.html',
-    'changelog.html',
-    'impressum.html',
-    'datenschutz.html'
-  ];
-
-  const tbody = document.querySelector('#t tbody');
-  const abs = s => new URL(s, location.origin + '/Supersystem/').toString();
-
-  for(const p of pages){
-    const url = abs(p) + '?nocache=' + VER;
-    let html='', note='';
-    try {
-      const res = await fetch(url, {cache:'no-store'});
-      if(!res.ok) throw new Error(res.status + ' ' + res.statusText);
-      html = await res.text();
-    } catch(e) {
-      addRow(p, '—', '—', '—', '—', 'Fehler: ' + e.message);
-      continue;
-    }
-
-    const hasBase = /<base\s+href="\/Supersystem\/"\s*>/i.test(html);
-    const hasSW   = new RegExp(`<script\\s+src="js\\/sw-register\\.js\\?v=${VER}"`).test(html);
-    const hasPDF  = /assets\/docs\/SafeShare-Quickstart-DE\.pdf/i.test(html);
-    const hasTools= /href="tools\.html"/i.test(html) ? false : true; // true == entfernt
-
-    addRow(p,
-      hasBase ? 'PASS' : 'FAIL',
-      hasSW   ? 'PASS' : 'FAIL',
-      hasPDF  ? 'PASS' : 'FAIL',
-      hasTools? 'PASS' : 'FAIL',
-      note
-    );
+  // SW-Register-Version aus dem <script>-Tag ermitteln
+  function detectSwRegVersion() {
+    const tag = [...document.scripts].find(s => /js\/sw-register\.js/i.test(s.src));
+    const m = tag && tag.src.match(/[?&]v=([^&]+)/);
+    return m ? m[1] : null;
   }
 
-  function addRow(page, base, sw, pdf, tools, note){
-    const tr = document.createElement('tr');
-    const cl = s => s==='PASS' ? 'ok' : (s==='FAIL' ? 'bad' : '');
-    tr.innerHTML =
-      `<td><a href="${page}?nocache=${VER}" target="_blank" rel="noopener">${page}</a></td>`+
-      `<td class="${cl(base)}">${base}</td>`+
-      `<td class="${cl(sw)}">${sw}</td>`+
-      `<td class="${cl(pdf)}">${pdf}</td>`+
-      `<td class="${cl(tools)}">${tools}</td>`+
-      `<td>${note||''}</td>`;
-    tbody.appendChild(tr);
+  const ver = detectSwRegVersion();
+
+  // Checks
+  const checks = {
+    base_ok: /<base\s+href=["']\/Supersystem\/["']\s*>/i.test(html),
+    referrer_ok:
+      /<meta\s+name=["']referrer["']\s+content=["']no-referrer(?:-when-downgrade)?["']\s*>/i.test(html),
+    sw_register_found: !!ver,
+    sw_register_ok: ver === EXPECTED_VER,
+    quickstart_link: /assets\/docs\/SafeShare-Quickstart-DE\.pdf/i.test(html),
+    tools_link_removed: !/href=["']tools\.html["']/i.test(html),
+    canonical_present: /<link\s+rel=["']canonical["'][^>]*>/i.test(html),
+  };
+
+  console.table({
+    ...checks,
+    sw_register_version: ver || 'not found',
+    expected_version: EXPECTED_VER
+  });
+
+  // Zusatzinfos zum Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      console.log('[SW]', {
+        has_controller: !!navigator.serviceWorker.controller,
+        scope: reg ? reg.scope : 'none'
+      });
+    }).catch(e => console.log('[SW] getRegistration error:', e));
+  } else {
+    console.log('[SW] serviceWorker API not supported');
   }
 })();
-</script>
-
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
-</body>
-</html>
