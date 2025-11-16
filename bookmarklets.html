@@ -1,78 +1,129 @@
+<!-- /Supersystem/bookmarklets.html -->
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<base href="/Supersystem/">
-<title>Bookmarklets · SafeShare</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <base href="/Supersystem/">
 
-<!-- Social Preview -->
-<meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/"> <!-- pro Seite anpassen -->
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <title>SafeShare Bookmarklets</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
 
-<!-- iOS / PWA -->
-<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <!-- Social Preview -->
+  <meta property="og:title" content="SafeShare Bookmarklets">
+  <meta property="og:description" content="Zwei Bookmarklets: Aktuelle Seite säubern & öffnen · Beliebige URL säubern.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SafeShare Bookmarklets">
+  <meta name="twitter:description" content="Zwei Bookmarklets: Aktuelle Seite säubern & öffnen · Beliebige URL säubern.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
 
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
-<meta name="robots" content="index,follow">
-<link rel="icon" href="assets/logo.png?v=2025-11-15-01">
-<style>
-:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:960px;margin:auto;padding:28px 16px}
-h1{margin:0 0 8px;font-size:28px}.mut{color:var(--mut)}
-.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
-input.code{flex:1;min-width:280px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-button{padding:.6rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;font-weight:600}
-a.link, a.link:visited{color:#9aead0}
-</style>
+  <!-- iOS / PWA -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!-- Icons (KREIS) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192-kreis.png?v=2025-11-15-11">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-11">
+
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e;--ink:#07130c;--line:#222}
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+    a{color:#9aead0;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:980px;margin:auto;padding:28px 16px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{width:28px;height:28px}
+    nav a{margin-left:14px;color:#cfeee5}
+    h1{margin:0 0 6px;font-size:26px}
+    .mut{color:var(--mut)}
+    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010;margin-bottom:12px}
+    .bm-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    .bm{border:1px solid #252525;border-radius:10px;padding:12px;background:#0f0f0f}
+    .bm h3{margin:0 0 8px;font-size:18px}
+    .bm a.bm-link{display:inline-block;background:var(--pri);color:var(--ink);font-weight:700;padding:.55rem .8rem;border-radius:10px}
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    textarea.code{width:100%;min-height:64px;background:#0b0b0b;color:#dfe; border:1px solid #222; border-radius:8px;padding:8px;font:14px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+    .btn{display:inline-block;padding:.55rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;font-weight:700}
+    footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-size:14px}
+    footer a{color:#b6e6d6}
+    .foot-grid{display:flex;flex-wrap:wrap;gap:10px 16px}
+    .foot-grid a:visited{color:#b6e6d6}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Bookmarklets</h1>
-  <p class="mut">
-    Desktop: Button „SafeShare clean“ in die Lesezeichenleiste ziehen.<br>
-    iPhone/iPad: <strong>Code kopieren</strong> → Lesezeichen anlegen → im Feld „Adresse/URL“ den Code einfügen.
-  </p>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="assets/icons/icon-32-kreis.png?v=2025-11-15-11" alt="">
+        <span>SafeShare</span>
+      </div>
+      <nav>
+        <a href="index.html">Start</a>
+        <a href="app.html">App</a>
+        <a href="bulk-clean.html">Bulk</a>
+        <a href="pro.html">Pro</a>
+      </nav>
+    </header>
 
-  <div class="card" id="bm-list">Lade …</div>
+    <h1>Bookmarklets</h1>
+    <p class="mut">Auf Desktop: Link auf die Lesezeichenleiste ziehen. Auf iOS/Android: Link lange drücken → „Zu Lesezeichen“.</p>
 
-  <p class="mut" style="margin-top:12px">
-    <a href="index.html" class="link">Start</a> ·
-    <a href="app.html" class="link">App</a> ·
-    <a href="bulk-clean.html" class="link">Bulk-Cleaning</a> ·
-    <a href="team-setup.html" class="link">Team-Setup</a> ·
-    <a href="support.html" class="link">Support</a> ·
-    <a href="press.html" class="link">Presse</a> ·
-    <a href="changelog.html" class="link">Changelog</a> ·
-    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="link" download>Quickstart (PDF)</a> ·
-    <a href="impressum.html" class="link">Impressum</a> ·
-    <a href="datenschutz.html" class="link">Datenschutz</a>
-  </p>
-</div>
+    <div class="bm-list">
+      <div class="bm">
+        <h3>Aktuelle Seite säubern &amp; öffnen</h3>
+        <p><a class="bm-link" href="javascript:(function(){var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(u);})();">SafeShare – Clean&nbsp;&amp;&nbsp;Open</a></p>
+        <details>
+          <summary class="mut">Code anzeigen (zum Kopieren)</summary>
+          <textarea class="code" readonly>javascript:(function(){var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(u);})();</textarea>
+          <div class="row"><button class="btn" data-copy>In Zwischenablage</button></div>
+        </details>
+      </div>
 
-<script src="js/bookmarklets.js?v=2025-11-15-01"></script>
-<script>
-  (function(){
-    var box = document.getElementById('bm-list');
-    if (!box) return;
-    if (window.renderBookmarkletsPage) renderBookmarkletsPage('bm-list');
-    else box.textContent = 'Fehler: js/bookmarklets.js nicht geladen';
-  })();
-</script>
-<script src="js/ext-links.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
+      <div class="bm">
+        <h3>Beliebige URL säubern</h3>
+        <p><a class="bm-link" href="javascript:(function(){var v=(getSelection?String(getSelection()):'')||prompt('URL reinigen:');if(!v)return;location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(v);})();">SafeShare – Clean&nbsp;URL</a></p>
+        <details>
+          <summary class="mut">Code anzeigen (zum Kopieren)</summary>
+          <textarea class="code" readonly>javascript:(function(){var v=(getSelection?String(getSelection()):'')||prompt('URL reinigen:');if(!v)return;location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(v);})();</textarea>
+          <div class="row"><button class="btn" data-copy>In Zwischenablage</button></div>
+        </details>
+      </div>
+    </div>
+
+    <footer>
+      <div class="foot-grid">
+        <a href="support.html">Support</a>
+        <a href="press.html">Presse</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="assets/docs/SafeShare-Quickstart-DE.pdf" target="_blank" rel="noopener">Quickstart PDF</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+  // Copy helper (local only)
+  document.addEventListener('click', (e)=>{
+    const b = e.target.closest('[data-copy]'); if(!b) return;
+    const ta = b.closest('details').querySelector('textarea.code');
+    if(!ta) return;
+    ta.focus(); ta.select();
+    try{ document.execCommand('copy'); b.textContent='Kopiert'; setTimeout(()=>b.textContent='In Zwischenablage',1200);}catch{}
+  });
+  </script>
+  <script src="js/ext-links.js?v=2025-11-15-11"></script>
+  <script src="js/sw-register.js?v=2025-11-15-11"></script>
 </body>
 </html>
