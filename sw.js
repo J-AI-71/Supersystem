@@ -1,10 +1,11 @@
-// /Supersystem/sw.js
-const VERSION = '2025-11-15-04';
-const CACHE = 'ss-cache-' + VERSION;
-const BYPASS_HTML = new Set([
-  '/Supersystem/impressum.html',
-  '/Supersystem/datenschutz.html'
-]);
+// in sw.js
+const VERSION='2025-11-15-12';
+const BYPASS=[/\/assets\/icons\//,/\/assets\/og\.png$/];
+self.addEventListener('fetch',e=>{
+  const u=new URL(e.request.url);
+  if(u.origin===location.origin && BYPASS.some(rx=>rx.test(u.pathname))) return;
+  // …
+});
 
 self.addEventListener('install', e => {
   self.skipWaiting();
