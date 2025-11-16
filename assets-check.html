@@ -16,19 +16,23 @@ th{background:#111}
 .bad{color:#e05a5a;font-weight:700}
 img{background:#000;border:1px solid #252525;border-radius:8px;max-width:96px}
 code{background:#000;border:1px solid #252525;border-radius:6px;padding:1px 4px}
+label{margin-right:12px}
+a,a:visited{color:#9aead0}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Assets-Check</h1>
-  <p>Prüft die Icon-Dateien. Wähle unten, ob du mit <code>-green</code> gearbeitet hast.</p>
+  <p>Prüft die Icon-Dateien im Ordner <code>assets/icons/</code>. Wähle, ob du Dateinamen mit <code>-green</code> verwendest.</p>
 
-  <label><input type="radio" name="mode" value="green" checked> Dateinamen mit <code>-green</code></label>
-  <label style="margin-left:12px"><input type="radio" name="mode" value="plain"> Dateinamen ohne <code>-green</code></label>
+  <label><input type="radio" name="mode" value="green" checked> mit <code>-green</code></label>
+  <label><input type="radio" name="mode" value="plain"> ohne <code>-green</code></label>
 
   <table id="t"><thead>
     <tr><th>Datei</th><th>Bild</th><th>Status</th><th>URL</th></tr>
   </thead><tbody></tbody></table>
+
+  <p style="margin-top:10px"><a href="index.html">Start</a></p>
 </div>
 
 <script>
@@ -51,21 +55,18 @@ code{background:#000;border:1px solid #252525;border-radius:6px;padding:1px 4px}
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${file}<div class="mut">${label}</div></td>
-        <td><img alt="" style="width:96px;height:96px;object-fit:contain;opacity:.8"></td>
+        <td><img alt="" style="width:96px;height:96px;object-fit:contain;opacity:.9"></td>
         <td class="status">…</td>
         <td><code>${url}</code></td>`;
       tbody.appendChild(tr);
-      // load image + HEAD check
       const img = tr.querySelector('img'); img.src = url;
       fetch(url, {method:'GET', cache:'no-store'})
         .then(r => tr.querySelector('.status').innerHTML = r.ok ? '<span class="ok">PASS</span>' : '<span class="bad">FAIL '+r.status+'</span>')
-        .catch(e => tr.querySelector('.status').innerHTML = '<span class="bad">FAIL</span>');
+        .catch(() => tr.querySelector('.status').innerHTML = '<span class="bad">FAIL</span>');
     }
   }
 
-  document.querySelectorAll('input[name="mode"]').forEach(r=>{
-    r.addEventListener('change', ()=>render(r.value));
-  });
+  document.querySelectorAll('input[name="mode"]').forEach(r=>r.addEventListener('change',()=>render(r.value)));
   render('green');
 })();
 </script>
