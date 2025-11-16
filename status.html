@@ -1,47 +1,96 @@
-// SafeShare Status-Check (in der Browser-Konsole auf einer beliebigen Seite ausführen)
-// Prüft: <base>, Referrer-Policy, sw-register-Version, Quickstart-Link, Tools-Link entfernt, canonical
-// Erwartete SW-Version hier ggf. anpassen:
-(() => {
-  const EXPECTED_VER = '2025-11-15-01';
+<!-- /Supersystem/status.html -->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <base href="/Supersystem/">
 
-  const html = document.documentElement.innerHTML;
+  <title>Status · SafeShare</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/status.html">
+  <meta name="robots" content="noindex,nofollow">
 
-  // SW-Register-Version aus dem <script>-Tag ermitteln
-  function detectSwRegVersion() {
-    const tag = [...document.scripts].find(s => /js\/sw-register\.js/i.test(s.src));
-    const m = tag && tag.src.match(/[?&]v=([^&]+)/);
-    return m ? m[1] : null;
-  }
+  <!-- Icons -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
 
-  const ver = detectSwRegVersion();
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--ok:#2bc27e;--bad:#e05a5a;--line:#222}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+    .wrap{max-width:880px;margin:auto;padding:28px 16px}
+    h1{margin:0 0 8px;font-size:26px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border:1px solid var(--line);padding:8px;vertical-align:top}
+    th{background:#111}
+    .ok{color:var(--ok);font-weight:700}
+    .bad{color:var(--bad);font-weight:700}
+    code{background:#000;border:1px solid #222;border-radius:6px;padding:1px 4px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Status</h1>
+    <table id="t">
+      <thead><tr><th>Check</th><th>Ergebnis</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-  // Checks
-  const checks = {
-    base_ok: /<base\s+href=["']\/Supersystem\/["']\s*>/i.test(html),
-    referrer_ok:
-      /<meta\s+name=["']referrer["']\s+content=["']no-referrer(?:-when-downgrade)?["']\s*>/i.test(html),
-    sw_register_found: !!ver,
-    sw_register_ok: ver === EXPECTED_VER,
-    quickstart_link: /assets\/docs\/SafeShare-Quickstart-DE\.pdf/i.test(html),
-    tools_link_removed: !/href=["']tools\.html["']/i.test(html),
-    canonical_present: /<link\s+rel=["']canonical["'][^>]*>/i.test(html),
-  };
+  <script>
+  (async function(){
+    const rows = [
+      ['Base-HREF', async ()=>{
+        return document.baseURI.includes('/Supersystem/') ? 'PASS' : 'FAIL';
+      }],
+      ['Icons erreichbar (192-kreis)', async ()=>{
+        const r = await fetch('assets/icons/icon-192-kreis.png?nocache='+Date.now(), {cache:'no-store'});
+        return r.ok ? 'PASS' : 'FAIL '+r.status;
+      }],
+      ['Manifest ladbar', async ()=>{
+        const r = await fetch('manifest.webmanifest?nocache='+Date.now(), {cache:'no-store'});
+        return r.ok ? 'PASS' : 'FAIL '+r.status;
+      }],
+      ['Service Worker registriert', async ()=>{
+        try{
+          const reg = await navigator.serviceWorker?.getRegistration();
+          return reg ? 'PASS' : 'FAIL';
+        }catch(e){return 'FAIL';}
+      }],
+      ['SW Controller vorhanden', async ()=>{
+        return navigator.serviceWorker?.controller ? 'PASS' : 'FAIL';
+      }],
+      ['sw.js VERSION', async ()=>{
+        const txt = await (await fetch('sw.js?nocache='+Date.now(), {cache:'no-store'})).text();
+        const m = /VERSION\s*=\s*['"]([^'"]+)['"]/.exec(txt);
+        return m ? 'PASS '+m[1] : 'FAIL';
+      }],
+      ['sw-register.js VER', async ()=>{
+        const txt = await (await fetch('js/sw-register.js?nocache='+Date.now(), {cache:'no-store'})).text();
+        const m = /VER\s*=\s*['"]([^'"]+)['"]/.exec(txt);
+        return m ? 'PASS '+m[1] : 'FAIL';
+      }],
+      ['OG-Bild erreichbar', async ()=>{
+        const r = await fetch('assets/og.png?nocache='+Date.now(), {cache:'no-store'});
+        return r.ok ? 'PASS' : 'FAIL '+r.status;
+      }]
+    ];
 
-  console.table({
-    ...checks,
-    sw_register_version: ver || 'not found',
-    expected_version: EXPECTED_VER
-  });
-
-  // Zusatzinfos zum Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistration().then(reg => {
-      console.log('[SW]', {
-        has_controller: !!navigator.serviceWorker.controller,
-        scope: reg ? reg.scope : 'none'
-      });
-    }).catch(e => console.log('[SW] getRegistration error:', e));
-  } else {
-    console.log('[SW] serviceWorker API not supported');
-  }
-})();
+    const $tb = document.querySelector('#t tbody');
+    for(const [label, fn] of rows){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${label}</td><td>…</td>`;
+      $tb.appendChild(tr);
+      try{
+        const res = await fn();
+        const ok = String(res).startsWith('PASS');
+        tr.children[1].innerHTML = ok ? `<span class="ok">${res}</span>` : `<span class="bad">${res}</span>`;
+      }catch(e){
+        tr.children[1].innerHTML = `<span class="bad">FAIL</span>`;
+      }
+    }
+  })();
+  </script>
+  <script src="js/sw-register.js?v=2025-11-15-11"></script>
+</body>
+</html>
