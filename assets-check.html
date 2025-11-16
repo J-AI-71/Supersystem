@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Assets-Check · SafeShare</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+body{margin:0;background:#0b0b0b;color:#eaeaea;font:15px/1.55 system-ui}
+.wrap{max-width:920px;margin:auto;padding:20px 14px}
+h1{margin:0 0 10px;font-size:22px}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #252525;padding:8px;vertical-align:top}
+th{background:#111}
+.ok{color:#2bc27e;font-weight:700}
+.bad{color:#e05a5a;font-weight:700}
+img{background:#000;border:1px solid #252525;border-radius:8px;max-width:96px}
+code{background:#000;border:1px solid #252525;border-radius:6px;padding:1px 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Assets-Check</h1>
+  <p>Prüft die Icon-Dateien. Wähle unten, ob du mit <code>-green</code> gearbeitet hast.</p>
+
+  <label><input type="radio" name="mode" value="green" checked> Dateinamen mit <code>-green</code></label>
+  <label style="margin-left:12px"><input type="radio" name="mode" value="plain"> Dateinamen ohne <code>-green</code></label>
+
+  <table id="t"><thead>
+    <tr><th>Datei</th><th>Bild</th><th>Status</th><th>URL</th></tr>
+  </thead><tbody></tbody></table>
+</div>
+
+<script>
+(function(){
+  const rows = [
+    ['icon-180',   '180x180'],
+    ['icon-192',   '192x192'],
+    ['icon-512',   '512x512'],
+    ['icon-maskable-512', '512x512 (maskable)']
+  ];
+  const tbody = document.querySelector('#t tbody');
+
+  function render(mode){
+    tbody.innerHTML = '';
+    const suffix = mode==='green' ? '-green' : '';
+    const ver = Date.now().toString().slice(-7);
+    for(const [base,label] of rows){
+      const file = `${base}${suffix}.png`;
+      const url = `assets/icons/${file}?nocache=${ver}`;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${file}<div class="mut">${label}</div></td>
+        <td><img alt="" style="width:96px;height:96px;object-fit:contain;opacity:.8"></td>
+        <td class="status">…</td>
+        <td><code>${url}</code></td>`;
+      tbody.appendChild(tr);
+      // load image + HEAD check
+      const img = tr.querySelector('img'); img.src = url;
+      fetch(url, {method:'GET', cache:'no-store'})
+        .then(r => tr.querySelector('.status').innerHTML = r.ok ? '<span class="ok">PASS</span>' : '<span class="bad">FAIL '+r.status+'</span>')
+        .catch(e => tr.querySelector('.status').innerHTML = '<span class="bad">FAIL</span>');
+    }
+  }
+
+  document.querySelectorAll('input[name="mode"]').forEach(r=>{
+    r.addEventListener('change', ()=>render(r.value));
+  });
+  render('green');
+})();
+</script>
+</body>
+</html>
