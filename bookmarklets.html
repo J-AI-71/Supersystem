@@ -48,14 +48,16 @@ a.link{color:#9aead0}
 </p>
 </div>
 
-<script src="js/bookmarklets.js?v=2025-11-14-05"
 <script src="js/bookmarklets.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
-</body>
-        onerror="document.getElementById('bm-list').textContent='Fehler: js/bookmarklets.js nicht gefunden';"></script>
 <script>
-  if (window.renderBookmarkletsPage) renderBookmarkletsPage('bm-list');
+  (function(){
+    var box = document.getElementById('bm-list');
+    if (!box) return;
+    if (window.renderBookmarkletsPage) renderBookmarkletsPage('bm-list');
+    else box.textContent = 'Fehler: js/bookmarklets.js nicht geladen';
+  })();
 </script>
+<script src="js/sw-register.js?v=2025-11-15-01"></script>
 <script src="js/sw-register.js?v=2025-11-14-05"></script>
 </body>
 </html>
