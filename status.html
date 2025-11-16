@@ -1,64 +1,108 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/"><title>Status · SafeShare</title>
-<link rel="icon" href="assets/logo.png?v=2025-11-13-07">
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Status · SafeShare</title>
+<meta name="robots" content="noindex,nofollow">
 <style>
-body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.5 system-ui}.w{max-width:860px;margin:auto;padding:24px 16px}
-h1{margin:0 0 10px}.ok{color:#29c07e}.bad{color:#ff6b6b}.card{background:#111;border:1px solid #1f1f1f;border-radius:10px;padding:12px;margin-top:10px}
-code{background:#000;padding:.1rem .3rem;border-radius:6px}
-</style></head><body><div class="w">
-<h1>Status</h1>
-<div id="list" class="card">Prüfe …</div>
-<p style="margin-top:8px"><a href="tools.html" class="ok">Tools</a> · <a href="index.html" class="ok">Start</a></p>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--ok:#2bc27e;--bad:#e05a5a}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui}
+.w{max-width:1100px;margin:auto;padding:28px 16px}
+h1{margin:0 0 10px;font-size:24px}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #2a2a2a;padding:8px;vertical-align:top}
+th{background:#111}
+.ok{color:var(--ok);font-weight:600}
+.bad{color:var(--bad);font-weight:600}
+.mut{color:var(--mut)}
+code{background:#000;border:1px solid #2a2a2a;border-radius:6px;padding:1px 4px}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>Status-Check</h1>
+  <p class="mut">Prüft Basis-Tags, SW-Version und Footer-Links. Version erwartet: <code>2025-11-15-01</code></p>
+
+  <table id="t">
+    <thead>
+      <tr>
+        <th>Seite</th>
+        <th>Base</th>
+        <th>SW-Register</th>
+        <th>Quickstart-Link</th>
+        <th>Tools-Link entfernt</th>
+        <th>Hinweis</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <p class="mut" style="margin-top:12px">Tipp: Bei FAIL → <code>tools.html</code> öffnen, „SW abmelden“ + „Caches löschen“, Seite mit <code>?nocache=2025-11-15-01</code> neu laden.</p>
 </div>
+
 <script>
 (async function(){
-  const res=[];
-  // 1) Base
-  const expected = location.origin + '/Supersystem/';
-  const actual = document.baseURI;
-  res.push({name:'<base href>', ok: actual===expected, info:`${actual}`});
+  const VER = '2025-11-15-01';
+  const pages = [
+    'index.html',
+    'app.html',
+    'bookmarklets.html',
+    'bulk-clean.html',
+    'pro.html',
+    'team-setup.html',
+    'support.html',
+    'press.html',
+    'changelog.html',
+    'impressum.html',
+    'datenschutz.html'
+  ];
 
-  // 2) Redirect-Datei erreichbar
-  try{
-    const r=await fetch('redirect-entschachteln.html',{cache:'no-store'});
-    res.push({name:'redirect-entschachteln.html', ok:r.ok, info:`HTTP ${r.status}`});
-  }catch(e){ res.push({name:'redirect-entschachteln.html', ok:false, info:String(e)}) }
+  const tbody = document.querySelector('#t tbody');
+  const abs = s => new URL(s, location.origin + '/Supersystem/').toString();
 
-  // 3) Alias erreichbar
-  try{
-    const r=await fetch('Redirect-entschachteln.html',{cache:'no-store'});
-    res.push({name:'Redirect-entschachteln.html (Alias)', ok:r.ok, info:`HTTP ${r.status}`});
-  }catch(e){ res.push({name:'Redirect-entschachteln.html (Alias)', ok:false, info:String(e)}) }
+  for(const p of pages){
+    const url = abs(p) + '?nocache=' + VER;
+    let html='', note='';
+    try {
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error(res.status + ' ' + res.statusText);
+      html = await res.text();
+    } catch(e) {
+      addRow(p, '—', '—', '—', '—', 'Fehler: ' + e.message);
+      continue;
+    }
 
-  // 4) Service Worker
-  const sw = 'serviceWorker' in navigator;
-  res.push({name:'Service Worker unterstützt', ok: sw, info: sw?'ja':'nein'});
-  if(sw){
-    const reg = await navigator.serviceWorker.getRegistration();
-    res.push({name:'SW registriert', ok: !!reg, info: reg? (reg.active && reg.active.scriptURL):'—'});
-    res.push({name:'SW kontrolliert Seite', ok: !!navigator.serviceWorker.controller, info: navigator.serviceWorker.controller?'ja':'nein'});
+    const hasBase = /<base\s+href="\/Supersystem\/"\s*>/i.test(html);
+    const hasSW   = new RegExp(`<script\\s+src="js\\/sw-register\\.js\\?v=${VER}"`).test(html);
+    const hasPDF  = /assets\/docs\/SafeShare-Quickstart-DE\.pdf/i.test(html);
+    const hasTools= /href="tools\.html"/i.test(html) ? false : true; // true == entfernt
+
+    addRow(p,
+      hasBase ? 'PASS' : 'FAIL',
+      hasSW   ? 'PASS' : 'FAIL',
+      hasPDF  ? 'PASS' : 'FAIL',
+      hasTools? 'PASS' : 'FAIL',
+      note
+    );
   }
 
-  // 5) Manifest
-  try{
-    const r=await fetch('manifest.webmanifest',{cache:'no-store'});
-    res.push({name:'Manifest', ok:r.ok, info:`HTTP ${r.status}`});
-  }catch(e){ res.push({name:'Manifest', ok:false, info:String(e)}) }
-
-  // 6) Bookmarklets-Quelle
-  try{
-    const r=await fetch('js/bookmarklets.js',{cache:'no-store'});
-    res.push({name:'js/bookmarklets.js', ok:r.ok, info:`HTTP ${r.status}`});
-  }catch(e){ res.push({name:'js/bookmarklets.js', ok:false, info:String(e)}) }
-
-  // Render
-  const el=document.getElementById('list'); el.innerHTML='';
-  res.forEach(r=>{
-    const p=document.createElement('p');
-    p.innerHTML = `<strong>${r.name}:</strong> <span class="${r.ok?'ok':'bad'}">${r.ok?'OK':'Fehler'}</span> <span class="mut">— ${r.info}</span>`;
-    el.appendChild(p);
-  });
+  function addRow(page, base, sw, pdf, tools, note){
+    const tr = document.createElement('tr');
+    const cl = s => s==='PASS' ? 'ok' : (s==='FAIL' ? 'bad' : '');
+    tr.innerHTML =
+      `<td><a href="${page}?nocache=${VER}" target="_blank" rel="noopener">${page}</a></td>`+
+      `<td class="${cl(base)}">${base}</td>`+
+      `<td class="${cl(sw)}">${sw}</td>`+
+      `<td class="${cl(pdf)}">${pdf}</td>`+
+      `<td class="${cl(tools)}">${tools}</td>`+
+      `<td>${note||''}</td>`;
+    tbody.appendChild(tr);
+  }
 })();
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js?v=2025-11-13-07'); }
-</script></body></html>
+</script>
+
+<script src="js/sw-register.js?v=2025-11-15-01"></script>
+</body>
+</html>
