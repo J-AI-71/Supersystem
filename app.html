@@ -1,103 +1,130 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<base href="/Supersystem/">
-<title>…</title>
-<!-- Social Preview -->
-<meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/"> <!-- pro Seite anpassen -->
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <base href="/Supersystem/">
 
-<!-- iOS / PWA -->
-<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>SafeShare App – Links säubern</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
 
-<title>SafeShare – Links reinigen</title>
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
-<meta name="robots" content="index,follow">
-<link rel="manifest" href="manifest.webmanifest?v=2025-11-14-05">
-<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
-<meta name="theme-color" content="#111111">
-<style>
-:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:860px;margin:auto;padding:28px 16px}
-h1{margin:0 0 4px;font-size:28px}.mut{color:var(--mut)}
-.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0;cursor:pointer}
-.btn.pri{background:var(--pri);color:#07130c}
-.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-input.url{width:100%;padding:.8rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:16px/1.3 ui-monospace,Menlo,Consolas,monospace}
-input.out{width:100%;margin-top:10px;padding:.7rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.3 ui-monospace,Menlo,Consolas,monospace}
-small.help{display:block;margin-top:6px;color:var(--mut)}
-summary{cursor:pointer}
-a.nav{color:#9aead0}
-</style>
+  <!-- Social Preview -->
+  <meta property="og:title" content="SafeShare App – Links säubern">
+  <meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SafeShare App – Links säubern">
+  <meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+
+  <!-- iOS / PWA -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!-- Icons (KREIS) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192-kreis.png?v=2025-11-15-11">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-11">
+
+  <style>
+    :root{
+      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a;
+      --pri:#29c07e; --pri-ink:#07130c; --line:#222;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+    a{color:#9aead0;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:980px;margin:auto;padding:28px 16px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{width:28px;height:28px}
+    nav a{margin-left:14px;color:#cfeee5}
+    .pill{display:inline-block;padding:.25rem .55rem;border:1px solid #2a2a2a;border-radius:999px;font-size:12px;color:#cfcfcf}
+    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010}
+    .row{display:flex;flex-wrap:wrap;gap:8px}
+    .btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;font-weight:700;border:0}
+    .btn.pri{background:var(--pri);color:var(--pri-ink)}
+    .btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
+    label.mut{color:var(--mut);font-size:14px}
+    input.url{width:100%;padding:.7rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#0e0e0e;color:var(--fg)}
+    input.url:focus{outline:2px solid #1f3a31;border-color:#2a2a2a}
+    input.out{width:100%;margin-top:10px;padding:.7rem .9rem;border-radius:10px;border:1px dashed #2a2a2a;background:#0c0c0c;color:#bcd9cf}
+    .help{color:var(--mut);font-size:13px}
+    details{background:#0f0f0f;border-radius:10px;padding:10px;border:1px solid #1d1d1d}
+    summary{cursor:pointer}
+    footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-size:14px}
+    footer a{color:#b6e6d6}
+    .foot-grid{display:flex;flex-wrap:wrap;gap:10px 16px}
+    .foot-grid a:visited{color:#b6e6d6}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>SafeShare</h1>
-  <p id="pro-state" class="mut" style="margin:-4px 0 6px">Pro: nicht aktiv · <a class="mut" href="pro.html">freischalten</a></p>
-  <p class="mut">UTM, gclid, fbclid & Co. entfernen – lokal im Browser.</p>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="assets/icons/icon-32-kreis.png?v=2025-11-15-11" alt="">
+        <span>SafeShare</span>
+      </div>
+      <nav>
+        <a href="index.html">Start</a>
+        <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="bulk-clean.html">Bulk</a>
+        <a href="pro.html">Pro</a>
+      </nav>
+    </header>
 
-  <div class="card">
-    <label for="in" class="mut">Link</label>
-    <input id="in" class="url" type="search" inputmode="url" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="URL einfügen oder tippen …">
-    <small class="help">Tipp: Einfügen, Enter drücken – oder „Säubern &amp; öffnen“.</small>
+    <div class="card" style="margin-bottom:12px">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
+        <strong>App</strong>
+        <span id="pro-state" class="pill">Pro: …</span>
+      </div>
 
-    <div class="row" style="margin-top:12px">
-      <button id="cleanOpen" class="btn pri" type="button">Säubern & öffnen</button>
-      <button id="copy" class="btn alt" type="button">Kopieren</button>
-      <button id="share" class="btn alt" type="button">Teilen</button>
-      <a id="inspect" class="btn alt" href="#" rel="noopener">Prüfen</a>
+      <label for="in" class="mut">Link</label>
+      <input id="in" class="url" type="search" inputmode="url" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="URL einfügen oder tippen …">
+      <small class="help">Tipp: Einfügen, Enter drücken – oder „Säubern &amp; öffnen“.</small>
+
+      <div class="row" style="margin-top:12px">
+        <button id="cleanOpen" class="btn pri" type="button">Säubern & öffnen</button>
+        <button id="copy" class="btn alt" type="button">Kopieren</button>
+        <button id="share" class="btn alt" type="button">Teilen</button>
+        <a id="inspect" class="btn alt" href="#" rel="noopener">Prüfen</a>
+      </div>
+
+      <small class="help" id="statsLine" aria-live="polite" style="display:block;margin-top:6px">Heute gesäubert: 0 · Gesamt: 0</small>
+
+      <input id="out" class="out" readonly placeholder="Ergebnis erscheint hier …">
+
+      <details id="logBox" class="mut" style="margin-top:8px;display:none">
+        <summary>Was wurde geändert?</summary>
+        <div id="log"></div>
+      </details>
     </div>
 
-    <small class="help" id="statsLine" aria-live="polite">Heute gesäubert: 0 · Gesamt: 0</small>
-
-    <input id="out" class="out" readonly placeholder="Ergebnis erscheint hier …">
-
-    <details id="logBox" class="mut" style="margin-top:8px;display:none">
-      <summary>Was wurde geändert?</summary>
-      <div id="log"></div>
-    </details>
+    <footer>
+      <div class="foot-grid">
+        <a href="support.html">Support</a>
+        <a href="press.html">Presse</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="assets/docs/SafeShare-Quickstart-DE.pdf" target="_blank" rel="noopener">Quickstart PDF</a>
+      </div>
+    </footer>
   </div>
 
-<p class="mut" style="margin-top:12px">
-  <a href="index.html" class="nav">Start</a> ·
-  <a href="app.html" class="nav">App</a> ·
-  <a href="bookmarklets.html" class="nav">Bookmarklets</a> ·
-  <a href="bulk-clean.html" class="nav">Bulk-Cleaning</a> ·
-  <a href="team-setup.html" class="nav">Team-Setup</a> ·
-  <a href="support.html" class="nav">Support</a> ·
-  <a href="press.html" class="nav">Presse</a> ·
-  <a href="changelog.html" class="nav">Changelog</a> ·
-  <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="nav" download>Quickstart (PDF)</a> ·
-  <a href="impressum.html" class="nav">Impressum</a> ·
-  <a href="datenschutz.html" class="nav">Datenschutz</a>
-</p>
-</div>
-
-<script src="js/core.js?v=2025-11-14-05"></script>
-<script src="js/app.js?v=2025-11-14-05"></script>
-<script src="js/sw-register.js?v=2025-11-14-05"></script>
-<script src="js/core.js?v=2025-11-15-01"></script>
-<script src="js/app.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
-<script src="js/core.js?v=2025-11-15-01"></script>
-<script src="js/telemetry.js?v=2025-11-15-01"></script>
-<script src="js/app.js?v=2025-11-15-01"></script>
-<script src="js/ext-links.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
+  <!-- Scripts -->
+  <script src="js/core.js?v=2025-11-15-11"></script>
+  <script src="js/telemetry.js?v=2025-11-15-11"></script>
+  <script src="js/app.js?v=2025-11-15-11"></script>
+  <script src="js/ext-links.js?v=2025-11-15-11"></script>
+  <script src="js/sw-register.js?v=2025-11-15-11"></script>
 </body>
 </html>
