@@ -1,7 +1,7 @@
 // /Supersystem/js/sw-register.js
 (function () {
   'use strict';
-  const VER = '2025-11-15-01';          // nur hier erhöhen
+  const VER = '2025-11-15-05';          // nur hier erhöhen
   if (!('serviceWorker' in navigator)) return;
 
   const url = new URL(location.href);
