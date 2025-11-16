@@ -1,63 +1,86 @@
-// in sw.js
-const VERSION='2025-11-15-12';
-const BYPASS=[/\/assets\/icons\//,/\/assets\/og\.png$/];
-self.addEventListener('fetch',e=>{
-  const u=new URL(e.request.url);
-  if(u.origin===location.origin && BYPASS.some(rx=>rx.test(u.pathname))) return;
-  // …
+// /Supersystem/sw.js
+/* SafeShare Service Worker – Navigation mit Offline-Fallback */
+const VERSION = '2025-11-15-12';
+const ROOT = '/Supersystem/';
+const OFFLINE_URL = ROOT + 'offline.html';
+const PRECACHE = [OFFLINE_URL];
+
+// Bestimmte Assets nicht abfangen (werden immer direkt geladen)
+const BYPASS = [/\/assets\/icons\//, /\/assets\/og\.png$/];
+
+// Cache-Namen
+const CNAME = (name) => `ss-${VERSION}-${name}`;
+
+self.addEventListener('install', (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CNAME('pre'));
+    await cache.addAll(PRECACHE);
+    await self.skipWaiting();
+  })());
 });
 
-self.addEventListener('install', e => {
-  self.skipWaiting();
-  e.waitUntil(caches.open(CACHE)); // kein Precache nötig
-});
-
-self.addEventListener('activate', e => {
-  e.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    const keep = new Set([CNAME('pre'), CNAME('dyn')]);
+    for (const key of await caches.keys()) {
+      if (!keep.has(key)) await caches.delete(key);
+    }
     await self.clients.claim();
   })());
 });
 
-self.addEventListener('message', e => {
-  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
-});
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
 
-self.addEventListener('fetch', e => {
-  const req = e.request;
+  // Nur GET behandeln
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-  const isHTML = req.destination === 'document' || url.pathname.endsWith('.html');
-  const isPDF  = url.pathname.endsWith('.pdf');
 
-  // HTML/PDF: network-first (Legal-Pages nie cachen)
-  if (isHTML || isPDF) {
-    e.respondWith((async () => {
+  // Nur gleiche Origin abfangen
+  const sameOrigin = url.origin === location.origin;
+
+  // Bestimmte Pfade ignorieren
+  if (sameOrigin && BYPASS.some(rx => rx.test(url.pathname))) return;
+
+  // Navigationsanfragen (Seitenaufrufe): Network → Fallback offline.html
+  const isHTMLNav =
+    req.mode === 'navigate' ||
+    (req.headers.get('accept') || '').includes('text/html');
+
+  if (sameOrigin && isHTMLNav) {
+    event.respondWith((async () => {
       try {
+        // Network first
         const fresh = await fetch(req, { cache: 'no-store' });
-        if (!isHTML || !BYPASS_HTML.has(url.pathname)) {
-          const c = await caches.open(CACHE);
-          c.put(req, fresh.clone());
-        }
         return fresh;
-      } catch {
-        const c = await caches.open(CACHE);
-        const hit = await c.match(req);
-        return hit || Response.error();
+      } catch (err) {
+        // Offline-Fallback
+        const cache = await caches.open(CNAME('pre'));
+        const offline = await cache.match(OFFLINE_URL);
+        return offline || new Response('Offline', { status: 503 });
       }
     })());
     return;
   }
 
-  // Sonstige Assets: cache-first
-  e.respondWith((async () => {
-    const c = await caches.open(CACHE);
-    const hit = await c.match(req);
-    if (hit) return hit;
-    const fresh = await fetch(req);
-    try { c.put(req, fresh.clone()); } catch {}
-    return fresh;
+  // Statische Assets: Stale-While-Revalidate (optional)
+  if (sameOrigin && /\.(?:js|css|png|jpg|jpeg|gif|svg|webp|ico|json|webmanifest)$/.test(url.pathname)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CNAME('dyn'));
+      const cached = await cache.match(req);
+      const fetchPromise = fetch(req).then((response) => {
+        if (response && response.ok) cache.put(req, response.clone());
+        return response;
+      }).catch(() => cached);
+      return cached || fetchPromise;
+    })());
+    return;
+  }
+
+  // Standard: Netz versuchen, sonst Cache
+  event.respondWith((async () => {
+    try { return await fetch(req); }
+    catch { return (await caches.match(req)) || (await caches.match(OFFLINE_URL)); }
   })());
 });
