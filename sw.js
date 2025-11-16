@@ -1,5 +1,5 @@
 // /Supersystem/sw.js
-const VERSION = '2025-11-15-01';
+const VERSION = '2025-11-15-04';
 const CACHE = 'ss-cache-' + VERSION;
 const BYPASS_HTML = new Set([
   '/Supersystem/impressum.html',
