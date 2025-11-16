@@ -8,11 +8,19 @@
   const $out  = document.getElementById('out');
   const $logB = document.getElementById('logBox');
   const $log  = document.getElementById('log');
+  const $stats= document.getElementById('statsLine');
 
   // Pro-Status
   (function(){
     const el = document.getElementById('pro-state'); if(!el) return;
     el.innerHTML = C.isPro() ? 'Pro: aktiv' : 'Pro: nicht aktiv · <a class="mut" href="pro.html">freischalten</a>';
+  })();
+
+  // Telemetry initial render
+  (function(){
+    if (window.SafeShare && SafeShare.telemetry && $stats) {
+      SafeShare.telemetry.renderLine($stats);
+    }
   })();
 
   function runClean(vRaw){
@@ -21,12 +29,20 @@
     const cl = C.cleanWithLog(un.url);
 
     $out.value = cl.url;
+
     const lines=[];
     if(un.steps.length) lines.push('Entschachtelung: '+un.steps.join(' → '));
     if(cl.notes.length) lines.push(...cl.notes);
     if(!lines.length)   lines.push('Keine Änderungen notwendig.');
     $log.innerHTML = '<ul style="margin:.2rem 0 0 18px">'+lines.map(x=>`<li>${x.replace(/&/g,'&amp;')}</li>`).join('')+'</ul>';
     $logB.style.display='block';
+
+    // Telemetry bump
+    if (window.SafeShare && SafeShare.telemetry) {
+      SafeShare.telemetry.bumpClean();
+      if ($stats) SafeShare.telemetry.renderLine($stats);
+    }
+
     return cl.url;
   }
 
