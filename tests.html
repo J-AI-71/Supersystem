@@ -1,65 +1,103 @@
+<!-- /Supersystem/tests.html -->
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<base href="/Supersystem/">
-<title>…</title>
-<title>Tests · SafeShare</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <base href="/Supersystem/">
 
-<!-- Social Preview -->
-<meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/"> <!-- pro Seite anpassen -->
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <title>SafeShare Tests</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
 
-<!-- iOS / PWA -->
-<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <!-- Social -->
+  <meta property="og:title" content="SafeShare Tests">
+  <meta property="og:description" content="Beispiel-URLs ausprobieren, Logs ansehen.">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
 
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
-<meta name="robots" content="noindex,follow">
-<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
-<style>
-:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui}
-.wrap{max-width:960px;margin:auto;padding:28px 16px}
-h1{margin:0 0 8px;font-size:26px}.mut{color:var(--mut)}
-.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-a{color:#9aead0}
-code{background:#000;border:1px solid #2a2a2a;border-radius:6px;padding:2px 6px}
-li{margin:6px 0}
-</style>
+  <!-- iOS / Icons / Manifest -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-11">
+
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e;--line:#222}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+    .wrap{max-width:980px;margin:auto;padding:28px 16px}
+    h1{margin:0 0 8px;font-size:26px}
+    .mut{color:var(--mut)}
+    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010;margin-bottom:12px}
+    textarea{width:100%;min-height:120px;background:#0b0b0b;color:#eaeaea;border:1px solid #222;border-radius:10px;padding:10px}
+    .btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;font-weight:700;border:0}
+    .btn.pri{background:var(--pri);color:#07130c}
+    .btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border:1px solid #222;padding:8px;vertical-align:top}
+    th{background:#111}
+    code{background:#000;border:1px solid #222;border-radius:6px;padding:1px 4px}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Tests</h1>
-  <div class="card">
-    <ul>
-      <li>UTM: <a href="app.html?u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dnewsletter%26utm_medium%3Demail%26ref%3Dhome">example.com mit UTM</a></li>
-      <li>gclid/fbclid: <a href="app.html?u=https%3A%2F%2Fshop.example.org%2Fproduct%3Fid%3D123%26gclid%3DABC%26fbclid%3DXYZ">shop.example.org</a></li>
-      <li>Google-URL: <a href="app.html?u=https%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26url%3Dhttps%253A%252F%252Fexample.com%252Farticle%253Futm_source%253Dgoogle%2526gclid%253D123">google.com/url</a></li>
-      <li>Amazon: <a href="app.html?u=https%3A%2F%2Fwww.amazon.de%2Fdp%2FB000TEST%3Ftag%3Dpartner-21%26ref%3Dabcde%23reviews">amazon.de</a></li>
-    </ul>
+  <div class="wrap">
+    <h1>Tests</h1>
+    <div class="card">
+      <p class="mut">Eine URL pro Zeile. Bereinigt mit <code>core.js</code> (unwrap + clean). Logs werden angezeigt.</p>
+      <textarea id="in" placeholder="https://example.com?utm_source=…&#10;https://www.google.com/url?…"></textarea>
+      <div style="margin-top:10px">
+        <button id="run" class="btn pri" type="button">Säubern</button>
+        <button id="ex" class="btn alt" type="button">Beispiele einfügen</button>
+      </div>
+      <div id="outBox" style="display:none">
+        <table>
+          <thead><tr><th>#</th><th>Original</th><th>Sauber</th><th>Log</th></tr></thead>
+          <tbody id="tbl"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <p class="mut" style="margin-top:12px">
-    <a href="index.html">Start</a> ·
-    <a href="app.html">App</a> ·
-    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" download>Quickstart (PDF)</a> ·
-    <a href="impressum.html">Impressum</a> ·
-    <a href="datenschutz.html">Datenschutz</a>
-  </p>
-</div>
-<script src="js/sw-register.js?v=2025-11-14-05"></script> 
-<script src="js/ext-links.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
+  <script src="js/core.js?v=2025-11-15-11"></script>
+  <script>
+  (function(){
+    const $in = document.getElementById('in');
+    const $tbl = document.getElementById('tbl');
+    const $box = document.getElementById('outBox');
+    function cleanOne(seed){
+      let url = seed.trim(); if(!url) return null;
+      const steps = [], notes = [];
+      try{
+        if (SafeShare?.core?.unwrapWithLog){
+          const u = SafeShare.core.unwrapWithLog(url);
+          url = u.url; (u.steps||[]).forEach(s=>steps.push(s));
+        }
+        if (SafeShare?.core?.cleanWithLog){
+          const c = SafeShare.core.cleanWithLog(url);
+          url = c.url; (c.notes||[]).forEach(n=>notes.push(n));
+        }
+      }catch(e){ notes.push('Fehler: '+e.message); }
+      return {in:seed, out:url, log:[...steps, ...notes]};
+    }
+    document.getElementById('run').onclick = ()=>{
+      const lines = $in.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      if(!lines.length) return;
+      $tbl.innerHTML = '';
+      lines.map(cleanOne).forEach((r,i)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${i+1}</td><td><code>${r.in.replace(/</g,'&lt;')}</code></td><td><a href="${r.out}" target="_blank" rel="noopener">${r.out}</a></td><td>${r.log.join('<br>')}</td>`;
+        $tbl.appendChild(tr);
+      });
+      $box.style.display='block';
+    };
+    document.getElementById('ex').onclick = ()=>{
+      $in.value = [
+        'https://example.com/?utm_source=newsletter&utm_medium=email&gclid=123',
+        'https://www.google.com/url?sa=t&url=https%3A%2F%2Fexample.com%2F&usg=AOv',
+        'https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2F%3Ffbclid%3Dabc&h=…'
+      ].join('\n');
+    };
+  })();
+  </script>
+  <script src="js/ext-links.js?v=2025-11-15-11"></script>
+  <script src="js/sw-register.js?v=2025-11-15-11"></script>
 </body>
 </html>
