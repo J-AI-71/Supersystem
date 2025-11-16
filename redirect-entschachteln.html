@@ -1,89 +1,63 @@
+<!-- /Supersystem/redirect-entschachteln.html -->
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<base href="/Supersystem/">
-<title>…</title>
-<title>Redirect-Analyse · SafeShare</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <base href="/Supersystem/">
 
-<!-- Social Preview -->
-<meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/"> <!-- pro Seite anpassen -->
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <title>Weiterleitung · SafeShare</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
+  <meta name="robots" content="noindex,nofollow">
 
-<!-- iOS / PWA -->
-<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <!-- iOS / Icons / Manifest -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-11">
 
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
-<meta name="robots" content="noindex,follow">
-<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
-<style>
-:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
-.wrap{max-width:960px;margin:auto;padding:28px 16px}
-h1{margin:0 0 6px;font-size:26px}.mut{color:var(--mut)}
-.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-code,pre{background:#000;border:1px solid #2a2a2a;border-radius:8px;padding:8px;color:#eaeaea}
-a{color:#9aead0}
-</style>
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+    .wrap{max-width:860px;margin:auto;padding:28px 16px}
+    a{color:#9aead0}
+    .mut{color:var(--mut)}
+    .btn{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;font-weight:700;text-decoration:none}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Redirect-Analyse</h1>
-  <div class="card" id="box">Lade …</div>
-  <p class="mut" style="margin-top:12px">
-    <a href="app.html">Zur App</a> · <a href="index.html">Start</a>
-  </p>
-</div>
+  <div class="wrap">
+    <h1>Weiterleiten …</h1>
+    <p class="mut">Ziel wird bereinigt und geöffnet. Falls der automatische Sprung blockiert wird, klicke:</p>
+    <p><a id="link" class="btn" href="#">Zum Ziel</a></p>
+    <p class="mut" id="log"></p>
+  </div>
 
-<script src="js/core.js?v=2025-11-14-05"></script>
-<script>
-(function(){
-  const box = document.getElementById('box');
-  const sp = new URL(location.href).searchParams;
-  const raw = sp.get('u') || '';
-  if(!raw){ box.textContent='Parameter „u“ fehlt.'; return; }
+  <script src="js/core.js?v=2025-11-15-11"></script>
+  <script>
+  (function(){
+    const q = new URLSearchParams(location.search);
+    const seed = q.get('u') || '';
+    const $log = document.getElementById('log');
+    const $link = document.getElementById('link');
 
-  const seed = SafeShare.core.normalizeSeed(raw);
-  const un = SafeShare.core.unwrapWithLog(seed);
-  const cl = SafeShare.core.cleanWithLog(un.url);
+    function clean(seedUrl){
+      let url = seedUrl, steps=[], notes=[];
+      try{
+        if (SafeShare?.core?.unwrapWithLog){ const u=SafeShare.core.unwrapWithLog(url); url=u.url; steps=u.steps||[]; }
+        if (SafeShare?.core?.cleanWithLog){ const c=SafeShare.core.cleanWithLog(url); url=c.url; notes=c.notes||[]; }
+      }catch(e){ notes.push('Fehler: '+e.message); }
+      return {url, info:[...steps, ...notes]};
+    }
 
-  const details = sp.get('details')==='1';
-  const wait = sp.get('wait')==='1';
-
-  const html = `
-    <p class="mut">Eingabe (roh):</p>
-    <pre>${raw.replace(/&/g,'&amp;')}</pre>
-    <p class="mut">Entschachtelt:</p>
-    <pre>${un.url.replace(/&/g,'&amp;')}</pre>
-    <p class="mut">Ergebnis (gereinigt):</p>
-    <pre>${cl.url.replace(/&/g,'&amp;')}</pre>
-    ${un.steps.length||cl.notes.length?'<p class="mut">Protokoll:</p>':''}
-    ${un.steps.length?('<ul>'+un.steps.map(s=>'<li>'+s+'</li>').join('')+'</ul>'):''}
-    ${cl.notes.length?('<ul>'+cl.notes.map(s=>'<li>'+s+'</li>').join('')+'</ul>'):''}
-    ${!wait?('<p><a href="'+cl.url+'">Jetzt zur bereinigten URL</a></p>'):''}
-  `;
-  box.innerHTML = html;
-
-  if(!wait && !details){
-    setTimeout(()=>{ location.href = cl.url; }, 350);
-  }
-})();
-</script>
-<script src="js/sw-register.js?v=2025-11-14-05"></script>
-<script src="js/core.js?v=2025-11-15-01"></script>
-<script>/* Analyse-Logik */</script>
-<script src="js/ext-links.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
+    const res = clean(seed);
+    $link.href = res.url;
+    $link.textContent = 'Zum Ziel: ' + res.url;
+    if(res.info?.length){ $log.innerHTML = res.info.join(' · '); }
+    // Auto-redirect
+    try{ location.replace(res.url); }catch{ location.href = res.url; }
+  })();
+  </script>
+  <script src="js/sw-register.js?v=2025-11-15-11"></script>
 </body>
 </html>
