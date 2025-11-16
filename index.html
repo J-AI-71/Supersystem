@@ -5,13 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <base href="/Supersystem/">
-<title>…</title>
 <title>SafeShare – Saubere Links ohne Tracking</title>
 <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#111111">
-<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
-<link rel="manifest" href="manifest.webmanifest?v=2025-11-14-05">
+<link rel="icon" href="assets/logo.png?v=2025-11-15-01">
+<link rel="manifest" href="manifest.webmanifest?v=2025-11-15-01">
 <style>
 :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
 html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -19,21 +18,23 @@ html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,
 h1{margin:0 0 6px;font-size:32px}
 p.mut{color:var(--mut)}
 .card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:14px}
-a.nav{color:#9aead0}
-.btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;background:var(--pri);color:#07130c;font-weight:700;text-decoration:none}
+.btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;font-weight:700;text-decoration:none}
+.btn.pri{background:var(--pri);color:#07130c}
+.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
 .badge{display:inline-block;background:#1b1b1b;border:1px solid #2a2a2a;padding:.2rem .5rem;border-radius:8px;margin-left:8px}
 .row{display:flex;gap:10px;flex-wrap:wrap}
+a.nav, a.nav:visited{color:#9aead0}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>SafeShare <span id="pro-badge" class="badge">nicht aktiv</span></h1>
-  <p class="mut">UTM, gclid, fbclid & Co. entfernen – lokal im Browser. Keine Server, kein Tracking.</p>
+  <p class="mut">UTM, gclid, fbclid &amp; Co. entfernen – lokal im Browser. Keine Server, kein Tracking.</p>
 
   <div class="row" style="margin:12px 0">
-    <a class="btn" href="app.html">Zur App</a>
-    <a class="btn" href="bookmarklets.html" style="background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a">Bookmarklets</a>
-    <a class="btn" href="pro.html" style="background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a">Pro</a>
+    <a class="btn pri" href="app.html">Zur App</a>
+    <a class="btn alt" href="bookmarklets.html">Bookmarklets</a>
+    <a class="btn alt" href="pro.html">Pro</a>
   </div>
 
   <div class="card">
@@ -42,34 +43,36 @@ a.nav{color:#9aead0}
     <div id="bm-index">Lade …</div>
   </div>
 
-<p class="mut" style="margin-top:12px">
-  <a href="index.html" class="nav">Start</a> ·
-  <a href="app.html" class="nav">App</a> ·
-  <a href="bookmarklets.html" class="nav">Bookmarklets</a> ·
-  <a href="bulk-clean.html" class="nav">Bulk-Cleaning</a> ·
-  <a href="team-setup.html" class="nav">Team-Setup</a> ·
-  <a href="support.html" class="nav">Support</a> ·
-  <a href="press.html" class="nav">Presse</a> ·
-  <a href="changelog.html" class="nav">Changelog</a> ·
-  <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="nav" download>Quickstart (PDF)</a> ·
-  <a href="impressum.html" class="nav">Impressum</a> ·
-  <a href="datenschutz.html" class="nav">Datenschutz</a>
-</p>
+  <p class="mut" style="margin-top:14px">
+    <a href="index.html" class="nav">Start</a> ·
+    <a href="app.html" class="nav">App</a> ·
+    <a href="bookmarklets.html" class="nav">Bookmarklets</a> ·
+    <a href="bulk-clean.html" class="nav">Bulk-Cleaning</a> ·
+    <a href="team-setup.html" class="nav">Team-Setup</a> ·
+    <a href="support.html" class="nav">Support</a> ·
+    <a href="press.html" class="nav">Presse</a> ·
+    <a href="changelog.html" class="nav">Changelog</a> ·
+    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" class="nav" download>Quickstart (PDF)</a> ·
+    <a href="impressum.html" class="nav">Impressum</a> ·
+    <a href="datenschutz.html" class="nav">Datenschutz</a>
+  </p>
 </div>
 
-<script src="js/bookmarklets.js?v=2025-11-14-05"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
-</body>
+<!-- Bookmarklet-Renderer für die Startseite -->
+<script src="js/bookmarklets.js?v=2025-11-15-01"></script>
 <script>
-  if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');
   (function(){
-    const on = localStorage.getItem('ss2_pro')==='1';
+    var box = document.getElementById('bm-index');
+    if (!box) return;
+    if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');
+    else box.textContent = 'Fehler: js/bookmarklets.js nicht geladen';
+  })();
+  (function(){
+    const on = localStorage.getItem('ss2_pro') === '1';
     const b = document.getElementById('pro-badge');
     if (b) b.textContent = on ? 'aktiv' : 'nicht aktiv';
   })();
 </script>
-<script src="js/sw-register.js?v=2025-11-14-05"></script>
-… evtl. <script src="js/bookmarklets.js?..."></script>
 <script src="js/sw-register.js?v=2025-11-15-01"></script>
 </body>
 </html>
