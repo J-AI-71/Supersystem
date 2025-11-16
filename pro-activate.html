@@ -1,55 +1,37 @@
+<!-- /Supersystem/pro-activate.html -->
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<base href="/Supersystem/">
-<title>…</title>
-<title>Pro aktiviert</title>
-
-<!-- Social Preview -->
-<meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/"> <!-- pro Seite anpassen -->
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-
-<!-- iOS / PWA -->
-<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
-<meta name="robots" content="noindex,follow">
-<link rel="icon" href="assets/logo.png?v=2025-11-14-05">
-<style>
-html,body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.6 system-ui}
-.wrap{max-width:860px;margin:auto;padding:28px 16px}
-a{color:#9aead0}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>Pro aktiviert</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    body{margin:0;font:16px/1.6 system-ui;background:#0b0b0b;color:#eaeaea;display:grid;place-items:center;height:100vh}
+    .card{background:#101010;border:1px solid #222;border-radius:12px;padding:18px;max-width:560px}
+    .btn{display:inline-block;margin-top:10px;padding:.7rem 1rem;border-radius:10px;font-weight:700;background:#29c07e;color:#07130c;text-decoration:none}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>SafeShare Pro</h1>
-  <p id="msg">Aktiviere …</p>
-  <p><a href="index.html">Zur Startseite</a> · <a href="bulk-clean.html">Bulk-Cleaning</a></p>
-</div>
-<script>
-  const sp = new URL(location.href).searchParams;
-  if (sp.get('pro')==='1') {
-    localStorage.setItem('ss2_pro','1');
-    document.getElementById('msg').textContent = 'Pro wurde aktiviert. Viel Erfolg!';
-  } else {
-    document.getElementById('msg').textContent = 'Parameter fehlt. Pro nicht aktiviert.';
-  }
-</script>
-<script src="js/sw-register.js?v=2025-11-14-05"></script>
-<script src="js/ext-links.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
+  <div class="card">
+    <h1>SafeShare Pro</h1>
+    <p>Pro wurde aktiviert.</p>
+    <a id="back" class="btn" href="app.html">Zur App</a>
+  </div>
+
+  <script>
+  (function(){
+    const p = new URLSearchParams(location.search);
+    const shouldPro = p.get('pro');
+    const ret = p.get('return') || 'app.html';
+    try{
+      if(shouldPro==='1') localStorage.setItem('ss_pro','1');
+      document.getElementById('back').href = ret;
+      // auto zurück nach kurzer Pause
+      setTimeout(()=>location.replace(ret), 600);
+    }catch(e){}
+  })();
+  </script>
 </body>
 </html>
