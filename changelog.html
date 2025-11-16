@@ -1,67 +1,121 @@
+<!-- /Supersystem/changelog.html -->
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<base href="/Supersystem/">
-<title>…</title>
-<title>Changelog · SafeShare</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <base href="/Supersystem/">
 
-<!-- Social Preview -->
-<meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/"> <!-- pro Seite anpassen -->
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-<meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <title>SafeShare Changelog</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/changelog.html">
 
-<!-- iOS / PWA -->
-<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <!-- Social -->
+  <meta property="og:title" content="SafeShare Changelog">
+  <meta property="og:description" content="Änderungen, Fixes, neue Funktionen.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/changelog.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
 
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/changelog.html">
-<meta name="robots" content="index,follow">
-<link rel="icon" href="assets/logo.png?v=2025-11-15-01">
-<style>
-:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
-.wrap{max-width:860px;margin:auto;padding:28px 16px}
-h1{margin:0 0 8px;font-size:28px}.mut{color:var(--mut)}
-.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}
-ul{margin:8px 0 0 18px}
-a{color:#9aead0}
-</style>
+  <!-- iOS / PWA -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=2025-11-15-11">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192-kreis.png?v=2025-11-15-11">
+
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-11">
+
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e;--ink:#07130c;--line:#222}
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+    a{color:#9aead0;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:980px;margin:auto;padding:28px 16px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{width:28px;height:28px}
+    nav a{margin-left:14px;color:#cfeee5}
+    h1{margin:0 0 8px;font-size:26px}
+    .mut{color:var(--mut)}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{border:1px solid var(--line);padding:10px;vertical-align:top}
+    th{background:#111}
+    ul{margin:0 0 0 18px}
+    footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-size:14px}
+    .foot-grid{display:flex;flex-wrap:wrap;gap:10px 16px}
+    footer a, .foot-grid a:visited{color:#b6e6d6}
+    .pill{display:inline-block;margin-left:8px;padding:.2rem .5rem;border:1px solid #2a2a2a;border-radius:999px;font-size:12px;color:#cfcfcf}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Changelog</h1>
-  <div class="card">
-    <h3>2025-11-15 · v2025-11-15-01</h3>
-    <ul>
-      <li>Manifest, Robots, Sitemap ergänzt</li>
-      <li>Support-, Presse- und Changelog-Seite</li>
-      <li>Service Worker konsolidiert (HTML/PDF network-first)</li>
-    </ul>
-    <h3>2025-11-14 · v2025-11-14-05</h3>
-    <ul>
-      <li>Neue App-UI, Bookmarklets-Seite, Bulk-Cleaning</li>
-      <li>Impressum/Datenschutz finalisiert</li>
-      <li>Quickstart-PDF verlinkt</li>
-    </ul>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="assets/icons/icon-32-kreis.png?v=2025-11-15-11" alt="">
+        <span>SafeShare</span>
+      </div>
+      <nav>
+        <a href="index.html">Start</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="bulk-clean.html">Bulk</a>
+        <a href="pro.html">Pro</a>
+      </nav>
+    </header>
+
+    <h1>Changelog <span class="pill">Stand: 2025-11-15</span></h1>
+    <p class="mut">Wesentliche Änderungen, Fixes und neue Seiten.</p>
+
+    <table>
+      <thead><tr><th>Datum / Version</th><th>Änderungen</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>2025-11-15 • v2025-11-15-11</td>
+          <td>
+            <ul>
+              <li>Icons: Wechsel auf neutrales <strong>Kreis-Icon</strong> (ohne Symbol), neue Dateinamen <code>icon-*-kreis.png</code>.</li>
+              <li>Alle Seiten: Head-Einbindungen auf neue Icons angepasst; Manifest aktualisiert.</li>
+              <li><code>404.html</code>: Auto-Redirect entfernt; klare Navigation zurück zu Start/App.</li>
+              <li>Neue Seiten: <code>team-setup.html</code>, <code>support.html</code>, <code>press.html</code>.</li>
+              <li>Bookmarklets: Anleitungen für iOS/Android; Copy-Button für Code.</li>
+              <li>Bulk-Cleaning: CSV/TSV-Export hinzugefügt.</li>
+              <li>Pro-Flow: <code>pro-activate.html?pro=1&amp;return=…</code> dokumentiert; Statusanzeige in App/Pro.</li>
+              <li>PDF: Quickstart verlinkt (<code>assets/docs/SafeShare-Quickstart-DE.pdf</code>).</li>
+              <li>SW/Caching: Versionen gebumpt; Tools/Status-Hilfen dokumentiert.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>2025-11-14 • v2025-11-14-xx</td>
+          <td>
+            <ul>
+              <li>Grundlayout, Dark-Theme, Navigation, Footer vereinheitlicht.</li>
+              <li>App/Bookmarklets/Bulk – erste funktionsfähige Fassung.</li>
+              <li>Rechtliches: Impressum/Datenschutz Grundgerüst.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer>
+      <div class="foot-grid">
+        <a href="support.html">Support</a>
+        <a href="press.html">Presse</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="assets/docs/SafeShare-Quickstart-DE.pdf" target="_blank" rel="noopener">Quickstart PDF</a>
+      </div>
+    </footer>
   </div>
-  <p class="mut" style="margin-top:12px">
-    <a href="index.html">Start</a> ·
-    <a href="assets/docs/SafeShare-Quickstart-DE.pdf" download>Quickstart (PDF)</a> ·
-    <a href="impressum.html">Impressum</a> ·
-    <a href="datenschutz.html">Datenschutz</a>
-  </p>
-</div>
-<script src="js/ext-links.js?v=2025-11-15-01"></script>
-<script src="js/sw-register.js?v=2025-11-15-01"></script>
+
+  <script src="js/ext-links.js?v=2025-11-15-11"></script>
+  <script src="js/sw-register.js?v=2025-11-15-11"></script>
 </body>
 </html>
