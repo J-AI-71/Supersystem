@@ -1,74 +1,39 @@
+<!-- /Supersystem/assets-check.html -->
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/">
-<title>Assets-Check · SafeShare</title>
-<meta name="robots" content="noindex,nofollow">
-<style>
-body{margin:0;background:#0b0b0b;color:#eaeaea;font:15px/1.55 system-ui}
-.wrap{max-width:920px;margin:auto;padding:20px 14px}
-h1{margin:0 0 10px;font-size:22px}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{border:1px solid #252525;padding:8px;vertical-align:top}
-th{background:#111}
-.ok{color:#2bc27e;font-weight:700}
-.bad{color:#e05a5a;font-weight:700}
-img{background:#000;border:1px solid #252525;border-radius:8px;max-width:96px}
-code{background:#000;border:1px solid #252525;border-radius:6px;padding:1px 4px}
-label{margin-right:12px}
-a,a:visited{color:#9aead0}
-</style>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/"><title>Assets Check</title>
+  <style>
+    body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.6 system-ui}
+    .wrap{max-width:860px;margin:auto;padding:24px}
+    table{width:100%;border-collapse:collapse} th,td{border:1px solid #222;padding:8px}
+    .ok{color:#29c07e;font-weight:700}.bad{color:#e05a5a;font-weight:700}
+    img{height:40px;width:auto;vertical-align:middle}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Assets-Check</h1>
-  <p>Prüft die Icon-Dateien im Ordner <code>assets/icons/</code>. Wähle, ob du Dateinamen mit <code>-green</code> verwendest.</p>
-
-  <label><input type="radio" name="mode" value="green" checked> mit <code>-green</code></label>
-  <label><input type="radio" name="mode" value="plain"> ohne <code>-green</code></label>
-
-  <table id="t"><thead>
-    <tr><th>Datei</th><th>Bild</th><th>Status</th><th>URL</th></tr>
-  </thead><tbody></tbody></table>
-
-  <p style="margin-top:10px"><a href="index.html">Start</a></p>
-</div>
-
-<script>
-(function(){
+  <div class="wrap">
+    <h1>Assets Check</h1>
+    <table id="t"><thead><tr><th>Ressource</th><th>Ergebnis</th><th>Vorschau</th></tr></thead><tbody></tbody></table>
+  </div>
+  <script>
   const rows = [
-    ['icon-180',   '180x180'],
-    ['icon-192',   '192x192'],
-    ['icon-512',   '512x512'],
-    ['icon-maskable-512', '512x512 (maskable)']
+    'assets/icons/icon-180-kreis.png',
+    'assets/icons/icon-192-kreis.png',
+    'assets/icons/icon-512-kreis.png',
+    'assets/icons/icon-maskable-512-kreis.png',
+    'assets/og.png'
   ];
-  const tbody = document.querySelector('#t tbody');
-
-  function render(mode){
-    tbody.innerHTML = '';
-    const suffix = mode==='green' ? '-green' : '';
-    const ver = Date.now().toString().slice(-7);
-    for(const [base,label] of rows){
-      const file = `${base}${suffix}.png`;
-      const url = `assets/icons/${file}?nocache=${ver}`;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${file}<div class="mut">${label}</div></td>
-        <td><img alt="" style="width:96px;height:96px;object-fit:contain;opacity:.9"></td>
-        <td class="status">…</td>
-        <td><code>${url}</code></td>`;
-      tbody.appendChild(tr);
-      const img = tr.querySelector('img'); img.src = url;
-      fetch(url, {method:'GET', cache:'no-store'})
-        .then(r => tr.querySelector('.status').innerHTML = r.ok ? '<span class="ok">PASS</span>' : '<span class="bad">FAIL '+r.status+'</span>')
-        .catch(() => tr.querySelector('.status').innerHTML = '<span class="bad">FAIL</span>');
-    }
-  }
-
-  document.querySelectorAll('input[name="mode"]').forEach(r=>r.addEventListener('change',()=>render(r.value)));
-  render('green');
-})();
-</script>
+  const tb=document.querySelector('#t tbody');
+  rows.forEach(async p=>{
+    const tr=document.createElement('tr'); tr.innerHTML=`<td>${p}</td><td>…</td><td></td>`; tb.appendChild(tr);
+    try{
+      const r=await fetch(p+'?nocache='+Date.now(),{cache:'no-store'});
+      if(r.ok){ tr.children[1].innerHTML='<span class="ok">PASS</span>'; const img=document.createElement('img'); img.src=p+'?nocache='+Date.now(); tr.children[2].appendChild(img);}
+      else tr.children[1].innerHTML='<span class="bad">FAIL '+r.status+'</span>';
+    }catch(e){ tr.children[1].innerHTML='<span class="bad">FAIL</span>'; }
+  });
+  </script>
 </body>
 </html>
