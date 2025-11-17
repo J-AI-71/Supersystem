@@ -1,7 +1,7 @@
 /* /Supersystem/sw.js — Service Worker SafeShare
    Strategie: HTML = network-first; Assets = stale-while-revalidate;
    Nie cachen: sitemap.xml, robots.txt, Impressum/Datenschutz, Pro-Aktivierung. */
-const VER = '18'; // bei Änderungen anheben
+const VER = '24'; // bei Änderungen anheben
 const CACHE_HTML    = `ss2-html-${VER}`;
 const CACHE_STATIC  = `ss2-static-${VER}`;
 const CACHE_RUNTIME = `ss2-runtime-${VER}`;
