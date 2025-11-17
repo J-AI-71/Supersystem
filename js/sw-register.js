@@ -1,5 +1,5 @@
 // /Supersystem/js/sw-register.js
-const VER   = '2025-11-15-24';
+const VER   = '2025-11-15-26';
 const SCOPE = '/Supersystem/';
 
 (function () {
