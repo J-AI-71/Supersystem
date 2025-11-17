@@ -4,40 +4,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
   <meta name="referrer" content="no-referrer-when-downgrade">
   <base href="/Supersystem/">
 
   <title>SafeShare Tools</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tools.html">
-  <meta name="robots" content="noindex,nofollow">
 
-  <!-- iOS / Icons -->
-  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
+  <!-- Icons / Manifest (nur zur Vollständigkeit) -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-16">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-16">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-16">
 
   <style>
     :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e;--line:#222}
+    *{box-sizing:border-box}
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
+    a{color:#9aead0;text-decoration:none}
+    a:hover{text-decoration:underline}
     .wrap{max-width:980px;margin:auto;padding:28px 16px}
     h1{margin:0 0 8px;font-size:26px}
-    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010;margin-bottom:12px}
+    .mut{color:var(--mut)}
+    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010;margin:12px 0}
     .btn{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;font-weight:700;text-decoration:none;cursor:pointer}
     .btn.pri{background:var(--pri);color:#07130c;border-color:transparent}
-    .mut{color:var(--mut)}
     pre,code{background:#000;border:1px solid #222;border-radius:6px;padding:6px;overflow:auto}
     table{width:100%;border-collapse:collapse;margin-top:10px}
     th,td{border:1px solid #222;padding:8px;vertical-align:top}
     th{background:#111}
+    .row{display:flex;flex-wrap:wrap;gap:10px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Tools</h1>
+    <p class="mut"><a href="index.html">Start</a> · <a href="app.html">App</a> · <a href="status.html">Status</a></p>
 
     <div class="card">
       <strong>Service Worker &amp; Cache</strong>
-      <div style="margin-top:8px">
-        <button class="btn" id="swUpdate">SW update()</button>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="swUpdate">update()</button>
         <button class="btn" id="swUnregister">Service Worker abmelden</button>
         <button class="btn" id="clearCaches">Alle Caches löschen</button>
       </div>
@@ -46,7 +51,7 @@
 
     <div class="card">
       <strong>Lokale Einstellungen</strong>
-      <div style="margin-top:8px">
+      <div class="row" style="margin-top:8px">
         <button class="btn" id="clearLocal">Pro &amp; Team-Defaults löschen</button>
       </div>
       <pre id="localDump" style="margin-top:8px"></pre>
@@ -70,7 +75,9 @@
       try{
         const reg = await navigator.serviceWorker?.getRegistration();
         const ctrl = navigator.serviceWorker?.controller;
-        $state.textContent = `SW: ${reg ? 'registriert' : 'nicht registriert'} · Controller: ${ctrl ? 'ja' : 'nein'}`;
+        $state.textContent =
+          `SW: ${reg ? 'registriert' : 'nicht registriert'} · `+
+          `Controller: ${ctrl ? 'ja' : 'nein'}`;
       }catch(e){ $state.textContent = 'SW-Status nicht verfügbar'; }
     }
 
@@ -142,5 +149,6 @@
     row('manifest name','manifest.webmanifest?v=ns', /"name"\s*:\s*"([^"]+)"/);
   })();
   </script>
+  <script src="js/sw-register.js?v=2025-11-15-16"></script>
 </body>
 </html>
