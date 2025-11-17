@@ -1,6 +1,6 @@
 // /Supersystem/sw.js
 // Minimal-SW: HTML immer Netz; Assets stale-while-revalidate; Icons/OG bypass.
-const VERSION='2025-11-15-16';
+const VERSION='2025-11-15-18';
 const BYPASS=[/\/assets\/icons\//,/\/assets\/og\.png$/];
 const CNAME = n => `ss-${VERSION}-${n}`;
 
