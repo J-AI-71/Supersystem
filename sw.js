@@ -21,6 +21,7 @@ const PRECACHE_URLS = [
 // nie cachen (immer Netzwerk)
 const NETWORK_ONLY_PATHS = new Set([
   `${SCOPE_PATH}sitemap.xml`,
+  `${SCOPE_PATH}sitemap.txt`,   // <— ergänzt
   `${SCOPE_PATH}robots.txt`,
   `${SCOPE_PATH}impressum.html`,
   `${SCOPE_PATH}datenschutz.html`,
