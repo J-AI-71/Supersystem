@@ -2,108 +2,208 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="referrer" content="no-referrer-when-downgrade">
-  <base href="/Supersystem/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
+<title>Tests · SafeShare</title>
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#111111">
+<link rel="icon" href="assets/icons/icon-192.png">
 
-  <title>SafeShare Tests</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
-
-  <!-- Social -->
-  <meta property="og:title" content="SafeShare Tests">
-  <meta property="og:description" content="Beispiel-URLs ausprobieren, Logs ansehen.">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-
-  <!-- iOS / Icons / Manifest -->
-  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
-  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-11">
-
-  <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e;--line:#222}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
-    .wrap{max-width:980px;margin:auto;padding:28px 16px}
-    h1{margin:0 0 8px;font-size:26px}
-    .mut{color:var(--mut)}
-    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010;margin-bottom:12px}
-    textarea{width:100%;min-height:120px;background:#0b0b0b;color:#eaeaea;border:1px solid #222;border-radius:10px;padding:10px}
-    .btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;font-weight:700;border:0}
-    .btn.pri{background:var(--pri);color:#07130c}
-    .btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border:1px solid #222;padding:8px;vertical-align:top}
-    th{background:#111}
-    code{background:#000;border:1px solid #222;border-radius:6px;padding:1px 4px}
-  </style>
+<!-- Link-Farbfix (verhindert lila :visited) -->
+<style>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e;--link:#9aead0}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a, a:visited{color:var(--link)}
+a:hover, a:active{opacity:.85}
+.wrap{max-width:980px;margin:auto;padding:32px 16px}
+h1{margin:0 0 8px;font-size:30px}
+h2{margin:16px 0 8px;font-size:20px}
+.mut{color:var(--mut)}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;text-decoration:none;font-weight:700;border:0;cursor:pointer}
+.btn.pri{background:var(--pri);color:#07130c}
+.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
+input[type="text"],textarea{width:100%;padding:.7rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font:14px/1.45 ui-monospace,Menlo,Consolas,monospace}
+code{background:#000;padding:.06rem .35rem;border-radius:6px}
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th,.table td{font-size:14px;text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid #222}
+.badge{display:inline-block;background:#1b1b1b;border:1px solid #2a2a2a;border-radius:999px;padding:.15rem .55rem;font-size:12px;color:#eaeaea}
+.small{font-size:12px}
+</style>
 </head>
-  <footer class="mut" style="margin-top:16px">
-  <a href="impressum.html">Impressum</a> ·
-  <a href="datenschutz.html">Datenschutz</a> ·
-  <a href="help.html">Hilfe</a>
-</footer>
 <body>
-  <div class="wrap">
-    <h1>Tests</h1>
-    <div class="card">
-      <p class="mut">Eine URL pro Zeile. Bereinigt mit <code>core.js</code> (unwrap + clean). Logs werden angezeigt.</p>
-      <textarea id="in" placeholder="https://example.com?utm_source=…&#10;https://www.google.com/url?…"></textarea>
-      <div style="margin-top:10px">
-        <button id="run" class="btn pri" type="button">Säubern</button>
-        <button id="ex" class="btn alt" type="button">Beispiele einfügen</button>
-      </div>
-      <div id="outBox" style="display:none">
-        <table>
-          <thead><tr><th>#</th><th>Original</th><th>Sauber</th><th>Log</th></tr></thead>
-          <tbody id="tbl"></tbody>
-        </table>
-      </div>
+<div class="wrap">
+  <h1>Tests</h1>
+  <p class="mut">Beispiele zum Prüfen der Entschachtelung und der Entfernung von Tracking-Parametern. Ergebnisse erscheinen unterhalb der Eingaben.</p>
+
+  <div class="row" style="margin-top:6px">
+    <a class="btn alt" href="index.html">Start</a>
+    <a class="btn alt" href="app.html">App</a>
+    <a class="btn alt" href="bookmarklets.html">Bookmarklet</a>
+    <a class="btn alt" href="tools.html">Tools</a>
+  </div>
+
+  <!-- Einzellink-Test -->
+  <div class="card">
+    <h2>1) Einzellink</h2>
+    <input id="singleIn" type="text" placeholder="URL einfügen … z. B. https://example.com/?utm_source=newsletter&gclid=123">
+    <div class="row" style="margin-top:10px">
+      <button id="singleCleanOpen" class="btn pri" type="button">Säubern & öffnen</button>
+      <button id="singleClean" class="btn alt" type="button">Nur säubern</button>
+      <button id="singleInspect" class="btn alt" type="button">Prüfen (Analyse)</button>
+      <button id="singleCopy" class="btn alt" type="button">Ergebnis kopieren</button>
+    </div>
+    <div id="singleOutBox" style="margin-top:10px;display:none">
+      <div><span class="badge">Ergebnis</span></div>
+      <input id="singleOut" type="text" readonly>
+      <details style="margin-top:8px"><summary>Was wurde geändert?</summary><div id="singleLog" class="small"></div></details>
     </div>
   </div>
 
-  <script src="js/core.js?v=2025-11-15-11"></script>
-  <script>
-  (function(){
-    const $in = document.getElementById('in');
-    const $tbl = document.getElementById('tbl');
-    const $box = document.getElementById('outBox');
-    function cleanOne(seed){
-      let url = seed.trim(); if(!url) return null;
-      const steps = [], notes = [];
-      try{
-        if (SafeShare?.core?.unwrapWithLog){
-          const u = SafeShare.core.unwrapWithLog(url);
-          url = u.url; (u.steps||[]).forEach(s=>steps.push(s));
-        }
-        if (SafeShare?.core?.cleanWithLog){
-          const c = SafeShare.core.cleanWithLog(url);
-          url = c.url; (c.notes||[]).forEach(n=>notes.push(n));
-        }
-      }catch(e){ notes.push('Fehler: '+e.message); }
-      return {in:seed, out:url, log:[...steps, ...notes]};
+  <!-- Sammeltests (vorgegebene Beispiele) -->
+  <div class="card">
+    <h2>2) Sammeltests</h2>
+    <p class="mut">Klicke auf „Alle prüfen“, um die Beispiele mit der SafeShare-Logik zu verarbeiten.</p>
+    <textarea id="batchIn" rows="8"></textarea>
+    <div class="row" style="margin-top:10px">
+      <button id="batchRun" class="btn pri" type="button">Alle prüfen</button>
+      <button id="batchCopy" class="btn alt" type="button">Ausgabe kopieren</button>
+      <button id="batchReset" class="btn alt" type="button">Zurücksetzen</button>
+    </div>
+    <div id="batchStats" class="mut small" style="margin-top:8px"></div>
+    <table class="table" id="batchTable" aria-label="Testergebnisse">
+      <thead>
+        <tr><th style="width:36%">Original</th><th style="width:36%">Entschachtelt</th><th style="width:28%">Gesäubert</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <footer class="mut" style="margin-top:16px">
+    <a href="impressum.html">Impressum</a> ·
+    <a href="datenschutz.html">Datenschutz</a> ·
+    <a href="help.html">Hilfe</a>
+  </footer>
+</div>
+
+<!-- Kernlogik laden -->
+<script src="js/core.js?v=18"></script>
+<script>
+(function(){
+  const C = (window.SafeShare && window.SafeShare.core) || null;
+  if(!C){ console.warn('SafeShare.core nicht verfügbar'); return; }
+
+  // ===== Einzellink =====
+  const $in  = document.getElementById('singleIn');
+  const $out = document.getElementById('singleOut');
+  const $box = document.getElementById('singleOutBox');
+  const $log = document.getElementById('singleLog');
+
+  function runSingle(doOpen){
+    const raw = ($in.value||'').trim(); if(!raw) return;
+    const seed = C.normalizeSeed(raw);
+    const un = C.unwrapWithLog(seed);
+    const cl = C.cleanWithLog(un.url);
+
+    $box.style.display = 'block';
+    $out.value = cl.url;
+    const lines=[];
+    if(un.steps.length) lines.push('Entschachtelung: '+un.steps.join(' → '));
+    if(cl.notes.length) lines.push(...cl.notes);
+    if(!lines.length)   lines.push('Keine Änderungen notwendig.');
+    $log.innerHTML = '<ul style="margin:.2rem 0 0 18px">'+lines.map(x=>`<li>${x.replace(/&/g,'&amp;')}</li>`).join('')+'</ul>';
+
+    if(doOpen) location.href = cl.url;
+  }
+
+  document.getElementById('singleCleanOpen').addEventListener('click', ()=>runSingle(true));
+  document.getElementById('singleClean').addEventListener('click', ()=>runSingle(false));
+  document.getElementById('singleInspect').addEventListener('click', ()=>{
+    const raw = ($in.value||'').trim(); if(!raw) return;
+    const href = 'redirect-entschachteln.html?wait=1&details=1&u=' + encodeURIComponent(raw);
+    window.open(href, '_blank', 'noopener');
+  });
+  document.getElementById('singleCopy').addEventListener('click', async ()=>{
+    const v = $out.value||''; if(!v) return;
+    try{ await navigator.clipboard.writeText(v); }catch{ prompt('Ergebnis kopieren:', v); }
+  });
+
+  // ===== Sammeltests =====
+  const samples = [
+    // UTM / Standard-Tracker
+    'https://example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=promo&gclid=CL-123',
+    // Google redirect (q=url)
+    'https://www.google.com/url?q=https%3A%2F%2Fexample.org%2Fpath%3Futm_term%3Dabc&sa=U&ved=2ahUKEwj',
+    // Newsletter redirect (url=)
+    'https://news.example.net/redirect?url=https%3A%2F%2Fexample.org%2Fcat%2Fitem%3Fmc_eid%3Dxyz%26utm_content%3Dcta',
+    // Amazon
+    'https://www.amazon.de/dp/B00TEST?tag=aff-21&ref=sr_1_1&pf_rd_r=ABC123#section',
+    // t.co Kurzlink (nur Demo – echte Auflösung durch Netzwerk nicht möglich; wir säubern nur sichtbare Tracker)
+    'https://t.co/AbCdEf?utm_source=twitter',
+    // Doppelte Slashes & trailing slash
+    'https://example.com//a///b/?utm_id=999/',
+    // Hash-only tracking (wird idR behalten, außer Spezialfall Amazon)
+    'https://example.org/article?utm_medium=social#section-2'
+  ];
+
+  const $batchIn   = document.getElementById('batchIn');
+  const $batchRun  = document.getElementById('batchRun');
+  const $batchCopy = document.getElementById('batchCopy');
+  const $batchReset= document.getElementById('batchReset');
+  const $batchStats= document.getElementById('batchStats');
+  const $tbody     = document.querySelector('#batchTable tbody');
+
+  // Prefill
+  $batchIn.value = samples.join('\n');
+
+  function row(o,u,c){
+    const tr = document.createElement('tr');
+    const td1 = document.createElement('td'); td1.textContent = o; tr.appendChild(td1);
+    const td2 = document.createElement('td'); td2.textContent = u; tr.appendChild(td2);
+    const td3 = document.createElement('td');
+    const a   = document.createElement('a'); a.href = c; a.textContent = c; a.rel = 'noopener'; a.target = '_blank';
+    td3.appendChild(a); tr.appendChild(td3);
+    return tr;
+  }
+
+  function runBatch(){
+    const lines = ($batchIn.value||'').split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+    $tbody.innerHTML = '';
+    if(!lines.length){ $batchStats.textContent=''; return; }
+    let count=0;
+    for(const raw of lines){
+      const seed = C.normalizeSeed(raw);
+      const un   = C.unwrap(seed);
+      const cl   = C.clean(un, {normalize:true});
+      $tbody.appendChild(row(raw, un, cl));
+      count++;
     }
-    document.getElementById('run').onclick = ()=>{
-      const lines = $in.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-      if(!lines.length) return;
-      $tbl.innerHTML = '';
-      lines.map(cleanOne).forEach((r,i)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${i+1}</td><td><code>${r.in.replace(/</g,'&lt;')}</code></td><td><a href="${r.out}" target="_blank" rel="noopener">${r.out}</a></td><td>${r.log.join('<br>')}</td>`;
-        $tbl.appendChild(tr);
-      });
-      $box.style.display='block';
-    };
-    document.getElementById('ex').onclick = ()=>{
-      $in.value = [
-        'https://example.com/?utm_source=newsletter&utm_medium=email&gclid=123',
-        'https://www.google.com/url?sa=t&url=https%3A%2F%2Fexample.com%2F&usg=AOv',
-        'https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2F%3Ffbclid%3Dabc&h=…'
-      ].join('\n');
-    };
-  })();
-  </script>
-  <script src="js/core.js?v=2025-11-15-16"></script>
-<script src="js/ext-links.js?v=2025-11-15-16"></script>
-<script src="js/sw-register.js?v=2025-11-15-16"></script>
+    $batchStats.textContent = `${count} Eingaben verarbeitet`;
+  }
+
+  $batchRun.addEventListener('click', runBatch);
+  $batchCopy.addEventListener('click', async ()=>{
+    const rows=[...$tbody.querySelectorAll('tr')];
+    if(!rows.length) return;
+    const text = rows.map(tr=>{
+      const tds = tr.querySelectorAll('td');
+      return `${tds[0].textContent}\n→ ${tds[1].textContent}\n⇒ ${tds[2].textContent}\n`;
+    }).join('\n');
+    try{ await navigator.clipboard.writeText(text); }catch{ prompt('Ausgabe kopieren:', text); }
+  });
+  $batchReset.addEventListener('click', ()=>{
+    $batchIn.value = samples.join('\n');
+    $tbody.innerHTML = '';
+    $batchStats.textContent='';
+  });
+
+})();
+</script>
+
+<!-- Service Worker Registrierung (immer zuletzt) -->
+<script src="js/sw-register.js?v=18"></script>
 </body>
 </html>
