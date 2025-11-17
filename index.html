@@ -1,127 +1,105 @@
+<!-- /Supersystem/index.html -->
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="referrer" content="no-referrer-when-downgrade">
-  <base href="/Supersystem/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
 
-  <title>SafeShare – Saubere Links ohne Tracking</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
+<title>SafeShare – saubere Links ohne Tracking</title>
+<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
+<meta name="robots" content="index,follow">
+<meta name="description" content="SafeShare entfernt UTM, gclid, fbclid & Co. und entpackt Redirect-Links – lokal im Browser.">
+<meta name="theme-color" content="#111111">
 
-  <!-- Social Preview -->
-  <meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-  <meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-  <meta name="twitter:description" content="UTM, gclid, fbclid & Co. entfernen – lokal im Browser.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og.png">
+<!-- Icons -->
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="assets/icons/apple-touch-icon-167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152.png">
+<link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest?v=2025-11-17-01">
 
-  <!-- iOS / PWA -->
-  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-11">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!-- Social -->
+<meta property="og:title" content="SafeShare – saubere Links ohne Tracking">
+<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen. Lokal im Browser.">
+<meta property="og:image" content="assets/icons/icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
 
-  <!-- Icons (KREIS) -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-11">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=2025-11-15-11">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192-kreis.png?v=2025-11-15-11">
-
-  <!-- Manifest -->
-  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-11">
-
-  <style>
-    :root{
-      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a;
-      --pri:#29c07e; --pri-ink:#07130c; --line:#222;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
-    a{color:#9aead0;text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:980px;margin:auto;padding:28px 16px}
-    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
-    .brand img{width:28px;height:28px}
-    nav a{margin-left:14px;color:#cfeee5}
-    .hero{padding:18px 0 8px}
-    h1{margin:0 0 6px;font-size:28px;line-height:1.2}
-    .sub{color:var(--mut);margin:0 0 18px}
-    .cta .btn{margin-right:8px;margin-bottom:8px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:22px 0}
-    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010}
-    .card h3{margin:0 0 6px;font-size:18px}
-    .mut{color:var(--mut)}
-    .btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;font-weight:700;border:0}
-    .btn.pri{background:var(--pri);color:var(--pri-ink)}
-    .btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}
-    footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-size:14px}
-    footer a{color:#b6e6d6}
-    .foot-grid{display:flex;flex-wrap:wrap;gap:10px 16px}
-    .foot-grid a:visited{color:#b6e6d6}
-  </style>
+<style>
+:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:980px;margin:auto;padding:32px 16px}
+h1{margin:0 0 6px;font-size:32px}
+p{margin:6px 0}
+.mut{color:var(--mut)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;padding:.8rem 1.05rem;border-radius:11px;font-weight:700;text-decoration:none;border:0;cursor:pointer}
+.btn.pri{background:var(--pri);color:#07130c}
+.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
+.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:14px}
+.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
+.code{flex:1;min-width:280px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
+footer a{color:#9aead0;text-decoration:none;margin-right:10px}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <img src="assets/icons/icon-32-kreis.png?v=2025-11-15-11" alt="">
-        <span>SafeShare</span>
-      </div>
-      <nav>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="bulk-clean.html">Bulk</a>
-        <a href="pro.html">Pro</a>
-      </nav>
-    </header>
+<div class="wrap">
+  <h1>SafeShare</h1>
+  <p id="pro-badge" class="mut">Pro: nicht aktiv</p>
+  <p class="mut">Entfernt Tracking-Parameter (UTM, gclid, fbclid, …) und entpackt Weiterleitungen – 100% lokal im Browser.</p>
 
-    <section class="hero">
-      <h1>Saubere Links ohne Tracking</h1>
-      <p class="sub">Entfernt UTM, <code>gclid</code>, <code>fbclid</code>, Weiterleitungswrapper &amp; mehr – lokal im Browser.</p>
-      <div class="cta">
-        <a class="btn pri" href="app.html">Zur App</a>
-        <a class="btn alt" href="bookmarklets.html">Bookmarklets</a>
-        <a class="btn alt" href="bulk-clean.html">Bulk-Cleaning</a>
-        <a class="btn alt" href="assets/docs/SafeShare-Quickstart-DE.pdf" target="_blank" rel="noopener">Quickstart PDF</a>
-      </div>
-    </section>
-
-    <section class="grid">
-      <div class="card">
-        <h3>Privat &amp; lokal</h3>
-        <p class="mut">Alles passiert im Browser. Keine Servercalls. Keine Speicherung von Links.</p>
-      </div>
-      <div class="card">
-        <h3>Weiterleitungen entschachteln</h3>
-        <p class="mut">Enttarnt verschachtelte Redirects (z. B. Mail-&amp; Ad-Tracker) und führt zum Ziel.</p>
-      </div>
-      <div class="card">
-        <h3>Ein Klick</h3>
-        <p class="mut">Einfügen, Enter – oder „Säubern &amp; öffnen“. Teilen/Kopieren inklusive.</p>
-      </div>
-      <div class="card">
-        <h3>Teams &amp; Pro</h3>
-        <p class="mut">Publisher-/WL-Voreinstellungen, Richtlinien-Modus, Bulk-Tools. <a href="pro.html">Mehr&nbsp;erfahren</a>.</p>
-      </div>
-    </section>
-
-    <footer>
-      <div class="foot-grid">
-        <a href="support.html">Support</a>
-        <a href="press.html">Presse</a>
-        <a href="changelog.html">Changelog</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="assets/docs/SafeShare-Quickstart-DE.pdf" target="_blank" rel="noopener">Quickstart PDF</a>
-      </div>
-    </footer>
+  <div class="row" style="margin-top:10px">
+    <a class="btn pri" href="app.html">App starten</a>
+    <a class="btn alt" href="bookmarklets.html">Bookmarklet</a>
+    <a class="btn alt" href="pro.html">Pro kaufen</a>
   </div>
 
-  <script src="js/ext-links.js?v=2025-11-15-16"></script>
-<script src="js/sw-register.js?v=2025-11-15-16"></script>
+  <!-- Kurzvorschau Bookmarklet -->
+  <div class="card">
+    <h2 style="margin:0 0 8px;font-size:20px">Bookmarklet – „SafeShare clean“</h2>
+    <div id="bm-index">Lade …</div>
+    <p class="mut" style="margin-top:8px">iPhone/iPad: „Code kopieren“ → neues Lesezeichen → Code in das Feld „Adresse/URL“ einfügen.</p>
+  </div>
+
+  <!-- Features -->
+  <div class="card">
+    <h2 style="margin:0 0 8px;font-size:20px">Funktionen</h2>
+    <ul style="margin:0 0 0 18px">
+      <li>Tracking-Parameter entfernen (utm_*, gclid, fbclid, msclkid, …)</li>
+      <li>Redirects entschachteln (<code>url=</code>, <code>u=</code>, Google/Newsletter)</li>
+      <li>Amazon: Ref-/Tag-Parameter aufräumen; Pfade normalisieren</li>
+      <li>Pro: Bulk-Cleaning &amp; Team-Whitelist/Publisher-Modus</li>
+      <li>PWA: Optional als App installierbar</li>
+    </ul>
+  </div>
+
+  <div class="row" style="margin-top:12px">
+    <a class="btn alt" href="bulk-clean.html">Bulk-Cleaning</a>
+    <a class="btn alt" href="team-setup.html">Team-Setup</a>
+    <a class="btn alt" href="tests.html">Tests</a>
+  </div>
+
+  <footer class="mut" style="margin-top:18px">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+  </footer>
+</div>
+
+<!-- Bookmarklet-Renderer -->
+<script src="js/bookmarklets.js?v=2025-11-17-01"></script>
+<script>
+  // Bookmarklet-Vorschau rendern
+  if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');
+  // Pro-Badge aus lokalem Status
+  (function(){
+    const on = localStorage.getItem('ss2_pro')==='1';
+    const b = document.getElementById('pro-badge');
+    if (b) b.textContent = 'Pro: ' + (on ? 'aktiv' : 'nicht aktiv');
+  })();
+</script>
+
+<!-- Service Worker Registrierung: immer zuletzt -->
+<script src="js/sw-register.js?v=2025-11-17-01"></script>
 </body>
 </html>
