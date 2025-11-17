@@ -19,13 +19,15 @@ const PRECACHE_URLS = [
 ];
 
 // nie cachen (immer Netzwerk)
+const VER = '26';
 const NETWORK_ONLY_PATHS = new Set([
-  `${SCOPE_PATH}sitemap.xml`,
-  `${SCOPE_PATH}sitemap.txt`,   // <— ergänzt
-  `${SCOPE_PATH}robots.txt`,
-  `${SCOPE_PATH}impressum.html`,
-  `${SCOPE_PATH}datenschutz.html`,
-  `${SCOPE_PATH}pro-activate.html`
+  '/Supersystem/sitemap.xml',
+  '/Supersystem/sitemap.txt',
+  '/Supersystem/robots.txt',
+  '/Supersystem/BingSiteAuth.xml',   // <— hinzugefügt
+  '/Supersystem/impressum.html',
+  '/Supersystem/datenschutz.html',
+  '/Supersystem/pro-activate.html'
 ]);
 
 self.addEventListener('install', (event) => {
