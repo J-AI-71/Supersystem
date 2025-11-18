@@ -21,18 +21,18 @@
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- CSP (JSON-LD inline → 'unsafe-inline' vorerst notwendig) -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'unsafe-inline';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self'">
+  <!-- NEU: CSP (ohne unsafe-inline bei Skripten) -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+               base-uri 'self';
+               frame-ancestors 'none';
+               object-src 'none';
+               img-src 'self' data:;
+               style-src 'self' 'unsafe-inline';
+               script-src 'self';
+               font-src 'self';
+               worker-src 'self';
+               manifest-src 'self'">
 
   <!-- Icons / Manifest -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=31">
@@ -68,30 +68,9 @@
 
   <script defer src="js/sw-register.js?v=31"></script>
 
-  <!-- FAQ Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"Warum SafeShare für Publisher?",
-        "acceptedAnswer":{"@type":"Answer","text":"Saubere Links sind kürzer, laden schneller und werden seltener geblockt. SafeShare entfernt Tracking-Ballast und entpackt Redirects, vollständig lokal im Browser."}
-      },
-      {
-        "@type":"Question",
-        "name":"Beeinträchtigt SafeShare Affiliate-Tracking?",
-        "acceptedAnswer":{"@type":"Answer","text":"Standardmäßig werden bekannte Tracking-Parameter entfernt. Teams können eine Whitelist hinterlegen (z. B. ref=, tag=), sodass essenzielle Partner-IDs erhalten bleiben."}
-      },
-      {
-        "@type":"Question",
-        "name":"Welche Features gibt es für Teams?",
-        "acceptedAnswer":{"@type":"Answer","text":"Pro bietet Bulk-Cleaning, Team-Whitelist (Publisher-Modus) und Helper-Tools. Aktivierung lokal per pro-activate.html?pro=1 nach Kauf-Redirect."}
-      }
-    ]
-  }
-  </script>
+<!-- NEU: Externes JSON-LD -->
+<script type="application/ld+json" src="ld/publisher-faq.jsonld"></script>
+
 </head>
 <body>
   <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
