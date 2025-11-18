@@ -1,14 +1,336 @@
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="/Supersystem/">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="de">
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="x-default">
-<meta property="og:locale" content="de_DE">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
-<title>Bulk-Clean · SafeShare</title>
-<meta name="description" content="Mehrere Links auf einmal säubern – schneller Workflow für Profis.">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png"><link rel="icon" href="assets/icons/icon-192.png"><link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="css/theme.css?v=27"><script src="js/sw-register.js?v=27"></script>
+<!doctype html>
+<html lang="de">
+<head>
+  <!-- Basis -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>Bulk-Clean · SafeShare</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
+
+  <!-- hreflang / Locale -->
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="x-default">
+  <meta property="og:locale" content="de_DE">
+
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 form-action 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- Meta -->
+  <meta name="description" content="Mehrere Links auf einmal säubern: Tracking-Parameter entfernen und Weiterleitungen entpacken – lokal im Browser.">
+
+  <!-- Icons / Manifest -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
+  <link rel="manifest" href="manifest.webmanifest?v=29">
+
+  <!-- Fallback-Styles (keine weiße Seite) -->
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a;--btn:#1b1b1b;--ok:#1e402f}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:1100px;margin:0 auto;padding:22px 14px}
+    h1{margin:.2em 0 .6em;font-size:1.9rem}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
+    textarea{width:100%;min-height:180px;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:12px}
+    input[type=text]{width:100%;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:12px}
+    .btn{padding:.7rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--fg);text-decoration:none;cursor:pointer}
+    .btn.pri{background:#1e2e24}
+    .btn.ok{background:var(--ok)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .badge{display:inline-block;margin-left:8px;padding:.15rem .45rem;border-radius:8px;border:1px solid var(--line);background:#172017;color:#9ed1b1;font-size:.85rem}
+    .stat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+    .pill{background:#171717;border:1px solid var(--line);border-radius:10px;padding:.4rem .6rem;text-align:center}
+    code{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
+    details{margin-top:10px}
+    footer{margin-top:18px}
+    a{color:#cfe7ff}
+    @media (max-width:920px){ .grid{grid-template-columns:1fr} }
+  </style>
+
+  <!-- Optional Theme -->
+  <link rel="stylesheet" href="css/theme.css?v=27">
+
+  <!-- SW-Registrierung -->
+  <script src="js/sw-register.js?v=29"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Bulk-Clean <span id="proBadge" class="badge" style="display:none">Pro aktiv</span></h1>
+    <p class="mut">Füge mehrere URLs (eine pro Zeile) ein. SafeShare entfernt Tracking-Parameter und entpackt Weiterleitungen – alles lokal im Browser.</p>
+
+    <div class="grid">
+      <!-- Eingabe -->
+      <section class="box">
+        <h2 style="margin-top:0">Eingabe</h2>
+        <textarea id="inBulk" placeholder="https://example.com/?utm_source=newsletter&gclid=123&#10;https://www.google.com/url?q=https%3A%2F%2Fziel.de%2F…&#10;…"></textarea>
+        <div class="row">
+          <button class="btn pri" onclick="UI.clean()">Säubern</button>
+          <button class="btn" onclick="UI.check()">Prüfen</button>
+          <button class="btn" onclick="UI.clear()">Leeren</button>
+          <button class="btn" onclick="UI.paste()">Einfügen</button>
+        </div>
+        <details>
+          <summary class="mut">Optionen</summary>
+          <div class="row" style="margin-top:8px">
+            <label><input type="checkbox" id="dedup" checked> Duplikate entfernen</label>
+            <label><input type="checkbox" id="keepOrder" checked> Reihenfolge beibehalten</label>
+            <label><input type="checkbox" id="skipInvalid" checked> Ungültige Zeilen überspringen</label>
+          </div>
+        </details>
+      </section>
+
+      <!-- Ausgabe -->
+      <section class="box">
+        <h2 style="margin-top:0">Ergebnis</h2>
+        <textarea id="outBulk" readonly placeholder="Bereinigte URLs erscheinen hier – eine pro Zeile."></textarea>
+        <div class="row">
+          <button class="btn" onclick="UI.copy()">Kopieren</button>
+          <button class="btn ok" onclick="UI.downloadTxt()">Als TXT speichern</button>
+          <button class="btn" onclick="UI.downloadCsv()">Als CSV speichern</button>
+        </div>
+        <div class="stat">
+          <div class="pill"><strong id="cntIn">0</strong><div class="mut">Eingang</div></div>
+          <div class="pill"><strong id="cntOut">0</strong><div class="mut">Ausgang</div></div>
+          <div class="pill"><strong id="cntRemoved">0</strong><div class="mut">entfernte Parameter</div></div>
+          <div class="pill"><strong id="cntUnwrap">0</strong><div class="mut">entpackte Redirects</div></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="box">
+      <h2 style="margin-top:0">Änderungs-Report</h2>
+      <details open>
+        <summary class="mut">Pro Zeile</summary>
+        <div id="report" style="margin-top:10px"></div>
+      </details>
+    </section>
+
+    <footer class="mut">
+      <a href="index.html">Startseite</a> ·
+      <a href="app.html">App</a> ·
+      <a href="help.html">Hilfe</a> ·
+      <a href="team-setup.html">Team-Whitelist</a> ·
+      <a href="mailto:?subject=SafeShare%20Feedback&body=Bitte%20hier%20Feedback%20eintragen.">Feedback</a>
+    </footer>
+  </div>
+
+  <script>
+  (function(){
+    const $ = sel => document.querySelector(sel);
+    const QS = {
+      in: $('#inBulk'),
+      out: $('#outBulk'),
+      report: $('#report'),
+      cntIn: $('#cntIn'),
+      cntOut: $('#cntOut'),
+      cntRem: $('#cntRemoved'),
+      cntUnw: $('#cntUnwrap'),
+      pro: $('#proBadge'),
+      opt: {
+        dedup: $('#dedup'),
+        keepOrder: $('#keepOrder'),
+        skipInvalid: $('#skipInvalid')
+      }
+    };
+
+    if (localStorage.getItem('ss2_pro') === '1') QS.pro.style.display = 'inline-block';
+
+    const UI = window.UI = {
+      async paste(){
+        try{
+          const t = await navigator.clipboard.readText();
+          if (t) QS.in.value = (QS.in.value ? QS.in.value + '\n' : '') + t;
+        }catch(e){}
+      },
+      clear(){
+        QS.in.value = '';
+        QS.out.value = '';
+        QS.report.innerHTML = '';
+        updateStats(0,0,0,0);
+        QS.in.focus();
+      },
+      check(){ run(false); },
+      clean(){ run(true); },
+      copy(){
+        const v = QS.out.value.trim();
+        if (!v) return;
+        if (navigator.clipboard?.writeText) navigator.clipboard.writeText(v);
+        else { QS.out.select(); document.execCommand('copy'); QS.out.blur(); }
+      },
+      downloadTxt(){
+        const v = QS.out.value;
+        if (!v) return;
+        download('safeshare-bulk.txt', v);
+      },
+      downloadCsv(){
+        if (!lastRun || !lastRun.rows.length) return;
+        const header = ['input','output','removed','kept','unwrapped_from','unwrapped_to'];
+        const lines = [header.join(',')];
+        for (const r of lastRun.rows){
+          const row = [
+            csv(r.input), csv(r.output), csv(r.removed.join('|')),
+            csv(r.kept.join('|')), csv(r.unwrapped?.from||''), csv(r.unwrapped?.to||'')
+          ];
+          lines.push(row.join(','));
+        }
+        download('safeshare-bulk.csv', lines.join('\n'));
+      }
+    };
+
+    let lastRun = null;
+
+    function run(applyClean){
+      const raw = QS.in.value.replace(/\r\n/g,'\n');
+      const lines = raw.split('\n').map(s=>s.trim());
+      const allowRaw = localStorage.getItem('ss2_allow') || '';
+      const allow = new Set(allowRaw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean));
+
+      const rows = [];
+      let removedTotal = 0, unwrappedTotal = 0;
+
+      for (let i=0; i<lines.length; i++){
+        const line = lines[i];
+        if (!line) continue;
+        if (line.startsWith('#')) continue;
+
+        let input = line;
+        if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(input)) input = 'https://' + input;
+
+        let u;
+        try { u = new URL(input); }
+        catch { if (!QS.opt.skipInvalid.checked) rows.push(reportRow(line, line, [], [], null)); continue; else continue; }
+
+        const unwrap = unwrapRedirect(u);
+        if (unwrap) { u = new URL(unwrap.to); unwrappedTotal++; }
+
+        const removed = [];
+        for (const [k] of u.searchParams) {
+          const kl = k.toLowerCase();
+          const isTracker =
+            kl.startsWith('utm_') ||
+            kl === 'gclid' || kl === 'fbclid' || kl === 'yclid' ||
+            kl === 'mc_eid' || kl === 'mc_cid' || kl === 'mkt_tok' ||
+            kl === 'igshid' || kl === 'spm' ||
+            kl === 'vero_conv' || kl === 'vero_id' || kl === 'vero_campaign' ||
+            kl === 'ref' || kl === 'ref_src' || kl === 'ref_url';
+          if (isTracker && !allow.has(kl)) { removed.push(k); }
+        }
+        removed.forEach(k=>u.searchParams.delete(k));
+
+        for (const [k,v] of Array.from(u.searchParams.entries())) {
+          const kl = k.toLowerCase();
+          if (v === '' && !allow.has(kl)) { u.searchParams.delete(k); removed.push(k); }
+        }
+
+        if (u.protocol === 'http:' && u.port === '80') u.port = '';
+        if (u.protocol === 'https:' && u.port === '443') u.port = '';
+        if (u.pathname === '') u.pathname = '/';
+
+        removedTotal += removed.length;
+        const output = applyClean ? u.toString() : new URL(u).toString();
+
+        rows.push(reportRow(line, output, removed, Array.from(allow), unwrap));
+      }
+
+      // Deduplizieren
+      let outList = rows.map(r=>r.output);
+      if (QS.opt.dedup.checked) {
+        const seen = new Set();
+        outList = outList.filter(u=>{
+          if (seen.has(u)) return false;
+          seen.add(u); return true;
+        });
+      }
+      if (!QS.opt.keepOrder.checked) outList.sort();
+
+      QS.out.value = outList.join('\n');
+      QS.report.innerHTML = renderReport(rows);
+      updateStats(lines.filter(Boolean).length, outList.length, removedTotal, unwrappedTotal);
+
+      lastRun = { rows, outList };
+    }
+
+    function reportRow(input, output, removed, kept, unwrapped){
+      return { input, output, removed, kept, unwrapped };
+    }
+
+    function renderReport(rows){
+      if (!rows.length) return '<p class="mut">–</p>';
+      const parts = rows.map((r,idx)=>{
+        const rm = r.removed.length ? `<div>Entfernt: <code>${r.removed.map(escapeHtml).join('</code>, <code>')}</code></div>` : '<div>Entfernt: –</div>';
+        const kp = r.kept.length ? `<div>Whitelist: <code>${r.kept.map(escapeHtml).join('</code>, <code>')}</code></div>` : '<div>Whitelist: –</div>';
+        const uw = r.unwrapped ? `<div>Redirect: <code>${escapeHtml(r.unwrapped.from)}</code> → <code>${escapeHtml(r.unwrapped.to)}</code></div>` : '';
+        return `<div class="box" style="margin-top:8px">
+          <div class="mut">#${idx+1}</div>
+          <div>Input: <code>${escapeHtml(r.input)}</code></div>
+          <div>Output: <code>${escapeHtml(r.output)}</code></div>
+          ${rm}${kp}${uw}
+        </div>`;
+      });
+      return parts.join('');
+    }
+
+    function updateStats(cin, cout, crem, cunw){
+      QS.cntIn.textContent  = String(cin);
+      QS.cntOut.textContent = String(cout);
+      QS.cntRem.textContent = String(crem);
+      QS.cntUnw.textContent = String(cunw);
+    }
+
+    function unwrapRedirect(u){
+      const host = u.hostname.replace(/^www\./,'').toLowerCase();
+      // Google /url
+      if (host === 'google.com' || host.endsWith('.google.com')) {
+        if (u.pathname === '/url') {
+          const tgt = u.searchParams.get('q') || u.searchParams.get('url') || u.searchParams.get('qurl');
+          if (isHttp(tgt)) return { from: u.toString(), to: tgt };
+        }
+      }
+      // Facebook
+      if (host.endsWith('facebook.com') || host.endsWith('l.facebook.com') || host.endsWith('lm.facebook.com')) {
+        const tgt = u.searchParams.get('u') || u.searchParams.get('l') || u.searchParams.get('href');
+        if (isHttp(tgt)) return { from: u.toString(), to: tgt };
+      }
+      // Generisch: erster query-Wert, der wie URL aussieht
+      for (const [,v] of u.searchParams) {
+        if (isHttp(v)) return { from: u.toString(), to: v };
+      }
+      return null;
+    }
+
+    function isHttp(s){ return typeof s === 'string' && /^https?:\/\//i.test(s); }
+
+    function csv(s){
+      const t = String(s ?? '');
+      if (/[",\n]/.test(t)) return '"' + t.replace(/"/g,'""') + '"';
+      return t;
+    }
+    function download(name, content){
+      const blob = new Blob([content], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = name; document.body.appendChild(a); a.click();
+      setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+    }
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;' }[c])); }
+  })();
+  </script>
+
+  <noscript><div class="
