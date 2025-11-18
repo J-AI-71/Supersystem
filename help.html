@@ -1,25 +1,57 @@
-<!-- Canonical + hreflang/Locale -->
+<!-- HEAD: help.html -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="/Supersystem/">
 <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/help.html">
+
+<!-- hreflang / Locale -->
 <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/help.html" hreflang="de">
 <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/help.html" hreflang="x-default">
 <meta property="og:locale" content="de_DE">
 
-<!-- Meta Description -->
+<!-- Sicherheits-CSP -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
+               object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline';
+               script-src 'self' 'unsafe-inline'; font-src 'self'; worker-src 'self';
+               manifest-src 'self'; connect-src 'self'">
+
+<title>Hilfe · SafeShare</title>
 <meta name="description" content="Kurzanleitung, FAQ und Troubleshooting zu SafeShare: App, Bookmarklet, Pro-Aktivierung, Bulk-Cleaning, Team-Whitelist.">
 
-<!-- Open Graph -->
+<!-- OG/Twitter -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SafeShare">
 <meta property="og:title" content="Hilfe · SafeShare">
-<meta property="og:description" content="Kurzanleitung, FAQ und Troubleshooting zu SafeShare: App, Bookmarklet, Pro-Aktivierung, Bulk-Cleaning, Team-Whitelist.">
+<meta property="og:description" content="Kurzanleitung, FAQ und Troubleshooting zu SafeShare.">
 <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/help.html">
 <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 <meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-
-<!-- Twitter -->
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hilfe · SafeShare">
 <meta name="twitter:description" content="Kurzanleitung, FAQ und Troubleshooting zu SafeShare.">
 <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+
+<!-- FAQ JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Was macht SafeShare?","acceptedAnswer":{"@type":"Answer","text":"Entfernt Tracking-Parameter (utm_*, gclid, fbclid …) und entpackt Weiterleitungen – lokal im Browser."}},
+    {"@type":"Question","name":"Speichert SafeShare Daten?","acceptedAnswer":{"@type":"Answer","text":"Nein. Keine Server-Logs, keine Cookies, kein Tracking. Optionale Einstellungen nur lokal im Browser (localStorage)."}},
+    {"@type":"Question","name":"Bookmarklet auf iPhone/iPad?","acceptedAnswer":{"@type":"Answer","text":"Auf bookmarklets.html Code kopieren, in Safari neues Lesezeichen anlegen, Code ins Feld Adresse/URL einsetzen."}},
+    {"@type":"Question","name":"Pro aktivieren?","acceptedAnswer":{"@type":"Answer","text":"Nach Kauf leitet Payhip auf pro-activate.html?pro=1 um; dadurch wird Pro lokal aktiviert (localStorage:ss2_pro=1)."}},
+    {"@type":"Question","name":"Bulk-Cleaning?","acceptedAnswer":{"@type":"Answer","text":"bulk-clean.html öffnen, mehrere URLs einfügen, starten, Ergebnis kopieren."}},
+    {"@type":"Question","name":"Team-Whitelist/Publisher-Modus?","acceptedAnswer":{"@type":"Answer","text":"team-setup.html öffnen, Publisher-Modus aktivieren, erlaubte Keys speichern."}},
+    {"@type":"Question","name":"Alte Inhalte?","acceptedAnswer":{"@type":"Answer","text":"tools.html → Service Worker abmelden → Caches löschen → Seite neu laden."}}
+  ]
+}
+</script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/theme.css?v=27">
+<script src="js/sw-register.js?v=27"></script>
