@@ -1,78 +1,37 @@
 # SafeShare – saubere Links ohne Tracking
 
+**SafeShare** entfernt Tracking-Parameter (`utm_*`, `gclid`, `fbclid` …) und entpackt verschachtelte Weiterleitungen – **100 % lokal im Browser** (PWA, offline-fähig).
+
 - App: https://j-ai-71.github.io/Supersystem/
 - Hilfe/FAQ: https://j-ai-71.github.io/Supersystem/help.html
 - Pro: https://j-ai-71.github.io/Supersystem/pro.html
+- Bookmarklet: https://j-ai-71.github.io/Supersystem/bookmarklets.html
 
-SafeShare entfernt UTM/gclid/fbclid und entpackt Redirects – 100 % lokal im Browser (PWA, offline-fähig).
+## Features
+- Entfernt Tracking-Parameter, entpackt Redirects
+- Läuft komplett clientseitig, keine Server-Logs, keine Cookies
+- PWA: Zum Home-Screen hinzufügen, offline nutzbar
+- Bookmarklet für 1-Klick-Reinigung im Browser
+- **Pro**: Bulk-Cleaning & Team-Whitelist/Publisher-Modus
 
----
+## Schnellstart
+1. **App öffnen** → URL einfügen → **Säubern** → Ergebnis kopieren/öffnen.  
+2. **Bookmarklet**: Auf `bookmarklets.html` den `javascript:`-Code kopieren → im Browser als Lesezeichen-URL einfügen.  
+3. **PWA installieren**: „Zum Home-Bildschirm hinzufügen“ (iOS/Android) bzw. „Installieren“ (Desktop).  
+4. **Pro aktivieren**: Kauf → Redirect auf `pro-activate.html?pro=1` → Badge zeigt „aktiv“.
 
-## Was kann SafeShare?
-- Entfernt Tracking-Teile aus Links.
-- Öffnet den bereinigten Link oder kopiert ihn.
-- Optional: „Pro“ für Listen (viele Links auf einmal).
+## Datenschutz
+- Keine Accounts, kein Tracking.  
+- Optionale Einstellungen (z. B. Pro-Flag, Team-Whitelist) werden nur lokal im Browser gespeichert.
 
----
-
-## So benutzt du SafeShare
-
-### 1) Direkt in der App
-1. Seite öffnen: `https://j-ai-71.github.io/Supersystem/`
-2. **App starten** → Link einfügen → **Säubern & öffnen**.
-
-### 2) Als Lesezeichen-Knopf (Bookmarklet)
-
-**iPhone/iPad**
-1. Seite `bookmarklets.html` öffnen.  
-2. Beim gewünschten Eintrag **lange tippen** → „Zum Lesezeichen hinzufügen“.  
-3. Danach in Safari **Lesezeichen bearbeiten** und die **URL** durch den angezeigten `javascript:`-Code ersetzen (neben dem Link steht ein **Kopieren**-Knopf).  
-4. Ab jetzt: Irgendeine Seite öffnen → Lesezeichen antippen → Link wird gereinigt.
-
-**Computer (Mac/PC)**
-1. `bookmarklets.html` öffnen.  
-2. Den großen Link **in die Lesezeichenleiste ziehen**.  
-   Falls der Browser `javascript:` beim Speichern entfernt: Neues Lesezeichen anlegen und den Code aus dem Feld **hineinkopieren**.
+## Feedback
+Issues/Ideen willkommen. Alternativ per Mail: `support.safeshare@
 
 ---
 
-## „Beispiel-Share“
-Auf der Startseite gibt es **Beispiel-Share**. Das zeigt kurz den SafeShare-Bildschirm und öffnet dann `example.com` – nur zum Testen.
-
----
-
-## Pro-Funktionen (optional)
-- „Bulk-Cleaning“: Viele Links auf einmal reinigen.
-- Eigene Regeln für Domains.
-- Aktivierung: Nach dem Kauf (Payhip) öffnet sich die App mit Freischaltung.
-
----
-
-## Häufige Fragen
-
-**„Ich kann den Button nicht ziehen.“**  
-Auf iPhone/iPad geht Ziehen nicht. Lösung: Langes Tippen → Lesezeichen → URL durch den kopierten `javascript:`-Code ersetzen.
-
-**„Beim Antippen passiert nichts.“**  
-In-App-Browser (z. B. aus Chats/Instagram) blockieren `javascript:`. Öffne die Seite im normalen **Safari** oder **Chrome**.
-
-**„Die Seite zeigt noch die alte Version.“**  
-`tools.html` öffnen → **Service Worker abmelden** → **Caches löschen** → Seite neu laden.
-
-**„Installieren auf Gerät geht nicht.“**  
-Auf iOS bitte **Teilen** → **Zum Home-Bildschirm**. Der „Installieren“-Knopf wird dort nicht immer angeboten.
-
----
-
-## Nützliche Seiten
-- Start: `https://j-ai-71.github.io/Supersystem/index.html`  
-- App: `https://j-ai-71.github.io/Supersystem/app.html`  
-- Bookmarklets: `https://j-ai-71.github.io/Supersystem/bookmarklets.html`  
-- Werkzeuge (Cache leeren): `https://j-ai-71.github.io/Supersystem/tools.html`  
-- Status-Check: `https://j-ai-71.github.io/Supersystem/status.html`
-
----
-
-## Kontakt / Rechtliches
-- **Impressum:** `https://j-ai-71.github.io/Supersystem/impressum.html`  
-- **Datenschutz:** `https://j-ai-71.github.io/Supersystem/datenschutz.html`
+<footer class="mut" style="margin-top:16px">
+  <a href="impressum.html">Impressum</a> ·
+  <a href="datenschutz.html">Datenschutz</a> ·
+  <a href="help.html">Hilfe</a> ·
+  <a href="mailto:?subject=SafeShare%20Feedback&body=Bitte%20hier%20Feedback%20eintragen.">Feedback</a>
+</footer>
