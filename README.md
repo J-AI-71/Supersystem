@@ -25,7 +25,7 @@
 - Optionale Einstellungen (z. B. Pro-Flag, Team-Whitelist) werden nur lokal im Browser gespeichert.
 
 ## Feedback
-Issues/Ideen willkommen. Alternativ per Mail: `support.safeshare@
+Issues/Ideen willkommen. Alternativ per Mail: `support.safeshare@proton.me´
 
 ---
 
