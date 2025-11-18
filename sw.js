@@ -6,7 +6,7 @@
  * - Sauberes Cache-Rollover pro Version
  */
 
-const SS_SW_VERSION = '2025-11-18-04';              // ← bei jedem Release erhöhen
+const SS_SW_VERSION = '2025-11-18-05';              // ← bei jedem Release erhöhen
 const BASE_PATH      = '/Supersystem/';             // GitHub Pages Unterpfad
 const OFFLINE_URL    = `${BASE_PATH}offline.html`;
 
@@ -49,6 +49,10 @@ const precacheList = [
   `${BASE_PATH}robots.txt`,
   `${BASE_PATH}manifest.webmanifest?v=31`,
 
+// JSON-LD (NEU: für CSP-hardened Landingpages)
+  `${BASE_PATH}ld/publisher-faq.jsonld`,
+  `${BASE_PATH}ld/education-faq.jsonld`,
+   
   // CSS
   `${BASE_PATH}css/theme.css?v=31`,
 
