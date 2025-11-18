@@ -1,22 +1,21 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- 404.html -->
+  <!-- 404.html (ohne Inline-JS, konsolidierte Skripte) -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>404 – Seite nicht gefunden · SafeShare</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/404.html">
 
-  <!-- hreflang / Locale -->
+  <!-- Canonical / hreflang -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/404.html">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/404.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/404.html" hreflang="x-default">
+  <meta name="description" content="Die angeforderte Seite wurde nicht gefunden. Vorschläge und schnelle Navigation innerhalb von SafeShare.">
+  <meta name="robots" content="noindex,follow">
   <meta property="og:locale" content="de_DE">
 
-  <!-- Robots -->
-  <meta name="robots" content="noindex,follow">
-
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Sanfte CSP – keine Inline-Skripte -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -25,31 +24,32 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'unsafe-inline';
+                 script-src 'self';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- Meta -->
-  <meta name="description" content="Die angeforderte Seite wurde nicht gefunden. Vorschläge und schnelle Navigation innerhalb von SafeShare.">
-
   <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-  <link rel="manifest" href="manifest.webmanifest?v=29">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=30">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=30">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=30">
+  <link rel="manifest" href="manifest.webmanifest?v=30">
 
   <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a;--btn:#1b1b1b;--ok:#1e402f}
+    :root{
+      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a; --card:#121212;
+      --line:#2a2a2a; --btn:#1b1b1b; --ok:#1e402f;
+    }
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    a{color:#cfe7ff}
     .wrap{max-width:980px;margin:0 auto;padding:22px 14px}
+    .mut{color:var(--mut)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
     h1{margin:.2em 0 .2em;font-size:2rem}
     h2{margin:1.0em 0 .35em;font-size:1.2rem}
-    .mut{color:var(--mut)}
     .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
     .row{display:flex;flex-wrap:wrap;gap:10px}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
@@ -60,44 +60,49 @@
     ul.tight li{margin:.25rem 0}
     code,kbd{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
     .pill{display:inline-block;margin:2px;padding:.2rem .45rem;border-radius:999px;background:#171717;border:1px solid #2a2a2a}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
     footer{margin-top:18px}
-    a{color:#cfe7ff}
+    .visually-hidden-focusable{position:absolute;left:-9999px}
+    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#222;padding:.4rem .6rem;border-radius:8px}
   </style>
 
-  <!-- Optional Theme -->
-  <link rel="stylesheet" href="css/theme.css?v=27">
+  <link rel="stylesheet" href="css/theme.css?v=30">
 
-  <!-- SW-Registrierung -->
-  <script src="js/sw-register.js?v=29"></script>
+  <!-- SW-Registrierung + Seiten-Skript -->
+  <script defer src="js/sw-register.js?v=30"></script>
+  <script defer src="js/page-404.js?v=30"></script>
 </head>
 <body>
+  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
   <div class="wrap">
-    <h1>404 · Seite nicht gefunden</h1>
-    <p class="mut">Die angeforderte Adresse existiert nicht. Unten findest du Vorschläge und die wichtigsten Seiten.</p>
+    <header>
+      <h1>404 · Seite nicht gefunden</h1>
+      <p class="mut">Die angeforderte Adresse existiert nicht. Unten findest du Vorschläge und die wichtigsten Seiten.</p>
+    </header>
 
-    <section class="card">
-      <h2 style="margin-top:0">Angefragte URL</h2>
-      <input id="badUrl" type="text" readonly class="mono" value="">
-      <div class="row" style="margin-top:10px">
-        <a class="btn ok" href="index.html">Zur Startseite</a>
-        <a class="btn" href="sitemap.xml" target="_blank" rel="noopener">Sitemap</a>
-        <button class="btn" type="button" onclick="tryFix()">Automatisch korrigieren</button>
-      </div>
-      <p class="mut mono" id="info">–</p>
-    </section>
+    <main id="main">
+      <section class="card" aria-labelledby="req">
+        <h2 id="req" style="margin-top:0">Angefragte URL</h2>
+        <input id="badUrl" type="text" readonly class="mono" value="">
+        <div class="row" style="margin-top:10px">
+          <a class="btn ok" href="index.html">Zur Startseite</a>
+          <a class="btn" href="sitemap.xml" target="_blank" rel="noopener">Sitemap</a>
+          <button id="btnTryFix" class="btn" type="button">Automatisch korrigieren</button>
+        </div>
+        <p class="mut mono" id="info" style="margin:.5rem 0 0">–</p>
+      </section>
 
-    <section class="card">
-      <h2 style="margin-top:0">Meistgenutzte Seiten</h2>
-      <div class="grid" id="quicklinks">
-        <!-- gefüllt per JS -->
-      </div>
-    </section>
+      <section class="card" aria-labelledby="top">
+        <h2 id="top">Meistgenutzte Seiten</h2>
+        <div class="grid" id="quicklinks">
+          <!-- wird von page-404.js gefüllt -->
+        </div>
+      </section>
 
-    <section class="card">
-      <h2 style="margin-top:0">Vorschläge (ähnliche Dateinamen)</h2>
-      <div id="suggest" class="mut">–</div>
-    </section>
+      <section class="card" aria-labelledby="sugg">
+        <h2 id="sugg">Vorschläge (ähnliche Dateinamen)</h2>
+        <div id="suggest" class="mut">–</div>
+      </section>
+    </main>
 
     <footer class="mut">
       <a href="index.html">Startseite</a> ·
@@ -105,6 +110,7 @@
       <a href="bookmarklets.html">Bookmarklet</a> ·
       <a href="bulk-clean.html">Bulk-Clean</a> ·
       <a href="team-setup.html">Team-Setup</a> ·
+      <a href="redirect-entschachteln.html">Redirect entschachteln</a> ·
       <a href="help.html">Hilfe</a> ·
       <a href="status.html">Status</a> ·
       <a href="impressum.html">Impressum</a> ·
@@ -113,136 +119,8 @@
     </footer>
   </div>
 
-  <script>
-  (function(){
-    const $ = sel => document.querySelector(sel);
-
-    // Bekannte Seiten (Pfad relativ zu /Supersystem/)
-    const PAGES = [
-      { path:'',                 title:'Startseite' },
-      { path:'index.html',       title:'Startseite (index.html)' },
-      { path:'app.html',         title:'App' },
-      { path:'bookmarklets.html',title:'Bookmarklet' },
-      { path:'bulk-clean.html',  title:'Bulk-Clean' },
-      { path:'team-setup.html',  title:'Team-Setup' },
-      { path:'redirect-entschachteln.html', title:'Redirect entschachteln' },
-      { path:'tests.html',       title:'Tests' },
-      { path:'tools.html',       title:'Tools' },
-      { path:'pro.html',         title:'Pro' },
-      { path:'pro-activate.html',title:'Pro aktivieren' },
-      { path:'help.html',        title:'Hilfe' },
-      { path:'status.html',      title:'Status' },
-      { path:'impressum.html',   title:'Impressum' },
-      { path:'datenschutz.html', title:'Datenschutz' },
-      { path:'press.html',       title:'Presse' },
-      { path:'sitemap.xml',      title:'Sitemap (XML)' }
-    ];
-
-    // Anzeige der fehlerhaften URL
-    const full = location.href;
-    $('#badUrl').value = full;
-    $('#info').textContent = 'Pfad: ' + location.pathname;
-
-    // Quicklinks rendern
-    const Q = $('#quicklinks');
-    [
-      'app.html','bookmarklets.html','bulk-clean.html','team-setup.html',
-      'redirect-entschachteln.html','tests.html','help.html','status.html'
-    ].forEach(p => {
-      const item = PAGES.find(x=>x.path===p);
-      if (!item) return;
-      const a = document.createElement('a');
-      a.className = 'btn';
-      a.href = item.path || 'index.html';
-      a.textContent = item.title;
-      Q.appendChild(a);
-    });
-
-    // Vorschläge für Tippfehler
-    const slug = getSlugFromPath(location.pathname);
-    const scored = PAGES
-      .filter(p=>p.path) // nur tatsächliche Dateien
-      .map(p => ({...p, score: similarity(slug, stripExt(p.path)) }))
-      .sort((a,b)=>b.score - a.score)
-      .slice(0,6);
-
-    const container = $('#suggest');
-    if (!slug) {
-      container.innerHTML = '<p>–</p>';
-    } else {
-      container.innerHTML = scored.map(s=>{
-        const hint = `<span class="pill">Score ${s.score.toFixed(2)}</span>`;
-        const link = `<a href="${s.path}">${escapeHtml(s.title)}</a>`;
-        return `<div>${hint} ${link} <span class="mut mono">(${s.path})</span></div>`;
-      }).join('');
-      // Sanfte Auto-Weiterleitung bei sehr hoher Ähnlichkeit
-      if (scored[0] && scored[0].score >= 0.92) {
-        setTimeout(()=>{ location.href = scored[0].path; }, 1200);
-      }
-    }
-
-    // Utils
-    function getSlugFromPath(path){
-      // erwartet /Supersystem/…  → gibt "…"(ohne .html) zurück
-      const m = path.match(/\/Supersystem\/(.+?)$/);
-      let s = m ? m[1] : '';
-      s = s.replace(/^\/*/,'').replace(/\/*$/,'');
-      // Query/Hash entfernen
-      s = s.split('?')[0].split('#')[0];
-      // index.html → leer
-      if (s === '' || s.toLowerCase() === 'index.html') return '';
-      return stripExt(decodeURIComponent(s));
-    }
-    function stripExt(s){ return s.replace(/\.html?$/i,''); }
-    function norm(s){
-      return String(s||'').toLowerCase()
-        .replace(/\s+/g,'')
-        .replace(/[-_]+/g,'')
-        .replace(/[^a-z0-9]/g,'');
-    }
-    // einfache Ähnlichkeit (Jaro-Winkler-artige Mischung aus LCS und Länge)
-    function similarity(a,b){
-      const A = norm(a), B = norm(b);
-      if (!A && !B) return 1;
-      if (!A || !B) return 0;
-      const lcsLen = lcs(A,B);
-      const base = (2*lcsLen)/(A.length + B.length);
-      const prefix = commonPrefix(A,B);
-      return base + Math.min(0.1, prefix*0.02); // kleiner Bonus für gemeinsamen Präfix
-    }
-    function lcs(a,b){
-      const m=a.length,n=b.length;
-      const dp = Array(m+1).fill(null).map(()=>Array(n+1).fill(0));
-      for(let i=1;i<=m;i++){
-        for(let j=1;j<=n;j++){
-          dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1]+1 : Math.max(dp[i-1][j], dp[i][j-1]);
-        }
-      }
-      return dp[m][n];
-    }
-    function commonPrefix(a,b){
-      let i=0; while(i<a.length && i<b.length && a[i]===b[i]) i++; return i;
-    }
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    // Korrekturversuch: Leerzeichen/Encoding/fehlende .html
-    window.tryFix = function(){
-      let p = location.pathname.replace(/^\/+/,'');
-      // ggf. Projektscope entfernen und Basis setzen
-      p = p.replace(/^Supersystem\/?/,'');
-      p = decodeURIComponent(p).trim();
-
-      // Entferne doppelte Slashes, Leerzeichen um " ? " etc.
-      p = p.replace(/\s/g,'').replace(/\/{2,}/g,'/').replace(/index$/i,'index.html');
-
-      if (!p || p === '/' || p.toLowerCase()==='index') p = 'index.html';
-      if (!/\.[a-z]+$/i.test(p)) p = p + '.html'; // fehlt evtl. .html
-
-      location.href = p;
-    };
-  })();
-  </script>
-
-  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist optional. Nutze die Links oben, um zur Startseite oder Sitemap zu wechseln.</p></div></noscript>
+  <noscript>
+    <div class="wrap"><p class="mut">JavaScript ist optional. Nutze die Links oben, um zur Startseite oder Sitemap zu wechseln.</p></div>
+  </noscript>
 </body>
 </html>
