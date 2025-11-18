@@ -1,161 +1,252 @@
-<!-- /Supersystem/tools.html -->
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow">
-  <meta name="referrer" content="no-referrer-when-downgrade">
   <base href="/Supersystem/">
+  <title>Tools · SafeShare</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tools.html">
 
-  <link rel="stylesheet" href="css/theme.css?v=18">
+  <!-- Keine Indexierung -->
+  <meta name="robots" content="noindex,nofollow,noarchive">
 
-  <title>SafeShare Tools</title>
+  <!-- hreflang/Locale (optional trotz noindex) -->
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/tools.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/tools.html" hreflang="x-default">
+  <meta property="og:locale" content="de_DE">
 
-  <!-- Icons / Manifest (nur zur Vollständigkeit) -->
-  <link rel="apple-touch-icon" href="assets/icons/icon-180-kreis.png?v=2025-11-15-16">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=2025-11-15-16">
-  <link rel="manifest" href="manifest.webmanifest?v=2025-11-15-16">
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 form-action 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- Icons / Manifest -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
+  <link rel="manifest" href="manifest.webmanifest?v=29">
+
+  <!-- Theme -->
+  <link rel="stylesheet" href="css/theme.css?v=27">
+
+  <!-- SW-Register (darf hier bleiben; Abmeldung erfolgt über Buttons) -->
+  <script src="js/sw-register.js?v=27"></script>
 
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e;--line:#222}
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui}
-    a{color:#9aead0;text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:980px;margin:auto;padding:28px 16px}
-    h1{margin:0 0 8px;font-size:26px}
-    .mut{color:var(--mut)}
-    .card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#101010;margin:12px 0}
-    .btn{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;font-weight:700;text-decoration:none;cursor:pointer}
-    .btn.pri{background:var(--pri);color:#07130c;border-color:transparent}
-    pre,code{background:#000;border:1px solid #222;border-radius:6px;padding:6px;overflow:auto}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border:1px solid #222;padding:8px;vertical-align:top}
-    th{background:#111}
-    .row{display:flex;flex-wrap:wrap;gap:10px}
+    :root{--gap:12px}
+    body{background:#0b0b0b;color:#eaeaea;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0}
+    .wrap{max-width:1000px;margin:0 auto;padding:16px}
+    h1,h2{line-height:1.25;margin:.4em 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--gap)}
+    .card{border:1px solid #2a2a2a;border-radius:12px;padding:14px;background:#121212}
+    .row{display:flex;flex-wrap:wrap;gap:8px;margin:.5rem 0}
+    .btn{padding:.6rem .9rem;border-radius:10px;border:1px solid #2a2a2a;background:#1b1b1b;color:#eaeaea;cursor:pointer}
+    .btn.danger{border-color:#693333;background:#331a1a}
+    .btn.warn{border-color:#66551a;background:#2a2414}
+    code,kbd{background:#161616;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
+    pre{background:#0f0f0f;border:1px solid #262626;border-radius:10px;padding:10px;overflow:auto}
+    .mut{color:#9a9a9a}
+    table{width:100%;border-collapse:collapse}
+    td,th{border-bottom:1px solid #252525;padding:6px 8px;text-align:left;vertical-align:top}
   </style>
 </head>
-  <footer class="mut" style="margin-top:16px">
-  <a href="impressum.html">Impressum</a> ·
-  <a href="datenschutz.html">Datenschutz</a> ·
-  <a href="help.html">Hilfe</a>
-</footer>
 <body>
   <div class="wrap">
-    <h1>Tools</h1>
-    <p class="mut"><a href="index.html">Start</a> · <a href="app.html">App</a> · <a href="status.html">Status</a></p>
+    <h1>SafeShare – Tools</h1>
+    <p class="mut">Service Worker abmelden, Caches leeren, lokale Einstellungen zurücksetzen, Version prüfen.</p>
 
-    <div class="card">
-      <strong>Service Worker &amp; Cache</strong>
-      <div class="row" style="margin-top:8px">
-        <button class="btn" id="swUpdate">update()</button>
-        <button class="btn" id="swUnregister">Service Worker abmelden</button>
-        <button class="btn" id="clearCaches">Alle Caches löschen</button>
-      </div>
-      <p class="mut" id="swState" style="margin-top:8px">Status …</p>
+    <div class="grid">
+      <!-- Service Worker -->
+      <section class="card">
+        <h2>Service Worker</h2>
+        <div class="row">
+          <button class="btn" onclick="listSW()">Registrierungen anzeigen</button>
+          <button class="btn warn" onclick="skipWaiting()">SW: skipWaiting</button>
+          <button class="btn danger" onclick="unregisterAll()">Alle abmelden</button>
+        </div>
+        <div id="swInfo" class="mut">–</div>
+      </section>
+
+      <!-- Caches -->
+      <section class="card">
+        <h2>HTTP-Caches</h2>
+        <div class="row">
+          <button class="btn" onclick="listCaches()">Auflisten</button>
+          <button class="btn danger" onclick="deleteAllCaches()">Alle Caches löschen</button>
+        </div>
+        <div id="cacheInfo" class="mut">–</div>
+      </section>
+
+      <!-- Local Storage -->
+      <section class="card">
+        <h2>Lokale Einstellungen</h2>
+        <div class="row">
+          <button class="btn" onclick="listLS()">localStorage anzeigen</button>
+          <button class="btn danger" onclick="clearSS()">SafeShare-Keys löschen</button>
+          <button class="btn danger" onclick="clearAllLS()">Alles in localStorage löschen</button>
+        </div>
+        <div class="row">
+          <button class="btn" onclick="setPro(1)">Pro aktivieren</button>
+          <button class="btn warn" onclick="setPro(0)">Pro deaktivieren</button>
+        </div>
+        <div id="lsInfo" class="mut">–</div>
+      </section>
+
+      <!-- Version / Umfeld -->
+      <section class="card">
+        <h2>Version & Umgebung</h2>
+        <div class="row">
+          <button class="btn" onclick="showSWVersion()">sw.js Version lesen</button>
+          <button class="btn" onclick="env()">Umgebung anzeigen</button>
+          <button class="btn" onclick="hardReset()">Hard Reset (SW+Cache+LS)</button>
+        </div>
+        <div id="verInfo" class="mut">–</div>
+      </section>
     </div>
 
-    <div class="card">
-      <strong>Lokale Einstellungen</strong>
-      <div class="row" style="margin-top:8px">
-        <button class="btn" id="clearLocal">Pro &amp; Team-Defaults löschen</button>
-      </div>
-      <pre id="localDump" style="margin-top:8px"></pre>
-    </div>
+    <section class="card" style="margin-top:12px">
+      <h2>Protokoll</h2>
+      <pre id="log" aria-live="polite">bereit…</pre>
+    </section>
 
-    <div class="card">
-      <strong>Versionen</strong>
-      <table>
-        <tbody id="versTbl"></tbody>
-      </table>
-    </div>
+    <footer class="mut" style="margin:14px 0 8px">
+      <a class="btn" href="index.html">Startseite</a>
+      <a class="btn" href="app.html">App öffnen</a>
+      <a class="btn" href="help.html">Hilfe</a>
+    </footer>
   </div>
 
-  <script>
-  (async function(){
-    const $state = document.getElementById('swState');
-    const $dump  = document.getElementById('localDump');
-    const $tbl   = document.getElementById('versTbl');
+<script>
+  const $ = (sel)=>document.querySelector(sel);
+  const log = (m)=>{ const el=$('#log'); el.textContent += '\n' + m; el.scrollTop = el.scrollHeight; };
 
-    async function swInfo(){
-      try{
-        const reg = await navigator.serviceWorker?.getRegistration();
-        const ctrl = navigator.serviceWorker?.controller;
-        $state.textContent =
-          `SW: ${reg ? 'registriert' : 'nicht registriert'} · `+
-          `Controller: ${ctrl ? 'ja' : 'nein'}`;
-      }catch(e){ $state.textContent = 'SW-Status nicht verfügbar'; }
+  // Service Worker
+  async function listSW(){
+    if(!('serviceWorker' in navigator)){ $('#swInfo').textContent='SW-API fehlt'; return; }
+    const regs = await navigator.serviceWorker.getRegistrations();
+    if(!regs.length){ $('#swInfo').textContent='Keine Registrierungen'; return; }
+    const rows = await Promise.all(regs.map(async r=>{
+      const st = r.active ? 'active' : (r.waiting ? 'waiting' : (r.installing ? 'installing' : '—'));
+      const url = (r.active?.scriptURL || r.waiting?.scriptURL || r.installing?.scriptURL || r.scope);
+      return `<tr><td>${st}</td><td><code>${escapeHtml(url)}</code></td><td><button class="btn warn" onclick="unregisterOne('${r.scope}')">Abmelden</button></td></tr>`;
+    }));
+    $('#swInfo').innerHTML = `<table><thead><tr><th>Status</th><th>Script</th><th></th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
+  }
+  async function unregisterOne(scope){
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for(const r of regs){ if(r.scope===scope){ await r.unregister(); log('SW abgemeldet: '+scope); } }
+    await listSW();
+  }
+  async function unregisterAll(){
+    if(!confirm('Alle Service Worker abmelden?')) return;
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for(const r of regs){ await r.unregister(); log('SW abgemeldet: '+r.scope); }
+    await listSW();
+  }
+  async function skipWaiting(){
+    if(!navigator.serviceWorker?.controller){ log('Kein aktiver Controller'); return; }
+    try {
+      navigator.serviceWorker.controller.postMessage({type:'SKIP_WAITING'});
+      log('SKIP_WAITING gesendet.');
+    } catch(e){ log('Fehler: '+e); }
+  }
+
+  // Caches
+  async function listCaches(){
+    if(!('caches' in window)){ $('#cacheInfo').textContent='Cache-API fehlt'; return; }
+    const keys = await caches.keys();
+    if(!keys.length){ $('#cacheInfo').textContent='Keine Cache-Einträge'; return; }
+    $('#cacheInfo').innerHTML = '<ul>'+keys.map(k=>`<li><code>${escapeHtml(k)}</code> <button class="btn warn" onclick="deleteCache('${k}')">löschen</button></li>`).join('')+'</ul>';
+  }
+  async function deleteCache(name){
+    await caches.delete(name);
+    log('Cache gelöscht: '+name);
+    listCaches();
+  }
+  async function deleteAllCaches(){
+    if(!confirm('Alle Caches löschen?')) return;
+    const keys = await caches.keys();
+    for(const k of keys){ await caches.delete(k); log('Cache gelöscht: '+k); }
+    listCaches();
+  }
+
+  // LocalStorage
+  function listLS(){
+    if(!('localStorage' in window)){ $('#lsInfo').textContent='localStorage fehlt'; return; }
+    if(!localStorage.length){ $('#lsInfo').textContent='localStorage ist leer'; return; }
+    let rows = '';
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      const v = localStorage.getItem(k);
+      rows += `<tr><td><code>${escapeHtml(k)}</code></td><td><code>${escapeHtml(String(v)).slice(0,400)}</code></td><td><button class="btn warn" onclick="delLS('${escapeAttr(k)}')">löschen</button></td></tr>`;
     }
+    $('#lsInfo').innerHTML = `<table><thead><tr><th>Key</th><th>Wert</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+  function delLS(k){ localStorage.removeItem(k); log('LS gelöscht: '+k); listLS(); }
+  function clearSS(){
+    const keys = Object.keys(localStorage).filter(k=>/^ss2_/i.test(k) || ['ss2_pro','ss2_pub','ss2_allow','ss2_team'].includes(k));
+    for(const k of keys){ localStorage.removeItem(k); log('LS gelöscht: '+k); }
+    listLS();
+  }
+  function clearAllLS(){
+    if(!confirm('ALLE localStorage-Einträge löschen?')) return;
+    localStorage.clear(); log('localStorage geleert.');
+    listLS();
+  }
+  function setPro(v){
+    if(v){ localStorage.setItem('ss2_pro','1'); log('Pro aktiv: ss2_pro=1'); }
+    else { localStorage.removeItem('ss2_pro'); log('Pro deaktiviert'); }
+    listLS();
+  }
 
-    document.getElementById('swUpdate').onclick = async ()=>{
-      try{
-        const reg = await navigator.serviceWorker.getRegistration();
-        await reg?.update();
-        await swInfo();
-        alert('update() aufgerufen.');
-      }catch(e){ alert('update() fehlgeschlagen.'); }
-    };
+  // Version / Env
+  async function showSWVersion(){
+    try{
+      const res = await fetch('sw.js?nocache='+Date.now(), {cache:'no-store'});
+      const txt = await res.text();
+      const m = txt.match(/const\s+VER\s*=\s*['"]([^'"]+)['"]/);
+      const ver = m ? m[1] : '—';
+      const ctrl = navigator.serviceWorker?.controller?.scriptURL || 'kein Controller';
+      $('#verInfo').innerHTML = `<p>sw.js <strong>VER=${escapeHtml(ver)}</strong></p><p>Controller: <code>${escapeHtml(ctrl)}</code></p>`;
+      log('sw.js Version: '+ver);
+    }catch(e){ $('#verInfo').textContent='Fehler beim Lesen von sw.js'; log('Fehler: '+e); }
+  }
+  function env(){
+    const ua = navigator.userAgent;
+    const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone===true);
+    const online = navigator.onLine ? 'online' : 'offline';
+    const pwa = standalone ? 'PWA/Standalone' : 'Browser-Tab';
+    $('#verInfo').innerHTML = `<p>User-Agent: <code>${escapeHtml(ua)}</code></p><p>Status: ${pwa}, ${online}</p>`;
+    log('Env aktualisiert.');
+  }
 
-    document.getElementById('swUnregister').onclick = async ()=>{
-      try{
-        const reg = await navigator.serviceWorker.getRegistration();
-        if(reg){ await reg.unregister(); alert('Abgemeldet. Seite neu laden.'); }
-        else alert('Kein SW registriert.');
-        await swInfo();
-      }catch(e){ alert('Abmelden fehlgeschlagen.'); }
-    };
+  async function hardReset(){
+    if(!confirm('Hard Reset ausführen? (SW abmelden, Caches löschen, localStorage leeren, Seite neu laden)')) return;
+    try{
+      await unregisterAll();
+      await deleteAllCaches();
+      localStorage.clear();
+      log('Neuladen…'); setTimeout(()=>location.reload(true), 600);
+    }catch(e){ log('Fehler beim Reset: '+e); }
+  }
 
-    document.getElementById('clearCaches').onclick = async ()=>{
-      try{
-        const names = await caches.keys();
-        await Promise.all(names.map(n => caches.delete(n)));
-        alert('Alle Caches gelöscht.');
-      }catch(e){ alert('Caches konnten nicht gelöscht werden.'); }
-    };
+  // Helpers
+  function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s){ return s.replace(/['"]/g, '_'); }
 
-    document.getElementById('clearLocal').onclick = ()=>{
-      try{
-        localStorage.removeItem('ss_pro');
-        localStorage.removeItem('ss_publisher');
-        localStorage.removeItem('ss_wl');
-        dumpLocal();
-        alert('Lokale Einträge entfernt.');
-      }catch(e){ alert('Fehler beim Löschen.'); }
-    };
-
-    function dumpLocal(){
-      try{
-        const out = {
-          ss_pro: localStorage.getItem('ss_pro'),
-          ss_publisher: localStorage.getItem('ss_publisher'),
-          ss_wl: localStorage.getItem('ss_wl')
-        };
-        $dump.textContent = JSON.stringify(out, null, 2);
-      }catch(e){ $dump.textContent = 'kein Zugriff'; }
-    }
-
-    async function row(label, url, rx){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<th>${label}</th><td>…</td>`;
-      $tbl.appendChild(tr);
-      try{
-        const r = await fetch(url, {cache:'no-store'});
-        const t = await r.text();
-        const m = rx.exec(t);
-        tr.children[1].textContent = m ? m[1] : '–';
-      }catch(e){
-        tr.children[1].textContent = 'Fehler';
-      }
-    }
-
-    dumpLocal();
-    swInfo();
-    row('sw.js VERSION','sw.js?v=ns', /VERSION\s*=\s*['"]([^'"]+)['"]/);
-    row('sw-register.js VER','js/sw-register.js?v=ns', /VER\s*=\s*['"]([^'"]+)['"]/);
-    row('manifest name','manifest.webmanifest?v=ns', /"name"\s*:\s*"([^"]+)"/);
-  })();
-  </script>
-  <script src="js/sw-register.js?v=2025-11-15-16"></script>
+  // Auto-Infos beim Laden
+  listSW(); listCaches(); listLS(); env();
+</script>
 </body>
 </html>
