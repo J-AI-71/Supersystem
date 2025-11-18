@@ -1,33 +1,155 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/compliance.html">
-<title>Compliance-konforme Linkfreigabe | SafeShare</title>
-<meta name="description" content="Einheitliche Link-Policy: Tracker entfernen, erlaubte Parameter per Whitelist. Ohne Log-Speicherung, ohne Konten.">
-<link rel="icon" href="assets/logo.png">
-<style>body{margin:0;background:#0b0b0b;color:#eaeaea;font:16px/1.55 system-ui}.wrap{max-width:860px;margin:auto;padding:28px 16px}.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:12px}.mut{color:#9a9a9a}.btn{display:inline-block;padding:.75rem 1rem;border-radius:10px;text-decoration:none;font-weight:600;border:0}.btn.pri{background:#29c07e;color:#07130c}.btn.alt{background:#1b1b1b;color:#eaeaea;border:1px solid #2a2a2a}ul{margin:8px 0 0 18px}</style>
+  <!-- compliance.html – Richtlinien & Compliance-Info (SEO) -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>Compliance & Richtlinien · SafeShare</title>
+
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/compliance.html">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/compliance.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/compliance.html" hreflang="x-default">
+  <meta name="description" content="Privacy-by-Design, lokale Verarbeitung, optionale Team-Whitelist: so fügt sich SafeShare in Compliance-Vorgaben ein.">
+
+  <!-- OG/Twitter -->
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SafeShare – Compliance & Richtlinien">
+  <meta property="og:description" content="Lokale Verarbeitung, keine Server-Logs, kontrollierte Parameter per Whitelist.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/compliance.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- CSP (JSON-LD inline → 'unsafe-inline' für Skript) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self'">
+
+  <!-- Icons / Manifest -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=31">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=31">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=31">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+
+  <!-- Styles (hell) -->
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#0b0b0b; --mut:#5a5a5a; --line:#e5e5e5;
+      --card:#ffffff; --cta:#0b6a3b; --cta-fg:#fff; --ghost:#eef6f1; --ghost-fg:#0b4e2e;
+    }
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    a{color:#0b6a3b}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px 16px}
+    header h1{margin:.2em 0 .2em;font-size:2rem}
+    header p{color:var(--mut)}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-block;background:var(--cta);color:var(--cta-fg);padding:.7rem 1rem;border-radius:10px;text-decoration:none}
+    .btn.ghost{background:var(--ghost);color:var(--ghost-fg);border:1px solid #cfe6d6}
+    ul.tight{margin:.3rem 0;padding-left:1.2rem} ul.tight li{margin:.25rem 0}
+    code,kbd{background:#f5f5f5;border:1px solid #e2e2e2;border-radius:6px;padding:.05rem .35rem}
+    footer{margin:22px 0;color:var(--mut)}
+    .visually-hidden-focusable{position:absolute;left:-9999px}
+    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#fff;padding:.4rem .6rem;border-radius:8px;outline:1px solid var(--line)}
+  </style>
+
+  <link rel="stylesheet" href="css/theme.css?v=31">
+  <script defer src="js/sw-register.js?v=31"></script>
+
+  <!-- Structured Data (FAQ) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Welche Daten verarbeitet SafeShare?",
+       "acceptedAnswer":{"@type":"Answer","text":"SafeShare verarbeitet ausschließlich URLs lokal im Browser. Es gibt keine Server-Logs, keine Accounts, keine Tracking-Cookies. Optionale Einstellungen (z. B. Team-Whitelist, Pro-Flag) liegen im localStorage."}},
+      {"@type":"Question","name":"Wie wird Compliance sichergestellt?",
+       "acceptedAnswer":{"@type":"Answer","text":"Die Team-Whitelist definiert, welche Parameter erhalten bleiben (z. B. tag, ref). Alles andere wird entfernt. Damit ist die Weitergaberegel technisch erzwingbar und transparent."}},
+      {"@type":"Question","name":"Welche technischen Kontrollen gibt es?",
+       "acceptedAnswer":{"@type":"Answer","text":"Content Security Policy, PWA/Offline-Fallback, keine Dritt-Requests (außer optionalen Assets), minimaler Scope. Nutzung ohne externe Bibliotheken möglich."}}
+    ]
+  }
+  </script>
 </head>
 <body>
-<div class="wrap">
-  <h1>Whitelist/Policy für Teams & DPOs</h1>
-  <div class="card">
-    <ul>
-      <li>Tracker raus (utm, gclid, fbclid …)</li>
-      <li>Zulässige Parameter via Whitelist behalten</li>
-      <li>Clientseitig, keine Logs, keine Cookies</li>
-    </ul>
-    <p style="margin-top:8px"><a class="btn pri" href="app.html">Pilot starten</a></p>
+  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
+  <div class="wrap">
+    <header>
+      <h1>Compliance & Richtlinien</h1>
+      <p>Privacy-by-Design: lokale Verarbeitung, keine Server-Logs, optionale Team-Whitelist für kontrollierte Parameter.</p>
+    </header>
+
+    <main id="main" class="grid" style="margin-top:12px">
+      <section class="card">
+        <h2>Prinzipien</h2>
+        <ul class="tight">
+          <li><strong>Lokal & zustandsarm:</strong> Verarbeitung im Browser, keine personenbezogenen Serverdaten.</li>
+          <li><strong>Deterministisch:</strong> Entfernt bekannte Tracking-Parameter; Whitelist bewahrt definierte Keys.</li>
+          <li><strong>Transparenz:</strong> <a href="help.html">Hilfe</a> dokumentiert Muster & Beispiele; Tests auf <a href="tests.html">Tests</a>.</li>
+        </ul>
+
+        <h3 style="margin-top:1rem">Team-Whitelist</h3>
+        <ul class="tight">
+          <li>In <a href="team-setup.html">Team-Setup</a> Parameter wie <code>tag</code>, <code>ref</code> hinterlegen.</li>
+          <li>Publisher-Modus: Erlaubte IDs bleiben erhalten, alles andere wird entfernt.</li>
+          <li>Gleiches Verhalten auf allen Team-Geräten (per Dokumentation/Rollout der Whitelist-Liste).</li>
+        </ul>
+
+        <h3 style="margin-top:1rem">Technische Kontrollen</h3>
+        <ul class="tight">
+          <li><strong>CSP:</strong> Restriktive Content Security Policy; keine externen Skriptquellen.</li>
+          <li><strong>PWA & Offline:</strong> Kernseiten offline verfügbar (<a href="offline.html">Offline</a>).</li>
+          <li><strong>Kein Tracking:</strong> Keine Telemetrie, keine Cookies für den Betrieb.</li>
+          <li><strong>Security.txt:</strong> Kontakt unter <code>/.well-known/security.txt</code>.</li>
+        </ul>
+
+        <div class="row" style="margin-top:10px">
+          <a class="btn" href="app.html">Jetzt testen</a>
+          <a class="btn ghost" href="help.html">Hilfe</a>
+          <a class="btn ghost" href="publisher.html">Publisher</a>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Empfohlene Nutzung</h2>
+        <ul class="tight">
+          <li>Bookmarklet für Redaktionen/Teams ausrollen.</li>
+          <li>Bulk-Clean (Pro) für Sammellisten verwenden.</li>
+          <li>Whitelist dokumentieren (z. B. in internen Richtlinien/Confluence).</li>
+        </ul>
+
+        <h2 style="margin-top:1rem">Rechtliches</h2>
+        <ul class="tight">
+          <li><a href="datenschutz.html">Datenschutz</a> · <a href="impressum.html">Impressum</a></li>
+          <li><a href="terms.html">Nutzungsbedingungen</a> · <a href="kurz-terms.html">Kurz-Terms</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer style="margin:22px 0;color:#5a5a5a">
+      <a href="index.html">Startseite</a> ·
+      <a href="app.html">App</a> ·
+      <a href="publisher.html">Publisher</a> ·
+      <a href="education.html">Education</a> ·
+      <a href="help.html">Hilfe</a> ·
+      <a href="press.html">Presse</a> ·
+      <a href="impressum.html">Impressum</a> ·
+      <a href="datenschutz.html">Datenschutz</a>
+    </footer>
   </div>
-  <p class="mut" style="margin-top:12px"><a href="index.html">Start</a></p>
-</div>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Wie setzen wir die Whitelist?","acceptedAnswer":{"@type":"Answer","text":"Per URL-Schalter oder lokale Voreinstellung (Team-Modus). Dokumentation liegt in der README."}},
-{"@type":"Question","name":"Gibt es eine Serververarbeitung?","acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare verarbeitet ausschließlich im Browser der Nutzer."}}
-]}
-</script>
-<script>if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js?v=2025-11-13-06')}</script>
+
+  <noscript><div class="wrap"><p class="mut">Hinweis: JSON-LD ist inline eingebunden. Für härtere CSP kann es gehasht oder ausgelagert werden.</p></div></noscript>
 </body>
 </html>
