@@ -1,19 +1,21 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- tests.html -->
+  <!-- tests.html (neu, ohne Inline-JS, mit konsolidierten Skripten) -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Tests · SafeShare</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
 
-  <!-- hreflang / Locale -->
+  <!-- Canonical / hreflang -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/tests.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/tests.html" hreflang="x-default">
+  <meta name="description" content="Testsuite für SafeShare: Beispiele säubern, Redirects entschachteln, in App öffnen, kopieren.">
+  <meta name="robots" content="index,follow">
   <meta property="og:locale" content="de_DE">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Sanfte CSP – keine Inline-Handler -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -22,299 +24,119 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'unsafe-inline';
+                 script-src 'self';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <meta name="description" content="Test-Suite für SafeShare: Beispiele für UTM/gclid/fbclid und verschachtelte Redirects.">
-
   <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-  <link rel="manifest" href="manifest.webmanifest?v=29">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=30">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=30">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=30">
+  <link rel="manifest" href="manifest.webmanifest?v=30">
 
-  <!-- Fallback-Styles (kein Weißbild) -->
+  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a;--btn:#1b1b1b;--ok:#1e402f}
+    :root{
+      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a; --line:#2a2a2a;
+      --card:#121212; --btn:#1b1b1b; --ok:#1e402f;
+    }
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    .wrap{max-width:1100px;margin:0 auto;padding:22px 14px}
-    h1{margin:.2em 0 .4em;font-size:1.9rem}
-    h2{margin:1.0em 0 .3em;font-size:1.25rem}
-    .mut{color:var(--mut)}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-    .row{display:flex;flex-wrap:wrap;gap:8px}
-    .btn{padding:.6rem .9rem;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--fg);text-decoration:none;cursor:pointer}
-    .btn.ok{background:var(--ok)}
-    input[type=text]{width:100%;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:10px}
-    code{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
-    .pill{display:inline-block;margin:2px;padding:.2rem .45rem;border-radius:999px;background:#171717;border:1px solid #2a2a2a}
-    footer{margin-top:18px}
     a{color:#cfe7ff}
-    .small{font-size:.92rem}
+    .wrap{max-width:1100px;margin:0 auto;padding:22px 14px}
+    .mut{color:var(--mut)}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    h1{margin:.2em 0 .6em;font-size:1.9rem}
+    h2{margin:1.0em 0 .35em;font-size:1.15rem}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
+    .row{display:flex;flex-wrap:wrap;gap:8px}
+    .btn{display:inline-block;border:1px solid var(--line);background:var(--btn);color:var(--fg);
+         padding:.55rem .85rem;border-radius:10px;cursor:pointer;text-decoration:none}
+    .btn.ok{background:var(--ok)}
+    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.1rem .5rem;margin:.1rem .25rem 0 0}
+    input[type="text"],textarea{width:100%;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);
+         color:var(--fg);border-radius:10px;padding:.55rem .7rem}
+    table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    thead th{background:#151515;border-bottom:1px solid var(--line);text-align:left;padding:.6rem .7rem}
+    tbody td{border-top:1px solid var(--line);padding:.55rem .6rem;vertical-align:top}
+    tbody tr:first-child td{border-top:none}
+    td.small .row{gap:6px}
+    footer{margin:18px 0}
+    .visually-hidden-focusable{position:absolute;left:-9999px}
+    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#222;padding:.4rem .6rem;border-radius:8px}
   </style>
 
-  <!-- Optional Theme -->
-  <link rel="stylesheet" href="css/theme.css?v=27">
+  <link rel="stylesheet" href="css/theme.css?v=30">
 
-  <!-- SW-Registrierung -->
-  <script src="js/sw-register.js?v=29"></script>
+  <!-- SW-Registrierung + Seiten-Skripte -->
+  <script defer src="js/sw-register.js?v=30"></script>
+  <script defer src="js/cleaner.js?v=30"></script>
+  <script defer src="js/page-tests.js?v=30"></script>
 </head>
 <body>
+  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
   <div class="wrap">
-    <h1>SafeShare – Tests</h1>
-    <p class="mut">Beispiele für Tracking-Parameter und verschachtelte Weiterleitungen. „Säubern (lokal)“ testet den Algorithmus im Browser; „In App öffnen“ startet die App mit der Test-URL.</p>
-
-    <!-- Schnellaktionen -->
-    <section class="card">
-      <div class="row">
-        <button class="btn" onclick="nocache()">Neu laden (?nocache)</button>
-        <a class="btn" href="tools.html">Tools</a>
-        <a class="btn" href="redirect-entschachteln.html">Redirect-Entschachteln</a>
-        <a class="btn" href="app.html">App</a>
+    <header>
+      <h1>Tests</h1>
+      <p class="mut">Beispiele säubern, Redirects entschachteln, „In App“ öffnen oder Output kopieren.</p>
+      <div class="row" style="margin-top:.4rem">
+        <button id="btnNc" class="btn" type="button">Neu laden (nocache)</button>
+        <a id="btnApp" class="btn ok" href="app.html">App öffnen</a>
       </div>
-      <p class="mut small mono" id="ncInfo">–</p>
-    </section>
+      <p id="ncInfo" class="mut mono" style="margin:.4rem 0 0">URL: –</p>
+    </header>
 
-    <!-- Einzeltest -->
-    <section class="card">
-      <h2 style="margin-top:0">Einzeltest</h2>
-      <div class="row">
-        <input id="oneIn" type="text" inputmode="url" placeholder="https://…">
-        <button class="btn" onclick="oneClean()">Säubern (lokal)</button>
-        <button class="btn ok" onclick="openInApp()">In App öffnen</button>
-      </div>
-      <div style="margin-top:10px">
-        <label class="mut" for="oneOut">Ergebnis</label>
-        <input id="oneOut" type="text" readonly>
-      </div>
-      <details style="margin-top:8px">
-        <summary class="mut">Änderungen</summary>
-        <div id="oneRep" class="small">–</div>
-      </details>
-    </section>
+    <main id="main">
+      <section class="card" aria-labelledby="oneoff">
+        <h2 id="oneoff">Einzeltest</h2>
+        <label for="oneIn" class="mut">Eingabe-URL</label>
+        <input id="oneIn" type="text" placeholder="https://…">
+        <div class="row" style="margin-top:.6rem">
+          <button id="btnOneClean" class="btn ok" type="button">Säubern</button>
+          <button id="btnOneOpen" class="btn" type="button">In App öffnen</button>
+        </div>
+        <label for="oneOut" class="mut" style="margin-top:.6rem;display:block">Ergebnis</label>
+        <input id="oneOut" type="text" class="mono" readonly placeholder="—">
+        <div id="oneRep" class="mut mono" style="margin-top:.4rem">–</div>
+      </section>
 
-    <!-- Test-Sets -->
-    <section class="card">
-      <h2 style="margin-top:0">Szenarien</h2>
-      <table>
-        <thead><tr><th style="width:32px">#</th><th>Beschreibung</th><th>URL</th><th>Aktionen</th></tr></thead>
-        <tbody id="testsBody"></tbody>
-      </table>
-    </section>
+      <section class="card" aria-labelledby="liste">
+        <h2 id="liste">Beispiel-Liste</h2>
+        <table aria-describedby="liste">
+          <thead>
+            <tr>
+              <th style="width:48px">#</th>
+              <th style="width:220px">Name</th>
+              <th>URL</th>
+              <th style="width:380px">Aktionen / Report</th>
+            </tr>
+          </thead>
+          <tbody id="testsBody">
+            <!-- Zeilen werden von js/page-tests.js erzeugt -->
+          </tbody>
+        </table>
+      </section>
+    </main>
 
     <footer class="mut">
       <a href="index.html">Startseite</a> ·
       <a href="app.html">App</a> ·
+      <a href="bookmarklets.html">Bookmarklet</a> ·
+      <a href="bulk-clean.html">Bulk-Clean</a> ·
+      <a href="team-setup.html">Team-Setup</a> ·
+      <a href="redirect-entschachteln.html">Redirect entschachteln</a> ·
       <a href="help.html">Hilfe</a> ·
+      <a href="status.html">Status</a> ·
       <a href="impressum.html">Impressum</a> ·
       <a href="datenschutz.html">Datenschutz</a> ·
-      <a href="mailto:?subject=SafeShare%20Feedback&body=Bitte%20hier%20Feedback%20eintragen.">Feedback</a>
+      <a href="press.html">Presse</a>
     </footer>
   </div>
 
-  <script>
-    // --- Konstante App-URL für "In App öffnen" ---
-    const APP_URL = 'https://j-ai-71.github.io/Supersystem/app.html';
-
-    // --- Testsuite ---
-    const TESTS = [
-      {
-        name: 'UTM + gclid',
-        url: 'https://example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=launch&gclid=TEST123'
-      },
-      {
-        name: 'Google /url → Ziel',
-        url: 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpage%3Futm_source%3Dgoogle&sa=D&source=hangouts&ust=158'
-      },
-      {
-        name: 'Facebook linker → Ziel',
-        url: 'https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.org%2F%3Ffbclid%3DXYZ&h=AT0'
-      },
-      {
-        name: 'Reddit outbound',
-        url: 'https://out.reddit.com/t3_abc?url=https%3A%2F%2Fexample.net%2F%3Fref%3Dtwitter&token=123'
-      },
-      {
-        name: 'Generic redirect param',
-        url: 'https://tracker.example/redirect?target=https%3A%2F%2Fexample.com%2F%3Fspm%3Dabc123'
-      },
-      {
-        name: 'Amazon Beispiel (Affiliate + UTM)',
-        url: 'https://www.amazon.de/dp/B0C1234567?tag=affde-21&utm_source=newsletter&ref_=abc123'
-      },
-      {
-        name: 'Schon sauber',
-        url: 'https://example.com/path?foo=bar'
-      },
-      {
-        name: 'Kurz-URL (ohne eingebettetes Ziel)',
-        url: 'https://bit.ly/3abcxyz'
-      }
-    ];
-
-    // Tabelle rendern
-    const TBody = document.getElementById('testsBody');
-    TESTS.forEach((t, i) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${i+1}</td>
-        <td>${escapeHtml(t.name)}</td>
-        <td class="mono"><input id="u${i}" type="text" value="${escapeAttr(t.url)}" style="width:100%"></td>
-        <td class="small">
-          <div class="row">
-            <button class="btn" onclick="rowClean(${i})">Säubern (lokal)</button>
-            <button class="btn ok" onclick="rowOpen(${i})">In App öffnen</button>
-            <button class="btn" onclick="copyIn(${i})">Input kopieren</button>
-            <button class="btn" onclick="copyOut(${i})">Output kopieren</button>
-          </div>
-          <div id="r${i}" class="mut mono" style="margin-top:6px">–</div>
-        </td>
-      `;
-      TBody.appendChild(tr);
-    });
-
-    // --- Schnellaktionen ---
-    function nocache(){
-      const ts = new Date().toISOString().replace(/[:.]/g,'-');
-      const url = location.pathname + '?nocache=' + ts;
-      location.href = url;
-    }
-    document.getElementById('ncInfo').textContent = 'URL: ' + location.href;
-
-    // --- Einzeltest ---
-    function oneClean(){
-      const src = document.getElementById('oneIn').value.trim();
-      if(!src) return;
-      const res = Cleaner.cleanUrl(src);
-      document.getElementById('oneOut').value = res.url;
-      document.getElementById('oneRep').innerHTML = renderReport(res);
-    }
-    function openInApp(){
-      const v = document.getElementById('oneIn').value.trim();
-      if(!v) return;
-      const target = APP_URL + '?url=' + encodeURIComponent(v);
-      try { window.open(target, '_blank', 'noopener,noreferrer'); } catch { location.href = target; }
-    }
-
-    // --- Zeilenaktionen ---
-    function rowClean(i){
-      const inp = document.getElementById('u'+i);
-      const res = Cleaner.cleanUrl(inp.value);
-      document.getElementById('r'+i).innerHTML = `
-        <div>Output: <code>${escapeHtml(res.url)}</code></div>${renderReport(res)}
-      `;
-      // Output als data-attr für "Output kopieren"
-      inp.setAttribute('data-out', res.url);
-    }
-    function rowOpen(i){
-      const v = document.getElementById('u'+i).value;
-      const target = APP_URL + '?url=' + encodeURIComponent(v);
-      try { window.open(target, '_blank', 'noopener,noreferrer'); } catch { location.href = target; }
-    }
-    async function copyIn(i){
-      const v = document.getElementById('u'+i).value;
-      if(navigator.clipboard?.writeText) await navigator.clipboard.writeText(v);
-    }
-    async function copyOut(i){
-      const el = document.getElementById('u'+i);
-      const v = el.getAttribute('data-out') || '';
-      if(!v) return;
-      if(navigator.clipboard?.writeText) await navigator.clipboard.writeText(v);
-    }
-
-    function renderReport(res){
-      const rm = res.removed.length ? res.removed.map(k=>'<span class="pill">'+escapeHtml(k)+'</span>').join(' ') : '–';
-      const kp = res.kept.length ? res.kept.map(k=>'<span class="pill">'+escapeHtml(k)+'</span>').join(' ') : '–';
-      const uw = res.unwrapped ? `<div>Redirect: <code>${escapeHtml(res.unwrapped.from)}</code> → <code>${escapeHtml(res.unwrapped.to)}</code></div>` : '';
-      const nm = res.normalized || '–';
-      return `<div>Entfernt: ${rm}</div><div>Behalten: ${kp}</div>${uw}<div>Normalisierung: ${escapeHtml(nm)}</div>`;
-    }
-
-    // --- Reinigungslogik (wie App/Bulk) ---
-    const Cleaner = {
-      cleanUrl(input){
-        let url = String(input).trim();
-        const info = { url:'', removed:[], kept:[], normalized:'', unwrapped:null };
-
-        if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(url)) url = 'https://' + url;
-
-        let u; try { u = new URL(url); } catch { return { ...info, url: input }; }
-
-        const unwrap = this.unwrap(u);
-        if (unwrap) { info.unwrapped = unwrap; u = new URL(unwrap.to); }
-
-        const allowRaw = localStorage.getItem('ss2_allow') || '';
-        const allow = new Set(allowRaw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean));
-
-        const toRemove = [];
-        for (const [k] of u.searchParams) {
-          const key = k.toLowerCase();
-          const rm =
-            key.startsWith('utm_') ||
-            key === 'gclid' || key === 'fbclid' || key === 'yclid' ||
-            key === 'mc_eid' || key === 'mc_cid' || key === 'mkt_tok' ||
-            key === 'igshid' || key === 'spm' ||
-            key === 'vero_conv' || key === 'vero_id' || key === 'vero_campaign' ||
-            key === 'ref' || key === 'ref_src' || key === 'ref_url';
-          if (rm && !allow.has(key)) toRemove.push(k);
-        }
-        toRemove.forEach(k=>{ info.removed.push(k); u.searchParams.delete(k); });
-
-        for (const [k,v] of Array.from(u.searchParams.entries())) {
-          const kl = k.toLowerCase();
-          if (v === '' && !allow.has(kl)) { u.searchParams.delete(k); info.removed.push(k); }
-        }
-
-        if ((u.protocol==='http:' && u.port==='80') || (u.protocol==='https:' && u.port==='443')) { u.port=''; info.normalized='Standard-Port entfernt'; }
-        if (u.pathname === '') u.pathname = '/';
-
-        info.url = u.toString();
-        info.kept = Array.from(allow);
-        return info;
-      },
-
-      unwrap(u){
-        const host = u.hostname.replace(/^www\./,'').toLowerCase();
-        // Google /url
-        if (host === 'google.com' || host.endsWith('.google.com')) {
-          if (u.pathname === '/url') {
-            const tgt = u.searchParams.get('q') || u.searchParams.get('url') || u.searchParams.get('qurl');
-            if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-          }
-        }
-        // Facebook linker
-        if (host.endsWith('facebook.com') || host.endsWith('l.facebook.com') || host.endsWith('lm.facebook.com')) {
-          const tgt = u.searchParams.get('u') || u.searchParams.get('l') || u.searchParams.get('href');
-          if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-        }
-        // Reddit outbound
-        if (host === 'out.reddit.com') {
-          const tgt = u.searchParams.get('url');
-          if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-        }
-        // Generisch: erster query-Wert, der wie URL aussieht
-        for (const [,v] of u.searchParams) {
-          if (isHttp(v)) return { from: u.toString(), to: v };
-        }
-        return null;
-      }
-    };
-    function isHttp(s){ return typeof s === 'string' && /^https?:\/\//i.test(s); }
-
-    // --- Utils ---
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
-  </script>
-
-  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist deaktiviert. Diese Seite benötigt JavaScript.</p></div></noscript>
+  <noscript>
+    <div class="wrap"><p class="mut">JavaScript ist erforderlich, um die Tests automatisch auszuführen.</p></div>
+  </noscript>
 </body>
 </html>
