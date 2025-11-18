@@ -1,61 +1,162 @@
-<!-- HEAD: index.html -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<base href="/Supersystem/">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-<!-- hreflang / Locale -->
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="de">
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="x-default">
-<meta property="og:locale" content="de_DE">
+<!doctype html>
+<html lang="de">
+<head>
+  <!-- Basis -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>SafeShare – saubere Links ohne Tracking</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
 
-<!-- Sicherheits-CSP (sanft) -->
-<meta http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
-               object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline';
-               script-src 'self' 'unsafe-inline'; font-src 'self'; worker-src 'self';
-               manifest-src 'self'; connect-src 'self'">
+  <!-- hreflang / Locale -->
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="x-default">
+  <meta property="og:locale" content="de_DE">
 
-<!-- Meta -->
-<title>SafeShare – saubere Links ohne Tracking</title>
-<meta name="description" content="Entfernt UTM/gclid/fbclid und entpackt Redirects – 100 % lokal im Browser (PWA, offline-fähig).">
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 form-action 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
 
-<!-- Open Graph / Twitter -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="SafeShare">
-<meta property="og:title" content="SafeShare – saubere Links ohne Tracking">
-<meta property="og:description" content="Entfernt UTM/gclid/fbclid und entpackt Redirects – 100 % lokal im Browser.">
-<meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SafeShare – saubere Links ohne Tracking">
-<meta name="twitter:description" content="Entfernt Tracking-Parameter & Weiterleitungen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <!-- Meta -->
+  <meta name="description" content="Entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – 100 % lokal im Browser (PWA, offline-fähig).">
 
-<!-- JSON-LD als SoftwareApplication -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "SafeShare",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Web",
-  "url": "https://j-ai-71.github.io/Supersystem/",
-  "description": "SafeShare entfernt UTM, gclid, fbclid & Co. und entpackt Redirect-Links – lokal im Browser.",
-  "isAccessibleForFree": true,
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "url": "https://j-ai-71.github.io/Supersystem/" },
-  "softwareHelp": { "@type": "CreativeWork", "url": "https://j-ai-71.github.io/Supersystem/help.html" }
-}
-</script>
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SafeShare">
+  <meta property="og:title" content="SafeShare – saubere Links ohne Tracking">
+  <meta property="og:description" content="Entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – 100 % lokal im Browser.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SafeShare – saubere Links ohne Tracking">
+  <meta name="twitter:description" content="Entfernt Tracking-Parameter & Weiterleitungen – lokal im Browser.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
-<!-- Assets -->
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-<link rel="icon" href="assets/icons/icon-192.png">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="css/theme.css?v=27">
-<script src="js/sw-register.js?v=27"></script>
+  <!-- JSON-LD als SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SafeShare",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web",
+    "url": "https://j-ai-71.github.io/Supersystem/",
+    "description": "SafeShare entfernt UTM, gclid, fbclid & Co. und entpackt Redirect-Links – lokal im Browser.",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "url": "https://j-ai-71.github.io/Supersystem/" },
+    "softwareHelp": { "@type": "CreativeWork", "url": "https://j-ai-71.github.io/Supersystem/help.html" }
+  }
+  </script>
+
+  <!-- Icons / Manifest -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
+  <link rel="manifest" href="manifest.webmanifest?v=29">
+
+  <!-- Kritisches Basis-CSS (verhindert „weiße Seite“ auch ohne theme.css) -->
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);
+         font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:980px;margin:0 auto;padding:24px 14px}
+    h1{margin:.2em 0 .1em;font-size:2rem}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;text-decoration:none;
+         background:#1b1b1b;border:1px solid var(--line);color:var(--fg)}
+    .btn.pri{background:#1e2e24}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:16px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+    footer{margin-top:18px}
+    a{color:#cfe7ff}
+  </style>
+
+  <!-- Optional zusätzliches Theme -->
+  <link rel="stylesheet" href="css/theme.css?v=27">
+</head>
+<body>
+  <div class="wrap">
+    <h1>SafeShare</h1>
+    <p class="mut">Saubere Links ohne Tracking. Entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – lokal im Browser.</p>
+
+    <div class="row" style="margin-top:10px">
+      <a class="btn pri" href="app.html">App starten</a>
+      <a class="btn" href="bookmarklets.html">Bookmarklet</a>
+      <a class="btn" href="pro.html">Pro</a>
+      <a class="btn" href="help.html">Hilfe</a>
+    </div>
+
+    <!-- SEO-Textblock (H2/H3, um doppelte H1 zu vermeiden) -->
+    <section class="seo" style="max-width:820px;margin:28px auto 0;padding:0 2px">
+      <h2>Saubere Links ohne Tracking</h2>
+      <p>
+        SafeShare entfernt konsequent Tracking-Parameter (<strong>utm_*</strong>, <strong>gclid</strong>, <strong>fbclid</strong> …) und
+        entpackt verschachtelte Weiterleitungen. Alles läuft <strong>100&nbsp;% lokal im Browser</strong> – keine Server-Logs, keine Cookies,
+        keine personenbezogenen Daten. So teilst du kurze, transparente Links, die schneller laden, weniger Daten preisgeben
+        und professionell aussehen.
+      </p>
+      <h3>So nutzt du SafeShare</h3>
+      <p>
+        Für einzelne Adressen nutze die <a href="app.html">Web-App</a>. Für den Alltag im Browser gibt es das
+        <a href="bookmarklets.html">Bookmarklet</a> („SafeShare clean“). SafeShare funktioniert auf Desktop, iPhone und iPad, ist als
+        <strong>PWA</strong> offline-fähig und benötigt keine Anmeldung.
+      </p>
+      <h3>Pro-Funktionen für Teams & Publishing</h3>
+      <p>
+        <a href="pro.html">SafeShare Pro</a> bietet <strong>Bulk-Cleaning</strong> für viele Links auf einmal sowie
+        eine <strong>Team-Whitelist/Publisher-Modus</strong>. Ideal für Datenschutz-bewusste Nutzerinnen und Nutzer,
+        Journalist:innen, NGOs, Lehrkräfte, Affiliate-Publisher, Blogger und Deal-Seiten mit Compliance-Vorgaben.
+      </p>
+      <p class="mut">
+        Details und Anleitungen in der <a href="help.html">Hilfe/FAQ</a>.
+      </p>
+    </section>
+
+    <div class="cards">
+      <div class="card">
+        <h3>App</h3>
+        <p>Links einfügen, <em>Säubern</em>, Ergebnis kopieren oder öffnen.</p>
+        <p><a class="btn" href="app.html">Jetzt öffnen</a></p>
+      </div>
+      <div class="card">
+        <h3>Bookmarklet</h3>
+        <p>„SafeShare clean“ als Lesezeichen – 1-Klick Reinigung der aktuellen Seite.</p>
+        <p><a class="btn" href="bookmarklets.html">Bookmarklet einrichten</a></p>
+      </div>
+      <div class="card">
+        <h3>Pro</h3>
+        <p>Bulk-Cleaning & Team-Whitelist/Publisher-Modus für professionelle Workflows.</p>
+        <p><a class="btn" href="pro.html">Mehr erfahren</a></p>
+      </div>
+    </div>
+
+    <footer class="mut">
+      <a href="impressum.html">Impressum</a> ·
+      <a href="datenschutz.html">Datenschutz</a> ·
+      <a href="help.html">Hilfe</a> ·
+      <a href="mailto:?subject=SafeShare%20Feedback&body=Bitte%20hier%20Feedback%20eintragen.">Feedback</a>
+    </footer>
+  </div>
+
+  <!-- SW-Registrierung (Version ggf. anpassen) -->
+  <script src="js/sw-register.js?v=29"></script>
+  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist deaktiviert. SafeShare benötigt JavaScript.</p></div></noscript>
+</body>
+</html>
