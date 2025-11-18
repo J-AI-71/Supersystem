@@ -1,163 +1,251 @@
-/* /Supersystem/sw.js — Service Worker SafeShare
-   Strategie: HTML = network-first; Assets = stale-while-revalidate;
-   Nie cachen: sitemap.xml, robots.txt, Impressum/Datenschutz, Pro-Aktivierung. */
-const VER = '27'; // bei Änderungen anheben
-const CACHE_HTML    = `ss2-html-${VER}`;
-const CACHE_STATIC  = `ss2-static-${VER}`;
-const CACHE_RUNTIME = `ss2-runtime-${VER}`;
-const SCOPE_PATH    = '/Supersystem/';
+/* sw.js – SafeShare v2
+ * Strategie:
+ * - Navigation: Network-First (4s Timeout) → Fallback Cache → offline.html
+ * - Statische Assets (CSS/JS/Icons/Manifest): Cache-First (Stale-While-Revalidate)
+ * - Versionierte Precache-Liste (schnellere Erstladung, offline nutzbar)
+ * - Sauberes Cache-Rollover pro Version
+ */
 
-const PRECACHE_URLS = [
-  // Seiten (nur für schnellen Erstaufruf; Legal-Seiten NICHT hier hinein)
-  'index.html','app.html','bookmarklets.html','bulk-clean.html',
-  'team-setup.html','redirect-entschachteln.html','pro.html',
-  'tests.html','help.html',
-  // Assets
-  'manifest.webmanifest','css/theme.css',
-  'js/sw-register.js','js/core.js','js/app.js','js/bookmarklets.js','js/bulk-clean.js','js/team-setup.js',
-  'assets/icons/apple-touch-icon-180.png','assets/icons/icon-192.png','assets/icons/icon-512.png'
+const SS_SW_VERSION = '2025-11-18-04';              // ← bei jedem Release erhöhen
+const BASE_PATH      = '/Supersystem/';             // GitHub Pages Unterpfad
+const OFFLINE_URL    = `${BASE_PATH}offline.html`;
+
+const PRECACHE      = `ss2-precache-${SS_SW_VERSION}`;
+const RUNTIME_ASSET = `ss2-runtime-asset-${SS_SW_VERSION}`;
+const RUNTIME_PAGE  = `ss2-runtime-page-${SS_SW_VERSION}`;
+
+const SAME_ORIGIN = self.location.origin;
+
+/* -------------------- Precache-Liste --------------------
+   Wichtig: exakt so eintragen, wie in HTML verlinkt (inkl. ?v=…),
+   sonst passt das URL-Matching offline nicht.
+--------------------------------------------------------- */
+const precacheList = [
+  // Dokumente (HTML)
+  `${BASE_PATH}`,
+  `${BASE_PATH}index.html`,
+  `${BASE_PATH}app.html`,
+  `${BASE_PATH}help.html`,
+  `${BASE_PATH}quickstart.html`,
+  `${BASE_PATH}publisher.html`,
+  `${BASE_PATH}education.html`,
+  `${BASE_PATH}partners.html`,
+  `${BASE_PATH}compliance.html`,
+  `${BASE_PATH}bookmarklets.html`,
+  `${BASE_PATH}bulk-clean.html`,
+  `${BASE_PATH}team-setup.html`,
+  `${BASE_PATH}redirect-entschachteln.html`,
+  `${BASE_PATH}tests.html`,
+  `${BASE_PATH}tools.html`,
+  `${BASE_PATH}pro.html`,
+  `${BASE_PATH}press.html`,
+  `${BASE_PATH}impressum.html`,
+  `${BASE_PATH}datenschutz.html`,
+  `${BASE_PATH}status.html`,
+  `${BASE_PATH}offline.html`,             // Fallback-Seite
+
+  // Meta
+  `${BASE_PATH}sitemap.xml`,
+  `${BASE_PATH}robots.txt`,
+  `${BASE_PATH}manifest.webmanifest?v=31`,
+
+  // CSS
+  `${BASE_PATH}css/theme.css?v=31`,
+
+  // JS Kern
+  `${BASE_PATH}js/sw-register.js?v=31`,
+  `${BASE_PATH}js/cleaner.js?v=31`,
+
+  // JS Seiten (nur die, die du nutzt)
+  `${BASE_PATH}js/app.js?v=31`,
+  `${BASE_PATH}js/bookmarklets.js?v=31`,
+  `${BASE_PATH}js/bulk-clean.js?v=31`,
+  `${BASE_PATH}js/team-setup.js?v=31`,
+  `${BASE_PATH}js/page-redirect.js?v=31`,
+  `${BASE_PATH}js/page-tests.js?v=31`,
+  `${BASE_PATH}js/page-status.js?v=31`,
+  `${BASE_PATH}js/page-404.js?v=31`,
+  `${BASE_PATH}js/page-quickstart.js?v=31`,
+  `${BASE_PATH}js/page-pro-activate.js?v=31`,
+  `${BASE_PATH}js/ext-links.js?v=31`,
+  `${BASE_PATH}js/telemetry.js?v=31`,
+
+  // Icons/OG (prüfe, dass sie existieren)
+  `${BASE_PATH}assets/icons/apple-touch-icon-180.png?v=31`,
+  `${BASE_PATH}assets/icons/icon-32-kreis.png?v=31`,
+  `${BASE_PATH}assets/icons/icon-16-kreis.png?v=31`,
+  `${BASE_PATH}assets/og/og-index.jpg`,
+  `${BASE_PATH}assets/qr/app-qr.png`,
 ];
 
-// nie cachen (immer Netzwerk)
-const VER = '26';
-const NETWORK_ONLY_PATHS = new Set([
-  '/Supersystem/sitemap.xml',
-  '/Supersystem/sitemap.txt',
-  '/Supersystem/robots.txt',
-  '/Supersystem/BingSiteAuth.xml',   // <— hinzugefügt
-  '/Supersystem/impressum.html',
-  '/Supersystem/datenschutz.html',
-  '/Supersystem/pro-activate.html'
-]);
-
+/* -------------------- Install -------------------- */
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_STATIC).then((c) => c.addAll(PRECACHE_URLS.map(u => toAbs(u))))
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(PRECACHE);
+    // Einzel-add statt addAll, damit eine fehlende Datei nicht alles scheitern lässt
+    for (const url of precacheList) {
+      try { await cache.add(new Request(url, { cache: 'reload' })); }
+      catch (e) { /* optional: console.warn('[SW] Precache fail:', url, e); */ }
+    }
+    await self.skipWaiting();
+  })());
 });
 
+/* -------------------- Activate -------------------- */
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(
-      keys
-        .filter(k => /^ss2-(html|static|runtime)-/.test(k) && ![CACHE_HTML,CACHE_STATIC,CACHE_RUNTIME].includes(k))
-        .map(k => caches.delete(k))
-    );
+    // Alte Caches entfernen
+    const names = await caches.keys();
+    await Promise.all(names.map((name) => {
+      if (![PRECACHE, RUNTIME_ASSET, RUNTIME_PAGE].includes(name)) {
+        return caches.delete(name);
+      }
+    }));
+    // Navigation Preload optional aktivieren
+    if ('navigationPreload' in self.registration) {
+      try { await self.registration.navigationPreload.enable(); } catch {}
+    }
     await self.clients.claim();
   })());
 });
 
-self.addEventListener('message', (e) => {
-  if (e.data === 'SKIP_WAITING') self.skipWaiting();
-});
+/* -------------------- Helpers -------------------- */
+const isHTMLNavigate = (request) =>
+  request.mode === 'navigate' ||
+  (request.destination === 'document') ||
+  (request.headers && request.headers.get('Accept')?.includes('text/html'));
 
+const hasNoCacheParam = (url) => {
+  const u = new URL(url);
+  return u.searchParams.has('nocache');
+};
+
+const isSameOrigin = (url) => url.startsWith(SAME_ORIGIN);
+
+/* -------------------- Fetch -------------------- */
 self.addEventListener('fetch', (event) => {
-  const req = event.request;
-  if (req.method !== 'GET') return; // nur GET behandeln
+  const { request } = event;
+  const url = new URL(request.url);
 
-  const url = new URL(req.url);
+  // Nur GET cachen
+  if (request.method !== 'GET') return;
 
-  // nur eigene Origin cachen
-  if (url.origin !== location.origin) return;
+  // Navigation: Network-First mit Fallback
+  if (isHTMLNavigate(request)) {
+    event.respondWith((async () => {
+      // nocache → direkt Netz (ohne Cache)
+      if (hasNoCacheParam(request.url)) {
+        try {
+          const fresh = await fetch(request, { cache: 'no-store' });
+          const cache = await caches.open(RUNTIME_PAGE);
+          cache.put(request, fresh.clone());
+          return fresh;
+        } catch {
+          // offline: versuche aus Cache
+          const cache = await caches.open(PRECACHE);
+          return (await cache.match(request)) ||
+                 (await cache.match(url.pathname)) ||
+                 (await cache.match(OFFLINE_URL)) ||
+                 new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' }});
+        }
+      }
 
-  // harte Ausnahmen (immer Netzwerk, kein Cache)
-  if (NETWORK_ONLY_PATHS.has(url.pathname)) {
-    event.respondWith(fetchNoStore(req));
+      // Network-First mit kurzer Timeout, dann Cache → offline
+      try {
+        const ctrl = new AbortController();
+        const tid  = setTimeout(() => ctrl.abort(), 4000);
+        // Navigation preload nutzen, wenn vorhanden
+        const preloadResp = await event.preloadResponse;
+        const netResp = preloadResp || await fetch(request, { signal: ctrl.signal });
+        clearTimeout(tid);
+
+        // Im Page-Runtime-Cache ablegen
+        try {
+          const cache = await caches.open(RUNTIME_PAGE);
+          cache.put(request, netResp.clone());
+        } catch {}
+        return netResp;
+      } catch {
+        // Netzwerkfehler → Cache → offline
+        const cache = await caches.open(PRECACHE);
+        const matchPre = await cache.match(request);
+        if (matchPre) return matchPre;
+
+        const runtimePage = await caches.open(RUNTIME_PAGE);
+        const matchRun = await runtimePage.match(request);
+        if (matchRun) return matchRun;
+
+        const offline = await cache.match(OFFLINE_URL);
+        return offline || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' }});
+      }
+    })());
     return;
   }
 
-  // Cache umgehen bei ?nocache / ?sw (manuelle Aktualisierung)
-  if (url.searchParams.has('nocache') || url.searchParams.has('sw')) {
-    event.respondWith(fetchNoStore(req));
+  // Nur gleiche Origin cachen (Assets)
+  if (!isSameOrigin(request.url)) return;
+
+  // Statische Assets: Cache-First, dann Netz (SWR)
+  const dest = request.destination;
+  const isAsset = ['script','style','font','image','manifest'].includes(dest);
+
+  if (isAsset) {
+    event.respondWith((async () => {
+      const cache = await caches.open(RUNTIME_ASSET);
+
+      // nocache → Netzwerk
+      if (hasNoCacheParam(request.url)) {
+        try {
+          const fresh = await fetch(request, { cache: 'no-store' });
+          cache.put(request, fresh.clone());
+          return fresh;
+        } catch {
+          const cached = await caches.match(request);
+          return cached || new Response('', { status: 504 });
+        }
+      }
+
+      const cached = await caches.match(request);
+      const networkFetch = fetch(request).then((resp) => {
+        if (resp && resp.ok) cache.put(request, resp.clone());
+        return resp;
+      }).catch(() => null);
+
+      // Sofort Cache, nebenbei aktualisieren
+      return cached || (await networkFetch) || new Response('', { status: 504 });
+    })());
     return;
   }
 
-  // HTML erkennen (Accept-Header oder .html)
-  const accept = req.headers.get('accept') || '';
-  const isHTML = accept.includes('text/html') || url.pathname.endsWith('.html') || url.pathname === SCOPE_PATH;
-
-  if (isHTML) {
-    event.respondWith(networkFirst(req, CACHE_HTML));
-    return;
-  }
-
-  // statische Assets
-  const dest = req.destination; // 'script','style','image','font','worker',…
-  if (dest === 'script' || dest === 'style' || dest === 'worker') {
-    event.respondWith(staleWhileRevalidate(req, CACHE_STATIC));
-    return;
-  }
-  if (dest === 'image' || dest === 'font' || url.pathname.endsWith('.png') || url.pathname.endsWith('.svg')) {
-    event.respondWith(cacheFirst(req, CACHE_STATIC));
-    return;
-  }
-
-  // Fallback: durchreichen + opportunistisch cachen
-  event.respondWith(staleWhileRevalidate(req, CACHE_RUNTIME));
+  // Alle anderen GETs: Pass-Through mit leichter Absicherung
+  event.respondWith((async () => {
+    try {
+      return await fetch(request);
+    } catch {
+      const cached = await caches.match(request);
+      return cached || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' }});
+    }
+  })());
 });
 
-/* --- Strategien --- */
-async function networkFirst(req, cacheName) {
-  try {
-    const net = await fetch(req, { cache: 'no-store' });
-    const res = net.clone();
-    // nur erfolgreiche Antworten cachen
-    if (res.ok) {
-      const c = await caches.open(cacheName);
-      c.put(stripSearch(req), res);
-    }
-    return net;
-  } catch {
-    const match = await caches.match(stripSearch(req));
-    return match || caches.match(toAbs('index.html'));
+/* -------------------- Messages (optional) --------------------
+   sw-register.js kann hiermit interagieren:
+   - {type:'GET_VERSION'}   → sendet Version zurück
+   - {type:'SKIP_WAITING'}  → sofort aktivieren
+   - {type:'CLEAR_CACHES'}  → alle alten Caches löschen
+-------------------------------------------------------------- */
+self.addEventListener('message', (event) => {
+  const msg = event.data || {};
+  if (msg && msg.type === 'GET_VERSION') {
+    event.source?.postMessage({ type: 'SW_VERSION', version: SS_SW_VERSION });
   }
-}
-
-async function staleWhileRevalidate(req, cacheName) {
-  const cacheKey = stripSearch(req);
-  const cached = await caches.match(cacheKey);
-  const netPromise = fetch(req).then(async (res) => {
-    if (res && res.ok) {
-      const c = await caches.open(cacheName);
-      c.put(cacheKey, res.clone());
-    }
-    return res;
-  }).catch(() => undefined);
-  return cached || netPromise || fetch(req);
-}
-
-async function cacheFirst(req, cacheName) {
-  const cacheKey = stripSearch(req);
-  const cached = await caches.match(cacheKey);
-  if (cached) return cached;
-  const res = await fetch(req);
-  if (res && res.ok) {
-    const c = await caches.open(cacheName);
-    c.put(cacheKey, res.clone());
+  if (msg && msg.type === 'SKIP_WAITING') {
+    self.skipWaiting();
   }
-  return res;
-}
-
-/* --- Helfer --- */
-function toAbs(u) {
-  return new URL(u, self.registration.scope).toString();
-}
-function stripSearch(req) {
-  // gleiche Ressource ohne ?nocache/&v etc. als Cache-Key verwenden (nur für eigene Files)
-  try {
-    const url = new URL(req.url);
-    if (url.origin === location.origin && url.pathname.startsWith(SCOPE_PATH)) {
-      // nur harmlose Versions-Parameter entfernen
-      url.searchParams.delete('v');
-      url.searchParams.delete('sw');
-      url.searchParams.delete('nocache');
-      return url.toString();
-    }
-  } catch {}
-  return req;
-}
-function fetchNoStore(req) {
-  return fetch(req, { cache: 'no-store' });
-}
+  if (msg && msg.type === 'CLEAR_CACHES') {
+    event.waitUntil((async () => {
+      const names = await caches.keys();
+      await Promise.all(names.map((n) => caches.delete(n)));
+    })());
+  }
+});
