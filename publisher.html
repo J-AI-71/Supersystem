@@ -8,6 +8,56 @@
   <title>Für Publisher & Affiliates · SafeShare</title>
 
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/publisher.html">
+
+  <!-- CSP ohne 'unsafe-inline' für Skripte; Nonce erlaubt NUR den JSON-LD-Block -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+               base-uri 'self';
+               frame-ancestors 'none';
+               object-src 'none';
+               img-src 'self' data:;
+               style-src 'self' 'unsafe-inline';
+               script-src 'self' 'nonce-SSJSON1';
+               font-src 'self';
+               worker-src 'self';
+               manifest-src 'self';
+               connect-src 'self'">
+
+<!-- JSON-LD inline mit passender Nonce (SSJSON1) -->
+<script type="application/ld+json" nonce="SSJSON1">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "de-DE",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Warum SafeShare für Publisher?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Saubere Links sind kürzer, laden schneller und werden seltener geblockt. SafeShare entfernt Tracking-Ballast und entpackt Redirects – vollständig lokal im Browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Beeinträchtigt SafeShare Affiliate-Tracking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standardmäßig werden bekannte Tracking-Parameter entfernt. Teams können eine Whitelist hinterlegen (z. B. ref, tag), sodass essenzielle Partner-IDs erhalten bleiben."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Welche Features gibt es für Teams?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pro bietet Bulk-Cleaning, Team-Whitelist (Publisher-Modus) und Helper-Tools. Aktivierung lokal per pro-activate.html?pro=1 nach Kauf-Redirect."
+      }
+    }
+  ]
+}
+</script>
+
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/publisher.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/publisher.html" hreflang="x-default">
   <meta name="description" content="Saubere, schnelle Links für Publisher & Affiliates: UTM-Ballast entfernen, Redirects entpacken, Conversion verbessern – lokal im Browser.">
