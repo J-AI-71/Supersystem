@@ -1,14 +1,280 @@
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="/Supersystem/">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/status.html">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/status.html" hreflang="de">
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/status.html" hreflang="x-default">
-<meta property="og:locale" content="de_DE">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
-<title>Status · SafeShare</title>
-<meta name="description" content="Build/Deploy-Status und Versionshinweise.">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png"><link rel="icon" href="assets/icons/icon-192.png"><link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="css/theme.css?v=27"><script src="js/sw-register.js?v=27"></script>
+<!doctype html>
+<html lang="de">
+<head>
+  <!-- status.html -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>Status · SafeShare</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/status.html">
+
+  <!-- hreflang / Locale -->
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/status.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/status.html" hreflang="x-default">
+  <meta property="og:locale" content="de_DE">
+
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 form-action 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- Meta -->
+  <meta name="description" content="Laufzeit- und Installationsstatus: Service Worker, Caches, LocalStorage, PWA, Version.">
+
+  <!-- Icons / Manifest -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
+  <link rel="manifest" href="manifest.webmanifest?v=29">
+
+  <!-- Basistyle (kein Weißbild) -->
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a;--btn:#1b1b1b;--ok:#1e402f}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:980px;margin:0 auto;padding:22px 14px}
+    h1{margin:.2em 0 .4em;font-size:1.9rem}
+    h2{margin:1.0em 0 .3em;font-size:1.2rem}
+    .mut{color:var(--mut)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
+    .row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{padding:.6rem .9rem;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:#eaeaea;text-decoration:none;cursor:pointer}
+    .btn.ok{background:var(--ok)}
+    code,kbd{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
+    .pill{display:inline-block;margin:2px;padding:.2rem .45rem;border-radius:999px;background:#171717;border:1px solid #2a2a2a}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    footer{margin-top:18px}
+    a{color:#cfe7ff}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+    .kv{display:grid;grid-template-columns:max(160px) 1fr;gap:8px}
+  </style>
+
+  <!-- Optional Theme -->
+  <link rel="stylesheet" href="css/theme.css?v=27">
+
+  <!-- SW-Registrierung (normal) -->
+  <script src="js/sw-register.js?v=29"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Status</h1>
+    <p class="mut mono" id="loc">–</p>
+
+    <section class="card">
+      <div class="row">
+        <button class="btn" onclick="reloadWithNoCache()">Neu laden (?nocache)</button>
+        <button class="btn" onclick="refreshAll()">Status aktualisieren</button>
+        <a class="btn" href="tools.html">Tools öffnen</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Laufzeit</h2>
+      <div class="kv mono" id="runtime">–</div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Service Worker</h2>
+      <div class="row">
+        <button class="btn" onclick="swUpdate()">Auf Update prüfen</button>
+      </div>
+      <div id="sw" class="mono" style="margin-top:8px">–</div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Caches</h2>
+      <div id="caches" class="mono">–</div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">LocalStorage</h2>
+      <div id="ls" class="mono">–</div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Manifest & Icons</h2>
+      <div class="mono" id="manifest">–</div>
+    </section>
+
+    <footer class="mut">
+      <a href="index.html">Startseite</a> ·
+      <a href="app.html">App</a> ·
+      <a href="help.html">Hilfe</a> ·
+      <a href="impressum.html">Impressum</a> ·
+      <a href="datenschutz.html">Datenschutz</a>
+    </footer>
+  </div>
+
+  <script>
+  (function(){
+    const $ = sel => document.querySelector(sel);
+
+    // Kopfinfo
+    $('#loc').textContent = 'URL: ' + location.href;
+
+    // Initial laden
+    refreshAll();
+
+    async function refreshAll(){
+      renderRuntime();
+      await renderSW();
+      await renderCaches();
+      await renderLS();
+      await renderManifest();
+    }
+
+    // — Laufzeit —
+    function renderRuntime(){
+      const isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+      const isIOSStandalone = typeof navigator.standalone === 'boolean' ? navigator.standalone : false;
+      const online = navigator.onLine;
+      const conn = navigator.connection || {};
+      const ua = navigator.userAgent;
+
+      const rows = [
+        ['PWA (display-mode: standalone)', String(isStandalone)],
+        ['PWA (iOS navigator.standalone)', String(isIOSStandalone)],
+        ['Online', String(online)],
+        ['Netz (effectiveType)', conn.effectiveType || '–'],
+        ['RTT (ms, geschätzt)', conn.rtt || '–'],
+        ['SW Controller vorhanden', String(!!(navigator.serviceWorker && navigator.serviceWorker.controller))],
+        ['Zeit (lokal)', new Date().toString()],
+        ['User-Agent', ua]
+      ];
+      $('#runtime').innerHTML = rows.map(r=>`<div>${r[0]}</div><div>${escapeHtml(r[1])}</div>`).join('');
+    }
+
+    // — Service Worker —
+    async function renderSW(){
+      if (!('serviceWorker' in navigator)) { $('#sw').textContent = 'Kein Service-Worker-Support.'; return; }
+      const regs = await navigator.serviceWorker.getRegistrations();
+      if (!regs.length) { $('#sw').textContent = 'Keine Registrierung gefunden.'; return; }
+
+      const parts = [];
+      for (const r of regs){
+        const scope = r.scope || '–';
+        const active = r.active ? r.active.scriptURL : '–';
+        const state  = r.active ? r.active.state : (r.installing ? 'installing' : (r.waiting ? 'waiting' : '–'));
+        const installing = r.installing ? r.installing.scriptURL : '';
+        const waiting    = r.waiting ? r.waiting.scriptURL : '';
+
+        let swVersion = '–';
+        try {
+          // sw.js laden und Versionskonstante herauslesen (falls vorhanden)
+          const txt = await fetch('sw.js?nocache=' + Date.now(), {cache:'no-store'}).then(r=>r.ok?r.text():'').catch(()=> '');
+          const m = txt && txt.match(/SS_SW_VERSION\s*=\s*['"]([^'"]+)['"]/);
+          if (m) swVersion = m[1];
+        } catch(e){}
+
+        parts.push(
+          `<div class="card" style="margin-top:10px">
+             <div>Scope: <code>${escapeHtml(scope)}</code></div>
+             <div>Aktiv: <code>${escapeHtml(active)}</code></div>
+             <div>Zustand: <code>${escapeHtml(String(state))}</code></div>
+             ${installing ? `<div>Installing: <code>${escapeHtml(installing)}</code></div>` : ''}
+             ${waiting ? `<div>Waiting: <code>${escapeHtml(waiting)}</code></div>` : ''}
+             <div>SW-Version: <code>${escapeHtml(swVersion)}</code></div>
+           </div>`
+        );
+      }
+      $('#sw').innerHTML = parts.join('') || '–';
+    }
+
+    async function swUpdate(){
+      try{
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r=>r.update()));
+        await renderSW();
+      }catch(e){}
+    }
+
+    // — Caches —
+    async function renderCaches(){
+      if (!('caches' in window)) { $('#caches').textContent = 'Cache API nicht verfügbar.'; return; }
+      const keys = await caches.keys();
+      if (!keys.length) { $('#caches').textContent = 'Keine Caches vorhanden.'; return; }
+      const list = await Promise.all(keys.map(async name => {
+        let count = '–';
+        try {
+          const c = await caches.open(name);
+          const reqs = await c.keys();
+          count = String(reqs.length);
+        } catch(e){}
+        return `<div><span class="pill">${escapeHtml(name)}</span> · Einträge: ${count}</div>`;
+      }));
+      $('#caches').innerHTML = list.join('');
+    }
+
+    // — LocalStorage —
+    async function renderLS(){
+      try{
+        const keys = [];
+        for (let i=0; i<localStorage.length; i++){
+          const k = localStorage.key(i);
+          keys.push([k, localStorage.getItem(k)]);
+        }
+        if (!keys.length){ $('#ls').textContent = '–'; return; }
+        const rows = keys.map(([k,v])=>{
+          const val = (v && v.length > 200) ? v.slice(0,200) + '…' : (v ?? '');
+          return `<div><code>${escapeHtml(k)}</code> = <code>${escapeHtml(val)}</code></div>`;
+        });
+        $('#ls').innerHTML = rows.join('');
+      }catch(e){
+        $('#ls').textContent = 'LocalStorage nicht lesbar.';
+      }
+    }
+
+    // — Manifest & Icons —
+    async function renderManifest(){
+      const out = [];
+      try{
+        const m = await fetch('manifest.webmanifest?v=29', {cache:'no-store'}).then(r=>r.ok?r.json():null);
+        if (m){
+          out.push(`<div>Name: <code>${escapeHtml(m.name || m.short_name || '–')}</code></div>`);
+          out.push(`<div>Start URL: <code>${escapeHtml(m.start_url || '–')}</code></div>`);
+          out.push(`<div>Display: <code>${escapeHtml(m.display || '–')}</code></div>`);
+          out.push(`<div>Icons: ${Array.isArray(m.icons)? m.icons.length : 0} Einträge</div>`);
+        } else {
+          out.push('<div>Manifest nicht gefunden.</div>');
+        }
+      }catch(e){
+        out.push('<div>Manifest nicht lesbar.</div>');
+      }
+      // Apple Touch Icon Reachability (HEAD)
+      try{
+        const ok = await fetch('assets/icons/apple-touch-icon-180.png?v=29', {method:'HEAD', cache:'no-store'}).then(r=>r.ok).catch(()=>false);
+        out.push(`<div>Apple Touch 180: ${ok ? '<span class="pill">OK</span>' : '<span class="pill">Fehlt</span>'}</div>`);
+      }catch(e){}
+      $('#manifest').innerHTML = out.join('');
+    }
+
+    // — Utils —
+    function reloadWithNoCache(){
+      const ts = new Date().toISOString().replace(/[:.]/g,'-');
+      const base = location.pathname.replace(/\/+$/,'') || '/';
+      location.href = base + '?nocache=' + ts;
+    }
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[c])); }
+
+    // Expose für Buttons
+    window.refreshAll = refreshAll;
+    window.swUpdate = swUpdate;
+    window.reloadWithNoCache = reloadWithNoCache;
+  })();
+  </script>
+
+  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist erforderlich, um den Status auszulesen.</p></div></noscript>
+</body>
+</html>
