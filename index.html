@@ -1,192 +1,58 @@
-<!-- /Supersystem/index.html -->
-<!doctype html>
-<html lang="de">
-<head>
+<!-- HEAD: index.html -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="/Supersystem/">
-
-<!-- GSC Verification -->
-<meta name="google-site-verification" content="HIER_DEN_CODE_EINFÜGEN">
-
-<link rel="stylesheet" href="css/theme.css?v=18">
-  
-<title>SafeShare – saubere Links ohne Tracking</title>
 <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
-<link rel="alternate" href="EXAKTE-SEITEN-URL" hreflang="de">
-<link rel="alternate" href="EXAKTE-SEITEN-URL" hreflang="x-default">
-<meta property="og:locale" content="de_DE">
+
+<!-- hreflang / Locale -->
 <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="de">
 <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="x-default">
 <meta property="og:locale" content="de_DE">
 
-<!-- Bing Webmaster Tools -->
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+<!-- Sicherheits-CSP (sanft) -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
+               object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline';
+               script-src 'self' 'unsafe-inline'; font-src 'self'; worker-src 'self';
+               manifest-src 'self'; connect-src 'self'">
 
+<!-- Meta -->
+<title>SafeShare – saubere Links ohne Tracking</title>
+<meta name="description" content="Entfernt UTM/gclid/fbclid und entpackt Redirects – 100 % lokal im Browser (PWA, offline-fähig).">
+
+<!-- Open Graph / Twitter -->
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="SafeShare">
 <meta property="og:title" content="SafeShare – saubere Links ohne Tracking">
-<meta property="og:description" content="Entfernt UTM/gclid/fbclid und entpackt Redirects – lokal im Browser.">
+<meta property="og:description" content="Entfernt UTM/gclid/fbclid und entpackt Redirects – 100 % lokal im Browser.">
 <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
-<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/icons/icon-512.png">
+<meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SafeShare – saubere Links ohne Tracking">
 <meta name="twitter:description" content="Entfernt Tracking-Parameter & Weiterleitungen – lokal im Browser.">
-<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/icons/icon-512.png">
+<meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
+<!-- JSON-LD als SoftwareApplication -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
+  "@type": "SoftwareApplication",
   "name": "SafeShare",
-  "description": "Saubere Links ohne Tracking: entfernt UTM, gclid, fbclid und entpackt Redirects – alles lokal im Browser.",
-  "url": "https://j-ai-71.github.io/Supersystem/",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Web",
+  "url": "https://j-ai-71.github.io/Supersystem/",
+  "description": "SafeShare entfernt UTM, gclid, fbclid & Co. und entpackt Redirect-Links – lokal im Browser.",
   "isAccessibleForFree": true,
-  "browserRequirements": "Requires Javascript. Works offline as PWA.",
-  "offers": {
-    "@type": "Offer",
-    "url": "https://j-ai-71.github.io/Supersystem/pro.html",
-    "category": "Paid",
-    "priceCurrency": "EUR"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "SafeShare",
-    "url": "https://j-ai-71.github.io/Supersystem/"
-  }
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "url": "https://j-ai-71.github.io/Supersystem/" },
+  "softwareHelp": { "@type": "CreativeWork", "url": "https://j-ai-71.github.io/Supersystem/help.html" }
 }
 </script>
 
-<meta name="robots" content="index,follow">
-<meta name="description" content="SafeShare entfernt UTM, gclid, fbclid & Co. und entpackt Redirect-Links – lokal im Browser.">
-<meta name="theme-color" content="#111111">
-
-<!-- Icons -->
+<!-- Assets -->
 <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-<link rel="apple-touch-icon" sizes="167x167" href="assets/icons/apple-touch-icon-167.png">
-<link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152.png">
-<link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120.png">
-<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
-<link rel="manifest" href="manifest.webmanifest?v=2025-11-17-01">
-
-<!-- Social -->
-<meta property="og:title" content="SafeShare – saubere Links ohne Tracking">
-<meta property="og:description" content="UTM, gclid, fbclid & Co. entfernen. Lokal im Browser.">
-<meta property="og:image" content="assets/icons/icon-512.png">
-<meta name="twitter:card" content="summary_large_image">
-
-<style>
-:root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--pri:#29c07e}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:980px;margin:auto;padding:32px 16px}
-h1{margin:0 0 6px;font-size:32px}
-p{margin:6px 0}
-.mut{color:var(--mut)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-block;padding:.8rem 1.05rem;border-radius:11px;font-weight:700;text-decoration:none;border:0;cursor:pointer}
-.btn.pri{background:var(--pri);color:#07130c}
-.btn.alt{background:#1b1b1b;color:var(--fg);border:1px solid #2a2a2a}
-.card{background:#111;border:1px solid #1f1f1f;border-radius:12px;padding:16px;margin-top:14px}
-.bm{display:inline-block;padding:.6rem .9rem;border-radius:10px;background:#1b1b1b;border:1px solid #2a2a2a;color:#eaeaea;text-decoration:none;font-weight:600;cursor:grab}
-.code{flex:1;min-width:280px;padding:.6rem;border-radius:10px;border:1px solid #2a2a2a;background:#000;color:#eaeaea;font-family:ui-monospace,Menlo,Consolas,monospace}
-footer a{color:#9aead0;text-decoration:none;margin-right:10px}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h2>SafeShare</h2>
-  <p id="pro-badge" class="mut">Pro: nicht aktiv</p>
-  <p class="mut">Entfernt Tracking-Parameter (UTM, gclid, fbclid, …) und entpackt Weiterleitungen – 100% lokal im Browser.</p>
-
-  <div class="row" style="margin-top:10px">
-    <a class="btn pri" href="app.html">App starten</a>
-    <a class="btn alt" href="bookmarklets.html">Bookmarklet</a>
-    <a class="btn alt" href="pro.html">Pro kaufen</a>
-  </div>
-
-<section class="seo" style="max-width:820px;margin:28px auto 0;padding:0 12px">
-  <h1>SafeShare – saubere Links ohne Tracking</h1>
-  <p>
-    SafeShare entfernt konsequent Tracking-Parameter (<strong>utm_*</strong>, <strong>gclid</strong>, <strong>fbclid</strong>, u. a.) und
-    entpackt verschachtelte Weiterleitungen. Alles läuft <strong>100 % lokal im Browser</strong> – keine Server-Logs, keine Cookies,
-    keine personenbezogenen Daten. So teilst du kurze, transparente Links, die schneller laden, weniger Daten preisgeben
-    und professionell aussehen.
-  </p>
-
-  <h2>So nutzt du SafeShare</h2>
-  <p>
-    Für einzelne Adressen öffnest du die <a href="app.html">Web-App</a>, fügst die URL ein und klickst auf <em>Säubern</em>.
-    Für den Alltag im Browser gibt es das <a href="bookmarklets.html">Bookmarklet</a>:
-    Einmal einrichten, dann reicht ein Tap auf „SafeShare clean“, um die aktuelle Seite sofort bereinigt zu kopieren oder zu teilen.
-    SafeShare funktioniert auf Desktop, iPhone und iPad, ist als <strong>PWA</strong> offline-fähig und benötigt keine Anmeldung.
-  </p>
-
-  <h2>Pro-Funktionen für Teams & Publishing</h2>
-  <p>
-    <a href="pro.html">SafeShare Pro</a> bietet <strong>Bulk-Cleaning</strong> für viele Links auf einmal sowie
-    eine <strong>Team-Whitelist/Publisher-Modus</strong> (z. B. um eigene Kampagnen-Parameter kontrolliert zuzulassen).
-    Ideal für Datenschutz-bewusste Nutzerinnen und Nutzer, <em>Journalist:innen</em>, <em>NGOs</em>, <em>Lehrkräfte</em>,
-    <em>Affiliate-Publisher</em>, <em>Blogger</em> und <em>Deal-Seiten</em> mit Compliance-Vorgaben.
-  </p>
-
-  <h2>Transparenz & Hilfe</h2>
-  <p>
-    SafeShare priorisiert Datenschutz und digitale Hygiene. Welche Parameter entfernt werden und wie Weiterleitungen
-    entschachtelt werden, ist in der <a href="help.html">Hilfe/FAQ</a> dokumentiert. Dort findest du auch Anleitungen für iOS,
-    Tipps zum Einrichten des Bookmarklets und Hinweise zur Offline-Nutzung. Starte jetzt mit der
-    <a href="app.html">App</a> oder richte das <a href="bookmarklets.html">Bookmarklet</a> ein – saubere Links in Sekunden.
-  </p>
-</section>
-  
-<a class="btn alt" href="assets/docs/SafeShare_Quickstart.pdf" download>Quickstart PDF</a>
-
-  <!-- Kurzvorschau Bookmarklet -->
-  <div class="card">
-    <h2 style="margin:0 0 8px;font-size:20px">Bookmarklet – „SafeShare clean“</h2>
-    <div id="bm-index">Lade …</div>
-    <p class="mut" style="margin-top:8px">iPhone/iPad: „Code kopieren“ → neues Lesezeichen → Code in das Feld „Adresse/URL“ einfügen.</p>
-  </div>
-
-  <!-- Features -->
-  <div class="card">
-    <h2 style="margin:0 0 8px;font-size:20px">Funktionen</h2>
-    <ul style="margin:0 0 0 18px">
-      <li>Tracking-Parameter entfernen (utm_*, gclid, fbclid, msclkid, …)</li>
-      <li>Redirects entschachteln (<code>url=</code>, <code>u=</code>, Google/Newsletter)</li>
-      <li>Amazon: Ref-/Tag-Parameter aufräumen; Pfade normalisieren</li>
-      <li>Pro: Bulk-Cleaning &amp; Team-Whitelist/Publisher-Modus</li>
-      <li>PWA: Optional als App installierbar</li>
-    </ul>
-  </div>
-
-  <div class="row" style="margin-top:12px">
-    <a class="btn alt" href="bulk-clean.html">Bulk-Cleaning</a>
-    <a class="btn alt" href="team-setup.html">Team-Setup</a>
-    <a class="btn alt" href="tests.html">Tests</a>
-  </div>
-
-  <footer class="mut" style="margin-top:18px">
-    <a href="impressum.html">Impressum</a>
-    <a href="datenschutz.html">Datenschutz</a>
-    <a href="help.html">Hilfe</a>
-  </footer>
-</div>
-
-<!-- Bookmarklet-Renderer -->
-<script src="js/bookmarklets.js?v=2025-11-17-01"></script>
-<script>
-  // Bookmarklet-Vorschau rendern
-  if (window.renderBookmarkletsIndex) renderBookmarkletsIndex('bm-index');
-  // Pro-Badge aus lokalem Status
-  (function(){
-    const on = localStorage.getItem('ss2_pro')==='1';
-    const b = document.getElementById('pro-badge');
-    if (b) b.textContent = 'Pro: ' + (on ? 'aktiv' : 'nicht aktiv');
-  })();
-</script>
-
-<!-- Service Worker Registrierung: immer zuletzt -->
-<script src="js/sw-register.js?v=2025-11-17-01"></script>
-</body>
-</html>
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/theme.css?v=27">
+<script src="js/sw-register.js?v=27"></script>
