@@ -1,14 +1,185 @@
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="/Supersystem/">
-<link rel="canonical" href="https://j-ai-71.github.io/Supersystem/impressum.html">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/impressum.html" hreflang="de">
-<link rel="alternate" href="https://j-ai-71.github.io/Supersystem/impressum.html" hreflang="x-default">
-<meta property="og:locale" content="de_DE">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
-<title>Impressum · SafeShare</title>
-<meta name="description" content="Impressum und Anbieterkennzeichnung.">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png"><link rel="icon" href="assets/icons/icon-192.png"><link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="css/theme.css?v=27"><script src="js/sw-register.js?v=27"></script>
+<!doctype html>
+<html lang="de">
+<head>
+  <!-- impressum.html -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/Supersystem/">
+  <title>Impressum · SafeShare</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/impressum.html">
+
+  <!-- hreflang / Locale -->
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/impressum.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/impressum.html" hreflang="x-default">
+  <meta property="og:locale" content="de_DE">
+
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 form-action 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <meta name="description" content="Impressum für SafeShare (Anbieterkennzeichnung nach § 5 TMG und § 18 Abs. 2 MStV).">
+
+  <!-- Icons / Manifest -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
+  <link rel="manifest" href="manifest.webmanifest?v=29">
+
+  <!-- Basistyle (kein Weißbild) -->
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:980px;margin:0 auto;padding:22px 14px}
+    h1{margin:.2em 0 .4em;font-size:1.9rem}
+    h2{margin:1.0em 0 .35em;font-size:1.2rem}
+    .mut{color:var(--mut)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
+    a{color:#cfe7ff}
+    address{font-style:normal;line-height:1.7}
+    code{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
+    footer{margin-top:18px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    ul.tight li{margin:.25rem 0}
+  </style>
+
+  <!-- Optional Theme -->
+  <link rel="stylesheet" href="css/theme.css?v=27">
+
+  <!-- SW-Registrierung -->
+  <script src="js/sw-register.js?v=29"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Impressum</h1>
+    <p class="mut">Anbieterkennzeichnung nach § 5 TMG und Verantwortlichkeit nach § 18 Abs. 2 MStV.</p>
+
+    <section class="card" id="anbieter">
+      <h2>Anbieter</h2>
+      <address>
+        <strong><!-- NAME -->(Bitte Namen/Firma eintragen)</strong><br>
+        <!-- STRASSE -->(Straße und Hausnummer)<br>
+        <!-- PLZORT -->(PLZ und Ort)<br>
+        <!-- LAND -->(Land)
+      </address>
+      <p>
+        Kontakt: <a href="mailto:<!-- EMAIL -->">(E-Mail einsetzen)</a><br>
+        Telefon: <!-- TELEFON --> (optional)
+      </p>
+      <p>
+        Vertreten durch: <!-- VERTRETUNG --> (falls juristische Person)
+      </p>
+      <p class="mut mono">
+        Hinweis: Diese Platzhalter im HTML durch deine echten Angaben ersetzen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Register & Aufsicht (falls zutreffend)</h2>
+      <ul class="tight">
+        <li>Registereintrag: <!-- REGISTER --> (z. B. Handelsregister, Vereinsregister, Registernummer)</li>
+        <li>Umsatzsteuer-ID nach § 27a UStG: <!-- USTID --></li>
+        <li>Wirtschafts-ID: <!-- WID --> (falls vorhanden)</li>
+        <li>Aufsichtsbehörde: <!-- AUFSICHT --> (bei reglementierten Berufen)</li>
+        <li>Berufsrechtliche Regelungen/Angaben: <!-- BERUF --> (falls erforderlich)</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Verantwortlich für den Inhalt (§ 18 Abs. 2 MStV)</h2>
+      <p>
+        <!-- INHALTSVERANTWORTLICHER -->(Name) · <!-- ANSCHRIFT INHALT --> (Anschrift wie oben)
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>EU-Streitschlichtung</h2>
+      <p>
+        Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+        <a href="https://ec.europa.eu/consumers/odr/" rel="noopener" target="_blank">https://ec.europa.eu/consumers/odr/</a>.
+        Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Haftung für Inhalte</h2>
+      <p>
+        Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+        Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
+        überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung
+        der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem
+        Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen werden wir diese Inhalte
+        umgehend entfernen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Haftung für Links</h2>
+      <p>
+        Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese
+        fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber
+        der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige
+        Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne
+        konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Urheberrecht</h2>
+      <p>
+        Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
+        Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen
+        Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet, sofern nicht anders
+        angegeben. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet und entsprechende
+        Inhalte als solche gekennzeichnet. Solltest du trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen Hinweis. Bei
+        Bekanntwerden von Rechtsverletzungen entfernen wir derartige Inhalte umgehend.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Bild-/Icon-Nachweise</h2>
+      <p class="mut">
+        Eigene Grafiken/Icons (SafeShare-Logo, App-Icons). Externe Marken und Logos sind Eigentum der jeweiligen Rechteinhaber.
+      </p>
+    </section>
+
+    <footer class="mut">
+      <a href="index.html">Startseite</a> ·
+      <a href="datenschutz.html">Datenschutz</a> ·
+      <a href="help.html">Hilfe</a> ·
+      <a href="mailto:?subject=SafeShare%20Impressum&body=Nachricht%20an%20die%20Betreiber.">Kontakt</a>
+    </footer>
+  </div>
+
+  <!-- Optional: Mini-Helfer, um E-Mail im Markup anzuzeigen (Platzhalter ersetzen) -->
+  <script>
+    // Wenn du gleich im HTML echte Daten eingetragen hast, diesen Block ignorieren/entfernen.
+    // Beispiel für einfache Platzhalter-Ersetzung per URL-Parametern: ?name=...&email=... (nur Demo)
+    (function(){
+      const q = new URLSearchParams(location.search);
+      const name = q.get('name');      // z.B. Jana Jergus
+      const email = q.get('email');    // z.B. kontakt@example.com
+      if (name) document.querySelector('#anbieter address strong').textContent = name;
+      if (email) {
+        const a = document.querySelector('#anbieter a[href^="mailto:"]');
+        a.href = 'mailto:' + email;
+        a.textContent = email;
+      }
+    })();
+  </script>
+
+  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist nicht erforderlich, alle Pflichtangaben stehen im Text.</p></div></noscript>
+</body>
+</html>
