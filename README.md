@@ -1,9 +1,10 @@
-# SafeShare – Einfache Anleitung
+# SafeShare – saubere Links ohne Tracking
 
-Saubere Links ohne Werbe-Anhänge (z. B. utm, gclid, fbclid). Teilen ohne Ballast.
+- App: https://j-ai-71.github.io/Supersystem/
+- Hilfe/FAQ: https://j-ai-71.github.io/Supersystem/help.html
+- Pro: https://j-ai-71.github.io/Supersystem/pro.html
 
-**Zur Seite:**  
-`https://j-ai-71.github.io/Supersystem/`
+SafeShare entfernt UTM/gclid/fbclid und entpackt Redirects – 100 % lokal im Browser (PWA, offline-fähig).
 
 ---
 
