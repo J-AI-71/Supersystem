@@ -1,92 +1,65 @@
 <!doctype html>
 <html lang="de">
+<!-- education.html — <head> (final, mit Nonce) -->
 <head>
-  <!-- education.html – Landing für Schule/NGOs/Lehrkräfte (SEO) -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Für Bildung & NGOs · SafeShare</title>
 
+  <title>SafeShare für Bildung & NGOs</title>
+  <meta name="description" content="Links teilen ohne Tracking – datensparsam, PWA-fähig, offline nutzbar. Ideal für Unterricht, Hochschulen, NGOs und öffentliche Einrichtungen.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/education.html">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/education.html">
+  <meta name="robots" content="index,follow">
 
-<meta http-equiv="Content-Security-Policy"
-      content="default-src 'self';
-               base-uri 'self';
-               frame-ancestors 'none';
-               object-src 'none';
-               img-src 'self' data:;
-               style-src 'self' 'unsafe-inline';
-               script-src 'self' 'nonce-SSJSON2';
-               font-src 'self';
-               worker-src 'self';
-               manifest-src 'self';
-               connect-src 'self'">
+  <!-- CSP: Skripte nur von self, JSON-LD via Nonce -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'nonce-SSJSON2';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
 
-<script type="application/ld+json" nonce="SSJSON2">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "de-DE",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Wie schützt SafeShare die Privatsphäre?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "SafeShare verarbeitet Links ausschließlich im Browser. Es gibt keine Accounts, keine Server-Logs und keine Tracking-Cookies."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Eignet sich SafeShare für Schulen und NGOs?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Ja. Lehrkräfte, Hochschulen und NGOs können Links vor dem Teilen bereinigen. Optional als PWA installierbar und offline nutzbar."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Braucht man Adminrechte oder IT?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Nein. SafeShare ist eine Web-App und läuft in gängigen Browsern ohne Installation. PWA-Installation ist optional."
-      }
-    }
-  ]
-}
-</script>
-  
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/education.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/education.html" hreflang="x-default">
-  <meta name="description" content="Privacy-freundliches Teilen für Schule, Hochschulen und NGOs: sichere, saubere Links ohne Tracking – lokal im Browser.">
+  <!-- JSON-LD (FAQ) -->
+  <script type="application/ld+json" nonce="SSJSON2">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "inLanguage":"de-DE",
+    "mainEntity":[
+      {"@type":"Question","name":"Wie schützt SafeShare die Privatsphäre?","acceptedAnswer":{"@type":"Answer","text":"SafeShare verarbeitet Links ausschließlich im Browser. Es gibt keine Accounts, keine Server-Logs und keine Tracking-Cookies."}},
+      {"@type":"Question","name":"Eignet sich SafeShare für Schulen und NGOs?","acceptedAnswer":{"@type":"Answer","text":"Ja. Lehrkräfte, Hochschulen und NGOs können Links vor dem Teilen bereinigen. Optional als PWA installierbar und offline nutzbar."}},
+      {"@type":"Question","name":"Braucht man Adminrechte oder IT?","acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare ist eine Web-App und läuft in gängigen Browsern ohne Installation. PWA-Installation ist optional."}}
+    ]
+  }
+  </script>
 
-  <!-- OG/Twitter -->
-  <meta property="og:locale" content="de_DE">
+  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="SafeShare für Bildung & NGOs">
-  <meta property="og:description" content="Sichere, saubere Links ohne Tracking – lokal im Browser.">
+  <meta property="og:description" content="Datensparsam teilen – ohne Tracking, lokal im Browser, PWA-fähig.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/education.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
- <!-- NEU: CSP (ohne unsafe-inline bei Skripten) -->
-<meta http-equiv="Content-Security-Policy"
-      content="default-src 'self';
-               base-uri 'self';
-               frame-ancestors 'none';
-               object-src 'none';
-               img-src 'self' data:;
-               style-src 'self' 'unsafe-inline';
-               script-src 'self';
-               font-src 'self';
-               worker-src 'self';
-               manifest-src 'self'">
-
   <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=31">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=31">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=31">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
   <link rel="manifest" href="manifest.webmanifest?v=31">
+  <meta name="theme-color" content="#0b0b0b">
+
+  <!-- CSS / JS -->
+  <link rel="stylesheet" href="css/theme.css?v=31">
+  <script defer src="js/sw-register.js?v=31"></script>
+  <script defer src="js/ext-links.js?v=31"></script>
+</head>
 
   <!-- Styles (hell) -->
   <style>
