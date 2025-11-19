@@ -28,11 +28,12 @@
     { path: 'offline.html',                 title: 'Offline',                   tags: ['offline'] },
   ];
 
-  const QUICK = [
-    'index.html','app.html','bookmarklets.html','bulk-clean.html','team-setup.html',
-    'redirect-entschachteln.html','help.html','quickstart.html',
-    'publisher.html','education.html','partners.html','compliance.html','press.html'
-  ];
+  const PAGES = [
+  '', 'app.html','bookmarklets.html','bulk-clean.html','team-setup.html',
+  'redirect-entschachteln.html','pro.html','publisher.html','education.html',
+  'partners.html','compliance.html','press.html','help.html',
+  'impressum.html','datenschutz.html','quickstart.html','status.html'
+];
 
   /* ---- Alias/Heuristiken für häufige Tippfehler ---- */
   const ALIAS = new Map(Object.entries({
