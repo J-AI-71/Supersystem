@@ -1,141 +1,82 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- status.html (neu, ohne Inline-JS) -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Status · SafeShare</title>
 
-  <!-- Canonical / hreflang -->
+  <!-- Kanonisch + Robots -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/status.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/status.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/status.html" hreflang="x-default">
-  <meta name="description" content="Status- und Diagnose-Seite für SafeShare: Service Worker, Caches, LocalStorage, Manifest.">
-  <meta name="robots" content="noindex,follow">
-  <meta property="og:locale" content="de_DE">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
+  <!-- Meta/Icons/Manifest -->
+  <meta name="description" content="Status & Diagnose der SafeShare-PWA: Service Worker, Cache-Version, Browser-Umgebung, Precache und Offline-Verfügbarkeit.">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=30">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=30">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=30">
-  <link rel="manifest" href="manifest.webmanifest?v=30">
+  <!-- CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
+                 img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';
+                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
 
-  <!-- Styles -->
+  <!-- Preloads (optional) -->
+  <link rel="preload" href="js/page-status.js?v=30" as="script">
+  <link rel="preload" href="js/sw-register.js?v=30" as="script">
+
   <style>
-    :root{
-      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a; --line:#2a2a2a;
-      --card:#121212; --btn:#1b1b1b; --ok:#1e402f; --warn:#40311e;
-    }
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    a{color:#cfe7ff}
-    .wrap{max-width:980px;margin:0 auto;padding:22px 14px}
-    .mut{color:var(--mut)}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    h1{margin:.2em 0 .6em;font-size:1.9rem}
-    h2{margin:1.0em 0 .35em;font-size:1.15rem}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    .row{display:flex;flex-wrap:wrap;gap:8px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .btn{display:inline-block;border:1px solid var(--line);background:var(--btn);color:var(--fg);
-         padding:.55rem .85rem;border-radius:10px;cursor:pointer;text-decoration:none}
-    .btn.ok{background:var(--ok)}
-    .btn.warn{background:var(--warn)}
-    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.1rem .5rem;margin:.1rem .25rem 0 0}
-    .kv{display:grid;grid-template-columns:260px 1fr;gap:6px}
-    footer{margin:18px 0}
-    .visually-hidden-focusable{position:absolute;left:-9999px}
-    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#222;padding:.4rem .6rem;border-radius:8px}
+    body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0b0b0b;color:#eaeaea}
+    .wrap{max-width:960px;margin:0 auto;padding:24px}
+    .mut{color:#b8b8b8}
+    .row{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #3a3a3a;text-decoration:none;color:#eaeaea;background:#161616}
+    .btn:hover{background:#1f1f1f}
+    .card{border:1px solid #2b2b2b;border-radius:14px;padding:16px;background:#111}
+    .ft{margin-top:36px;border-top:1px solid #262626;padding-top:14px}
+    .ft a{color:#b8b8b8;text-decoration:none;margin-right:10px}
+    .skip{position:absolute;left:-9999px;top:-9999px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:8px 10px;border-radius:8px}
   </style>
-
-  <link rel="stylesheet" href="css/theme.css?v=30">
-
-  <!-- SW-Registrierung + Seiten-Skripte -->
-  <script defer src="js/sw-register.js?v=31"></script>
-<script defer src="js/page-status.js?v=31"></script>
 </head>
 <body>
-  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+
   <div class="wrap">
     <header>
-      <h1>Status</h1>
-      <p id="loc" class="mut mono">URL: –</p>
-      <div class="row" style="margin-top:.4rem">
-        <button id="btnSwUpd" class="btn ok" type="button">Auf Update prüfen</button>
-        <button id="btnRefresh" class="btn" type="button">Status aktualisieren</button>
-        <button id="btnNoCache" class="btn warn" type="button">Neu laden (nocache)</button>
-        <a class="btn" href="app.html">Zur App</a>
-      </div>
+      <h1>SafeShare Status</h1>
+      <p class="mut">Diagnose der PWA: Service Worker, Cache-Version, Browser-Umgebung, Offline-Modus und mehr.</p>
     </header>
 
     <main id="main">
-      <section class="card" aria-labelledby="rt">
-        <h2 id="rt">Laufzeit</h2>
-        <div id="runtime" class="kv">
-          <!-- gefüllt durch page-status.js -->
-        </div>
-      </section>
+      <div id="status-out" class="card">Lade Status …</div>
 
-      <section class="card" aria-labelledby="sw">
-        <h2 id="sw">Service Worker</h2>
-        <div id="sw" class="mut">
-          <!-- gefüllt durch page-status.js -->
-        </div>
-      </section>
-
-      <section class="card" aria-labelledby="cache">
-        <h2 id="cache">Cache API</h2>
-        <div id="caches" class="mut">
-          <!-- gefüllt durch page-status.js -->
-        </div>
-      </section>
-
-      <section class="card" aria-labelledby="ls">
-        <h2 id="ls">LocalStorage</h2>
-        <div id="ls" class="mut mono">
-          <!-- gefüllt durch page-status.js -->
-        </div>
-      </section>
-
-      <section class="card" aria-labelledby="mani">
-        <h2 id="mani">Manifest</h2>
-        <div id="manifest" class="mut">
-          <!-- gefüllt durch page-status.js -->
-        </div>
-      </section>
+      <div class="row">
+        <a class="btn" href="./">Zur Startseite</a>
+        <a class="btn" href="help.html">Hilfe</a>
+      </div>
     </main>
 
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="bookmarklets.html">Bookmarklet</a> ·
-      <a href="bulk-clean.html">Bulk-Clean</a> ·
-      <a href="team-setup.html">Team-Setup</a> ·
-      <a href="redirect-entschachteln.html">Redirect entschachteln</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a> ·
-      <a href="press.html">Presse</a>
+    <footer class="ft">
+      <nav class="ft-nav">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="help.html">Hilfe</a>
+        <a href="press.html">Presse</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
     </footer>
   </div>
 
-  <noscript>
-    <div class="wrap"><p class="mut">JavaScript ist erforderlich, um Statusdaten aus dem Browser anzuzeigen.</p></div>
-  </noscript>
+  <noscript><div class="wrap"><div class="card">JavaScript ist erforderlich, um den Status anzuzeigen.</div></div></noscript>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=30"></script>
+  <script defer src="js/cleaner.js?v=30"></script>
+  <script defer src="js/page-status.js?v=30"></script>
 </body>
 </html>
