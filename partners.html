@@ -5,132 +5,176 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare für Unternehmen & Partner</title>
+  <title>Unternehmen &amp; Partner · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/partners.html">
-  <meta name="description" content="Saubere Links, weniger Tracking-Footprint und klare Compliance – komplett lokal im Browser, ohne Accounts. Für Unternehmen, Publisher, Partnernetzwerke und IT.">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="SafeShare für Unternehmen & Partner: saubere, kurze Links in Marketing, CRM und Compliance. Lokal im Browser, ohne Accounts – Whitelist für erlaubte Parameter.">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/partners.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/partners.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/partners.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/partners.html">
   <meta property="og:locale" content="de_DE">
-
-  <!-- Icons / PWA -->
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="SafeShare für Unternehmen & Partner">
-  <meta property="og:description" content="Kürzere, saubere Links; weniger Tracking-Footprint; klare Compliance – alles lokal im Browser.">
+  <meta property="og:description" content="Klarere Links für Marketing, CRM und Compliance – mit Team-Whitelist.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/partners.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Sicherheits-CSP (sanft) -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    base-uri 'self';
-    frame-ancestors 'none';
-    object-src 'none';
-    img-src 'self' data:;
-    style-src 'self' 'unsafe-inline';
-    script-src 'self';
-    font-src 'self';
-    worker-src 'self';
-    manifest-src 'self';
-    connect-src 'self'
-  ">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Styles (leicht, identisch zu den anderen Seiten) -->
+  <!-- Sicherheits-CSP (ohne Inline-JS) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
+                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=31"></script>
+
+  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9e9ea;--mut:#a7a7ad;--card:#151518;--btn:#2a6df4;--btnfg:#fff;--chip:#222228}
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
     @media (prefers-color-scheme: light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5e5e66;--card:#f5f7fa;--chip:#e9ecf3}
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
     }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
     a{color:inherit}
-    .wrap{max-width:1080px;margin:0 auto;padding:24px}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
-    .chip{background:var(--chip);border-radius:999px;padding:8px 12px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px}
-    @media(min-width:840px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border-radius:12px;padding:18px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--chip);text-decoration:none}
-    .btn.pri{background:var(--btn);color:var(--btnfg)}
-    footer{margin-top:30px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
-    footer a{color:var(--mut);text-decoration:none;margin-right:10px}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+    .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:#141414}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
+    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
+    ul{margin:.4rem 0 .8rem 1.2rem}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    pre{background:#0f0f10;border:1px solid var(--line);border-radius:10px;padding:10px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:6px}
+    th,td{border-top:1px solid var(--line);padding:8px 6px;vertical-align:top}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
     .skip{position:absolute;left:-9999px}
-    .skip:focus{left:12px;top:12px;z-index:10;background:#ffd;border-radius:6px;color:#000;padding:6px 10px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
   </style>
-
-  <!-- SW-Registrierung -->
-  <script defer src="js/sw-register.js?v=30"></script>
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt springen</a>
   <div class="wrap" id="main">
-    <h1>SafeShare für Unternehmen &amp; Partner</h1>
-    <p class="mut">Saubere Links, weniger Tracking-Footprint, klare Compliance – komplett lokal im Browser, ohne Accounts.</p>
+    <h1>Unternehmen &amp; Partner</h1>
+    <p class="mut">Klarere, kürzere Links in Marketing, CRM und Compliance. SafeShare entfernt Tracking-Signaturen, entpackt Redirects und behält definierte Team-Parameter (Whitelist) – alles lokal im Browser.</p>
 
-    <div class="row" aria-label="Themen">
-      <span class="chip">Marketing &amp; Redaktion</span>
-      <span class="chip">Affiliates &amp; Partnernetzwerke</span>
-      <span class="chip">IT-Compliance</span>
-      <span class="chip">PWA &amp; Offline</span>
+    <div class="row" style="margin-top:10px">
+      <a class="btn pri" href="app.html">App öffnen</a>
+      <a class="btn" href="team-setup.html">Team-Whitelist</a>
+      <a class="btn" href="bulk-clean.html">Bulk-Clean (Pro)</a>
+      <a class="btn" href="compliance.html">Compliance</a>
+      <a class="btn" href="quickstart.html">Quickstart (1 Seite)</a>
+    </div>
+
+    <div class="chips" aria-label="Einsatzbereiche">
+      <span class="chip">Marketing &amp; Kampagnen</span>
+      <span class="chip">CRM &amp; Newsletter</span>
+      <span class="chip">Sales-Enablement</span>
+      <span class="chip">IT &amp; Compliance</span>
+      <span class="chip">Partnerprogramme</span>
     </div>
 
     <div class="grid">
       <section class="card">
-        <h2>Einsatzfelder</h2>
+        <h2>Business-Nutzen</h2>
         <ul>
-          <li><strong>Publisher/Deals:</strong> Tracking-Ballast entfernen, Partner-IDs via Whitelist erhalten.</li>
-          <li><strong>Marketing/CRM:</strong> Kürzere URLs in Kampagnen &amp; Newslettern.</li>
-          <li><strong>IT/Compliance:</strong> Lokale Verarbeitung, keine Dritt-Requests, klare Parameter-Regeln.</li>
+          <li><strong>Einheitliche Link-Standards:</strong> saubere, kurze URLs für Kampagnen, Landingpages und Assets.</li>
+          <li><strong>Weniger Fehlerquellen:</strong> entpackte Redirects und entfernte Rausch-Parameter.</li>
+          <li><strong>Kontrollierte Parameter:</strong> Team-Whitelist für erlaubte IDs (z. B. <code>tag</code>, <code>ref</code>, <code>aff_id</code>).</li>
+          <li><strong>Privacy-by-Design:</strong> Verarbeitung lokal im Browser, keine Accounts, keine Server-Logs.</li>
         </ul>
-
-        <h3>Integration</h3>
-        <ul>
-          <li><a href="bookmarklets.html">Bookmarklet</a> in Redaktionsbrowsern ausrollen.</li>
-          <li><a href="bulk-clean.html">Bulk-Clean</a> (Pro) für Listenexporte.</li>
-          <li><a href="team-setup.html">Team-Whitelist</a> definieren (z. B. <code>tag</code>, <code>ref</code>).</li>
-        </ul>
-
         <div class="row">
-          <a class="btn pri" href="app.html">Jetzt ausprobieren</a>
-          <a class="btn" href="quickstart.html">Quickstart (PDF)</a>
-          <a class="btn" href="help.html">Hilfe</a>
+          <a class="btn pri" href="bookmarklets.html">Bookmarklet speichern</a>
+          <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
         </div>
       </section>
 
-      <aside class="card">
-        <h2>Vorteile</h2>
-        <ul>
-          <li>Schnellere, klarere Links → bessere UX.</li>
-          <li>Weniger Blockaden durch Filter-Signaturen.</li>
-          <li>Privacy-by-Design: keine Server-Logs; PWA-fähig.</li>
-          <li>Parametrische Kontrolle per Whitelist.</li>
-        </ul>
-        <p>Weitere Infos: <a href="compliance.html">Compliance</a> · <a href="press.html">Presse</a></p>
-      </aside>
+      <section class="card">
+        <h2>Typische Workflows</h2>
+        <table aria-label="Workflows">
+          <thead>
+            <tr><th>Bereich</th><th>Vorgehen</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Marketing</td>
+              <td>Links vor dem Publizieren in der <a href="app.html">App</a> säubern; Whitelist-Parameter erlauben.</td>
+            </tr>
+            <tr>
+              <td>CRM/Newsletter</td>
+              <td>Listen mit <a href="bulk-clean.html">Bulk-Clean</a> bereinigen, CSV exportieren, in Tool importieren.</td>
+            </tr>
+            <tr>
+              <td>Partner</td>
+              <td>Erlaubte IDs wie <code>tag</code>/<code>ref</code> in <a href="team-setup.html">Team-Setup</a> pflegen.</td>
+            </tr>
+            <tr>
+              <td>Compliance</td>
+              <td>Richtlinie definieren, regelmäßige Stichproben; Status unter <a href="status.html">Status</a> prüfen.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Vorher → Nachher</h2>
+        <pre><code>https://shop.tld/p/?utm_source=news&amp;utm_campaign=sale&amp;gclid=abc&amp;tag=partner42
+→ https://shop.tld/p/?tag=partner42
+
+https://www.google.com/url?q=https%3A%2F%2Ffirmenseite.tld%2Fcase%3Fref%3Db2b&amp;sa=D
+→ https://firmenseite.tld/case?ref=b2b</code></pre>
+        <p class="mut">Whitelist gepflegt: <code>tag</code>, <code>ref</code>.</p>
+      </section>
+
+      <section class="card">
+        <h2>Einführung in 5 Schritten</h2>
+        <ol>
+          <li><a href="bookmarklets.html">Bookmarklet</a> in die Leiste ziehen oder <a href="app.html">App</a> nutzen.</li>
+          <li>Erlaubte Parameter in <a href="team-setup.html">Team-Whitelist</a> eintragen.</li>
+          <li>Prozesse festlegen (Einzel-Link vs. Bulk-Clean, Verantwortung/Review).</li>
+          <li>Optional als PWA installieren (offline nutzbar).</li>
+          <li>Regelmäßig Stichproben, Ergebnisse dokumentieren (<a href="compliance.html">Compliance</a>).</li>
+        </ol>
+      </section>
     </div>
 
-    <footer aria-label="Fußzeile">
-      <nav>
-        <a href="./">Startseite</a> ·
-        <a href="app.html">App</a> ·
-        <a href="quickstart.html">Quickstart</a> ·
-        <a href="help.html">Hilfe</a> ·
-        <a href="press.html">Presse</a> ·
-        <a href="impressum.html">Impressum</a> ·
+    <footer>
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
+        <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
       </nav>
     </footer>
   </div>
+
+  <noscript>
+    <div class="wrap"><div class="card">JavaScript aktivieren, um PWA/Service-Worker zu nutzen.</div></div>
+  </noscript>
 </body>
 </html>
