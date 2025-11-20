@@ -8,29 +8,49 @@
   <title>SafeShare – Saubere Links ohne Tracking</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="SafeShare säubert Links lokal im Browser: entfernt UTM/gclid/fbclid, entpackt Redirects und schützt die Privatsphäre. Keine Accounts, keine Server-Logs.">
+  <meta name="description" content="SafeShare säubert Links lokal im Browser: entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – ohne Accounts, ohne Server-Logs.">
 
-  <!-- Locale / hreflang -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="x-default">
+  <!-- hreflang / Locale -->
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/">
   <meta property="og:locale" content="de_DE">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-  <meta property="og:description" content="Entfernt Tracking-Parameter wie UTM/gclid/fbclid, entpackt Weiterleitungen – alles lokal im Browser.">
+  <meta property="og:description" content="Entfernt Tracking-Parameter und entpackt Redirects – alles lokal im Browser.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/icons/og.png">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- PWA / Icons -->
   <meta name="theme-color" content="#0b0b0b">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
-  <link rel="icon" type="image/png" href="assets/icons/icon-32-kreis.png" sizes="32x32">
-  <link rel="icon" type="image/png" href="assets/icons/icon-16-kreis.png" sizes="16x16">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Structured Data -->
+  <meta name="application-name" content="SafeShare">
+  <script type="application/ld+json" nonce="SSAPP1">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "inLanguage":"de-DE",
+    "name":"SafeShare",
+    "description":"SafeShare säubert Links lokal im Browser: entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – ohne Accounts, ohne Server-Logs.",
+    "url":"https://j-ai-71.github.io/Supersystem/",
+    "applicationCategory":"UtilitiesApplication",
+    "operatingSystem":"Web",
+    "browserRequirements":"Aktueller Browser (PWA-fähig)",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},
+    "publisher":{"@type":"Organization","name":"SafeShare"},
+    "isFamilyFriendly":true
+  }
+  </script>
+
+  <!-- Sicherheits-CSP (mit Nonce für JSON-LD) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -38,21 +58,23 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self';
+                 script-src 'self' 'nonce-SSAPP1';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- SW-Registrierung (extern) -->
+  <!-- SW-Registrierung -->
   <script defer src="js/sw-register.js?v=31"></script>
-
-  <!-- (optional) Diagnose-Overlay ohne Konsole -->
+  <!-- Optional: Diagnose-Overlay ohne Konsole -->
   <!-- <script defer src="js/diag.js?v=31"></script> -->
 
   <!-- Minimal-Styles -->
   <style>
     :root { color-scheme: light dark; --bg:#0b0b0b; --fg:#eaeaea; --mut:#a6a6a6; --card:#141414; --pri:#23c47e; }
+    @media (prefers-color-scheme: light){
+      :root { --bg:#ffffff; --fg:#0b0b0b; --mut:#5f6368; --card:#f5f7fa; --pri:#23c47e; }
+    }
     html,body{margin:0;padding:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:var(--bg);color:var(--fg)}
     .wrap{max-width:980px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
