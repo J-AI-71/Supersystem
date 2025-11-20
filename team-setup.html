@@ -1,220 +1,147 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- bulk-clean.html -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Bulk-Clean · SafeShare</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
+  <title>Team-Whitelist · SafeShare</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/team-setup.html">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="Team-Whitelist: Erlaubte Parameter (z. B. Partner-IDs) zentral definieren. Gilt lokal im Browser für App, Bookmarklet und Bulk-Clean.">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/team-setup.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/team-setup.html">
   <meta property="og:locale" content="de_DE">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Team-Whitelist – SafeShare">
+  <meta property="og:description" content="Welche Parameter bleiben dürfen? Lokal definieren & anwenden.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/team-setup.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <meta name="description" content="Mehrere Links auf einmal säubern – schneller Workflow für Profis.">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-  <link rel="manifest" href="manifest.webmanifest?v=29">
+  <!-- Sicherheits-CSP (ohne Inline-JS) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
+                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
 
-  <!-- Fallback-Styles -->
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=31"></script>
+  <script defer src="js/team-setup.js?v=31"></script>
+
+  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a;--btn:#1b1b1b}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    .wrap{max-width:980px;margin:0 auto;padding:22px 14px}
-    h1{margin:.2em 0 .4em;font-size:1.9rem}
+    :root{--bg:#0b0b0b;--fg:#e9e9ea;--mut:#a7a7ad;--card:#151518;--line:#20232b;--chip:#1b1f27;--pri:#23c47e}
+    @media(prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5e5e66;--card:#f5f7fa;--line:#e1e7ef;--chip:#e9edf5}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:inherit}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px}
-    textarea{width:100%;box-sizing:border-box;min-height:220px;background:#0f0f0f;border:1px solid var(--line);color:var(--fg);border-radius:12px;padding:12px}
-    .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    .btn{padding:.7rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--fg);text-decoration:none;cursor:pointer}
-    .btn.pri{background:#1e2e24}
-    .stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
-    code{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
-    footer{margin-top:18px}
-    a{color:#cfe7ff}
-    .small{font-size:.92rem}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:980px){.grid{grid-template-columns:1.15fr .85fr}}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#121417;color:var(--fg);text-decoration:none;cursor:pointer}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    input[type=text]{height:40px;border-radius:10px;border:1px solid var(--line);background:#0f1114;color:var(--fg);padding:0 12px}
+    textarea{width:100%;min-height:130px;border-radius:12px;border:1px solid var(--line);background:#0f1114;color:var(--fg);padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-top:1px solid var(--line);vertical-align:middle}
+    th{text-align:left;color:var(--mut)}
+    .pill{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin:4px 6px 0 0}
+    .pill code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .pill .x{margin-left:8px;cursor:pointer;opacity:.8}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+    .badge{background:#101215;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--mut);font-size:.92rem}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .skip{position:absolute;left:-9999px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
   </style>
-
-  <link rel="stylesheet" href="css/theme.css?v=27">
-  <script src="js/sw-register.js?v=29"></script>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Bulk-Clean</h1>
-    <p class="mut">Mehrere URLs (eine pro Zeile) einfügen → <em>Säubern</em> → Ergebnis kopieren oder als Datei speichern.</p>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap" id="main">
+    <h1>Team-Whitelist</h1>
+    <p class="mut">Definiere Parameter, die beim Säubern erhalten bleiben sollen (z. B. <code>tag</code>, <code>ref</code>, <code>partner</code>). Gilt lokal im Browser für <a href="app.html">App</a>, <a href="bookmarklets.html">Bookmarklet</a> und <a href="bulk-clean.html">Bulk-Clean</a>.</p>
 
-    <section class="box">
-      <h2 style="margin-top:0">Eingabe</h2>
-      <textarea id="inList" placeholder="https://beispiel.de/?utm_source=newsletter&#10;https://google.com/url?q=https%3A%2F%2Fziel.de%2F%3Ffbclid%3D123&amp;gclid=ABC123"></textarea>
-      <div class="row" style="margin-top:10px">
-        <button class="btn pri" onclick="bulkClean()">Säubern</button>
-        <button class="btn" onclick="pasteFromClipboard()">Aus Zwischenablage einfügen</button>
-        <button class="btn" onclick="clearIn()">Eingabe leeren</button>
-      </div>
-      <p class="small mut">Whitelist-Keys (Team/Publisher) werden aus <code>localStorage:ss2_allow</code> gelesen.</p>
-    </section>
+    <div class="grid">
+      <!-- Verwaltung -->
+      <section class="card">
+        <h2>Parameter verwalten</h2>
 
-    <section class="box">
-      <h2 style="margin-top:0">Ergebnis</h2>
-      <textarea id="outList" readonly placeholder="Bereinigte URLs erscheinen hier…"></textarea>
-      <div class="row" style="margin-top:10px">
-        <button class="btn" onclick="copyOut()">Kopieren</button>
-        <button class="btn" onclick="downloadOut()">Als TXT speichern</button>
-        <button class="btn" onclick="clearOut()">Ausgabe leeren</button>
-      </div>
-      <div id="stats" class="stat small mut" style="margin-top:10px"></div>
-    </section>
+        <div class="row" style="margin:6px 0 10px">
+          <label for="param-input" class="mut">Neuer Parameter:</label>
+          <input id="param-input" type="text" inputmode="latin" autocomplete="off" placeholder="z. B. tag oder ref" aria-label="Parametername">
+          <button class="btn pri" id="btn-add">Hinzufügen</button>
+          <button class="btn" id="btn-export">Exportieren</button>
+          <button class="btn" id="btn-reset">Zurücksetzen</button>
+        </div>
 
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="team-setup.html">Team-Setup</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="mailto:?subject=SafeShare%20Feedback&body=Bitte%20hier%20Feedback%20eintragen.">Feedback</a>
+        <div id="pill-box" aria-live="polite" aria-label="Whitelist" style="margin-top:6px"></div>
+
+        <div class="badges">
+          <span class="badge">Einträge: <strong id="cnt">0</strong></span>
+          <span class="badge">Speicherort: <code>localStorage</code></span>
+          <span class="badge">Key: <code>ss_whitelist</code></span>
+        </div>
+
+        <h3 style="margin:18px 0 8px">Liste importieren</h3>
+        <p class="mut">Kommagetrennt, Leerzeichen oder Zeilenumbrüche sind ok. Ungültige Namen werden ignoriert.</p>
+        <textarea id="import-area" placeholder="tag, ref
+partner_id
+foo_bar"></textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn pri" id="btn-import-merge">Importieren (zusammenführen)</button>
+          <button class="btn" id="btn-import-replace">Importieren (ersetzen)</button>
+        </div>
+      </section>
+
+      <!-- Hinweise -->
+      <aside class="card">
+        <h2>Hinweise & Geltung</h2>
+        <ul>
+          <li><strong>Geltung:</strong> Nur auf diesem Gerät/Browser (lokal).</li>
+          <li><strong>Format:</strong> Kleinbuchstaben, Ziffern, Unterstrich, Bindestrich, Punkt (<code>a-z 0-9 _ - .</code>).</li>
+          <li><strong>Beispiele:</strong> <code>tag</code>, <code>ref</code>, <code>partner</code>, <code>aff_id</code>.</li>
+          <li><strong>Kompatibilität:</strong> Älterer Key <code>ss_team_whitelist</code> wird weiter gelesen.</li>
+          <li><strong>Export:</strong> JSON zum Teilen im Team.</li>
+        </ul>
+        <p class="mut">Nach Änderungen empfehlen wir einen Kurztest in der <a href="app.html">App</a> oder mit <a href="bulk-clean.html">Bulk-Clean</a>.</p>
+      </aside>
+    </div>
+
+    <footer>
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="help.html">Hilfe</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
     </footer>
   </div>
 
-  <script>
-    const $ = sel => document.querySelector(sel);
-
-    async function pasteFromClipboard(){
-      try{
-        const t = await navigator.clipboard.readText();
-        if(t){ $('#inList').value = t; }
-      }catch(e){}
-    }
-    function clearIn(){ $('#inList').value=''; }
-    function clearOut(){ $('#outList').value=''; $('#stats').innerHTML=''; }
-    function copyOut(){
-      const v = $('#outList').value;
-      if(!v) return;
-      if(navigator.clipboard?.writeText){ navigator.clipboard.writeText(v); }
-      else { $('#outList').select(); document.execCommand('copy'); $('#outList').blur(); }
-    }
-    function downloadOut(){
-      const v = $('#outList').value;
-      if(!v) return;
-      const blob = new Blob([v], {type:'text/plain;charset=utf-8'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'safeshare-cleaned.txt';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-    }
-
-    function bulkClean(){
-      const input = $('#inList').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-      const out = [];
-      const removed = new Map(); // key -> count
-      let changed = 0, unwrapped = 0;
-
-      for(const line of input){
-        const res = Cleaner.cleanUrl(line);
-        out.push(res.url);
-        if(res.removed.length || res.unwrapped) changed++;
-        if(res.unwrapped) unwrapped++;
-        for(const k of res.removed){
-          removed.set(k, (removed.get(k)||0) + 1);
-        }
-      }
-      $('#outList').value = out.join('\n');
-
-      const remKeys = [...removed.entries()].sort((a,b)=>b[1]-a[1]).slice(0,20)
-        .map(([k,c])=>`<code>${escapeHtml(k)}</code>×${c}`).join(' ');
-      const kept = (localStorage.getItem('ss2_allow')||'').split(',').map(s=>s.trim()).filter(Boolean);
-      $('#stats').innerHTML = `
-        <div><strong>Zeilen</strong><br>${input.length}</div>
-        <div><strong>Geändert</strong><br>${changed}</div>
-        <div><strong>Redirects entpackt</strong><br>${unwrapped}</div>
-        <div><strong>Whitelist (behalten)</strong><br>${kept.length? kept.map(k=>'<code>'+escapeHtml(k)+'</code>').join(', '):'–'}</div>
-        <div style="grid-column:1/-1"><strong>Top entfernte Parameter</strong><br>${remKeys || '–'}</div>
-      `;
-    }
-
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    // — Reinigungslogik (wie in App) —
-    const Cleaner = {
-      cleanUrl(input){
-        let url = String(input).trim();
-        const info = { url:'', removed:[], kept:[], normalized:'', unwrapped:null };
-
-        if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(url)) url = 'https://' + url;
-
-        let u; try { u = new URL(url); } catch { return { ...info, url: input }; }
-
-        const unwrap = this.unwrap(u);
-        if (unwrap) { info.unwrapped = unwrap; u = new URL(unwrap.to); }
-
-        const allowRaw = localStorage.getItem('ss2_allow') || '';
-        const allow = new Set(allowRaw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean));
-
-        const toRemove = [];
-        for (const [k] of u.searchParams) {
-          const key = k.toLowerCase();
-          const rm = key.startsWith('utm_') ||
-                     key === 'gclid' || key === 'fbclid' || key === 'yclid' ||
-                     key === 'mc_eid' || key === 'mc_cid' ||
-                     key === 'mkt_tok' || key === 'vercelToolbarCode'.toLowerCase() ||
-                     key === 'igshid' || key === 'spm' ||
-                     key === 'vero_conv' || key === 'vero_id' || key === 'vero_campaign' ||
-                     key === 'ref' || key === 'ref_src' || key === 'ref_url';
-          if (rm && !allow.has(key)) toRemove.push(k);
-        }
-        toRemove.forEach(k=>{ info.removed.push(k); u.searchParams.delete(k); });
-
-        for (const [k,v] of Array.from(u.searchParams.entries())) {
-          if (v === '' && !allow.has(k.toLowerCase())) { u.searchParams.delete(k); info.removed.push(k); }
-        }
-
-        if ((u.protocol==='http:' && u.port==='80') || (u.protocol==='https:' && u.port==='443')) { u.port=''; info.normalized='Standard-Port entfernt'; }
-        if (u.pathname === '') u.pathname = '/';
-
-        info.url = u.toString();
-        info.kept = Array.from(allow);
-        return info;
-      },
-
-      unwrap(u){
-        const host = u.hostname.replace(/^www\./,'').toLowerCase();
-        if (host === 'google.com' || host.endsWith('.google.com')) {
-          if (u.pathname === '/url') {
-            const tgt = u.searchParams.get('q') || u.searchParams.get('url') || u.searchParams.get('qurl');
-            if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-          }
-        }
-        if (host.endsWith('facebook.com') || host.endsWith('l.facebook.com') || host.endsWith('lm.facebook.com')) {
-          const tgt = u.searchParams.get('u') || u.searchParams.get('l') || u.searchParams.get('href');
-          if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-        }
-        for (const [,v] of u.searchParams) { if (isHttp(v)) return { from: u.toString(), to: v }; }
-        return null;
-      }
-    };
-    function isHttp(s){ return typeof s === 'string' && /^https?:\/\//i.test(s); }
-  </script>
-
-  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist deaktiviert. SafeShare benötigt JavaScript.</p></div></noscript>
+  <noscript>
+    <div class="wrap"><div class="card">JavaScript aktivieren, um die Team-Whitelist zu bearbeiten.</div></div>
+  </noscript>
 </body>
 </html>
