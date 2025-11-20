@@ -5,282 +5,178 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare App – Links säubern</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
+  <title>SafeShare – Saubere Links ohne Tracking</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="SafeShare säubert Links lokal im Browser: entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – ohne Accounts, ohne Server-Logs.">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/">
   <meta property="og:locale" content="de_DE">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
-  
-  <!-- Meta -->
-  <meta name="description" content="SafeShare App: Tracking-Parameter entfernen und Weiterleitungen entpacken – lokal im Browser.">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
+  <meta property="og:description" content="Entfernt Tracking-Parameter und entpackt Redirects – alles lokal im Browser.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-  <link rel="manifest" href="manifest.webmanifest?v=29">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Style (leicht, damit nie „weiße Seite“) -->
-  <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a;--ok:#1e402f;--btn:#1b1b1b}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    .wrap{max-width:900px;margin:0 auto;padding:22px 14px}
-    h1{margin:.2em 0 .6em;font-size:1.9rem}
-    .mut{color:var(--mut)}
-    textarea,input[type=text]{width:100%;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:12px 44px 12px 12px}
-    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-    .btn{padding:.7rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--fg);text-decoration:none;cursor:pointer}
-    .btn.pri{background:#1e2e24}
-    .btn.ok{background:var(--ok)}
-    .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    .clearBtn{position:absolute;right:10px;top:10px;line-height:1;border:1px solid var(--line);background:#171717;color:#ccc;border-radius:8px;padding:.2rem .4rem;cursor:pointer}
-    .rel{position:relative}
-    code{background:#0f0f0f;border:1px solid var(--line);border-radius:6px;padding:.1rem .35rem}
-    .badge{display:inline-block;margin-left:8px;padding:.15rem .45rem;border-radius:8px;border:1px solid var(--line);background:#172017;color:#9ed1b1;font-size:.85rem}
-    .changes{font-size:.95rem}
-    .changes li{margin:.15rem 0}
-    footer{margin-top:18px}
-    a{color:#cfe7ff}
-  </style>
-
-  <!-- Optional zusätzliches Theme -->
-  <link rel="stylesheet" href="css/theme.css?v=27">
-</head>
-<body>
-  <div class="wrap">
-    <h1>SafeShare App <span id="proBadge" class="badge" style="display:none">Pro aktiv</span></h1>
-    <p class="mut">URL einfügen, <em>Säubern</em> klicken. Ergebnis kopieren, teilen oder öffnen. Alles läuft lokal im Browser.</p>
-
-    <!-- Eingabe -->
-    <div class="box">
-      <label for="inUrl" class="mut">Eingabe-URL</label>
-      <div class="rel">
-        <input id="inUrl" type="text" inputmode="url" placeholder="https://…" autocomplete="off" spellcheck="false">
-        <button class="clearBtn" type="button" title="Eingabe leeren" aria-label="Eingabe leeren" onclick="UI.clearIn()">✕</button>
-      </div>
-      <div class="row">
-        <button class="btn pri"  id="btnClean"  type="button" onclick="UI.clean()">Säubern</button>
-        <button class="btn"      id="btnCheck"  type="button" onclick="UI.check()">Prüfen</button>
-        <button class="btn"      id="btnCopy"   type="button" onclick="UI.copy()">Kopieren</button>
-        <button class="btn"      id="btnShare"  type="button" onclick="UI.share()">Teilen</button>
-        <button class="btn ok"   id="btnOpen"   type="button" onclick="UI.open()">Öffnen</button>
-      </div>
-    </div>
-
-    <!-- Ausgabe -->
-    <div class="box">
-      <label for="outUrl" class="mut">Bereinigte URL (read-only)</label>
-      <input id="outUrl" type="text" readonly>
-      <details class="box" style="margin-top:10px">
-        <summary class="mut">Änderungen anzeigen</summary>
-        <ul id="changeList" class="changes"></ul>
-      </details>
-    </div>
-
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="bookmarklets.html">Bookmarklet</a> ·
-      <a href="mailto:?subject=SafeShare%20Feedback&body=Bitte%20hier%20Feedback%20eintragen.">Feedback</a>
-    </footer>
-  </div>
-
-  <!-- SW-Registrierung -->
-  <script src="js/sw-register.js?v=29"></script>
-
-  <!-- App-Logik (kompakt, ohne externe Abhängigkeiten) -->
-  <script>
-  (function(){
-    const $ = sel => document.querySelector(sel);
-    const QS = {
-      in:  $('#inUrl'),
-      out: $('#outUrl'),
-      changes: $('#changeList'),
-      pro: $('#proBadge')
-    };
-
-    // Pro-Badge
-    if (localStorage.getItem('ss2_pro') === '1') QS.pro.style.display = 'inline-block';
-
-    // Prefill via ?url=
-    const params = new URLSearchParams(location.search);
-    if (params.get('url')) {
-      QS.in.value = decodeURIComponent(params.get('url'));
-      setTimeout(()=>UI.clean(), 0);
-    }
-
-    // ENTER auf Eingabe -> Säubern
-    QS.in.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); UI.clean(); } });
-
-    // Haupt-API
-    window.UI = {
-      clearIn(){
-        QS.in.value = '';
-        QS.out.value = '';
-        QS.changes.innerHTML = '';
-        QS.in.focus();
-      },
-      clean(){
-        const src = QS.in.value.trim();
-        if (!src) return;
-        const res = Cleaner.cleanUrl(src);
-        QS.out.value = res.url;
-        renderChanges(res);
-      },
-      check(){
-        const src = QS.in.value.trim();
-        if (!src) return;
-        const res = Cleaner.cleanUrl(src);
-        renderChanges(res);
-        if (!QS.out.value) QS.out.value = res.url; // Ausgabe zeigen, aber nichts öffnen
-      },
-      copy(){
-        const v = QS.out.value.trim();
-        if (!v) return;
-        if (navigator.clipboard?.writeText) {
-          navigator.clipboard.writeText(v);
-        } else {
-          QS.out.select(); document.execCommand('copy'); QS.out.blur();
-        }
-      },
-      async share(){
-        const v = QS.out.value.trim() || QS.in.value.trim();
-        if (!v) return;
-        if (navigator.share) {
-          try { await navigator.share({ title:'SafeShare Link', url: v }); } catch(e){}
-        } else {
-          UI.copy();
-        }
-      },
-      open(){
-        const v = QS.out.value.trim() || QS.in.value.trim();
-        if (!v) return;
-        try { window.open(v, '_blank', 'noopener,noreferrer'); } catch(e) { location.href = v; }
-      }
-    };
-
-    function renderChanges(res){
-      const items = [];
-      if (res.unwrapped) items.push(`<li>Redirect entpackt: <code>${escapeHtml(res.unwrapped.from)}</code> → <code>${escapeHtml(res.unwrapped.to)}</code></li>`);
-      if (res.removed.length) items.push(`<li>Entfernte Parameter: <code>${res.removed.map(escapeHtml).join('</code>, <code>')}</code></li>`);
-      if (res.kept.length)    items.push(`<li>Behalten (Whitelist): <code>${res.kept.map(escapeHtml).join('</code>, <code>')}</code></li>`);
-      if (res.normalized)     items.push(`<li>Normalisiert: ${res.normalized}</li>`);
-      QS.changes.innerHTML = items.length ? items.join('') : '<li>Keine Änderungen erforderlich.</li>';
-    }
-
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;' }[c])); }
-
-    // --- Reinigungslogik ---
-    const Cleaner = {
-      cleanUrl(input){
-        let url = String(input).trim();
-        const info = { url:'', removed:[], kept:[], normalized:'', unwrapped:null };
-
-        // Fallback: wenn kein Protokoll, http ergänzen
-        if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(url)) url = 'https://' + url;
-
-        // Versuchen zu parsen
-        let u;
-        try { u = new URL(url); }
-        catch { return { ...info, url: input }; }
-
-        // Redirect-Entpacken (bekannte Muster)
-        const unwrap = this.unwrap(u);
-        if (unwrap) {
-          info.unwrapped = unwrap;
-          u = new URL(unwrap.to);
-        }
-
-        // Whitelist (Team/Publisher) optional aus localStorage
-        const allowRaw = localStorage.getItem('ss2_allow') || '';
-        const allow = new Set(allowRaw.split(',').map(s=>s.trim()).filter(Boolean));
-
-        // Entfernen von Tracking-Parametern
-        const toRemove = [];
-        for (const [k] of u.searchParams) {
-          const key = k.toLowerCase();
-          const rm =
-            key.startsWith('utm_') ||
-            key === 'gclid' || key === 'fbclid' ||
-            key === 'yclid' || key === 'mc_eid' || key === 'mc_cid' ||
-            key === 'mkt_tok' || key === 'vercelToolbarCode' ||
-            key === 'igshid' || key === 'spm' ||
-            key === 'vero_conv' || key === 'vero_id' || key === 'vero_campaign' ||
-            key === 'ref' || key === 'ref_src' || key === 'ref_url';
-          if (rm && !allow.has(key)) toRemove.push(k);
-        }
-        toRemove.forEach(k=>{
-          info.removed.push(k);
-          u.searchParams.delete(k);
-        });
-
-        // Leere Parameter bereinigen
-        for (const [k,v] of Array.from(u.searchParams.entries())) {
-          if (v === '' && !allow.has(k.toLowerCase())) {
-            u.searchParams.delete(k);
-            info.removed.push(k);
-          }
-        }
-
-        // Standard-Ports entfernen (80/443)
-        if ((u.protocol === 'http:' && u.port === '80') || (u.protocol === 'https:' && u.port === '443')) {
-          u.port = '';
-          info.normalized = 'Standard-Port entfernt';
-        }
-
-        // Trailing Slash vereinheitlichen (optional, nur Root)
-        if (u.pathname === '' ) u.pathname = '/';
-
-        info.url = u.toString();
-        info.kept = Array.from(allow);
-        return info;
-      },
-
-      unwrap(u){
-        const host = u.hostname.replace(/^www\./,'').toLowerCase();
-        // Google /url
-        if (host === 'google.com' || host.endsWith('.google.com')) {
-          if (u.pathname === '/url') {
-            const tgt = u.searchParams.get('q') || u.searchParams.get('url') || u.searchParams.get('qurl');
-            if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-          }
-        }
-        // Facebook linker
-        if (host.endsWith('facebook.com') || host.endsWith('l.facebook.com') || host.endsWith('lm.facebook.com')) {
-          const tgt = u.searchParams.get('u') || u.searchParams.get('l') || u.searchParams.get('href');
-          if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-        }
-        // Generic: erster query-Wert, der wie URL aussieht
-        for (const [,v] of u.searchParams) {
-          if (isHttp(v)) return { from: u.toString(), to: v };
-        }
-        return null;
-      }
-    };
-
-    function isHttp(s){ return typeof s === 'string' && /^https?:\/\//i.test(s); }
-  })();
+  <!-- Structured Data -->
+  <meta name="application-name" content="SafeShare">
+  <script type="application/ld+json" nonce="SSAPP1">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "inLanguage":"de-DE",
+    "name":"SafeShare",
+    "description":"SafeShare säubert Links lokal im Browser: entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – ohne Accounts, ohne Server-Logs.",
+    "url":"https://j-ai-71.github.io/Supersystem/",
+    "applicationCategory":"UtilitiesApplication",
+    "operatingSystem":"Web",
+    "browserRequirements":"Aktueller Browser (PWA-fähig)",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},
+    "publisher":{"@type":"Organization","name":"SafeShare"},
+    "isFamilyFriendly":true
+  }
   </script>
 
-  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist deaktiviert. SafeShare benötigt JavaScript.</p></div></noscript>
+  <!-- Sicherheits-CSP (mit Nonce für JSON-LD) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'nonce-SSAPP1';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- SW-Registrierung -->
+  <script defer src="js/sw-register.js?v=31"></script>
+  <!-- Optional: Diagnose-Overlay -->
+  <!-- <script defer src="js/diag.js?v=31"></script> -->
+
+  <!-- Minimal-Styles -->
+  <style>
+    :root { color-scheme: light dark; --bg:#0b0b0b; --fg:#eaeaea; --mut:#a6a6a6; --card:#141414; --pri:#23c47e; }
+    @media (prefers-color-scheme: light){
+      :root { --bg:#ffffff; --fg:#0b0b0b; --mut:#5f6368; --card:#f5f7fa; --pri:#23c47e; }
+    }
+    html,body{margin:0;padding:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:var(--bg);color:var(--fg)}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #2b2b2b;background:#161616;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#071b10;font-weight:600}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+    .chip{padding:7px 10px;border-radius:999px;border:1px solid #2b2b2b;background:#141414;color:var(--fg);text-decoration:none;font-size:.92rem}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:22px 0}
+    @media(min-width:820px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid #2b2b2b;border-radius:14px;padding:16px}
+    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
+    .card ul{margin:.4rem 0 .8rem 1.1rem}
+    .targets{display:grid;grid-template-columns:1fr;gap:10px;margin:22px 0}
+    @media(min-width:780px){.targets{grid-template-columns:repeat(4,1fr)}}
+    .target a{display:block;background:#111;border:1px solid #2b2b2b;border-radius:12px;padding:12px;text-decoration:none;color:var(--fg)}
+    footer{border-top:1px solid #2b2b2b;margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:16px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip:focus{left:12px;top:12px;width:auto;height:auto;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
+    .seo h2{margin:1.2rem 0 .4rem}
+    .seo p{margin:.35rem 0;color:var(--mut)}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+
+  <div class="wrap" id="main">
+    <h1>SafeShare</h1>
+    <p class="mut">Saubere Links ohne Tracking. Entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – alles lokal im Browser.</p>
+
+    <div class="row" style="margin-top:10px">
+      <a class="btn pri" href="app.html">App starten</a>
+      <a class="btn" href="bookmarklets.html">Bookmarklet</a>
+      <a class="btn" href="pro.html">Pro</a>
+      <a class="btn" href="help.html">Hilfe</a>
+      <a class="btn" href="quickstart.html">Quickstart (PDF)</a>
+    </div>
+
+    <div class="chips" aria-label="Tools">
+      <a class="chip" href="app.html">UTM-Ballast raus</a>
+      <a class="chip" href="redirect-entschachteln.html">Redirects entpacken</a>
+      <a class="chip" href="team-setup.html">Whitelist für Partner-IDs</a>
+      <a class="chip" href="bulk-clean.html">Bulk-Clean (Pro)</a>
+    </div>
+
+    <!-- Zielgruppen-Kacheln -->
+    <div class="targets" aria-label="Für wen ist SafeShare?">
+      <div class="target"><a href="publisher.html">Publisher &amp; Affiliates<br><span class="mut">Schnellere, klarere Links</span></a></div>
+      <div class="target"><a href="education.html">Bildung &amp; NGOs<br><span class="mut">Privacy-freundliches Teilen</span></a></div>
+      <div class="target"><a href="partners.html">Unternehmen &amp; Partner<br><span class="mut">Marketing · CRM · IT</span></a></div>
+      <div class="target"><a href="compliance.html">Compliance<br><span class="mut">Regeln &amp; Whitelist</span></a></div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Warum SafeShare?</h2>
+        <ul>
+          <li><strong>Sauber &amp; kurz:</strong> Tracking-Parameter werden entfernt, Weiterleitungs-Ketten entpackt.</li>
+          <li><strong>Privacy-by-Design:</strong> Verarbeitung erfolgt ausschließlich im Browser – keine Accounts, keine Server-Logs.</li>
+          <li><strong>Einfach integrierbar:</strong> Bookmarklet für Redaktionen, App für manuelle Checks, Bulk-Clean für Listen.</li>
+          <li><strong>Fehlerärmer:</strong> Klarere URLs verbessern UX, Klickbereitschaft und Weitergabe.</li>
+        </ul>
+        <div class="row">
+          <a class="btn pri" href="app.html">Jetzt ausprobieren</a>
+          <a class="btn" href="help.html">Schritt-für-Schritt</a>
+        </div>
+      </section>
+
+      <section class="card seo" aria-labelledby="seo-head">
+        <h2 id="seo-head">Saubere Links – schnell erklärt</h2>
+        <p>Viele Links enthalten Marketing-Parameter wie <code>utm_*</code>, <code>gclid</code> oder <code>fbclid</code>. Sie verlängern URLs, können Filter auslösen und beeinträchtigen die Weitergabe. SafeShare entfernt diese Signaturen lokal im Browser und entpackt gängige Weiterleitungen zu ihrem Klarziel. Dadurch entstehen kurze, lesbare Links mit besserer User-Experience – ohne externe Requests.</p>
+        <p>SafeShare eignet sich für Publisher, Bildungs- und Non-Profit-Organisationen, Teams mit Compliance-Vorgaben und Unternehmen, die einheitliche, klare Link-Standards möchten. Das Bookmarklet säubert Links direkt auf Webseiten, die App prüft und öffnet Ziele, Bulk-Clean (Pro) bereinigt Listen aus Redaktions- oder CRM-Systemen. Alle Kernfunktionen laufen offline-tauglich, PWA-fähig und ohne Konto.</p>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>Weiterführend</h2>
+      <div class="chips">
+        <a class="chip" href="press.html">Presse</a>
+        <a class="chip" href="status.html">Status</a>
+        <a class="chip" href="help.html#faq">FAQ</a>
+      </div>
+    </section>
+
+    <footer class="wrap">
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="help.html">Hilfe</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partner</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="status.html">Status</a>
+      </nav>
+    </footer>
+  </div>
 </body>
 </html>
