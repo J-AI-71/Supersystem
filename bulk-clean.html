@@ -5,331 +5,152 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Bulk-Clean · SafeShare</title>
+  <title>Bulk-Clean (Pro) · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="Bulk-Clean (Pro): Viele URLs in einem Rutsch bereinigen und als Liste/CSV weiterverwenden. Ideal für Redaktion, CRM und Kampagnen.">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
   <meta property="og:locale" content="de_DE">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bulk-Clean (Pro) – SafeShare">
+  <meta property="og:description" content="Viele URLs auf einmal säubern – schnell und lokal im Browser.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Meta -->
-  <meta name="description" content="Mehrere Links auf einmal säubern: Tracking-Parameter entfernen und Weiterleitungen entpacken – lokal im Browser.">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-  <link rel="manifest" href="manifest.webmanifest?v=29">
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
+                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
 
-  <!-- Fallback-Styles (keine weiße Seite) -->
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=31"></script>
+  <!-- Falls vorhanden, zentrale Logik wiederverwenden -->
+  <script defer src="js/cleaner.js?v=31"></script>
+  <script defer src="js/bulk-clean.js?v=31"></script>
+
+  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a;--btn:#1b1b1b;--ok:#1e402f}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    .wrap{max-width:1100px;margin:0 auto;padding:22px 14px}
-    h1{margin:.2em 0 .6em;font-size:1.9rem}
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
+    @media (prefers-color-scheme: light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-    .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    textarea{width:100%;min-height:180px;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:12px}
-    input[type=text]{width:100%;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:12px}
-    .btn{padding:.7rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--fg);text-decoration:none;cursor:pointer}
-    .btn.pri{background:#1e2e24}
-    .btn.ok{background:var(--ok)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .badge{display:inline-block;margin-left:8px;padding:.15rem .45rem;border-radius:8px;border:1px solid var(--line);background:#172017;color:#9ed1b1;font-size:.85rem}
-    .stat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
-    .pill{background:#171717;border:1px solid var(--line);border-radius:10px;padding:.4rem .6rem;text-align:center}
-    code{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
-    details{margin-top:10px}
-    footer{margin-top:18px}
-    a{color:#cfe7ff}
-    @media (max-width:920px){ .grid{grid-template-columns:1fr} }
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    textarea{width:100%;min-height:240px;border-radius:12px;border:1px solid var(--line);background:#0f0f10;color:var(--fg);padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none;cursor:pointer}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+    .badge{background:#101010;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:0.92rem}
+    label{display:inline-flex;align-items:center;gap:8px}
+    input[type=checkbox]{transform:translateY(1px)}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.95rem}
+    th,td{border-top:1px solid var(--line);padding:8px 6px;vertical-align:top}
+    tfoot td{color:var(--mut)}
+    footer{border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
+    footer a{color:var(--mut);text-decoration:none;margin-right:10px}
+    .skip{position:absolute;left:-9999px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
   </style>
-
-  <!-- Optional Theme -->
-  <link rel="stylesheet" href="css/theme.css?v=27">
-
-  <!-- SW-Registrierung -->
-  <script src="js/sw-register.js?v=29"></script>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Bulk-Clean <span id="proBadge" class="badge" style="display:none">Pro aktiv</span></h1>
-    <p class="mut">Füge mehrere URLs (eine pro Zeile) ein. SafeShare entfernt Tracking-Parameter und entpackt Weiterleitungen – alles lokal im Browser.</p>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap" id="main">
+    <h1>Bulk-Clean (Pro)</h1>
+    <p class="mut">Viele URLs in einem Rutsch säubern. Verarbeitung erfolgt lokal im Browser. Optional: erlaubte Parameter aus der <a href="team-setup.html">Team-Whitelist</a> beibehalten.</p>
 
     <div class="grid">
       <!-- Eingabe -->
-      <section class="box">
-        <h2 style="margin-top:0">Eingabe</h2>
-        <textarea id="inBulk" placeholder="https://example.com/?utm_source=newsletter&gclid=123&#10;https://www.google.com/url?q=https%3A%2F%2Fziel.de%2F…&#10;…"></textarea>
-        <div class="row">
-          <button class="btn pri" onclick="UI.clean()">Säubern</button>
-          <button class="btn" onclick="UI.check()">Prüfen</button>
-          <button class="btn" onclick="UI.clear()">Leeren</button>
-          <button class="btn" onclick="UI.paste()">Einfügen</button>
+      <section class="card">
+        <h2>Eingabe</h2>
+        <textarea id="src" placeholder="Eine URL pro Zeile einfügen oder Text mit Links. Beispiel:
+https://example.com/?utm_source=newsletter&gclid=123
+https://l.facebook.com/l.php?u=https%3A%2F%2Fbeispiel.de%2F%3Fref%3Dfriend&fbclid=xyz#top
+https://www.google.com/url?q=https%3A%2F%2Fshop.tld%2Fprodukt%3Futm_campaign%3Dblackfriday&sa=D"></textarea>
+
+        <div class="controls">
+          <label><input type="checkbox" id="opt-unwrap" checked> Redirects entpacken</label>
+          <label><input type="checkbox" id="opt-keep" checked> Team-Whitelist beibehalten</label>
+          <label><input type="checkbox" id="opt-dedupe" checked> Duplikate entfernen</label>
         </div>
-        <details>
-          <summary class="mut">Optionen</summary>
-          <div class="row" style="margin-top:8px">
-            <label><input type="checkbox" id="dedup" checked> Duplikate entfernen</label>
-            <label><input type="checkbox" id="keepOrder" checked> Reihenfolge beibehalten</label>
-            <label><input type="checkbox" id="skipInvalid" checked> Ungültige Zeilen überspringen</label>
-          </div>
-        </details>
+
+        <div class="controls">
+          <button class="btn pri" id="btn-clean">Säubern</button>
+          <button class="btn" id="btn-copy">Ergebnis kopieren</button>
+          <button class="btn" id="btn-csv">CSV exportieren</button>
+          <button class="btn" id="btn-clear">Zurücksetzen</button>
+        </div>
+
+        <div class="badges" id="stats">
+          <span class="badge">Eingaben: <strong id="cnt-in">0</strong></span>
+          <span class="badge">gültig: <strong id="cnt-valid">0</strong></span>
+          <span class="badge">bereinigt: <strong id="cnt-clean">0</strong></span>
+          <span class="badge">unverändert: <strong id="cnt-same">0</strong></span>
+        </div>
       </section>
 
       <!-- Ausgabe -->
-      <section class="box">
-        <h2 style="margin-top:0">Ergebnis</h2>
-        <textarea id="outBulk" readonly placeholder="Bereinigte URLs erscheinen hier – eine pro Zeile."></textarea>
-        <div class="row">
-          <button class="btn" onclick="UI.copy()">Kopieren</button>
-          <button class="btn ok" onclick="UI.downloadTxt()">Als TXT speichern</button>
-          <button class="btn" onclick="UI.downloadCsv()">Als CSV speichern</button>
-        </div>
-        <div class="stat">
-          <div class="pill"><strong id="cntIn">0</strong><div class="mut">Eingang</div></div>
-          <div class="pill"><strong id="cntOut">0</strong><div class="mut">Ausgang</div></div>
-          <div class="pill"><strong id="cntRemoved">0</strong><div class="mut">entfernte Parameter</div></div>
-          <div class="pill"><strong id="cntUnwrap">0</strong><div class="mut">entpackte Redirects</div></div>
-        </div>
+      <section class="card">
+        <h2>Ergebnis</h2>
+        <textarea id="dst" placeholder="Bereinigte URLs erscheinen hier …" readonly></textarea>
+        <table aria-label="Zusammenfassung">
+          <thead>
+            <tr><th>Original</th><th>Bereinigt</th></tr>
+          </thead>
+          <tbody id="table-body">
+            <tr><td colspan="2" class="mut">Noch keine Verarbeitung.</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="2" class="mut">Tipp: CSV exportieren und direkt in Redaktions-/CRM-Listen übernehmen.</td></tr>
+          </tfoot>
+        </table>
       </section>
     </div>
 
-    <section class="box">
-      <h2 style="margin-top:0">Änderungs-Report</h2>
-      <details open>
-        <summary class="mut">Pro Zeile</summary>
-        <div id="report" style="margin-top:10px"></div>
-      </details>
+    <section class="card">
+      <h2>Hinweise</h2>
+      <ul>
+        <li>Typische Tracking-Parameter (<code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code>, …) werden entfernt.</li>
+        <li>Übliche Redirects (<code>t.co</code>, <code>l.facebook.com</code>, <code>google.com/url</code> u. a.) werden zum Klarziel entpackt.</li>
+        <li>Team-Whitelist: erlaubte Parameter (z. B. <code>tag</code>, <code>ref</code>) in <a href="team-setup.html">team-setup</a> definieren.</li>
+      </ul>
     </section>
 
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="team-setup.html">Team-Whitelist</a> ·
-      <a href="mailto:?subject=SafeShare%20Feedback&body=Bitte%20hier%20Feedback%20eintragen.">Feedback</a>
+    <footer>
+      <nav>
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="help.html">Hilfe</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
     </footer>
   </div>
 
-  <script>
-  (function(){
-    const $ = sel => document.querySelector(sel);
-    const QS = {
-      in: $('#inBulk'),
-      out: $('#outBulk'),
-      report: $('#report'),
-      cntIn: $('#cntIn'),
-      cntOut: $('#cntOut'),
-      cntRem: $('#cntRemoved'),
-      cntUnw: $('#cntUnwrap'),
-      pro: $('#proBadge'),
-      opt: {
-        dedup: $('#dedup'),
-        keepOrder: $('#keepOrder'),
-        skipInvalid: $('#skipInvalid')
-      }
-    };
-
-    if (localStorage.getItem('ss2_pro') === '1') QS.pro.style.display = 'inline-block';
-
-    const UI = window.UI = {
-      async paste(){
-        try{
-          const t = await navigator.clipboard.readText();
-          if (t) QS.in.value = (QS.in.value ? QS.in.value + '\n' : '') + t;
-        }catch(e){}
-      },
-      clear(){
-        QS.in.value = '';
-        QS.out.value = '';
-        QS.report.innerHTML = '';
-        updateStats(0,0,0,0);
-        QS.in.focus();
-      },
-      check(){ run(false); },
-      clean(){ run(true); },
-      copy(){
-        const v = QS.out.value.trim();
-        if (!v) return;
-        if (navigator.clipboard?.writeText) navigator.clipboard.writeText(v);
-        else { QS.out.select(); document.execCommand('copy'); QS.out.blur(); }
-      },
-      downloadTxt(){
-        const v = QS.out.value;
-        if (!v) return;
-        download('safeshare-bulk.txt', v);
-      },
-      downloadCsv(){
-        if (!lastRun || !lastRun.rows.length) return;
-        const header = ['input','output','removed','kept','unwrapped_from','unwrapped_to'];
-        const lines = [header.join(',')];
-        for (const r of lastRun.rows){
-          const row = [
-            csv(r.input), csv(r.output), csv(r.removed.join('|')),
-            csv(r.kept.join('|')), csv(r.unwrapped?.from||''), csv(r.unwrapped?.to||'')
-          ];
-          lines.push(row.join(','));
-        }
-        download('safeshare-bulk.csv', lines.join('\n'));
-      }
-    };
-
-    let lastRun = null;
-
-    function run(applyClean){
-      const raw = QS.in.value.replace(/\r\n/g,'\n');
-      const lines = raw.split('\n').map(s=>s.trim());
-      const allowRaw = localStorage.getItem('ss2_allow') || '';
-      const allow = new Set(allowRaw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean));
-
-      const rows = [];
-      let removedTotal = 0, unwrappedTotal = 0;
-
-      for (let i=0; i<lines.length; i++){
-        const line = lines[i];
-        if (!line) continue;
-        if (line.startsWith('#')) continue;
-
-        let input = line;
-        if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(input)) input = 'https://' + input;
-
-        let u;
-        try { u = new URL(input); }
-        catch { if (!QS.opt.skipInvalid.checked) rows.push(reportRow(line, line, [], [], null)); continue; else continue; }
-
-        const unwrap = unwrapRedirect(u);
-        if (unwrap) { u = new URL(unwrap.to); unwrappedTotal++; }
-
-        const removed = [];
-        for (const [k] of u.searchParams) {
-          const kl = k.toLowerCase();
-          const isTracker =
-            kl.startsWith('utm_') ||
-            kl === 'gclid' || kl === 'fbclid' || kl === 'yclid' ||
-            kl === 'mc_eid' || kl === 'mc_cid' || kl === 'mkt_tok' ||
-            kl === 'igshid' || kl === 'spm' ||
-            kl === 'vero_conv' || kl === 'vero_id' || kl === 'vero_campaign' ||
-            kl === 'ref' || kl === 'ref_src' || kl === 'ref_url';
-          if (isTracker && !allow.has(kl)) { removed.push(k); }
-        }
-        removed.forEach(k=>u.searchParams.delete(k));
-
-        for (const [k,v] of Array.from(u.searchParams.entries())) {
-          const kl = k.toLowerCase();
-          if (v === '' && !allow.has(kl)) { u.searchParams.delete(k); removed.push(k); }
-        }
-
-        if (u.protocol === 'http:' && u.port === '80') u.port = '';
-        if (u.protocol === 'https:' && u.port === '443') u.port = '';
-        if (u.pathname === '') u.pathname = '/';
-
-        removedTotal += removed.length;
-        const output = applyClean ? u.toString() : new URL(u).toString();
-
-        rows.push(reportRow(line, output, removed, Array.from(allow), unwrap));
-      }
-
-      // Deduplizieren
-      let outList = rows.map(r=>r.output);
-      if (QS.opt.dedup.checked) {
-        const seen = new Set();
-        outList = outList.filter(u=>{
-          if (seen.has(u)) return false;
-          seen.add(u); return true;
-        });
-      }
-      if (!QS.opt.keepOrder.checked) outList.sort();
-
-      QS.out.value = outList.join('\n');
-      QS.report.innerHTML = renderReport(rows);
-      updateStats(lines.filter(Boolean).length, outList.length, removedTotal, unwrappedTotal);
-
-      lastRun = { rows, outList };
-    }
-
-    function reportRow(input, output, removed, kept, unwrapped){
-      return { input, output, removed, kept, unwrapped };
-    }
-
-    function renderReport(rows){
-      if (!rows.length) return '<p class="mut">–</p>';
-      const parts = rows.map((r,idx)=>{
-        const rm = r.removed.length ? `<div>Entfernt: <code>${r.removed.map(escapeHtml).join('</code>, <code>')}</code></div>` : '<div>Entfernt: –</div>';
-        const kp = r.kept.length ? `<div>Whitelist: <code>${r.kept.map(escapeHtml).join('</code>, <code>')}</code></div>` : '<div>Whitelist: –</div>';
-        const uw = r.unwrapped ? `<div>Redirect: <code>${escapeHtml(r.unwrapped.from)}</code> → <code>${escapeHtml(r.unwrapped.to)}</code></div>` : '';
-        return `<div class="box" style="margin-top:8px">
-          <div class="mut">#${idx+1}</div>
-          <div>Input: <code>${escapeHtml(r.input)}</code></div>
-          <div>Output: <code>${escapeHtml(r.output)}</code></div>
-          ${rm}${kp}${uw}
-        </div>`;
-      });
-      return parts.join('');
-    }
-
-    function updateStats(cin, cout, crem, cunw){
-      QS.cntIn.textContent  = String(cin);
-      QS.cntOut.textContent = String(cout);
-      QS.cntRem.textContent = String(crem);
-      QS.cntUnw.textContent = String(cunw);
-    }
-
-    function unwrapRedirect(u){
-      const host = u.hostname.replace(/^www\./,'').toLowerCase();
-      // Google /url
-      if (host === 'google.com' || host.endsWith('.google.com')) {
-        if (u.pathname === '/url') {
-          const tgt = u.searchParams.get('q') || u.searchParams.get('url') || u.searchParams.get('qurl');
-          if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-        }
-      }
-      // Facebook
-      if (host.endsWith('facebook.com') || host.endsWith('l.facebook.com') || host.endsWith('lm.facebook.com')) {
-        const tgt = u.searchParams.get('u') || u.searchParams.get('l') || u.searchParams.get('href');
-        if (isHttp(tgt)) return { from: u.toString(), to: tgt };
-      }
-      // Generisch: erster query-Wert, der wie URL aussieht
-      for (const [,v] of u.searchParams) {
-        if (isHttp(v)) return { from: u.toString(), to: v };
-      }
-      return null;
-    }
-
-    function isHttp(s){ return typeof s === 'string' && /^https?:\/\//i.test(s); }
-
-    function csv(s){
-      const t = String(s ?? '');
-      if (/[",\n]/.test(t)) return '"' + t.replace(/"/g,'""') + '"';
-      return t;
-    }
-    function download(name, content){
-      const blob = new Blob([content], {type:'text/plain;charset=utf-8'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = name; document.body.appendChild(a); a.click();
-      setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
-    }
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;' }[c])); }
-  })();
-  </script>
-
-  <noscript><div class="
+  <noscript>
+    <div class="wrap"><div class="card">JavaScript aktivieren, um Listen zu bereinigen, zu kopieren und als CSV zu exportieren.</div></div>
+  </noscript>
+</body>
+</html>
