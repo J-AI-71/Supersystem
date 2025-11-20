@@ -1,157 +1,207 @@
 <!doctype html>
-<html lang="de"><!-- publisher.html — <head> (final, mit Nonce) -->
+<html lang="de">
 <head>
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-
-  <title>SafeShare für Publisher & Affiliates</title>
-  <meta name="description" content="Saubere, schnelle Links ohne UTM/gclid/fbclid. Redirects entpacken, Whitelist für Partner-IDs, Bulk-Clean – alles lokal im Browser.">
+  <title>Publisher &amp; Affiliates · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/publisher.html">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="SafeShare für Publisher: Tracking-Ballast entfernen, Partner-IDs via Whitelist behalten, klare Links für Redaktion & Deals.">
+
+  <!-- hreflang / Locale -->
   <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/publisher.html">
-  <meta name="robots" content="index,follow">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/publisher.html">
+  <meta property="og:locale" content="de_DE">
 
-  <!-- CSP: Skripte nur von self, JSON-LD via Nonce -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSJSON1';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SafeShare für Publisher">
+  <meta property="og:description" content="Kürzere, sauberere Links – Partner-IDs per Whitelist behalten.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/publisher.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <!-- JSON-LD (FAQ) -->
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+
+  <!-- FAQ JSON-LD (mit Nonce) -->
   <script type="application/ld+json" nonce="SSJSON1">
   {
     "@context":"https://schema.org",
     "@type":"FAQPage",
     "inLanguage":"de-DE",
     "mainEntity":[
-      {"@type":"Question","name":"Warum SafeShare für Publisher?","acceptedAnswer":{"@type":"Answer","text":"Saubere Links sind kürzer, laden schneller und werden seltener geblockt. SafeShare entfernt Tracking-Ballast und entpackt Redirects – vollständig lokal im Browser."}},
-      {"@type":"Question","name":"Beeinträchtigt SafeShare Affiliate-Tracking?","acceptedAnswer":{"@type":"Answer","text":"Standardmäßig werden bekannte Tracking-Parameter entfernt. Teams können eine Whitelist hinterlegen (z. B. ref, tag), sodass essenzielle Partner-IDs erhalten bleiben."}},
-      {"@type":"Question","name":"Welche Features gibt es für Teams?","acceptedAnswer":{"@type":"Answer","text":"Pro bietet Bulk-Cleaning, Team-Whitelist (Publisher-Modus) und Helper-Tools. Aktivierung lokal per pro-activate.html?pro=1 nach Kauf-Redirect."}}
+      {
+        "@type":"Question",
+        "name":"Wie hält SafeShare Partner-IDs?",
+        "acceptedAnswer":{"@type":"Answer","text":"Über die Team-Whitelist können z. B. tag/ref erhalten bleiben. Die Liste gilt lokal im Browser und wirkt in App, Bookmarklet und Bulk-Clean."}
+      },
+      {
+        "@type":"Question",
+        "name":"Braucht die Redaktion ein Konto?",
+        "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare läuft lokal im Browser (PWA-fähig), ohne Accounts oder Server-Logs."}
+      },
+      {
+        "@type":"Question",
+        "name":"Wie binden wir SafeShare in Workflows ein?",
+        "acceptedAnswer":{"@type":"Answer","text":"Für Einzel-Links: App oder Bookmarklet. Für Listen: Bulk-Clean (Pro) mit CSV-Export, z. B. für CMS, Newsletter oder Deal-Tabellen."}
+      }
     ]
   }
   </script>
 
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare für Publisher & Affiliates">
-  <meta property="og:description" content="Saubere Links, weniger Blockaden, bessere Weitergabe – lokal im Browser.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/publisher.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
+  <!-- Sicherheits-CSP (Nonce für JSON-LD) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
+                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'nonce-SSJSON1';
+                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
-  <meta name="theme-color" content="#0b0b0b">
-
-  <!-- CSS / JS -->
-  <link rel="stylesheet" href="css/theme.css?v=31">
+  <!-- JS -->
   <script defer src="js/sw-register.js?v=31"></script>
-  <script defer src="js/ext-links.js?v=31"></script>
-</head>
 
-  <!-- Styles (hell) -->
+  <!-- Styles -->
   <style>
-    :root{
-      --bg:#ffffff; --fg:#0b0b0b; --mut:#5a5a5a; --line:#e5e5e5;
-      --card:#ffffff; --chip:#f3f6fb; --chip-b:#d9e6fb; --cta:#0a5abf; --cta-fg:#fff;
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
+    @media (prefers-color-scheme: light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
     }
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    a{color:var(--cta)}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px 16px}
-    header h1{margin:.2em 0 .2em;font-size:2rem}
-    header p{color:var(--mut)}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:inherit}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+    .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:#141414}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
+    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
     .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .row{display:flex;flex-wrap:wrap;gap:10px}
-    .btn{display:inline-block;background:var(--cta);color:var(--cta-fg);padding:.7rem 1rem;border-radius:10px;text-decoration:none}
-    .btn.ghost{background:#f2f6ff;color:#0a3c80;border:1px solid var(--chip-b)}
-    .chip{display:inline-block;background:var(--chip);border:1px solid var(--chip-b);border-radius:999px;padding:.2rem .6rem;margin:.15rem .25rem 0 0}
-    ul.tight{margin:.3rem 0;padding-left:1.2rem} ul.tight li{margin:.25rem 0}
-    footer{margin:22px 0;color:var(--mut)}
-    .visually-hidden-focusable{position:absolute;left:-9999px}
-    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#fff;padding:.4rem .6rem;border-radius:8px;outline:1px solid var(--line)}
+    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    pre{background:#0f0f10;border:1px solid var(--line);border-radius:10px;padding:10px;overflow:auto}
+    ul{margin:.4rem 0 .8rem 1.2rem}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .skip{position:absolute;left:-9999px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
   </style>
-
-  <link rel="stylesheet" href="css/theme.css?v=31">
-
-  <script defer src="js/sw-register.js?v=31"></script>
-
-<!-- NEU: Externes JSON-LD -->
-<script type="application/ld+json" src="ld/publisher-faq.jsonld"></script>
-
 </head>
 <body>
-  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
-  <div class="wrap">
-    <header>
-      <h1>SafeShare für Publisher & Affiliates</h1>
-      <p>Saubere, schnelle Links → bessere UX & Conversion. Alles lokal, keine Accounts, keine Server-Logs.</p>
-      <div class="row" style="margin-top:.4rem">
-        <span class="chip">UTM-Ballast raus</span>
-        <span class="chip">Redirects entpacken</span>
-        <span class="chip">Whitelist für Partner-IDs</span>
-        <span class="chip">Bulk-Clean (Pro)</span>
-      </div>
-    </header>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap" id="main">
+    <h1>Publisher &amp; Affiliates</h1>
+    <p class="mut">Kürzere, sauberere Links für Redaktion, Deals und Newsletter. Tracking-Ballast raus – Partner-IDs per Whitelist behalten. Lokal im Browser, PWA-fähig, ohne Accounts.</p>
 
-    <main id="main" class="grid" style="margin-top:12px">
+    <div class="row" style="margin-top:10px">
+      <a class="btn pri" href="app.html">App öffnen</a>
+      <a class="btn" href="bookmarklets.html">Bookmarklet speichern</a>
+      <a class="btn" href="bulk-clean.html">Bulk-Clean (Pro)</a>
+      <a class="btn" href="team-setup.html">Team-Whitelist</a>
+      <a class="btn" href="help.html#faq">FAQ</a>
+    </div>
+
+    <div class="chips" aria-label="Einsatzfelder">
+      <span class="chip">Redaktionelle Artikel</span>
+      <span class="chip">Deal-Seiten &amp; Affiliate</span>
+      <span class="chip">Newsletter</span>
+      <span class="chip">Social-Previews</span>
+      <span class="chip">CMS/CRM-Listen</span>
+    </div>
+
+    <div class="grid">
       <section class="card">
-        <h2>Vorteile für Publisher</h2>
-        <ul class="tight">
-          <li><strong>Schneller:</strong> Kürzere, saubere URLs verbessern Klickbereitschaft & Ladezeit.</li>
-          <li><strong>Weniger Blockaden:</strong> Reduzierte Tracking-Signaturen werden seltener gefiltert.</li>
-          <li><strong>Konvertiert klarer:</strong> Keine ablenkenden Parameter, bessere Weitergabe.</li>
-          <li><strong>Privacy-by-Design:</strong> Verarbeitung im Browser, keine externen Requests.</li>
+        <h2>Schneller Redaktions-Workflow</h2>
+        <ul>
+          <li><strong>Einzel-Link:</strong> In der <a href="app.html">App</a> einfügen → „Säubern + öffnen“. Ergebnis kopieren/teilen.</li>
+          <li><strong>Direkt im Browser:</strong> <a href="bookmarklets.html">Bookmarklet</a> in die Leiste ziehen → auf Zielseite klicken.</li>
+          <li><strong>Listen/Tabellen:</strong> <a href="bulk-clean.html">Bulk-Clean</a> für viele URLs inkl. CSV-Export.</li>
         </ul>
-
-        <h3 style="margin-top:1rem">So arbeitet ihr mit SafeShare</h3>
-        <ul class="tight">
-          <li><a href="bookmarklets.html">Bookmarklet</a> im Browser speichern → Links on-the-fly bereinigen.</li>
-          <li><a href="bulk-clean.html">Bulk-Clean</a> (Pro) für Listen aus Redaktionssystemen.</li>
-          <li><a href="team-setup.html">Team-Whitelist</a> pflegen (z. B. <code>tag</code>, <code>ref</code>), damit Partner-IDs erhalten bleiben.</li>
-        </ul>
-
-        <div class="row" style="margin-top:10px">
-          <a class="btn" href="app.html">Jetzt ausprobieren</a>
-          <a class="btn ghost" href="quickstart.html">Quickstart (PDF)</a>
-          <a class="btn ghost" href="pro.html">Pro-Features</a>
+        <div class="row">
+          <a class="btn pri" href="bookmarklets.html">Bookmarklet holen</a>
+          <a class="btn" href="quickstart.html">Quickstart (1 Seite)</a>
         </div>
       </section>
 
-      <aside class="card">
-        <h2>FAQ</h2>
-        <p><strong>Greift SafeShare in Affiliate-Verträge ein?</strong><br>
-           Nein. SafeShare bearbeitet nur die Link-Parametersicht. Rechts- & Vertragslage bleibt unberührt.</p>
-        <p><strong>Kann ich bestimmte Parameter behalten?</strong><br>
-           Ja, über die <a href="team-setup.html">Whitelist</a> (lokal gespeichert).</p>
-        <p><strong>Benötigen wir Accounts?</strong><br>
-           Nein. Alles funktioniert lokal im Browser.</p>
-      </aside>
-    </main>
+      <section class="card">
+        <h2>Partner-IDs gezielt behalten</h2>
+        <p>Definiert erlaubte Parameter (z. B. <code>tag</code>, <code>ref</code>, <code>aff_id</code>) einmalig in der <a href="team-setup.html">Team-Whitelist</a>. SafeShare entfernt Tracking-Signaturen (<code>utm_*</code>, <code>gclid</code>, <code>fbclid</code> …), behält aber eure erlaubten IDs.</p>
+        <ul>
+          <li>Gilt lokal im Browser, ohne Server-Sync.</li>
+          <li>Wirkt in App, Bookmarklet und Bulk-Clean.</li>
+        </ul>
+      </section>
 
-    <footer style="margin:22px 0;color:#5a5a5a">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="team-setup.html">Team-Setup</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="press.html">Presse</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a>
+      <section class="card">
+        <h2>Beispiele (vorher → nachher)</h2>
+        <pre><code>https://shop.tld/prod?utm_source=news&amp;utm_medium=email&amp;tag=JJ2025
+→ https://shop.tld/prod?tag=JJ2025
+
+https://l.facebook.com/l.php?u=https%3A%2F%2Fbeispiel.de%2F%3Fref%3Dteam&amp;fbclid=123
+→ https://beispiel.de/?ref=team
+
+https://www.google.com/url?q=https%3A%2F%2Fdeal.tld%2Fpage%3Faff_id%3D42&amp;sa=D
+→ https://deal.tld/page?aff_id=42</code></pre>
+        <p class="mut">Whitelist gepflegt: <code>tag</code>, <code>ref</code>, <code>aff_id</code>.</p>
+      </section>
+
+      <section class="card">
+        <h2>Einbettung in bestehende Abläufe</h2>
+        <ul>
+          <li><strong>CMS/Redaktion:</strong> Link vor dem Publizieren säubern; Bulk-Clean für Sammel-Listen.</li>
+          <li><strong>Newsletter:</strong> Ziel-URLs konsistent und kurz; bessere Lesbarkeit & Weitergabe.</li>
+          <li><strong>Deal-Seiten:</strong> Klar-Links mit beibehaltenen Partner-IDs; weniger Fehlerquellen.</li>
+        </ul>
+        <div class="row">
+          <a class="btn" href="press.html">Presse/Profil</a>
+          <a class="btn" href="compliance.html">Compliance-Hinweise</a>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>FAQ (Kurz)</h2>
+      <details>
+        <summary>Wie richtet man die Whitelist ein?</summary>
+        <p>In <a href="team-setup.html">Team-Setup</a> gewünschte Parameternamen (klein geschrieben) hinzufügen. Gilt sofort im Browser.</p>
+      </details>
+      <details>
+        <summary>Was ist mit Offline/PWA?</summary>
+        <p>SafeShare ist PWA-fähig. „Zum Home-Bildschirm“ hinzufügen und offline nutzen; Verarbeitung bleibt lokal.</p>
+      </details>
+      <details>
+        <summary>Unterstützte Redirects?</summary>
+        <p>u. a. <code>google.com/url</code>, <code>t.co</code>, <code>l.facebook.com</code>, <code>lnkd.in</code>, <code>medium.com/r/…</code>, <code>out.reddit.com</code>, <code>pinterest.com/offsite</code>. Details siehe <a href="redirect-entschachteln.html">Redirect-Entpacken</a>.</p>
+      </details>
+    </section>
+
+    <footer>
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="help.html">Hilfe</a>
+        <a href="press.html">Presse</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
     </footer>
   </div>
 
-  <noscript><div class="wrap"><p class="mut">Hinweis: JSON-LD ist inline eingebunden. Für härtere CSP kann es in eine separate Datei ausgelagert werden.</p></div></noscript>
+  <noscript>
+    <div class="wrap"><div class="card">JavaScript aktivieren, um PWA/Service-Worker zu nutzen.</div></div>
+  </noscript>
 </body>
 </html>
