@@ -5,62 +5,72 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Unternehmen & Partner · SafeShare</title>
-  <meta name="description" content="SafeShare für Unternehmen & Partner: kurze, saubere Links mit klarer Compliance – komplett lokal im Browser, ohne Accounts.">
+  <title>SafeShare für Unternehmen & Partner</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/partners.html">
+  <meta name="description" content="Saubere Links, weniger Tracking-Footprint und klare Compliance – komplett lokal im Browser, ohne Accounts. Für Unternehmen, Publisher, Partnernetzwerke und IT.">
+  <meta name="robots" content="index,follow">
 
   <!-- hreflang / Locale -->
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/partners.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/partners.html" hreflang="x-default">
   <meta property="og:locale" content="de_DE">
 
+  <!-- Icons / PWA -->
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="SafeShare für Unternehmen & Partner">
-  <meta property="og:description" content="Saubere Links, weniger Tracking-Footprint, klare Compliance – lokal im Browser.">
+  <meta property="og:description" content="Kürzere, saubere Links; weniger Tracking-Footprint; klare Compliance – alles lokal im Browser.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/partners.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192-kreis.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon-512-kreis.png">
-  <link rel="manifest" href="manifest.webmanifest">
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    base-uri 'self';
+    frame-ancestors 'none';
+    object-src 'none';
+    img-src 'self' data:;
+    style-src 'self' 'unsafe-inline';
+    script-src 'self';
+    font-src 'self';
+    worker-src 'self';
+    manifest-src 'self';
+    connect-src 'self'
+  ">
 
-  <!-- Security Policy -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
-                 img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';
-                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
-
-  <!-- Minimal Styles (seitenweit konsistent) -->
+  <!-- Styles (leicht, identisch zu den anderen Seiten) -->
   <style>
-    :root{--bg:#0b0b0b;--card:#141414;--mut:#9aa3ad;--txt:#e9eef2;--acc:#3ad69f;--btn:#1f2937}
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#0b0b0b;color:var(--txt);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
-    .wrap{max-width:980px;margin:40px auto;padding:0 16px}
-    h1{font-size:34px;margin:0 0 8px}
+    :root{--bg:#0b0b0b;--fg:#e9e9ea;--mut:#a7a7ad;--card:#151518;--btn:#2a6df4;--btnfg:#fff;--chip:#222228}
+    @media (prefers-color-scheme: light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5e5e66;--card:#f5f7fa;--chip:#e9ecf3}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    a{color:inherit}
+    .wrap{max-width:1080px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
-    .chip{background:#151a20;color:#cfd6dd;border:1px solid #202833;border-radius:999px;padding:8px 12px;font-size:14px}
-    .grid{display:grid;grid-template-columns:1fr;gap:18px;margin:10px 0 22px}
-    @media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid #1f2630;border-radius:12px;padding:18px}
-    .card h2{margin:0 0 8px;font-size:22px}
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 2px}
-    .btn{display:inline-block;background:var(--btn);border:1px solid #232b36;border-radius:10px;padding:10px 14px}
-    .btn.pri{background:#16a34a;border-color:#16a34a;color:#08110b}
-    footer{margin:26px 0 40px;color:var(--mut);font-size:14px}
-    footer a{color:#cfd6dd}
-    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip:focus{left:16px;top:10px;width:auto;height:auto;padding:6px 10px;background:#fff;color:#111;border-radius:6px}
+    .row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+    .chip{background:var(--chip);border-radius:999px;padding:8px 12px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:840px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border-radius:12px;padding:18px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--chip);text-decoration:none}
+    .btn.pri{background:var(--btn);color:var(--btnfg)}
+    footer{margin-top:30px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
+    footer a{color:var(--mut);text-decoration:none;margin-right:10px}
+    .skip{position:absolute;left:-9999px}
+    .skip:focus{left:12px;top:12px;z-index:10;background:#ffd;border-radius:6px;color:#000;padding:6px 10px}
   </style>
 
-  <!-- SW + Telemetrie -->
+  <!-- SW-Registrierung -->
   <script defer src="js/sw-register.js?v=30"></script>
-  <script defer src="js/telemetry.js?v=30"></script>
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -68,7 +78,7 @@
     <h1>SafeShare für Unternehmen &amp; Partner</h1>
     <p class="mut">Saubere Links, weniger Tracking-Footprint, klare Compliance – komplett lokal im Browser, ohne Accounts.</p>
 
-    <div class="chips">
+    <div class="row" aria-label="Themen">
       <span class="chip">Marketing &amp; Redaktion</span>
       <span class="chip">Affiliates &amp; Partnernetzwerke</span>
       <span class="chip">IT-Compliance</span>
@@ -83,13 +93,15 @@
           <li><strong>Marketing/CRM:</strong> Kürzere URLs in Kampagnen &amp; Newslettern.</li>
           <li><strong>IT/Compliance:</strong> Lokale Verarbeitung, keine Dritt-Requests, klare Parameter-Regeln.</li>
         </ul>
-        <h3 style="margin:14px 0 8px;font-size:17px">Integration</h3>
+
+        <h3>Integration</h3>
         <ul>
           <li><a href="bookmarklets.html">Bookmarklet</a> in Redaktionsbrowsern ausrollen.</li>
           <li><a href="bulk-clean.html">Bulk-Clean</a> (Pro) für Listenexporte.</li>
           <li><a href="team-setup.html">Team-Whitelist</a> definieren (z. B. <code>tag</code>, <code>ref</code>).</li>
         </ul>
-        <div class="btns">
+
+        <div class="row">
           <a class="btn pri" href="app.html">Jetzt ausprobieren</a>
           <a class="btn" href="quickstart.html">Quickstart (PDF)</a>
           <a class="btn" href="help.html">Hilfe</a>
@@ -99,17 +111,17 @@
       <aside class="card">
         <h2>Vorteile</h2>
         <ul>
-          <li><strong>Schneller:</strong> Klarere Links → bessere UX.</li>
-          <li><strong>Weniger Blockaden:</strong> Reduzierte Tracking-Signaturen.</li>
-          <li><strong>Privacy-by-Design:</strong> keine Server-Logs; PWA-fähig.</li>
-          <li><strong>Parametrische Kontrolle:</strong> via Whitelist.</li>
+          <li>Schnellere, klarere Links → bessere UX.</li>
+          <li>Weniger Blockaden durch Filter-Signaturen.</li>
+          <li>Privacy-by-Design: keine Server-Logs; PWA-fähig.</li>
+          <li>Parametrische Kontrolle per Whitelist.</li>
         </ul>
-        <p class="mut" style="margin-top:8px">Weitere Infos: <a href="compliance.html">Compliance</a> · <a href="press.html">Presse</a></p>
+        <p>Weitere Infos: <a href="compliance.html">Compliance</a> · <a href="press.html">Presse</a></p>
       </aside>
     </div>
 
-    <footer>
-      <p>
+    <footer aria-label="Fußzeile">
+      <nav>
         <a href="./">Startseite</a> ·
         <a href="app.html">App</a> ·
         <a href="quickstart.html">Quickstart</a> ·
@@ -117,12 +129,8 @@
         <a href="press.html">Presse</a> ·
         <a href="impressum.html">Impressum</a> ·
         <a href="datenschutz.html">Datenschutz</a>
-      </p>
+      </nav>
     </footer>
   </div>
-
-  <noscript>
-    <div class="wrap" style="color:#ffd9d9">Für alle Funktionen JavaScript aktivieren.</div>
-  </noscript>
 </body>
 </html>
