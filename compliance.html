@@ -1,156 +1,236 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- compliance.html – Richtlinien & Compliance-Info (SEO) -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Compliance & Richtlinien · SafeShare</title>
-
+  <title>Compliance · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/compliance.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/compliance.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/compliance.html" hreflang="x-default">
-  <meta name="description" content="Privacy-by-Design, lokale Verarbeitung, optionale Team-Whitelist: so fügt sich SafeShare in Compliance-Vorgaben ein.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="Compliance & Richtlinien für SafeShare: Governance der Team-Whitelist, Nachweisführung, Datenschutz-Grundsätze (DSGVO) und technische Einordnung.">
 
-  <!-- OG/Twitter -->
+  <!-- hreflang / Locale -->
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/compliance.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/compliance.html">
   <meta property="og:locale" content="de_DE">
+
+  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Compliance & Richtlinien">
-  <meta property="og:description" content="Lokale Verarbeitung, keine Server-Logs, kontrollierte Parameter per Whitelist.">
+  <meta property="og:title" content="SafeShare Compliance">
+  <meta property="og:description" content="Richtlinien, Governance & Nachweisführung für saubere, kurze Links – lokal im Browser verarbeitet.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/compliance.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
-
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=31">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=31">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=31">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
   <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Styles (hell) -->
-  <style>
-    :root{
-      --bg:#ffffff; --fg:#0b0b0b; --mut:#5a5a5a; --line:#e5e5e5;
-      --card:#ffffff; --cta:#0b6a3b; --cta-fg:#fff; --ghost:#eef6f1; --ghost-fg:#0b4e2e;
-    }
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    a{color:#0b6a3b}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px 16px}
-    header h1{margin:.2em 0 .2em;font-size:2rem}
-    header p{color:var(--mut)}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .row{display:flex;flex-wrap:wrap;gap:10px}
-    .btn{display:inline-block;background:var(--cta);color:var(--cta-fg);padding:.7rem 1rem;border-radius:10px;text-decoration:none}
-    .btn.ghost{background:var(--ghost);color:var(--ghost-fg);border:1px solid #cfe6d6}
-    ul.tight{margin:.3rem 0;padding-left:1.2rem} ul.tight li{margin:.25rem 0}
-    code,kbd{background:#f5f5f5;border:1px solid #e2e2e2;border-radius:6px;padding:.05rem .35rem}
-    footer{margin:22px 0;color:var(--mut)}
-    .visually-hidden-focusable{position:absolute;left:-9999px}
-    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#fff;padding:.4rem .6rem;border-radius:8px;outline:1px solid var(--line)}
-  </style>
-
-  <link rel="stylesheet" href="css/theme.css?v=31">
-  <script defer src="js/sw-register.js?v=31"></script>
-
-  <!-- Structured Data (FAQ) -->
-  <script type="application/ld+json">
+  <!-- FAQ JSON-LD (mit Nonce) -->
+  <script type="application/ld+json" nonce="SSJSON3">
   {
     "@context":"https://schema.org",
     "@type":"FAQPage",
+    "inLanguage":"de-DE",
     "mainEntity":[
-      {"@type":"Question","name":"Welche Daten verarbeitet SafeShare?",
-       "acceptedAnswer":{"@type":"Answer","text":"SafeShare verarbeitet ausschließlich URLs lokal im Browser. Es gibt keine Server-Logs, keine Accounts, keine Tracking-Cookies. Optionale Einstellungen (z. B. Team-Whitelist, Pro-Flag) liegen im localStorage."}},
-      {"@type":"Question","name":"Wie wird Compliance sichergestellt?",
-       "acceptedAnswer":{"@type":"Answer","text":"Die Team-Whitelist definiert, welche Parameter erhalten bleiben (z. B. tag, ref). Alles andere wird entfernt. Damit ist die Weitergaberegel technisch erzwingbar und transparent."}},
-      {"@type":"Question","name":"Welche technischen Kontrollen gibt es?",
-       "acceptedAnswer":{"@type":"Answer","text":"Content Security Policy, PWA/Offline-Fallback, keine Dritt-Requests (außer optionalen Assets), minimaler Scope. Nutzung ohne externe Bibliotheken möglich."}}
+      {
+        "@type":"Question",
+        "name":"Verarbeitet SafeShare personenbezogene Daten?",
+        "acceptedAnswer":{"@type":"Answer","text":"SafeShare arbeitet lokal im Browser des Nutzers und sendet keine URLs oder Metadaten an Server von SafeShare. Es findet keine zentrale Speicherung oder Protokollierung statt."}
+      },
+      {
+        "@type":"Question",
+        "name":"Wie wird die Einhaltung dokumentiert?",
+        "acceptedAnswer":{"@type":"Answer","text":"Durch eine Richtlinie zur Linkhygiene, definierte Team-Whitelist, Stichproben mit Screenshots/CSV sowie die öffentlich zugängliche Status-Seite. Siehe Abschnitt Nachweisführung."}
+      },
+      {
+        "@type":"Question",
+        "name":"Was passiert mit Partner-IDs?",
+        "acceptedAnswer":{"@type":"Answer","text":"Über die Team-Whitelist können erlaubte Parameter (z. B. tag, ref, aff_id) erhalten bleiben. Alles andere wird entfernt."}
+      },
+      {
+        "@type":"Question",
+        "name":"Ist eine Auftragsverarbeitung notwendig?",
+        "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare verarbeitet lokal im Endgerät des Nutzers. Es werden keine Daten an SafeShare-Server übermittelt; damit liegt regulär keine Auftragsverarbeitung vor."}
+      }
     ]
   }
   </script>
+
+  <!-- Sicherheits-CSP (Nonce für JSON-LD) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'nonce-SSJSON3';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=31"></script>
+
+  <!-- Styles -->
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
+    @media (prefers-color-scheme: light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:inherit}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+    .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:#141414}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
+    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
+    ul{margin:.4rem 0 .8rem 1.2rem}
+    pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    pre{background:#0f0f10;border:1px solid var(--line);border-radius:10px;padding:10px;white-space:pre-wrap}
+    table{width:100%;border-collapse:collapse}
+    th,td{border-top:1px solid var(--line);padding:8px 6px;vertical-align:top}
+    .badge{display:inline-block;background:#101010;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin-right:8px;color:var(--mut);font-size:.92rem}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .skip{position:absolute;left:-9999px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
+  </style>
 </head>
 <body>
-  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
-  <div class="wrap">
-    <header>
-      <h1>Compliance & Richtlinien</h1>
-      <p>Privacy-by-Design: lokale Verarbeitung, keine Server-Logs, optionale Team-Whitelist für kontrollierte Parameter.</p>
-    </header>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap" id="main">
+    <h1>Compliance</h1>
+    <p class="mut">Richtlinien, Governance und Nachweisführung für klare, kurze Links. SafeShare verarbeitet lokal im Browser – ohne Accounts, ohne Server-Logs.</p>
 
-    <main id="main" class="grid" style="margin-top:12px">
+    <div class="row" style="margin-top:10px">
+      <a class="chip" href="team-setup.html">Team-Whitelist</a>
+      <a class="chip" href="status.html">Status</a>
+      <a class="chip" href="help.html#faq">FAQ</a>
+      <a class="chip" href="press.html">Presse/Profil</a>
+    </div>
+
+    <div class="grid">
+      <!-- Governance -->
       <section class="card">
-        <h2>Prinzipien</h2>
-        <ul class="tight">
-          <li><strong>Lokal & zustandsarm:</strong> Verarbeitung im Browser, keine personenbezogenen Serverdaten.</li>
-          <li><strong>Deterministisch:</strong> Entfernt bekannte Tracking-Parameter; Whitelist bewahrt definierte Keys.</li>
-          <li><strong>Transparenz:</strong> <a href="help.html">Hilfe</a> dokumentiert Muster & Beispiele; Tests auf <a href="tests.html">Tests</a>.</li>
+        <h2>Governance & Zuständigkeiten</h2>
+        <ul>
+          <li><strong>Policy Owner:</strong> Fachbereich (z. B. Redaktion, Marketing, Bildung) definiert die Linkhygiene-Richtlinie.</li>
+          <li><strong>Freigabe:</strong> Datenschutz/Compliance validieren Whitelist-Parameter und Anwendungsfälle.</li>
+          <li><strong>Betrieb:</strong> Nutzer:innen wenden SafeShare über <a href="app.html">App</a>, <a href="bookmarklets.html">Bookmarklet</a> oder <a href="bulk-clean.html">Bulk-Clean</a> an.</li>
+          <li><strong>Nachweis:</strong> Stichproben, Screenshots/CSV, dokumentierte Whitelist (Export) – siehe unten.</li>
         </ul>
-
-        <h3 style="margin-top:1rem">Team-Whitelist</h3>
-        <ul class="tight">
-          <li>In <a href="team-setup.html">Team-Setup</a> Parameter wie <code>tag</code>, <code>ref</code> hinterlegen.</li>
-          <li>Publisher-Modus: Erlaubte IDs bleiben erhalten, alles andere wird entfernt.</li>
-          <li>Gleiches Verhalten auf allen Team-Geräten (per Dokumentation/Rollout der Whitelist-Liste).</li>
-        </ul>
-
-        <h3 style="margin-top:1rem">Technische Kontrollen</h3>
-        <ul class="tight">
-          <li><strong>CSP:</strong> Restriktive Content Security Policy; keine externen Skriptquellen.</li>
-          <li><strong>PWA & Offline:</strong> Kernseiten offline verfügbar (<a href="offline.html">Offline</a>).</li>
-          <li><strong>Kein Tracking:</strong> Keine Telemetrie, keine Cookies für den Betrieb.</li>
-          <li><strong>Security.txt:</strong> Kontakt unter <code>/.well-known/security.txt</code>.</li>
-        </ul>
-
-        <div class="row" style="margin-top:10px">
-          <a class="btn" href="app.html">Jetzt testen</a>
-          <a class="btn ghost" href="help.html">Hilfe</a>
-          <a class="btn ghost" href="publisher.html">Publisher</a>
-        </div>
       </section>
 
-      <aside class="card">
-        <h2>Empfohlene Nutzung</h2>
-        <ul class="tight">
-          <li>Bookmarklet für Redaktionen/Teams ausrollen.</li>
-          <li>Bulk-Clean (Pro) für Sammellisten verwenden.</li>
-          <li>Whitelist dokumentieren (z. B. in internen Richtlinien/Confluence).</li>
+      <!-- Technik -->
+      <section class="card">
+        <h2>Technische Einordnung</h2>
+        <ul>
+          <li><strong>Verarbeitung lokal:</strong> URL-Bereinigung läuft ausschließlich im Browser des Nutzers.</li>
+          <li><strong>Keine Server-Logs:</strong> SafeShare sendet keine URLs oder Metadaten an Server von SafeShare.</li>
+          <li><strong>Whitelist:</strong> Erlaubte Parameter werden im <code>localStorage</code> des Browsers gespeichert (<code>ss_whitelist</code>).</li>
+          <li><strong>PWA/Offline:</strong> Optional installierbar; keine zusätzliche Datenübermittlung.</li>
+          <li><strong>Sicherheit:</strong> Content-Security-Policy (CSP), keine Fremdskripte, keine Inline-Logik außer signiertem JSON-LD.</li>
         </ul>
+      </section>
 
-        <h2 style="margin-top:1rem">Rechtliches</h2>
-        <ul class="tight">
-          <li><a href="datenschutz.html">Datenschutz</a> · <a href="impressum.html">Impressum</a></li>
-          <li><a href="terms.html">Nutzungsbedingungen</a> · <a href="kurz-terms.html">Kurz-Terms</a></li>
+      <!-- Richtlinie -->
+      <section class="card">
+        <h2>Richtlinie zur Linkhygiene (Beispiel)</h2>
+        <pre><code>1. Ziel
+   Einheitliche, kurze, datensparsame Links in allen Publikationen/Workflows.
+
+2. Grundsatz
+   Tracking-Signaturen (z. B. utm_*, gclid, fbclid) werden entfernt.
+   Übliche Weiterleitungen werden zum Klarziel entpackt.
+
+3. Ausnahmen (Whitelist)
+   Folgende Parameter bleiben erhalten (falls vorhanden): tag, ref, aff_id.
+   Änderungen an der Whitelist bedürfen der Freigabe durch Datenschutz/Compliance.
+
+4. Verantwortlichkeiten
+   - Policy Owner: &lt;Bereich/Team&gt;
+   - Freigabe: &lt;DS/Compliance&gt;
+   - Anwendung: alle Mitarbeitenden gemäß Quickstart.
+
+5. Nachweis & Review
+   Monatliche Stichprobe (min. 10 Links) inkl. Screenshot/CSV.
+   Ergebnisse in &lt;Ablage/Ordner&gt; dokumentieren.
+</code></pre>
+      </section>
+
+      <!-- Nachweis -->
+      <section class="card">
+        <h2>Nachweisführung (Stichprobe)</h2>
+        <ol>
+          <li>Whitelist prüfen/Export: <a href="team-setup.html">Team-Setup</a> → „Exportieren“ → JSON ablegen.</li>
+          <li>Stichprobe: Mit <a href="app.html">App</a> oder <a href="bulk-clean.html">Bulk-Clean</a> Links säubern.</li>
+          <li>Dokumentation: Screenshot der Ergebnisse oder CSV-Export (Bulk-Clean) ablegen.</li>
+          <li>Status: <a href="status.html">Status</a> aufrufen, „Auf Updates prüfen“ und Ergebnis vermerken.</li>
+        </ol>
+        <p class="mut">Tipp: Für Audits eine kurze Checkliste im Team-Wiki pflegen.</p>
+      </section>
+
+      <!-- Datenschutz -->
+      <section class="card">
+        <h2>Datenschutz (DSGVO – Einordnung)</h2>
+        <ul>
+          <li><strong>Datenminimierung (Art. 5 Abs. 1 c):</strong> Entfernen von Tracking-Parametern reduziert personenbezogene Bezüge.</li>
+          <li><strong>Zweckbindung/Transparenz:</strong> Klarere Ziel-URLs, geringere Intransparenz durch Redirect-Ketten.</li>
+          <li><strong>Technisch-organisatorisch:</strong> Verarbeitung lokal; keine Übermittlung an SafeShare-Server; CSP aktiv.</li>
+          <li><strong>Auftragsverarbeitung:</strong> Nicht erforderlich, da keine externe Verarbeitung durch SafeShare.</li>
         </ul>
-      </aside>
-    </main>
+        <p class="mut">Rechtliche Bewertung obliegt Ihrem Unternehmen/ Ihrer Organisation. Diese Seite stellt keine Rechtsberatung dar.</p>
+      </section>
 
-    <footer style="margin:22px 0;color:#5a5a5a">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="publisher.html">Publisher</a> ·
-      <a href="education.html">Education</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="press.html">Presse</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a>
+      <!-- Parameter-Governance -->
+      <section class="card">
+        <h2>Parameter-Governance (Whitelist)</h2>
+        <table aria-label="Governance-Übersicht">
+          <thead><tr><th>Schritt</th><th>Beschreibung</th><th>Artefakte</th></tr></thead>
+          <tbody>
+            <tr><td>Definition</td><td>Liste erlaubter Parameter festlegen (Kleinbuchstaben, klarer Zweck).</td><td>Whitelist in <a href="team-setup.html">Team-Setup</a>, Export (JSON)</td></tr>
+            <tr><td>Freigabe</td><td>Freigabe durch Datenschutz/Compliance dokumentieren.</td><td>Protokoll/Issue/Ticket</td></tr>
+            <tr><td>Rollout</td><td>Hinweis in Quickstart/Guides; ggf. Schulung.</td><td><a href="quickstart.html">Quickstart</a></td></tr>
+            <tr><td>Review</td><td>Monatlich/Quartalsweise Stichprobe, Anpassungen bei Bedarf.</td><td>Stichproben-CSV, Export-JSON</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <footer>
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="partners.html">Partner</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="help.html">Hilfe</a>
+        <a href="press.html">Presse</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="status.html">Status</a>
+      </nav>
     </footer>
   </div>
 
-  <noscript><div class="wrap"><p class="mut">Hinweis: JSON-LD ist inline eingebunden. Für härtere CSP kann es gehasht oder ausgelagert werden.</p></div></noscript>
+  <noscript>
+    <div class="wrap"><div class="card">JavaScript ist optional (Service Worker/PWA). Die Inhalte dieser Seite funktionieren auch ohne JS.</div></div>
+  </noscript>
 </body>
 </html>
