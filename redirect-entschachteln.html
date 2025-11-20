@@ -1,136 +1,131 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- redirect-entschachteln.html (neu, ohne Inline-JS) -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Redirect entschachteln · SafeShare</title>
-
-  <!-- Canonical / hreflang -->
+  <title>Redirects entpacken · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html" hreflang="x-default">
-  <meta name="description" content="Entpackt Weiterleitungs-Links (Google, Facebook, Reddit usw.) und zeigt die echte Ziel-URL. Optional Trackingparameter entfernen.">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="Weiterleitungen entpacken: Aus t.co, l.facebook.com & Co. die klare Ziel-URL extrahieren – für kurze, saubere Links.">
+
+  <!-- hreflang / Locale -->
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
   <meta property="og:locale" content="de_DE">
 
-   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Redirects entpacken – SafeShare">
+  <meta property="og:description" content="Klarziel statt Ketten: übliche Redirects lokal auflösen.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=30">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=30">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=30">
-  <link rel="manifest" href="manifest.webmanifest?v=30">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+
+  <!-- Sicherheits-CSP (ohne Inline-JS) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
+                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=31"></script>
+  <script defer src="js/cleaner.js?v=31"></script>
+  <script defer src="js/page-unwrap.js?v=31"></script>
 
   <!-- Styles -->
   <style>
-    :root{
-      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a; --line:#2a2a2a;
-      --card:#121212; --btn:#1b1b1b; --ok:#1e402f;
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
+    @media (prefers-color-scheme: light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
     }
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    a{color:#cfe7ff}
-    .wrap{max-width:980px;margin:0 auto;padding:22px 14px}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    h1{margin:.2em 0 .6em;font-size:1.9rem}
-    h2{margin:1.0em 0 .35em;font-size:1.15rem}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    .row{display:flex;flex-wrap:wrap;gap:8px}
-    .btn{display:inline-block;border:1px solid var(--line);background:var(--btn);color:var(--fg);
-         padding:.6rem .9rem;border-radius:10px;cursor:pointer;text-decoration:none}
-    .btn.ok{background:var(--ok)}
-    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.1rem .5rem;margin:.1rem .25rem 0 0}
-    input[type="text"],textarea{width:100%;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);
-         color:var(--fg);border-radius:10px;padding:.6rem .7rem}
-    label{user-select:none}
-    footer{margin:18px 0}
-    .visually-hidden-focusable{position:absolute;left:-9999px}
-    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#222;padding:.4rem .6rem;border-radius:8px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    input[type=url], input[type=text]{width:100%;height:44px;border-radius:10px;border:1px solid var(--line);background:#0f0f10;color:var(--fg);padding:0 12px}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none;cursor:pointer}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    .out{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f0f10}
+    .out a{word-break:break-all}
+    .badge{display:inline-block;background:#101010;border:1px solid var(--line);border-radius:999px;padding:6px 10px;margin-right:8px;color:var(--mut);font-size:.92rem}
+    footer{border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
+    footer a{color:var(--mut);text-decoration:none;margin-right:10px}
+    .skip{position:absolute;left:-9999px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
   </style>
-
-  <!-- CSS (falls vorhanden) -->
-  <link rel="stylesheet" href="css/theme.css?v=30">
-
-  <!-- SW-Registrierung + Seiten-Skripte (NEU, keine Inline-Handler) -->
-  <script defer src="js/sw-register.js?v=30"></script>
-  <script defer src="js/cleaner.js?v=30"></script>
-  <script defer src="js/page-redirect.js?v=30"></script>
 </head>
 <body>
-  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
-  <div class="wrap">
-    <header>
-      <h1>Redirect entschachteln</h1>
-      <p class="mut">Ziel-URL aus Weiterleitungs-Links extrahieren und optional Tracking-Parameter entfernen.</p>
-    </header>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap" id="main">
+    <h1>Redirects entpacken</h1>
+    <p class="mut">Übliche Weiterleitungen (z. B. <code>t.co</code>, <code>l.facebook.com</code>, <code>google.com/url</code>) zum Klarziel auflösen. Optional Tracking-Signaturen entfernen.</p>
 
-    <main id="main">
-      <section class="card" aria-labelledby="eingabe">
-        <h2 id="eingabe">Eingabe</h2>
-        <label for="inUrl" class="mut">Weiterleitungs-Link einfügen</label>
-        <input id="inUrl" type="text" name="url" placeholder="z. B. https://www.google.com/url?q=https%3A%2F%2Fexample.com%2F…" autocomplete="off" inputmode="url" spellcheck="false" aria-describedby="hint">
-        <p id="hint" class="mut mono" style="margin:.4rem 0 0">Enter = Entschachteln</p>
+    <section class="card" aria-label="Eingabe">
+      <label class="mut" for="in-url">URL</label>
+      <input id="in-url" type="url" inputmode="url" placeholder="Hier URL einfügen oder via Bookmarklet landen …" autocomplete="off">
 
-        <div class="row" style="margin-top:.7rem">
-          <label class="mut"><input id="optClean" type="checkbox" checked> Tracking-Parameter zusätzlich entfernen</label>
-        </div>
+      <div class="controls">
+        <label><input type="checkbox" id="opt-unwrap" checked> Redirects entpacken</label>
+        <label><input type="checkbox" id="opt-clean" checked> Tracking entfernen</label>
+        <label><input type="checkbox" id="opt-keep" checked> Team-Whitelist beibehalten</label>
+      </div>
 
-        <div class="row" style="margin-top:.7rem">
-          <button id="btnUnwrap" class="btn ok" type="button" aria-label="Entschachteln">Entschachteln</button>
-          <button id="btnCopy"   class="btn"    type="button" aria-label="Ergebnis kopieren">Kopieren</button>
-          <button id="btnOpen"   class="btn"    type="button" aria-label="Ergebnis öffnen">Öffnen</button>
-          <a class="btn" href="app.html" aria-label="In App öffnen (weiterverarbeiten)">In App</a>
-        </div>
-      </section>
+      <div class="controls">
+        <button class="btn pri" id="btn-check">Prüfen</button>
+        <button class="btn" id="btn-open">Säubern&nbsp;+&nbsp;öffnen</button>
+        <button class="btn" id="btn-copy">Ergebnis kopieren</button>
+        <button class="btn" id="btn-reset">Zurücksetzen</button>
+      </div>
 
-      <section class="card" aria-labelledby="ausgabe">
-        <h2 id="ausgabe">Ausgabe</h2>
-        <label for="outUrl" class="mut">Ergebnis-URL</label>
-        <input id="outUrl" type="text" readonly class="mono" placeholder="—">
-      </section>
+      <div class="badges">
+        <span class="badge">Eingang: <strong id="b-in">–</strong></span>
+        <span class="badge">Ziel: <strong id="b-target">–</strong></span>
+        <span class="badge">Bereinigt: <strong id="b-clean">–</strong></span>
+      </div>
+    </section>
 
-      <section class="card" aria-labelledby="schritte">
-        <h2 id="schritte">Schritte</h2>
-        <div id="steps" class="mut">Noch keine Analyse.</div>
-      </section>
+    <section class="card" aria-label="Ergebnis">
+      <h2>Ergebnis</h2>
+      <div id="out-url" class="out">Noch kein Ergebnis.</div>
+    </section>
 
-      <section class="card" aria-labelledby="aenderungen">
-        <h2 id="aenderungen">Änderungen</h2>
-        <div id="changes" class="mut">–</div>
-      </section>
-    </main>
+    <section class="card" aria-label="Hinweise">
+      <h2>Hinweise</h2>
+      <ul>
+        <li>Bookmarklet „Redirect entpacken“ übergibt automatisch die aktuelle Seite an diese Ansicht.</li>
+        <li>Whitelist-Parameter (z. B. <code>tag</code>, <code>ref</code>) in <a href="team-setup.html">Team-Setup</a> pflegen.</li>
+        <li>Verarbeitung erfolgt lokal im Browser.</li>
+      </ul>
+    </section>
 
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="bookmarklets.html">Bookmarklet</a> ·
-      <a href="bulk-clean.html">Bulk-Clean</a> ·
-      <a href="team-setup.html">Team-Setup</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="status.html">Status</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a> ·
-      <a href="press.html">Presse</a>
+    <footer>
+      <nav>
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="help.html">Hilfe</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><p class="mut">JavaScript ist erforderlich, um Redirects zu entschachteln.</p></div>
+    <div class="wrap"><div class="card">JavaScript aktivieren, um Redirects zu entpacken und Ergebnisse zu kopieren/öffnen.</div></div>
   </noscript>
 </body>
 </html>
