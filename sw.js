@@ -1,255 +1,187 @@
-/* sw.js – SafeShare v2
+/* sw.js – SafeShare Service Worker
  * Strategie:
- * - Navigation: Network-First (4s Timeout) → Fallback Cache → offline.html
- * - Statische Assets (CSS/JS/Icons/Manifest): Cache-First (Stale-While-Revalidate)
- * - Versionierte Precache-Liste (schnellere Erstladung, offline nutzbar)
- * - Sauberes Cache-Rollover pro Version
+ * - HTML (Navigations): network-first mit Offline-Fallback
+ * - Assets (JS/CSS/Icons/Images/Manifest): cache-first
+ * - Precache definierter Kernseiten/Assets
+ * Steuerung:
+ * - Message PING / SKIP_WAITING / CLEAR_CACHES / PRECACHE_LIST
  */
+const SS_VERSION = 'v32';
+const PRECACHE = `ss-precache-${SS_VERSION}`;
+const RUNTIME  = `ss-runtime-${SS_VERSION}`;
+const OFFLINE_URL = 'offline.html';
 
-const SS_SW_VERSION = '2025-11-18-05';              // ← bei jedem Release erhöhen
-const BASE_PATH      = '/Supersystem/';             // GitHub Pages Unterpfad
-const OFFLINE_URL    = `${BASE_PATH}offline.html`;
-
-const PRECACHE      = `ss2-precache-${SS_SW_VERSION}`;
-const RUNTIME_ASSET = `ss2-runtime-asset-${SS_SW_VERSION}`;
-const RUNTIME_PAGE  = `ss2-runtime-page-${SS_SW_VERSION}`;
-
-const SAME_ORIGIN = self.location.origin;
-
-/* -------------------- Precache-Liste --------------------
-   Wichtig: exakt so eintragen, wie in HTML verlinkt (inkl. ?v=…),
-   sonst passt das URL-Matching offline nicht.
---------------------------------------------------------- */
-const precacheList = [
-  // Dokumente (HTML)
-  `${BASE_PATH}`,
-  `${BASE_PATH}index.html`,
-  `${BASE_PATH}app.html`,
-  `${BASE_PATH}help.html`,
-  `${BASE_PATH}quickstart.html`,
-  `${BASE_PATH}publisher.html`,
-  `${BASE_PATH}education.html`,
-  `${BASE_PATH}partners.html`,
-  `${BASE_PATH}compliance.html`,
-  `${BASE_PATH}bookmarklets.html`,
-  `${BASE_PATH}bulk-clean.html`,
-  `${BASE_PATH}team-setup.html`,
-  `${BASE_PATH}redirect-entschachteln.html`,
-  `${BASE_PATH}tests.html`,
-  `${BASE_PATH}tools.html`,
-  `${BASE_PATH}pro.html`,
-  `${BASE_PATH}press.html`,
-  `${BASE_PATH}impressum.html`,
-  `${BASE_PATH}datenschutz.html`,
-  `${BASE_PATH}status.html`,
-  `${BASE_PATH}offline.html`,             // Fallback-Seite
-
-  // Meta
-  `${BASE_PATH}sitemap.xml`,
-  `${BASE_PATH}robots.txt`,
-  `${BASE_PATH}manifest.webmanifest?v=31`,
-
-// JSON-LD (NEU: für CSP-hardened Landingpages)
-  `${BASE_PATH}ld/publisher-faq.jsonld`,
-  `${BASE_PATH}ld/education-faq.jsonld`,
-   
-  // CSS
-  `${BASE_PATH}css/theme.css?v=31`,
-
-  // JS Kern
-  `${BASE_PATH}js/sw-register.js?v=31`,
-  `${BASE_PATH}js/cleaner.js?v=31`,
-
-  // JS Seiten (nur die, die du nutzt)
-  `${BASE_PATH}js/app.js?v=31`,
-  `${BASE_PATH}js/bookmarklets.js?v=31`,
-  `${BASE_PATH}js/bulk-clean.js?v=31`,
-  `${BASE_PATH}js/team-setup.js?v=31`,
-  `${BASE_PATH}js/page-redirect.js?v=31`,
-  `${BASE_PATH}js/page-tests.js?v=31`,
-  `${BASE_PATH}js/page-status.js?v=31`,
-  `${BASE_PATH}js/page-404.js?v=31`,
-  `${BASE_PATH}js/page-quickstart.js?v=31`,
-  `${BASE_PATH}js/page-pro-activate.js?v=31`,
-  `${BASE_PATH}js/ext-links.js?v=31`,
-  `${BASE_PATH}js/telemetry.js?v=31`,
-
-  // Icons/OG (prüfe, dass sie existieren)
-  `${BASE_PATH}assets/icons/apple-touch-icon-180.png?v=31`,
-  `${BASE_PATH}assets/icons/icon-32-kreis.png?v=31`,
-  `${BASE_PATH}assets/icons/icon-16-kreis.png?v=31`,
-  `${BASE_PATH}assets/og/og-index.jpg`,
-  `${BASE_PATH}assets/qr/app-qr.png`,
+/** Precache-Liste – nur eigene, vorhandene Dateien (gleiches Origin) */
+const PRECACHE_URLS = [
+  './', 'index.html',
+  'app.html','pro.html','bookmarklets.html','bulk-clean.html',
+  'redirect-entschachteln.html','team-setup.html',
+  'help.html','quickstart.html','tests.html','status.html',
+  'publisher.html','education.html','partners.html','compliance.html',
+  'press.html','impressum.html','datenschutz.html','terms.html','kurz-terms.html',
+  // Grundlegende Assets
+  'manifest.webmanifest',
+  'assets/icons/icon-16-kreis.png',
+  'assets/icons/icon-32-kreis.png',
+  'assets/icons/icon-192-kreis.png',
+  'assets/icons/icon-512-kreis.png',
+  'assets/icons/apple-touch-icon-180.png',
+  'assets/og/og-index.jpg',
+  // QR (falls vorhanden; wenn nicht, wird beim Install still übersprungen)
+  'assets/qr/app-qr.svg',
+  // JavaScript (sofern vorhanden)
+  'js/sw-register.js',
+  'js/cleaner.js',
+  'js/bookmarklets.js',
+  'js/bulk-clean.js',
+  'js/page-status.js',
+  'js/page-pro.js',
+  'js/page-404.js',
+  // Fallback-Seiten (optional, aber empfohlen)
+  '404.html',
+  OFFLINE_URL
 ];
 
-/* -------------------- Install -------------------- */
+/* ---------------- Install: Precache ---------------- */
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(PRECACHE);
-    // Einzel-add statt addAll, damit eine fehlende Datei nicht alles scheitern lässt
-    for (const url of precacheList) {
-      try { await cache.add(new Request(url, { cache: 'reload' })); }
-      catch (e) { /* optional: console.warn('[SW] Precache fail:', url, e); */ }
-    }
-    await self.skipWaiting();
+    // Robust gegen einzelne 404: einzeln hinzufügen
+    await Promise.all(PRECACHE_URLS.map(async (url) => {
+      try {
+        // Cache-busting beim Install vermeiden; Browser nutzt frische Kopie
+        const req = new Request(url, { cache: 'reload' });
+        const res = await fetch(req);
+        if (res && res.ok) await cache.put(req, res.clone());
+      } catch (_) { /* fehlende Datei ignorieren */ }
+    }));
+    // Keine automatische Übernahme – „wartende Version“ bleibt sichtbar,
+    // damit status.html → „Wartende Version aktivieren“ nutzen kann.
+    // self.skipWaiting(); // absichtlich NICHT automatisch
   })());
 });
 
-/* -------------------- Activate -------------------- */
+/* ---------------- Activate: Aufräumen & Claim ---------------- */
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
-    // Alte Caches entfernen
-    const names = await caches.keys();
-    await Promise.all(names.map((name) => {
-      if (![PRECACHE, RUNTIME_ASSET, RUNTIME_PAGE].includes(name)) {
-        return caches.delete(name);
-      }
-    }));
-    // Navigation Preload optional aktivieren
-    if ('navigationPreload' in self.registration) {
-      try { await self.registration.navigationPreload.enable(); } catch {}
-    }
+    const keys = await caches.keys();
+    await Promise.all(
+      keys.map(k => {
+        const keep = (k === PRECACHE) || (k === RUNTIME);
+        if (!keep && (k.startsWith('ss-precache-') || k.startsWith('ss-runtime-'))) {
+          return caches.delete(k);
+        }
+      })
+    );
     await self.clients.claim();
   })());
 });
 
-/* -------------------- Helpers -------------------- */
-const isHTMLNavigate = (request) =>
-  request.mode === 'navigate' ||
-  (request.destination === 'document') ||
-  (request.headers && request.headers.get('Accept')?.includes('text/html'));
-
-const hasNoCacheParam = (url) => {
-  const u = new URL(url);
-  return u.searchParams.has('nocache');
-};
-
-const isSameOrigin = (url) => url.startsWith(SAME_ORIGIN);
-
-/* -------------------- Fetch -------------------- */
+/* ---------------- Fetch: Strategie je Ressourcentyp ---------------- */
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
+  const req = event.request;
 
-  // Nur GET cachen
-  if (request.method !== 'GET') return;
+  // Nur GET abfangen
+  if (req.method !== 'GET') return;
 
-  // Navigation: Network-First mit Fallback
-  if (isHTMLNavigate(request)) {
-    event.respondWith((async () => {
-      // nocache → direkt Netz (ohne Cache)
-      if (hasNoCacheParam(request.url)) {
-        try {
-          const fresh = await fetch(request, { cache: 'no-store' });
-          const cache = await caches.open(RUNTIME_PAGE);
-          cache.put(request, fresh.clone());
-          return fresh;
-        } catch {
-          // offline: versuche aus Cache
-          const cache = await caches.open(PRECACHE);
-          return (await cache.match(request)) ||
-                 (await cache.match(url.pathname)) ||
-                 (await cache.match(OFFLINE_URL)) ||
-                 new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' }});
-        }
-      }
+  const url = new URL(req.url);
 
-      // Network-First mit kurzer Timeout, dann Cache → offline
-      try {
-        const ctrl = new AbortController();
-        const tid  = setTimeout(() => ctrl.abort(), 4000);
-        // Navigation preload nutzen, wenn vorhanden
-        const preloadResp = await event.preloadResponse;
-        const netResp = preloadResp || await fetch(request, { signal: ctrl.signal });
-        clearTimeout(tid);
+  // Cross-Origin nicht anfassen (lassen wir Netzwerk machen)
+  if (url.origin !== self.location.origin) return;
 
-        // Im Page-Runtime-Cache ablegen
-        try {
-          const cache = await caches.open(RUNTIME_PAGE);
-          cache.put(request, netResp.clone());
-        } catch {}
-        return netResp;
-      } catch {
-        // Netzwerkfehler → Cache → offline
-        const cache = await caches.open(PRECACHE);
-        const matchPre = await cache.match(request);
-        if (matchPre) return matchPre;
-
-        const runtimePage = await caches.open(RUNTIME_PAGE);
-        const matchRun = await runtimePage.match(request);
-        if (matchRun) return matchRun;
-
-        const offline = await cache.match(OFFLINE_URL);
-        return offline || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' }});
-      }
-    })());
+  // Hart neu laden, wenn ?nocache=… vorhanden
+  if (url.searchParams.has('nocache')) {
+    event.respondWith(fetch(req, { cache: 'reload' }).catch(() => caches.match(req)));
     return;
   }
 
-  // Nur gleiche Origin cachen (Assets)
-  if (!isSameOrigin(request.url)) return;
-
-  // Statische Assets: Cache-First, dann Netz (SWR)
-  const dest = request.destination;
-  const isAsset = ['script','style','font','image','manifest'].includes(dest);
-
-  if (isAsset) {
-    event.respondWith((async () => {
-      const cache = await caches.open(RUNTIME_ASSET);
-
-      // nocache → Netzwerk
-      if (hasNoCacheParam(request.url)) {
-        try {
-          const fresh = await fetch(request, { cache: 'no-store' });
-          cache.put(request, fresh.clone());
-          return fresh;
-        } catch {
-          const cached = await caches.match(request);
-          return cached || new Response('', { status: 504 });
-        }
-      }
-
-      const cached = await caches.match(request);
-      const networkFetch = fetch(request).then((resp) => {
-        if (resp && resp.ok) cache.put(request, resp.clone());
-        return resp;
-      }).catch(() => null);
-
-      // Sofort Cache, nebenbei aktualisieren
-      return cached || (await networkFetch) || new Response('', { status: 504 });
-    })());
+  // Navigationen (HTML-Seiten): network-first + Offline-Fallback
+  if (req.mode === 'navigate') {
+    event.respondWith(networkFirst(req));
     return;
   }
 
-  // Alle anderen GETs: Pass-Through mit leichter Absicherung
-  event.respondWith((async () => {
-    try {
-      return await fetch(request);
-    } catch {
-      const cached = await caches.match(request);
-      return cached || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' }});
-    }
-  })());
+  // Dateiendung analysieren
+  const pathname = url.pathname;
+  const ext = pathname.split('.').pop().toLowerCase();
+
+  // Statische Assets: cache-first
+  if (['js','css','png','jpg','jpeg','svg','webmanifest','ico','gif','json','map'].includes(ext)) {
+    event.respondWith(cacheFirst(req));
+    return;
+  }
+
+  // Sonst: network-first (z. B. HTML, ohne navigate-Mode)
+  event.respondWith(networkFirst(req));
 });
 
-/* -------------------- Messages (optional) --------------------
-   sw-register.js kann hiermit interagieren:
-   - {type:'GET_VERSION'}   → sendet Version zurück
-   - {type:'SKIP_WAITING'}  → sofort aktivieren
-   - {type:'CLEAR_CACHES'}  → alle alten Caches löschen
--------------------------------------------------------------- */
+/* ---------------- Message-API: Status & Steuerung ---------------- */
 self.addEventListener('message', (event) => {
-  const msg = event.data || {};
-  if (msg && msg.type === 'GET_VERSION') {
-    event.source?.postMessage({ type: 'SW_VERSION', version: SS_SW_VERSION });
+  const data = event.data || {};
+  const port = (event.ports && event.ports[0]) ? event.ports[0] : null;
+
+  if (data.type === 'PING') {
+    port && port.postMessage({ type: 'PONG', version: SS_VERSION, note: `precache:${PRECACHE_URLS.length}` });
+    return;
   }
-  if (msg && msg.type === 'SKIP_WAITING') {
+
+  if (data.type === 'SKIP_WAITING') {
     self.skipWaiting();
+    port && port.postMessage({ type: 'ACK' });
+    return;
   }
-  if (msg && msg.type === 'CLEAR_CACHES') {
-    event.waitUntil((async () => {
-      const names = await caches.keys();
-      await Promise.all(names.map((n) => caches.delete(n)));
-    })());
+
+  if (data.type === 'CLEAR_CACHES') {
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+      port && port.postMessage({ type: 'CLEARED' });
+    })();
+    return;
+  }
+
+  if (data.type === 'PRECACHE_LIST') {
+    port && port.postMessage({ type: 'PRECACHE_LIST', items: PRECACHE_URLS });
+    return;
   }
 });
+
+/* ---------------- Strategien ---------------- */
+async function networkFirst(request) {
+  try {
+    const fresh = await fetch(request);
+    // HTML & JSON etc. nicht zwingend in RUNTIME cachen, aber kann sinnvoll sein:
+    const rt = await caches.open(RUNTIME);
+    rt.put(request, fresh.clone());
+    return fresh;
+  } catch (_) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    // Offline-Fallback nur für Navigationen/HTML sinnvoll
+    if (request.mode === 'navigate') {
+      const off = await caches.match(OFFLINE_URL);
+      if (off) return off;
+    }
+    // Letzte Option: 404-Fallback
+    const notFound = await caches.match('404.html');
+    return notFound || new Response('Offline', { status: 503, statusText: 'Offline' });
+  }
+}
+
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+  try {
+    const fresh = await fetch(request);
+    // Nur erfolgreiche Antworten cachen
+    if (fresh && fresh.ok) {
+      const rt = await caches.open(RUNTIME);
+      rt.put(request, fresh.clone());
+    }
+    return fresh;
+  } catch (_) {
+    // Fallback: 404-Seite, wenn sinnvoll
+    const notFound = await caches.match('404.html');
+    return notFound || new Response('Offline', { status: 503, statusText: 'Offline' });
+  }
+}
