@@ -1,198 +1,70 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>App – SafeShare (Diagnose)</title>
+  <title>App – SafeShare</title>
   <meta name="description" content="SafeShare App: Links säubern (UTM/gclid/fbclid entfernen) und Redirects entpacken – lokal im Browser.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/app.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/app.html">
+  <meta property="og:locale" content="de_DE">
 
   <!-- Icons/Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- CSP: erlaubt genau dieses Inline-Script via Nonce -->
+  <!-- CSP: externes JS erlaubt; Netz für https: freigeben (Redirect-Checks) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
                  frame-ancestors 'none';
                  object-src 'none';
-                 img-src 'self' data:;
+                 img-src 'self' data: blob:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSAPP';
+                 script-src 'self';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
-                 connect-src 'self' https:;">
+                 connect-src 'self' https: blob:;">
 
-  <!-- Styles -->
   <style>
-    :root{color-scheme:light dark;--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
-    @media(prefers-color-scheme:light){:root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    .wrap{max-width:960px;margin:0 auto;padding:20px}
-    h1{margin:8px 0 6px}
-    .mut{color:var(--mut)}
-    .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+    :root{color-scheme:light dark}
+    body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:#0b0b0b;color:#eee}
+    .wrap{max-width:920px;margin:0 auto;padding:20px}
+    h1{margin:10px 0 6px;font-size:1.6rem}
+    p.mut{opacity:.8;margin:0 0 14px}
+    .box{background:#111;border:1px solid #222;border-radius:12px;padding:14px}
     .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    input[type=url]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f0f10;color:inherit}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:inherit}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    input[type=url]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2a2a;background:#0f0f10;color:inherit}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid #2a2a2a;background:#141414;color:inherit}
+    .btn.pri{background:#1e8b6f;border-color:#1e8b6f;color:#fff}
     .out{word-break:break-all;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
-    footer{margin:24px 0 8px;color:var(--mut)}
+    footer{margin:28px 0 8px;opacity:.8}
+    @media(prefers-color-scheme:light){
+      body{background:#fafafa;color:#111}
+      .box{background:#fff;border-color:#e5e7eb}
+      input{background:#fff;border-color:#d1d5db}
+      .btn{background:#fff;border-color:#d1d5db}
+      .btn.pri{background:#1e8b6f;color:#fff;border-color:#1e8b6f}
+    }
   </style>
 
-  <!-- DIAGNOSE-APP (kein externes JS) -->
-  <script nonce="SSAPP">
-  (() => {
-    "use strict";
-
-    // --- Whitelist aus localStorage (kommasepariert) ---
-    function getWhitelist() {
-      const raw = localStorage.getItem('ss_whitelist') || '';
-      return new Set(raw.split(',').map(s => s.trim()).filter(Boolean));
-    }
-
-    // --- Tracking-Blacklist (erweiterbar) ---
-    const BLACK = new Set([
-      'gclid','dclid','gbraid','wbraid','fbclid','mc_eid','mc_cid','msclkid','vero_id','_hsenc','_hsmi','mkt_tok','igshid'
-    ]);
-
-    // --- Wrapper-Domains -> Param-Schlüssel mit Ziel-URL ---
-    const WRAPPERS = [
-      {host:/(^|\.)google\.[^/]+$/i, path:/^\/url$/i, key:'q'},
-      {host:/^l\.facebook\.com$/i, path:/^\/l\.php$/i, key:'u'},
-      {host:/(^|\.)reddit\.com$/i, path:/^\/r?edirect|^\/out/i, key:'url'},
-      {host:/(^|\.)t\.co$/i, key:null}, // keine Entpackung ohne Netz möglich
-      {host:/(^|\.)vk\.com$/i, path:/^\/away\.php$/i, key:'to'},
-      {host:/(^|\.)safelinks\.protection\.outlook\.com$/i, key:'url'}
-    ];
-
-    function ensureUrl(str) {
-      str = (str || '').trim();
-      if (!str) throw new Error('Leere Eingabe');
-      if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(str)) str = 'https://' + str;
-      return new URL(str);
-    }
-
-    function unwrapOnce(u) {
-      for (const w of WRAPPERS) {
-        if (w.host && !w.host.test(u.hostname)) continue;
-        if (w.path && !w.path.test(u.pathname)) continue;
-        if (!w.key) return u; // z. B. t.co – ohne Netz nicht entpackbar
-        const val = u.searchParams.get(w.key);
-        if (val) {
-          try { return new URL(decodeURIComponent(val)); } catch { return u; }
-        }
-      }
-      return u;
-    }
-
-    function stripParams(u, whitelist) {
-      // 1) utm_* weg, außer Whitelist
-      for (const [k] of u.searchParams) {
-        if (k.toLowerCase().startsWith('utm_') && !whitelist.has(k)) u.searchParams.delete(k);
-      }
-      // 2) Blacklist weg, außer Whitelist
-      for (const key of Array.from(u.searchParams.keys())) {
-        if (BLACK.has(key) && !whitelist.has(key)) u.searchParams.delete(key);
-      }
-      // 3) Facebook mtl/_fb* Fragmente (häufig): grob bereinigen
-      if (u.hash && /utm_|fbclid|gclid/i.test(u.hash)) u.hash = '';
-      // 4) Aufräumen "?","#" wenn leer
-      const s = u.search; if (!s || s === '?') u.search = '';
-      if (u.hash === '#') u.hash = '';
-      return u;
-    }
-
-    function cleanUrl(input) {
-      let u = ensureUrl(input);
-      // bis zu 2 Unwrap-Runden, um /url -> echte URL -> evtl. zweite Ebene abzudecken
-      for (let i=0;i<2;i++) {
-        const next = unwrapOnce(u);
-        if (next.href === u.href) break;
-        u = next;
-      }
-      const wl = getWhitelist();
-      u = stripParams(u, wl);
-      return u.toString();
-    }
-
-    // --- UI ---
-    const $ = sel => document.querySelector(sel);
-    const $in = $('#in-url');
-    const $out = $('#out-url');
-    const $msg = $('#msg');
-
-    function setOut(text) { $out.textContent = text || ''; }
-    function setMsg(text) { $msg.textContent = text || ''; }
-
-    async function doClean() {
-      try {
-        const val = $in.value.trim();
-        const cleaned = cleanUrl(val);
-        setOut(cleaned);
-        setMsg('Bereinigt.');
-        return cleaned;
-      } catch (e) {
-        setMsg('Fehler: ' + (e.message||e));
-        return null;
-      }
-    }
-
-    $('#btn-clean-open').addEventListener('click', async () => {
-      const cleaned = await doClean(); if (!cleaned) return;
-      try { window.open(cleaned, '_blank', 'noopener'); } catch {}
-    });
-
-    $('#btn-open').addEventListener('click', async () => {
-      const cleaned = await doClean(); if (!cleaned) return;
-      try { window.location.href = cleaned; } catch {}
-    });
-
-    $('#btn-copy').addEventListener('click', async () => {
-      const cleaned = await doClean(); if (!cleaned) return;
-      try {
-        await navigator.clipboard.writeText(cleaned);
-        setMsg('Kopiert.');
-      } catch { setMsg('Kopieren nicht möglich.'); }
-    });
-
-    $('#btn-share').addEventListener('click', async () => {
-      const cleaned = await doClean(); if (!cleaned) return;
-      if (navigator.share) {
-        try { await navigator.share({ title:'SafeShare', url: cleaned }); setMsg('Geteilt.'); return; } catch {}
-      }
-      setMsg('Teilen nicht verfügbar – Link ist kopiert.'); 
-      try { await navigator.clipboard.writeText(cleaned); } catch {}
-    });
-
-    $('#btn-clear').addEventListener('click', () => {
-      $in.value = ''; setOut(''); setMsg('');
-      $in.focus();
-    });
-
-    // Prefill per ?url=
-    try {
-      const u = new URL(location.href);
-      const preset = u.searchParams.get('url');
-      if (preset) { $in.value = preset; doClean(); }
-    } catch {}
-  })();
-  </script>
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=34"></script>
+  <script defer src="js/app.js?v=34"></script>
 </head>
 <body>
   <div class="wrap">
     <h1>SafeShare – App</h1>
     <p class="mut">Tracking-Parameter entfernen (UTM/gclid/fbclid) & Redirects entpacken. Lokal im Browser.</p>
 
-    <div class="box">
-      <label for="in-url" class="mut">URL eingeben</label>
+    <div class="box" aria-labelledby="lbl-input">
+      <label id="lbl-input" for="in-url" class="mut">URL eingeben</label>
       <input id="in-url" type="url" inputmode="url" placeholder="https://…">
-      <div class="row" style="margin-top:10px">
+      <div class="row">
         <button id="btn-clean-open" class="btn pri" type="button">Säubern + öffnen</button>
         <button id="btn-open" class="btn" type="button">Nur öffnen</button>
         <button id="btn-copy" class="btn" type="button">Kopieren</button>
@@ -205,9 +77,13 @@
       <div id="msg" class="mut" role="status" aria-live="polite" style="margin-top:8px"></div>
     </div>
 
-    <footer>
-      <a href="./">Startseite</a> · <a href="help.html">Hilfe</a> · <a href="status.html">Status</a> · <a href="impressum.html">Impressum</a>
+    <footer class="mut" style="margin-top:18px">
+      <a href="./">Startseite</a> · <a href="help.html">Hilfe</a> · <a href="status.html">Status</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
     </footer>
   </div>
+
+  <noscript>
+    <div class="wrap"><p>Bitte JavaScript aktivieren. SafeShare verarbeitet Links lokal im Browser.</p></div>
+  </noscript>
 </body>
 </html>
