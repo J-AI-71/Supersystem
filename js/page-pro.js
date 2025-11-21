@@ -1,36 +1,53 @@
-// page-pro.js – Pro-Status anzeigen und Buttons steuern
-(function(){
-  const $ = s => document.querySelector(s);
-  const badge = $('#pro-badge');
-  const btnBuy = $('#btn-buy');
-  const btnAct = $('#btn-activate');
-  const btnDeact = $('#btn-deactivate');
+/* Pro-Status steuern: liest/setzt localStorage('ss_pro') und aktualisiert die UI */
+(function () {
+  const $ = (sel) => document.querySelector(sel);
 
-  function isPro(){
-    try { return localStorage.getItem('ss_pro') === '1'; } catch { return false; }
-  }
-  function render(){
+  const BADGE = $('#pro-badge');            // <span id="pro-badge">Status: …</span>
+  const WRAP  = document.body;              // bekommt Klasse is-pro / not-pro
+  const BTN_ACT = $('#btn-activate');       // „Kauf abgeschlossen? Aktivieren“
+  const BTN_APP = $('#btn-app');            // „Zur App“
+  const BTN_BUY = $('#btn-buy');            // „Pro kaufen“ (Link ist im HTML)
+
+  // Helper
+  const isPro = () => localStorage.getItem('ss_pro') === '1';
+  const setPro = (on) => {
+    if (on) localStorage.setItem('ss_pro', '1');
+    else localStorage.removeItem('ss_pro');
+  };
+
+  function render() {
     const pro = isPro();
-    if (pro){
-      badge.textContent = 'Status: aktiv';
-      badge.classList.remove('warn'); badge.classList.add('ok');
-      btnBuy?.classList.add('hide');
-      btnAct?.classList.add('hide');
-      btnDeact?.classList.remove('hide');
-    }else{
-      badge.textContent = 'Status: nicht aktiviert';
-      badge.classList.remove('ok'); badge.classList.add('warn');
-      btnBuy?.classList.remove('hide');
-      btnAct?.classList.remove('hide');
-      btnDeact?.classList.add('hide');
-    }
+    WRAP.classList.toggle('is-pro', pro);
+    WRAP.classList.toggle('not-pro', !pro);
+    if (BADGE) BADGE.textContent = pro ? 'Status: aktiviert' : 'Status: nicht aktiviert';
   }
 
-  // Aktualisieren, falls ein anderer Tab pro-activate aufruft
-  window.addEventListener('storage', e=>{
-    if (e.key === 'ss_pro') render();
-  });
+  // Button: Manuel aktivieren (führt zur Aktivierungsseite)
+  if (BTN_ACT) {
+    BTN_ACT.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Diese Seite setzt den Status und bringt den Nutzer zurück zur App
+      location.href = 'pro-activate.html?pro=1';
+    });
+  }
 
-  // Erste Darstellung
+  // Button: Zur App
+  if (BTN_APP) {
+    BTN_APP.addEventListener('click', (e) => {
+      e.preventDefault();
+      location.href = 'app.html';
+    });
+  }
+
+  // Optional: Debug-URL ?pro=force / ?pro=off
+  const p = new URLSearchParams(location.search);
+  if (p.get('pro') === 'force') setPro(true);
+  if (p.get('pro') === 'off') setPro(false);
+
   render();
+
+  // Exponiere Mini-API in der Konsole
+  window.ssPro = {
+    isPro, set: setPro, clear: () => setPro(false), render
+  };
 })();
