@@ -7,23 +7,8 @@
   <base href="/Supersystem/">
   <title>Offline · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/offline.html">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Du bist offline. SafeShare funktioniert ohne Server – lade die Seite später neu oder öffne den Status.">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/offline.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/offline.html">
-  <meta property="og:locale" content="de_DE">
-
-  <!-- PWA / Icons -->
-  <meta name="theme-color" content="#ffffff">
-  <meta name="color-scheme" content="light">
-  <link rel="manifest" href="manifest.webmanifest?v=33">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-
-  <!-- Sicherheits-CSP (keine Inline-Skripte nötig) -->
+  <!-- sanfte CSP: erlaubt Inline-Styles, keine externen Requests nötig -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -34,67 +19,74 @@
                  script-src 'self';
                  font-src 'self';
                  worker-src 'self';
-                 manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- (kein JS erforderlich; Seite funktioniert komplett ohne Skripte) -->
+  <!-- App-Icons (optional, falls schon im Cache) -->
+  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
 
-  <!-- Helles Theme -->
+  <meta name="theme-color" content="#ffffff">
   <style>
     :root{
-      --bg:#ffffff; --fg:#0b0b0b; --mut:#5f6368;
-      --card:#f7f9fc; --line:#e5e9f0; --pri:#23c47e;
-      --br:14px
+      --bg:#f7f7f9; --card:#ffffff; --text:#111; --mut:#555;
+      --pri:#0f766e; --bd:#e6e6ec; --shadow:0 4px 20px rgba(0,0,0,.06);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%}
-    body{background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:760px;margin:0 auto;padding:24px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--br);padding:18px}
-    h1{margin:.2rem 0 .6rem 0;font-size:1.6rem}
-    p.mut{color:var(--mut);margin:.2rem 0 .8rem}
-    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#fff}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .tips{margin:.4rem 0 .8rem 1.2rem}
-    footer{border-top:1px solid var(--line);margin-top:22px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0;color:var(--mut)}
-    code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial,sans-serif;
+      display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .wrap{
+      width:100%; max-width:760px; background:var(--card);
+      border:1px solid var(--bd); border-radius:16px; padding:28px;
+      box-shadow:var(--shadow);
+    }
+    h1{margin:0 0 6px;font-size:28px}
+    p.mut{margin:0 0 18px;color:var(--mut)}
+    .box{
+      background:#fff; border:1px dashed var(--bd); border-radius:12px;
+      padding:16px; margin:14px 0
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .btn{
+      display:inline-block; padding:10px 14px; border-radius:10px;
+      text-decoration:none; border:1px solid var(--bd); background:#fff; color:var(--text)
+    }
+    .btn.pri{background:var(--pri); color:#fff; border-color:var(--pri)}
+    code{background:#f0f2f5;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
+    ul{margin:8px 0 0 18px}
+    footer{margin-top:18px; font-size:14px; color:var(--mut)}
+    .small{font-size:14px; color:var(--mut)}
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <main class="wrap" role="main">
     <h1>Offline</h1>
-    <p class="mut">Keine Internetverbindung. SafeShare arbeitet lokal, einige Seiten benötigen jedoch einen ersten Abruf.</p>
+    <p class="mut">Keine Internetverbindung. SafeShare funktioniert auch ohne Konto – einige Seiten sind offline verfügbar.</p>
 
-    <section class="card" aria-label="Optionen">
-      <p>Versuche es mit einem der folgenden Schritte:</p>
-      <div class="row">
-        <!-- Hard-Reload über nocache-Query -->
-        <a class="btn pri" href="./?nocache=1">Neu laden</a>
-        <a class="btn" href="status.html">Status &amp; Cache</a>
-        <a class="btn" href="app.html">App</a>
-        <a class="btn" href="./">Startseite</a>
-      </div>
-      <ul class="tips">
-        <li>Wenn „Neu laden“ nicht hilft: Öffne <a href="status.html">status.html</a> und aktiviere ggf. eine wartende Version.</li>
-        <li>Nach der ersten Nutzung stehen Kernseiten offline bereit (PWA &amp; Cache).</li>
+    <div class="box">
+      <strong>So bekommst du wieder alles angezeigt:</strong>
+      <ul>
+        <li>Stelle eine Verbindung zum Internet her und lade die Seite neu.</li>
+        <li>Für iOS/Safari: App-Switcher → Karte nach unten wischen → <em>Neu laden</em>.</li>
+        <li>Alternativ später erneut öffnen: <code>/Supersystem/</code>.</li>
       </ul>
-    </section>
+    </div>
 
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <span>SafeShare</span> ·
-        <a href="help.html">Hilfe</a> ·
-        <a href="impressum.html">Impressum</a> ·
-        <a href="datenschutz.html">Datenschutz</a>
-      </nav>
+    <div class="row" aria-label="Schnellzugriff">
+      <a class="btn pri" href="index.html">Zur Startseite</a>
+      <a class="btn" href="app.html">App öffnen</a>
+      <a class="btn" href="help.html">Hilfe</a>
+      <a class="btn" href="status.html">Status</a>
+    </div>
+
+    <p class="small">Tipp: Öffne die wichtigsten Seiten einmal online, dann sind sie beim nächsten Mal auch ohne Netz verfügbar.</p>
+
+    <footer class="small">
+      © SafeShare · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
     </footer>
-  </div>
-
-  <noscript>
-    <div class="wrap"><div class="card">Diese Seite funktioniert vollständig ohne JavaScript.</div></div>
-  </noscript>
+  </main>
 </body>
 </html>
