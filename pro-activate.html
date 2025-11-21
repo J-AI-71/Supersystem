@@ -1,127 +1,95 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- pro-activate.html (ohne Inline-JS, konsolidierte Skripte) -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Pro aktiviert · SafeShare</title>
-
-  <!-- Canonical / hreflang -->
+  <title>Pro aktivieren · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
+
+  <!-- Indexierung verhindern -->
+  <meta name="robots" content="noindex,follow">
+
+  <!-- hreflang / Locale -->
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="x-default">
-  <meta name="description" content="Aktiviert SafeShare Pro lokal im Browser nach dem Kauf-Redirect.">
-  <meta name="robots" content="noindex,nofollow,noarchive">
   <meta property="og:locale" content="de_DE">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
-+  <meta name="robots" content="noindex,follow">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
+  <!-- Icons & Manifest -->
+  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
+  <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=30">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=30">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=30">
-  <link rel="manifest" href="manifest.webmanifest?v=30">
+  <!-- Sanfte CSP -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
 
-  <!-- Styles -->
+  <!-- Mini-Styles für klare Bestätigungsseite -->
   <style>
-    :root{
-      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a; --line:#2a2a2a;
-      --card:#121212; --btn:#1b1b1b; --ok:#1e402f; --warn:#40251e;
-    }
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    a{color:#cfe7ff}
-    .wrap{max-width:900px;margin:0 auto;padding:22px 14px}
-    .mut{color:var(--mut)}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    h1{margin:.2em 0 .5em;font-size:1.9rem}
-    h2{margin:1.0em 0 .35em;font-size:1.15rem}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    .row{display:flex;flex-wrap:wrap;gap:8px}
-    .btn{display:inline-block;border:1px solid var(--line);background:var(--btn);color:var(--fg);
-         padding:.6rem .9rem;border-radius:10px;cursor:pointer;text-decoration:none}
-    .btn.ok{background:var(--ok)}
-    .btn.warn{background:var(--warn)}
-    .badge{display:inline-block;margin-left:8px;padding:.15rem .45rem;border-radius:8px;border:1px solid var(--line);
-           background:#172017;color:#9ed1b1;font-size:.85rem}
-    footer{margin:18px 0}
-    .visually-hidden-focusable{position:absolute;left:-9999px}
-    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#222;padding:.4rem .6rem;border-radius:8px}
+    :root { color-scheme: light dark; }
+    body { margin:0; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .wrap { max-width:820px; margin:40px auto; padding:0 16px; }
+    h1 { margin:0 0 8px; }
+    .mut { color:#666; margin:0 0 20px; }
+    .card { border:1px solid #ddd; border-radius:12px; padding:16px; margin:20px 0; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; margin:18px 0; }
+    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid #ccc; text-decoration:none; }
+    .btn.pri { border-color:transparent; background:#2f855a; color:#fff; }
+    .ok { color:#2f855a; font-weight:600; }
+    .warn { color:#b7791f; }
+    footer { margin-top:28px; font-size:14px; color:#666; }
   </style>
 
-  <link rel="stylesheet" href="css/theme.css?v=30">
-
-  <!-- Skripte -->
-  <script defer src="js/sw-register.js?v=30"></script>
-  <script defer src="js/page-pro-activate.js?v=30"></script>
+  <!-- SW & Seitenlogik -->
+  <script defer src="js/sw-register.js?v=31"></script>
+  <script defer src="js/page-pro-activate.js?v=31"></script>
 </head>
 <body>
-  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
   <div class="wrap">
-    <header>
-      <h1>Pro-Aktivierung <span id="stateBadge" class="badge" style="display:none">aktiv</span></h1>
-      <p id="origin" class="mut mono">–</p>
-    </header>
+    <h1>SafeShare Pro – aktiviert</h1>
+    <p class="mut">Dein Kauf wurde bestätigt. Diese Seite schaltet <strong>Pro</strong> im aktuellen Browser frei.</p>
 
-    <main id="main">
-      <section class="card" aria-labelledby="status">
-        <h2 id="status">Status</h2>
-        <div id="msg">Wird geprüft …</div>
-        <div class="row" style="margin-top:10px">
-          <a class="btn ok" href="index.html">Zur Startseite</a>
-          <a class="btn" href="pro.html">Pro-Seite</a>
-          <a class="btn" href="app.html">Zur App</a>
-          <a class="btn" href="tools.html">Tools</a>
-        </div>
-      </section>
+    <div class="card">
+      <p id="status"><span class="ok">✔</span> Pro-Status wird gesetzt …</p>
 
-      <section class="card" aria-labelledby="how">
-        <h2 id="how">Wie funktioniert das?</h2>
-        <ol class="mut">
-          <li>Nach dem Kauf leitet der Shop auf <code class="mono">pro-activate.html?pro=1</code> weiter.</li>
-          <li>Diese Seite setzt lokal im Browser <code class="mono">localStorage["ss2_pro"]="1"</code>.</li>
-          <li>Zurück auf der Startseite zeigt das Pro-Badge „aktiv“.</li>
-        </ol>
-        <p class="mut">Kein Server-Login, keine Cookies. Die Aktivierung ist <strong>geräte-/browserbezogen</strong>.</p>
-      </section>
+      <div class="row">
+        <a id="go-app" class="btn pri" href="app.html">Los geht’s – App öffnen</a>
+        <a class="btn" href="pro.html">Pro-Features ansehen</a>
+        <a class="btn" href="status.html">Status prüfen</a>
+      </div>
+    </div>
 
-      <section class="card" aria-labelledby="manual">
-        <h2 id="manual">Manuell umschalten</h2>
-        <div class="row">
-          <button id="btnProOn"  class="btn"      type="button">Pro aktivieren</button>
-          <button id="btnProOff" class="btn warn" type="button">Pro deaktivieren</button>
-          <button id="btnShowLS" class="btn"      type="button">LocalStorage anzeigen</button>
-        </div>
-        <div id="ls" class="mut mono" style="margin-top:8px">–</div>
-      </section>
-    </main>
+    <div class="card">
+      <h2 style="margin-top:0;">Troubleshooting</h2>
+      <ol>
+        <li>Diese Seite einmal neu laden.</li>
+        <li>Sicherstellen, dass du <strong>im gleichen Browser/Profil</strong> wie beim Kauf bist.</li>
+        <li>Auf <em>„Los geht’s – App öffnen“</em> klicken und dort Pro nutzen.</li>
+        <li><a href="status.html">Status prüfen</a>:
+            <code>Pro</code> sollte <em>aktiv</em> anzeigen.</li>
+        <li>Falls Pro gesperrt bleibt: Browser-Datenspeicherung erlauben (Cookies/Website-Daten),
+            ggf. Content-Blocker/Private Mode kurz deaktivieren und erneut versuchen.</li>
+        <li>iOS/Safari: Öffne Links im <em>gleichen Tab</em> (keine Reader-Ansicht), dann erneut auf die Schaltfläche tippen.</li>
+        <li>Weiterhin Probleme? Sieh die <a href="help.html">Hilfe</a> ein.</li>
+      </ol>
+      <p class="warn" id="storage-note" style="display:none;">Hinweis: Es scheint, als könnte dieser Browser keinen lokalen Speicher verwenden. Bitte einen anderen Browser versuchen oder Blocker deaktivieren.</p>
+    </div>
 
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="pro.html">Pro</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="status.html">Status</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a>
+    <footer>
+      <a href="./">Startseite</a> · <a href="help.html">Hilfe</a> ·
+      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
     </footer>
   </div>
-
-  <noscript>
-    <div class="wrap"><p class="mut">JavaScript ist erforderlich, um Pro lokal zu setzen.</p></div>
-  </noscript>
 </body>
 </html>
