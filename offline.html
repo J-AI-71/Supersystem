@@ -1,79 +1,100 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- offline.html (helles Theme) -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Offline · SafeShare</title>
-
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/offline.html">
-  <meta name="robots" content="noindex,nofollow">
-  <meta name="description" content="Du bist offline. SafeShare funktioniert weitgehend lokal – versuche es erneut, wenn du wieder online bist.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Du bist offline. SafeShare funktioniert ohne Server – lade die Seite später neu oder öffne den Status.">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
+  <!-- hreflang / Locale -->
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/offline.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/offline.html">
+  <meta property="og:locale" content="de_DE">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=31">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=31">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=31">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light">
+  <link rel="manifest" href="manifest.webmanifest?v=33">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Styles (hell) -->
+  <!-- Sicherheits-CSP (keine Inline-Skripte nötig) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- (kein JS erforderlich; Seite funktioniert komplett ohne Skripte) -->
+
+  <!-- Helles Theme -->
   <style>
     :root{
-      --bg:#fafafa; --fg:#0b0b0b; --mut:#5a5a5a; --line:#e3e3e3;
-      --card:#ffffff; --btn:#f2f2f2; --ok:#e6f3ea; --ok-fg:#134d2a;
-      --link:#0a5abf;
+      --bg:#ffffff; --fg:#0b0b0b; --mut:#5f6368;
+      --card:#f7f9fc; --line:#e5e9f0; --pri:#23c47e;
+      --br:14px
     }
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    a{color:var(--link)}
-    .wrap{max-width:760px;margin:0 auto;padding:26px 16px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    h1{margin:.2em 0 .4em;font-size:1.9rem}
-    p.mut{color:var(--mut)}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:760px;margin:0 auto;padding:24px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--br);padding:18px}
+    h1{margin:.2rem 0 .6rem 0;font-size:1.6rem}
+    p.mut{color:var(--mut);margin:.2rem 0 .8rem}
     .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-    .btn{display:inline-block;border:1px solid var(--line);background:var(--btn);color:var(--fg);
-         padding:.65rem 1rem;border-radius:10px;text-decoration:none}
-    .btn.ok{background:var(--ok);color:var(--ok-fg);border-color:#d5ebdc}
-    .visually-hidden-focusable{position:absolute;left:-9999px}
-    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#fff;padding:.4rem .6rem;border-radius:8px;outline:1px solid var(--line)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#fff}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    .tips{margin:.4rem 0 .8rem 1.2rem}
+    footer{border-top:1px solid var(--line);margin-top:22px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0;color:var(--mut)}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   </style>
-
-  <link rel="stylesheet" href="css/theme.css?v=31">
-
-  <script defer src="js/sw-register.js?v=31"></script>
 </head>
 <body>
-  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
   <div class="wrap">
     <h1>Offline</h1>
-    <p class="mut">Keine Verbindung. SafeShare arbeitet weitgehend lokal. Versuche es erneut, wenn du wieder online bist, oder nutze die lokalen Seiten.</p>
+    <p class="mut">Keine Internetverbindung. SafeShare arbeitet lokal, einige Seiten benötigen jedoch einen ersten Abruf.</p>
 
-    <main id="main" class="card">
+    <section class="card" aria-label="Optionen">
+      <p>Versuche es mit einem der folgenden Schritte:</p>
       <div class="row">
-        <a class="btn ok" href="app.html">App öffnen</a>
-        <a class="btn" href="index.html">Startseite</a>
-        <a class="btn" href="status.html">Status</a>
-        <a class="btn" href="help.html">Hilfe</a>
-        <a class="btn" href="quickstart.html">Quickstart</a>
+        <!-- Hard-Reload über nocache-Query -->
+        <a class="btn pri" href="./?nocache=1">Neu laden</a>
+        <a class="btn" href="status.html">Status &amp; Cache</a>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="./">Startseite</a>
       </div>
-      <p class="mut" style="margin-top:10px">Tipp: Installiere SafeShare als PWA („Zum Home-Bildschirm hinzufügen“), damit die wichtigsten Seiten auch ohne Netz bereitstehen.</p>
-    </main>
+      <ul class="tips">
+        <li>Wenn „Neu laden“ nicht hilft: Öffne <a href="status.html">status.html</a> und aktiviere ggf. eine wartende Version.</li>
+        <li>Nach der ersten Nutzung stehen Kernseiten offline bereit (PWA &amp; Cache).</li>
+      </ul>
+    </section>
+
+    <footer>
+      <nav class="links" aria-label="Footer">
+        <span>SafeShare</span> ·
+        <a href="help.html">Hilfe</a> ·
+        <a href="impressum.html">Impressum</a> ·
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+    </footer>
   </div>
-  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist optional; Links funktionieren ohne JS.</p></div></noscript>
+
+  <noscript>
+    <div class="wrap"><div class="card">Diese Seite funktioniert vollständig ohne JavaScript.</div></div>
+  </noscript>
 </body>
 </html>
