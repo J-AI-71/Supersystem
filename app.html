@@ -5,185 +5,103 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare – Saubere Links ohne Tracking</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
-  <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="SafeShare säubert Links lokal im Browser: entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – ohne Accounts, ohne Server-Logs.">
+  <title>App – SafeShare</title>
+  <meta name="description" content="SafeShare App: Links säubern (UTM/gclid/fbclid entfernen) und Redirects entpacken – lokal im Browser.">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/">
+  <!-- Kanonisch / Locale -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="x-default">
   <meta property="og:locale" content="de_DE">
+
+  <!-- Icons & Manifest -->
+  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/icons/icon-192-kreis.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
+  <link rel="manifest" href="manifest.webmanifest">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-  <meta property="og:description" content="Entfernt Tracking-Parameter und entpackt Redirects – alles lokal im Browser.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
+  <meta property="og:title" content="SafeShare App – Links säubern & Redirects entpacken">
+  <meta property="og:description" content="Tracking-Parameter entfernen und Weiterleitungen entpacken – alles lokal im Browser, ohne Accounts.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- NEU: OG-Image -->
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-
-  <!-- PWA / Icons -->
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-
-  <!-- Structured Data -->
-  <meta name="application-name" content="SafeShare">
-  <script type="application/ld+json" nonce="SSAPP1">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebApplication",
-    "inLanguage":"de-DE",
-    "name":"SafeShare",
-    "description":"SafeShare säubert Links lokal im Browser: entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – ohne Accounts, ohne Server-Logs.",
-    "url":"https://j-ai-71.github.io/Supersystem/",
-    "applicationCategory":"UtilitiesApplication",
-    "operatingSystem":"Web",
-    "browserRequirements":"Aktueller Browser (PWA-fähig)",
-    "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},
-    "publisher":{"@type":"Organization","name":"SafeShare"},
-    "isFamilyFriendly":true
-  }
-  </script>
-
-  <!-- Sicherheits-CSP (mit Nonce für JSON-LD) -->
+  <!-- CSP (Netz erlaubt für https:, nötig fürs Entpacken von Redirects) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
                  frame-ancestors 'none';
                  object-src 'none';
-                 img-src 'self' data:;
+                 img-src 'self' data: blob:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSAPP1';
+                 script-src 'self';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
-                 connect-src 'self'">
+                 connect-src 'self' https: blob:;">
 
-  <!-- SW-Registrierung -->
-  <script defer src="js/sw-register.js?v=31"></script>
-  <!-- Optional: Diagnose-Overlay -->
-  <!-- <script defer src="js/diag.js?v=31"></script> -->
-
-  <!-- Minimal-Styles -->
+  <!-- Basis-Stile (leicht, systemfont) -->
   <style>
-    :root { color-scheme: light dark; --bg:#0b0b0b; --fg:#eaeaea; --mut:#a6a6a6; --card:#141414; --pri:#23c47e; }
-    @media (prefers-color-scheme: light){
-      :root { --bg:#ffffff; --fg:#0b0b0b; --mut:#5f6368; --card:#f5f7fa; --pri:#23c47e; }
+    :root{color-scheme:light dark}
+    body{margin:0;font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0b0b0b;color:#eee}
+    .wrap{max-width:920px;margin:0 auto;padding:20px}
+    h1{font-size:1.6rem;margin:10px 0 4px}
+    p.mut{opacity:.8;margin:0 0 14px}
+    .box{background:#111;border:1px solid #222;border-radius:12px;padding:14px}
+    .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    input[type=url],input[type=text],textarea{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1px solid #2a2a2a;background:#0f0f10;color:inherit}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #2a2a2a;background:#141414;color:inherit;text-decoration:none}
+    .btn.pri{background:#1e8b6f;border-color:#1e8b6f;color:#fff}
+    .mut2{font-size:.9rem;opacity:.7;margin-top:8px}
+    .out{word-break:break-all;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    footer{margin:28px 0 8px;opacity:.8}
+    @media (prefers-color-scheme:light){
+      body{background:#fafafa;color:#111}
+      .box{background:#fff;border-color:#e5e7eb}
+      input,textarea{background:#fff;border-color:#d1d5db}
+      .btn{background:#fff;border-color:#d1d5db}
+      .btn.pri{background:#1e8b6f;color:#fff;border-color:#1e8b6f}
     }
-    html,body{margin:0;padding:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:var(--bg);color:var(--fg)}
-    .wrap{max-width:980px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #2b2b2b;background:#161616;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#071b10;font-weight:600}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
-    .chip{padding:7px 10px;border-radius:999px;border:1px solid #2b2b2b;background:#141414;color:var(--fg);text-decoration:none;font-size:.92rem}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:22px 0}
-    @media(min-width:820px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid #2b2b2b;border-radius:14px;padding:16px}
-    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
-    .card ul{margin:.4rem 0 .8rem 1.1rem}
-    .targets{display:grid;grid-template-columns:1fr;gap:10px;margin:22px 0}
-    @media(min-width:780px){.targets{grid-template-columns:repeat(4,1fr)}}
-    .target a{display:block;background:#111;border:1px solid #2b2b2b;border-radius:12px;padding:12px;text-decoration:none;color:var(--fg)}
-    footer{border-top:1px solid #2b2b2b;margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:16px 0}
-    footer a{color:var(--mut);text-decoration:none}
-    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip:focus{left:12px;top:12px;width:auto;height:auto;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
-    .seo h2{margin:1.2rem 0 .4rem}
-    .seo p{margin:.35rem 0;color:var(--mut)}
   </style>
+
+  <!-- Service Worker + App-Skripte (keine Inline-Skripte nötig) -->
+  <script defer src="js/sw-register.js?v=31"></script>
+  <script defer src="js/core.js?v=31"></script>
+  <script defer src="js/cleaner.js?v=31"></script>
+  <script defer src="js/app.js?v=31"></script>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap">
+    <h1>SafeShare – App</h1>
+    <p class="mut">Tracking-Parameter entfernen (UTM/gclid/fbclid) &amp; Redirects entpacken. Alles lokal im Browser.</p>
 
-  <div class="wrap" id="main">
-    <h1>SafeShare</h1>
-    <p class="mut">Saubere Links ohne Tracking. Entfernt UTM/gclid/fbclid und entpackt Weiterleitungen – alles lokal im Browser.</p>
-
-    <div class="row" style="margin-top:10px">
-      <a class="btn pri" href="app.html">App starten</a>
-      <a class="btn" href="bookmarklets.html">Bookmarklet</a>
-      <a class="btn" href="pro.html">Pro</a>
-      <a class="btn" href="help.html">Hilfe</a>
-      <a class="btn" href="quickstart.html">Quickstart (PDF)</a>
-    </div>
-
-    <div class="chips" aria-label="Tools">
-      <a class="chip" href="app.html">UTM-Ballast raus</a>
-      <a class="chip" href="redirect-entschachteln.html">Redirects entpacken</a>
-      <a class="chip" href="team-setup.html">Whitelist für Partner-IDs</a>
-      <a class="chip" href="bulk-clean.html">Bulk-Clean (Pro)</a>
-    </div>
-
-    <!-- Zielgruppen-Kacheln -->
-    <div class="targets" aria-label="Für wen ist SafeShare?">
-      <div class="target"><a href="publisher.html">Publisher &amp; Affiliates<br><span class="mut">Schnellere, klarere Links</span></a></div>
-      <div class="target"><a href="education.html">Bildung &amp; NGOs<br><span class="mut">Privacy-freundliches Teilen</span></a></div>
-      <div class="target"><a href="partners.html">Unternehmen &amp; Partner<br><span class="mut">Marketing · CRM · IT</span></a></div>
-      <div class="target"><a href="compliance.html">Compliance<br><span class="mut">Regeln &amp; Whitelist</span></a></div>
-    </div>
-
-    <div class="grid">
-      <section class="card">
-        <h2>Warum SafeShare?</h2>
-        <ul>
-          <li><strong>Sauber &amp; kurz:</strong> Tracking-Parameter werden entfernt, Weiterleitungs-Ketten entpackt.</li>
-          <li><strong>Privacy-by-Design:</strong> Verarbeitung erfolgt ausschließlich im Browser – keine Accounts, keine Server-Logs.</li>
-          <li><strong>Einfach integrierbar:</strong> Bookmarklet für Redaktionen, App für manuelle Checks, Bulk-Clean für Listen.</li>
-          <li><strong>Fehlerärmer:</strong> Klarere URLs verbessern UX, Klickbereitschaft und Weitergabe.</li>
-        </ul>
-        <div class="row">
-          <a class="btn pri" href="app.html">Jetzt ausprobieren</a>
-          <a class="btn" href="help.html">Schritt-für-Schritt</a>
-        </div>
-      </section>
-
-      <section class="card seo" aria-labelledby="seo-head">
-        <h2 id="seo-head">Saubere Links – schnell erklärt</h2>
-        <p>Viele Links enthalten Marketing-Parameter wie <code>utm_*</code>, <code>gclid</code> oder <code>fbclid</code>. Sie verlängern URLs, können Filter auslösen und beeinträchtigen die Weitergabe. SafeShare entfernt diese Signaturen lokal im Browser und entpackt gängige Weiterleitungen zu ihrem Klarziel. Dadurch entstehen kurze, lesbare Links mit besserer User-Experience – ohne externe Requests.</p>
-        <p>SafeShare eignet sich für Publisher, Bildungs- und Non-Profit-Organisationen, Teams mit Compliance-Vorgaben und Unternehmen, die einheitliche, klare Link-Standards möchten. Das Bookmarklet säubert Links direkt auf Webseiten, die App prüft und öffnet Ziele, Bulk-Clean (Pro) bereinigt Listen aus Redaktions- oder CRM-Systemen. Alle Kernfunktionen laufen offline-tauglich, PWA-fähig und ohne Konto.</p>
-      </section>
-    </div>
-
-    <section class="card">
-      <h2>Weiterführend</h2>
-      <div class="chips">
-        <a class="chip" href="press.html">Presse</a>
-        <a class="chip" href="status.html">Status</a>
-        <a class="chip" href="help.html#faq">FAQ</a>
+    <div class="box" aria-labelledby="lbl-eingabe">
+      <label id="lbl-eingabe" for="in-url" class="mut2">URL eingeben</label>
+      <input id="in-url" type="url" inputmode="url" placeholder="https://…">
+      <div class="row">
+        <button id="btn-clean-open" class="btn pri" type="button">Säubern + öffnen</button>
+        <button id="btn-open" class="btn" type="button">Nur öffnen</button>
+        <button id="btn-copy" class="btn" type="button">Kopieren</button>
+        <button id="btn-share" class="btn" type="button">Teilen</button>
+        <button id="btn-clear" class="btn" type="button">Feld leeren</button>
       </div>
-    </section>
 
-    <footer class="wrap">
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="quickstart.html">Quickstart</a>
-        <a href="help.html">Hilfe</a>
-        <a href="publisher.html">Publisher</a>
-        <a href="education.html">Education</a>
-        <a href="partners.html">Partner</a>
-        <a href="compliance.html">Compliance</a>
-        <a href="press.html">Presse</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="status.html">Status</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-      </nav>
+      <div class="mut2">Ergebnis</div>
+      <div id="out-url" class="out box" style="margin-top:6px;"></div>
+      <div id="msg" class="mut2" role="status" aria-live="polite"></div>
+    </div>
+
+    <p class="mut2">Tipps: Bookmarklet auf <a class="btn" href="bookmarklets.html">Bookmarklets</a> speichern · Listen in <a class="btn" href="bulk-clean.html">Bulk-Clean</a> bereinigen · Team-Whitelist in <a class="btn" href="team-setup.html">Team-Setup</a>.</p>
+
+    <footer class="mut2">
+      <a href="./">Startseite</a> · <a href="help.html">Hilfe</a> · <a href="press.html">Presse</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="status.html">Status</a>
     </footer>
   </div>
+
+  <noscript>
+    <div class="wrap"><p>Bitte JavaScript aktivieren. SafeShare verarbeitet Links lokal im Browser.</p></div>
+  </noscript>
 </body>
 </html>
