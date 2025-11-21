@@ -241,6 +241,45 @@
         </details>
       </section>
 
+<section class="card" id="troubleshooting" aria-labelledby="ts-title">
+  <h2 id="ts-title">Troubleshooting</h2>
+
+  <h3>App lädt, aber Buttons reagieren nicht</h3>
+  <ul>
+    <li><strong>Cache/Service Worker:</strong> <a href="status.html">Status</a> öffnen → „Auf Updates prüfen“ → „Wartende Version aktivieren“.</li>
+    <li><strong>Harter Reload:</strong> URL mit <code>?nocache=1</code> aufrufen (z. B. <code>app.html?nocache=1</code>).</li>
+    <li><strong>CSP prüfen:</strong> Im &lt;head&gt; muss <code>script-src 'self'</code> stehen; für Netztests <code>connect-src 'self' https:</code>.</li>
+  </ul>
+
+  <h3>Bookmarklet lässt sich nicht ziehen (iOS/Safari)</h3>
+  <ul>
+    <li>Statt Drag&amp;Drop: Langdruck → „Zu Favoriten“ oder „Lesezeichen hinzufügen“.</li>
+    <li>Alternativ: Code kopieren und manuell als Lesezeichen-URL einfügen.</li>
+  </ul>
+
+  <h3>Offline-Nutzung funktioniert nicht</h3>
+  <ul>
+    <li>Seite <em>einmal online</em> öffnen, damit der Service Worker die App cached.</li>
+    <li><code>offline.html</code> ist Fallback; prüfe in <code>sw.js</code> <code>PRECACHE_URLS</code> und <code>OFFLINE_URL</code>.</li>
+  </ul>
+
+  <h3>„Säubern“ entfernt gewünschte Parameter</h3>
+  <ul>
+    <li>Whitelist im Team-Setup pflegen (z. B. <code>tag</code>, <code>ref</code>). Die dort eingetragenen Keys bleiben erhalten.</li>
+  </ul>
+
+  <h3>Redirect wird nicht entpackt</h3>
+  <ul>
+    <li>Parameter-basierte Weiterleitungen (z. B. <code>l.facebook.com/l.php?u=</code>) funktionieren offline.</li>
+    <li>Shortener wie <code>t.co</code> benötigen Internet (echte HTTP-Auflösung).</li>
+  </ul>
+
+  <h3>Kopieren/Teilen funktioniert nicht</h3>
+  <ul>
+    <li>Clipboard/Share-APIs sind abhängig vom Browser. Fallback: Ergebnis manuell markieren und kopieren.</li>
+  </ul>
+</section>
+      
       <!-- 8) Troubleshooting -->
       <section class="card" id="trouble">
         <h2>8) Troubleshooting</h2>
