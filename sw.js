@@ -6,7 +6,7 @@
  * Steuerung:
  * - Message PING / SKIP_WAITING / CLEAR_CACHES / PRECACHE_LIST
  */
-const SS_VERSION = 'v32';
+const SS_VERSION = 'v33';
 const PRECACHE = `ss-precache-${SS_VERSION}`;
 const RUNTIME  = `ss-runtime-${SS_VERSION}`;
 const OFFLINE_URL = 'offline.html';
