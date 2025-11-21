@@ -1,3 +1,4 @@
+<!-- /Supersystem/partners.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -5,10 +6,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Unternehmen &amp; Partner · SafeShare</title>
+  <title>Partner & Unternehmen · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/partners.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="SafeShare für Unternehmen & Partner: saubere, kurze Links in Marketing, CRM und Compliance. Lokal im Browser, ohne Accounts – Whitelist für erlaubte Parameter.">
+  <meta name="description" content="Für Unternehmen & Partner: klare Compliance, reduzierte Tracking-Signaturen, parametrisierte Regeln. Rollout per Bookmarklet und Bulk-Clean (Pro).">
 
   <!-- hreflang / Locale -->
   <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/partners.html">
@@ -17,17 +18,12 @@
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare für Unternehmen & Partner">
-  <meta property="og:description" content="Klarere Links für Marketing, CRM und Compliance – mit Team-Whitelist.">
+  <meta property="og:title" content="SafeShare – Partner & Unternehmen">
+  <meta property="og:description" content="Compliance-freundliche Klar-Links, lokal verarbeitet.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/partners.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- NEU: OG-Image -->
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  
   <!-- PWA / Icons -->
   <meta name="theme-color" content="#0b0b0b">
   <meta name="color-scheme" content="light dark">
@@ -36,12 +32,61 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
 
-  <!-- Sicherheits-CSP (ohne Inline-JS) -->
+  <!-- Sicherheits-CSP (JSON-LD Nonce erlaubt) -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
-                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
-                 script-src 'self';
-                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'nonce-SSJSONP';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- JSON-LD FAQ -->
+  <script type="application/ld+json" nonce="SSJSONP">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Welche Bereiche profitieren im Unternehmen?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Marketing/CRM (kürzere Kampagnen-URLs), Publisher/Deals (saubere Links mit erhaltener Partner-ID) und IT/Compliance (lokale Verarbeitung, klare Regeln)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Unterstützt SafeShare Compliance-Vorgaben?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ja. Durch lokale Verarbeitung ohne Dritt-Requests und eine definierbare Parameter-Whitelist lassen sich Tracking-Footprints reduzieren."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Wie wird SafeShare ausgerollt?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Als Bookmarklet in Redaktionsbrowsern und optional Bulk-Clean (Pro) für Listenexporte aus CMS/CRM."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Verlassen Daten unser Unternehmen?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nein. SafeShare arbeitet client-seitig im Browser; es werden keine Nutzungsdaten an SafeShare-Server gesendet."
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- JS -->
   <script defer src="js/sw-register.js?v=31"></script>
@@ -56,110 +101,73 @@
     a{color:inherit}
     .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
-    .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:#141414}
     .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
     @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
     .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
     ul{margin:.4rem 0 .8rem 1.2rem}
-    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    pre{background:#0f0f10;border:1px solid var(--line);border-radius:10px;padding:10px;overflow:auto}
-    table{width:100%;border-collapse:collapse;margin-top:6px}
-    th,td{border-top:1px solid var(--line);padding:8px 6px;vertical-align:top}
+    h1{margin:.2rem 0 .6rem 0}
+    h2{margin:1rem 0 .5rem}
     footer{border-top:1px solid var(--line);margin-top:28px}
     footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
     footer a{color:var(--mut);text-decoration:none}
-    .skip{position:absolute;left:-9999px}
-    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
   </style>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
-  <div class="wrap" id="main">
-    <h1>Unternehmen &amp; Partner</h1>
-    <p class="mut">Klarere, kürzere Links in Marketing, CRM und Compliance. SafeShare entfernt Tracking-Signaturen, entpackt Redirects und behält definierte Team-Parameter (Whitelist) – alles lokal im Browser.</p>
-
-    <div class="row" style="margin-top:10px">
-      <a class="btn pri" href="app.html">App öffnen</a>
-      <a class="btn" href="team-setup.html">Team-Whitelist</a>
-      <a class="btn" href="bulk-clean.html">Bulk-Clean (Pro)</a>
-      <a class="btn" href="compliance.html">Compliance</a>
-      <a class="btn" href="quickstart.html">Quickstart (1 Seite)</a>
-    </div>
-
-    <div class="chips" aria-label="Einsatzbereiche">
-      <span class="chip">Marketing &amp; Kampagnen</span>
-      <span class="chip">CRM &amp; Newsletter</span>
-      <span class="chip">Sales-Enablement</span>
-      <span class="chip">IT &amp; Compliance</span>
-      <span class="chip">Partnerprogramme</span>
-    </div>
+  <div class="wrap">
+    <header class="row" style="justify-content:space-between;gap:16px">
+      <div>
+        <h1>Partner &amp; Unternehmen</h1>
+        <p class="mut">Compliance-freundliche Klar-Links, lokal verarbeitet. Regeln definieren, Tracking-Signaturen reduzieren.</p>
+      </div>
+      <div class="row">
+        <a class="btn pri" href="app.html">App öffnen</a>
+        <a class="btn" href="team-setup.html">Team-Whitelist</a>
+        <a class="btn" href="compliance.html">Compliance</a>
+      </div>
+    </header>
 
     <div class="grid">
       <section class="card">
-        <h2>Business-Nutzen</h2>
+        <h2>Nutzen</h2>
         <ul>
-          <li><strong>Einheitliche Link-Standards:</strong> saubere, kurze URLs für Kampagnen, Landingpages und Assets.</li>
-          <li><strong>Weniger Fehlerquellen:</strong> entpackte Redirects und entfernte Rausch-Parameter.</li>
-          <li><strong>Kontrollierte Parameter:</strong> Team-Whitelist für erlaubte IDs (z. B. <code>tag</code>, <code>ref</code>, <code>aff_id</code>).</li>
-          <li><strong>Privacy-by-Design:</strong> Verarbeitung lokal im Browser, keine Accounts, keine Server-Logs.</li>
+          <li>Signaturen reduzieren (utm_*, gclid, fbclid …).</li>
+          <li>Direktziel-Öffnung durch Entpacken von Redirects.</li>
+          <li>Regeln per Whitelist je Team/Brand steuerbar.</li>
+          <li>Client-seitig, ohne Konten & ohne SafeShare-Server-Logs.</li>
         </ul>
+      </section>
+
+      <section class="card">
+        <h2>Rollout</h2>
+        <ul>
+          <li>Bookmarklet in Standardbrowser der Redaktion.</li>
+          <li>Pro: <a href="bulk-clean.html">Bulk-Clean</a> für Listenexporte.</li>
+          <li>Regelwerk: <a href="team-setup.html">Team-Setup</a> pflegen.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>FAQ</h2>
+        <h3>Welche Bereiche profitieren?</h3>
+        <p>Marketing/CRM, Publisher/Deals, IT/Compliance.</p>
+        <h3>Compliance-Unterstützung?</h3>
+        <p>Ja, durch lokale Verarbeitung und Whitelist-Regeln.</p>
+        <h3>Rollout?</h3>
+        <p>Bookmarklet + optional Bulk-Clean (Pro) in Teams.</p>
+        <h3>Verlassen Daten das Unternehmen?</h3>
+        <p>Nein, Verarbeitung im Browser – keine SafeShare-Server-Logs.</p>
+      </section>
+
+      <section class="card">
+        <h2>Loslegen</h2>
         <div class="row">
-          <a class="btn pri" href="bookmarklets.html">Bookmarklet speichern</a>
-          <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
+          <a class="btn pri" href="app.html">App öffnen</a>
+          <a class="btn" href="bookmarklets.html">Bookmarklet</a>
+          <a class="btn" href="help.html">Hilfe</a>
         </div>
-      </section>
-
-      <section class="card">
-        <h2>Typische Workflows</h2>
-        <table aria-label="Workflows">
-          <thead>
-            <tr><th>Bereich</th><th>Vorgehen</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Marketing</td>
-              <td>Links vor dem Publizieren in der <a href="app.html">App</a> säubern; Whitelist-Parameter erlauben.</td>
-            </tr>
-            <tr>
-              <td>CRM/Newsletter</td>
-              <td>Listen mit <a href="bulk-clean.html">Bulk-Clean</a> bereinigen, CSV exportieren, in Tool importieren.</td>
-            </tr>
-            <tr>
-              <td>Partner</td>
-              <td>Erlaubte IDs wie <code>tag</code>/<code>ref</code> in <a href="team-setup.html">Team-Setup</a> pflegen.</td>
-            </tr>
-            <tr>
-              <td>Compliance</td>
-              <td>Richtlinie definieren, regelmäßige Stichproben; Status unter <a href="status.html">Status</a> prüfen.</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section class="card">
-        <h2>Vorher → Nachher</h2>
-        <pre><code>https://shop.tld/p/?utm_source=news&amp;utm_campaign=sale&amp;gclid=abc&amp;tag=partner42
-→ https://shop.tld/p/?tag=partner42
-
-https://www.google.com/url?q=https%3A%2F%2Ffirmenseite.tld%2Fcase%3Fref%3Db2b&amp;sa=D
-→ https://firmenseite.tld/case?ref=b2b</code></pre>
-        <p class="mut">Whitelist gepflegt: <code>tag</code>, <code>ref</code>.</p>
-      </section>
-
-      <section class="card">
-        <h2>Einführung in 5 Schritten</h2>
-        <ol>
-          <li><a href="bookmarklets.html">Bookmarklet</a> in die Leiste ziehen oder <a href="app.html">App</a> nutzen.</li>
-          <li>Erlaubte Parameter in <a href="team-setup.html">Team-Whitelist</a> eintragen.</li>
-          <li>Prozesse festlegen (Einzel-Link vs. Bulk-Clean, Verantwortung/Review).</li>
-          <li>Optional als PWA installieren (offline nutzbar).</li>
-          <li>Regelmäßig Stichproben, Ergebnisse dokumentieren (<a href="compliance.html">Compliance</a>).</li>
-        </ol>
       </section>
     </div>
 
@@ -170,18 +178,23 @@ https://www.google.com/url?q=https%3A%2F%2Ffirmenseite.tld%2Fcase%3Fref%3Db2b&am
         <a href="bookmarklets.html">Bookmarklet</a>
         <a href="bulk-clean.html">Bulk-Clean</a>
         <a href="team-setup.html">Team-Whitelist</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partner</a>
         <a href="compliance.html">Compliance</a>
         <a href="press.html">Presse</a>
+        <a href="help.html">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="terms.html">Terms</a>
         <a href="kurz-terms.html">Kurz-Terms</a>
+        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">JavaScript aktivieren, um PWA/Service-Worker zu nutzen.</div></div>
+    <div class="wrap"><div class="card">JavaScript ist optional (Service Worker/PWA). Diese Seite funktioniert auch ohne JS.</div></div>
   </noscript>
 </body>
 </html>
