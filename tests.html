@@ -1,141 +1,226 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- tests.html (neu, ohne Inline-JS, mit konsolidierten Skripten) -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Tests · SafeShare</title>
-
-  <!-- Canonical / hreflang -->
+  <title>Tests & Beispiele · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tests.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/tests.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/tests.html" hreflang="x-default">
-  <meta name="description" content="Testsuite für SafeShare: Beispiele säubern, Redirects entschachteln, in App öffnen, kopieren.">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="description" content="Tests & Beispiele für SafeShare: Tracking-Parameter entfernen, Redirects entpacken, Whitelist prüfen, Bulk-Clean ausprobieren.">
+
+  <!-- hreflang / Locale -->
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/tests.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/tests.html">
   <meta property="og:locale" content="de_DE">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SafeShare – Tests & Beispiele">
+  <meta property="og:description" content="Sofort testen: UTM entfernen, Redirects entpacken, Team-Whitelist, Bulk-Clean.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/tests.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=30">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=30">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=30">
-  <link rel="manifest" href="manifest.webmanifest?v=30">
+  <!-- PWA / Icons -->
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+
+  <!-- Sicherheits-CSP (keine Inline-Skripte) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=31"></script>
 
   <!-- Styles -->
   <style>
-    :root{
-      --bg:#0b0b0b; --fg:#eaeaea; --mut:#9a9a9a; --line:#2a2a2a;
-      --card:#121212; --btn:#1b1b1b; --ok:#1e402f;
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
+    @media(prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
     }
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    a{color:#cfe7ff}
-    .wrap{max-width:1100px;margin:0 auto;padding:22px 14px}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:inherit}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    h1{margin:.2em 0 .6em;font-size:1.9rem}
-    h2{margin:1.0em 0 .35em;font-size:1.15rem}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    .row{display:flex;flex-wrap:wrap;gap:8px}
-    .btn{display:inline-block;border:1px solid var(--line);background:var(--btn);color:var(--fg);
-         padding:.55rem .85rem;border-radius:10px;cursor:pointer;text-decoration:none}
-    .btn.ok{background:var(--ok)}
-    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.1rem .5rem;margin:.1rem .25rem 0 0}
-    input[type="text"],textarea{width:100%;box-sizing:border-box;background:#0f0f0f;border:1px solid var(--line);
-         color:var(--fg);border-radius:10px;padding:.55rem .7rem}
-    table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-    thead th{background:#151515;border-bottom:1px solid var(--line);text-align:left;padding:.6rem .7rem}
-    tbody td{border-top:1px solid var(--line);padding:.55rem .6rem;vertical-align:top}
-    tbody tr:first-child td{border-top:none}
-    td.small .row{gap:6px}
-    footer{margin:18px 0}
-    .visually-hidden-focusable{position:absolute;left:-9999px}
-    .visually-hidden-focusable:focus{left:10px;top:10px;z-index:1000;background:#222;padding:.4rem .6rem;border-radius:8px}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
+    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    pre{background:#0f0f10;border:1px solid var(--line);border-radius:10px;padding:10px;white-space:pre-wrap}
+    ul{margin:.4rem 0 .8rem 1.2rem}
+    li+li{margin-top:.25rem}
+    textarea{width:100%;min-height:140px;border-radius:10px;border:1px solid var(--line);background:#0f0f10;color:var(--fg);padding:10px}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .skip{position:absolute;left:-9999px}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
   </style>
-
-  <link rel="stylesheet" href="css/theme.css?v=30">
-
-  <!-- SW-Registrierung + Seiten-Skripte -->
-  <script defer src="js/sw-register.js?v=30"></script>
-  <script defer src="js/cleaner.js?v=30"></script>
-  <script defer src="js/page-tests.js?v=30"></script>
 </head>
 <body>
-  <a href="#main" class="visually-hidden-focusable">Zum Inhalt springen</a>
-  <div class="wrap">
-    <header>
-      <h1>Tests</h1>
-      <p class="mut">Beispiele säubern, Redirects entschachteln, „In App“ öffnen oder Output kopieren.</p>
-      <div class="row" style="margin-top:.4rem">
-        <button id="btnNc" class="btn" type="button">Neu laden (nocache)</button>
-        <a id="btnApp" class="btn ok" href="app.html">App öffnen</a>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap" id="main">
+    <header class="row" style="justify-content:space-between;gap:16px">
+      <div>
+        <h1>Tests &amp; Beispiele</h1>
+        <p class="mut">Zum schnellen Prüfen von SafeShare: Tracking-Parameter entfernen, Redirects entpacken, Whitelist-Verhalten, Bulk-Clean.</p>
       </div>
-      <p id="ncInfo" class="mut mono" style="margin:.4rem 0 0">URL: –</p>
+      <div class="row">
+        <a class="btn pri" href="app.html">App öffnen</a>
+        <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+      </div>
     </header>
 
-    <main id="main">
-      <section class="card" aria-labelledby="oneoff">
-        <h2 id="oneoff">Einzeltest</h2>
-        <label for="oneIn" class="mut">Eingabe-URL</label>
-        <input id="oneIn" type="text" placeholder="https://…">
-        <div class="row" style="margin-top:.6rem">
-          <button id="btnOneClean" class="btn ok" type="button">Säubern</button>
-          <button id="btnOneOpen" class="btn" type="button">In App öffnen</button>
+    <div class="grid">
+      <!-- 1) Tracking-Parameter -->
+      <section class="card">
+        <h2>1) Tracking-Parameter entfernen</h2>
+        <p class="mut">Vorher-Links öffnen, URL kopieren, in der <a href="app.html">App</a> säubern. Erwartung siehe darunter.</p>
+        <ul>
+          <li>
+            Vorher: <a href="https://example.com/p?utm_source=news&utm_medium=email&utm_campaign=launch" rel="nofollow">example.com/p?utm_…</a><br>
+            Erwartet: <code>https://example.com/p</code>
+          </li>
+          <li>
+            Vorher: <a href="https://shop.example/p?gclid=EAIaIQobChMI" rel="nofollow">shop.example/p?gclid=…</a><br>
+            Erwartet: <code>https://shop.example/p</code>
+          </li>
+          <li>
+            Vorher: <a href="https://blog.example/artikel?fbclid=IwAR3xYz" rel="nofollow">blog.example/artikel?fbclid=…</a><br>
+            Erwartet: <code>https://blog.example/artikel</code>
+          </li>
+          <li>
+            Vorher: <a href="https://deal.example/x?msclkid=abc123&utm_source=ads" rel="nofollow">deal.example/x?msclkid=&utm_…</a><br>
+            Erwartet: <code>https://deal.example/x</code>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2) Redirects -->
+      <section class="card">
+        <h2>2) Redirects entpacken</h2>
+        <p class="mut">Vorher-URL öffnen und die endgültige Ziel-URL in der App säubern/prüfen.</p>
+        <ul>
+          <li>
+            Vorher: <a href="https://www.google.com/url?q=https%3A%2F%2Fprojekt.example%2Fmaterial&sa=D" rel="nofollow">google.com/url?q=…</a><br>
+            Erwartet: <code>https://projekt.example/material</code>
+          </li>
+          <li>
+            Vorher: <a href="https://t.co/abc" rel="nofollow">t.co/abc</a> (Twitter/𝕏 Kurzlink, Beispiel)<br>
+            Erwartet: <code>https://ziel.example/…</code> (Klarziel)
+          </li>
+          <li>
+            Vorher: <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fnews.example%2Fstory%3Futm_source%3Dfb" rel="nofollow">l.facebook.com/l.php?u=…</a><br>
+            Erwartet: <code>https://news.example/story</code>
+          </li>
+        </ul>
+        <div class="row">
+          <a class="btn" href="redirect-entschachteln.html">Redirect-Tool öffnen</a>
         </div>
-        <label for="oneOut" class="mut" style="margin-top:.6rem;display:block">Ergebnis</label>
-        <input id="oneOut" type="text" class="mono" readonly placeholder="—">
-        <div id="oneRep" class="mut mono" style="margin-top:.4rem">–</div>
       </section>
 
-      <section class="card" aria-labelledby="liste">
-        <h2 id="liste">Beispiel-Liste</h2>
-        <table aria-describedby="liste">
-          <thead>
-            <tr>
-              <th style="width:48px">#</th>
-              <th style="width:220px">Name</th>
-              <th>URL</th>
-              <th style="width:380px">Aktionen / Report</th>
-            </tr>
-          </thead>
-          <tbody id="testsBody">
-            <!-- Zeilen werden von js/page-tests.js erzeugt -->
-          </tbody>
-        </table>
+      <!-- 3) Team-Whitelist -->
+      <section class="card">
+        <h2>3) Team-Whitelist (IDs behalten)</h2>
+        <p class="mut">Whitelist in <a href="team-setup.html">team-setup</a> pflegen (z. B. <code>tag</code>, <code>ref</code>). Dann verhalten prüfen:</p>
+        <ul>
+          <li>
+            Vorher: <a href="https://shop.example/p?utm_source=news&tag=JJ42" rel="nofollow">shop.example/p?utm_source=&tag=JJ42</a><br>
+            Erwartet: <code>https://shop.example/p?tag=JJ42</code>
+          </li>
+          <li>
+            Vorher: <a href="https://blog.example/x?ref=partner123&fbclid=XYZ" rel="nofollow">blog.example/x?ref=partner123&fbclid=…</a><br>
+            Erwartet: <code>https://blog.example/x?ref=partner123</code>
+          </li>
+        </ul>
       </section>
-    </main>
 
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="bookmarklets.html">Bookmarklet</a> ·
-      <a href="bulk-clean.html">Bulk-Clean</a> ·
-      <a href="team-setup.html">Team-Setup</a> ·
-      <a href="redirect-entschachteln.html">Redirect entschachteln</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="status.html">Status</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a> ·
-      <a href="press.html">Presse</a>
+      <!-- 4) Gemischt -->
+      <section class="card">
+        <h2>4) Gemischte Fälle</h2>
+        <ul>
+          <li>
+            Vorher: <a href="https://portal.example/d?utm_campaign=spring&gclid=abc&ref=MEDIA" rel="nofollow">portal.example/d?utm_…&gclid=…&ref=MEDIA</a><br>
+            Erwartet (Whitelist <code>ref</code>): <code>https://portal.example/d?ref=MEDIA</code>
+          </li>
+          <li>
+            Vorher: <a href="https://out.reddit.com/t3_abc?url=https%3A%2F%2Fprojekt.example%2Fdoc%3Futm_term%3Dk" rel="nofollow">out.reddit.com/…url=…</a><br>
+            Erwartet: <code>https://projekt.example/doc</code>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 5) Bulk-Clean -->
+      <section class="card">
+        <h2>5) Bulk-Clean (Listen säubern)</h2>
+        <p class="mut">Beispiel-Liste kopieren und in <a href="bulk-clean.html">bulk-clean</a> einfügen.</p>
+        <pre><code>https://example.com/a?utm_source=news
+https://shop.example/p?gclid=EAIaIQ
+https://www.google.com/url?q=https%3A%2F%2Fziel.example%2Fkatalog&amp;sa=D
+https://blog.example/art?utm_medium=social&amp;tag=JJ42
+https://l.facebook.com/l.php?u=https%3A%2F%2Fnews.example%2Fstory%3Ffbclid%3DABC</code></pre>
+        <div class="row">
+          <a class="btn pri" href="bulk-clean.html">Bulk-Clean öffnen</a>
+        </div>
+      </section>
+
+      <!-- 6) PWA/Cache -->
+      <section class="card">
+        <h2>6) PWA/Cache prüfen</h2>
+        <ul>
+          <li><a href="status.html">Status</a> → „Auf Updates prüfen“ → ggf. „Wartende Version aktivieren“.</li>
+          <li>Hard-Reload: Seite mit <code>?nocache=</code> öffnen, z. B. <a href="tests.html?nocache=2025112112">tests.html?nocache=2025112112</a>.</li>
+          <li>Caches/LocalStorage löschen: in <a href="status.html">status.html</a> unter „Cache & Storage“.</li>
+        </ul>
+      </section>
+    </div>
+
+    <footer>
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partner</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
+        <a href="help.html">Hilfe</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="terms.html">Terms</a>
+        <a href="kurz-terms.html">Kurz-Terms</a>
+        <a href="status.html">Status</a>
+      </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><p class="mut">JavaScript ist erforderlich, um die Tests automatisch auszuführen.</p></div>
+    <div class="wrap"><div class="card">JavaScript ist optional (Service Worker/PWA). Diese Seite funktioniert auch ohne JS.</div></div>
   </noscript>
 </body>
 </html>
