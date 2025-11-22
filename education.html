@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Education & NGOs · SafeShare</title>
+  <meta name="description" content="Für Bildung & NGOs: Privatsphäre-freundliches Teilen, klare URLs ohne Tracking. PWA-fähig und offline nutzbar.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/education.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="Für Bildung & NGOs: Privacy-freundliche Klar-Links, offline als PWA nutzbar, kein Tracking. Einfach teilen in Lernumgebungen.">
 
   <!-- hreflang / Locale -->
   <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/education.html">
@@ -18,21 +18,21 @@
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Education & NGOs">
-  <meta property="og:description" content="Privacy-freundlich teilen: Tracking raus, Klar-Links, PWA/Offline.">
+  <meta property="og:title" content="SafeShare für Education & NGOs">
+  <meta property="og:description" content="Klare, saubere Links ohne Tracking. Lokale Verarbeitung, kein Login – ideal für Unterricht, Projekte und Schutzräume.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/education.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- PWA / Icons -->
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="manifest" href="manifest.webmanifest?v=35">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (JSON-LD Nonce erlaubt) -->
+  <!-- Sicherheits-CSP (sanft; JSON-LD per Nonce erlaubt) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -40,136 +40,119 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSJSON2';
+                 script-src 'self' 'nonce-SSFAQ';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- JSON-LD FAQ -->
-  <script type="application/ld+json" nonce="SSJSON2">
+  <!-- Styles -->
+  <style>
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:#9fe7c3}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#072b16;font-weight:700}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+    ul.check{list-style:none;padding-left:0;margin:.4rem 0}
+    ul.check li{padding-left:28px;position:relative;margin:.3rem 0}
+    ul.check li:before{content:"✔";position:absolute;left:0;top:0;color:#5fe09f}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  </style>
+
+  <!-- FAQ JSON-LD -->
+  <script type="application/ld+json" nonce="SSFAQ">
   {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Brauche ich einen Account?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Nein. SafeShare funktioniert ohne Konto. Die Bereinigung erfolgt lokal im Browser."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Kann ich SafeShare offline nutzen?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Ja. SafeShare ist als PWA installierbar. Nach dem ersten Laden funktionieren Kernseiten auch ohne Internet."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Ist SafeShare datenschutzfreundlich?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Ja. Es werden keine personenbezogenen Daten an SafeShare-Server übertragen. Das Tool entfernt Tracking-Parameter und entpackt Redirects lokal."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Wie fange ich an?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "App öffnen, Link einfügen, „Säubern“. Für eine Kurzanleitung gibt es die Quickstart-Seite mit QR."
-        }
-      }
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Warum SafeShare im Unterricht/NGO?",
+       "acceptedAnswer":{"@type":"Answer","text":"Saubere, klare URLs ohne Tracking erhöhen Sicherheit und Verständlichkeit. SafeShare läuft vollständig lokal ohne Konten."}},
+      {"@type":"Question","name":"Funktioniert SafeShare offline?",
+       "acceptedAnswer":{"@type":"Answer","text":"Ja. Als PWA lassen sich Startseite und App offline nutzen (nach dem ersten Laden)."}},
+      {"@type":"Question","name":"Bleiben projektrelevante Parameter erhalten?",
+       "acceptedAnswer":{"@type":"Answer","text":"Über die Team-Whitelist können erlaubte Parameter (z. B. tag/ref) erhalten bleiben."}}
     ]
   }
   </script>
 
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=31"></script>
-
-  <!-- Styles -->
-  <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
-    @media (prefers-color-scheme: light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
-    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    ul{margin:.4rem 0 .8rem 1.2rem}
-    h1{margin:.2rem 0 .6rem 0}
-    h2{margin:1rem 0 .5rem}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
-  </style>
+  <script defer src="js/sw-register.js?v=35"></script>
 </head>
 <body>
   <div class="wrap">
     <header class="row" style="justify-content:space-between;gap:16px">
       <div>
-        <h1>Education &amp; NGOs</h1>
-        <p class="mut">Privacy-freundliches Teilen in Lernumgebungen und Öffentlichkeitsarbeit – ohne Dritt-Requests, offline als PWA nutzbar.</p>
+        <h1>Für Education & NGOs</h1>
+        <p class="mut">Privatsphäre-freundliches Teilen mit klaren, sauberen Links. Keine Accounts, keine Server-Logs – ideal für Unterricht, Projekte und Schutzräume.</p>
       </div>
       <div class="row">
-        <a class="btn pri" href="app.html">App öffnen</a>
-        <a class="btn" href="quickstart.html">Quickstart</a>
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="app.html">App</a>
         <a class="btn" href="help.html">Hilfe</a>
       </div>
     </header>
 
-    <div class="grid">
-      <section class="card">
-        <h2>Warum SafeShare für Bildung/NGOs?</h2>
-        <ul>
-          <li>Tracking-Parameter entfernen – klare, neutrale Links.</li>
-          <li>Redirects entpacken → Zielseite direkt öffnen.</li>
-          <li>Keine Konten, keine SafeShare-Server-Logs.</li>
-          <li>Als PWA installierbar, Kernseiten offline nutzbar.</li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <h2>Einsatz</h2>
-        <ul>
-          <li>Unterrichtsmaterialien, Kursplattformen, Rundbriefe.</li>
-          <li>Social-Posts & Pressearbeit mit Klar-Links.</li>
-          <li>Whitelist, wenn bestimmte IDs erhalten bleiben müssen.</li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <h2>FAQ</h2>
-        <h3>Brauche ich einen Account?</h3>
-        <p>Nein. SafeShare funktioniert ohne Konto, alles lokal im Browser.</p>
-        <h3>Offline möglich?</h3>
-        <p>Ja. Nach Installation als PWA laufen Kernseiten offline.</p>
-        <h3>Datenschutz?</h3>
-        <p>Keine Übertragung von Nutzungsdaten an SafeShare-Server.</p>
-        <h3>Start?</h3>
-        <p>App öffnen → Link einfügen → „Säubern“. Hilfe & Quickstart siehe Links.</p>
-      </section>
-
-      <section class="card">
-        <h2>Loslegen</h2>
-        <div class="row">
-          <a class="btn pri" href="app.html">App öffnen</a>
-          <a class="btn" href="bookmarklets.html">Bookmarklet</a>
-          <a class="btn" href="team-setup.html">Team-Whitelist</a>
+    <section class="card">
+      <div class="grid">
+        <div>
+          <h2 style="margin-top:0">Vorteile</h2>
+          <ul class="check">
+            <li>UTM/gclid/fbclid automatisch entfernen</li>
+            <li>Weiterleitungen wie <span class="mono">google.com/url</span>, <span class="mono">l.facebook.com/l.php</span> entpacken</li>
+            <li>Lokale Verarbeitung im Browser, keine Drittanbieter</li>
+            <li>PWA: Startseite/App offline nutzbar</li>
+            <li>Einfaches Onboarding ohne Konten</li>
+          </ul>
+          <div class="row" style="margin-top:10px">
+            <a class="btn pri" href="app.html">Jetzt starten</a>
+            <a class="btn" href="quickstart.html">Quickstart</a>
+          </div>
         </div>
-      </section>
-    </div>
+        <div>
+          <h2 style="margin-top:0">Einsatzszenarien</h2>
+          <ul class="check">
+            <li>Arbeitsblätter & Lernplattformen mit klaren Ziel-Links</li>
+            <li>Projektdokumentationen und Quellenangaben ohne Tracking</li>
+            <li>Öffentlichkeitsarbeit von NGOs ohne unnötige Parameter</li>
+            <li>Teilen in Messengern/Newslettern mit kurzen, sauberen URLs</li>
+          </ul>
+          <div class="row" style="margin-top:10px">
+            <a class="btn" href="bookmarklets.html">Bookmarklet</a>
+            <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Gemeinsame Regeln (Whitelist)</h2>
+      <p class="mut">Definiert in der <a href="team-setup.html">Team-Whitelist</a>, welche Parameter erhalten bleiben dürfen (z. B. <span class="mono">tag</span>, <span class="mono">ref</span>). So bleiben projekt- oder kursrelevante Kennzeichnungen erhalten, während Tracking entfernt wird.</p>
+      <div class="row" style="margin-top:8px">
+        <a class="btn" href="team-setup.html">Whitelist einrichten</a>
+        <a class="btn" href="help.html#team">Anleitung</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Optional: Pro-Funktionen</h2>
+      <p>Mit Pro können Listen im Bulk gereinigt und exportiert werden – praktisch für Klassen- oder Projekt-URLs.</p>
+      <div class="row">
+        <a class="btn" href="bulk-clean.html">Bulk-Clean (Pro)</a>
+        <a class="btn" href="pro.html">Pro aktivieren</a>
+      </div>
+    </section>
 
     <footer>
       <nav class="links" aria-label="Footer">
@@ -179,7 +162,6 @@
         <a href="bulk-clean.html">Bulk-Clean</a>
         <a href="team-setup.html">Team-Whitelist</a>
         <a href="publisher.html">Publisher</a>
-        <a href="education.html">Education</a>
         <a href="partners.html">Partner</a>
         <a href="compliance.html">Compliance</a>
         <a href="press.html">Presse</a>
@@ -194,7 +176,7 @@
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">JavaScript ist optional (Service Worker/PWA). Diese Seite funktioniert auch ohne JS.</div></div>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. SafeShare arbeitet lokal im Browser.</div></div>
   </noscript>
 </body>
 </html>
