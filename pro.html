@@ -1,3 +1,4 @@
+<!-- /Supersystem/pro.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -5,32 +6,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare Pro – Bulk-Clean, Redirect-Entpacken & Team-Whitelist</title>
-  <meta name="description" content="SafeShare Pro aktiviert Bulk-Clean für Listen, Redirect-Entpacken im Klartext und Team-Whitelist – alles lokal im Browser ohne Accounts.">
+  <title>Pro · SafeShare</title>
+  <meta name="description" content="SafeShare Pro: Bulk-Clean für URL-Listen, Team-Whitelist, Redirect-Entpacken – alles lokal im Browser. Kauf über Payhip, Aktivierung ohne Konto.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro.html">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/pro.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/pro.html">
   <meta property="og:locale" content="de_DE">
-
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <meta name="theme-color" content="#0b0b0b">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="SafeShare Pro">
-  <meta property="og:description" content="Listen säubern (Bulk-Clean), Redirects entpacken und Team-Whitelist – alles lokal im Browser.">
+  <meta property="og:description" content="Bulk-Clean, Whitelist-Regeln, Redirect-Entpacken – lokal, offline-fähig. Aktivierung ohne Konto.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html">
-  <meta property="og:image" content="assets/og/og-index.jpg">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+
+  <!-- Sicherheits-CSP (sanft; JSON-LD per Nonce erlaubt) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -38,111 +40,139 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self';
+                 script-src 'self' 'nonce-SSFAQ';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
-                 connect-src 'self'">
+                 connect-src 'self' https:">
 
-  <!-- Mini-Styles (seitenlokal) -->
+  <!-- Styles -->
   <style>
-    :root { color-scheme: light dark; }
-    html,body { margin:0; font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu; background:#0b0b0b; color:#e8e8e8; }
-    a { color:#6be28e; text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    .wrap { max-width:960px; margin:32px auto; padding:0 16px; }
-    .mut { color:#9aa1a6; }
-    .row { display:flex; flex-wrap:wrap; gap:12px; }
-    .btn { display:inline-block; padding:.65rem 1rem; border-radius:10px; border:1px solid #2a2f33; background:#15181a; color:#e8e8e8; text-decoration:none; }
-    .btn:hover { background:#1b1f22; }
-    .btn.pri { background:#1e4029; border-color:#2c5a3b; }
-    .btn.pri:hover { background:#235233; }
-    .pill { display:inline-block; padding:.3rem .6rem; border-radius:999px; background:#171a1d; border:1px solid #2a2f33; font-weight:600; }
-    .badge { padding:.35rem .6rem; border-radius:10px; border:1px solid #343a40; background:#171a1d; }
-    body.is-pro  #pro-badge { background:#15361f; border-color:#235233; color:#bff0c9; }
-    body.not-pro #pro-badge { background:#2a1a1a; border-color:#5a2c2c; color:#f6c8c8; }
-    h1 { font-size:2rem; margin:.2rem 0 1rem }
-    h2 { margin:1.6rem 0 .6rem; font-size:1.25rem; }
-    section.card { border:1px solid #232629; background:#101214; border-radius:14px; padding:16px; margin:14px 0; }
-    ul { margin:.4rem 0 .8rem 1.1rem; }
-    footer { margin:48px 0 32px; color:#8e9499; }
-    footer a { color:#a9b1b7; }
-    .grid { display:grid; gap:16px; grid-template-columns:1fr; }
-    @media (min-width:860px){ .grid{ grid-template-columns:1fr 1fr; } }
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--ok:#5fe09f;--err:#ef4444}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184;--ok:#14a44d;--err:#b91c1c}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:#9fe7c3}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#072b16;font-weight:700}
+    .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--mut);font-size:.9rem}
+    .chip.ok{color:#062012;background:var(--ok);border-color:transparent}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    ul.check{list-style:none;padding-left:0;margin:.4rem 0}
+    ul.check li{padding-left:28px;position:relative;margin:.35rem 0}
+    ul.check li:before{content:"✔";position:absolute;left:0;top:0;color:var(--ok)}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
   </style>
 
+  <!-- FAQ JSON-LD -->
+  <script type="application/ld+json" nonce="SSFAQ">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Was bietet SafeShare Pro?",
+       "acceptedAnswer":{"@type":"Answer","text":"Bulk-Clean für URL-Listen, erweiterte Redirect-Entpackung und Team-Whitelist-Regeln – alles lokal, offline-fähig."}},
+      {"@type":"Question","name":"Wie aktiviere ich Pro?",
+       "acceptedAnswer":{"@type":"Answer","text":"Nach dem Kauf auf Payhip die Seite /pro-activate.html?pro=1 öffnen. Die Aktivierung wird lokal im Browser gespeichert."}},
+      {"@type":"Question","name":"Brauche ich ein Konto oder Lizenz-Server?",
+       "acceptedAnswer":{"@type":"Answer","text":"Nein. Es gibt keine Konten und keinen Lizenz-Server. Die Aktivierung ist pro Browser/Profil lokal."}},
+      {"@type":"Question","name":"Bleiben Affiliate-Parameter erhalten?",
+       "acceptedAnswer":{"@type":"Answer","text":"Ja, wenn sie in der Team-Whitelist stehen (z. B. tag, ref). Tracking-Parameter werden entfernt."}}
+    ]
+  }
+  </script>
+
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=31"></script>
-  <script defer src="js/page-pro.js?v=31"></script>
+  <script defer src="js/sw-register.js?v=35"></script>
+  <script defer src="js/page-pro.js?v=35"></script>
 </head>
-<body class="not-pro">
+<body>
   <div class="wrap">
-    <h1>SafeShare Pro</h1>
-    <p class="mut">Listen säubern (Bulk-Clean), CSV-Export und Redirect-Entpacken für Teams – lokal im Browser, ohne Accounts oder Server-Logs.</p>
-
-    <p style="margin:.6rem 0 1rem">
-      <span id="pro-badge" class="badge">Status: nicht aktiviert</span>
-    </p>
-
-    <div class="row" style="margin:.2rem 0 1.1rem">
-      <a class="btn" id="btn-app" href="app.html">Zur App</a>
-      <a class="btn pri" id="btn-buy" href="https://payhip.com/b/VDm3B">Pro kaufen</a>
-      <a class="btn" id="btn-activate" href="pro-activate.html?pro=1">Kauf abgeschlossen? Aktivieren</a>
-    </div>
+    <header class="row" style="justify-content:space-between;gap:16px">
+      <div>
+        <h1>SafeShare Pro <span id="pro-badge" class="chip ok" style="display:none">aktiv</span></h1>
+        <p class="mut">Bulk-Clean, erweiterte Tools und Team-Whitelist – lokal, offline-fähig, ohne Konto.</p>
+      </div>
+      <div class="row">
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="help.html">Hilfe</a>
+      </div>
+    </header>
 
     <section class="card">
-      <h2>Leistungsumfang</h2>
-      <ul>
-        <li><strong>Bulk-Clean:</strong> Viele URLs in einem Rutsch säubern; CSV/TSV einfügen → exportieren.</li>
-        <li><strong>Redirect-Entpacken:</strong> Klare Ziel-URLs statt Ketten (<em>google.com/url, t.co, l.facebook.com …</em>).</li>
-        <li><strong>Team-Whitelist:</strong> Erlaubte IDs (z. B. <code>tag</code>, <code>ref</code>) bleiben erhalten.</li>
-        <li><strong>Privacy-by-Design:</strong> Verarbeitung rein im Browser, keine externen Requests.</li>
+      <h2 style="margin-top:0">Funktionen</h2>
+      <ul class="check">
+        <li><strong>Bulk-Clean:</strong> Listen/CSV in einem Schritt säubern und exportieren</li>
+        <li><strong>Redirect-Entpacken:</strong> Wrapper wie <span class="mono">google.com/url</span>, <span class="mono">l.facebook.com/l.php</span> u. a.</li>
+        <li><strong>Whitelist-Regeln:</strong> Erlaubte Parameter zentral festlegen (z. B. <span class="mono">tag</span>, <span class="mono">ref</span>)</li>
+        <li><strong>PWA & Offline:</strong> App auch ohne Netz nutzbar</li>
+        <li><strong>Privacy by Design:</strong> 100 % lokal im Browser, keine Server-Logs</li>
       </ul>
-      <div class="row">
-        <a class="btn pri" href="bulk-clean.html">Bulk-Clean öffnen</a>
+      <div class="row" style="margin-top:10px">
+        <a class="btn" href="bulk-clean.html">Bulk-Clean öffnen</a>
         <a class="btn" href="team-setup.html">Team-Whitelist</a>
-        <a class="btn" href="redirect-entschachteln.html">Redirect-Tool</a>
+        <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
       </div>
     </section>
 
-    <section class="card">
-      <h2>Aktivierung & Ablauf</h2>
-      <ol style="margin:.4rem 0 .2rem 1.1rem">
-        <li>Bezug über Payhip-Shop (Button „Pro kaufen“).</li>
-        <li>Nach dem Kauf leitet Payhip auf <code>pro-activate.html?pro=1</code> um.</li>
-        <li>Die Seite setzt den lokalen Pro-Status und führt zurück zur App/Startseite.</li>
-        <li>Der Status gilt auf <em>diesem Gerät/Browser</em>; mehrfach aktivierbar (keine Konten/Server).</li>
+    <section id="buy-activate" class="card" aria-labelledby="ba-title">
+      <h2 id="ba-title" style="margin-top:0">Kaufen & aktivieren</h2>
+      <ol class="mut" style="margin:.4rem 0 .2rem 1.2rem">
+        <li>Pro kaufen bei Payhip.</li>
+        <li>Weiterleitung (oder manuell): <span class="mono">/pro-activate.html?pro=1</span> öffnen.</li>
+        <li>Zurück zu <a href="bulk-clean.html">Bulk-Clean</a> – Badge „Pro aktiv“ sichtbar.</li>
       </ol>
-      <p class="mut">Hinweis: Für jeden Browser/Device einmal aktivieren (lokaler Speicher).</p>
+      <div class="row" style="margin-top:10px">
+        <a class="btn pri" href="https://payhip.com/b/VDm3B" rel="noopener">Pro kaufen</a>
+        <a class="btn" href="pro-activate.html?pro=1">Schon gekauft? Aktivieren</a>
+        <a class="btn" href="quickstart.html">Quickstart</a>
+      </div>
+      <p class="mut" style="margin-top:6px">Aktivierung ist <strong>lokal pro Browser/Profil</strong>. Für weitere Geräte den Aktivierungsschritt dort wiederholen.</p>
     </section>
 
-    <section class="card">
-      <h2>Probleme bei der Aktivierung?</h2>
-      <ul>
-        <li>Nach Kauf <strong>Weiterleitung</strong> erlauben; alternativ manuell <a href="pro-activate.html?pro=1">pro-activate.html?pro=1</a> öffnen.</li>
-        <li>Gleicher Browser & Gerät wie beim Kauf; kein Privat-/Datensparmodus.</li>
-        <li>Service Worker updaten: <a href="status.html">Status</a> → „Auf Updates prüfen“ → „Wartende Version aktivieren“.</li>
-        <li>Konsole-Test: <code>ssPro.isPro()</code>, <code>ssPro.set(true)</code>, danach <code>ssPro.render()</code>.</li>
-        <li>Zurücksetzen (z. B. für Tests): <code>ssPro.set(false)</code> und Seite neu laden.</li>
-      </ul>
+    <section id="status" class="card" aria-labelledby="st-title">
+      <h2 id="st-title" style="margin-top:0">Status</h2>
+      <p class="mut">Aktueller Zustand: <strong id="pro-state">wird geprüft …</strong></p>
+      <div class="row" style="margin-top:8px">
+        <button id="pro-recheck" class="btn" type="button">Status prüfen</button>
+        <button id="pro-reset" class="btn" type="button">Pro lokal zurücksetzen</button>
+        <a class="btn" href="status.html">Service-Worker/Updates</a>
+      </div>
+      <p class="mut" style="margin-top:6px">Hinweis: „Zurücksetzen“ löscht nur das lokale Pro-Flag in diesem Browser/Profil.</p>
     </section>
 
     <footer>
-      <nav class="row" style="gap:10px">
-        <a href="index.html">Startseite</a> ·
-        <a href="app.html">App</a> ·
-        <a href="bulk-clean.html">Bulk-Clean</a> ·
-        <a href="help.html">Hilfe</a> ·
-        <a href="quickstart.html">Quickstart</a> ·
-        <a href="press.html">Presse</a> ·
-        <a href="impressum.html">Impressum</a> ·
-        <a href="datenschutz.html">Datenschutz</a> ·
-        <a href="terms.html">Terms</a> ·
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partner</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
+        <a href="help.html">Hilfe</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="terms.html">Terms</a>
         <a href="kurz-terms.html">Kurz-Terms</a>
+        <a href="status.html">Status</a>
       </nav>
     </footer>
-
-    <noscript><p class="mut">JavaScript ist deaktiviert. SafeShare Pro benötigt JavaScript, da alles lokal im Browser läuft.</p></noscript>
   </div>
+
+  <noscript>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. Die Pro-Erkennung und der Status benötigen JS.</div></div>
+  </noscript>
 </body>
 </html>
