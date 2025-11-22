@@ -7,32 +7,33 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Redirects entpacken · SafeShare</title>
-  <meta name="description" content="Redirects entpacken: Verschachtelte Weiterleitungen auflösen für eine klare Ziel-URL. Weniger Tracking, bessere UX.">
+  <meta name="description" content="Entpackt typische Weiterleitungs-Links (z. B. google.com/url, l.facebook.com/l.php) und zeigt die Ziel-URL an – lokal im Browser.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
   <meta property="og:locale" content="de_DE">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Redirects entpacken · SafeShare">
-  <meta property="og:description" content="Verschachtelte Weiterleitungen offline auflösen und Tracking-Parameter entfernen.">
+  <meta property="og:title" content="SafeShare · Redirects entpacken">
+  <meta property="og:description" content="Ziel-URL aus Weiterleitungen extrahieren – 100 % lokal.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
   <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
   <meta name="theme-color" content="#0b0b0b">
   <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (sanft; kein Fremd-JS) -->
+  <!-- Sicherheits-CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -48,82 +49,66 @@
 
   <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--err:#ef4444}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--warn:#f59e0b}
     @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b;--warn:#b45309}
     }
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
     a{color:#9fe7c3}
-    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
     .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
     .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none;cursor:pointer}
     .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .btn.min{padding:8px 10px;font-size:.95rem}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    input[type=url]{width:100%;box-sizing:border-box;padding:12px;border-radius:12px;border:1px solid var(--line);background:#0f1216;color:inherit}
-    @media(prefers-color-scheme:light){input[type=url]{background:#fff}}
-    .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--mut);font-size:.9rem}
-    .hint{font-size:.95rem}
-    .err{color:var(--err)}
+    .field{position:relative}
+    .field input[type="url"]{
+      width:100%;box-sizing:border-box;background:#0d1319;color:var(--fg);
+      border:1px solid var(--line);border-radius:12px;padding:12px
+    }
+    .out{background:#0d1319;border:1px solid var(--line);border-radius:12px;padding:12px}
+    code.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-all}
     footer{border-top:1px solid var(--line);margin-top:28px}
     footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
     footer a{color:var(--mut);text-decoration:none}
-    #out-link{word-break:break-all}
-    #diag-pre{white-space:pre-wrap;margin:0}
   </style>
 
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=35"></script>
-  <script defer src="js/redirect-unpack.js?v=35"></script>
+  <script defer src="js/sw-register.js?v=20251122"></script>
+  <script defer src="js/cleaner.js?v=20251122"></script>
+  <script defer src="js/page-redirect.js?v=20251122"></script>
 </head>
 <body>
   <div class="wrap">
     <header class="row" style="justify-content:space-between;gap:16px">
       <div>
         <h1>Redirects entpacken</h1>
-        <p class="mut">Verschachtelte Weiterleitungen (z. B. <code>google.com/url</code>, <code>l.facebook.com/l.php</code>, Safelinks) offline auflösen. Optional Tracking entfernen.</p>
+        <p class="mut">Extrahiert die Ziel-URL aus Weiterleitungs-Links (z. B. <code class="mono">google.com/url</code>, <code class="mono">l.facebook.com/l.php</code>), lokal im Browser.</p>
       </div>
       <div class="row">
-        <a class="btn" href="./">Startseite</a>
-        <a class="btn" href="app.html">App</a>
-        <a class="btn" href="help.html">Hilfe</a>
+        <a class="btn ghost" href="./">Startseite</a>
+        <a class="btn ghost" href="help.html">Hilfe</a>
       </div>
     </header>
 
-    <section class="card" aria-labelledby="in-title">
-      <h2 id="in-title" style="margin-top:0">Eingabe</h2>
-      <input id="ru-in" type="url" inputmode="url" placeholder="https://www.google.com/url?q=https%3A%2F%2Fziel.example%2F%3Futm_source%3D…" class="mono">
-      <div class="row" style="margin-top:10px">
-        <label class="row" style="gap:8px;align-items:center">
-          <input id="opt-clean" type="checkbox" checked>
-          <span class="hint">Tracking-Parameter entfernen (utm_*, gclid/fbclid/msclkid …)</span>
-        </label>
+    <section class="card">
+      <h2 style="margin-top:0">1) Link einfügen</h2>
+      <div class="field">
+        <input id="in-url" type="url" inputmode="url" placeholder="Weiterleitungs-Link einfügen …" autocomplete="on" spellcheck="false" aria-label="Eingabe-Link">
       </div>
       <div class="row" style="margin-top:10px">
-        <button id="btn-unpack" class="btn pri" type="button">Entpacken</button>
-        <button id="btn-open"   class="btn" type="button">Öffnen</button>
-        <button id="btn-copy"   class="btn min" type="button">Kopieren</button>
-        <button id="btn-check"  class="btn min" type="button">Prüfen</button>
+        <button id="btn-unwrap" class="btn pri" type="button">Entpacken</button>
+        <button id="btn-copy" class="btn" type="button">Kopieren</button>
+        <button id="btn-open" class="btn" type="button">Öffnen</button>
       </div>
-      <p class="mut hint" style="margin:.6rem 0 0">Hinweis: Kürzungsdienste wie <code>t.co</code> benötigen Netzwerk zum Auflösen. SafeShare verwendet kein externes Nachladen und entpackt dort nur, wenn Zielparameter vorhanden sind.</p>
+      <p id="msg" class="mut" style="margin-top:6px"></p>
     </section>
 
-    <section class="card" aria-labelledby="out-title">
-      <h2 id="out-title" style="margin-top:0">Ergebnis</h2>
-      <p id="out-link" class="mono">—</p>
-      <div class="row" style="margin-top:10px">
-        <span id="out-host" class="chip">—</span>
-        <span id="out-hops" class="chip">Hops: 0</span>
-        <span id="out-removed" class="chip">Entfernt: 0</span>
-        <span id="out-msg" class="chip">Bereit.</span>
+    <section class="card">
+      <h2 style="margin-top:0">Ergebnis</h2>
+      <div class="out">
+        <code id="out-url" class="mono"></code>
       </div>
-    </section>
-
-    <section id="diag" class="card" hidden>
-      <h2 style="margin-top:0">Prüfen</h2>
-      <pre id="diag-pre" class="mono">—</pre>
     </section>
 
     <footer>
@@ -133,23 +118,15 @@
         <a href="bookmarklets.html">Bookmarklet</a>
         <a href="bulk-clean.html">Bulk-Clean</a>
         <a href="team-setup.html">Team-Whitelist</a>
-        <a href="publisher.html">Publisher</a>
-        <a href="education.html">Education</a>
-        <a href="partners.html">Partner</a>
-        <a href="compliance.html">Compliance</a>
-        <a href="press.html">Presse</a>
         <a href="help.html">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. Das Entpacken erfolgt lokal im Browser.</div></div>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren, um Weiterleitungen zu entpacken.</div></div>
   </noscript>
 </body>
 </html>
