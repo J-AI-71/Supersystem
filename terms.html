@@ -1,92 +1,187 @@
+<!-- /Supersystem/terms.html -->
 <!doctype html>
 <html lang="de">
 <head>
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Nutzungsbedingungen · SafeShare</title>
+  <title>Terms · SafeShare</title>
+  <meta name="description" content="Nutzungsbedingungen für SafeShare: Geltungsbereich, Nutzung, Lizenz, Pro-Kauf & Aktivierung, Gewährleistung, Haftung, Datenschutz, Änderungen.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/terms.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="Nutzungsbedingungen für SafeShare. Nutzung auf eigene Verantwortung. Keine Konten, keine Server-Logs.">
+
+  <!-- hreflang / Locale -->
   <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/terms.html">
   <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/terms.html">
   <meta property="og:locale" content="de_DE">
+
+  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Nutzungsbedingungen">
-  <meta property="og:description" content="Nutzung auf eigene Verantwortung. Keine Konten, keine Server-Logs.">
+  <meta property="og:title" content="SafeShare · Terms">
+  <meta property="og:description" content="Nutzungsbedingungen für SafeShare (frei & Pro).">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/terms.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#0b0b0b"><meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
+
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="manifest.webmanifest?v=35">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
+
+  <!-- Sicherheits-CSP (sanft) -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
-                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
-                 script-src 'self'; font-src 'self'; worker-src 'self';
-                 manifest-src 'self'; connect-src 'self'">
-  <script defer src="js/sw-register.js?v=31"></script>
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self' https:">
+
+  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
-    @media(prefers-color-scheme:light){:root{--bg:#fff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
+    }
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit} .wrap{max-width:1000px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)} .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    h1{margin:.2rem 0 .6rem 0} h2{margin:1.2rem 0 .4rem}
-    ul{margin:.4rem 0 .8rem 1.2rem} code{font-family:ui-monospace,Menlo,Consolas,monospace}
+    a{color:#9fe7c3}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .mut{color:var(--mut)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    h2{margin-top:0}
+    ul{margin:.4rem 0 .2rem 1.2rem}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
     footer{border-top:1px solid var(--line);margin-top:28px}
     footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
     footer a{color:var(--mut);text-decoration:none}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
   </style>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=35"></script>
 </head>
 <body>
   <div class="wrap">
-    <h1>Nutzungsbedingungen</h1>
-    <p class="mut">Stand: 2025-11-20</p>
+    <header style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start">
+      <div>
+        <h1>Terms (Nutzungsbedingungen)</h1>
+        <p class="mut">Gültig für SafeShare (frei) und SafeShare Pro.</p>
+      </div>
+      <div class="row" style="display:flex;gap:10px">
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="impressum.html">Impressum</a>
+        <a class="btn" href="datenschutz.html">Datenschutz</a>
+      </div>
+    </header>
 
     <section class="card">
-      <h2>1. Geltungsbereich</h2>
-      <p>Diese Bedingungen regeln die Nutzung von SafeShare unter <code>https://j-ai-71.github.io/Supersystem/</code>. Abweichende Bedingungen gelten nur bei ausdrücklicher Zustimmung.</p>
+      <h2>1) Geltungsbereich</h2>
+      <p>Diese Bedingungen gelten für die Nutzung der Webanwendung „SafeShare“ unter <span class="mono">https://j-ai-71.github.io/Supersystem/</span> einschließlich optionaler Pro-Funktionen.</p>
+    </section>
 
-      <h2>2. Leistungsbeschreibung</h2>
-      <p>SafeShare ist eine Client-seitige Web-App. URLs werden lokal im Browser bereinigt (Tracking-Parameter entfernen, gängige Redirects entpacken). Es werden keine Konten bereitgestellt und keine SafeShare-Server-Logs geführt.</p>
-
-      <h2>3. Nutzung & Verantwortung</h2>
+    <section class="card">
+      <h2>2) Funktionsweise & Umfang</h2>
       <ul>
-        <li>Die Nutzung erfolgt eigenverantwortlich. Prüfen Sie Ziel-URLs vor der Weitergabe.</li>
-        <li>Whitelist-Parameter (z. B. <code>tag</code>, <code>ref</code>) werden lokal im Browser gespeichert.</li>
-        <li>PWA/Offline-Funktion ist optional.</li>
+        <li>SafeShare bereinigt URLs (Entfernung gängiger Tracking-Parameter) und entpackt verbreitete Weiterleitungs-Wrapper.</li>
+        <li>Die Verarbeitung erfolgt ausschließlich lokal im Browser (Client-Side). Es gibt keinen App-Server und keine App-Server-Logs.</li>
+        <li>Pro umfasst zusätzliche Komfortfunktionen (z. B. Bulk-Clean). Details: <a href="pro.html">pro.html</a>.</li>
       </ul>
+    </section>
 
-      <h2>4. Rechte</h2>
-      <p>Urheber- und Markenrechte bleiben vorbehalten. Eine Weitergabe oder Wiederveröffentlichung signifikanter Teile ohne Zustimmung ist unzulässig.</p>
+    <section class="card">
+      <h2>3) Nutzungsvoraussetzungen & Pflichten</h2>
+      <ul>
+        <li>Sie sind verantwortlich für die rechtmäßige Nutzung und Weitergabe bereinigter URLs (z. B. Kennzeichnung, Partnerbedingungen, Urheberrechte).</li>
+        <li>Keine missbräuchliche Nutzung (z. B. Umgehung fremder Sicherheitsmechanismen, Spam, rechtswidrige Inhalte).</li>
+        <li>Team-Whitelist: Erlaubte Parameter (z. B. <span class="mono">tag</span>, <span class="mono">ref</span>) werden von Ihnen/ Ihrem Team festgelegt und verantwortet.</li>
+      </ul>
+    </section>
 
-      <h2>5. Haftung</h2>
-      <p>SafeShare wird „wie besehen“ bereitgestellt. Soweit gesetzlich zulässig, wird die Haftung für leichte Fahrlässigkeit ausgeschlossen. Dies gilt nicht bei Vorsatz, grober Fahrlässigkeit, Verletzung von Leben, Körper oder Gesundheit sowie nach zwingenden gesetzlichen Vorschriften.</p>
+    <section class="card">
+      <h2>4) Lizenz & Rechte</h2>
+      <ul>
+        <li>SafeShare wird als Web-App bereitgestellt. Sofern nicht anders gekennzeichnet, verbleiben sämtliche Rechte bei der/den Anbieterin/Anbietern.</li>
+        <li>Sie erhalten ein einfaches, widerrufliches Nutzungsrecht zur Verwendung im Rahmen dieser Bedingungen.</li>
+        <li>Marken/Logos dürfen nicht ohne Zustimmung verwendet oder verändert werden.</li>
+      </ul>
+    </section>
 
-      <h2>6. Datenschutz</h2>
-      <p>Es findet keine Übermittlung von verarbeiteten URLs an SafeShare-Server statt. Weitere Hinweise enthält die <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+    <section class="card">
+      <h2>5) Pro-Kauf & Aktivierung</h2>
+      <ul>
+        <li>Verkauf/Abwicklung über Payhip: <a href="https://payhip.com/b/VDm3B" rel="noopener">Produktseite</a>. Es gelten die Bedingungen von Payhip/Zahlungsdienstleistern.</li>
+        <li>Aktivierung erfolgt lokal und geräte-/browserbezogen via <span class="mono">/pro-activate.html?pro=1</span>. Bei Wechsel des Geräts/Browsers erneut aktivieren.</li>
+        <li>Rückerstattungen/Support zum Kauf bitte direkt über Payhip abwickeln.</li>
+      </ul>
+    </section>
 
-      <h2>7. Änderungen</h2>
-      <p>Funktion und Bedingungen können angepasst werden. Wesentliche Änderungen werden auf dieser Seite dokumentiert.</p>
+    <section class="card">
+      <h2>6) Gewährleistung & Haftung</h2>
+      <ul>
+        <li>Die App wird „wie besehen“ bereitgestellt. Es wird keine bestimmte Verfügbarkeit oder Eignung zugesichert.</li>
+        <li>Für leichte Fahrlässigkeit wird die Haftung ausgeschlossen; unberührt bleiben Schäden aus Verletzung von Leben, Körper oder Gesundheit sowie zwingende Haftung (z. B. Produkthaftung).</li>
+        <li>Kein Anspruch auf dauerhafte Bereitstellung einzelner Funktionen, Inhalte oder Schnittstellen.</li>
+      </ul>
+    </section>
 
-      <h2>8. Kontakt/Impressum</h2>
-      <p>Rechtlich Verantwortliche siehe <a href="impressum.html">Impressum</a>.</p>
+    <section class="card">
+      <h2>7) Datenschutz</h2>
+      <p>Informationen zur Verarbeitung personenbezogener Daten finden Sie in der <a href="datenschutz.html">Datenschutzerklärung</a>. Die App verarbeitet eingegebene URLs lokal; Kaufdaten liegen bei Payhip.</p>
+    </section>
+
+    <section class="card">
+      <h2>8) Verfügbarkeit, Änderungen & Beendigung</h2>
+      <ul>
+        <li>Es besteht kein Anspruch auf jederzeitige Verfügbarkeit. Wartung/Anpassung/Abschaltung sind möglich.</li>
+        <li>Diese Terms können angepasst werden. Maßgeblich ist die hier veröffentlichte Fassung.</li>
+        <li>Bei Verstößen können Nutzungen gesperrt/unterbunden werden.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>9) Externe Links/Anbieter</h2>
+      <p>Für verlinkte externe Angebote (z. B. Payhip, GitHub) gelten die jeweiligen Bedingungen/Datenschutzhinweise der Anbieter.</p>
+    </section>
+
+    <section class="card">
+      <h2>10) Recht & Gerichtsstand</h2>
+      <p>Es gilt deutsches Recht unter Ausschluss des Kollisionsrechts. Zwingende Verbraucherschutzvorschriften des Wohnsitzstaates bleiben unberührt. Gerichtsstand im gesetzlichen Rahmen.</p>
+      <p class="mut" style="margin-top:.3rem">Stand: 2025-11-22</p>
     </section>
 
     <footer>
       <nav class="links" aria-label="Footer">
         <a href="./">Startseite</a>
         <a href="app.html">App</a>
-        <a href="help.html">Hilfe</a>
-        <a href="press.html">Presse</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partner</a>
         <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
+        <a href="help.html">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
+        <a href="terms.html" aria-current="page">Terms</a>
+        <a href="kurz-terms.html">Kurz-Terms</a>
+        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
+
+  <noscript>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren, um PWA/Service-Worker nutzen zu können.</div></div>
+  </noscript>
 </body>
 </html>
