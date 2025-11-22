@@ -5,140 +5,148 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Bookmarklets · SafeShare</title>
+  <title>Bookmarklet · SafeShare</title>
+  <meta name="description" content="Bookmarklet für SafeShare: Ein Klick bereinigt Links direkt auf Webseiten. Anleitung für iOS, Android und Desktop.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="Bookmarklets für SafeShare: Links direkt von Webseiten aus bereinigen. Anleitung für Desktop und Mobilgeräte.">
+  <meta name="robots" content="index,follow">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/bookmarklets.html" hreflang="x-default">
   <meta property="og:locale" content="de_DE">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare Bookmarklets">
-  <meta property="og:description" content="Links direkt aus dem Browser säubern – Desktop & Mobil.">
+  <meta property="og:title" content="SafeShare Bookmarklet">
+  <meta property="og:description" content="Saubere Links direkt auf Webseiten: Tracking entfernen, Redirects entpacken.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/bookmarklets.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- NEU: OG-Image -->
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  
   <!-- PWA / Icons -->
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="manifest" href="manifest.webmanifest?v=35">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Sicherheits-CSP (sanft; keine Fremd-Skripte nötig) -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
-                 img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';
-                 font-src 'self'; worker-src 'self'; manifest-src 'self'; connect-src 'self'">
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self' https:">
 
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=31"></script>
-  <script defer src="js/bookmarklets.js?v=31"></script>
-
-  <!-- Styles -->
+  <!-- Styles (leicht) -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
-    @media (prefers-color-scheme: light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--err:#ef4444}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
     }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:#9fe7c3}
     .wrap{max-width:980px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px}
-    @media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
-    .bm-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
-    .bm{display:inline-block;padding:10px 14px;border-radius:10px;background:#161616;border:1px solid var(--line);text-decoration:none;color:var(--fg);font-weight:600}
-    .bm:hover{background:#1e1e1e}
-    .copy{padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#101010;color:var(--fg)}
-    .code{width:100%;min-height:72px;border-radius:10px;border:1px solid var(--line);background:#0e0e0e;color:#eaeaea;padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
-    .mut-small{color:var(--mut);font-size:0.92rem}
-    footer{border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
-    footer a{color:var(--mut);text-decoration:none;margin-right:10px}
-    .skip{position:absolute;left:-9999px}
-    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    .bm{display:inline-block;padding:10px 14px;border-radius:10px;border:1px dashed var(--line);background:#0f1216;color:var(--fg);text-decoration:none}
+    textarea{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f0f10;color:inherit;font-family:ui-monospace,Menlo,Consolas,monospace}
+    @media(prefers-color-scheme:light){textarea{background:#fff}}
+    .hint{font-size:.95rem}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
   </style>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=35"></script>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
-  <div class="wrap" id="main">
-    <h1>SafeShare Bookmarklets</h1>
-    <p class="mut">Mit einem Klick Links säubern – direkt aus dem Browser. Desktop: per Drag &amp; Drop in die Lesezeichenleiste ziehen. Mobil (iOS/Android): Code kopieren und in ein neues Lesezeichen als URL einfügen.</p>
+  <div class="wrap">
+    <header class="row" style="justify-content:space-between;gap:16px">
+      <div>
+        <h1>SafeShare Bookmarklet</h1>
+        <p class="mut">Saubere Links direkt auf Webseiten: Tracking-Parameter entfernen & verschachtelte Redirects entpacken.</p>
+      </div>
+      <div class="row">
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="help.html">Hilfe</a>
+      </div>
+    </header>
 
-    <div class="grid">
-      <!-- 1) Clean & Open -->
-      <section class="card">
-        <h2>1) SafeShare Clean (öffnen)</h2>
-        <p class="mut">Leitet die aktuelle Seite an die SafeShare-App weiter, dort wird der Link bereinigt und das Ziel geöffnet.</p>
-        <div class="bm-row">
-          <a class="bm" href="javascript:(()=>{location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(location.href)})()">SafeShare&nbsp;Clean</a>
-          <button class="copy" data-copy="#code-clean">Code kopieren</button>
-        </div>
-        <textarea id="code-clean" class="code" readonly>javascript:(()=>{location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(location.href)})()</textarea>
-        <p class="mut-small">Hinweis: Klicken auf der Seite kann durch CSP blockiert sein – <strong>bitte ziehen</strong> oder den Code kopieren.</p>
-      </section>
-
-      <!-- 2) Redirect entpacken -->
-      <section class="card">
-        <h2>2) Redirect entpacken</h2>
-        <p class="mut">Entpackt typische Weiterleitungen (z. B. t.co, l.facebook.com) und zeigt das Klarziel.</p>
-        <div class="bm-row">
-          <a class="bm" href="javascript:(()=>{location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)})()">Redirect&nbsp;entpacken</a>
-          <button class="copy" data-copy="#code-unwrap">Code kopieren</button>
-        </div>
-        <textarea id="code-unwrap" class="code" readonly>javascript:(()=>{location.href='https://j-ai-71.github.io/Supersystem/redirect-entschachteln.html?u='+encodeURIComponent(location.href)})()</textarea>
-      </section>
-
-      <!-- 3) Clean & Copy -->
-      <section class="card">
-        <h2>3) SafeShare Clean (nur kopieren)</h2>
-        <p class="mut">Übergibt die aktuelle URL an die App und zeigt die bereinigte Version zum Kopieren.</p>
-        <div class="bm-row">
-          <a class="bm" href="javascript:(()=>{location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(location.href)+'&copy=1'})()">Clean&nbsp;→&nbsp;Kopieren</a>
-          <button class="copy" data-copy="#code-copy">Code kopieren</button>
-        </div>
-        <textarea id="code-copy" class="code" readonly>javascript:(()=>{location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(location.href)+'&copy=1'})()</textarea>
-      </section>
-    </div>
-
+    <!-- 1) Drag & Drop (Desktop) -->
     <section class="card">
-      <h2>Installation</h2>
-      <ol>
-        <li><strong>Desktop (Chrome/Firefox/Edge):</strong> Lesezeichenleiste einblenden → den Button oben <em>in die Leiste ziehen</em>.</li>
-        <li><strong>Safari (macOS):</strong> „Darstellung → Favoritenleiste einblenden“ → Button ziehen.</li>
-        <li><strong>iPhone/iPad (Safari):</strong> Zuerst eine beliebige Seite als Lesezeichen speichern → danach in „Lesezeichen bearbeiten“ die URL durch den oben kopierten Code ersetzen.</li>
-        <li><strong>Android (Chrome/Firefox):</strong> Neues Lesezeichen anlegen → Titel vergeben → URL-Feld durch den Code ersetzen.</li>
-      </ol>
-      <p class="mut-small">Tipp: Benenne das Lesezeichen z. B. <em>„SafeShare Clean“</em>, <em>„Redirect entpacken“</em> oder <em>„Clean → Kopieren“</em>.</p>
+      <h2 style="margin-top:0">Drag &amp; Drop (Desktop)</h2>
+      <p class="hint mut">Ziehe die Schaltflächen in deine Lesezeichenleiste. Nicht klicken – ziehen.</p>
+      <div class="row" style="margin-top:8px">
+        <!-- Bookmarklet: Clean & navigate -->
+        <a class="bm" title="SafeShare Clean (Bookmarklet)"
+           href="javascript:(function(){try{var u=new URL(location.href);function g(u){try{var h=u.hostname,p=u.pathname,s=u.searchParams;if((/(^|\.)google\.[^/]+$/i).test(h)&&/^\/url$/i.test(p)&&s.get('q'))return new URL(decodeURIComponent(s.get('q')));if(/^l\.facebook\.com$/i.test(h)&&/^\/l\.php$/i.test(p)&&s.get('u'))return new URL(decodeURIComponent(s.get('u')));if((/(^|\.)reddit\.com$/i).test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));if(/^safelinks\.protection\.outlook\.com$/i.test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));}catch(e){}return u;}u=g(u);var keep={'tag':1,'ref':1};var del=['gclid','dclid','fbclid','msclkid','gbraid','wbraid','vero_id','_hsenc','_hsmi','mkt_tok','igshid','mc_eid','mc_cid'];(function(u){var ks=Array.from(u.searchParams.keys());for(var i=0;i<ks.length;i++){var k=ks[i],kl=k.toLowerCase();if(kl.indexOf('utm_')===0&&!keep[k])u.searchParams.delete(k);if(del.indexOf(kl)>-1&&!keep[k])u.searchParams.delete(k);}if(/utm_|fbclid|gclid|msclkid/i.test(u.hash))u.hash='';if(!u.search||u.search==='?')u.search='';if(u.hash==='#')u.hash='';})(u);var a=u.toString();if(a!==location.href)location.replace(a);else alert('Schon sauber');}catch(e){alert('Fehler: '+e.message);}})();">🔖 SafeShare Clean</a>
+
+        <!-- Bookmarklet: Clean & copy -->
+        <a class="bm" title="SafeShare Copy Clean (Bookmarklet)"
+           href="javascript:(function(){try{var u=new URL(location.href);function g(u){try{var h=u.hostname,p=u.pathname,s=u.searchParams;if((/(^|\.)google\.[^/]+$/i).test(h)&&/^\/url$/i.test(p)&&s.get('q'))return new URL(decodeURIComponent(s.get('q')));if(/^l\.facebook\.com$/i.test(h)&&/^\/l\.php$/i.test(p)&&s.get('u'))return new URL(decodeURIComponent(s.get('u')));if((/(^|\.)reddit\.com$/i).test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));if(/^safelinks\.protection\.outlook\.com$/i.test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));}catch(e){}return u;}u=g(u);var keep={'tag':1,'ref':1};var del=['gclid','dclid','fbclid','msclkid','gbraid','wbraid','vero_id','_hsenc','_hsmi','mkt_tok','igshid','mc_eid','mc_cid'];(function(u){var ks=Array.from(u.searchParams.keys());for(var i=0;i<ks.length;i++){var k=ks[i],kl=k.toLowerCase();if(kl.indexOf('utm_')===0&&!keep[k])u.searchParams.delete(k);if(del.indexOf(kl)>-1&&!keep[k])u.searchParams.delete(k);}if(/utm_|fbclid|gclid|msclkid/i.test(u.hash))u.hash='';if(!u.search||u.search==='?')u.search='';if(u.hash==='#')u.hash='';})(u);var a=u.toString();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(a).then(function(){alert('Kopiert:\\n'+a);},function(){prompt('Kopieren:',a);});}else{prompt('Kopieren:',a);} }catch(e){alert('Fehler: '+e.message);}})();">🔖 SafeShare Copy Clean</a>
+      </div>
+      <p class="mut" style="margin-top:8px">Hinweis: Einige Webseiten blockieren Bookmarklets per CSP. In dem Fall die <a href="app.html">App</a> nutzen.</p>
+    </section>
+
+    <!-- 2) Code kopieren (iOS/Android/Safari mobil) -->
+    <section class="card">
+      <h2 style="margin-top:0">Code kopieren (mobil)</h2>
+      <p class="hint mut">iOS Safari erlaubt das Ziehen nicht. Lege ein Lesezeichen an, öffne „Bearbeiten“ und ersetze die URL durch den Code.</p>
+
+      <h3 style="margin:.2rem 0 .4rem">„SafeShare Clean“ – öffnet die bereinigte URL</h3>
+      <textarea rows="5" readonly>javascript:(function(){try{var u=new URL(location.href);function g(u){try{var h=u.hostname,p=u.pathname,s=u.searchParams;if((/(^|\.)google\.[^/]+$/i).test(h)&&/^\/url$/i.test(p)&&s.get('q'))return new URL(decodeURIComponent(s.get('q')));if(/^l\.facebook\.com$/i.test(h)&&/^\/l\.php$/i.test(p)&&s.get('u'))return new URL(decodeURIComponent(s.get('u')));if((/(^|\.)reddit\.com$/i).test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));if(/^safelinks\.protection\.outlook\.com$/i.test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));}catch(e){}return u;}u=g(u);var keep={'tag':1,'ref':1};var del=['gclid','dclid','fbclid','msclkid','gbraid','wbraid','vero_id','_hsenc','_hsmi','mkt_tok','igshid','mc_eid','mc_cid'];(function(u){var ks=Array.from(u.searchParams.keys());for(var i=0;i<ks.length;i++){var k=ks[i],kl=k.toLowerCase();if(kl.indexOf('utm_')===0&&!keep[k])u.searchParams.delete(k);if(del.indexOf(kl)>-1&&!keep[k])u.searchParams.delete(k);}if(/utm_|fbclid|gclid|msclkid/i.test(u.hash))u.hash='';if(!u.search||u.search==='?')u.search='';if(u.hash==='#')u.hash='';})(u);var a=u.toString();if(a!==location.href)location.replace(a);else alert('Schon sauber');}catch(e){alert('Fehler: '+e.message);}})();</textarea>
+
+      <h3 style="margin:1rem 0 .4rem">„SafeShare Copy Clean“ – kopiert die bereinigte URL</h3>
+      <textarea rows="5" readonly>javascript:(function(){try{var u=new URL(location.href);function g(u){try{var h=u.hostname,p=u.pathname,s=u.searchParams;if((/(^|\.)google\.[^/]+$/i).test(h)&&/^\/url$/i.test(p)&&s.get('q'))return new URL(decodeURIComponent(s.get('q')));if(/^l\.facebook\.com$/i.test(h)&&/^\/l\.php$/i.test(p)&&s.get('u'))return new URL(decodeURIComponent(s.get('u')));if((/(^|\.)reddit\.com$/i).test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));if(/^safelinks\.protection\.outlook\.com$/i.test(h)&&s.get('url'))return new URL(decodeURIComponent(s.get('url')));}catch(e){}return u;}u=g(u);var keep={'tag':1,'ref':1};var del=['gclid','dclid','fbclid','msclkid','gbraid','wbraid','vero_id','_hsenc','_hsmi','mkt_tok','igshid','mc_eid','mc_cid'];(function(u){var ks=Array.from(u.searchParams.keys());for(var i=0;i<ks.length;i++){var k=ks[i],kl=k.toLowerCase();if(kl.indexOf('utm_')===0&&!keep[k])u.searchParams.delete(k);if(del.indexOf(kl)>-1&&!keep[k])u.searchParams.delete(k);}if(/utm_|fbclid|gclid|msclkid/i.test(u.hash))u.hash='';if(!u.search||u.search==='?')u.search='';if(u.hash==='#')u.hash='';})(u);var a=u.toString();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(a).then(function(){alert('Kopiert:\n'+a);},function(){prompt('Kopieren:',a);});}else{prompt('Kopieren:',a);} }catch(e){alert('Fehler: '+e.message);}})();</textarea>
+
+      <div class="card" style="margin-top:14px">
+        <h3 style="margin-top:0">iOS Safari – Schritt für Schritt</h3>
+        <ol style="margin:.4rem 0 .2rem 1.2rem">
+          <li>Beliebige Seite öffnen → Teilen → „Lesezeichen hinzufügen“.</li>
+          <li>Safari → Lesezeichen → „Bearbeiten“ → das neue Lesezeichen antippen.</li>
+          <li><strong>Name:</strong> z. B. <em>SafeShare Clean</em>; <strong>Adresse/URL:</strong> den Code oben komplett einfügen.</li>
+          <li>Speichern. Ab jetzt im selben Tab aufrufen, wenn die Adresseleiste die zu bereinigende URL zeigt.</li>
+        </ol>
+        <p class="mut">Hinweis: Team-Whitelist (<code>tag</code>/<code>ref</code>) ist im Bookmarklet fest verdrahtet. Für weitere Ausnahmen bitte die <a href="app.html">App</a> bzw. <a href="team-setup.html">Team-Whitelist</a> nutzen.</p>
+      </div>
     </section>
 
     <footer>
-      <nav>
+      <nav class="links" aria-label="Footer">
         <a href="./">Startseite</a>
         <a href="app.html">App</a>
-        <a href="quickstart.html">Quickstart</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partner</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
         <a href="help.html">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="terms.html">Terms</a>
         <a href="kurz-terms.html">Kurz-Terms</a>
+        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">JavaScript ist für Copy-Buttons nicht erforderlich – du kannst den Code trotzdem per Markieren &amp; Kopieren übernehmen.</div></div>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. Für das Bookmarklet reicht Kopieren, aber die Seite nutzt kleine Skripte (SW).</div></div>
   </noscript>
 </body>
 </html>
