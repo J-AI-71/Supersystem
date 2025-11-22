@@ -6,8 +6,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Bulk-Clean (Pro) · SafeShare</title>
-  <meta name="description" content="Bulk-Clean (Pro): Viele URLs in einem Rutsch säubern, CSV import/export. Ideal für Redaktion, Marketing und Teams.">
+  <title>Bulk-Clean · SafeShare</title>
+  <meta name="description" content="Viele Links auf einmal säubern: Liste einfügen, SafeShare entfernt Tracking-Parameter und entpackt Redirects – lokal im Browser. Export als TXT.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
@@ -18,158 +18,120 @@
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Bulk-Clean (Pro) · SafeShare">
-  <meta property="og:description" content="URL-Listen sauber machen: Tracking raus, Redirects entpacken.">
+  <meta property="og:title" content="SafeShare · Bulk-Clean">
+  <meta property="og:description" content="Mehrere Links gleichzeitig säubern und entpacken – 100% lokal.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
   <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
   <meta name="theme-color" content="#0b0b0b">
   <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (ohne inline JS; JSON-LD via Nonce) -->
+  <!-- Sicherheits-CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
                  frame-ancestors 'none';
                  object-src 'none';
-                 img-src 'self' data: blob:;
+                 img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSFAQ';
+                 script-src 'self';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
-                 connect-src 'self' https: blob:;">
+                 connect-src 'self'">
 
-  <!-- Styles (leicht) -->
+  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeef2;--mut:#9aa6b2;--card:#101419;--line:#23303a;--pri:#23c47e;--err:#ef4444}
-    @media (prefers-color-scheme: light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--ok:#5fe09f}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b;--ok:#14a44d}
     }
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    a{color:#9fe7c3}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
     .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
     .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#14181c;color:var(--fg);text-decoration:none}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none;cursor:pointer}
     .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    textarea,input[type=text]{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f1114;color:inherit}
-    @media(prefers-color-scheme:light){textarea,input[type=text]{background:#fff}}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .stat{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+    textarea{width:100%;min-height:220px;background:#0d1319;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:10px;box-sizing:border-box}
+    .grid-2{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:980px){.grid-2{grid-template-columns:1fr 1fr}}
     .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--mut);font-size:.9rem}
-    .err{color:var(--err)}
+    .chip.ok{background:var(--ok);border-color:transparent;color:#062012}
     footer{border-top:1px solid var(--line);margin-top:28px}
     footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
     footer a{color:var(--mut);text-decoration:none}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   </style>
 
-  <!-- FAQ JSON-LD (indexierbar) -->
-  <script type="application/ld+json" nonce="SSFAQ">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {"@type":"Question","name":"Was ist Bulk-Clean?",
-       "acceptedAnswer":{"@type":"Answer","text":"Bereinigt URL-Listen gesammelt: entfernt Tracking-Parameter (z. B. UTM, gclid/fbclid/msclkid) und entpackt Redirects – lokal im Browser."}},
-      {"@type":"Question","name":"Brauche ich einen Account?",
-       "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare arbeitet client-seitig im Browser. Pro wird lokal aktiviert."}},
-      {"@type":"Question","name":"Wie aktiviere ich Pro?",
-       "acceptedAnswer":{"@type":"Answer","text":"Nach Kauf: pro-activate.html?pro=1 öffnen – die Freischaltung wird im Browser gespeichert."}}
-    ]
-  }
-  </script>
-
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=35"></script>
-  <script defer src="js/bulk-clean.js?v=35"></script>
+  <script defer src="js/sw-register.js?v=20251122"></script>
+  <script defer src="js/cleaner.js?v=20251122"></script>
+  <script defer src="js/page-bulk-clean.js?v=20251122"></script>
 </head>
 <body>
   <div class="wrap">
-    <header class="row" style="justify-content:space-between;gap:16px">
+    <header class="row" style="justify-content:space-between">
       <div>
-        <h1>Bulk-Clean <span class="chip" id="pro-badge" style="display:none">Pro aktiv</span></h1>
-        <p class="mut">URL-Listen in einem Schritt bereinigen: Tracking raus, Redirects entpacken, Export.</p>
+        <h1>Bulk-Clean <span id="badge-pro" class="chip ok" style="display:none">Pro aktiv</span></h1>
+        <p class="mut">Viele Links gleichzeitig säubern &amp; Weiterleitungen entpacken – alles lokal im Browser.</p>
       </div>
       <div class="row">
-        <a class="btn" href="./">Startseite</a>
-        <a class="btn" href="pro.html">Pro</a>
-        <a class="btn" href="help.html">Hilfe</a>
+        <a class="btn ghost" href="./">Startseite</a>
+        <a class="btn ghost" href="help.html">Hilfe</a>
       </div>
     </header>
 
-    <!-- Teaser / Paywall (sichtbar ohne Pro) -->
-    <section id="paywall" class="card" aria-live="polite">
-      <h2>Teil von SafeShare Pro</h2>
-      <p>Listen mit URLs automatisch bereinigen und als Datei exportieren.</p>
-      <ul class="mut">
-        <li>Entfernt UTM/gclid/fbclid/msclkid u. v. m.</li>
-        <li>Entpackt Redirects (z. B. <code>google.com/url?q=…</code>, <code>l.facebook.com/l.php?u=…</code>)</li>
-        <li>Whitelist hält z. B. <code>tag</code> / <code>ref</code> für Partner-IDs zurück</li>
-        <li>Alles lokal im Browser – keine Konten</li>
-      </ul>
-      <div class="row" style="margin-top:8px">
-        <a class="btn pri" href="https://payhip.com/b/VDm3B" rel="noopener">Pro kaufen</a>
-        <a class="btn" href="pro-activate.html?pro=1">Schon gekauft? Aktivieren</a>
-        <a class="btn" href="quickstart.html">Quickstart</a>
+    <section class="card">
+      <div class="grid-2">
+        <div>
+          <h2 style="margin-top:0">Eingabe</h2>
+          <textarea id="in-list" placeholder="Eine URL pro Zeile oder aus CSV einfügen …"></textarea>
+          <div class="row" style="margin-top:10px">
+            <label class="mut"><input id="opt-unwrap" type="checkbox" checked> Redirects entpacken</label>
+            <label class="mut"><input id="opt-dedup" type="checkbox"> Duplikate entfernen</label>
+            <label class="mut"><input id="opt-trim" type="checkbox" checked> Leerzeilen entfernen</label>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <button id="btn-run" class="btn pri" type="button">Säubern</button>
+            <button id="btn-reset" class="btn" type="button">Zurücksetzen</button>
+          </div>
+        </div>
+
+        <div>
+          <h2 style="margin-top:0">Ergebnis</h2>
+          <textarea id="out-list" readonly placeholder="Ausgabe erscheint hier …"></textarea>
+          <div class="row" style="margin-top:10px">
+            <button id="btn-copy" class="btn" type="button">Kopieren</button>
+            <button id="btn-download" class="btn" type="button">Als TXT speichern</button>
+            <span id="stats" class="mut"></span>
+          </div>
+          <p class="mut" style="margin-top:8px">Whitelist aus <a href="team-setup.html">Team-Setup</a> wird berücksichtigt (z. B. <code class="mono">tag</code>, <code class="mono">ref</code>).</p>
+        </div>
       </div>
-    </section>
-
-    <!-- Pro-UI (versteckt ohne Pro) -->
-    <section id="bc-ui" class="card" data-nosnippet hidden>
-      <h2>Liste bereinigen</h2>
-      <p class="mut">Eine URL pro Zeile. Leere Zeilen und Kommentare mit <code>#</code> werden ignoriert.</p>
-      <textarea id="bc-input" class="mono" rows="12" placeholder="https://example.com/?utm_source=x&#10;# Kommentarzeile&#10;https://l.facebook.com/l.php?u=https%3A%2F%2Fziel.example%2F%3Ftag%3Dabc"></textarea>
-
-      <div class="row" style="margin-top:10px">
-        <button id="bc-run" class="btn pri" type="button">Liste säubern</button>
-        <button id="bc-copy" class="btn" type="button">Kopieren</button>
-        <button id="bc-export" class="btn" type="button">Als Datei exportieren</button>
-        <input id="bc-filename" class="mono" type="text" placeholder="Dateiname (optional)" style="max-width:340px">
-      </div>
-
-      <div class="stat">
-        <span class="chip" id="stat-in">Eingaben: 0</span>
-        <span class="chip" id="stat-out">Ergebnisse: 0</span>
-        <span class="chip" id="stat-dupes">Duplikate: 0</span>
-        <span class="chip" id="stat-errors">Fehler: 0</span>
-      </div>
-
-      <h3 style="margin-top:14px">Ergebnis</h3>
-      <textarea id="bc-output" class="mono" rows="12" readonly placeholder="Ausgabe erscheint hier …"></textarea>
-      <div id="bc-msg" class="mut" aria-live="polite" style="margin-top:8px"></div>
     </section>
 
     <footer>
       <nav class="links" aria-label="Footer">
         <a href="./">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklet</a>
         <a href="team-setup.html">Team-Whitelist</a>
-        <a href="publisher.html">Publisher</a>
-        <a href="education.html">Education</a>
-        <a href="partners.html">Partner</a>
-        <a href="compliance.html">Compliance</a>
-        <a href="press.html">Presse</a>
         <a href="help.html">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. Bulk-Clean verarbeitet Listen lokal im Browser.</div></div>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren, um Bulk-Clean zu verwenden.</div></div>
   </noscript>
 </body>
 </html>
