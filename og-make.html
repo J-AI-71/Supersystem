@@ -1,4 +1,4 @@
-<!-- /Supersystem/og-make.html -->
+<!-- /Supersystem/og-make.html (noindex, internal tool) -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -6,28 +6,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>OG-Bild Generator · SafeShare</title>
-  <meta name="description" content="Einmal-Seite: SVG laden und als 1200×630 JPG (og-index.jpg) exportieren – lokal im Browser, ohne externe Dienste.">
+  <title>OG-Maker (intern) · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/og-make.html">
-  <meta name="robots" content="noindex,follow">
+  <meta name="robots" content="noindex, nofollow, noarchive">
 
-  <!-- PWA / Icons (optional) -->
-  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <!-- OG/Twitter (rein informativ; Seite ist noindex) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SafeShare – OG-Maker">
+  <meta property="og:description" content="Platzhalter-OG-Bild als 1200×630 generieren und speichern.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/og-make.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
   <meta name="theme-color" content="#0b0b0b">
   <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (erlaubt inline-Script per Nonce, Blob/Data-URLs für Canvas/Preview) -->
+  <!-- Sicherheits-CSP (Inline-Script via Nonce) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
                  frame-ancestors 'none';
                  object-src 'none';
-                 img-src 'self' data: blob:;
+                 img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-OGMAKE';
+                 script-src 'self' 'nonce-SSOG';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
@@ -35,242 +41,130 @@
 
   <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--warn:#f59e0b}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b;--warn:#b45309}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--line:#26313a;--card:#0f141a;--pri:#2bd184}
+    @media(prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--line:#e2e8f0;--card:#f6f8fa;--pri:#22c07b}
     }
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:#9fe7c3}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
     .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
     .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    label{display:block;margin:.3rem 0 .1rem}
+    input[type="text"]{width:100%;max-width:520px;padding:10px;border-radius:10px;border:1px solid var(--line);background:#0d1319;color:var(--fg)}
+    input[type="color"]{width:54px;height:34px;padding:0;border:1px solid var(--line);border-radius:8px;background:#0d1319}
     .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none;cursor:pointer}
     .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .btn.ghost{background:transparent}
-    label{display:block;margin:.35rem 0 .15rem}
-    input[type="text"],input[type="number"],textarea,select{
-      width:100%;max-width:100%;box-sizing:border-box;
-      background:#0d1319;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px
-    }
-    textarea{min-height:180px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px}
-    @media(min-width:900px){.grid{grid-template-columns:1.2fr .8fr}}
-    .box{border:1px dashed var(--line);border-radius:12px;padding:10px}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .preview{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
-    .hint{font-size:.95rem}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
+    canvas{width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
   </style>
 
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=35"></script>
+  <script defer src="js/sw-register.js?v=20251122"></script>
+  <script nonce="SSOG">
+    document.addEventListener('DOMContentLoaded', () => {
+      const c = /** @type {HTMLCanvasElement} */(document.getElementById('og'));
+      const ctx = c.getContext('2d');
+      const titleEl = document.getElementById('title');
+      const subEl = document.getElementById('subtitle');
+      const bg1El = document.getElementById('bg1');
+      const bg2El = document.getElementById('bg2');
 
-  <!-- Inline-Logic -->
-  <script nonce="OGMAKE">
-  (() => {
-    'use strict';
-    const $ = (s) => document.querySelector(s);
+      function draw() {
+        const W = 1200, H = 630;
+        c.width = W; c.height = H;
 
-    const els = {
-      svgPath: $('#svg-path'),
-      loadBtn: $('#btn-load'),
-      svgText: $('#svg-text'),
-      w: $('#w'), h: $('#h'),
-      bg: $('#bg'),
-      q: $('#q'),
-      name: $('#name'),
-      renderBtn: $('#btn-render'),
-      dlBtn: $('#btn-download'),
-      outImg: $('#out-img'),
-      canvas: document.createElement('canvas'),
-      status: $('#status')
-    };
+        // Hintergrund: sanfter diagonaler Verlauf
+        const g = ctx.createLinearGradient(0,0,W,H);
+        g.addColorStop(0, bg1El.value);
+        g.addColorStop(1, bg2El.value);
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,W,H);
 
-    function setStatus(msg, ok=true){
-      els.status.textContent = msg;
-      els.status.style.color = ok ? '' : 'var(--warn)';
-    }
+        // Matte
+        ctx.fillStyle = 'rgba(0,0,0,.18)';
+        ctx.fillRect(40,40,W-80,H-80);
 
-    async function loadSVG() {
-      const url = (els.svgPath.value || '').trim();
-      if (!url) { setStatus('Pfad fehlt.', false); return; }
-      try {
-        const res = await fetch(url, {cache:'no-store'});
-        if (!res.ok) throw new Error(res.status+' '+res.statusText);
-        const txt = await res.text();
-        els.svgText.value = txt;
-        setStatus('SVG geladen: '+url);
-      } catch (e) {
-        setStatus('Laden fehlgeschlagen: '+e.message, false);
+        // Titel
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 72px Inter, Segoe UI, system-ui, Arial';
+        ctx.textBaseline = 'top';
+        wrapText(ctx, titleEl.value || 'SafeShare', 80, 90, W-160, 78);
+
+        // Untertitel
+        ctx.fillStyle = 'rgba(255,255,255,.88)';
+        ctx.font = '400 36px Inter, Segoe UI, system-ui, Arial';
+        wrapText(ctx, subEl.value || 'Saubere Links ohne Tracking – lokal im Browser.', 80, 330, W-160, 44);
+
+        // Branding unten links
+        ctx.font = '700 28px Inter, Segoe UI, system-ui, Arial';
+        ctx.fillStyle = '#9fe7c3';
+        ctx.fillText('SafeShare', 80, H-100);
+        ctx.font = '400 22px Inter, Segoe UI, system-ui, Arial';
+        ctx.fillStyle = 'rgba(255,255,255,.9)';
+        ctx.fillText('j-ai-71.github.io/Supersystem', 80, H-64);
       }
-    }
 
-    function svgTextToBlobUrl(txt){
-      const blob = new Blob([txt], {type:'image/svg+xml;charset=utf-8'});
-      return URL.createObjectURL(blob);
-    }
-
-    function parseIntOr(def, v){
-      const n = parseInt(v, 10);
-      return Number.isFinite(n) && n>0 ? n : def;
-    }
-
-    function render() {
-      const svg = els.svgText.value.trim();
-      if (!svg) { setStatus('Kein SVG vorhanden.', false); return; }
-
-      const W = parseIntOr(1200, els.w.value);
-      const H = parseIntOr(630, els.h.value);
-      const bg = els.bg.value || '#ffffff';
-      const url = svgTextToBlobUrl(svg);
-
-      const img = new Image();
-      img.onload = () => {
-        try{
-          const ctx = els.canvas.getContext('2d');
-          els.canvas.width = W;
-          els.canvas.height = H;
-          // Hintergrund
-          ctx.fillStyle = bg;
-          ctx.fillRect(0,0,W,H);
-          // SVG proportional einpassen
-          // Annahme: SVG selbst ist 1200×630; falls anders, wird skaliert
-          const scale = Math.min(W / img.width, H / img.height);
-          const dw = img.width * scale;
-          const dh = img.height * scale;
-          const dx = (W - dw) / 2;
-          const dy = (H - dh) / 2;
-          ctx.drawImage(img, dx, dy, dw, dh);
-
-          // Vorschau aktualisieren
-          const jpg = els.canvas.toDataURL('image/jpeg', Number(els.q.value) || 0.92);
-          els.outImg.src = jpg;
-          els.outImg.alt = (els.name.value || 'og-index') + '.jpg';
-          els.dlBtn.disabled = false;
-          setStatus('Gerendert: '+W+'×'+H+' • Qualität '+els.q.value);
-        } finally {
-          URL.revokeObjectURL(url);
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+        const words = text.split(' ');
+        let line = '', yy = y;
+        for (let n=0; n<words.length; n++){
+          const test = line + words[n] + ' ';
+          const w = ctx.measureText(test).width;
+          if (w > maxWidth && n>0) {
+            ctx.fillText(line, x, yy);
+            line = words[n] + ' ';
+            yy += lineHeight;
+          } else {
+            line = test;
+          }
         }
-      };
-      img.onerror = () => {
-        setStatus('SVG konnte nicht gerendert werden (fehlerhafte Inhalte?)', false);
-        URL.revokeObjectURL(url);
-      };
-      img.src = url;
-    }
+        ctx.fillText(line, x, yy);
+      }
 
-    function download() {
-      if (!els.outImg.src) { setStatus('Nichts zum Speichern.', false); return; }
-      const a = document.createElement('a');
-      const name = (els.name.value || 'og-index') + '.jpg';
-      a.download = name;
-      a.href = els.canvas.toDataURL('image/jpeg', Number(els.q.value) || 0.92);
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setStatus('Gespeichert: '+name);
-    }
+      document.getElementById('render').addEventListener('click', draw);
+      document.getElementById('save').addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.download = 'og-index.jpg';
+        a.href = c.toDataURL('image/jpeg', 0.92);
+        a.click();
+      });
 
-    // Defaults
-    els.svgPath.value = 'assets/og/og-index.svg';
-    els.w.value = 1200; els.h.value = 630; els.q.value = 0.92;
-    els.bg.value = '#0b0b0b'; // Markenhintergrund
-    els.name.value = 'og-index';
-    els.dlBtn.disabled = true;
-
-    // Bindings
-    els.loadBtn.addEventListener('click', loadSVG);
-    els.renderBtn.addEventListener('click', render);
-    els.dlBtn.addEventListener('click', download);
-  })();
+      // Initial render
+      draw();
+    });
   </script>
 </head>
 <body>
   <div class="wrap">
-    <header class="row" style="justify-content:space-between">
-      <div>
-        <h1>OG-Bild Generator</h1>
-        <p class="mut">SVG laden → als 1200×630 JPG exportieren. Lokal, ohne externe Dienste.</p>
-      </div>
-      <div class="row">
-        <a class="btn ghost" href="./">Startseite</a>
-        <a class="btn ghost" href="press.html">Presse</a>
-      </div>
-    </header>
-
-    <section class="grid">
-      <!-- Linke Spalte: Eingaben -->
-      <div class="card">
-        <div class="box">
-          <label for="svg-path">SVG-Pfad (relativ zu <span class="mono">/Supersystem/</span>)</label>
-          <div class="row">
-            <input id="svg-path" type="text" placeholder="assets/og/og-index.svg" spellcheck="false">
-            <button id="btn-load" class="btn" type="button">SVG laden</button>
-          </div>
-          <p class="hint mut" style="margin:.4rem 0 0">Tipp: Erst <code>assets/og/og-index.svg</code> erstellen/ändern, dann hier laden.</p>
+    <h1>OG-Maker <span class="mut">(1200×630)</span></h1>
+    <div class="card">
+      <div class="row" style="gap:18px">
+        <div>
+          <label for="title">Titel</label>
+          <input id="title" type="text" placeholder="SafeShare">
+          <label for="subtitle">Untertitel</label>
+          <input id="subtitle" type="text" placeholder="Saubere Links ohne Tracking – lokal im Browser.">
         </div>
-
-        <div class="box" style="margin-top:12px">
-          <label for="svg-text">SVG-Inhalt (optional direkt einfügen/ändern)</label>
-          <textarea id="svg-text" placeholder="&lt;svg …&gt; … &lt;/svg&gt;"></textarea>
-        </div>
-
-        <div class="row" style="margin-top:12px">
-          <div style="flex:1 1 140px">
-            <label for="w">Breite</label>
-            <input id="w" type="number" min="1" value="1200">
-          </div>
-          <div style="flex:1 1 140px">
-            <label for="h">Höhe</label>
-            <input id="h" type="number" min="1" value="630">
-          </div>
-          <div style="flex:1 1 160px">
-            <label for="bg">Hintergrund</label>
-            <input id="bg" type="text" value="#0b0b0b" class="mono">
-          </div>
-          <div style="flex:1 1 160px">
-            <label for="q">Qualität (0.1–1.0)</label>
-            <input id="q" type="number" step="0.01" min="0.1" max="1" value="0.92">
-          </div>
-          <div style="flex:1 1 200px">
-            <label for="name">Dateiname (ohne .jpg)</label>
-            <input id="name" type="text" value="og-index" class="mono">
-          </div>
-        </div>
-
-        <div class="row" style="margin-top:12px">
-          <button id="btn-render" class="btn pri" type="button">Rendern</button>
-          <button id="btn-download" class="btn" type="button">Als JPG speichern</button>
-          <span id="status" class="mut" role="status" aria-live="polite"></span>
+        <div>
+          <label for="bg1">Verlauf oben links</label>
+          <input id="bg1" type="color" value="#0E1A24">
+          <label for="bg2">Verlauf unten rechts</label>
+          <input id="bg2" type="color" value="#1F7A55">
         </div>
       </div>
+      <div class="row" style="margin-top:12px">
+        <button id="render" class="btn">Neu rendern</button>
+        <button id="save" class="btn pri">Als JPG speichern</button>
+        <a class="btn" href="assets/og/og-index.jpg" download>Aktuelles OG-Bild laden</a>
+      </div>
+    </div>
 
-      <!-- Rechte Spalte: Vorschau -->
-      <aside class="card" aria-labelledby="prev-title">
-        <h2 id="prev-title" style="margin-top:0">Vorschau</h2>
-        <img id="out-img" class="preview" alt="Vorschau og-index.jpg">
-        <p class="mut hint" style="margin-top:8px">
-          Speichere das Ergebnis als <span class="mono">assets/og/og-index.jpg</span> ins Repo,
-          damit Open-Graph/Sharing es nutzen kann.
-        </p>
-      </aside>
-    </section>
+    <div class="card" style="margin-top:14px">
+      <canvas id="og" width="1200" height="630" aria-label="OG-Vorschau"></canvas>
+    </div>
 
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="press.html">Presse</a>
-        <a href="help.html">Hilfe</a>
-        <a href="status.html">Status</a>
-      </nav>
-    </footer>
+    <p class="mut">Hinweis: Diese interne Seite ist <strong>noindex</strong> und dient nur zum schnellen Erzeugen eines Platzhalterbilds.</p>
   </div>
-
-  <noscript>
-    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. Diese Seite rendert SVG → JPG mit Canvas im Browser.</div></div>
-  </noscript>
+  <noscript><div class="wrap"><div class="card">Bitte JavaScript aktivieren, um das OG-Bild zu generieren.</div></div></noscript>
 </body>
 </html>
