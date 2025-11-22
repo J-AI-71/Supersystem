@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Presse · SafeShare</title>
-  <meta name="description" content="Pressebereich: Logos, App-Screens, Kurzbeschreibung, Fakten und Kontakt zu SafeShare. Saubere Links ohne Tracking – lokal im Browser.">
+  <meta name="description" content="Presse & Medien: Logo, App-Screens, Kurzbeschreibung, OG-Bild und QR. Keine Konten, keine Server-Logs – SafeShare arbeitet lokal im Browser.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/press.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
@@ -18,21 +18,22 @@
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare · Presse">
-  <meta property="og:description" content="Medienkit, Logos, Screenshots und Kurzbeschreibung. SafeShare entfernt Tracking-Parameter und entpackt Redirects – lokal, ohne Accounts.">
+  <meta property="og:title" content="SafeShare – Pressekit">
+  <meta property="og:description" content="Logos, Screens und Faktenblatt.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/press.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
   <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
   <meta name="theme-color" content="#0b0b0b">
   <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Sicherheits-CSP (JSON-LD per Nonce) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -40,7 +41,7 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self';
+                 script-src 'self' 'nonce-SSFAQ';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
@@ -50,122 +51,102 @@
   <style>
     :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
     @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b}
     }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
     a{color:#9fe7c3}
     .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
     .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .grid-2{display:grid;grid-template-columns:1fr;gap:14px}
-    @media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
     .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#072b16;font-weight:700}
-    .list{list-style:none;margin:.4rem 0;padding-left:0}
-    .list li{margin:.3rem 0}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    .grid-2{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:980px){.grid-2{grid-template-columns:1fr 1fr}}
     figure{margin:0}
-    figcaption{color:var(--mut);font-size:.9rem;margin-top:.35rem}
-    .thumbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-    .thumb{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0c1116}
-    .thumb img{display:block;width:100%;height:auto}
+    img.preview{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+    ul.check{list-style:none;margin:.4rem 0;padding-left:0}
+    ul.check li{padding-left:28px;position:relative;margin:.35rem 0}
+    ul.check li:before{content:"✔";position:absolute;left:0;top:0;color:#5fe09f}
     footer{border-top:1px solid var(--line);margin-top:28px}
     footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
     footer a{color:var(--mut);text-decoration:none}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   </style>
 
+  <!-- JSON-LD: About/Organization -->
+  <script type="application/ld+json" nonce="SSFAQ">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"SafeShare",
+    "url":"https://j-ai-71.github.io/Supersystem/",
+    "logo":"https://j-ai-71.github.io/Supersystem/assets/icons/icon-512-kreis.png",
+    "sameAs":["https://github.com/J-AI-71/Supersystem"]
+  }
+  </script>
+
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=35"></script>
+  <script defer src="js/sw-register.js?v=20251122"></script>
 </head>
 <body>
   <div class="wrap">
     <header class="row" style="justify-content:space-between;gap:16px">
       <div>
         <h1>Presse</h1>
-        <p class="mut">Logos, Screenshots, Kurzbeschreibung und Fakten zu SafeShare.</p>
+        <p class="mut">Assets &amp; Kurzinfos für Berichterstattung. Nutzung frei mit Quellenhinweis „SafeShare“.</p>
       </div>
       <div class="row">
-        <a class="btn" href="./">Startseite</a>
-        <a class="btn" href="app.html">App</a>
-        <a class="btn" href="help.html">Hilfe</a>
+        <a class="btn ghost" href="./">Startseite</a>
+        <a class="btn" href="quickstart.html">Quickstart</a>
       </div>
     </header>
 
     <section class="card">
-      <h2 style="margin-top:0">Kurzbeschreibung (Boilerplate)</h2>
-      <p>SafeShare säubert Links: Es entfernt Tracking-Parameter wie <span class="mono">UTM</span>, <span class="mono">gclid</span>, <span class="mono">fbclid</span> und entpackt verschachtelte Weiterleitungen (z. B. <span class="mono">google.com/url</span>, <span class="mono">l.facebook.com/l.php</span>) – vollständig lokal im Browser, ohne Accounts und ohne Server-Logs. Die App funktioniert als PWA auch offline und bietet mit „Pro“ ein Bulk-Cleaning für URL-Listen.</p>
-      <div class="row" style="margin-top:8px">
-        <a class="btn pri" href="app.html">Zur App</a>
-        <a class="btn" href="quickstart.html">Quickstart</a>
-        <a class="btn" href="https://github.com/J-AI-71/Supersystem" rel="noopener">GitHub</a>
+      <h2 style="margin-top:0">Download-Paket</h2>
+      <div class="row">
+        <a class="btn pri" href="assets/brand/press-kit.zip" download>Press Kit (ZIP)</a>
+        <a class="btn" href="assets/og/og-index.jpg" download>OG-Bild (1200×630)</a>
+        <a class="btn" href="assets/qr/app-qr.svg" download>QR zur App</a>
       </div>
+      <p class="mut" style="margin-top:8px">Enthält Logos (hell/dunkel), App-Screens und Kurzbeschreibung.</p>
     </section>
 
-    <section class="card">
-      <h2 style="margin-top:0">Quick Facts</h2>
-      <ul class="list mut">
-        <li>Plattform: Web (PWA-fähig), offline nutzbar</li>
-        <li>Verarbeitung: 100 % lokal im Browser, keine Server-Logs</li>
-        <li>Kernfunktionen: Tracking-Entfernung, Redirect-Entpacken, Bookmarklet, Team-Whitelist</li>
-        <li>Pro: Bulk-Clean (Listen/CSV), lokale Aktivierung, kein Account</li>
-        <li>Lizenz/Vertrieb: Frei + Pro (Payhip)</li>
-        <li>URL: <span class="mono">https://j-ai-71.github.io/Supersystem/</span></li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2 style="margin-top:0">Logos & Icons</h2>
-      <p class="mut">SVG für Skalierung, PNG für Previews. Kreis-App-Icon für PWA/Stores.</p>
-      <ul class="list">
-        <li><a href="assets/brand/safeshare-logo-dark.svg" download>Logo (Dark, SVG)</a></li>
-        <li><a href="assets/brand/safeshare-logo-light.svg" download>Logo (Light, SVG)</a></li>
-        <li><a href="assets/icons/icon-512-kreis.png" download>App-Icon 512×512 (PNG)</a></li>
-        <li><a href="assets/icons/apple-touch-icon-180.png" download>Apple Touch 180×180 (PNG)</a></li>
-        <li><a href="assets/og/og-index.jpg" download>Open-Graph Bild 1200×630 (JPG)</a></li>
-      </ul>
-      <p class="mut" style="margin-top:.6rem">Farbwelt (Beispiel): Primär <span class="mono">#2bd184</span>, Hintergrund <span class="mono">#0b0b0b</span>, Text hell <span class="mono">#e9eef1</span>.</p>
-    </section>
-
-    <section class="card">
-      <h2 style="margin-top:0">Screenshots</h2>
-      <div class="thumbs" role="list">
-        <figure class="thumb" role="listitem">
-          <img src="assets/screens/app-home.jpg" alt="SafeShare App: Start und Eingabefeld">
+    <section class="card grid-2">
+      <div>
+        <h2 style="margin-top:0">Logos</h2>
+        <ul>
+          <li><a href="assets/brand/safeshare-logo-dark.svg" download>Logo dunkel (SVG)</a></li>
+          <li><a href="assets/brand/safeshare-logo-light.svg" download>Logo hell (SVG)</a></li>
+          <li><a href="assets/icons/icon-512-kreis.png" download>App-Icon 512</a></li>
+          <li><a href="assets/icons/apple-touch-icon-180.png" download>Apple Touch 180</a></li>
+        </ul>
+        <h3>Kurztext</h3>
+        <p class="mut">
+          SafeShare entfernt Tracking-Parameter (z. B. <span class="mono">utm_*</span>, <span class="mono">gclid</span>, <span class="mono">fbclid</span>)
+          und entpackt Weiterleitungen – vollständig lokal im Browser. PWA, Bookmarklets und Team-Whitelist.
+        </p>
+      </div>
+      <aside>
+        <h2 style="margin-top:0">Screenshots</h2>
+        <figure>
+          <img class="preview" src="assets/screens/app-home.jpg" alt="SafeShare App – Start">
           <figcaption class="mut">App – Start</figcaption>
         </figure>
-        <figure class="thumb" role="listitem">
-          <img src="assets/screens/app-result.jpg" alt="SafeShare App: Ergebnis mit bereinigter URL">
+        <figure style="margin-top:10px">
+          <img class="preview" src="assets/screens/app-result.jpg" alt="SafeShare App – Ergebnis">
           <figcaption class="mut">App – Ergebnis</figcaption>
         </figure>
-        <figure class="thumb" role="listitem">
-          <img src="assets/screens/bookmarklet.jpg" alt="Bookmarklet-Anleitung Desktop und iOS">
-          <figcaption class="mut">Bookmarklet</figcaption>
-        </figure>
-        <figure class="thumb" role="listitem">
-          <img src="assets/screens/bulk-clean.jpg" alt="Bulk-Clean Oberfläche für URL-Listen">
-          <figcaption class="mut">Bulk-Clean (Pro)</figcaption>
-        </figure>
-      </div>
-      <p class="mut" style="margin-top:.6rem">Hinweis: Falls einzelne Dateien noch fehlen, bitte später erneut prüfen – die Bildpfade bleiben stabil.</p>
+      </aside>
     </section>
 
     <section class="card">
-      <h2 style="margin-top:0">Presse-Kit</h2>
-      <p>Komplettes Paket (Logos, Screens, Kurzbeschreibung, Farben):</p>
-      <div class="row">
-        <a class="btn pri" href="assets/brand/press-kit.zip" download>press-kit.zip</a>
-        <a class="btn" href="assets/qr/app-qr.svg" download>QR-Code zur App (SVG)</a>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2 style="margin-top:0">Kontakt</h2>
-      <p class="mut">Allgemeine Infos und Assets sind öffentlich. Für Rückfragen:</p>
-      <ul class="list">
-        <li>Projekt: <a href="https://github.com/J-AI-71/Supersystem" rel="noopener">GitHub-Repository</a></li>
-        <li>Pro-Kauf: <a href="https://payhip.com/b/VDm3B" rel="noopener">Payhip-Produktseite</a></li>
-        <li>Hilfe/FAQ: <a href="help.html">help.html</a></li>
+      <h2 style="margin-top:0">Fakten</h2>
+      <ul class="check">
+        <li>100 % lokal im Browser, keine App-Server-Logs</li>
+        <li>PWA: installierbar, offline nutzbar</li>
+        <li>Whitelist für legitime Parameter (<span class="mono">tag</span>, <span class="mono">ref</span> …)</li>
+        <li>Tools: App, Bookmarklets, Bulk-Clean, Redirect-Entpacken</li>
       </ul>
     </section>
 
@@ -176,23 +157,12 @@
         <a href="bookmarklets.html">Bookmarklet</a>
         <a href="bulk-clean.html">Bulk-Clean</a>
         <a href="team-setup.html">Team-Whitelist</a>
-        <a href="publisher.html">Publisher</a>
-        <a href="education.html">Education</a>
         <a href="partners.html">Partner</a>
-        <a href="compliance.html">Compliance</a>
-        <a href="press.html" aria-current="page">Presse</a>
         <a href="help.html">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
-
-  <noscript>
-    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. SafeShare arbeitet lokal im Browser.</div></div>
-  </noscript>
 </body>
 </html>
