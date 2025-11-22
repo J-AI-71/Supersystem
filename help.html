@@ -1,3 +1,4 @@
+<!-- /Supersystem/help.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -5,74 +6,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Hilfe · SafeShare</title>
+  <title>Hilfe & FAQ · SafeShare</title>
+  <meta name="description" content="Hilfe & FAQ zu SafeShare: App nutzen, Bookmarklet installieren, Pro aktivieren, Team-Whitelist einrichten, PWA/Offline, Troubleshooting.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/help.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="Hilfe & Anleitung für SafeShare: App, Bookmarklets, Team-Whitelist, Bulk-Clean, Redirects entpacken, PWA-Installation, FAQ und Troubleshooting.">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/help.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/help.html">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/help.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/help.html" hreflang="x-default">
   <meta property="og:locale" content="de_DE">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Hilfe & Anleitung">
-  <meta property="og:description" content="Schritt-für-Schritt: App, Bookmarklets, Team-Whitelist, Bulk-Clean, PWA, FAQ.">
+  <meta property="og:title" content="SafeShare – Hilfe & FAQ">
+  <meta property="og:description" content="Anleitung für App, Bookmarklet, Pro-Aktivierung, Team-Whitelist, PWA & Troubleshooting.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/help.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- NEU: OG-Image -->
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  
   <!-- PWA / Icons -->
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="manifest" href="manifest.webmanifest?v=35">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
 
-  <!-- FAQ JSON-LD (mit Nonce) -->
-  <script type="application/ld+json" nonce="SSFAQ1">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "inLanguage":"de-DE",
-    "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"Sendet SafeShare Daten an Server?",
-        "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare verarbeitet URLs lokal im Browser und sendet keine URLs oder Metadaten an SafeShare-Server."}
-      },
-      {
-        "@type":"Question",
-        "name":"Wie bleiben Partner-IDs erhalten?",
-        "acceptedAnswer":{"@type":"Answer","text":"Über die Team-Whitelist (team-setup). Dort werden erlaubte Parameter wie tag, ref, aff_id gepflegt."}
-      },
-      {
-        "@type":"Question",
-        "name":"Funktioniert SafeShare offline?",
-        "acceptedAnswer":{"@type":"Answer","text":"Ja, als PWA. Seite zum Home-Bildschirm hinzufügen; die Kernfunktionen bleiben offline nutzbar."}
-      },
-      {
-        "@type":"Question",
-        "name":"Welche Redirects werden entpackt?",
-        "acceptedAnswer":{"@type":"Answer","text":"u. a. google.com/url, t.co, l.facebook.com, lnkd.in, medium.com/r, out.reddit.com, pinterest.com/offsite."}
-      },
-      {
-        "@type":"Question",
-        "name":"Gibt es eine Anleitung zum Ausdrucken?",
-        "acceptedAnswer":{"@type":"Answer","text":"Ja. Quickstart (1 Seite) mit QR-Code: quickstart.html."}
-      }
-    ]
-  }
-  </script>
-
-  <!-- Sicherheits-CSP (Nonce für JSON-LD) -->
+  <!-- Sicherheits-CSP (sanft; JSON-LD per Nonce erlaubt) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -80,243 +40,202 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSFAQ1';
+                 script-src 'self' 'nonce-SSFAQ';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
-                 connect-src 'self'">
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=31"></script>
+                 connect-src 'self' https:">
 
   <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
-    @media (prefers-color-scheme: light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--err:#ef4444}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184;--err:#b91c1c}
     }
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit}
+    a{color:#9fe7c3}
     .wrap{max-width:1000px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
     .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
     .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-    .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:#141414}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
-    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
-    input[type=url],textarea{width:100%;border-radius:10px;border:1px solid var(--line);background:#0f0f10;color:var(--fg);padding:10px}
-    textarea{min-height:120px}
-    ul{margin:.4rem 0 .8rem 1.2rem}
-    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    pre{background:#0f0f10;border:1px solid var(--line);border-radius:10px;padding:10px;overflow:auto}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .toc{display:flex;flex-wrap:wrap;gap:8px}
+    .toc a{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--mut)}
     footer{border-top:1px solid var(--line);margin-top:28px}
     footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
     footer a{color:var(--mut);text-decoration:none}
-    .skip{position:absolute;left:-9999px}
-    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
+    .hint{font-size:.95rem}
+    ul.check{list-style:none;padding-left:0;margin:.4rem 0}
+    ul.check li{padding-left:28px;position:relative;margin:.3rem 0}
+    ul.check li:before{content:"✔";position:absolute;left:0;top:0;color:#5fe09f}
+    .err{color:var(--err)}
+    h2{scroll-margin-top:80px}
   </style>
+
+  <!-- FAQ JSON-LD (Rich Results) -->
+  <script type="application/ld+json" nonce="SSFAQ">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Was macht SafeShare?",
+       "acceptedAnswer":{"@type":"Answer","text":"SafeShare entfernt Tracking-Parameter (z. B. UTM, gclid, fbclid) aus URLs und entpackt gängige Weiterleitungs-Wrapper – vollständig lokal im Browser."}},
+      {"@type":"Question","name":"Brauche ich ein Konto?",
+       "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare läuft komplett client-seitig ohne Konten. Pro wird lokal aktiviert."}},
+      {"@type":"Question","name":"Wie aktiviere ich Pro?",
+       "acceptedAnswer":{"@type":"Answer","text":"Nach dem Kauf auf Payhip die Seite pro-activate.html?pro=1 öffnen. Die Aktivierung wird lokal gespeichert."}},
+      {"@type":"Question","name":"Bleiben Affiliate-IDs erhalten?",
+       "acceptedAnswer":{"@type":"Answer","text":"Ja, wenn sie in der Team-Whitelist stehen (z. B. tag, ref). Alle anderen Tracking-Parameter werden entfernt."}},
+      {"@type":"Question","name":"Funktioniert SafeShare offline?",
+       "acceptedAnswer":{"@type":"Answer","text":"Ja. Als PWA sind Startseite und App nach dem ersten Laden offline nutzbar."}}
+    ]
+  }
+  </script>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=35"></script>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
-  <div class="wrap" id="main">
-    <h1>Hilfe &amp; Anleitung</h1>
-    <p class="mut">SafeShare säubert Links lokal im Browser: Tracking-Parameter entfernen, Redirects entpacken, klare Kurz-URLs. Keine Konten, keine Server-Logs. Diese Seite führt durch alle Kernfunktionen.</p>
+  <div class="wrap">
+    <header class="row" style="justify-content:space-between;gap:16px">
+      <div>
+        <h1>Hilfe &amp; FAQ</h1>
+        <p class="mut">Anleitung für App, Bookmarklet, Pro, Team-Whitelist, PWA und Troubleshooting.</p>
+      </div>
+      <div class="row">
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="quickstart.html">Quickstart</a>
+      </div>
+    </header>
 
-    <div class="row" style="margin-top:10px">
-      <a class="btn pri" href="app.html">App starten</a>
-      <a class="btn" href="bookmarklets.html">Bookmarklets</a>
-      <a class="btn" href="team-setup.html">Team-Whitelist</a>
-      <a class="btn" href="bulk-clean.html">Bulk-Clean (Pro)</a>
-      <a class="btn" href="quickstart.html">Quickstart (PDF)</a>
-    </div>
+    <nav class="card">
+      <strong>Inhalt</strong>
+      <div class="toc" style="margin-top:8px">
+        <a href="#app">1) App</a>
+        <a href="#bookmarklet">2) Bookmarklet</a>
+        <a href="#pro">3) Pro aktivieren</a>
+        <a href="#team">4) Team-Whitelist</a>
+        <a href="#pwa">5) PWA/Offline</a>
+        <a href="#troubleshooting">6) Troubleshooting</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </nav>
 
-    <div class="chips" aria-label="Schnellzugriff">
-      <a class="chip" href="#app">App</a>
-      <a class="chip" href="#bm">Bookmarklets</a>
-      <a class="chip" href="#team">Team-Whitelist</a>
-      <a class="chip" href="#bulk">Bulk-Clean</a>
-      <a class="chip" href="#unwrap">Redirects</a>
-      <a class="chip" href="#pwa">PWA/Offline</a>
-      <a class="chip" href="#faq">FAQ</a>
-      <a class="chip" href="#trouble">Troubleshooting</a>
-    </div>
+    <section id="app" class="card">
+      <h2 style="margin-top:0">1) App verwenden</h2>
+      <ol class="mut" style="margin:.4rem 0 .2rem 1.2rem">
+        <li>URL in das Feld eingeben oder einfügen.</li>
+        <li><strong>Säubern</strong> → Tracking-Parameter werden entfernt; <strong>Säubern &amp; öffnen</strong> startet die Zielseite in neuem Tab.</li>
+        <li><strong>Kopieren</strong> schreibt die bereinigte URL in die Zwischenablage; <strong>Teilen</strong> nutzt die native Teilen-Funktion (falls verfügbar).</li>
+        <li>Das <strong>×</strong> löscht die Eingabe.</li>
+      </ol>
+      <div class="row" style="margin-top:8px">
+        <a class="btn pri" href="app.html">App starten</a>
+        <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
+      </div>
+    </section>
 
-    <div class="grid">
-      <!-- 1) App -->
-      <section class="card" id="app">
-        <h2>1) App</h2>
-        <ol>
-          <li>URL in das Feld einfügen oder per Bookmarklet übergeben.</li>
-          <li>Option „Säubern + öffnen“ für direkten Zielaufruf, oder „Kopieren“ für die bereinigte URL.</li>
-          <li>Optional: erlaubte Parameter aus der <a href="team-setup.html">Team-Whitelist</a> bleiben erhalten.</li>
-        </ol>
-        <p class="mut">Unterstützt gängige Redirects (Klarziel wird erkannt) und entfernt typische Tracking-Signaturen (<code>utm_*</code>, <code>gclid</code>, <code>fbclid</code> u. a.).</p>
-        <div class="row"><a class="btn pri" href="app.html">Zur App</a></div>
-      </section>
+    <section id="bookmarklet" class="card">
+      <h2 style="margin-top:0">2) Bookmarklet installieren</h2>
+      <ul class="check">
+        <li><strong>Desktop:</strong> Auf <a href="bookmarklets.html">bookmarklets.html</a> die Schaltfläche in die Lesezeichenleiste <em>ziehen</em>.</li>
+        <li><strong>iOS/Android:</strong> Lesezeichen anlegen → URL durch den bereitgestellten <span class="mono">javascript:</span>-Code ersetzen.</li>
+        <li>Bei blockierender CSP die <a href="app.html">App</a> nutzen.</li>
+      </ul>
+      <div class="row" style="margin-top:8px">
+        <a class="btn" href="bookmarklets.html">Zur Anleitung</a>
+      </div>
+    </section>
 
-      <!-- 2) Bookmarklets -->
-      <section class="card" id="bm">
-        <h2>2) Bookmarklets</h2>
-        <h3>Desktop</h3>
-        <ul>
-          <li>Lesezeichenleiste einblenden.</li>
-          <li>Auf <a href="bookmarklets.html">bookmarklets.html</a> den gewünschten Button in die Leiste ziehen.</li>
-          <li>Auf einer Zielseite klicken → Link wird an SafeShare übergeben.</li>
-        </ul>
-        <h3>Mobil (iOS/Android)</h3>
-        <ul>
-          <li>Neues Lesezeichen anlegen, Namen vergeben (z. B. „SafeShare Clean“).</li>
-          <li>URL des Lesezeichens durch den JavaScript-Code ersetzen (auf <a href="bookmarklets.html">bookmarklets.html</a> „Code kopieren“).</li>
-        </ul>
-        <div class="row"><a class="btn" href="bookmarklets.html">Bookmarklets öffnen</a></div>
-      </section>
+    <section id="pro" class="card">
+      <h2 style="margin-top:0">3) Pro aktivieren</h2>
+      <ol class="mut" style="margin:.4rem 0 .2rem 1.2rem">
+        <li><a href="https://payhip.com/b/VDm3B" rel="noopener">Pro kaufen (Payhip)</a>.</li>
+        <li>Weiterleitung (oder manuell): <span class="mono">/pro-activate.html?pro=1</span> öffnen.</li>
+        <li>Zurück zur <a href="index.html">Startseite</a> oder <a href="bulk-clean.html">Bulk-Clean</a> – Badge „Pro aktiv“ sichtbar.</li>
+      </ol>
+      <div class="row" style="margin-top:8px">
+        <a class="btn pri" href="pro.html">Pro-Übersicht</a>
+        <a class="btn" href="pro-activate.html?pro=1">Jetzt aktivieren</a>
+      </div>
+    </section>
 
-      <!-- 3) Team-Whitelist -->
-      <section class="card" id="team">
-        <h2>3) Team-Whitelist</h2>
-        <p>Parameter definieren, die erhalten bleiben dürfen (z. B. <code>tag</code>, <code>ref</code>, <code>aff_id</code>). Gilt lokal im Browser für App, Bookmarklets und Bulk-Clean.</p>
-        <ol>
-          <li><a href="team-setup.html">Team-Setup</a> öffnen.</li>
-          <li>Neue Parameternamen hinzufügen (klein geschrieben, a–z, 0–9, _ - .).</li>
-          <li>Export (JSON) für Team-Doku optional speichern.</li>
-        </ol>
-        <div class="row"><a class="btn" href="team-setup.html">Team-Whitelist öffnen</a></div>
-      </section>
+    <section id="team" class="card">
+      <h2 style="margin-top:0">4) Team-Whitelist</h2>
+      <p class="mut">Legt fest, welche Parameter erhalten bleiben (z. B. <span class="mono">tag</span>, <span class="mono">ref</span>). Alles andere wird entfernt.</p>
+      <div class="row" style="margin-top:8px">
+        <a class="btn pri" href="team-setup.html">Whitelist einrichten</a>
+        <a class="btn" href="help.html#faq">FAQ</a>
+      </div>
+    </section>
 
-      <!-- 4) Bulk-Clean -->
-      <section class="card" id="bulk">
-        <h2>4) Bulk-Clean (Pro)</h2>
-        <p>Viele URLs in einem Rutsch säubern; Ergebnis als Liste oder CSV exportieren.</p>
-        <ol>
-          <li>Liste/Zeilen einfügen (eine URL pro Zeile; extrahiert auch aus Fließtext).</li>
-          <li>Optionen wählen: Redirects entpacken, Whitelist beibehalten, Duplikate entfernen.</li>
-          <li>„Säubern“ → „CSV exportieren“ oder „Ergebnis kopieren“.</li>
-        </ol>
-        <div class="row"><a class="btn" href="bulk-clean.html">Bulk-Clean öffnen</a></div>
-      </section>
+    <section id="pwa" class="card">
+      <h2 style="margin-top:0">5) PWA & Offline</h2>
+      <ul class="check">
+        <li>SafeShare kann als App installiert werden (Browser-Menü „Zum Home-Bildschirm hinzufügen“ oder „Installieren“).</li>
+        <li>Nach dem ersten Laden funktionieren Startseite & App auch offline.</li>
+        <li>Status/Updates: <a href="status.html">status.html</a> → „Auf Updates prüfen“.</li>
+      </ul>
+      <div class="row" style="margin-top:8px">
+        <a class="btn" href="quickstart.html">Quickstart (druckbar)</a>
+        <a class="btn" href="status.html">Status</a>
+      </div>
+    </section>
 
-      <!-- 5) Redirects -->
-      <section class="card" id="unwrap">
-        <h2>5) Redirects entpacken</h2>
-        <p>Übliche Weiterleitungen (z. B. <code>google.com/url</code>, <code>t.co</code>, <code>l.facebook.com</code>) werden zum Klarziel aufgelöst. Optional Tracking entfernen und Whitelist anwenden.</p>
-        <div class="row">
-          <a class="btn" href="redirect-entschachteln.html">Redirect-Tool öffnen</a>
-          <a class="btn" href="bookmarklets.html">Bookmarklet „Redirect entpacken“</a>
-        </div>
-      </section>
+    <section id="troubleshooting" class="card">
+      <h2 style="margin-top:0">6) Troubleshooting</h2>
+      <ul class="check">
+        <li><strong>Seite lädt „weiß“:</strong> Erneut laden mit <span class="mono">?nocache=YYYYMMDD</span> anhängen, z. B. <span class="mono">/index.html?nocache=20250101</span>.</li>
+        <li><strong>Bookmarklet tut nichts:</strong> Seite blockiert Skripte per CSP → App nutzen.</li>
+        <li><strong>Pro-Badge fehlt:</strong> <span class="mono">/pro-activate.html?pro=1</span> erneut öffnen.</li>
+        <li><strong>Service Worker:</strong> <a href="status.html">status.html</a> → „Auf Updates prüfen“ → ggf. „Wartende Version aktivieren“.</li>
+      </ul>
+      <p class="mut">Wenn weiterhin Probleme bestehen, bitte die <a href="tests.html">Tests</a> und die Browser-Konsole prüfen.</p>
+    </section>
 
-      <!-- 6) PWA -->
-      <section class="card" id="pwa">
-        <h2>6) PWA &amp; Offline</h2>
-        <ul>
-          <li><strong>iOS (Safari):</strong> Seite öffnen → Teilen → „Zum Home-Bildschirm“.</li>
-          <li><strong>Android (Chrome):</strong> Menü → „App installieren“ / „Zum Startbildschirm“.</li>
-          <li><strong>Offline:</strong> Nach Installation sind Kernseiten offline nutzbar.</li>
-        </ul>
-        <p class="mut">Bei Layoutproblemen hart neu laden: URL mit <code>?nocache=YYYYMMDDHH</code> öffnen oder <a href="status.html">Status</a> → „Auf Updates prüfen“.</p>
-      </section>
-
-      <!-- 7) FAQ -->
-      <section class="card" id="faq">
-        <h2>7) FAQ (Kurz)</h2>
-        <details>
-          <summary>Erfordert SafeShare ein Konto?</summary>
-          <p>Nein. Es gibt keine Accounts und keine SafeShare-Server-Logs.</p>
-        </details>
-        <details>
-          <summary>Wie wird die Whitelist gespeichert?</summary>
-          <p>Lokal im Browser (<code>localStorage</code>) unter dem Schlüssel <code>ss_whitelist</code>.</p>
-        </details>
-        <details>
-          <summary>Welche Parameter werden entfernt?</summary>
-          <p>Typische Tracking-Signaturen wie <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code> u. a.</p>
-        </details>
-        <details>
-          <summary>Gibt es eine 1-Seiten-Anleitung?</summary>
-          <p>Ja, <a href="quickstart.html">Quickstart</a> mit QR-Code zur App.</p>
-        </details>
-      </section>
-
-<section class="card" id="troubleshooting" aria-labelledby="ts-title">
-  <h2 id="ts-title">Troubleshooting</h2>
-
-  <h3>App lädt, aber Buttons reagieren nicht</h3>
-  <ul>
-    <li><strong>Cache/Service Worker:</strong> <a href="status.html">Status</a> öffnen → „Auf Updates prüfen“ → „Wartende Version aktivieren“.</li>
-    <li><strong>Harter Reload:</strong> URL mit <code>?nocache=1</code> aufrufen (z. B. <code>app.html?nocache=1</code>).</li>
-    <li><strong>CSP prüfen:</strong> Im &lt;head&gt; muss <code>script-src 'self'</code> stehen; für Netztests <code>connect-src 'self' https:</code>.</li>
-  </ul>
-
-  <h3>Bookmarklet lässt sich nicht ziehen (iOS/Safari)</h3>
-  <ul>
-    <li>Statt Drag&amp;Drop: Langdruck → „Zu Favoriten“ oder „Lesezeichen hinzufügen“.</li>
-    <li>Alternativ: Code kopieren und manuell als Lesezeichen-URL einfügen.</li>
-  </ul>
-
-  <h3>Offline-Nutzung funktioniert nicht</h3>
-  <ul>
-    <li>Seite <em>einmal online</em> öffnen, damit der Service Worker die App cached.</li>
-    <li><code>offline.html</code> ist Fallback; prüfe in <code>sw.js</code> <code>PRECACHE_URLS</code> und <code>OFFLINE_URL</code>.</li>
-  </ul>
-
-  <h3>„Säubern“ entfernt gewünschte Parameter</h3>
-  <ul>
-    <li>Whitelist im Team-Setup pflegen (z. B. <code>tag</code>, <code>ref</code>). Die dort eingetragenen Keys bleiben erhalten.</li>
-  </ul>
-
-  <h3>Redirect wird nicht entpackt</h3>
-  <ul>
-    <li>Parameter-basierte Weiterleitungen (z. B. <code>l.facebook.com/l.php?u=</code>) funktionieren offline.</li>
-    <li>Shortener wie <code>t.co</code> benötigen Internet (echte HTTP-Auflösung).</li>
-  </ul>
-
-  <h3>Kopieren/Teilen funktioniert nicht</h3>
-  <ul>
-    <li>Clipboard/Share-APIs sind abhängig vom Browser. Fallback: Ergebnis manuell markieren und kopieren.</li>
-  </ul>
-</section>
-      
-      <!-- 8) Troubleshooting -->
-      <section class="card" id="trouble">
-        <h2>8) Troubleshooting</h2>
-        <ul>
-          <li><strong>Bookmarklet lässt sich nicht ziehen:</strong> Per Rechtsklick „Link zu Lesezeichen hinzufügen“ oder nur den Code kopieren und als Lesezeichen-URL einsetzen.</li>
-          <li><strong>Button „Säubern + öffnen“ reagiert nicht:</strong> Pop-up-Blocker prüfen oder Ziel in neuem Tab erlauben.</li>
-          <li><strong>Änderungen erscheinen nicht:</strong> Seite mit <code>?nocache=TIMESTAMP</code> öffnen oder in <a href="status.html">Status</a> „Auf Updates prüfen“.</li>
-          <li><strong>Whitelist greift nicht:</strong> Schreibweise (klein) prüfen; Seite ggf. neu laden.</li>
-        </ul>
-        <div class="row">
-          <a class="btn" href="status.html">Status öffnen</a>
-          <a class="btn" href="tests.html">Tests/Beispiele</a>
-        </div>
-      </section>
-    </div>
+    <section id="faq" class="card">
+      <h2 style="margin-top:0">FAQ</h2>
+      <details>
+        <summary><strong>Was entfernt SafeShare?</strong></summary>
+        <p class="mut">Standard-Tracking (z. B. <span class="mono">utm_*</span>, <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>) sowie gängige Weiterleitungs-Wrapper (z. B. <span class="mono">google.com/url</span>, <span class="mono">l.facebook.com/l.php</span>), ohne Netzwerkzugriffe.</p>
+      </details>
+      <details>
+        <summary><strong>Wie setze ich Ausnahmen?</strong></summary>
+        <p class="mut">Über die <a href="team-setup.html">Team-Whitelist</a> (lokal gespeichert). Trage erlaubte Parameter wie <span class="mono">tag</span> oder <span class="mono">ref</span> ein.</p>
+      </details>
+      <details>
+        <summary><strong>Offline-Nutzung?</strong></summary>
+        <p class="mut">Ja, als PWA: Nach dem ersten Besuch funktionieren Startseite und App offline. Siehe <a href="quickstart.html">Quickstart</a>.</p>
+      </details>
+    </section>
 
     <footer>
       <nav class="links" aria-label="Footer">
         <a href="./">Startseite</a>
         <a href="app.html">App</a>
-        <a href="quickstart.html">Quickstart</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
         <a href="publisher.html">Publisher</a>
         <a href="education.html">Education</a>
         <a href="partners.html">Partner</a>
         <a href="compliance.html">Compliance</a>
         <a href="press.html">Presse</a>
+        <a href="help.html" aria-current="page">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-        <a href="status.html">Status</a>
         <a href="terms.html">Terms</a>
         <a href="kurz-terms.html">Kurz-Terms</a>
+        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">JavaScript ist optional (Service Worker/PWA). Die Inhalte dieser Seite funktionieren auch ohne JS.</div></div>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. SafeShare arbeitet lokal im Browser.</div></div>
   </noscript>
 </body>
 </html>
