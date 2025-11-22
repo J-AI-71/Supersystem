@@ -6,32 +6,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Team-Whitelist & Setup · SafeShare</title>
-  <meta name="description" content="Team-Whitelist & Setup: Erlaubte Partner-IDs definieren (z. B. tag, ref) und gemeinsame Regeln für saubere Links.">
+  <title>Team-Whitelist · SafeShare</title>
+  <meta name="description" content="Legitime Parameter wie tag oder ref für dein Team whitelisten. SafeShare lässt diese beim Säubern erhalten. Speicherung lokal im Browser.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/team-setup.html">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/team-setup.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/team-setup.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/team-setup.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/team-setup.html">
   <meta property="og:locale" content="de_DE">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Team-Whitelist & Setup · SafeShare">
-  <meta property="og:description" content="Erlaubte Parameter für saubere Links gemeinsam festlegen.">
+  <meta property="og:title" content="SafeShare · Team-Whitelist">
+  <meta property="og:description" content="Definiere erlaubte URL-Parameter (z. B. tag, ref).">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/team-setup.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
   <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
   <meta name="theme-color" content="#0b0b0b">
   <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Sicherheits-CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -47,75 +49,66 @@
 
   <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--err:#ef4444}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
     @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b}
     }
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
     a{color:#9fe7c3}
-    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
     .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
     .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none;cursor:pointer}
     .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .btn.min{padding:8px 10px;font-size:.95rem}
-    input[type=text]{width:100%;box-sizing:border-box;padding:12px;border-radius:12px;border:1px solid var(--line);background:#0f1216;color:inherit}
-    @media(prefers-color-scheme:light){input[type=text]{background:#fff}}
+    input[type="text"], textarea{
+      width:100%;box-sizing:border-box;background:#0d1319;color:var(--fg);
+      border:1px solid var(--line);border-radius:12px;padding:10px
+    }
+    textarea{min-height:120px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-    .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:#11161b}
-    .chip button{border:0;background:transparent;color:var(--mut);cursor:pointer}
-    .warn{color:var(--err)}
-    .hint{font-size:.95rem}
     footer{border-top:1px solid var(--line);margin-top:28px}
     footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
     footer a{color:var(--mut);text-decoration:none}
+    .small{font-size:.95rem}
+    .list{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:4px 10px;background:#0d1319}
   </style>
 
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=35"></script>
-  <script defer src="js/page-team-setup.js?v=35"></script>
+  <script defer src="js/sw-register.js?v=20251122"></script>
+  <script defer src="js/page-team-setup.js?v=20251122"></script>
 </head>
 <body>
   <div class="wrap">
-    <header class="row" style="justify-content:space-between;gap:16px">
+    <header class="row" style="justify-content:space-between">
       <div>
-        <h1>Team-Whitelist & Setup</h1>
-        <p class="mut">Definiere, welche Parameter erhalten bleiben dürfen (z. B. <code>tag</code>, <code>ref</code>). Gilt für App & Bulk-Clean im aktuellen Browser/Profil.</p>
+        <h1>Team-Whitelist</h1>
+        <p class="mut">Definiere legitime Parameter, die beim Säubern erhalten bleiben sollen (z. B. <code class="mono">tag</code>, <code class="mono">ref</code>). Speicherung erfolgt lokal im Browser.</p>
       </div>
       <div class="row">
-        <a class="btn" href="./">Startseite</a>
-        <a class="btn" href="app.html">App</a>
-        <a class="btn" href="bulk-clean.html">Bulk-Clean</a>
-        <a class="btn" href="help.html">Hilfe</a>
+        <a class="btn ghost" href="./">Startseite</a>
+        <a class="btn ghost" href="help.html">Hilfe</a>
       </div>
     </header>
 
-    <section class="card" aria-labelledby="wl-title">
-      <h2 id="wl-title" style="margin-top:0">Whitelist-Parameter</h2>
-      <p class="hint mut">Kommagetrennt, nur Kleinbuchstaben/Ziffern/Unterstrich/Bindestrich. Beispiel: <code>tag,ref,aff_id,source</code></p>
-      <input id="wl-input" class="mono" type="text" placeholder="tag,ref">
-      <div class="chips" id="wl-chips" aria-live="polite"></div>
-
-      <div class="row" style="margin-top:12px">
-        <button id="wl-save" class="btn pri" type="button">Speichern</button>
-        <button id="wl-reset" class="btn" type="button">Standard (tag,ref)</button>
-        <button id="wl-clear" class="btn" type="button">Leeren</button>
-        <button id="wl-export" class="btn min" type="button">Export</button>
-        <label class="btn min" for="wl-import">Import</label>
-        <input id="wl-import" type="file" accept=".txt,.json" style="display:none">
+    <section class="card">
+      <h2 style="margin-top:0">Liste bearbeiten</h2>
+      <label for="in-params" class="mut small">Parameter (durch Komma, Leerzeichen oder Zeilenumbruch trennen)</label>
+      <textarea id="in-params" placeholder="z. B. tag, ref"></textarea>
+      <div class="row" style="margin-top:10px">
+        <button id="btn-save" class="btn pri" type="button">Speichern</button>
+        <button id="btn-reset" class="btn" type="button">Zurücksetzen</button>
+        <button id="btn-import" class="btn" type="button">Import</button>
+        <button id="btn-export" class="btn" type="button">Export</button>
       </div>
-      <p id="wl-msg" class="mut" style="margin-top:8px">Bereit.</p>
+      <p id="msg" class="mut" style="margin-top:8px"></p>
     </section>
 
     <section class="card">
-      <h2 style="margin-top:0">Wie wirkt die Whitelist?</h2>
-      <ul class="mut">
-        <li>Alle <code>utm_*</code>-Parameter werden entfernt – außer sie stehen auf der Whitelist.</li>
-        <li>Bekannte Tracker (<code>gclid/fbclid/msclkid</code> usw.) werden entfernt – außer sie stehen auf der Whitelist.</li>
-        <li>Gilt für <strong>App</strong>, <strong>Bulk-Clean</strong> und andere Seiten, die SafeShare-Logik nutzen.</li>
-      </ul>
+      <h2 style="margin-top:0">Aktiv</h2>
+      <div id="active-list" class="list" aria-live="polite"></div>
+      <p class="mut small" style="margin-top:8px">Hinweis: Die Whitelist wird von App, Bookmarklets und Bulk-Clean verwendet.</p>
     </section>
 
     <footer>
@@ -123,23 +116,16 @@
         <a href="./">Startseite</a>
         <a href="app.html">App</a>
         <a href="bookmarklets.html">Bookmarklet</a>
-        <a href="publisher.html">Publisher</a>
-        <a href="education.html">Education</a>
-        <a href="partners.html">Partner</a>
-        <a href="compliance.html">Compliance</a>
-        <a href="press.html">Presse</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
         <a href="help.html">Hilfe</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-        <a href="status.html">Status</a>
       </nav>
     </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. Diese Seite speichert Team-Einstellungen lokal im Browser.</div></div>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren, um die Whitelist zu bearbeiten.</div></div>
   </noscript>
 </body>
 </html>
