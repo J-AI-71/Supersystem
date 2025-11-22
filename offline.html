@@ -1,3 +1,4 @@
+<!-- /Supersystem/offline.html (noindex, offline fallback) -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -7,8 +8,17 @@
   <base href="/Supersystem/">
   <title>Offline · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/offline.html">
+  <meta name="robots" content="noindex, nofollow, noarchive">
 
-  <!-- sanfte CSP: erlaubt Inline-Styles, keine externen Requests nötig -->
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light">
+
+  <!-- Sicherheits-CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -19,74 +29,41 @@
                  script-src 'self';
                  font-src 'self';
                  worker-src 'self';
+                 manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- App-Icons (optional, falls schon im Cache) -->
-  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
-
-  <meta name="theme-color" content="#ffffff">
+  <!-- Styles: helles Theme -->
   <style>
-    :root{
-      --bg:#f7f7f9; --card:#ffffff; --text:#111; --mut:#555;
-      --pri:#0f766e; --bd:#e6e6ec; --shadow:0 4px 20px rgba(0,0,0,.06);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial,sans-serif;
-      display:flex; align-items:center; justify-content:center; padding:24px;
-    }
-    .wrap{
-      width:100%; max-width:760px; background:var(--card);
-      border:1px solid var(--bd); border-radius:16px; padding:28px;
-      box-shadow:var(--shadow);
-    }
-    h1{margin:0 0 6px;font-size:28px}
-    p.mut{margin:0 0 18px;color:var(--mut)}
-    .box{
-      background:#fff; border:1px dashed var(--bd); border-radius:12px;
-      padding:16px; margin:14px 0
-    }
-    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
-    .btn{
-      display:inline-block; padding:10px 14px; border-radius:10px;
-      text-decoration:none; border:1px solid var(--bd); background:#fff; color:var(--text)
-    }
-    .btn.pri{background:var(--pri); color:#fff; border-color:var(--pri)}
-    code{background:#f0f2f5;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
-    ul{margin:8px 0 0 18px}
-    footer{margin-top:18px; font-size:14px; color:var(--mut)}
-    .small{font-size:14px; color:var(--mut)}
+    :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--line:#e2e8f0}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    .wrap{max-width:820px;margin:0 auto;padding:28px}
+    .card{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fff}
+    h1{margin:.2rem 0}
+    .mut{color:var(--mut)}
+    .btn{display:inline-block;margin-top:8px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);text-decoration:none;color:inherit}
+    ul{margin:.2rem 0 .6rem 1.1rem}
+    li{margin:.2rem 0}
   </style>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=20251122"></script>
 </head>
 <body>
-  <main class="wrap" role="main">
-    <h1>Offline</h1>
-    <p class="mut">Keine Internetverbindung. SafeShare funktioniert auch ohne Konto – einige Seiten sind offline verfügbar.</p>
+  <div class="wrap">
+    <h1>Du bist offline</h1>
+    <p class="mut">Keine Verbindung. Die wichtigsten Seiten sind lokal verfügbar.</p>
 
-    <div class="box">
-      <strong>So bekommst du wieder alles angezeigt:</strong>
+    <div class="card" style="margin-top:12px">
+      <h2 style="margin:.2rem 0">Schnellzugriff</h2>
       <ul>
-        <li>Stelle eine Verbindung zum Internet her und lade die Seite neu.</li>
-        <li>Für iOS/Safari: App-Switcher → Karte nach unten wischen → <em>Neu laden</em>.</li>
-        <li>Alternativ später erneut öffnen: <code>/Supersystem/</code>.</li>
+        <li><a class="btn" href="app.html">App öffnen</a></li>
+        <li><a class="btn" href="bookmarklets.html">Bookmarklets</a></li>
+        <li><a class="btn" href="bulk-clean.html">Bulk-Clean</a></li>
+        <li><a class="btn" href="./">Startseite</a></li>
       </ul>
+      <p class="mut">Tipp: Stelle eine Verbindung her und lade die Seite neu, um alle Inhalte zu aktualisieren.</p>
     </div>
-
-    <div class="row" aria-label="Schnellzugriff">
-      <a class="btn pri" href="index.html">Zur Startseite</a>
-      <a class="btn" href="app.html">App öffnen</a>
-      <a class="btn" href="help.html">Hilfe</a>
-      <a class="btn" href="status.html">Status</a>
-    </div>
-
-    <p class="small">Tipp: Öffne die wichtigsten Seiten einmal online, dann sind sie beim nächsten Mal auch ohne Netz verfügbar.</p>
-
-    <footer class="small">
-      © SafeShare · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
-    </footer>
-  </main>
+  </div>
+  <noscript><div class="wrap"><div class="card">Für PWA-Funktionen bitte JavaScript aktivieren.</div></div></noscript>
 </body>
 </html>
