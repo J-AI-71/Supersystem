@@ -2,9 +2,15 @@
 (() => {
   'use strict';
 
-  // --- Pro-Gate / Badge ---
+  // --- Pro-Gate / Badge (kompatibel zu zwei Keys) ---
+  function isProActive() {
+    return (
+      localStorage.getItem('ss_pro') === '1' ||
+      localStorage.getItem('safeshare.pro') === '1'
+    );
+  }
   function applyProGate() {
-    const isPro = localStorage.getItem('ss_pro') === '1';
+    const isPro = isProActive();
     const pay = document.getElementById('paywall');
     const ui  = document.getElementById('bc-ui');
     const badge = document.getElementById('pro-badge');
@@ -92,15 +98,18 @@
   function setText(el, txt){ if (el) el.textContent = txt; }
 
   function runBulk() {
-    const src = ($('#bc-input')?.value || '').split(/\r?\n/);
+    const raw = $('#bc-input')?.value || '';
+    const src = raw.split(/\r?\n/);
     const out = [];
     let errors = 0;
     let dupes  = 0;
     const seen = new Set();
+    let inCount = 0;
 
-    for (let raw of src) {
-      const line = (raw || '').trim();
+    for (let line of src) {
+      line = (line || '').trim();
       if (!line || line.startsWith('#')) continue;
+      inCount++;
       try {
         const cleaned = cleanOne(line);
         if (seen.has(cleaned)) { dupes++; continue; }
@@ -114,7 +123,7 @@
     const outEl = $('#bc-output');
     if (outEl) outEl.value = out.join('\n');
 
-    setText($('#stat-in'),  `Eingaben: ${src.filter(l => l.trim() && !l.trim().startsWith('#')).length}`);
+    setText($('#stat-in'),  `Eingaben: ${inCount}`);
     setText($('#stat-out'), `Ergebnisse: ${out.length}`);
     setText($('#stat-dupes'), `Duplikate: ${dupes}`);
     setText($('#stat-errors'), `Fehler: ${errors}`);
