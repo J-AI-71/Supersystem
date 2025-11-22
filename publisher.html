@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Publisher & Affiliates · SafeShare</title>
+  <meta name="description" content="Für Publisher & Affiliates: Kürzere, saubere URLs, weniger Blockaden, bessere Weitergabe. Lokal, ohne Server-Logs.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/publisher.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="Für Publisher & Affiliates: Klar-Links ohne Tracking, Redirects entpacken, Partner-IDs per Whitelist erhalten. Bookmarklet & Bulk-Clean (Pro).">
 
   <!-- hreflang / Locale -->
   <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/publisher.html">
@@ -18,21 +18,21 @@
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Publisher & Affiliates">
-  <meta property="og:description" content="Kürzere, klare URLs – Tracking raus, Partner-IDs gezielt behalten.">
+  <meta property="og:title" content="SafeShare für Publisher & Affiliates">
+  <meta property="og:description" content="Saubere, kurze URLs ohne Tracking. Bessere Weitergabe, weniger Blockaden – lokal, ohne Accounts.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/publisher.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- PWA / Icons -->
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="manifest" href="manifest.webmanifest?v=35">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (JSON-LD Nonce erlaubt) -->
+  <!-- Sicherheits-CSP (sanft; JSON-LD per Nonce erlaubt) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -40,126 +40,122 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSJSON1';
+                 script-src 'self' 'nonce-SSFAQ';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- JSON-LD FAQ -->
-  <script type="application/ld+json" nonce="SSJSON1">
+  <!-- Styles -->
+  <style>
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:#9fe7c3}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .mut{color:var(--mut)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#072b16;font-weight:700}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+    ul.check{list-style:none;padding-left:0;margin:.4rem 0}
+    ul.check li{padding-left:28px;position:relative;margin:.3rem 0}
+    ul.check li:before{content:"✔";position:absolute;left:0;top:0;color:#5fe09f}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  </style>
+
+  <!-- FAQ JSON-LD -->
+  <script type="application/ld+json" nonce="SSFAQ">
   {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Greift SafeShare in Affiliate-Verträge ein?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Nein. SafeShare bereinigt nur URL-Parameter und entpackt Redirects lokal im Browser. Vertrags- oder Trackingbeziehungen bleiben unberührt."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Können Partner-IDs erhalten bleiben?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Ja. Über die Team-Whitelist kannst du erlaubte Parameter wie tag oder ref definieren. Diese bleiben beim Säubern erhalten."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Wie starte ich am schnellsten?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Bookmarklet im Redaktionsbrowser speichern und für Listenexporte Bulk-Clean (Pro) verwenden."
-        }
-      }
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Warum SafeShare für Publisher?",
+       "acceptedAnswer":{"@type":"Answer","text":"Kürzere, saubere Links steigern Klickrate und Vertrauen, umgehen Blockaden und halten Compliance ein – ohne Server-Logs, komplett lokal."}},
+      {"@type":"Question","name":"Behalte ich Affiliate-IDs?",
+       "acceptedAnswer":{"@type":"Answer","text":"Ja. Über die Team-Whitelist können erlaubte Parameter wie tag/ref erhalten bleiben."}},
+      {"@type":"Question","name":"Brauche ich ein Konto?",
+       "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare läuft vollständig im Browser. Pro wird lokal aktiviert (pro Gerät/Browser)."}}
     ]
   }
   </script>
 
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=31"></script>
-
-  <!-- Styles -->
-  <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--pri:#23c47e}
-    @media (prefers-color-scheme: light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--pri:#23c47e}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
-    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#151515;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    ul{margin:.4rem 0 .8rem 1.2rem}
-    h1{margin:.2rem 0 .6rem 0}
-    h2{margin:1rem 0 .5rem}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
-  </style>
+  <script defer src="js/sw-register.js?v=35"></script>
 </head>
 <body>
   <div class="wrap">
     <header class="row" style="justify-content:space-between;gap:16px">
       <div>
-        <h1>Publisher &amp; Affiliates</h1>
-        <p class="mut">Klar-Links statt Tracking-URLs: kürzer, stabiler, sharebar. Partner-IDs bleiben gezielt erhalten.</p>
+        <h1>Für Publisher & Affiliates</h1>
+        <p class="mut">Saubere, kurze Links – weniger Blockaden, bessere Weitergabe und mehr Vertrauen. Alles lokal im Browser.</p>
       </div>
       <div class="row">
-        <a class="btn pri" href="app.html">App öffnen</a>
-        <a class="btn" href="bookmarklets.html">Bookmarklet</a>
-        <a class="btn" href="bulk-clean.html">Bulk-Clean (Pro)</a>
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="pro.html">Pro</a>
+        <a class="btn" href="help.html">Hilfe</a>
       </div>
     </header>
 
-    <div class="grid">
-      <section class="card">
-        <h2>Vorteile</h2>
-        <ul>
-          <li>UTM/gclid/fbclid entfernen – lesbar und kurz teilen.</li>
-          <li>Redirects entpacken (google.com/url, t.co, l.facebook.com …).</li>
-          <li>Whitelist: <code>tag</code>, <code>ref</code> u. a. behalten.</li>
-          <li>Client-seitig, keine Konten, keine SafeShare-Server-Logs.</li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <h2>Workflow</h2>
-        <ul>
-          <li><strong>Sofort:</strong> Bookmarklet im Browser ablegen.</li>
-          <li><strong>Listen:</strong> Export aus CMS/CRM → <a href="bulk-clean.html">Bulk-Clean</a>.</li>
-          <li><strong>Regeln:</strong> Team-Whitelist in <a href="team-setup.html">Team-Setup</a> pflegen.</li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <h2>FAQ</h2>
-        <h3>Greift SafeShare in Affiliate-Verträge ein?</h3>
-        <p>Nein. SafeShare arbeitet nur an der URL. Verträge/Attribution werden nicht verändert.</p>
-        <h3>Bleiben Partner-IDs erhalten?</h3>
-        <p>Ja, wenn sie in der Whitelist stehen (z. B. <code>tag</code>, <code>ref</code>).</p>
-        <h3>Wie starten?</h3>
-        <p>Bookmarklet speichern, Regeln setzen, optional Bulk-Clean nutzen.</p>
-      </section>
-
-      <section class="card">
-        <h2>Loslegen</h2>
-        <div class="row">
-          <a class="btn pri" href="app.html">App öffnen</a>
-          <a class="btn" href="help.html">Hilfe</a>
-          <a class="btn" href="quickstart.html">Quickstart</a>
+    <section class="card">
+      <div class="grid">
+        <div>
+          <h2 style="margin-top:0">Vorteile</h2>
+          <ul class="check">
+            <li>UTM/gclid/fbclid automatisch entfernen</li>
+            <li>Weiterleitungen wie <span class="mono">google.com/url</span>, <span class="mono">l.facebook.com/l.php</span> entpacken</li>
+            <li>Whitelist für Partner-IDs (<span class="mono">tag</span>, <span class="mono">ref</span>, …)</li>
+            <li>Keine Server-Logs, kein Account – Privacy by Design</li>
+            <li>PWA-fähig, funktioniert auch offline (App)</li>
+          </ul>
+          <div class="row" style="margin-top:10px">
+            <a class="btn pri" href="app.html">Jetzt starten</a>
+            <a class="btn" href="team-setup.html">Whitelist einrichten</a>
+          </div>
         </div>
-      </section>
-    </div>
+        <div>
+          <h2 style="margin-top:0">Workflows</h2>
+          <ul class="check">
+            <li><strong>Bookmarklet:</strong> Direkt auf Seiten säubern & kopieren</li>
+            <li><strong>Bulk-Clean (Pro):</strong> CSV/Listen in einem Schritt bereinigen</li>
+            <li><strong>Redirect-Tool:</strong> Verschachtelte Ziel-URLs freilegen</li>
+            <li><strong>Team-Setup:</strong> Regeln einmal definieren, gemeinsam nutzen</li>
+          </ul>
+          <div class="row" style="margin-top:10px">
+            <a class="btn" href="bookmarklets.html">Bookmarklet</a>
+            <a class="btn" href="bulk-clean.html">Bulk-Clean (Pro)</a>
+            <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Affiliate-IDs behalten – Compliance sichern</h2>
+      <p class="mut">Über die Team-Whitelist legst du fest, welche Parameter erhalten bleiben dürfen. Beispiel: <span class="mono">tag,ref,aff_id,source</span>. So bleiben Partner-IDs intakt, während Tracking-Ballast entfernt wird.</p>
+      <div class="row" style="margin-top:8px">
+        <a class="btn" href="team-setup.html">Whitelist konfigurieren</a>
+        <a class="btn" href="help.html#pro">Hilfe zu Pro</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Pro aktivieren</h2>
+      <p>Für Bulk-Clean und erweiterte Tools:</p>
+      <div class="row">
+        <a class="btn pri" href="https://payhip.com/b/VDm3B" rel="noopener">Pro kaufen</a>
+        <a class="btn" href="pro-activate.html?pro=1">Schon gekauft? Aktivieren</a>
+      </div>
+      <p class="mut" style="margin-top:6px">Aktivierung ist lokal im Browser, ohne Konto. Nach dem Kauf wirst du automatisch weitergeleitet.</p>
+    </section>
 
     <footer>
       <nav class="links" aria-label="Footer">
@@ -168,7 +164,6 @@
         <a href="bookmarklets.html">Bookmarklet</a>
         <a href="bulk-clean.html">Bulk-Clean</a>
         <a href="team-setup.html">Team-Whitelist</a>
-        <a href="publisher.html">Publisher</a>
         <a href="education.html">Education</a>
         <a href="partners.html">Partner</a>
         <a href="compliance.html">Compliance</a>
@@ -184,7 +179,7 @@
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">JavaScript ist optional (Service Worker/PWA). Diese Seite funktioniert auch ohne JS.</div></div>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. SafeShare arbeitet lokal im Browser.</div></div>
   </noscript>
 </body>
 </html>
