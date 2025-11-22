@@ -1,207 +1,210 @@
+<!-- /Supersystem/datenschutz.html -->
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- datenschutz.html -->
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Datenschutz · SafeShare</title>
+  <title>Datenschutzerklärung · SafeShare</title>
+  <meta name="description" content="Datenschutz bei SafeShare: Verarbeitung lokal im Browser, keine Server-Logs der App, keine Konten. Hinweise zu lokalen Speichern, Service Worker, Hosting-Logs (GitHub Pages) und Kauf über Payhip.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/datenschutz.html">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
   <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/datenschutz.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/datenschutz.html" hreflang="x-default">
+  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/datenschutz.html">
+  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/datenschutz.html">
   <meta property="og:locale" content="de_DE">
 
-     <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/…">
-+  <meta http-equiv="Content-Security-Policy"
-+        content="default-src 'self';
-+                 base-uri 'self';
-+                 frame-ancestors 'none';
-+                 object-src 'none';
-+                 img-src 'self' data:;
-+                 style-src 'self' 'unsafe-inline';
-+                 script-src 'self';
-+                 font-src 'self';
-+                 worker-src 'self';
-+                 manifest-src 'self';
-+                 connect-src 'self'">
-
-  <meta name="description" content="Datenschutzhinweise zu SafeShare: Funktionsweise ohne Server-Tracking, lokale Speicherung (localStorage), Hosting-Hinweise, Rechte betroffener Personen.">
-
-  <!-- Open Graph / Twitter (optional) -->
+  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="SafeShare">
-  <meta property="og:title" content="Datenschutz · SafeShare">
-  <meta property="og:description" content="SafeShare arbeitet 100 % lokal im Browser. Keine Server-Accounts, keine Tracking-Cookies.">
+  <meta property="og:title" content="SafeShare · Datenschutzerklärung">
+  <meta property="og:description" content="Verarbeitung lokal im Browser, keine Konten, keine App-Server-Logs. Details zu PWA, Cache, GitHub Pages und Payhip.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/datenschutz.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
 
-  <!-- Icons / Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=29">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png?v=29">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png?v=29">
-  <link rel="manifest" href="manifest.webmanifest?v=29">
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
 
-  <!-- Basistyle (kein Weißbild) -->
+  <!-- Sicherheits-CSP (sanft) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self' https:">
+
+  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9a9a9a;--card:#121212;--line:#2a2a2a}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    .wrap{max-width:980px;margin:0 auto;padding:22px 14px}
-    h1{margin:.2em 0 .4em;font-size:1.9rem}
-    h2{margin:1.0em 0 .35em;font-size:1.2rem}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#2bd184}
+    }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    a{color:#9fe7c3}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-    a{color:#cfe7ff}
-    ul.tight li{margin:.25rem 0}
-    code{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:.1rem .35rem}
-    footer{margin-top:18px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
+    h2{margin-top:0}
+    ul{margin:.4rem 0 .2rem 1.2rem}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .note{background:#101010;border:1px dashed #2a2a2a;border-radius:10px;padding:10px}
+    footer{border-top:1px solid var(--line);margin-top:28px}
+    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+    footer a{color:var(--mut);text-decoration:none}
+    .small{font-size:.95rem}
   </style>
 
-  <!-- Optional Theme -->
-  <link rel="stylesheet" href="css/theme.css?v=27">
-
-  <!-- SW-Registrierung -->
-  <script src="js/sw-register.js?v=29"></script>
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=35"></script>
 </head>
 <body>
   <div class="wrap">
-    <h1>Datenschutz</h1>
-    <p class="mut">Stand: <!-- DATUM -->2025-11-18</p>
+    <header class="row" style="justify-content:space-between;gap:16px">
+      <div>
+        <h1>Datenschutzerklärung</h1>
+        <p class="mut">Informationen zur Verarbeitung personenbezogener Daten bei Nutzung von SafeShare.</p>
+      </div>
+      <div class="row">
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="impressum.html">Impressum</a>
+        <a class="btn" href="help.html">Hilfe</a>
+      </div>
+    </header>
 
-    <section class="card" id="verantwortlicher">
-      <h2>1. Verantwortlicher</h2>
-      <p>
-        Verantwortlich für diese Website/App im Sinne der DSGVO ist:
-      </p>
-      <address class="mono">
-        <!-- NAME/FIRMA -->Jana Jergus/SafeShare<br>
-        <!-- ANSCHRIFT -->Auf dem Emdgenberg, 61250 Usingen, Deutschland<br>
-        E-Mail: <a href="mailto:<!-- EMAIL -->">support.safeshare@proton.me</a><br>
-        
-      </address>
-      <p>Weitere Pflichtangaben finden sich im <a href="impressum.html">Impressum</a>.</p>
+    <section class="card">
+      <h2>1) Verantwortlicher</h2>
+      <p>Verantwortlich im Sinne der DSGVO für diese Website/Anwendung:</p>
+      <p><strong>Jana Jergus</strong><br>
+         <span class="mono">[Straße/Hausnr.] · [PLZ] [Ort] · Deutschland</span><br>
+         E-Mail: <a href="mailto:[ihre-mail]">[ihre-mail]</a></p>
+      <p class="mut small">Bitte Platzhalter in <span class="mono">[eckigen Klammern]</span> im <a href="impressum.html">Impressum</a> ergänzen.</p>
     </section>
 
-    <section class="card" id="grundsaetze">
-      <h2>2. Grundsätze</h2>
-      <ul class="tight">
-        <li>SafeShare arbeitet <strong>100&nbsp;% lokal im Browser</strong>: keine Server-Accounts, keine Tracking-Cookies, keine Profilbildung.</li>
-        <li>Die eingegebenen URLs werden <strong>nicht an einen Server gesendet</strong>, sondern ausschließlich im Browser verarbeitet.</li>
-        <li>Optionale Einstellungen (z.&nbsp;B. Pro-Flag, Whitelist) werden <strong>nur lokal</strong> in <code>localStorage</code> gespeichert.</li>
+    <section class="card">
+      <h2>2) Grundprinzip</h2>
+      <p>SafeShare verarbeitet eingegebene URLs <strong>ausschließlich lokal im Browser</strong> (Client-Side). Es werden <strong>keine</strong> URLs, Ergebnisse oder Nutzungsprofile an Server übertragen. Es gibt <strong>keine</strong> Registrierung und <strong>keine</strong> App-Server-Logs.</p>
+    </section>
+
+    <section class="card">
+      <h2>3) Arten der verarbeiteten Daten</h2>
+      <ul>
+        <li><strong>Eingabedaten:</strong> Von Ihnen eingegebene/ eingefügte URLs zur Bereinigung oder zum Entpacken von Weiterleitungen. Verarbeitung nur lokal im Browser.</li>
+        <li><strong>Lokale Einstellungen:</strong> z. B. Team-Whitelist (erlaubte Parameter wie <span class="mono">tag</span>, <span class="mono">ref</span>) und Pro-Status. Speicherung im <span class="mono">localStorage</span> und in PWA-Caches des Browsers.</li>
+        <li><strong>Hosting-Logs (GitHub Pages):</strong> Der Hosting-Anbieter kann technisch notwendige Zugriffsprotokolle (IP, Zeit, URL, User-Agent) führen. Diese sind nicht App-spezifisch und werden von GitHub verantwortet.</li>
+        <li><strong>Kaufabwicklung (Payhip):</strong> Für SafeShare Pro erfolgt der Kauf über Payhip. Dabei verarbeitete Daten (z. B. Zahlungs-/Rechnungsdaten) liegen in der Verantwortung von Payhip und ggf. Zahlungsdienstleistern.</li>
       </ul>
     </section>
 
-    <section class="card" id="hosting">
-      <h2>3. Hosting / Bereitstellung der Seiten</h2>
-      <p>
-        Diese Website wird als statische Seite bereitgestellt. Beim Aufruf werden technisch notwendige Daten (z.&nbsp;B. IP-Adresse, Zeitpunkt,
-        angeforderte Datei) durch die Infrastruktur des Hosting-Anbieters verarbeitet, um die Seite auszuliefern und die Sicherheit zu gewährleisten.
-        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherer, verfügbarer Bereitstellung).
-      </p>
-      <p class="note">
-        Hinweis: Bei Nutzung von <strong>GitHub Pages</strong> als Hoster verarbeitet GitHub (Microsoft-Konzern) Daten als eigener Verantwortlicher.
-        Details entnehmen Sie bitte der jeweiligen Datenschutzerklärung des Anbieters.
-      </p>
-    </section>
-
-    <section class="card" id="appfunktion">
-      <h2>4. Funktionsweise der App</h2>
-      <p>
-        Die App entfernt Tracking-Parameter (z.&nbsp;B. <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>) und kann verschachtelte
-        Weiterleitungs-Links lokal „entpacken“. Es findet <strong>kein Server-Abruf</strong> der Ziel-Seite statt, außer Sie klicken
-        bewusst auf „Öffnen“. Dabei wird die Ziel-URL in einem neuen Tab im Browser aufgerufen.
-      </p>
-      <p>
-        SafeShare setzt selbst <strong>keine eigenen Cookies</strong>. Für Offline-Funktionalität werden lediglich statische Assets via
-        <strong>Service Worker</strong> zwischengespeichert (PWA-Cache).
-      </p>
-    </section>
-
-    <section class="card" id="lokalspeicher">
-      <h2>5. Lokale Speicherung (localStorage/PWA)</h2>
-      <p>Folgende Schlüssel können lokal im Browser gespeichert werden:</p>
-      <ul class="tight mono">
-        <li><code>ss2_pro</code> – Pro-Status (Wert: <code>1</code> oder nicht gesetzt)</li>
-        <li><code>ss2_allow</code> – Team-Whitelist (kommagetrennte Parameternamen)</li>
-        <li><code>ss2_pub</code> – optionaler Publisher-Modus-Schalter</li>
-        <li>PWA-Caches (Service Worker) für statische Dateien</li>
-      </ul>
-      <p>Sie können diese Werte jederzeit selbst löschen:</p>
-      <ul class="tight">
-        <li>in der App über <a href="tools.html">tools.html</a> (Service Worker abmelden, Caches löschen, lokale Schlüssel entfernen)</li>
-        <li>oder über die Browser-Einstellungen (Website-Daten/Caches löschen)</li>
+    <section class="card">
+      <h2>4) Zwecke der Verarbeitung</h2>
+      <ul>
+        <li>Bereinigung von URLs (Entfernung gängiger Tracking-Parameter wie <span class="mono">utm_*</span>, <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>).</li>
+        <li>Entpacken verbreiteter Weiterleitungs-Wrapper (z. B. <span class="mono">google.com/url</span>, <span class="mono">l.facebook.com/l.php</span>), ohne Netzaufrufe.</li>
+        <li>Lokale Komfortfunktionen (PWA/Offline, Merkfunktionen im Browser).</li>
+        <li>Kaufabwicklung von Pro über Payhip (separate Verantwortlichkeit).</li>
       </ul>
     </section>
 
-    <section class="card" id="pro">
-      <h2>6. SafeShare Pro / Kaufabwicklung</h2>
-      <p>
-        Nach einem Kauf wird per „After-Purchase Redirect“ auf <code>pro-activate.html?pro=1</code> umgeleitet, wodurch lokal
-        <code>ss2_pro=1</code> gesetzt wird. Zahlungsabwicklung und Kaufdaten erfolgen <strong>außerhalb</strong> dieser Website über den
-        jeweiligen Zahlungs-/Shop-Anbieter (z.&nbsp;B. Payhip/Payment-Provider) als eigene Verantwortliche. Bitte beachten Sie deren
-        Datenschutzhinweise.
-      </p>
-    </section>
-
-    <section class="card" id="kontakt">
-      <h2>7. Kontaktaufnahme</h2>
-      <p>
-        Bei einer Kontaktaufnahme per E-Mail werden die mitgeteilten Daten (z.&nbsp;B. E-Mail-Adresse, Inhalt, Zeitpunkt) zur Bearbeitung der
-        Anfrage verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche/vertragliche Kommunikation) bzw. lit. f
-        (berechtigtes Interesse an Beantwortung). Die Daten werden gelöscht, sobald die Anfrage abschließend erledigt ist und keine
-        Aufbewahrungspflichten entgegenstehen.
-      </p>
-    </section>
-
-    <section class="card" id="rechte">
-      <h2>8. Ihre Rechte</h2>
-      <ul class="tight">
-        <li><strong>Auskunft</strong> über die verarbeiteten personenbezogenen Daten (Art. 15 DSGVO)</li>
-        <li><strong>Berichtigung</strong> unrichtiger Daten (Art. 16 DSGVO)</li>
-        <li><strong>Löschung</strong> („Recht auf Vergessenwerden“, Art. 17 DSGVO)</li>
-        <li><strong>Einschränkung</strong> der Verarbeitung (Art. 18 DSGVO)</li>
-        <li><strong>Datenübertragbarkeit</strong> (Art. 20 DSGVO)</li>
-        <li><strong>Widerspruch</strong> gegen Verarbeitungen auf Grundlage berechtigten Interesses (Art. 21 DSGVO)</li>
-        <li><strong>Beschwerde</strong> bei einer Datenschutz-Aufsichtsbehörde (Art. 77 DSGVO), z.&nbsp;B. in Ihrem Bundesland</li>
+    <section class="card">
+      <h2>5) Rechtsgrundlagen</h2>
+      <ul>
+        <li><strong>Nutzung der App:</strong> Art. 6 Abs. 1 b DSGVO (Vertrag/ähnliches Nutzungsverhältnis) bzw. Art. 6 Abs. 1 f DSGVO (berechtigte Interessen an einer funktionsfähigen, datensparsamen App).</li>
+        <li><strong>Hosting-Logs (GitHub Pages):</strong> Art. 6 Abs. 1 f DSGVO (berechtigtes Interesse an technischer Bereitstellung und Sicherheit).</li>
+        <li><strong>Kauf über Payhip:</strong> Art. 6 Abs. 1 b DSGVO (Vertragserfüllung) und ggf. Art. 6 Abs. 1 c DSGVO (steuer-/handelsrechtliche Pflichten) durch Payhip/Payment-Provider.</li>
       </ul>
-      <p>Zur Wahrnehmung Ihrer Rechte genügt eine formlose Anfrage an die oben genannte Kontaktadresse.</p>
     </section>
 
-    <section class="card" id="externe">
-      <h2>9. Externe Links</h2>
-      <p>
-        Diese Website enthält Links zu externen Seiten Dritter. Für deren Inhalte und Datenverarbeitungen sind die jeweiligen Betreiber verantwortlich.
-        Bitte beachten Sie die Datenschutzhinweise der verlinkten Seiten.
-      </p>
+    <section class="card">
+      <h2>6) Lokale Speicherung, Cookies & PWA</h2>
+      <ul>
+        <li><strong>localStorage:</strong> speichert z. B. Pro-Flag und Whitelist-Einträge. Löschbar über App-Funktionen („Zurücksetzen“) oder Browser-Einstellungen.</li>
+        <li><strong>Service Worker & Cache:</strong> Für Offline-Funktion speichert der Browser Dateien (HTML, JS, CSS, Icons) im Cache. Aktualisierung über <a href="status.html">status.html</a> („Auf Updates prüfen“).</li>
+        <li><strong>Cookies:</strong> Die App setzt selbst keine Tracking-Cookies. Drittanbieter (Payhip) können im Rahmen des Kaufvorgangs Cookies/ähnliche Technologien nutzen.</li>
+      </ul>
     </section>
 
-    <section class="card" id="aenderungen">
-      <h2>10. Änderungen dieser Hinweise</h2>
-      <p>
-        Diese Datenschutzhinweise können bei Bedarf angepasst werden, z.&nbsp;B. bei funktionalen Änderungen der App oder geänderten rechtlichen Vorgaben.
-        Es gilt die jeweils hier veröffentlichte Fassung.
-      </p>
+    <section class="card">
+      <h2>7) Empfänger & Drittanbieter</h2>
+      <ul>
+        <li><strong>Keine Übermittlung der Eingabe-URLs/Ergebnisse</strong> an Server durch die App.</li>
+        <li><strong>Hosting:</strong> GitHub (GitHub Pages) zur Auslieferung der statischen Seiten.</li>
+        <li><strong>Verkauf Pro:</strong> Payhip als unabhängiger Verkäufer/Abwickler. Es gelten deren Datenschutzbestimmungen.</li>
+      </ul>
     </section>
 
-    <footer class="mut">
-      <a href="index.html">Startseite</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="terms.html">Terms</a>
-      <a href="kurz-terms.html">Kurz-Terms</a>
-      <a href="mailto:<!-- EMAIL -->?subject=Anfrage%20zum%20Datenschutz">Datenschutz-Kontakt</a>
+    <section class="card">
+      <h2>8) Drittlandübermittlung</h2>
+      <p>Hosting (GitHub) und Payhip können Dienste außerhalb der EU/EWR einsetzen. Soweit erforderlich, erfolgen Übermittlungen auf Basis geeigneter Garantien (z. B. EU-Standardvertragsklauseln) der jeweiligen Anbieter.</p>
+    </section>
+
+    <section class="card">
+      <h2>9) Speicherdauer</h2>
+      <ul>
+        <li><strong>localStorage/PWA-Caches:</strong> dauerhaft im Browser bis zur Löschung durch Sie oder bei Zurücksetzen/Neuinstallation.</li>
+        <li><strong>Hosting-Logs:</strong> Verantwortlichkeit und Fristen bei GitHub.</li>
+        <li><strong>Kaufdaten (Payhip):</strong> nach Maßgabe gesetzlicher Aufbewahrungspflichten bei Payhip/Payment-Providern.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>10) Ihre Rechte</h2>
+      <ul>
+        <li>Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit (Art. 15–20 DSGVO), Widerspruch (Art. 21 DSGVO), Beschwerde bei einer Aufsichtsbehörde.</li>
+        <li>Für lokal gespeicherte Daten können Sie jederzeit Browser-Daten (localStorage/Cache) löschen oder in der App zurücksetzen.</li>
+        <li>Für Kaufdaten wenden Sie sich bitte an Payhip/den Zahlungsdienstleister.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>11) Externe Links</h2>
+      <p>Verlinkungen auf externe Seiten (z. B. Payhip, GitHub) unterliegen der Verantwortung der jeweiligen Anbieter. Bitte beachten Sie die dortigen Datenschutzhinweise.</p>
+    </section>
+
+    <section class="card">
+      <h2>12) Änderungen</h2>
+      <p>Diese Erklärung kann bei Bedarf angepasst werden, z. B. bei Funktionsänderungen der App oder rechtlichen Vorgaben. Maßgeblich ist die jeweils hier veröffentlichte Fassung.</p>
+      <p class="mut small">Stand: 2025-11-22</p>
+    </section>
+
+    <footer>
+      <nav class="links" aria-label="Footer">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Whitelist</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partner</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
+        <a href="help.html">Hilfe</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html" aria-current="page">Datenschutz</a>
+        <a href="terms.html">Terms</a>
+        <a href="kurz-terms.html">Kurz-Terms</a>
+        <a href="status.html">Status</a>
+      </nav>
     </footer>
   </div>
 
-  <noscript><div class="wrap"><p class="mut">Hinweis: JavaScript ist für die Datenschutzhinweise nicht erforderlich.</p></div></noscript>
+  <noscript>
+    <div class="wrap"><div class="card">Bitte JavaScript aktivieren, um PWA/Service-Worker nutzen zu können.</div></div>
+  </noscript>
 </body>
 </html>
