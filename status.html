@@ -1,3 +1,4 @@
+<!-- /Supersystem/status.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -5,183 +6,97 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Status & Wartung · SafeShare</title>
+  <title>Status · SafeShare</title>
+  <meta name="description" content="Status der PWA & Service Worker: Version, Update-Prüfung, Aktivierung wartender Versionen, Caches leeren.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/status.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="description" content="Status & Wartung: Service Worker, Caches, lokale Einstellungen prüfen und zurücksetzen. Hard-Reload & Update-Check.">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/status.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/status.html">
-  <meta property="og:locale" content="de_DE">
-
-  <!-- Open Graph / Twitter -->
+  <!-- OG/Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Status & Wartung">
-  <meta property="og:description" content="Service Worker & Caches prüfen, Updates laden, Hard-Reload.">
+  <meta property="og:title" content="SafeShare – Status">
+  <meta property="og:description" content="PWA/Service-Worker-Status anzeigen und steuern.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/status.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- OG-Image HIER einsetzen -->
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  
   <!-- PWA / Icons -->
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="manifest.webmanifest?v=31">
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="light dark">
 
   <!-- Sicherheits-CSP -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none';
-                 img-src 'self' data:; style-src 'self' 'unsafe-inline';
-                 script-src 'self'; font-src 'self'; worker-src 'self';
-                 manifest-src 'self'; connect-src 'self'">
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=31"></script>
-  <script defer src="js/page-status.js?v=31"></script>
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
 
   <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#a6a6a6;--card:#141414;--line:#2b2b2b;--chip:#1b1f27;--pri:#23c47e;--ok:#23c47e;--warn:#f59e0b;--err:#ef4444}
-    @media(prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f5f7fa;--line:#e2e8f0;--chip:#e9edf5;--ok:#169e63;--warn:#b7791f;--err:#dc2626}
+    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--warn:#f59e0b}
+    @media (prefers-color-scheme:light){
+      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b;--warn:#b45309}
     }
     html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
     .mut{color:var(--mut)}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
-    @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-    .card h2{margin:.2rem 0 .6rem 0;font-size:1.25rem}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#121417;color:var(--fg);text-decoration:none;cursor:pointer}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none;cursor:pointer}
     .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .btn.warn{background:var(--warn);border-color:transparent;color:#201606;font-weight:700}
-    .btn.err{background:var(--err);border-color:transparent;color:#1e0d0d;font-weight:700}
-    .kv{display:grid;grid-template-columns:max(160px) 1fr;gap:6px 12px}
-    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--mut)}
-    .badge.ok{background:var(--ok);color:#062012;border-color:transparent;font-weight:700}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
-    .skip{position:absolute;left:-9999px}
-    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:6px 10px;border-radius:8px}
-    details summary{cursor:pointer}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    table{width:100%;border-collapse:collapse;border:1px solid var(--line)}
+    th,td{padding:8px;border-top:1px solid var(--line);text-align:left}
+    th{color:var(--mut)}
   </style>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=20251122"></script>
+  <script defer src="js/page-status.js?v=20251122"></script>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
-  <div class="wrap" id="main">
-    <header class="row" style="justify-content:space-between;gap:16px">
+  <div class="wrap">
+    <header class="row" style="justify-content:space-between">
       <div>
-        <h1>Status &amp; Wartung</h1>
-        <p class="mut">Service Worker & Caches prüfen, Updates laden, Hard-Reload und lokale Daten zurücksetzen.</p>
+        <h1>Status</h1>
+        <p class="mut">Service Worker &amp; PWA-Informationen.</p>
       </div>
       <div class="row">
-        <span id="sw-state-badge" class="badge">SW: unbekannt</span>
+        <a class="btn" href="./">Startseite</a>
+        <a class="btn" href="app.html">App</a>
       </div>
     </header>
 
-    <div class="grid">
-      <!-- Service Worker -->
-      <section class="card" aria-label="Service Worker">
-        <h2>Service Worker</h2>
-        <div class="kv">
-          <div class="mut">Controller</div><div id="sw-controller" class="mono">–</div>
-          <div class="mut">Registration</div><div id="sw-reg" class="mono">–</div>
-          <div class="mut">Script</div><div id="sw-script" class="mono">–</div>
-          <div class="mut">SW-Version</div><div id="sw-version" class="mono">–</div>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <button class="btn pri" id="btn-update">Auf Updates prüfen</button>
-          <button class="btn" id="btn-activate-waiting" disabled>Wartende Version aktivieren</button>
-          <button class="btn warn" id="btn-hard">Hard-Reload (nocache)</button>
-          <button class="btn err" id="btn-unreg">SW deregistrieren</button>
-        </div>
-        <p id="sw-note" class="mut" style="margin-top:8px"></p>
-      </section>
-
-      <!-- Cache & Storage -->
-      <section class="card" aria-label="Cache & Storage">
-        <h2>Cache &amp; Storage</h2>
-        <div class="kv">
-          <div class="mut">Caches</div><div id="cache-list" class="mono">–</div>
-          <div class="mut">localStorage Keys</div><div id="ls-keys" class="mono">–</div>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <button class="btn" id="btn-clear-caches">Alle Caches löschen</button>
-          <button class="btn" id="btn-clear-ls">localStorage zurücksetzen</button>
-          <button class="btn err" id="btn-clear-all">Alles löschen (Caches+LS)</button>
-        </div>
-        <p class="mut" style="margin-top:8px">Betroffene Keys: <code>ss_whitelist</code>, <code>ss_team_whitelist</code>, <code>ss_pro</code>. Precache- und Laufzeit-Caches werden entfernt.</p>
-      </section>
-
-      <!-- App-Dateien -->
-      <section class="card" aria-label="App-Dateien">
-        <h2>App-Dateien</h2>
-        <ul>
-          <li><a href="manifest.webmanifest">manifest.webmanifest</a></li>
-          <li><a href="sw.js">sw.js</a></li>
-          <li><a href="js/sw-register.js">js/sw-register.js</a></li>
-        </ul>
-        <details>
-          <summary>Icons</summary>
-          <ul>
-            <li><a href="assets/icons/apple-touch-icon-180.png">apple-touch-icon-180.png</a></li>
-            <li><a href="assets/icons/icon-512-kreis.png">icon-512-kreis.png</a></li>
-            <li><a href="assets/icons/icon-192-kreis.png">icon-192-kreis.png</a></li>
-            <li><a href="assets/icons/icon-32-kreis.png">icon-32-kreis.png</a></li>
-            <li><a href="assets/icons/icon-16-kreis.png">icon-16-kreis.png</a></li>
-          </ul>
-        </details>
-      </section>
-
-      <!-- Diagnose -->
-      <section class="card" aria-label="Diagnose">
-        <h2>Diagnose</h2>
-        <div class="kv">
-          <div class="mut">Online</div><div class="mono" id="diag-online">–</div>
-          <div class="mut">Sprache</div><div class="mono" id="diag-lang">–</div>
-          <div class="mut">UA</div><div class="mono" id="diag-ua">–</div>
-          <div class="mut">Zeit</div><div class="mono" id="diag-time">–</div>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <button class="btn" id="btn-ping">SW anpingen</button>
-          <button class="btn" id="btn-open-app">Zur App</button>
-        </div>
-        <p id="diag-msg" class="mut" style="margin-top:8px"></p>
-      </section>
-    </div>
-
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklet</a>
-        <a href="bulk-clean.html">Bulk-Clean</a>
-        <a href="team-setup.html">Team-Whitelist</a>
-        <a href="help.html">Hilfe</a>
-        <a href="press.html">Presse</a>
-        <a href="compliance.html">Compliance</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-      </nav>
-    </footer>
+    <section class="card">
+      <h2 style="margin-top:0">Überblick</h2>
+      <table aria-label="SW-Status">
+        <tbody>
+          <tr><th>Registriert</th><td id="sw-state">–</td></tr>
+          <tr><th>Aktive Version</th><td id="sw-version">–</td></tr>
+          <tr><th>Wartende Version</th><td id="sw-waiting">–</td></tr>
+          <tr><th>Pro aktiviert</th><td id="pro-state">–</td></tr>
+        </tbody>
+      </table>
+      <p id="sw-log" class="mut" style="margin-top:8px"></p>
+      <div class="row" style="margin-top:10px">
+        <button id="btn-check" class="btn pri" type="button">Auf Updates prüfen</button>
+        <button id="btn-activate" class="btn" type="button">Wartende Version aktivieren</button>
+        <button id="btn-clear" class="btn" type="button">Caches leeren</button>
+      </div>
+      <p class="mut" style="margin-top:8px">Tipp: Bei Anzeige-Problemen Seite mit <code>?nocache=YYYYMMDD</code> neu laden.</p>
+    </section>
   </div>
 
-  <noscript>
-    <div class="wrap"><div class="card">JavaScript aktivieren, um Service-Worker und Caches zu verwalten.</div></div>
-  </noscript>
+  <noscript><div class="wrap"><div class="card">Bitte JavaScript aktivieren, um den Service-Worker-Status zu steuern.</div></div></noscript>
 </body>
 </html>
