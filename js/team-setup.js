@@ -1,144 +1,134 @@
-/* team-setup.js – SafeShare Team-Whitelist Verwaltung */
-(function(){
-  const KEY_MAIN = 'ss_whitelist';
-  const KEY_LEGACY = 'ss_team_whitelist';
+/* /Supersystem/js/page-team-setup.js (v35) – Whitelist-Editor */
+(() => {
+  'use strict';
 
-  const $ = s => document.querySelector(s);
-  const box = $('#pill-box');
-  const input = $('#param-input');
-  const cnt = $('#cnt');
-  const taImport = $('#import-area');
+  const $ = (s) => document.querySelector(s);
+  const chipsEl = $('#wl-chips');
+  const inputEl = $('#wl-input');
+  const msgEl = $('#wl-msg');
 
-  $('#btn-add').addEventListener('click', onAdd);
-  $('#btn-export').addEventListener('click', onExport);
-  $('#btn-reset').addEventListener('click', onReset);
-  $('#btn-import-merge').addEventListener('click', ()=>onImport(false));
-  $('#btn-import-replace').addEventListener('click', ()=>onImport(true));
-  input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); onAdd(); } });
+  const KEY = 'ss_whitelist';
+  const DEFAULTS = ['tag','ref'];
+  const VALID = /^[a-z0-9_-]+$/;
 
-  init();
-
-  function init(){
-    const set = loadSet();
-    render(set);
+  function load() {
+    const raw = (localStorage.getItem(KEY) || '').trim();
+    if (!raw) return [];
+    return raw.split(',').map(s => s.trim()).filter(Boolean);
   }
 
-  function loadSet(){
-    try{
-      const raw = localStorage.getItem(KEY_MAIN)
-               || localStorage.getItem(KEY_LEGACY)
-               || '[]';
-      const arr = JSON.parse(raw);
-      if (!Array.isArray(arr)) return new Set();
-      return new Set(arr.map(s => String(s).toLowerCase()));
-    }catch{ return new Set(); }
+  function save(list) {
+    const unique = Array.from(new Set(list.map(s => s.toLowerCase())))
+      .filter(s => VALID.test(s));
+    localStorage.setItem(KEY, unique.join(','));
+    return unique;
   }
 
-  function saveSet(set){
-    const arr = Array.from(set).sort();
-    localStorage.setItem(KEY_MAIN, JSON.stringify(arr));
-    // Legacy mitschreiben für Altseiten
-    localStorage.setItem(KEY_LEGACY, JSON.stringify(arr));
-    return arr;
-  }
-
-  function validName(name){
-    const n = String(name||'').trim().toLowerCase();
-    if (!n) return null;
-    // a-z 0-9 _ - .
-    if (!/^[a-z0-9_.-]{1,64}$/.test(n)) return null;
-    return n;
-  }
-
-  function onAdd(){
-    const n = validName(input.value);
-    if (!n) { flash(input); return; }
-    const set = loadSet();
-    set.add(n);
-    saveSet(set);
-    input.value = '';
-    render(set);
-    toast(`Hinzugefügt: ${n}`);
-  }
-
-  function onExport(){
-    const set = loadSet();
-    const json = JSON.stringify(Array.from(set).sort(), null, 2);
-    const blob = new Blob([json], {type:'application/json;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'safeshare-whitelist.json';
-    document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  function onReset(){
-    if (!confirm('Alle Einträge entfernen?')) return;
-    localStorage.setItem(KEY_MAIN, '[]');
-    localStorage.setItem(KEY_LEGACY, '[]');
-    render(new Set());
-  }
-
-  function onImport(replace){
-    const text = taImport.value || '';
-    const parts = text.split(/[\s,;]+/).map(s=>s.trim()).filter(Boolean);
-    if (!parts.length) { flash(taImport); return; }
-
-    let set = replace ? new Set() : loadSet();
-    let added = 0;
-    for (const p of parts){
-      const n = validName(p);
-      if (n){ set.add(n); added++; }
-    }
-    saveSet(set);
-    render(set);
-    toast(`${added} Einträge übernommen.`);
-  }
-
-  function render(set){
-    box.innerHTML = '';
-    const arr = Array.from(set).sort();
-    cnt.textContent = String(arr.length);
-    if (!arr.length){
-      const p = document.createElement('p');
-      p.className = 'mut';
-      p.textContent = 'Keine Einträge vorhanden.';
-      box.appendChild(p);
+  function render(list) {
+    // Input
+    inputEl.value = list.join(',');
+    // Chips
+    chipsEl.innerHTML = '';
+    if (!list.length) {
+      chipsEl.innerHTML = '<span class="mut">Keine Einträge – alles wird entfernt.</span>';
       return;
     }
-    for (const n of arr){
-      const span = document.createElement('span');
-      span.className = 'pill';
-      span.innerHTML = `<code>${escapeHtml(n)}</code><span class="x" title="Entfernen" aria-label="Entfernen" role="button">×</span>`;
-      span.querySelector('.x').addEventListener('click', ()=>{
-        const s2 = loadSet();
-        s2.delete(n);
-        saveSet(s2);
-        render(s2);
+    list.forEach(name => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.innerHTML = `<code>${name}</code> <button type="button" title="Entfernen" aria-label="Entfernen">×</button>`;
+      chip.querySelector('button').addEventListener('click', () => {
+        const next = load().filter(x => x !== name);
+        const final = save(next);
+        render(final);
+        setMsg(`Entfernt: ${name}`);
       });
-      box.appendChild(span);
-    }
-  }
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  function flash(el){
-    const old = el.style.outline;
-    el.style.outline = '2px solid #e11d48';
-    setTimeout(()=>{ el.style.outline = old || ''; }, 700);
-  }
-
-  function toast(msg){
-    const div = document.createElement('div');
-    div.textContent = msg;
-    Object.assign(div.style, {
-      position:'fixed',left:'50%',bottom:'18px',transform:'translateX(-50%)',
-      background:'#101214',color:'#e9e9ea',border:'1px solid #20232b',borderRadius:'10px',
-      padding:'8px 12px',zIndex:99999,font:'14px/1.2 system-ui,-apple-system,Segoe UI,Roboto'
+      chipsEl.appendChild(chip);
     });
-    document.body.appendChild(div);
-    setTimeout(()=>div.remove(), 1600);
   }
+
+  function parseInput() {
+    const raw = inputEl.value || '';
+    const items = raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+    const invalid = items.filter(s => !VALID.test(s));
+    if (invalid.length) {
+      throw new Error(`Ungültig: ${invalid.join(', ')} (nur a–z, 0–9, _ , -)`);
+    }
+    return items;
+  }
+
+  function setMsg(text) {
+    if (msgEl) msgEl.textContent = text;
+  }
+
+  // Events
+  $('#wl-save')?.addEventListener('click', () => {
+    try {
+      const items = parseInput();
+      const final = save(items);
+      render(final);
+      setMsg('Gespeichert.');
+    } catch (e) {
+      setMsg(String(e.message || e));
+    }
+  });
+
+  $('#wl-reset')?.addEventListener('click', () => {
+    const final = save(DEFAULTS);
+    render(final);
+    setMsg('Standard geladen (tag,ref).');
+  });
+
+  $('#wl-clear')?.addEventListener('click', () => {
+    localStorage.removeItem(KEY);
+    render([]);
+    setMsg('Whitelist geleert.');
+  });
+
+  $('#wl-export')?.addEventListener('click', () => {
+    const list = load();
+    const text = list.join(',') + '\n';
+    const ts = new Date();
+    const pad = (n) => String(n).padStart(2,'0');
+    const name = `safeshare-whitelist-${ts.getFullYear()}${pad(ts.getMonth()+1)}${pad(ts.getDate())}.txt`;
+    const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    setMsg(`Exportiert: ${name}`);
+  });
+
+  $('#wl-import')?.addEventListener('change', (ev) => {
+    const file = ev.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        let txt = String(reader.result || '');
+        // JSON-Array unterstützen
+        if (/^\s*\[/.test(txt)) {
+          const arr = JSON.parse(txt);
+          if (!Array.isArray(arr)) throw new Error('JSON ist keine Liste.');
+          txt = arr.join(',');
+        }
+        inputEl.value = txt.trim();
+        const final = save(parseInput());
+        render(final);
+        setMsg(`Importiert: ${file.name}`);
+      } catch (e) {
+        setMsg('Import fehlgeschlagen: ' + (e.message || e));
+      }
+      ev.target.value = '';
+    };
+    reader.readAsText(file, 'utf-8');
+  });
+
+  // Init
+  render(load());
+  setMsg('Bereit.');
+  console.log('[SafeShare] page-team-setup bereit');
 })();
