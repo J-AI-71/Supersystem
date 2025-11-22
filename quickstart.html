@@ -6,33 +6,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Quickstart (druckbar) · SafeShare</title>
-  <meta name="description" content="Quickstart: SafeShare in 1 Minute starten, installieren (PWA), Bookmarklet nutzen, Pro aktivieren und Team-Whitelist setzen. Mit QR-Code zur App.">
+  <title>Quickstart · SafeShare</title>
+  <meta name="description" content="Eine Seite, ein Blick: SafeShare in 60 Sekunden verstehen – inkl. QR-Code zur App.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/quickstart.html">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/quickstart.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/quickstart.html">
-  <meta property="og:locale" content="de_DE">
-
   <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="SafeShare · Quickstart">
-  <meta property="og:description" content="In 1 Minute loslegen: App öffnen, installieren (PWA), Bookmarklet, Pro aktivieren, Team-Whitelist. Mit QR-Code zur App.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SafeShare – Quickstart">
+  <meta property="og:description" content="So säuberst du Links in 60 Sekunden.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/quickstart.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
   <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=35">
+  <link rel="manifest" href="manifest.webmanifest?v=20251122">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
   <meta name="theme-color" content="#0b0b0b">
   <meta name="color-scheme" content="light dark">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Sicherheits-CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -46,136 +42,84 @@
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- Styles (druckfreundlich) -->
+  <!-- Styles (printfreundlich, 1 Seite) -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b}
+    :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--line:#e2e8f0;--pri:#22c07b}
+    @media (prefers-color-scheme:dark){
+      :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--line:#26313a;--pri:#2bd184}
     }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:#9fe7c3}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    .page{max-width:900px;margin:0 auto;padding:28px}
+    h1{margin:.2rem 0}
     .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#072b16;font-weight:700}
-    .grid{display:grid;grid-template-columns:1.4fr .9fr;gap:16px}
-    @media(max-width:900px){.grid{grid-template-columns:1fr}}
-    .qr-card{text-align:center}
-    .qr-card img{max-width:280px;width:100%;height:auto;border-radius:12px;background:#fff;padding:8px}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    ol.steps{margin:.4rem 0 .2rem 1.2rem}
-    ol.steps li{margin:.3rem 0}
-    .foot{border-top:1px solid var(--line);margin-top:24px;padding-top:12px}
-    .printbar{display:flex;gap:10px;align-items:center}
-    .hide-print{display:inline-flex}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){.grid{grid-template-columns:1.2fr .8fr}}
+    .card{border:1px solid var(--line);border-radius:12px;padding:16px}
+    ul{margin:.2rem 0 .6rem 1.1rem}
+    li{margin:.2rem 0}
+    .qr{display:flex;justify-content:center;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:inherit}
+    @page{size:A4;margin:12mm}
     @media print{
-      :root{--bg:#ffffff;--fg:#000;--mut:#333;--card:#fff;--line:#ddd}
-      a{color:#000;text-decoration:underline}
-      .wrap{padding:0}
-      .card{border-color:#ddd}
-      .hide-print{display:none !important}
-      .qr-card img{border:1px solid #bbb}
-      /* URL hinter Links ausgeben */
-      a[href]:after{content:" (" attr(href) ")"; font-size:0.9em; color:#333}
-      @page{size:A4;margin:12mm}
+      .no-print{display:none !important}
+      .page{padding:0}
+      a{color:#000;text-decoration:none}
     }
   </style>
 
   <!-- JS -->
-  <script defer src="js/sw-register.js?v=35"></script>
-  <script defer src="js/page-quickstart.js?v=35"></script>
+  <script defer src="js/sw-register.js?v=20251122"></script>
 </head>
 <body>
-  <div class="wrap">
-    <header class="row" style="justify-content:space-between">
+  <div class="page">
+    <header style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start" class="no-print">
       <div>
-        <h1>Quickstart</h1>
-        <p class="mut">SafeShare in 1 Minute: App, Installation (PWA), Bookmarklet, Pro, Team-Whitelist, Troubleshooting.</p>
+        <h1>Quickstart · SafeShare</h1>
+        <p class="mut">Eine Seite – installiert, verstanden, genutzt.</p>
       </div>
-      <div class="printbar hide-print">
+      <nav style="display:flex;gap:8px;flex-wrap:wrap">
         <a class="btn" href="./">Startseite</a>
-        <button id="do-print" class="btn">Drucken</button>
-      </div>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="help.html">Hilfe</a>
+      </nav>
     </header>
 
-    <section class="grid">
-      <div class="card">
-        <h2 style="margin-top:0">Schritt-für-Schritt</h2>
-        <ol class="steps">
-          <li><strong>App öffnen:</strong> <a href="app.html">/app.html</a>. URL einfügen → <em>Säubern</em> oder <em>Säubern &amp; öffnen</em>.</li>
-          <li><strong>Installieren (PWA):</strong>
-            <ul>
-              <li><em>iOS Safari:</em> Teilen → „Zum Home-Bildschirm“</li>
-              <li><em>Android Chrome:</em> Menü → „App installieren“</li>
-              <li><em>Desktop:</em> Browser „Installieren“-Icon (falls angeboten)</li>
-            </ul>
-          </li>
-          <li><strong>Bookmarklet (optional):</strong> <a href="bookmarklets.html">/bookmarklets.html</a> öffnen → Button in Lesezeichenleiste <em>ziehen</em>. Auf Mobilgeräten: Lesezeichen-URL durch den <span class="mono">javascript:</span>-Code ersetzen.</li>
-          <li><strong>Pro (optional):</strong> <a href="https://payhip.com/b/VDm3B" rel="noopener">Pro kaufen</a> → Weiterleitung oder manuell: <span class="mono">/pro-activate.html?pro=1</span> → Badge „Pro aktiv“ sichtbar (z. B. in <a href="bulk-clean.html">Bulk-Clean</a>).</li>
-          <li><strong>Team-Whitelist:</strong> <a href="team-setup.html">/team-setup.html</a> öffnen → erlaubte Parameter (z. B. <span class="mono">tag,ref</span>) eintragen → speichern.</li>
-          <li><strong>Troubleshooting:</strong> <a href="status.html">/status.html</a> → „Auf Updates prüfen“ bzw. „Wartende Version aktivieren“. Alternativ Seiten mit <span class="mono">?nocache=YYYYMMDD</span> neu laden.</li>
+    <main class="grid">
+      <section class="card">
+        <h2 style="margin:.2rem 0">So startest du in 60&nbsp;Sekunden</h2>
+        <ol>
+          <li>Öffne die App: <a href="app.html"><strong>app.html</strong></a>.</li>
+          <li>Füge einen Link ein und klicke auf <em>„Säubern“</em>.</li>
+          <li>Ergebnis <em>kopieren</em>, <em>teilen</em> oder <em>öffnen</em>.</li>
         </ol>
-        <div class="row" style="margin-top:10px">
-          <a class="btn pri" href="app.html">App starten</a>
-          <a class="btn" href="help.html">Hilfe &amp; FAQ</a>
+        <h3 style="margin:.4rem 0">Optional</h3>
+        <ul>
+          <li>Bookmarklets: <a href="bookmarklets.html">bookmarklets.html</a> → Button in Lesezeichenleiste ziehen (Desktop) oder Code in Lesezeichen einsetzen (Mobil).</li>
+          <li>Team-Whitelist: <a href="team-setup.html">team-setup.html</a> → legitime Parameter (z.&nbsp;B. <code>tag</code>, <code>ref</code>) hinterlegen.</li>
+          <li>Bulk-Clean für Listen/CSV: <a href="bulk-clean.html">bulk-clean.html</a>.</li>
+          <li>Installierbar als PWA. iOS: Teilen → „Zum Home-Bildschirm“. Android/Chrome: „Installieren“.</li>
+        </ul>
+        <p class="mut">Drucken: <strong>Strg+P</strong> / <strong>⌘P</strong>. Diese Seite ist für eine DIN-A4-Seite optimiert.</p>
+      </section>
+
+      <aside class="card">
+        <h2 style="margin:.2rem 0">QR zur App</h2>
+        <div class="qr">
+          <img src="assets/qr/app-qr.svg" alt="QR-Code zur SafeShare App" width="280" height="280" loading="lazy">
         </div>
-      </div>
-
-      <aside class="card qr-card" aria-labelledby="qr-title">
-        <h2 id="qr-title" style="margin-top:0">QR-Code zur App</h2>
-        <figure>
-          <img src="assets/qr/app-qr.svg" alt="QR-Code: https://j-ai-71.github.io/Supersystem/app.html">
-          <figcaption class="mut">Ziel: <span class="mono">/app.html</span></figcaption>
-        </figure>
-        <p class="mut" style="margin-top:10px">Für Ausdrucke gedacht. Auf Mobilgeräten einfach scannen und starten.</p>
+        <p style="margin-top:10px"><a class="btn" href="assets/qr/app-qr.svg" download>QR speichern</a></p>
+        <p class="mut">Ziel: <code>https://j-ai-71.github.io/Supersystem/app.html</code></p>
       </aside>
-    </section>
+    </main>
 
-    <section class="card">
-      <h2 style="margin-top:0">Kurz erklärt</h2>
-      <ul class="row" style="list-style:none;padding:0;margin:0;gap:16px;flex-wrap:wrap">
-        <li style="flex:1 1 280px;min-width:260px">
-          <strong>Was SafeShare tut</strong>
-          <p class="mut">Entfernt Tracking-Parameter (UTM, gclid/fbclid/msclkid …) und entpackt gängige Weiterleitungs-Wrapper – lokal im Browser.</p>
-        </li>
-        <li style="flex:1 1 280px;min-width:260px">
-          <strong>Was erhalten bleibt</strong>
-          <p class="mut">Über die Team-Whitelist können legitime Parameter (z. B. <span class="mono">tag</span>, <span class="mono">ref</span>) erlaubt werden.</p>
-        </li>
-        <li style="flex:1 1 280px;min-width:260px">
-          <strong>Offline &amp; Datenschutz</strong>
-          <p class="mut">PWA-fähig, funktioniert nach dem ersten Laden offline. Keine Server-Logs, keine Konten.</p>
-        </li>
-      </ul>
+    <section class="card" style="margin-top:16px">
+      <h2 style="margin:.2rem 0">Was SafeShare entfernt</h2>
+      <p class="mut">Tracking-Parameter wie <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code> und ähnliche. Übliche Redirect-Wrapper (z. B. <code>google.com/url</code>, <code>l.facebook.com/l.php</code>) werden entpackt. Alles lokal im Browser – keine App-Server-Logs.</p>
     </section>
-
-    <footer class="foot">
-      <nav class="row" aria-label="Footer" style="gap:10px">
-        <a href="./">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklet</a>
-        <a href="bulk-clean.html">Bulk-Clean</a>
-        <a href="team-setup.html">Team-Whitelist</a>
-        <a href="publisher.html">Publisher</a>
-        <a href="education.html">Education</a>
-        <a href="partners.html">Partner</a>
-        <a href="compliance.html">Compliance</a>
-        <a href="press.html">Presse</a>
-        <a href="help.html">Hilfe</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-        <a href="status.html">Status</a>
-        <a href="quickstart.html" aria-current="page">Quickstart</a>
-      </nav>
-    </footer>
   </div>
 
   <noscript>
-    <div class="wrap"><div class="card">Für „Drucken“ bitte JavaScript aktivieren – alternativ Browser-Menü „Drucken“ nutzen.</div></div>
+    <div class="page"><div class="card">Hinweis: Für vollständige Funktion bitte JavaScript aktivieren.</div></div>
   </noscript>
 </body>
 </html>
