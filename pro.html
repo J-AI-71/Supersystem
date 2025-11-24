@@ -5,23 +5,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare Pro – Bulk-Clean, Redirect-Entpacken, Team-Whitelist</title>
-  <meta name="description" content="SafeShare Pro: Listen säubern (Bulk-Clean), Redirects entpacken und Team-Whitelist – alles lokal im Browser, keine Accounts, keine Server-Logs. Einmal kaufen, lokal aktivieren.">
-
-  <!-- Canonical & hreflang -->
+  <title>SafeShare Pro – Saubere Links für Teams & Power-User</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro.html">
+  <meta name="description" content="SafeShare Pro: Bulk-Clean für ganze Linklisten, Redirects entpacken, Team-Whitelist. 100 % lokal im Browser, ohne Accounts, ohne Tracking. Einmal kaufen, lokal aktivieren.">
+
+  <!-- hreflang / Locale -->
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro.html" hreflang="x-default">
+  <meta property="og:locale" content="de_DE"/>
 
-  <!-- Icons/Manifest -->
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SafeShare Pro – Saubere Links für Teams & Power-User">
+  <meta property="og:description" content="Bulk-Clean, Redirects entpacken & Team-Whitelist – alles lokal im Browser, ohne Accounts.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Icons / PWA -->
   <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32">
-  <link rel="icon" href="assets/icons/icon-16-kreis.png" sizes="16x16">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
 
-  <!-- CSP: Inline-CSS erlauben (Seite nutzt <style>) -->
+  <!-- Security: sanfte CSP (Skripte nur von 'self') -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     base-uri 'self';
@@ -31,111 +37,209 @@
     style-src 'self' 'unsafe-inline';
     script-src 'self';
     font-src 'self';
+    connect-src 'self';
     worker-src 'self';
-    manifest-src 'self';
-    connect-src 'self'">
+    manifest-src 'self'
+  ">
 
-  <!-- Open Graph / Twitter -->
-  <meta property="og:locale" content="de_DE">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare Pro">
-  <meta property="og:description" content="Bulk-Clean, Redirect-Entpacken und Team-Whitelist – lokal im Browser. Einmal kaufen, keine Accounts.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- SW-Register -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
-
-  <!-- Mini-CSS -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#f5f5f5;--mut:#9aa0a6;--pri:#16a34a;--btn:#1f2937;--br:10px;--bd:#2b2f36}
-    @media (prefers-color-scheme: light){:root{--bg:#ffffff;--fg:#0a0a0a;--mut:#5f6368;--btn:#eef2f7;--bd:#e5e7eb}}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    .wrap{max-width:980px;margin:40px auto;padding:0 16px}
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--mut:#9aa0a6;--pri:#2ecc71;--pri2:#1b9e50;--card:#141416;--border:#2a2a2a}
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:#9fd; text-decoration:none} a:hover{opacity:.85}
+    header{padding:28px 16px 8px;max-width:1024px;margin:0 auto}
+    h1{margin:0 0 .25rem;font-size:36px;line-height:1.15}
     .mut{color:var(--mut)}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#222;color:#fff}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--btn);color:var(--fg);text-decoration:none;border:1px solid var(--bd)}
-    .btn.pri{background:var(--pri);color:#fff;border-color:transparent}
-    h1{font-size:32px;margin:0 0 8px}
-    h2{margin:28px 0 8px}
-    .card{border:1px solid var(--bd);border-radius:var(--br);padding:16px;background:transparent}
-    .grid{display:grid;gap:16px}
-    @media(min-width:800px){.grid{grid-template-columns:1fr 1fr}}
-    ul{margin:8px 0 0 18px}
-    .price{font-size:28px;margin:0}
-    .plan{display:flex;flex-direction:column;gap:10px}
-    .note{font-size:14px;color:var(--mut)}
-    .skip{position:absolute;left:-9999px}
-    .skip:focus{left:16px;top:12px;background:#000;color:#fff;padding:8px;border-radius:8px;z-index:10}
+    .wrap{max-width:1024px;margin:0 auto;padding:0 16px 40px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 24px}
+    .pill{padding:.25rem .6rem;border-radius:9999px;background:#15171b;color:#cbd3da;font-size:.9rem;border:1px solid #2a2f38}
+    .btn{display:inline-block;padding:.7rem 1rem;border-radius:.6rem;border:1px solid var(--border);background:#15171b;color:#eaeaea}
+    .btn.pri{background:var(--pri);border-color:var(--pri2);color:#061b0c;font-weight:700}
+    .btn.ghost{background:transparent}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+    .card h3{margin:.25rem 0 .5rem}
+    ul.clean{margin:.5rem 0 .5rem 1.1rem}
+    .price{font-size:28px;font-weight:800;margin:.25rem 0}
+    .plan-footer{margin-top:10px}
+    .note{font-size:.9rem;color:var(--mut)}
+    .cta-bar{position:sticky;bottom:0;background:#0d0f12e6;backdrop-filter:blur(6px);border-top:1px solid var(--border);padding:10px 16px;display:flex;gap:10px;justify-content:center}
+    footer{border-top:1px solid var(--border);margin-top:28px}
+    footer .foot{max-width:1024px;margin:0 auto;padding:18px 16px;color:var(--mut);font-size:.95rem}
+    footer .foot a{color:#bcd}
+    .links{display:flex;flex-wrap:wrap;gap:.75rem}
+    .kbd{font:600 12px/1.4 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:#111;padding:.15rem .35rem;border-radius:4px;border:1px solid #2a2a2a;color:#9aa0a6}
   </style>
+
+  <!-- Scripts -->
+  <script defer src="js/sw-register.js?v=31"></script>
+  <script defer src="js/ext-links.js?v=31"></script>
+  <script defer src="js/telemetry.js?v=31"></script>
+
+  <!-- Structured Data: WebApplication + Offers (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SafeShare Pro",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "url": "https://j-ai-71.github.io/Supersystem/pro.html",
+    "image": "https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg",
+    "description": "Bulk-Clean für ganze Linklisten, Redirects entpacken und Team-Whitelist – alles lokal im Browser, ohne Accounts.",
+    "offers": [{
+      "@type": "Offer",
+      "name": "Personal",
+      "price": "15.00",
+      "priceCurrency": "EUR",
+      "url": "https://payhip.com/b/XXXXXX"
+    },{
+      "@type": "Offer",
+      "name": "Team (bis 5 Geräte intern)",
+      "price": "49.00",
+      "priceCurrency": "EUR",
+      "url": "https://payhip.com/b/XXXXXX"
+    }]
+  }
+  </script>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
-  <div class="wrap" id="main">
+  <a class="kbd" href="#main" style="position:absolute;left:-9999px;top:8px" onfocus="this.style.left='8px'">Zum Inhalt springen</a>
+
+  <header>
     <h1>SafeShare Pro</h1>
-    <p class="mut">Listen säubern (Bulk-Clean), Redirect-Entpacken und Team-Whitelist – lokal im Browser, keine Accounts, keine Server-Logs.</p>
-
-    <div class="row" style="margin:12px 0 18px">
-      <span class="pill">Status: <strong>nicht aktiviert</strong></span>
+    <p class="mut">Bulk-Clean für ganze Linklisten, Redirects entpacken & Team-Whitelist – alles lokal im Browser, ohne Accounts.</p>
+    <div class="row">
+      <span class="pill">100 % lokal</span>
+      <span class="pill">Keine Accounts</span>
+      <span class="pill">PWA &amp; Offline-fähig</span>
+      <span class="pill">Privacy-by-Design</span>
     </div>
-
-    <div class="row" style="margin-bottom:14px">
-      <a class="btn" href="app.html">Zur App</a>
-      <a class="btn pri" href="https://payhip.com/b/VDm3B" rel="noopener">Pro kaufen</a>
-      <a class="btn" href="pro-activate.html?pro=1">Kauf abgeschlossen? Aktivieren</a>
-    </div>
-
-    <h2>Leistungsumfang</h2>
-    <ul>
-      <li><strong>Bulk-Clean:</strong> Viele URLs in einem Rutsch bereinigen; optional CSV-Export.</li>
-      <li><strong>Redirect-Entpacken:</strong> Klarziel statt Ketten (z. B. <em>google.com/url</em>, <em>t.co</em>, <em>l.facebook.com</em> …).</li>
-      <li><strong>Team-Whitelist:</strong> Erlaubte Parameter (z. B. <code>tag</code>, <code>ref</code>) bleiben erhalten.</li>
-      <li><strong>Privacy-by-Design:</strong> 100 % lokal im Browser, keine Server-Logs.</li>
-      <li><strong>PWA/Offline:</strong> Kernseiten auch ohne Netz verfügbar.</li>
-    </ul>
-
-    <div class="row" style="margin:14px 0 22px">
-      <a class="btn" href="bulk-clean.html">Bulk-Clean öffnen</a>
+    <div class="row">
+      <a class="btn pri" href="app.html">App öffnen</a>
+      <a class="btn" href="bookmarklets.html">Bookmarklet</a>
+      <a class="btn" href="bulk-clean.html">Bulk-Clean</a>
       <a class="btn" href="redirect-entschachteln.html">Redirect-Tool</a>
       <a class="btn" href="team-setup.html">Team-Whitelist</a>
+      <a class="btn ghost" href="pro-activate.html?pro=1">Kauf abgeschlossen? Aktivieren</a>
     </div>
+  </header>
 
-    <h2>Preise</h2>
-    <div class="grid">
-      <div class="card plan">
-        <div><strong>Personal</strong><div class="mut">1 Person · lokale Aktivierung</div></div>
-        <p class="price">15 € <span class="mut" style="font-size:16px">einmalig</span></p>
-        <ul>
-          <li>Bulk-Clean, Redirect-Entpacken, Whitelist</li>
-          <li>Updates für Version 1.x</li>
-          <li>Kein Abo, keine Konten</li>
-        </ul>
-        <a class="btn pri" href="https://payhip.com/b/VDm3B" rel="noopener">Kaufen</a>
+  <main id="main" class="wrap">
+    <!-- Leistungsumfang -->
+    <section class="card">
+      <h2 style="margin:0 0 .5rem">Leistungsumfang</h2>
+      <ul class="clean">
+        <li><strong>Bulk-Clean:</strong> Viele URLs in einem Rutsch bereinigen; optional CSV-Export.</li>
+        <li><strong>Redirects entpacken:</strong> End-Ziel statt Tracking-Ketten (z. B. <code>google.com/url</code>, <code>t.co</code>, <code>facebook.com</code>).</li>
+        <li><strong>Team-Whitelist:</strong> Erlaubte Parameter (z. B. <code>tag</code>, <code>ref</code>) bleiben erhalten.</li>
+        <li><strong>Privacy-freundlich:</strong> 100 % lokal im Browser, keine Server-Logs.</li>
+        <li><strong>PWA/Offline:</strong> Kerndienste funktionieren auch ohne Netz.</li>
+      </ul>
+      <div class="row" style="margin-top:10px">
+        <a class="btn pri" href="bulk-clean.html">Bulk-Clean jetzt testen</a>
+        <a class="btn" href="help.html">Hilfe &amp; FAQ</a>
       </div>
+    </section>
 
-      <div class="card plan">
-        <div><strong>Team</strong><div class="mut">bis 5 Geräte intern</div></div>
-        <p class="price">49 € <span class="mut" style="font-size:16px">einmalig</span></p>
-        <ul>
-          <li>Alle Personal-Features</li>
-          <li>Interne Nutzung für bis zu 5 Geräte</li>
-          <li>Priorisierte Unterstützung per E-Mail</li>
-        </ul>
-        <a class="btn" href="https://payhip.com/b/VDm3B" rel="noopener">Kaufen</a>
+    <!-- Preise / Pläne -->
+    <section style="margin-top:22px">
+      <h2 style="margin:0 0 .75rem">Preise</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Personal</h3>
+          <div class="mut">1 Person · lokale Aktivierung</div>
+          <div class="price">15 € <span class="mut" style="font-size:14px;font-weight:600">einmalig</span></div>
+          <ul class="clean">
+            <li>Bulk-Clean, Redirect-Entpacken, Whitelist</li>
+            <li>Updates für Version&nbsp;1.x</li>
+            <li>Kein Abo, keine Konten</li>
+          </ul>
+          <div class="plan-description note">Bezahlung über Payhip. Nach Kauf automatische Weiterleitung zu <code>pro-activate.html?pro=1</code> zur lokalen Freischaltung.</div>
+          <div class="plan-footer">
+            <!-- TODO: Ersetze XXXXXX durch deine echte Payhip-Produkt-ID -->
+            <a class="btn pri" href="https://payhip.com/b/XXXXXX" target="_blank" rel="noopener">Kaufen</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Team</h3>
+          <div class="mut">bis 5 Geräte intern</div>
+          <div class="price">49 € <span class="mut" style="font-size:14px;font-weight:600">einmalig</span></div>
+          <ul class="clean">
+            <li>Alle Personal-Features</li>
+            <li>Interne Nutzung bis 5 Geräte</li>
+            <li>Priorisierte E-Mail-Unterstützung</li>
+          </ul>
+          <div class="plan-description note">Auf Wunsch separate Payhip-Variante „Team“. Solange nicht vorhanden, kann der gleiche Produktlink genutzt werden.</div>
+          <div class="plan-footer">
+            <!-- Optional: eigener Team-Produktlink -->
+            <a class="btn" href="https://payhip.com/b/XXXXXX" target="_blank" rel="noopener">Kaufen</a>
+          </div>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <h2 style="margin-top:28px">Aktivierung & Ablauf</h2>
-    <ol>
-      <li>Kauf über Payhip („Pro kaufen“).</li>
-      <li>Payhip leitet danach auf <code>pro-activate.html?pro=1</code> um.</li>
-      <li>Die Seite setzt den lokalen Pro-Status und führt zurück zur App/Startseite.</li>
-      <li>Der Status gilt auf diesem Gerät/Browser; mehrfach aktivierbar (keine Konten).</li>
-    </ol>
+    <!-- Ablauf / Widerruf -->
+    <section class="card" style="margin-top:22px">
+      <h2 style="margin:0 0 .5rem">Aktivierung &amp; Ablauf</h2>
+      <ol class="clean" style="margin-left:1.25rem">
+        <li>Kauf über Payhip („Kaufen“).</li>
+        <li>Payhip leitet nach Zahlung zu <code>pro-activate.html?pro=1</code> um.</li>
+        <li>Dort lokalen Pro-Status setzen → automatische Rückkehr zur App/Startseite.</li>
+        <li>Der Status gilt nur auf diesem Gerät/Browser; mehrfach aktivierbar (keine Konten).</li>
+      </ol>
+      <p class="note" style="margin-top:.75rem">
+        <strong>Widerruf:</strong> Digitale Inhalte mit sofortigem Zugang. Mit Start der Leistung erlischt das Widerrufsrecht (siehe
+        <a href="terms.html">Terms</a>). Verbraucherrechte nach geltendem Recht bleiben unberührt.
+      </p>
+    </section>
 
-    <p class="note">Widerruf: Digitale Inhalte mit sofortigem Zugang. Du stimmst zu, dass der Widerruf erlischt, sobald die Leistung begonnen hat (siehe <a href="terms.html">Terms</a>). Verbraucherrechte bleiben im Rahmen des geltenden Rechts unberührt.</p>
+    <!-- Kurze FAQ (optional für Seite) -->
+    <section class="card" style="margin-top:22px">
+      <h2 style="margin:0 0 .5rem">Kurz-FAQ</h2>
+      <p><strong>Greift Pro in Verträge (z. B. Affiliate) ein?</strong><br><span class="mut">Nein. Es wird nur der Link selbst bereinigt; Verträge bleiben unberührt. Erlaubte Partner-IDs lassen sich über die Team-Whitelist erhalten.</span></p>
+      <p><strong>Brauche ich ein Konto?</strong><br><span class="mut">Nein. Alles läuft lokal im Browser.</span></p>
+      <div class="row" style="margin-top:6px">
+        <a class="btn" href="help.html">Mehr Fragen &amp; Antworten</a>
+        <a class="btn ghost" href="status.html">Status &amp; Updates</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky CTA -->
+  <div class="cta-bar">
+    <a class="btn pri" href="https://payhip.com/b/XXXXXX" target="_blank" rel="noopener">Jetzt Pro kaufen</a>
+    <a class="btn" href="pro-activate.html?pro=1">Schon bezahlt? Aktivieren</a>
   </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="foot">
+      <div class="links">
+        <a href="./">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="bookmarklets.html">Bookmarklet</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="team-setup.html">Team-Setup</a>
+        <a href="redirect-entschachteln.html">Redirects</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="partners.html">Partners</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="press.html">Presse</a>
+        <a href="help.html">Hilfe</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="status.html">Status</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="terms.html">Terms</a>
+        <a href="kurz-terms.html">Kurz-Terms</a>
+      </div>
+      <div class="note" style="margin-top:.6rem">
+        © 2025 SafeShare · Lokal, datensparsam · <a href="manifest.webmanifest">PWA-Manifest</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
