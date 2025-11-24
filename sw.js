@@ -4,6 +4,9 @@
 'use strict';
 
 const SW_VERSION = '2025-11-24-01';
+const CACHE_NAME = 'ss-cache-' + SW_VERSION; // wird in install/activate genutzt
+self.__SW_VERSION__ = SW_VERSION;
+
 const PRECACHE   = `ss-precache-${SW_VERSION}`;
 const RUNTIME    = `ss-runtime-${SW_VERSION}`;
 const OFFLINE_URL = 'offline.html';
