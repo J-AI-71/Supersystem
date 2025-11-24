@@ -1,23 +1,20 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Pro aktivieren · SafeShare</title>
-  <meta name="description" content="Aktiviert SafeShare Pro nach Payhip-Kauf lokal im Browser (Personal/Team) und leitet zurück zur App.">
-
-  <!-- Canonical & Robots (diese Seite nicht indexieren) -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
-  <meta name="robots" content="noindex,follow">
-
-  <!-- hreflang / Locale -->
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="x-default">
   <meta property="og:locale" content="de_DE">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Icons -->
+  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
+
+  <!-- CSP (erlaubt nur eigene Skripte) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -31,92 +28,40 @@
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- PWA / Icons -->
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-
-  <!-- Stile (klein) -->
-  <style>
-    :root { color-scheme: dark light; }
-    body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b0b0b;color:#e8e8e8}
-    .wrap{max-width:900px;margin:40px auto;padding:0 16px}
-    h1{font-size:clamp(1.6rem,2.5vw,2.2rem);margin:0 0 16px}
-    .panel{border:1px solid #2c2c2c;border-radius:12px;padding:18px;background:#121212}
-    .row{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 0}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #2c2c2c;background:#171717;color:#e8e8e8;text-decoration:none}
-    .btn.pri{background:#1f7a4f;border-color:#2aa56b}
-    .mut{opacity:.8}
-    .ok{color:#2fe08a}
-    .err{color:#ff7a7a}
-    details{margin-top:16px}
-    code,kbd{background:#171717;border:1px solid #2c2c2c;border-radius:6px;padding:1px 6px}
-    footer{margin:28px 0 8px;font-size:.92rem;opacity:.8}
-    a{color:#8bd6ff}
-  </style>
-
-  <!-- SW-Registrierung + Page-Logik -->
-  <script defer src="js/sw-register.js?v=2025-11-22-02"></script>
-  <script defer src="js/page-pro-activate.js?v=2025-11-22-02"></script>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script defer src="js/sw-register.js?v=31"></script>
+  <!-- Neues, sofort ausführendes Aktivierungsskript -->
+  <script defer src="js/page-pro-activate.js?v=31"></script>
 </head>
 <body>
-  <div class="wrap">
-    <a class="mut" href="#main">Zum Inhalt springen</a>
-    <h1 id="main">Pro aktivieren</h1>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap" id="main">
+    <h1>Pro aktivieren</h1>
 
-    <!-- Ergebnis-Panel -->
-    <div class="panel">
-      <p id="msg-pending" class="mut">Aktiviere … bitte kurz warten.</p>
-
-      <p id="msg-ok" class="ok" hidden>
-        Pro ist jetzt aktiviert
-        <span id="msg-plan" class="mut"></span>. Du kannst SafeShare sofort nutzen.
-      </p>
-
-      <p id="msg-err" class="err" hidden>
-        Aktivierung nicht durchgeführt. Diese Seite erwartet die Parameter
-        <code>?pro=1</code> und optional <code>&plan=personal|team</code>.
-        Bitte kehre zu <a href="pro.html">Pro</a> zurück oder kaufe erneut.
-      </p>
-
+    <div class="card">
+      <p>Wenn du von Payhip hierher weitergeleitet wurdest, ist Pro jetzt aktiviert.</p>
       <div class="row">
-        <a class="btn pri" href="app.html">Zur App</a>
-        <a class="btn" href="pro.html">Pro öffnen</a>
-        <a class="btn" href="status.html">Status prüfen</a>
+        <a class="btn" href="app.html">Zur App</a>
         <a class="btn" href="index.html">Startseite</a>
+        <a class="btn" href="status.html">Status prüfen</a>
       </div>
-
-      <details>
-        <summary>Was passiert hier?</summary>
-        <ul>
-          <li>Payhip leitet nach Kauf auf <code>pro-activate.html?pro=1&plan=…</code> um.</li>
-          <li>Diese Seite setzt <code>localStorage</code>-Schlüssel (<code>ss_pro</code>, <code>ss_pro_plan</code>).</li>
-          <li>Nach Erfolg erfolgt eine Auto-Weiterleitung zur App.</li>
-        </ul>
-      </details>
-
-      <details>
-        <summary>Troubleshooting</summary>
-        <ul>
-          <li>Öffne <a href="status.html">Status</a> und prüfe „Pro aktiviert“.</li>
-          <li>Falls „wartende Version“: dort aktivieren und Seite neu laden.</li>
-          <li>Notfalls: Caches leeren im Status, dann erneut aktivieren.</li>
-        </ul>
-      </details>
+      <p class="mut">Hinweis: Die Aktivierung wird lokal im Browser gespeichert. Bei Browser/Profil-Wechsel bitte erneut aktivieren.</p>
     </div>
 
-    <footer>
-      <p class="mut">
-        Hinweis: Die Aktivierung wird ausschließlich lokal im Browser gespeichert
-        (keine Konten, keine Server-Logs). Bei Browser-/Profilwechsel bitte erneut aktivieren.
-      </p>
-      <p class="mut">
-        Links: <a href="help.html">Hilfe</a> · <a href="impressum.html">Impressum</a> ·
-        <a href="datenschutz.html">Datenschutz</a> · <a href="terms.html">Terms</a>
-      </p>
-    </footer>
+    <div class="card">
+      <h2>Manuell aktivieren (falls Weiterleitung fehlte)</h2>
+      <div class="row">
+        <a class="btn pri" href="pro-activate.html?pro=1&plan=personal&return=pro">Aktivieren (Personal)</a>
+        <a class="btn" href="pro-activate.html?pro=1&plan=team&return=pro">Aktivieren (Team)</a>
+      </div>
+    </div>
   </div>
+
+  <footer class="foot">
+    <nav>
+      <a href="index.html">Startseite</a> · <a href="app.html">App</a> · <a href="help.html">Hilfe</a>
+    </nav>
+  </footer>
 </body>
 </html>
