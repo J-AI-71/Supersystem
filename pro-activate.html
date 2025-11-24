@@ -1,4 +1,3 @@
-<!-- /Supersystem/pro-activate.html (noindex) -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -7,20 +6,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Pro aktivieren · SafeShare</title>
+  <meta name="description" content="Aktiviert SafeShare Pro nach Payhip-Kauf lokal im Browser (Personal/Team) und leitet zurück zur App.">
+
+  <!-- Canonical & Robots (diese Seite nicht indexieren) -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
-  <!-- WICHTIG: kein Index für Aktivierungs-Seite -->
-  <meta name="robots" content="noindex, nofollow, noarchive">
-  <meta name="googlebot" content="noindex, nofollow, noarchive">
+  <meta name="robots" content="noindex,follow">
 
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
+  <!-- hreflang / Locale -->
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="x-default">
+  <meta property="og:locale" content="de_DE">
 
-  <!-- Sicherheits-CSP -->
+  <!-- Sicherheits-CSP (sanft) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -34,54 +31,92 @@
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- Styles -->
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
+  <meta name="theme-color" content="#0b0b0b">
+
+  <!-- Stile (klein) -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--ok:#5fe09f}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--ok:#14a44d}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    .wrap{max-width:760px;margin:0 auto;padding:28px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-    .ok{display:inline-block;border-radius:999px;background:var(--ok);color:#062012;padding:4px 10px;font-weight:700}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
+    :root { color-scheme: dark light; }
+    body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b0b0b;color:#e8e8e8}
+    .wrap{max-width:900px;margin:40px auto;padding:0 16px}
+    h1{font-size:clamp(1.6rem,2.5vw,2.2rem);margin:0 0 16px}
+    .panel{border:1px solid #2c2c2c;border-radius:12px;padding:18px;background:#121212}
+    .row{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 0}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #2c2c2c;background:#171717;color:#e8e8e8;text-decoration:none}
+    .btn.pri{background:#1f7a4f;border-color:#2aa56b}
+    .mut{opacity:.8}
+    .ok{color:#2fe08a}
+    .err{color:#ff7a7a}
+    details{margin-top:16px}
+    code,kbd{background:#171717;border:1px solid #2c2c2c;border-radius:6px;padding:1px 6px}
+    footer{margin:28px 0 8px;font-size:.92rem;opacity:.8}
+    a{color:#8bd6ff}
   </style>
 
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
-  <script defer>
-    // Aktiviert Pro lokal, wenn ?pro=1 vorhanden ist.
-    (function(){
-      const p = new URLSearchParams(location.search);
-      if (p.get('pro') === '1') {
-        try {
-          localStorage.setItem('ss_pro','1');
-          localStorage.setItem('safeshare.pro','1'); // Kompat-Speicher
-          document.addEventListener('DOMContentLoaded', ()=>{
-            const el = document.getElementById('state');
-            if (el) el.textContent = 'Pro ist in diesem Browser aktiv.';
-            const b = document.getElementById('badge');
-            if (b) b.style.display = 'inline-block';
-          });
-        } catch {}
-      }
-    })();
-  </script>
+  <!-- SW-Registrierung + Page-Logik -->
+  <script defer src="js/sw-register.js?v=2025-11-22-02"></script>
+  <script defer src="js/page-pro-activate.js?v=2025-11-22-02"></script>
 </head>
 <body>
   <div class="wrap">
-    <h1>Pro aktivieren <span id="badge" class="ok" style="display:none">aktiv</span></h1>
-    <div class="card">
-      <p id="state">Wenn du von Payhip hierher weitergeleitet wurdest, ist Pro jetzt aktiviert.</p>
-      <div class="row" style="margin-top:10px">
-        <a class="btn" href="app.html">Zur App</a>
-        <a class="btn" href="./">Startseite</a>
+    <a class="mut" href="#main">Zum Inhalt springen</a>
+    <h1 id="main">Pro aktivieren</h1>
+
+    <!-- Ergebnis-Panel -->
+    <div class="panel">
+      <p id="msg-pending" class="mut">Aktiviere … bitte kurz warten.</p>
+
+      <p id="msg-ok" class="ok" hidden>
+        Pro ist jetzt aktiviert
+        <span id="msg-plan" class="mut"></span>. Du kannst SafeShare sofort nutzen.
+      </p>
+
+      <p id="msg-err" class="err" hidden>
+        Aktivierung nicht durchgeführt. Diese Seite erwartet die Parameter
+        <code>?pro=1</code> und optional <code>&plan=personal|team</code>.
+        Bitte kehre zu <a href="pro.html">Pro</a> zurück oder kaufe erneut.
+      </p>
+
+      <div class="row">
+        <a class="btn pri" href="app.html">Zur App</a>
+        <a class="btn" href="pro.html">Pro öffnen</a>
         <a class="btn" href="status.html">Status prüfen</a>
+        <a class="btn" href="index.html">Startseite</a>
       </div>
-      <p style="margin-top:10px;color:#aab6bf">Hinweis: Die Aktivierung wird lokal im Browser gespeichert. Bei Browser/Profil-Wechsel bitte erneut aktivieren.</p>
+
+      <details>
+        <summary>Was passiert hier?</summary>
+        <ul>
+          <li>Payhip leitet nach Kauf auf <code>pro-activate.html?pro=1&plan=…</code> um.</li>
+          <li>Diese Seite setzt <code>localStorage</code>-Schlüssel (<code>ss_pro</code>, <code>ss_pro_plan</code>).</li>
+          <li>Nach Erfolg erfolgt eine Auto-Weiterleitung zur App.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Troubleshooting</summary>
+        <ul>
+          <li>Öffne <a href="status.html">Status</a> und prüfe „Pro aktiviert“.</li>
+          <li>Falls „wartende Version“: dort aktivieren und Seite neu laden.</li>
+          <li>Notfalls: Caches leeren im Status, dann erneut aktivieren.</li>
+        </ul>
+      </details>
     </div>
+
+    <footer>
+      <p class="mut">
+        Hinweis: Die Aktivierung wird ausschließlich lokal im Browser gespeichert
+        (keine Konten, keine Server-Logs). Bei Browser-/Profilwechsel bitte erneut aktivieren.
+      </p>
+      <p class="mut">
+        Links: <a href="help.html">Hilfe</a> · <a href="impressum.html">Impressum</a> ·
+        <a href="datenschutz.html">Datenschutz</a> · <a href="terms.html">Terms</a>
+      </p>
+    </footer>
   </div>
-  <noscript><div class="wrap"><div class="card">Bitte JavaScript aktivieren, um Pro lokal zu speichern.</div></div></noscript>
 </body>
 </html>
