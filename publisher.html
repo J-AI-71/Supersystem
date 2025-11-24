@@ -6,34 +6,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Publisher · SafeShare</title>
-  <meta name="description" content="Für Blogs, Magazine und Affiliate-Publisher: saubere, stabile Links ohne Tracking – Whitelist für legitime Tags, Bulk-Clean und Bookmarklets.">
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/publisher.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <title>SafeShare für Publisher & Affiliates</title>
+  <meta name="description" content="Saubere Links für Publisher & Affiliates: UTM-Ballast entfernen, Redirects entpacken, Partner-IDs per Whitelist behalten – lokal im Browser.">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/publisher.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/publisher.html">
-  <meta property="og:locale" content="de_DE">
+  <!-- Canonical / hreflang -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/publisher.html">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/publisher.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/publisher.html" hreflang="x-default">
+
+  <!-- Robots -->
+  <meta name="robots" content="index,follow">
 
   <!-- Open Graph / Twitter -->
+  <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare für Publisher">
-  <meta property="og:description" content="Saubere Links für Reichweite & Compliance.">
+  <meta property="og:title" content="SafeShare für Publisher & Affiliates">
+  <meta property="og:description" content="UTM-Ballast entfernen, Redirects entpacken und Partner-IDs per Whitelist behalten – lokal im Browser.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/publisher.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
+  <!-- Icons / Manifest -->
+  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/icons/icon-16-kreis.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
+  <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- Sicherheits-CSP (JSON-LD per Nonce) -->
+  <!-- CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -41,104 +40,100 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSFAQ';
+                 script-src 'self' 'nonce-SSJSON1';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- Styles -->
-  <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:#9fe7c3}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    ul.check{list-style:none;margin:.4rem 0;padding-left:0}
-    ul.check li{padding-left:28px;position:relative;margin:.35rem 0}
-    ul.check li:before{content:"✔";position:absolute;left:0;top:0;color:#5fe09f}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
-  </style>
+  <!-- Styles / SW -->
+  <link rel="stylesheet" href="assets/styles.css?v=32">
+  <script defer src="js/sw-register.js?v=32"></script>
 
-  <!-- JSON-LD: FAQ (Publisher) -->
-  <script type="application/ld+json" nonce="SSFAQ">
+  <!-- FAQ JSON-LD (kompakt) -->
+  <script type="application/ld+json" nonce="SSJSON1">
   {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
       {
         "@type":"Question",
-        "name":"Kann ich bestimmte Affiliate-Parameter behalten?",
-        "acceptedAnswer":{"@type":"Answer","text":"Ja. Über die Team-Whitelist (z. B. tag, ref) definierst du erlaubte Parameter, die nicht entfernt werden."}
+        "name":"Beeinträchtigt SafeShare Affiliate-Verträge?",
+        "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare bearbeitet nur die Link-Parameter. Vertragsbeziehungen bleiben unberührt. Partner-IDs können per Whitelist erhalten bleiben."}
       },
       {
         "@type":"Question",
-        "name":"Werden Daten an Server geschickt?",
-        "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare arbeitet vollständig lokal im Browser, ohne App-Server-Logs."}
+        "name":"Brauchen Teams ein Konto?",
+        "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare arbeitet lokal im Browser ohne Accounts. Pro-Funktionen werden lokal aktiviert."}
       },
       {
         "@type":"Question",
-        "name":"Gibt es Bulk-Clean?",
-        "acceptedAnswer":{"@type":"Answer","text":"Ja. Bulk-Clean säubert viele Links auf einmal und berücksichtigt die Whitelist."}
+        "name":"Gibt es Bulk-Clean für Redaktionen?",
+        "acceptedAnswer":{"@type":"Answer","text":"Ja. SafeShare Pro bietet Bulk-Clean für Linklisten sowie Redirect-Entpacken und CSV-Export."}
       }
     ]
   }
   </script>
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
 </head>
 <body>
-  <div class="wrap">
-    <header class="row" style="justify-content:space-between;gap:16px">
-      <div>
-        <h1>Für Publisher</h1>
-        <p class="mut">Saubere, stabile Links für Reichweite, Vertrauen und Compliance – ohne Tracking-Ballast.</p>
-      </div>
-      <div class="row">
-        <a class="btn ghost" href="./">Startseite</a>
-        <a class="btn" href="bulk-clean.html">Bulk-Clean</a>
-        <a class="btn" href="team-setup.html">Team-Whitelist</a>
-      </div>
-    </header>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
 
-    <section class="card">
-      <h2 style="margin-top:0">Vorteile</h2>
-      <ul class="check">
-        <li>Entfernt <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code></li>
-        <li>Entpackt Weiterleitungen (z. B. <code>google.com/url</code>, <code>l.facebook.com/l.php</code>)</li>
-        <li>Whitelist für legitime Affiliate-Parameter (<code>tag</code>, <code>ref</code> …)</li>
-        <li>Bookmarklets für Redaktionen, Bulk-Clean für Kampagnen</li>
-        <li>100 % lokal – keine App-Server-Logs</li>
-      </ul>
-      <div class="row" style="margin-top:10px">
-        <a class="btn pri" href="app.html">App starten</a>
-        <a class="btn" href="bookmarklets.html">Bookmarklets</a>
-        <a class="btn" href="help.html">Hilfe</a>
+  <main id="main" class="wrap">
+    <h1>SafeShare für Publisher &amp; Affiliates</h1>
+    <p class="mut">Saubere, schnelle Links → bessere UX &amp; Conversion. Alles lokal, keine Accounts, keine Server-Logs.</p>
+
+    <div class="row pillrow">
+      <span class="pill">UTM-Ballast raus</span>
+      <span class="pill">Redirects entpacken</span>
+      <span class="pill">Whitelist für Partner-IDs</span>
+      <a class="pill" href="pro.html">Bulk-Clean (Pro)</a>
+    </div>
+
+    <section class="cards two">
+      <div class="card">
+        <h2>Vorteile</h2>
+        <ul>
+          <li><strong>Schneller:</strong> Kürzere, saubere URLs verbessern Klickbereitschaft &amp; Ladezeit.</li>
+          <li><strong>Weniger Blockaden:</strong> Reduzierte Tracking-Signaturen werden seltener gefiltert.</li>
+          <li><strong>Klarer konvertiert:</strong> Weniger Ablenkung, bessere Weitergabe.</li>
+          <li><strong>Privacy-by-Design:</strong> Verarbeitung im Browser.</li>
+        </ul>
+
+        <h3 class="mt">So arbeitet ihr mit SafeShare</h3>
+        <ul>
+          <li><a href="bookmarklets.html">Bookmarklet</a> im Browser speichern → Links on-the-fly bereinigen.</li>
+          <li><a href="bulk-clean.html">Bulk-Clean</a> (Pro) für Listen aus Redaktionssystemen.</li>
+          <li><a href="team-setup.html">Team-Whitelist</a> pflegen (z. B. <code>tag</code>, <code>ref</code>), damit Partner-IDs bleiben.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>FAQ</h2>
+        <p><strong>Greift SafeShare in Affiliate-Verträge ein?</strong><br>Nein, nur die Parameteransicht wird bereinigt.</p>
+        <p><strong>Partner-IDs behalten?</strong><br>Ja, über die lokale Whitelist.</p>
+        <p><strong>Benötigen wir Accounts?</strong><br>Nein. Alles lokal.</p>
       </div>
     </section>
 
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklet</a>
-        <a href="bulk-clean.html">Bulk-Clean</a>
-        <a href="team-setup.html">Team-Whitelist</a>
-        <a href="help.html">Hilfe</a>
-        <a href="impressum.html">Impressum</a>
+    <p class="mt">
+      <a class="btn pri" href="app.html">Jetzt ausprobieren</a>
+      <a class="btn" href="quickstart.html">Quickstart (PDF)</a>
+      <a class="btn" href="pro.html">Pro-Features</a>
+    </p>
+
+    <hr class="mut" style="margin:24px 0">
+
+    <footer class="foot">
+      <nav class="wrap small">
+        <a href="index.html">Startseite</a> ·
+        <a aria-current="page">Publisher</a> ·
+        <a href="education.html">Education</a> ·
+        <a href="partners.html">Unternehmen</a> ·
+        <a href="press.html">Presse</a> ·
+        <a href="impressum.html">Impressum</a> ·
         <a href="datenschutz.html">Datenschutz</a>
       </nav>
     </footer>
-  </div>
+  </main>
 </body>
 </html>
