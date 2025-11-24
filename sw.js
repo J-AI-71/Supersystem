@@ -3,7 +3,7 @@
    -------------------------------------------------------- */
 'use strict';
 
-const SW_VERSION = '2025-11-22-01';
+const SW_VERSION = '2025-11-24-01';
 const PRECACHE   = `ss-precache-${SW_VERSION}`;
 const RUNTIME    = `ss-runtime-${SW_VERSION}`;
 const OFFLINE_URL = 'offline.html';
