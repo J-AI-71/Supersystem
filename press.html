@@ -6,34 +6,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>Presse · SafeShare</title>
-  <meta name="description" content="Presse & Medien: Logo, App-Screens, Kurzbeschreibung, OG-Bild und QR. Keine Konten, keine Server-Logs – SafeShare arbeitet lokal im Browser.">
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/press.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <title>Presse & Medien · SafeShare</title>
+  <meta name="description" content="Presseinfos, Logos und Screenshots zu SafeShare – saubere Links ohne Tracking, lokal im Browser. Presseanfragen willkommen.">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/press.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/press.html">
-  <meta property="og:locale" content="de_DE">
+  <!-- Canonical / hreflang -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/press.html">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/press.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/press.html" hreflang="x-default">
+
+  <!-- Robots -->
+  <meta name="robots" content="index,follow">
 
   <!-- Open Graph / Twitter -->
+  <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Pressekit">
-  <meta property="og:description" content="Logos, Screens und Faktenblatt.">
+  <meta property="og:title" content="Presse & Medien · SafeShare">
+  <meta property="og:description" content="Presseinfos, Logos und Screenshots zu SafeShare – saubere Links ohne Tracking, lokal im Browser.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/press.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
+  <!-- Icons / Manifest -->
+  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/icons/icon-16-kreis.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
+  <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- Sicherheits-CSP (JSON-LD per Nonce) -->
+  <!-- CSP (sanft) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -41,128 +40,75 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSFAQ';
+                 script-src 'self';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- Styles -->
-  <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:#9fe7c3}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .grid-2{display:grid;grid-template-columns:1fr;gap:14px}
-    @media(min-width:980px){.grid-2{grid-template-columns:1fr 1fr}}
-    figure{margin:0}
-    img.preview{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
-    ul.check{list-style:none;margin:.4rem 0;padding-left:0}
-    ul.check li{padding-left:28px;position:relative;margin:.35rem 0}
-    ul.check li:before{content:"✔";position:absolute;left:0;top:0;color:#5fe09f}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-  </style>
-
-  <!-- JSON-LD: About/Organization -->
-  <script type="application/ld+json" nonce="SSFAQ">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"SafeShare",
-    "url":"https://j-ai-71.github.io/Supersystem/",
-    "logo":"https://j-ai-71.github.io/Supersystem/assets/icons/icon-512-kreis.png",
-    "sameAs":["https://github.com/J-AI-71/Supersystem"]
-  }
-  </script>
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
+  <!-- Styles / SW -->
+  <link rel="stylesheet" href="assets/styles.css?v=32">
+  <script defer src="js/sw-register.js?v=32"></script>
 </head>
 <body>
-  <div class="wrap">
-    <header class="row" style="justify-content:space-between;gap:16px">
-      <div>
-        <h1>Presse</h1>
-        <p class="mut">Assets &amp; Kurzinfos für Berichterstattung. Nutzung frei mit Quellenhinweis „SafeShare“.</p>
-      </div>
-      <div class="row">
-        <a class="btn ghost" href="./">Startseite</a>
-        <a class="btn" href="quickstart.html">Quickstart</a>
-      </div>
-    </header>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
 
-    <section class="card">
-      <h2 style="margin-top:0">Download-Paket</h2>
-      <div class="row">
-        <a class="btn pri" href="assets/brand/press-kit.zip" download>Press Kit (ZIP)</a>
-        <a class="btn" href="assets/og/og-index.jpg" download>OG-Bild (1200×630)</a>
-        <a class="btn" href="assets/qr/app-qr.svg" download>QR zur App</a>
-      </div>
-      <p class="mut" style="margin-top:8px">Enthält Logos (hell/dunkel), App-Screens und Kurzbeschreibung.</p>
-    </section>
+  <main id="main" class="wrap">
+    <h1>Presse &amp; Medien</h1>
+    <p class="mut">SafeShare entfernt Tracking-Parameter (z. B. utm_, gclid, fbclid) und entpackt gängige Redirects – komplett lokal im Browser, ohne Accounts.</p>
 
-    <section class="card grid-2">
-      <div>
-        <h2 style="margin-top:0">Logos</h2>
+    <div class="row pillrow">
+      <span class="pill">Privacy-by-Design</span>
+      <span class="pill">Open Web</span>
+      <span class="pill">PWA &amp; Offline</span>
+    </div>
+
+    <section class="cards two">
+      <div class="card">
+        <h2>Kurzinfo</h2>
         <ul>
-          <li><a href="assets/brand/safeshare-logo-dark.svg" download>Logo dunkel (SVG)</a></li>
-          <li><a href="assets/brand/safeshare-logo-light.svg" download>Logo hell (SVG)</a></li>
-          <li><a href="assets/icons/icon-512-kreis.png" download>App-Icon 512</a></li>
-          <li><a href="assets/icons/apple-touch-icon-180.png" download>Apple Touch 180</a></li>
+          <li><strong>Produkt:</strong> SafeShare (Web-App &amp; Bookmarklets)</li>
+          <li><strong>Kernnutzen:</strong> Saubere, kurze Links ohne Tracking-Ballast</li>
+          <li><strong>Verarbeitung:</strong> 100 % lokal im Browser</li>
+          <li><strong>Pro:</strong> Bulk-Clean, Redirect-Entpacken, Team-Whitelist</li>
         </ul>
-        <h3>Kurztext</h3>
-        <p class="mut">
-          SafeShare entfernt Tracking-Parameter (z. B. <span class="mono">utm_*</span>, <span class="mono">gclid</span>, <span class="mono">fbclid</span>)
-          und entpackt Weiterleitungen – vollständig lokal im Browser. PWA, Bookmarklets und Team-Whitelist.
-        </p>
       </div>
-      <aside>
-        <h2 style="margin-top:0">Screenshots</h2>
-        <figure>
-          <img class="preview" src="assets/screens/app-home.jpg" alt="SafeShare App – Start">
-          <figcaption class="mut">App – Start</figcaption>
-        </figure>
-        <figure style="margin-top:10px">
-          <img class="preview" src="assets/screens/app-result.jpg" alt="SafeShare App – Ergebnis">
-          <figcaption class="mut">App – Ergebnis</figcaption>
-        </figure>
-      </aside>
+      <div class="card">
+        <h2>Kontakt &amp; Material</h2>
+        <p>Für Presseanfragen, Zitate und Hintergrundinfos:</p>
+        <p><a class="btn" href="impressum.html">Impressum / Kontakt</a></p>
+        <p>Logos &amp; Screenshots:</p>
+        <ul>
+          <li><a href="assets/press/safeshare-logos.zip">Logopaket (ZIP)</a></li>
+          <li><a href="assets/press/safeshare-screens.zip">Screenshots (ZIP)</a></li>
+          <li><a href="assets/press/safeshare-presskit.zip">Komplettes Presskit (ZIP)</a></li>
+        </ul>
+      </div>
     </section>
 
-    <section class="card">
-      <h2 style="margin-top:0">Fakten</h2>
-      <ul class="check">
-        <li>100 % lokal im Browser, keine App-Server-Logs</li>
-        <li>PWA: installierbar, offline nutzbar</li>
-        <li>Whitelist für legitime Parameter (<span class="mono">tag</span>, <span class="mono">ref</span> …)</li>
-        <li>Tools: App, Bookmarklets, Bulk-Clean, Redirect-Entpacken</li>
-      </ul>
+    <section>
+      <h2>Über SafeShare</h2>
+      <p>SafeShare ist ein leichtgewichtiges Hilfswerkzeug für saubere Links. Es entfernt gängige Tracking-Parameter und ersetzt verschachtelte Weiterleitungen durch Klarziele. Alles läuft lokal, wodurch keine Nutzungsdaten an Server von SafeShare übermittelt werden.</p>
+      <p>
+        <a class="btn pri" href="app.html">Jetzt ausprobieren</a>
+        <a class="btn" href="quickstart.html">Quickstart</a>
+        <a class="btn" href="help.html">Hilfe &amp; FAQ</a>
+      </p>
     </section>
 
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklet</a>
-        <a href="bulk-clean.html">Bulk-Clean</a>
-        <a href="team-setup.html">Team-Whitelist</a>
-        <a href="partners.html">Partner</a>
-        <a href="help.html">Hilfe</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
+    <hr class="mut" style="margin:24px 0">
+
+    <footer class="foot">
+      <nav class="wrap small">
+        <a href="index.html">Startseite</a> ·
+        <a href="publisher.html">Publisher</a> ·
+        <a href="education.html">Education</a> ·
+        <a aria-current="page">Presse</a> ·
+        <a href="impressum.html">Impressum</a> ·
+        <a href="datenschutz.html">Datenschutz</a> ·
+        <a href="terms.html">Terms</a>
       </nav>
     </footer>
-  </div>
+  </main>
 </body>
 </html>
