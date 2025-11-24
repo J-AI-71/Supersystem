@@ -6,62 +6,76 @@
   <base href="/Supersystem/">
   <title>Pro aktivieren · SafeShare</title>
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro-activate.html" hreflang="x-default">
-  <meta property="og:locale" content="de_DE">
+  <meta name="robots" content="noindex,follow">
 
-  <!-- Icons -->
-  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
-
-  <!-- CSP (erlaubt nur eigene Skripte) -->
+  <!-- Minimale CSP (keine Inline-Skripte nötig) -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
+        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none';
+                 object-src 'none'; img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
+                 script-src 'self'; font-src 'self'; worker-src 'self';
+                 connect-src 'self'; manifest-src 'self'">
 
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="assets/css/main.css">
-  <script defer src="js/sw-register.js?v=31"></script>
-  <!-- Neues, sofort ausführendes Aktivierungsskript -->
-  <script defer src="js/page-pro-activate.js?v=31"></script>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png" sizes="180x180">
+
+  <!-- Service Worker Registrar + Seite-spezifisches Skript (NEUE Version) -->
+  <script defer src="js/sw-register.js?v=33"></script>
+  <script defer src="js/page-pro-activate.js?v=33"></script>
+
+  <style>
+    :root{color-scheme:dark light}
+    body{margin:0;font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif;background:#0b0f12;color:#e9eef2}
+    .wrap{max-width:960px;margin:40px auto;padding:0 16px}
+    .card{background:#10161b;border:1px solid #1b2630;border-radius:14px;padding:18px}
+    h1{font-size:clamp(26px,3.2vw,34px);margin:0 0 18px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid #2a3947;text-decoration:none;color:inherit;background:#0f1419}
+    .btn.pri{background:#0b5a36;border-color:#0b5a36}
+    .mut{opacity:.8}
+    ul{margin:.6em 0 .2em 1.2em}
+    code{background:#0f1419;border:1px solid #203040;border-radius:6px;padding:.1em .35em}
+    footer{margin-top:16px;font-size:14px;opacity:.8}
+  </style>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <a href="#main" class="mut" style="position:absolute;left:-9999px">Zum Inhalt springen</a>
   <div class="wrap" id="main">
     <h1>Pro aktivieren</h1>
 
     <div class="card">
-      <p>Wenn du von Payhip hierher weitergeleitet wurdest, ist Pro jetzt aktiviert.</p>
+      <p class="mut">Wenn du von Payhip hierher weitergeleitet wurdest, ist Pro jetzt aktiviert.</p>
       <div class="row">
-        <a class="btn" href="app.html">Zur App</a>
+        <a class="btn pri" href="app.html">Zur App</a>
         <a class="btn" href="index.html">Startseite</a>
         <a class="btn" href="status.html">Status prüfen</a>
       </div>
       <p class="mut">Hinweis: Die Aktivierung wird lokal im Browser gespeichert. Bei Browser/Profil-Wechsel bitte erneut aktivieren.</p>
     </div>
 
+    <h2 style="margin-top:28px">Manuell aktivieren (falls Weiterleitung fehlte)</h2>
     <div class="card">
-      <h2>Manuell aktivieren (falls Weiterleitung fehlte)</h2>
       <div class="row">
-        <a class="btn pri" href="pro-activate.html?pro=1&plan=personal&return=pro">Aktivieren (Personal)</a>
-        <a class="btn" href="pro-activate.html?pro=1&plan=team&return=pro">Aktivieren (Team)</a>
+        <a class="btn pri" href="#" data-activate data-plan="personal">Aktivieren (Personal)</a>
+        <a class="btn" href="#" data-activate data-plan="team">Aktivieren (Team)</a>
+        <a class="btn" href="pro.html">Zur Pro-Seite</a>
       </div>
+      <p class="mut">Direktlinks (falls benötigt):<br>
+        <code>pro-activate.html?pro=1&amp;plan=personal&amp;return=pro</code> ·
+        <code>pro-activate.html?pro=1&amp;plan=team&amp;return=pro</code>
+      </p>
     </div>
-  </div>
 
-  <footer class="foot">
-    <nav>
-      <a href="index.html">Startseite</a> · <a href="app.html">App</a> · <a href="help.html">Hilfe</a>
-    </nav>
-  </footer>
+    <h3 style="margin-top:26px">Troubleshooting</h3>
+    <div class="card">
+      <ul>
+        <li><b>Wartende Version</b>: <a href="status.html">Status</a> öffnen → „Wartende Version aktivieren“.</li>
+        <li><b>Alte Dateien</b>: Seite mit <code>?nocache=YYYYMMDD</code> neu laden.</li>
+        <li><b>Pro nicht erkannt</b>: Cookies/LocalStorage für die Domain erlauben.</li>
+      </ul>
+    </div>
+
+    <footer class="mut">© SafeShare · <a href="help.html">Hilfe</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></footer>
+  </div>
 </body>
 </html>
