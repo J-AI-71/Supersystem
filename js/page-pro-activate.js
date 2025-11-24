@@ -1,59 +1,58 @@
-// /Supersystem/js/page-pro-activate.js
-(function () {
-  'use strict';
+/* /js/page-pro-activate.js */
+(() => {
+  const qs = new URLSearchParams(location.search);
+  const DBG = qs.has('debug');
+  const log = (...a) => { if (DBG) console.log('[pro-activate]', ...a); };
 
-  const log = (...a) => { try { console.log('[pro-activate]', ...a); } catch(_){} };
+  const param = (k, d='') => (qs.get(k) || d).trim();
+  const wantPro = param('pro') === '1';
+  const plan    = (param('plan','personal') || 'personal').toLowerCase();
+  const ret     = (param('return','app')    || 'app').toLowerCase(); // 'pro'|'app'
 
-  // Kleines Debug-Overlay, wenn ?debug=1 in der URL steht
-  const debugOverlay = (data) => {
-    const qp = new URLSearchParams(location.search);
-    if (!qp.get('debug')) return;
-    const pre = document.createElement('pre');
-    pre.style.cssText =
-      'position:fixed;bottom:8px;left:8px;right:8px;max-height:50vh;overflow:auto;' +
-      'background:#111;color:#0f0;padding:12px;border:1px solid #0f0;' +
-      'font:12px/1.35 monospace;z-index:2147483647';
-    pre.textContent = '[DEBUG pro-activate]\n' + JSON.stringify(data, null, 2);
-    document.body.appendChild(pre);
-  };
-
-  try {
-    const qp = new URLSearchParams(location.search);
-
-    const hasProParam = qp.has('pro');                 // nur aktiv werden, wenn explizit gesetzt
-    const doActivate  = qp.get('pro') !== '0';         // ?pro=1 (oder alles außer 0) -> aktivieren; ?pro=0 -> deaktivieren
-    const plan        = (qp.get('plan') || 'personal').toLowerCase();   // personal|team
-    const ret         = (qp.get('return') || 'pro').toLowerCase();      // pro|app|index
-
-    // Ziel bestimmen relativ zur Seite (respektiert <base href="/Supersystem/">)
-    const target =
-      ret === 'app'   ? new URL('app.html',   document.baseURI).href :
-      ret === 'index' ? new URL('index.html', document.baseURI).href :
-                        new URL('pro.html',   document.baseURI).href;
-
-    const info = { href: location.href, hasProParam, doActivate, plan, ret, target };
-
-    // Wenn kein ?pro=… vorhanden ist: nichts tun (nur Debug anzeigen)
-    if (!hasProParam) {
-      debugOverlay({ ...info, note: 'Kein ?pro= Parameter – keine Aktion.' });
-      return;
+  function setPro(flag, p) {
+    try {
+      localStorage.setItem('ss_pro_active', flag ? '1' : '');
+      if (p) localStorage.setItem('ss_pro_plan', p);
+      localStorage.setItem('ss_pro_at', String(Date.now()));
+      log('stored', { active: localStorage.getItem('ss_pro_active'),
+                      plan:   localStorage.getItem('ss_pro_plan') });
+      return true;
+    } catch (e) {
+      console.error('[pro-activate] localStorage failed', e);
+      return false;
     }
-
-    // LocalStorage setzen (lokale Aktivierung)
-    localStorage.setItem('ss_pro', doActivate ? '1' : '0');
-    localStorage.setItem('ss_pro_plan', plan);
-    sessionStorage.setItem('ss_pro_activated_ts', String(Date.now()));
-    log('Aktualisiert:', { pro: doActivate, plan });
-
-    debugOverlay({ ...info, set_localStorage: true });
-
-    // Mehrstufige Weiterleitung (falls irgendetwas blockt)
-    const go = () => { try { location.replace(target); } catch (_) { location.href = target; } };
-    setTimeout(go, 50);
-    setTimeout(go, 350);
-    setTimeout(go, 1200);
-  } catch (e) {
-    log('Fehler:', e);
-    debugOverlay({ error: String(e) });
   }
+
+  function go(where) {
+    const target = where === 'pro' ? 'pro.html' : 'app.html';
+    log('redirect ->', target);
+    // kleine Verzögerung, damit Storage sicher geschrieben ist
+    setTimeout(() => location.replace(target), 250);
+  }
+
+  function wireManual() {
+    document.querySelectorAll('[data-activate]').forEach(el => {
+      el.addEventListener('click', ev => {
+        ev.preventDefault();
+        const p = el.getAttribute('data-plan') || 'personal';
+        log('manual activate', p);
+        setPro(true, p);
+        go('pro');
+      });
+    });
+  }
+
+  function run() {
+    wireManual();
+
+    if (wantPro) {
+      log('auto activate', { plan, ret });
+      setPro(true, plan);
+      go(ret);
+    } else {
+      log('no ?pro=1 – waiting for manual click');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', run);
 })();
