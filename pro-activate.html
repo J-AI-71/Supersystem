@@ -1,81 +1,111 @@
 <!doctype html>
 <html lang="de">
 <head>
+  <!-- Basis -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
   <title>Pro aktivieren · SafeShare</title>
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
+
+  <!-- Indexierung -->
   <meta name="robots" content="noindex,follow">
 
-  <!-- Minimale CSP (keine Inline-Skripte nötig) -->
+  <!-- Canonical nur informativ (noindex-Seite) -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
+
+  <!-- Beschreibung (kurz, rein informativ) -->
+  <meta name="description" content="Aktiviere SafeShare Pro lokal in deinem Browser nach dem Kauf bei Payhip.">
+
+  <!-- CSP (ohne Inline-Skripte) -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; base-uri 'self'; frame-ancestors 'none';
-                 object-src 'none'; img-src 'self' data:;
+        content="default-src 'self';
+                 base-uri 'self';
+                 frame-ancestors 'none';
+                 object-src 'none';
+                 img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self'; font-src 'self'; worker-src 'self';
-                 connect-src 'self'; manifest-src 'self'">
+                 script-src 'self';
+                 font-src 'self';
+                 worker-src 'self';
+                 manifest-src 'self';
+                 connect-src 'self'">
 
-  <link rel="icon" href="assets/favicon.ico">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png" sizes="180x180">
+  <!-- PWA / Icons (optional – falls bereits vorhanden) -->
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- Service Worker Registrar + Seite-spezifisches Skript (NEUE Version) -->
-  <script defer src="js/sw-register.js?v=34"></script>
-  <script defer src="js/page-pro-activate.js?v=34"></script>
-
-  <style>
-    :root{color-scheme:dark light}
-    body{margin:0;font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif;background:#0b0f12;color:#e9eef2}
-    .wrap{max-width:960px;margin:40px auto;padding:0 16px}
-    .card{background:#10161b;border:1px solid #1b2630;border-radius:14px;padding:18px}
-    h1{font-size:clamp(26px,3.2vw,34px);margin:0 0 18px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid #2a3947;text-decoration:none;color:inherit;background:#0f1419}
-    .btn.pri{background:#0b5a36;border-color:#0b5a36}
-    .mut{opacity:.8}
-    ul{margin:.6em 0 .2em 1.2em}
-    code{background:#0f1419;border:1px solid #203040;border-radius:6px;padding:.1em .35em}
-    footer{margin-top:16px;font-size:14px;opacity:.8}
-  </style>
+  <!-- CSS (falls deine Seite eine gemeinsame CSS-Datei nutzt) -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <a href="#main" class="mut" style="position:absolute;left:-9999px">Zum Inhalt springen</a>
-  <div class="wrap" id="main">
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <nav class="topnav">
+      <a class="brand" href="index.html">SafeShare</a>
+      <div class="spacer"></div>
+      <a class="btn" href="index.html">Startseite</a>
+      <a class="btn" href="app.html">App</a>
+      <a class="btn" href="status.html">Status</a>
+      <a class="btn" href="help.html">Hilfe</a>
+    </nav>
+  </header>
+
+  <main id="main" class="container">
     <h1>Pro aktivieren</h1>
 
-    <div class="card">
-      <p class="mut">Wenn du von Payhip hierher weitergeleitet wurdest, ist Pro jetzt aktiviert.</p>
-      <div class="row">
-        <a class="btn pri" href="app.html">Zur App</a>
-        <a class="btn" href="index.html">Startseite</a>
+    <section class="card">
+      <p>Wenn du von Payhip hierher weitergeleitet wurdest, ist <strong>Pro jetzt aktiviert</strong> (lokal im Browser gespeichert).</p>
+
+      <div class="btn-row">
+        <a class="btn pri" id="go-pro" href="pro.html">Zur Pro-Seite</a>
+        <a class="btn" href="app.html">App öffnen</a>
         <a class="btn" href="status.html">Status prüfen</a>
       </div>
-      <p class="mut">Hinweis: Die Aktivierung wird lokal im Browser gespeichert. Bei Browser/Profil-Wechsel bitte erneut aktivieren.</p>
-    </div>
 
-    <h2 style="margin-top:28px">Manuell aktivieren (falls Weiterleitung fehlte)</h2>
-    <div class="card">
-      <div class="row">
-        <a class="btn pri" href="#" data-activate data-plan="personal">Aktivieren (Personal)</a>
-        <a class="btn" href="#" data-activate data-plan="team">Aktivieren (Team)</a>
-        <a class="btn" href="pro.html">Zur Pro-Seite</a>
+      <p class="note">Hinweis: Die Aktivierung gilt je Gerät/Browser. Bei Browser- oder Profilwechsel bitte erneut aktivieren.</p>
+    </section>
+
+    <section class="card">
+      <h2>Manuell aktivieren (falls Weiterleitung fehlte)</h2>
+      <div class="btn-row">
+        <a class="btn" href="pro-activate.html?pro=1&plan=personal&return=pro">Aktivieren (Personal)</a>
+        <a class="btn" href="pro-activate.html?pro=1&plan=team&return=pro">Aktivieren (Team)</a>
       </div>
-      <p class="mut">Direktlinks (falls benötigt):<br>
-        <code>pro-activate.html?pro=1&amp;plan=personal&amp;return=pro</code> ·
-        <code>pro-activate.html?pro=1&amp;plan=team&amp;return=pro</code>
-      </p>
-    </div>
+      <p class="muted">Direktaufrufe setzen den lokalen Pro-Status und springen anschließend zurück (Standard: Pro-Seite).</p>
+    </section>
 
-    <h3 style="margin-top:26px">Troubleshooting</h3>
-    <div class="card">
+    <section class="card">
+      <h2>Troubleshooting</h2>
       <ul>
-        <li><b>Wartende Version</b>: <a href="status.html">Status</a> öffnen → „Wartende Version aktivieren“.</li>
-        <li><b>Alte Dateien</b>: Seite mit <code>?nocache=YYYYMMDD</code> neu laden.</li>
-        <li><b>Pro nicht erkannt</b>: Cookies/LocalStorage für die Domain erlauben.</li>
+        <li><strong>Wartende Version:</strong> <a href="status.html">Status</a> öffnen → „Wartende Version aktivieren“.</li>
+        <li><strong>Veraltete Inhalte:</strong> Seite mit <code>?nocache=YYYYMMDD</code> neu laden.</li>
+        <li><strong>Pro nicht erkannt:</strong> Cookies/LocalStorage für diese Domain erlauben.</li>
+        <li><strong>Rücksprung ändern:</strong> <code>&return=pro</code> oder <code>&return=app</code> an die URL hängen.</li>
       </ul>
-    </div>
+      <details id="debugBox" class="debug" hidden>
+        <summary>Debug</summary>
+        <pre id="debugOut"></pre>
+      </details>
+    </section>
+  </main>
 
-    <footer class="mut">© SafeShare · <a href="help.html">Hilfe</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></footer>
-  </div>
+  <footer class="site-footer">
+    <nav class="footnav">
+      <a href="index.html">Startseite</a> ·
+      <a href="app.html">App</a> ·
+      <a href="pro.html">Pro</a> ·
+      <a href="help.html">Hilfe</a> ·
+      <a href="impressum.html">Impressum</a> ·
+      <a href="datenschutz.html">Datenschutz</a>
+    </nav>
+  </footer>
+
+  <noscript><p class="warn">Zum Aktivieren von Pro wird JavaScript benötigt.</p></noscript>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=20251124"></script>
+  <script defer src="js/page-pro-activate.js?v=20251124"></script>
 </body>
 </html>
