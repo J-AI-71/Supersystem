@@ -116,6 +116,13 @@ self.addEventListener('message', (ev) => {
   }
 });
 
+// Bridge: von der Seite „SKIP_WAITING“ anfordern (status.html-Button)
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 /* -------- Fetch: Network-first für Navigation, Stale-While-Revalidate für Assets -------- */
 self.addEventListener('fetch', (event) => {
   const req = event.request;
