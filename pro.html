@@ -5,24 +5,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare Pro · Listen säubern & Redirects entpacken</title>
-  <meta name="description" content="SafeShare Pro – Bulk-Clean, Redirect-Entpacken und Team-Whitelist. Einmalige Aktivierung, lokal im Browser, keine Konten.">
-
-  <!-- Canonical / Locale -->
+  <title>SafeShare Pro – Einmalzahlung, lokal im Browser</title>
+  <meta name="description" content="Pro: Bulk-Clean, Redirect-Entpacken, Team-Whitelist. Einmal kaufen, lokal aktivieren. Kein Abo, keine Konten.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro.html">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro.html" hreflang="de">
   <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/pro.html" hreflang="x-default">
-  <meta property="og:locale" content="de_DE">
 
-  <!-- Open Graph / Twitter -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare Pro – Bulk-Clean & Redirect-Entpacken">
-  <meta property="og:description" content="Einmalige Aktivierung. Lokal im Browser. Keine Konten.">
+  <meta property="og:title" content="SafeShare Pro – Einmalzahlung, lokal">
+  <meta property="og:description" content="Mehr Funktionen ohne Abo. Bulk-Clean, Redirect-Entpacken, Team-Whitelist.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Sicherheits-CSP (sanft) -->
+  <!-- Icons / PWA -->
+  <link rel="icon" href="assets/icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0b0d10">
+
+  <!-- CSP + Plausible -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -30,134 +32,97 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self';
+                 script-src 'self' https://plausible.io;
+                 connect-src 'self' https://plausible.io;
                  font-src 'self';
                  worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
+                 manifest-src 'self'">
+  <script defer data-domain="j-ai-71.github.io" src="https://plausible.io/js/script.js"></script>
 
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-
-  <!-- Stil (kompakt) -->
+  <!-- Minimal Styles -->
   <style>
-    :root { color-scheme: dark light; }
-    body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b0b0b;color:#e9e9e9}
-    .wrap{max-width:1100px;margin:40px auto;padding:0 16px}
-    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 10px}
-    .mut{opacity:.85}
-    .row{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 0}
-    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:#151515;border:1px solid #2a2a2a}
-    .chip.warn{background:#1a1a1a}
-    .chip.ok{background:#10261b;border-color:#2aa56b}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:#171717;border:1px solid #2c2c2c;color:#e9e9e9;text-decoration:none}
-    .btn.pri{background:#1f7a4f;border-color:#2aa56b}
-    .panel{border:1px solid #2c2c2c;border-radius:12px;padding:16px;background:#121212;margin:18px 0}
-    ul{margin:.2rem 0 .6rem 1.1rem}
-    .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:10px 0}
-    .plan{border:1px solid #2c2c2c;border-radius:14px;background:#121212;padding:16px}
-    .price{font-size:1.9rem;font-weight:700;margin:6px 0 12px}
-    .badge{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid #2a2a2a;background:#151515;margin:8px 0}
-    footer{margin:26px 0 10px;font-size:.95rem;opacity:.85}
-    a{color:#8bd6ff}
+    :root{color-scheme:dark light}
+    html,body{margin:0}
+    body{font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:#0b0d10;color:#e5e7eb}
+    header,main,footer{max-width:980px;margin:0 auto;padding:16px}
+    .badge{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #1f2937;background:#0f1318;margin-left:.5rem}
+    .grid{display:grid;gap:14px}
+    @media(min-width:800px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:#0f1318;border:1px solid #1f2937;border-radius:12px;padding:16px}
+    .price{font-weight:700;font-size:1.2rem;margin:.2rem 0 .6rem}
+    .btn{display:inline-block;margin-top:.4rem;padding:.6rem .9rem;border-radius:10px;border:1px solid #1f2937;background:#0f1820;color:#e5e7eb;text-decoration:none}
+    .pri{background:#123e2a;border-color:#1d4d33}
+    footer{border-top:1px solid #1f2937;color:#9ca3af}
   </style>
-
-  <!-- Skripte -->
-  <script defer src="js/sw-register.js?v=35"></script>
-<script defer src="js/page-pro.js?v=35"></script>
 </head>
 <body>
-  <div class="wrap">
-    <a class="mut" href="#main">Zum Inhalt springen</a>
-    <h1 id="main">SafeShare Pro</h1>
-    <p class="mut">Listen säubern (Bulk-Clean), Redirects entpacken und Team-Whitelist – lokal im Browser, ohne Accounts.</p>
+  <header>
+    <nav>
+      <a href="index.html">Startseite</a> · <a href="app.html">App</a> · <a href="help.html">Hilfe</a>
+    </nav>
+    <h1>SafeShare Pro
+      <span class="badge" id="proBadge">Status: nicht aktiviert</span>
+      <span class="badge" id="planBadge">Plan: –</span>
+    </h1>
+    <p>Mehr Funktionen. Einmalzahlung. Lokale Aktivierung (kein Abo, keine Konten).</p>
+  </header>
 
-    <!-- Status-Zeile (wird von page-pro.js aktualisiert) -->
-    <div class="row" aria-live="polite">
-      <span id="pro-badge" class="chip warn">Status: nicht aktiviert</span>
-      <a class="btn" href="app.html">Zur App</a>
-      <!-- „Kauf abgeschlossen? Aktivieren“ -->
-      <a class="btn" href="pro-activate.html?return=pro">Kauf abgeschlossen? Aktivieren</a>
-    </div>
-
-    <!-- Leistungsumfang -->
-    <div class="panel">
-      <h2 style="margin:0 0 8px">Leistungsumfang</h2>
+  <main class="grid">
+    <section class="card">
+      <h2>Personal</h2>
+      <div class="price">15 € einmalig</div>
       <ul>
-        <li><strong>Bulk-Clean:</strong> Viele URLs in einem Rutsch bereinigen; optional CSV-Export.</li>
-        <li><strong>Redirect-Entpacken:</strong> Klarziel statt Ketten (z.&nbsp;B. <em>google.com/url</em>, <em>t.co</em>, <em>l.facebook.com</em> …).</li>
-        <li><strong>Team-Whitelist:</strong> Erlaubte Parameter (z.&nbsp;B. <code>tag</code>, <code>ref</code>) bleiben erhalten.</li>
-        <li><strong>Privacy-by-Design:</strong> 100&nbsp;% lokal im Browser, keine Server-Logs.</li>
-        <li><strong>PWA/Offline:</strong> Kernseiten auch ohne Netz verfügbar.</li>
+        <li>Bulk-Clean & Redirect-Entpacken</li>
+        <li>Whitelist für legitime Parameter</li>
+        <li>Updates für Version 1.x</li>
+        <li>Lokale Aktivierung auf 1 Gerät/Browser</li>
       </ul>
-      <div class="row">
-        <a class="btn pri" href="bulk-clean.html">Bulk-Clean öffnen</a>
-        <a class="btn" href="team-setup.html">Team-Whitelist</a>
-        <a class="btn" href="redirect-entschachteln.html">Redirect-Tool</a>
-      </div>
-    </div>
+      <a class="btn pri"
+         href="https://payhip.com/b/VDm3B"
+         onclick="window.plausible&&plausible('pro_click',{props:{plan:'personal'}})">
+         Personal kaufen
+      </a>
+    </section>
 
-    <!-- Preise / Pläne -->
-    <h2 style="margin:16px 0 8px">Preise</h2>
-    <div class="plans">
-      <!-- Personal -->
-      <section class="plan" aria-labelledby="p1">
-        <div class="badge">1&nbsp;Person · lokale Aktivierung</div>
-        <h3 id="p1" style="margin:8px 0 0">Personal</h3>
-        <div class="price">15&nbsp;€ <span class="mut" style="font-size:.9rem;font-weight:400">einmalig</span></div>
-        <ul>
-          <li>Bulk-Clean, Redirect-Entpacken, Whitelist</li>
-          <li>Updates für Version&nbsp;1.x</li>
-          <li>Kein Abo, keine Konten</li>
-        </ul>
-        <!-- Personal -->
-         <a class="btn pri" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener noreferrer">Kaufen</a>
-      </section>
+    <section class="card">
+      <h2>Team</h2>
+      <div class="price">49 € einmalig</div>
+      <ul>
+        <li>Alle Personal-Features</li>
+        <li>Bis 5 Geräte intern</li>
+        <li>Team-Whitelist-Regeln</li>
+        <li>Priorisierte Unterstützung</li>
+      </ul>
+      <a class="btn"
+         href="https://payhip.com/b/Yxh5T"
+         onclick="window.plausible&&plausible('pro_click',{props:{plan:'team'}})">
+         Team kaufen
+      </a>
+    </section>
 
-      <!-- Team -->
-      <section class="plan" aria-labelledby="p2">
-        <div class="badge">bis 5 Geräte intern</div>
-        <h3 id="p2" style="margin:8px 0 0">Team</h3>
-        <div class="price">49&nbsp;€ <span class="mut" style="font-size:.9rem;font-weight:400">einmalig</span></div>
-        <ul>
-          <li>Alle Personal-Features</li>
-          <li>Interne Nutzung für bis zu 5 Geräte</li>
-          <li>Priorisierte Unterstützung per E-Mail</li>
-        </ul>
-        <!-- Team -->
-         <a class="btn" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener noreferrer">Kaufen</a>
-      </section>
-    </div>
-
-    <!-- Ablauf -->
-    <div class="panel">
-      <h2 style="margin:0 0 8px">Aktivierung & Ablauf</h2>
-      <ol style="margin:.2rem 0 .2rem 1.1rem">
-        <li>Kauf über Payhip (Button „Kaufen“).</li>
-        <li>Nach dem Kauf leitet Payhip auf
-          <code>pro-activate.html?pro=1&amp;plan=personal|team</code> um.</li>
-        <li>Die Seite setzt den lokalen Pro-Status und führt zurück zur App/Startseite.</li>
-        <li>Der Status gilt auf diesem Gerät/Browser; mehrfach aktivierbar (keine Konten).</li>
+    <section class="card" style="grid-column:1/-1">
+      <h2>So funktioniert die Aktivierung</h2>
+      <ol>
+        <li>Kauf abschließen (Personal/Team).</li>
+        <li>Automatische Weiterleitung zu <code>pro-activate.html</code> (setzt Pro & Plan auf diesem Gerät).</li>
+        <li>Zurück zu <code>pro.html</code> → Badge zeigt „aktiv“ und den Plan.</li>
       </ol>
-      <p class="mut" style="margin:.6rem 0 0">
-        Widerruf: Digitale Inhalte mit sofortigem Zugang. Du stimmst zu, dass der Widerruf erlischt,
-        sobald die Leistung begonnen hat (siehe <a href="terms.html">Terms</a>).
-        Verbraucherrechte bleiben im Rahmen des geltenden Rechts unberührt.
-      </p>
-    </div>
+      <p><a class="btn" href="pro-activate.html?pro=1&plan=personal&return=pro&debug=1">Aktivierung testen (ohne Kauf)</a></p>
+    </section>
+  </main>
 
-    <footer>
-      <p class="mut">
-        Links: <a href="index.html">Startseite</a> · <a href="app.html">App</a> ·
-        <a href="help.html">Hilfe</a> · <a href="press.html">Presse</a> ·
-        <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
-        <a href="terms.html">Terms</a>
-      </p>
-    </footer>
-  </div>
+  <footer>
+    <p>
+      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> ·
+      <a href="terms.html">Terms</a> · <a href="kurz-terms.html">Kurz-Terms</a>
+    </p>
+  </footer>
+
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=20251124-07"></script>
+  <script defer src="js/page-pro.js?v=20251124-07"></script>
+
+  <!-- Event: Pro-View -->
+  <script>window.plausible&&plausible('pro_view');</script>
 </body>
 </html>
