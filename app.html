@@ -1,4 +1,3 @@
-<!-- /Supersystem/app.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -6,34 +5,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>App · SafeShare</title>
-  <meta name="description" content="SafeShare App: Links säubern (UTM/gclid/fbclid entfernen), Weiterleitungen entpacken und Ergebnis kopieren/teilen – 100% lokal im Browser.">
+  <title>SafeShare App – Links säubern & Redirects entpacken</title>
+  <meta name="description" content="URL einfügen, säubern, kopieren oder öffnen. Entfernt utm_, gclid, fbclid und entpackt gängige Redirects – lokal im Browser.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="x-default">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/app.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/app.html">
-  <meta property="og:locale" content="de_DE">
-
-  <!-- Open Graph / Twitter -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare App">
-  <meta property="og:description" content="Säubert Links lokal im Browser. Entfernt Tracking-Parameter und entpackt gängige Redirects.">
+  <meta property="og:title" content="SafeShare App – Links säubern">
+  <meta property="og:description" content="Einfügen → säubern → öffnen. Komplett lokal im Browser.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
 
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
+  <!-- Icons / PWA -->
+  <link rel="icon" href="assets/icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0b0d10">
 
-  <!-- Sicherheits-CSP -->
+  <!-- CSP + Plausible -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -41,129 +32,62 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self';
+                 script-src 'self' https://plausible.io;
+                 connect-src 'self' https://plausible.io;
                  font-src 'self';
                  worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
+                 manifest-src 'self'">
+  <script defer data-domain="j-ai-71.github.io" src="https://plausible.io/js/script.js"></script>
 
-  <!-- Styles -->
+  <!-- Minimal Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--ok:#5fe09f;--warn:#f59e0b}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b;--ok:#14a44d;--warn:#b45309}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:#9fe7c3}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none;cursor:pointer}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    .btn.ghost{background:transparent}
-    .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--mut);font-size:.9rem}
-    .chip.ok{color:#062012;background:var(--ok);border-color:transparent}
-    .chip.warn{color:#2c1902;background:var(--warn)}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .field{position:relative}
-    .field input[type="url"], .field input[type="text"]{
-      width:100%;box-sizing:border-box;background:#0d1319;color:var(--fg);
-      border:1px solid var(--line);border-radius:12px;padding:12px 92px 12px 12px;
-      font-size:16px
-    }
-    .field button.clear{
-      position:absolute;right:10px;top:50%;transform:translateY(-50%);
-      border:1px solid var(--line);background:#0f141a;border-radius:10px;
-      padding:6px 10px;cursor:pointer;color:var(--mut)
-    }
-    .grid-2{display:grid;grid-template-columns:1fr;gap:14px}
-    @media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
-    .result{display:flex;flex-direction:column;gap:10px}
-    .result .out{background:#0d1319;border:1px solid var(--line);border-radius:12px;padding:12px}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
+    :root{color-scheme:dark light}
+    html,body{margin:0}
+    body{font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:#0b0d10;color:#e5e7eb}
+    header,main,footer{max-width:980px;margin:0 auto;padding:16px}
+    input,textarea,button{font:inherit}
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    input[type=url]{flex:1;min-width:240px;padding:.6rem .7rem;border-radius:10px;border:1px solid #1f2937;background:#0f1318;color:#e5e7eb}
+    .btn{padding:.6rem .9rem;border-radius:10px;border:1px solid #1f2937;background:#0f1318;color:#e5e7eb}
+    .pri{background:#123e2a;border-color:#1d4d33}
+    #out{margin-top:10px;padding:.6rem .7rem;border-radius:10px;border:1px solid #1f2937;background:#0f1318;word-break:break-all}
+    footer{border-top:1px solid #1f2937;color:#9ca3af}
   </style>
-
-  <!-- JS -->
-<script defer src="js/sw-register.js?v=20251124-05"></script>
-<script defer src="js/cleaner.js?v=20251124-05"></script>
-<script defer src="js/page-app.js?v=20251124-05"></script>
 </head>
 <body>
-  <div class="wrap">
-    <header class="row" style="justify-content:space-between;gap:16px">
-      <div>
-        <h1>SafeShare App <span id="badge-pro" class="chip ok" style="display:none">Pro aktiv</span></h1>
-        <p class="mut">Links säubern &amp; Redirects entpacken – lokal im Browser.</p>
-      </div>
-      <div class="row">
-        <a class="btn ghost" href="./">Startseite</a>
-        <a class="btn ghost" href="help.html">Hilfe</a>
-        <a class="btn ghost" href="status.html">Status</a>
-      </div>
-    </header>
+  <header>
+    <nav>
+      <a href="index.html">Startseite</a> · <a href="pro.html">Pro</a> · <a href="help.html">Hilfe</a> · <a href="status.html">Status</a>
+    </nav>
+    <h1>SafeShare App</h1>
+    <p>Füge unten einen Link ein und klicke „Säubern“.</p>
+  </header>
 
-    <section class="card">
-      <h2 style="margin-top:0">1) Link einfügen</h2>
-      <div class="field">
-        <input id="in-url" type="url" inputmode="url" placeholder="Link einfügen oder tippen …" autocomplete="on" spellcheck="false" aria-label="Eingabe-Link">
-        <button id="btn-clear" class="clear" type="button" aria-label="Eingabe leeren">✕</button>
-      </div>
-      <div class="row" style="margin-top:10px">
-        <button id="btn-clean" class="btn pri" type="button">Säubern</button>
-        <button id="btn-open" class="btn" type="button">Säubern &amp; öffnen</button>
-        <button id="btn-copy" class="btn" type="button">Kopieren</button>
-        <button id="btn-share" class="btn" type="button">Teilen</button>
-        <button id="btn-check" class="btn" type="button" title="Nur prüfen, nichts ändern">Prüfen</button>
-      </div>
-      <p id="hint" class="mut" style="margin-top:6px">Tipp: <span class="mono">⌘V</span>/<span class="mono">Ctrl+V</span> zum Einfügen. „Prüfen“ zeigt nur Befunde an.</p>
-    </section>
+  <main>
+    <div class="row">
+      <input id="url" type="url" placeholder="https://…">
+      <button id="btnCleanOpen" class="btn pri" type="button">Säubern & öffnen</button>
+      <button id="btnCopy" class="btn" type="button">Kopieren</button>
+      <button id="btnShare" class="btn" type="button">Teilen</button>
+      <button id="btnCheck" class="btn" type="button">Prüfen</button>
+    </div>
+    <div id="out" aria-live="polite" class="muted"></div>
 
-    <section class="grid-2">
-      <div class="card result">
-        <h2 style="margin:0">Ergebnis</h2>
-        <div class="out">
-          <div class="row" style="justify-content:space-between;align-items:flex-start">
-            <code id="out-url" class="mono" style="word-break:break-all"></code>
-            <div class="row" style="gap:6px">
-              <span id="stat-unwrapped" class="chip" title="Weiterleitung entpackt" style="display:none">entpackt</span>
-              <span id="stat-removed" class="chip" title="Anzahl entfernter Parameter" style="display:none">-0</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <a id="out-open" class="btn" href="#" target="_blank" rel="noopener" style="display:none">Ergebnis öffnen</a>
-        </div>
-        <p id="msg" class="mut" aria-live="polite"></p>
-      </div>
+    <p style="margin-top:14px">Mehr Tools: <a href="bookmarklets.html">Bookmarklet</a> · <a href="bulk-clean.html">Bulk Clean</a> · <a href="redirect-entschachteln.html">Redirect entschachteln</a></p>
+  </main>
 
-      <aside class="card">
-        <h2 style="margin:0">Team-Whitelist</h2>
-        <p class="mut">Legitime Parameter (z. B. <span class="mono">tag</span>, <span class="mono">ref</span>) bleiben erhalten, wenn in der Whitelist. Anpassen in <a href="team-setup.html">team-setup.html</a>.</p>
-        <p class="mut" id="wl-view" style="word-break:break-word"></p>
-        <div class="row">
-          <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
-          <a class="btn" href="bulk-clean.html">Bulk-Clean</a>
-          <a class="btn" href="bookmarklets.html">Bookmarklet</a>
-        </div>
-      </aside>
-    </section>
+  <footer>
+    <p>
+      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+    </p>
+  </footer>
 
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="pro.html">Pro</a>
-        <a href="help.html">Hilfe</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-      </nav>
-    </footer>
-  </div>
+  <!-- JS -->
+  <script defer src="js/sw-register.js?v=20251124-07"></script>
+  <script defer src="js/cleaner.js?v=20251124-07"></script>
+  <script defer src="js/page-app.js?v=20251124-07"></script>
 
-  <noscript>
-    <div class="wrap"><div class="card">Bitte JavaScript aktivieren. Die App arbeitet lokal im Browser.</div></div>
-  </noscript>
+  <!-- Event: App geöffnet -->
+  <script>window.plausible&&plausible('app_open');</script>
 </body>
 </html>
