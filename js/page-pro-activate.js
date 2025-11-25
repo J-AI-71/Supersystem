@@ -1,59 +1,54 @@
-/* /Supersystem/js/page-pro-activate.js */
-/* Aktiviert Pro lokal (localStorage) und leitet danach weiter. */
-
-(function () {
+/* /Supersystem/js/page-pro-activate.js — Hotfix:
+   • führt sofort aus (kein DOMContentLoaded)
+   • entfernt evtl. Session-Override
+   • setzt Pro-Keys
+   • leitet standardmäßig zu pro.html (return=pro|app|index) */
+(() => {
   'use strict';
 
-  const qs = new URLSearchParams(location.search);
+  const qs  = new URLSearchParams(location.search);
+  const dbg = qs.has('debug');
+  const log = (...a)=>{ if(dbg) try{console.log('[pro-activate]',...a);}catch{} };
 
-  // Debug-Helper
-  const DEBUG = qs.get('debug') === '1';
-  const log = (...args) => { if (DEBUG) console.log('[pro-activate]', ...args); };
+  // 1) evtl. alter Override entfernen (kann App erzwingen)
+  try { sessionStorage.removeItem('ss_after_activate'); } catch {}
 
-  // Params lesen
-  const proParam   = qs.get('pro');            // "1" erwartet
-  const planParam  = (qs.get('plan') || '').toLowerCase(); // "personal" | "team"
-  const retParam   = (qs.get('return') || '').toLowerCase(); // "pro" | "app" | ""
-  const noCache    = qs.get('nocache') || '';
+  // 2) Parameter lesen
+  const should = qs.get('pro') === '1';
+  const plan   = (qs.get('plan') || 'personal').toLowerCase();
+  const ret    = (qs.get('return') || 'pro').toLowerCase(); // Standard: pro
+  const noc    = qs.get('nocache') || '';
 
-  log('params', { proParam, planParam, retParam, noCache });
-
-  // Gültige Pläne normalisieren
-  const PLAN = (planParam === 'team' ? 'team' : 'personal');
-
-  // Aktivierung nur, wenn ?pro=1 da ist
-  const shouldActivate = proParam === '1';
-
-  try {
-    if (shouldActivate) {
-      // Keys setzen
+  // 3) Pro lokal setzen
+  if (should) {
+    try {
       localStorage.setItem('ss_pro', '1');
-      localStorage.setItem('ss_plan', PLAN);
-      // Optional: Zeitstempel für Debug
-      localStorage.setItem('ss_activated_at', String(Date.now()));
-      log('activated', { ss_pro: '1', ss_plan: PLAN });
-    } else {
-      log('no activation (missing ?pro=1)');
+      localStorage.setItem('ss_pro_plan', (plan === 'team' ? 'team' : 'personal'));
+      localStorage.setItem('ss_pro_activated_at', new Date().toISOString());
+    } catch (e) {
+      log('localStorage error', e);
     }
-  } catch (e) {
-    log('localStorage error', e);
+  } else {
+    log('kein ?pro=1 – keine Auto-Aktivierung');
   }
 
-  // Ziel bestimmen – Standard: pro.html (nicht app)
+  // 4) Ziel bestimmen (Fallback = pro.html)
   let target = 'pro.html';
-  if (retParam === 'app')  target = 'app.html';
-  else if (retParam === 'pro') target = 'pro.html';
+  if (ret === 'app')   target = 'app.html';
+  if (ret === 'index' || ret === 'start') target = 'index.html';
+  if (noc) target += (target.includes('?') ? '&' : '?') + 'nocache=' + encodeURIComponent(noc);
 
-  // nocache ggf. anhängen, damit SW/Cache sicher umgangen wird
-  if (noCache) {
-    target += (target.includes('?') ? '&' : '?') + 'nocache=' + encodeURIComponent(noCache);
+  // 5) Debug-Overlay (sichtbar auf iPad), dann Redirect
+  if (dbg) {
+    const pre = document.createElement('pre');
+    pre.style.cssText = 'position:fixed;bottom:8px;left:8px;right:8px;max-height:50vh;overflow:auto;background:#111;color:#0f0;padding:12px;border:1px solid #0f0;font:12px/1.3 monospace;z-index:999999';
+    pre.textContent = JSON.stringify({
+      should, plan, ret, target,
+      sw: (navigator.serviceWorker && navigator.serviceWorker.controller ? navigator.serviceWorker.controller.scriptURL : null)
+    }, null, 2);
+    document.body.appendChild(pre);
+    setTimeout(() => { try { location.replace(target); } catch { location.href = target; } }, 600);
+  } else {
+    try { location.replace(target); } catch { location.href = target; }
   }
-
-  log('redirect ->', target);
-
-  // Mini-Delay, damit UI bei Debug sichtbar bleibt
-  setTimeout(() => {
-    // replace = kein „Zurück“-Pingpong
-    location.replace(target);
-  }, DEBUG ? 600 : 80);
 })();
