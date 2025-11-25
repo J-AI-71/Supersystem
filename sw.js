@@ -3,7 +3,7 @@
    -------------------------------------------------------- */
 'use strict';
 
-const SW_VERSION = '2025-11-24-03';
+const SW_VERSION = '2025-11-24-04';
 const CACHE_NAME = 'ss-cache-' + SW_VERSION; // wird in install/activate genutzt
 self.__SW_VERSION__ = SW_VERSION;
 
