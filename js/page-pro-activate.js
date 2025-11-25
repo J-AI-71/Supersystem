@@ -1,105 +1,59 @@
-/* /Supersystem/js/page-pro-activate.js
-   Setzt den lokalen Pro-Status nach Payhip-Redirect und springt zurück. */
+/* /Supersystem/js/page-pro-activate.js */
+/* Aktiviert Pro lokal (localStorage) und leitet danach weiter. */
 
 (function () {
   'use strict';
 
   const qs = new URLSearchParams(location.search);
+
+  // Debug-Helper
   const DEBUG = qs.get('debug') === '1';
-  const RETURN = (qs.get('return') || 'pro').toLowerCase(); // pro|app|start|index
-  const PRO_FLAG = qs.get('pro') === '1';
-  const PLAN = (qs.get('plan') || 'personal').toLowerCase(); // personal|team
+  const log = (...args) => { if (DEBUG) console.log('[pro-activate]', ...args); };
 
-  // DOM-Helper
-  const $ = (s) => document.querySelector(s);
-  const showDebug = (obj) => {
-    if (!DEBUG) return;
-    const box = $('#debugBox');
-    const out = $('#debugOut');
-    if (box && out) {
-      box.hidden = false;
-      out.textContent = JSON.stringify(obj, null, 2);
+  // Params lesen
+  const proParam   = qs.get('pro');            // "1" erwartet
+  const planParam  = (qs.get('plan') || '').toLowerCase(); // "personal" | "team"
+  const retParam   = (qs.get('return') || '').toLowerCase(); // "pro" | "app" | ""
+  const noCache    = qs.get('nocache') || '';
+
+  log('params', { proParam, planParam, retParam, noCache });
+
+  // Gültige Pläne normalisieren
+  const PLAN = (planParam === 'team' ? 'team' : 'personal');
+
+  // Aktivierung nur, wenn ?pro=1 da ist
+  const shouldActivate = proParam === '1';
+
+  try {
+    if (shouldActivate) {
+      // Keys setzen
+      localStorage.setItem('ss_pro', '1');
+      localStorage.setItem('ss_plan', PLAN);
+      // Optional: Zeitstempel für Debug
+      localStorage.setItem('ss_activated_at', String(Date.now()));
+      log('activated', { ss_pro: '1', ss_plan: PLAN });
+    } else {
+      log('no activation (missing ?pro=1)');
     }
-    console.log('[pro-activate debug]', obj);
-  };
-
-  // Keys zentral
-  const KEYS = {
-    PRO: 'SS_PRO',                 // '1' = aktiv
-    PLAN: 'SS_PRO_PLAN',           // 'personal' | 'team'
-    AT: 'SS_PRO_AT',               // ISO-Zeitpunkt
-    SOURCE: 'SS_PRO_SOURCE'        // 'payhip'|'manual'
-  };
-
-  function setProLocally(plan, source) {
-    try {
-      localStorage.setItem(KEYS.PRO, '1');
-      localStorage.setItem(KEYS.PLAN, plan);
-      localStorage.setItem(KEYS.AT, new Date().toISOString());
-      localStorage.setItem(KEYS.SOURCE, source);
-      return true;
-    } catch (e) {
-      showDebug({ error: 'localStorage', detail: String(e) });
-      return false;
-    }
+  } catch (e) {
+    log('localStorage error', e);
   }
 
-  function getReturnHref() {
-    switch (RETURN) {
-      case 'app':   return 'app.html';
-      case 'start':
-      case 'index': return 'index.html';
-      case 'pro':
-      default:      return 'pro.html';
-    }
+  // Ziel bestimmen – Standard: pro.html (nicht app)
+  let target = 'pro.html';
+  if (retParam === 'app')  target = 'app.html';
+  else if (retParam === 'pro') target = 'pro.html';
+
+  // nocache ggf. anhängen, damit SW/Cache sicher umgangen wird
+  if (noCache) {
+    target += (target.includes('?') ? '&' : '?') + 'nocache=' + encodeURIComponent(noCache);
   }
 
-  function go(href) {
-    // schneller, ohne History-Eintrag
-    location.replace(href);
-  }
+  log('redirect ->', target);
 
-  // Hauptlogik
-  document.addEventListener('DOMContentLoaded', () => {
-    // Buttons verlinken (falls manuell geklickt wird)
-    const goPro = $('#go-pro');
-    if (goPro) goPro.href = 'pro.html';
-
-    const payload = {
-      url: location.href,
-      params: Object.fromEntries(qs.entries()),
-      willSetPro: PRO_FLAG,
-      plan: PLAN
-    };
-
-    // Automatische Aktivierung, wenn pro=1 vorhanden
-    if (PRO_FLAG) {
-      const ok = setProLocally(PLAN === 'team' ? 'team' : 'personal', 'payhip');
-      payload.setResult = ok ? 'ok' : 'fail';
-      showDebug(payload);
-
-      // kurzer Tick, damit Storage sicher geschrieben ist
-      setTimeout(() => go(getReturnHref()), 50);
-      return;
-    }
-
-    // Manuelle Aktivierungs-Links erlauben (Buttons oben auf der Seite)
-    // Aktivieren (Personal)
-    const linkPersonal = document.querySelector('a[href*="plan=personal"]');
-    if (linkPersonal) linkPersonal.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      setProLocally('personal', 'manual');
-      go(getReturnHref());
-    });
-
-    // Aktivieren (Team)
-    const linkTeam = document.querySelector('a[href*="plan=team"]');
-    if (linkTeam) linkTeam.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      setProLocally('team', 'manual');
-      go(getReturnHref());
-    });
-
-    showDebug(payload);
-  });
+  // Mini-Delay, damit UI bei Debug sichtbar bleibt
+  setTimeout(() => {
+    // replace = kein „Zurück“-Pingpong
+    location.replace(target);
+  }, DEBUG ? 600 : 80);
 })();
