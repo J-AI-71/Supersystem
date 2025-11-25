@@ -5,29 +5,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <base href="/Supersystem/">
-  <title>SafeShare – Saubere, kurze Links ohne Tracking</title>
-  <meta name="description" content="SafeShare entfernt Tracking-Parameter (z. B. utm_, gclid, fbclid), entpackt Redirects und hält freigegebene Parameter per Team-Whitelist. Lokal im Browser, ohne Accounts.">
+  <title>SafeShare – Links ohne Tracking. Ein Klick.</title>
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
 
-  <!-- Canonical / hreflang -->
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/index.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/index.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/index.html" hreflang="x-default">
+  <!-- hreflang / Locale -->
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="de">
+  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/" hreflang="x-default">
+  <meta property="og:locale" content="de_DE">
+
+  <!-- Meta-Description (≈150–160 Zeichen) -->
+  <meta name="description" content="Links sauber und kurz – ohne Tracking-Parameter. SafeShare reinigt URLs, entpackt Redirects und erhält erlaubte IDs per Whitelist. Lokal, ohne Accounts.">
 
   <!-- Open Graph / Twitter -->
-  <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Saubere, kurze Links ohne Tracking">
-  <meta property="og:description" content="Links säubern & Redirects entpacken – 100 % lokal im Browser. Keine Accounts. Team-Whitelist für erlaubte Parameter.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/index.html">
+  <meta property="og:title" content="SafeShare – Links ohne Tracking. Ein Klick.">
+  <meta property="og:description" content="Links säubern, Redirects entpacken, Team-Whitelist. Komplett lokal im Browser.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Icons / Manifest -->
-  <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
-  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png">
   <link rel="manifest" href="manifest.webmanifest">
 
-  <!-- CSP (JSON-LD via Nonce) -->
+  <!-- CSP (JSON-LD via Nonce erlaubt) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  base-uri 'self';
@@ -35,98 +37,86 @@
                  object-src 'none';
                  img-src 'self' data:;
                  style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSJSON0';
+                 script-src 'self' 'nonce-SSJSON1';
                  font-src 'self';
                  worker-src 'self';
                  manifest-src 'self';
                  connect-src 'self'">
 
-  <!-- WebApplication JSON-LD -->
-  <script type="application/ld+json" nonce="SSJSON0">
+  <!-- WebApplication -->
+  <script nonce="SSJSON1" type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "SafeShare",
-    "url": "https://j-ai-71.github.io/Supersystem/index.html",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Web",
-    "description": "Tracking-Parameter entfernen, Redirects entpacken, erlaubte Team-Parameter beibehalten – alles lokal im Browser.",
-    "offers": {
-      "@type": "Offer",
-      "price": "15.00",
-      "priceCurrency": "EUR"
-    }
+    "url": "https://j-ai-71.github.io/Supersystem/",
+    "applicationCategory": "Utility",
+    "operatingSystem": "iOS, Android, macOS, Windows, Linux",
+    "description": "Links ohne Tracking: UTM entfernen, Redirects entpacken, Team-Whitelist – lokal im Browser.",
+    "image": "https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
   }
   </script>
 
-  <!-- Organization JSON-LD -->
-  <script type="application/ld+json" nonce="SSJSON0">
+  <!-- Organization -->
+  <script nonce="SSJSON1" type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "SafeShare",
     "url": "https://j-ai-71.github.io/Supersystem/",
-    "logo": "https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg",
-    "sameAs": []
+    "logo": "https://j-ai-71.github.io/Supersystem/assets/icons/icon-512.png"
   }
   </script>
+
+  <!-- JS (Version gern anheben, z. B. 20251124-04) -->
+  <script defer src="js/sw-register.js?v=20251124-04"></script>
 </head>
-
 <body>
-  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+  <a href="#main" class="skip">Zum Inhalt springen</a>
 
-  <header class="site-header">
-    <nav class="nav">
-      <a href="index.html" aria-current="page">Startseite</a>
-      <a href="app.html">App</a>
-      <a href="pro.html">Pro</a>
-      <a href="help.html">Hilfe</a>
-      <a href="quickstart.html">Quickstart</a>
+  <header>
+    <nav>
+      <a href="index.html" aria-current="page">Startseite</a> ·
+      <a href="app.html">App</a> ·
+      <a href="pro.html">Pro</a> ·
+      <a href="quickstart.html">Quickstart</a> ·
+      <a href="help.html">Hilfe</a> ·
       <a href="press.html">Presse</a>
     </nav>
   </header>
 
-  <main id="main" class="container">
-    <section class="hero">
-      <h1>SafeShare</h1>
-      <p>Links säubern & Redirects entpacken – lokal im Browser. Keine Accounts, keine Server-Logs.</p>
-      <div class="cta">
-        <a class="btn btn-primary" href="app.html">App öffnen</a>
-        <a class="btn" href="pro.html">Pro ansehen</a>
-        <a class="btn" href="quickstart.html">Quickstart</a>
-      </div>
-      <ul class="chips">
-        <li>UTM-Ballast raus</li>
-        <li>Redirects entpacken</li>
-        <li>Team-Whitelist</li>
-        <li>PWA &amp; offline-fähig</li>
-      </ul>
-    </section>
+  <main id="main">
+    <h1>SafeShare</h1>
+    <p>Links säubern &amp; Redirects entpacken – lokal im Browser. Keine Accounts, keine Server-Logs.</p>
 
-    <section class="features">
-      <h2>Was SafeShare kann</h2>
-      <ul>
-        <li><strong>Säubern:</strong> Entfernt Tracking-Parameter wie <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>.</li>
-        <li><strong>Entpacken:</strong> Liefert Klarziel statt Ketten (z. B. <code>google.com/url</code>, <code>t.co</code> …).</li>
-        <li><strong>Whitelist:</strong> Erlaubte Parameter (z. B. <code>tag</code>, <code>ref</code>) bleiben erhalten.</li>
-        <li><strong>Privacy-by-Design:</strong> 100 % lokal im Browser, keine externen Requests.</li>
-      </ul>
-      <p>
-        Für Teams & Unternehmen: <a href="publisher.html">Publisher</a> ·
-        <a href="education.html">Bildung/NGOs</a> ·
-        <a href="partners.html">Unternehmen &amp; Partner</a> ·
-        <a href="compliance.html">Compliance</a>
-      </p>
-    </section>
+    <p>
+      <a href="app.html">App öffnen</a> ·
+      <a href="pro.html">Pro ansehen</a> ·
+      <a href="quickstart.html">Quickstart</a>
+    </p>
 
-    <section class="pwa">
-      <h2>Installierbar & offline-tauglich</h2>
-      <p>Als PWA installierbar; Kernseiten funktionieren auch ohne Netz. Status &amp; Service-Worker: <a href="status.html">hier prüfen</a>.</p>
-    </section>
+    <h2>Was SafeShare kann</h2>
+    <ul>
+      <li><strong>Säubern:</strong> Entfernt Tracking-Parameter wie <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>.</li>
+      <li><strong>Entpacken:</strong> Klarsziel statt Ketten (z. B. <code>google.com/url</code>, <code>t.co</code> …).</li>
+      <li><strong>Whitelist:</strong> Erlaubte Parameter (z. B. <code>tag</code>, <code>ref</code>) bleiben erhalten.</li>
+      <li><strong>Privacy-by-Design:</strong> 100 % lokal im Browser, keine externen Requests.</li>
+    </ul>
+
+    <p>Für Teams &amp; Unternehmen:
+      <a href="publisher.html">Publisher</a> ·
+      <a href="education.html">Bildung/NGOs</a> ·
+      <a href="partners.html">Unternehmen &amp; Partner</a> ·
+      <a href="compliance.html">Compliance</a>
+    </p>
+
+    <h2>Installierbar &amp; offline-tauglich</h2>
+    <p>Als PWA installierbar; Kernseiten funktionieren auch ohne Netz. Status &amp; Service-Worker: <a href="status.html">hier prüfen</a>.</p>
   </main>
 
-  <footer class="site-footer">
-    <nav class="footer-nav">
+  <footer>
+    <nav>
       <a href="index.html">Startseite</a> ·
       <a href="app.html">App</a> ·
       <a href="pro.html">Pro</a> ·
@@ -137,10 +127,7 @@
       <a href="terms.html">Terms</a> ·
       <a href="kurz-terms.html">Kurz-Terms</a>
     </nav>
-    <p class="copyright">© SafeShare</p>
+    <p>© SafeShare</p>
   </footer>
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251124-04"></script>
 </body>
 </html>
