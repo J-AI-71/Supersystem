@@ -6,7 +6,7 @@
   'use strict';
 
   // === Version anpassen (gleich wie in sw.js) ===============================
-  const SW_VERSION = '2025-11-24-06';
+  const SW_VERSION = '2025-11-24-07';
   const SW_URL     = 'sw.js?sw=' + encodeURIComponent(SW_VERSION);
   const SCOPE      = './'; // GitHub Pages: relativ lassen
 
