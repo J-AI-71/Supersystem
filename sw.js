@@ -38,6 +38,9 @@ const CORE = [
   'js/bookmarklets.js',
   'js/page-404.js',
 
+  'pro-activate.html',
+  'js/page-pro-activate.js',
+   
   // App-Metadaten & Icons
   'manifest.webmanifest',
   'assets/icons/icon-16-kreis.png',
