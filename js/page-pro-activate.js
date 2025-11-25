@@ -7,7 +7,7 @@
   const param = (k, d='') => (qs.get(k) || d).trim();
   const wantPro = param('pro') === '1';
   const plan    = (param('plan','personal') || 'personal').toLowerCase();
-  const ret     = (param('return','app')    || 'app').toLowerCase(); // 'pro'|'app'
+  const ret = (param('return','pro')    || 'pro').toLowerCase(); // 'pro'|'app'
 
   function setPro(flag, p) {
     try {
