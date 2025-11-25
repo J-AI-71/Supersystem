@@ -106,6 +106,33 @@
     <p>Service-Worker &amp; Cache: <a href="status.html">Status prüfen</a></p>
   </main>
 
+<script>
+  // Globale Helper für CTA-Events
+  function gcEvent(name, meta) {
+    if (!window.goatcounter || !window.goatcounter.count) return;
+    const params = new URLSearchParams(meta || {});
+    const p = location.pathname + '?event=' + encodeURIComponent(name) + (params.toString() ? '&' + params.toString() : '');
+    window.goatcounter.count({ path: p, title: 'event:' + name, event: true });
+  }
+
+  // Beispiel: Buttons „Kaufen“ personal/team markieren
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+
+    // Personal
+    if (a.matches('a[href*="payhip.com/b/VDm3B"]')) {
+      gcEvent('buy_personal_click', { ab: new URLSearchParams(location.search).get('ab') || 'na',
+                                      src: new URLSearchParams(location.search).get('src') || 'na' });
+    }
+    // Team
+    if (a.matches('a[href*="payhip.com/b/Yxh5T"]')) {
+      gcEvent('buy_team_click', { ab: new URLSearchParams(location.search).get('ab') || 'na',
+                                   src: new URLSearchParams(location.search).get('src') || 'na' });
+    }
+  });
+</script>
+  
   <footer>
     <p>
       <a href="index.html">Startseite</a> · <a href="app.html">App</a> · <a href="pro.html">Pro</a> ·
