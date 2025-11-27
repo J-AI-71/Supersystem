@@ -1,16 +1,64 @@
-<!-- education.html -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>SafeShare Education – saubere Links in Schule, Studium & Weiterbildung</title>
-  <meta name="description" content="SafeShare unterstützt Lehrkräfte, Lernende und Bildungsprojekte dabei, Links ohne überflüssige Tracking-Parameter zu teilen – einfach, verständlich und datensparsamer.">
+  <title>Guides &amp; Education – Tracking verstehen, Links bewusst nutzen</title>
+  <meta name="description" content="Sammlung von Guides rund um UTM-Parameter, Tracking-Links und Link-Hygiene. Lerne, wie du SafeShare in deinen Alltag und in Teams integrierst.">
 
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <!-- Canonical -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/education.html">
+
+  <!-- Favicon -->
   <link rel="icon" href="logo.svg" type="image/svg+xml">
+
+  <!-- Search Console / Bing -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Guides &amp; Education – Tracking verstehen, Links bewusst nutzen">
+  <meta property="og:description" content="Übersicht über SafeShare-Guides zu UTM-Parametern, Tracking-Links, Bulk-Reinigung, Publisher-Workflows und Pro-Features.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/education.html">
+  <meta property="og:site_name" content="SafeShare">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Guides &amp; Education – Tracking verstehen, Links bewusst nutzen">
+  <meta name="twitter:description" content="Lerne mit kompakten Guides, wie du Tracking-Parameter erkennst, entfernst und SafeShare in deinen Alltag integrierst.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+
+  <!-- Structured Data: CollectionPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "SafeShare Guides & Education",
+    "description": "Sammlung von Anleitungen und Artikeln zu UTM-Parametern, Tracking-Links und Link-Hygiene.",
+    "url": "https://j-ai-71.github.io/Supersystem/education.html",
+    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
+    "hasPart": [
+      {
+        "@type": "Article",
+        "headline": "UTM-Parameter entfernen: so machst du Kampagnen-Links sauber",
+        "url": "https://j-ai-71.github.io/Supersystem/utm-parameter-entfernen.html"
+      },
+      {
+        "@type": "Article",
+        "headline": "Tracking-Parameter entfernen: saubere Links mit weniger Datenmüll",
+        "url": "https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html"
+      },
+      {
+        "@type": "Article",
+        "headline": "URL Cleaner & Link-Cleaner – Browser vs. Tools vs. SafeShare",
+        "url": "https://j-ai-71.github.io/Supersystem/url-cleaner-tool-vergleich.html"
+      }
+    ]
+  }
+  </script>
 
   <style>
     :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
@@ -49,15 +97,14 @@
 
     main{padding:26px 0 40px;}
     h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
-    h2{font-size:20px;margin:24px 0 8px;}
-    h3{font-size:16px;margin:18px 0 6px;}
+    h2{font-size:20px;margin:22px 0 10px;}
+    h3{font-size:16px;margin:16px 0 6px;}
     p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
-    ul,ol{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 10px;}
 
     .card{
       background:rgba(9,14,30,.96);
       border-radius:16px;
-      padding:16px 16px 14px;
+      padding:18px 16px 16px;
       border:1px solid var(--border);
       margin-bottom:18px;
     }
@@ -72,21 +119,33 @@
       width:7px;height:7px;border-radius:50%;
       background:#3dd5b0;box-shadow:0 0 10px rgba(61,213,176,.8);
     }
-    .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      gap:6px;border-radius:999px;padding:8px 14px;
-      font-size:13px;border:1px solid transparent;
-      text-decoration:none;cursor:pointer;white-space:nowrap;
+    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px;font-size:11px;}
+    .pill{
+      border-radius:999px;
+      border:1px solid rgba(61,213,176,.6);
+      padding:3px 9px;
+      background:rgba(7,11,24,.98);
+      color:var(--muted);
     }
-    .btn-primary{
-      background:linear-gradient(120deg,#3dd5b0,#ffc98b);
-      color:#050810;font-weight:600;
+    .guide-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+      margin-top:6px;
     }
-    .btn-ghost{
-      border-color:rgba(99,110,160,.8);
-      color:var(--muted);background:rgba(9,15,32,.9);
+    .guide-card{
+      border-radius:14px;
+      border:1px solid rgba(44,57,103,.9);
+      padding:12px 12px 10px;
+      background:rgba(7,11,24,.98);
+      font-size:13px;
     }
+    .guide-title{
+      font-weight:600;font-size:14px;margin-bottom:4px;color:var(--text);
+    }
+    .guide-meta{font-size:11px;color:var(--muted);margin-bottom:6px;}
+    .guide-link{font-size:12px;margin-top:4px;}
+
     footer{
       border-top:1px solid rgba(36,46,78,.7);
       padding:14px 0 22px;font-size:11px;
@@ -111,7 +170,9 @@
       <nav class="nav-links">
         <a href="index.html">Startseite</a>
         <a href="app.html">App</a>
-        <a href="quickstart.html">Quickstart</a>
+        <a href="utm-parameter-entfernen.html">UTM-Guide</a>
+        <a href="tracking-parameter-entfernen.html">Tracking-Parameter</a>
+        <a href="url-cleaner-tool-vergleich.html">URL Cleaner Vergleich</a>
         <a href="help.html">Hilfe</a>
       </nav>
     </div>
@@ -120,76 +181,154 @@
 
 <main>
   <div class="shell">
-    <div class="card">
-      <div class="badge"><span class="badge-dot"></span> SafeShare Education</div>
-      <h1>Saubere Links für Bildung &amp; Lernumgebungen</h1>
+
+    <article class="card">
+      <div class="badge"><span class="badge-dot"></span> Guides</div>
+      <h1>Guides &amp; Education</h1>
       <p>
-        SafeShare kann in Schulen, Hochschulen und Weiterbildungsprojekten helfen, Links
-        datensparsamer und übersichtlicher zu teilen – ohne dass Lernende sich mit
-        Tracking-Parametern auseinandersetzen müssen.
+        Diese Seite sammelt kompakte Anleitungen rund um Tracking-Links, UTM-Parameter
+        und Link-Hygiene – und zeigt dir, wie du SafeShare sinnvoll in deinen Alltag
+        und in Teams einbaust.
       </p>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="app.html">SafeShare App öffnen</a>
-        <a class="btn btn-ghost" href="quickstart.html">Quickstart für Lehrkräfte</a>
+      <div class="pill-row">
+        <span class="pill">UTM-Parameter</span>
+        <span class="pill">Tracking verstehen</span>
+        <span class="pill">Link-Hygiene</span>
       </div>
-    </div>
+    </article>
 
-    <section class="card">
-      <h2>Warum SafeShare im Bildungsbereich?</h2>
-      <ul>
-        <li>Links aus Lernplattformen, Newslettern oder Tools sind oft unnötig aufgebläht.</li>
-        <li>Lernende verstehen nicht, was <code>utm_source</code> &amp; Co. bedeuten.</li>
-        <li>Du möchtest bewusst mit Tracking umgehen und unnötige IDs entfernen.</li>
-      </ul>
+    <article class="card">
+      <h2>1. Grundlagen-Guides</h2>
+      <div class="guide-grid">
+
+        <div class="guide-card">
+          <div class="guide-title">UTM-Parameter entfernen</div>
+          <div class="guide-meta">Was UTM-Codes sind und wie du sie mit SafeShare &amp; von Hand loswirst.</div>
+          <p>
+            UTM-Parameter sind der Standard im Online-Marketing, um Kampagnen zu
+            messen. Der Guide erklärt:
+          </p>
+          <ul>
+            <li>Aufbau und Arten von UTM-Parametern,</li>
+            <li>wann sie sinnvoll sind – und wann nicht,</li>
+            <li>Schritte zum manuellen Entfernen,</li>
+            <li>wie SafeShare dich dabei unterstützt.</li>
+          </ul>
+          <div class="guide-link">
+            <a href="utm-parameter-entfernen.html">Zum Guide „UTM-Parameter entfernen“</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-title">Tracking-Parameter entfernen</div>
+          <div class="guide-meta">UTM, gclid, fbclid und andere Anhängsel verstehen.</div>
+          <p>
+            Dieser Guide zeigt dir:
+          </p>
+          <ul>
+            <li>was Tracking-Parameter grundsätzlich sind,</li>
+            <li>wann sie für Auswertungen wichtig sind,</li>
+            <li>wann du sie entfernen kannst, ohne das Ziel zu ändern,</li>
+            <li>wie SafeShare dir saubere Links erzeugt.</li>
+          </ul>
+          <div class="guide-link">
+            <a href="tracking-parameter-entfernen.html">Zum Guide „Tracking-Parameter entfernen“</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-title">URL Cleaner &amp; Link-Cleaner im Vergleich</div>
+          <div class="guide-meta">Browser-Funktionen, Add-ons und SafeShare vergleichen.</div>
+          <p>
+            Hier erfährst du:
+          </p>
+          <ul>
+            <li>wie integrierte Browser-Funktionen arbeiten,</li>
+            <li>was Erweiterungen leisten,</li>
+            <li>wann eine Web-App wie SafeShare sinnvoll ist,</li>
+            <li>welche Kombinationen im Alltag gut funktionieren.</li>
+          </ul>
+          <div class="guide-link">
+            <a href="url-cleaner-tool-vergleich.html">Zum Vergleich „URL Cleaner &amp; Link-Cleaner“</a>
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>2. Praxis &amp; Workflows</h2>
+      <div class="guide-grid">
+
+        <div class="guide-card">
+          <div class="guide-title">Viele Links auf einmal bereinigen</div>
+          <div class="guide-meta">Bulk-Clean für Listen aus Excel, Sheets &amp; Tools.</div>
+          <p>
+            Wenn du mit Listen arbeitest (Newsletter, Social-Pläne, Dokumente),
+            zeigt dir dieser Bereich:
+          </p>
+          <ul>
+            <li>wie du Bulk-Clean in deinen Workflow einbaust,</li>
+            <li>wie du Listen vorbereitest und wieder einfügst,</li>
+            <li>wie du Änderungen prüfst (Vorher/Nachher).</li>
+          </ul>
+          <div class="guide-link">
+            <a href="bulk-clean.html">Zum Bulk-Clean-Modus</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-title">SafeShare für Publisher &amp; Affiliates</div>
+          <div class="guide-meta">Workflows für Redaktionen, Agenturen und Teams.</div>
+          <p>
+            Dieser Bereich richtet sich an Teams, die mit vielen Links arbeiten:
+          </p>
+          <ul>
+            <li>Umgang mit Affiliate-Parametern,</li>
+            <li>Regeln für Kampagnen-UTM,</li>
+            <li>Einführung eines „Link-Hygiene“-Standards.</li>
+          </ul>
+          <div class="guide-link">
+            <a href="publisher.html">Zu „SafeShare für Publisher &amp; Affiliates“</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-title">SafeShare Pro im Einsatz</div>
+          <div class="guide-meta">Whitelists, Pro-Workflows und Team-Setups.</div>
+          <p>
+            Hier geht es um Pro-Features:
+          </p>
+          <ul>
+            <li>Whitelists für eigene IDs,</li>
+            <li>konfigurierbare Bulk-Workflows,</li>
+            <li>Team-Regeln und Onboarding.</li>
+          </ul>
+          <div class="guide-link">
+            <a href="pro.html">Zu „SafeShare Pro“</a>
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>3. Nächste Schritte</h2>
       <p>
-        SafeShare hilft dabei, diese Links zu säubern, bevor sie im Unterricht, in Kursunterlagen
-        oder im Intranet verteilt werden.
+        Wenn du neu bei SafeShare bist:
       </p>
-    </section>
-
-    <section class="card">
-      <h2>Einsatzszenarien</h2>
-      <h3>Für Lehrkräfte</h3>
-      <ul>
-        <li>Material-Links vor dem Teilen über SafeShare bereinigen,</li>
-        <li>„Kurz-Links“ ohne Tracking in Präsentationen und PDFs nutzen,</li>
-        <li>Bookmarklets im Browser, um schnell aufzuräumen.</li>
-      </ul>
-
-      <h3>Für Lernende</h3>
-      <ul>
-        <li>eigene Linklisten (z. B. Forschung, Quellenverzeichnisse) sauber halten,</li>
-        <li>bewusster mit getrackten Links umgehen lernen,</li>
-        <li>SafeShare als kleinen Baustein digitaler Selbstverteidigung kennenlernen.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Simple Rollout-Idee</h2>
       <ol>
-        <li>SafeShare in einer kurzen Präsentation vorstellen.</li>
-        <li>Quickstart-Anleitung und <a href="bookmarklets.html">Bookmarklets</a> verlinken.</li>
-        <li>Lehrkräfte und Lernende ermutigen, Links vor dem Teilen zu säubern.</li>
-        <li>Optional: interne Guidelines erstellen („Links möglichst ohne Tracking teilen“).</li>
+        <li>Starte mit dem <a href="utm-parameter-entfernen.html">UTM-Guide</a>.</li>
+        <li>Teste danach eine Handvoll Links direkt in der <a href="app.html">SafeShare App</a>.</li>
+        <li>Wenn du mit Listen arbeitest, probiere <a href="bulk-clean.html">Bulk-Clean</a> aus.</li>
+        <li>Für Team- oder Publisher-Workflows kannst du dir
+          <a href="publisher.html">Publisher</a> und <a href="pro.html">Pro</a> ansehen.</li>
       </ol>
-    </section>
+      <p>
+        Weitere Fragen beantwortet die Seite <a href="help.html">Hilfe &amp; Support</a>.
+      </p>
+    </article>
 
-    <section class="card">
-      <h2>Lizenzfragen</h2>
-      <p>
-        Die Basisfunktionen von SafeShare sind als Web-App erreichbar. Ob und wie SafeShare
-        Pro in einer Bildungseinrichtung genutzt werden darf, hängt von deiner Lizenzpolitik
-        ab (z. B. Einzel-Lizenzen, Team-Lizenzen).
-      </p>
-      <p>
-        Siehe dazu:
-      </p>
-      <ul>
-        <li><a href="pro.html">SafeShare Pro</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-      </ul>
-    </section>
   </div>
 </main>
 
