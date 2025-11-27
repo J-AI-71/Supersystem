@@ -1,93 +1,258 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>URL/Link Cleaner ohne Tracking – SafeShare</title>
-  <meta name="description" content="Entferne Tracking-Parameter wie utm_, gclid, fbclid aus deinen Links – lokal im Browser, ohne Konten, ohne Server-Logs. Jetzt SafeShare Link Cleaner öffnen.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SafeShare App – UTM- & Tracking-Parameter jetzt entfernen</title>
+  <meta name="description" content="Füge eine URL ein, säubere UTM- und andere Tracking-Parameter und öffne direkt die bereinigte Zielseite. Alles läuft lokal im Browser.">
+
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/app.html" hreflang="x-default">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare App – Links säubern">
-  <meta property="og:description" content="Einfügen → säubern → öffnen. Komplett lokal im Browser.">
+  <meta property="og:title" content="SafeShare App – UTM- & Tracking-Parameter entfernen">
+  <meta property="og:description" content="Entferne UTM-, gclid-, fbclid- und andere Tracking-Parameter direkt im Browser.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/safeshare-cover.png">
 
-  <!-- Icons / PWA -->
-  <link rel="icon" href="assets/icons/icon-192.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0b0d10">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SafeShare App – UTM- & Tracking-Parameter entfernen">
+  <meta name="twitter:description" content="URL einfügen, Tracking entfernen, Zielseite öffnen – lokal und schnell.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/safeshare-cover.png">
 
-  <!-- CSP + Plausible -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self' https://plausible.io;
-                 connect-src 'self' https://plausible.io;
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self'">
-  <script defer data-domain="j-ai-71.github.io" src="https://plausible.io/js/script.js"></script>
-
-  <!-- Minimal Styles -->
   <style>
-    :root{color-scheme:dark light}
-    html,body{margin:0}
-    body{font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:#0b0d10;color:#e5e7eb}
-    header,main,footer{max-width:980px;margin:0 auto;padding:16px}
-    input,textarea,button{font:inherit}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
-    input[type=url]{flex:1;min-width:240px;padding:.6rem .7rem;border-radius:10px;border:1px solid #1f2937;background:#0f1318;color:#e5e7eb}
-    .btn{padding:.6rem .9rem;border-radius:10px;border:1px solid #1f2937;background:#0f1318;color:#e5e7eb}
-    .pri{background:#123e2a;border-color:#1d4d33}
-    #out{margin-top:10px;padding:.6rem .7rem;border-radius:10px;border:1px solid #1f2937;background:#0f1318;word-break:break-all}
-    footer{border-top:1px solid #1f2937;color:#9ca3af}
+    :root {
+      --bg: #050810;
+      --card: #0d111c;
+      --accent: #3dd5b0;
+      --text: #f5f7ff;
+      --muted: #9aa4c6;
+      --border: #1b2335;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text","Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #101626 0, #050810 55%, #020308 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: #8be5ca; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(5,8,16,.95), rgba(5,8,16,.85), transparent);
+      border-bottom: 1px solid rgba(36, 46, 78, 0.7);
+    }
+    .shell { max-width: 880px; margin: 0 auto; padding: 0 18px; }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 0; font-size: 13px; color: var(--muted); gap: 10px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 8px; }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 999px;
+      border: 1px solid rgba(61, 213, 176, 0.5);
+      background: radial-gradient(circle at 30% 0%, #f9eab0 0, #fbd2a7 14%, #ff9e9e 32%, #141827 100%);
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .logo-mark img { width: 22px; height: 22px; object-fit: contain; }
+    .logo-title { font-weight: 600; font-size: 15px; color: var(--text); }
+    .nav-links { display: flex; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a { text-decoration: none; }
+    @media (max-width: 720px) { .nav-links { display: none; } }
+
+    main { padding: 26px 0 40px; }
+    h1 { font-size: clamp(24px,4vw,30px); margin: 0 0 8px; }
+    p { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 10px; }
+
+    .app-card {
+      background: rgba(9, 14, 30, 0.96);
+      border-radius: 16px;
+      padding: 18px 16px 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+    label { font-size: 13px; color: var(--text); display: block; margin-bottom: 6px; }
+    input[type="text"], textarea {
+      width: 100%; border-radius: 10px;
+      border: 1px solid rgba(46,60,104,0.9);
+      background: rgba(7,12,30,0.95);
+      color: #d7e4ff;
+      padding: 9px 11px;
+      font-size: 13px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text","Segoe UI", sans-serif;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    .app-row { margin-bottom: 12px; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 6px; border-radius: 999px; padding: 8px 14px;
+      font-size: 13px; border: 1px solid transparent;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+    }
+    .btn-primary {
+      background: linear-gradient(120deg, #3dd5b0, #ffc98b);
+      color: #050810; font-weight: 600;
+    }
+    .btn-ghost {
+      border-color: rgba(99,110,160,0.8);
+      color: var(--muted);
+      background: rgba(9,15,32,0.9);
+    }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .switches {
+      display: flex; flex-wrap: wrap;
+      gap: 8px 14px; margin-top: 6px; font-size: 12px; color: var(--muted);
+    }
+    .switches label {
+      display: inline-flex; align-items: center; gap: 6px; margin-bottom: 0;
+      cursor: pointer; font-size: 12px; color: var(--muted);
+    }
+    .switches input { margin: 0; }
+    .result-box {
+      margin-top: 10px;
+      padding: 10px 11px;
+      border-radius: 10px;
+      border: 1px dashed rgba(61,213,176,0.7);
+      background: rgba(5,11,24,0.96);
+      font-size: 12px;
+      color: #ccefe4;
+      word-break: break-all;
+    }
+    .meta-row {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .meta-row span::before {
+      content: "●";
+      font-size: 7px;
+      color: #3dd5b0;
+      margin-right: 6px;
+    }
+    footer {
+      border-top: 1px solid rgba(36,46,78,0.7);
+      padding: 14px 0 22px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .footer-row {
+      max-width: 880px; margin: 0 auto; padding: 0 18px;
+      display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 10px; }
   </style>
 </head>
+
 <body>
-  <header>
-    <nav>
-      <a href="index.html">Startseite</a> · <a href="pro.html">Pro</a> · <a href="help.html">Hilfe</a> · <a href="status.html">Status</a>
-    </nav>
-    <h1>SafeShare App</h1>
-    <p>Füge unten einen Link ein und klicke „Säubern“.</p>
-  </header>
-
-  <main>
-    <div class="row">
-      <input id="url" type="url" placeholder="https://…">
-      <button id="btnCleanOpen" class="btn pri" type="button">Säubern & öffnen</button>
-      <button id="btnCopy" class="btn" type="button">Kopieren</button>
-      <button id="btnShare" class="btn" type="button">Teilen</button>
-      <button id="btnCheck" class="btn" type="button">Prüfen</button>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="link-cleaner.html">Link Cleaner</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="pro.html">Pro</a>
+      </nav>
     </div>
-    <div id="out" aria-live="polite" class="muted"></div>
+  </div>
+</header>
 
-    <p style="margin-top:14px">Mehr Tools: <a href="bookmarklets.html">Bookmarklet</a> · <a href="bulk-clean.html">Bulk Clean</a> · <a href="redirect-entschachteln.html">Redirect entschachteln</a></p>
-  </main>
-
-  <footer>
+<main>
+  <div class="shell">
+    <h1>SafeShare App – URL säubern &amp; öffnen</h1>
     <p>
-      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+      Füge unten eine URL ein, um UTM- und andere Tracking-Parameter zu entfernen und
+      Weiterleitungen zu entpacken. SafeShare arbeitet lokal im Browser; deine Links
+      werden nicht an einen Server gesendet.
     </p>
-  </footer>
 
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251124-07"></script>
-  <script defer src="js/cleaner.js?v=20251124-07"></script>
-  <script defer src="js/page-app.js?v=20251124-07"></script>
+    <div class="app-card">
+      <div class="app-row">
+        <label for="input-url">Tracking-URL einfügen</label>
+        <input id="input-url" type="text" placeholder="https://…">
+        <div class="hint">Beispiel: Newsletter-Link, Social-Media-Link, Werbe-URL …</div>
+      </div>
 
-  <!-- Event: App geöffnet -->
-  <script>window.plausible&&plausible('app_open');</script>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-clean-open" type="button">
+          Säubern &amp; öffnen
+        </button>
+        <button class="btn btn-ghost" id="btn-preview" type="button">
+          Nur prüfen (Link anzeigen)
+        </button>
+        <button class="btn btn-ghost" id="btn-copy" type="button">
+          Gesäuberte URL kopieren
+        </button>
+      </div>
+
+      <div class="switches">
+        <label>
+          <input type="checkbox" id="opt-unwrap-redirects" checked>
+          Redirects entpacken (z. B. google.com/url, t.co)
+        </label>
+        <label>
+          <input type="checkbox" id="opt-strip-tracking" checked>
+          Tracking-Parameter entfernen (utm_, gclid, fbclid …)
+        </label>
+      </div>
+
+      <div class="app-row">
+        <label for="output-url">Gesäuberte URL / Zieladresse</label>
+        <textarea id="output-url" readonly placeholder="Hier erscheint die bereinigte URL …"></textarea>
+      </div>
+
+      <div class="result-box" id="result-info">
+        Noch kein Link verarbeitet. Füge oben eine URL ein und wähle „Säubern &amp; öffnen“
+        oder „Nur prüfen“.
+      </div>
+
+      <div class="meta-row">
+        <span>lokale Verarbeitung im Browser</span>
+        <span>keine Accounts, keine Server-Logs</span>
+        <span>Bookmarklets verfügbar für 1-Klick-Reinigung</span>
+      </div>
+    </div>
+
+    <p class="hint">
+      Hinweis: Diese Seite definiert nur das Layout. Stelle sicher, dass deine JavaScript-Datei
+      die IDs <code>input-url</code>, <code>btn-clean-open</code>, <code>btn-preview</code>,
+      <code>btn-copy</code>, <code>opt-unwrap-redirects</code>, <code>opt-strip-tracking</code>
+      und <code>output-url</code> verwendet – oder passe die IDs an deinen bestehenden Code an.
+    </p>
+
+    <p>
+      Für mehr Details zur Funktionsweise siehe:
+      <a href="utm-parameter-entfernen.html">UTM-Parameter entfernen – Guide</a>
+      und <a href="help.html">Hilfe</a>.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="help.html">Hilfe</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
