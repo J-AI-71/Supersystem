@@ -1,139 +1,185 @@
-<!doctype html>
+<!-- press.html -->
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Presse & Medien · SafeShare</title>
-  <meta name="description" content="Pressebereich zu SafeShare: Kurzinfo, Kontakt, Logos & Screenshots. SafeShare entfernt Tracking-Parameter und entpackt Redirects – lokal im Browser.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SafeShare Press – Informationen für Medien &amp; Öffentlichkeit</title>
+  <meta name="description" content="Kurzinfo, Zitate und Ansprechpartner: SafeShare in der Presse und für Medienanfragen.">
+
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/press.html">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/press.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/press.html" hreflang="x-default">
-  <meta property="og:locale" content="de_DE">
-
-  <!-- Indexierung -->
-  <meta name="robots" content="index,follow">
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Presse & Medien · SafeShare">
-  <meta property="og:description" content="Kurzinfo, Kontakt, Logos & Screenshots zu SafeShare – dem Tool für saubere, kurze Links ohne Tracking.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/press.html">
-  <meta property="og:site_name" content="SafeShare">
-  <meta property="og:image" content="assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Presse & Medien · SafeShare">
-  <meta name="twitter:description" content="Kurzinfo, Kontakt, Logos & Screenshots zu SafeShare – dem Tool für saubere, kurze Links ohne Tracking.">
-  <meta name="twitter:image" content="assets/og/og-index.jpg">
-
-  <!-- Icons / PWA -->
-  <meta name="theme-color" content="#0b0d10">
-  <link rel="manifest" href="assets/manifest.webmanifest">
-  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
-  <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#0b0d10">
-
-  <!-- Content Security Policy (Inline-CSS erlaubt) -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
-
-  <!-- Mini-Styles (leicht, offline-tauglich) -->
   <style>
-    :root{color-scheme:dark light}
-    html,body{margin:0}
-    body{font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-         background:#0b0d10;color:#e5e7eb}
-    a{color:#93c5fd;text-underline-offset:2px}
-    .wrap{max-width:980px;margin:0 auto;padding:24px}
-    header{margin:0 0 16px}
-    h1{font-size:clamp(1.6rem,2.4vw,2.2rem);margin:0 0 6px}
-    p.lead{margin:0 0 14px;color:#cbd5e1}
-    .card{background:#0f1318;border:1px solid #1f2937;border-radius:12px;padding:16px;margin:16px 0}
-    h2{font-size:1.05rem;margin:0 0 8px}
-    ul{margin:8px 0 0 18px}
-    footer{margin:28px 0 0;border-top:1px solid #1f2937;padding:12px 0;color:#9ca3af}
-    footer a{color:#cbd5e1}
+    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:#8be5ca;text-decoration:none;}a:hover{text-decoration:underline;}
+    header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(16px);
+      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
+      border-bottom:1px solid rgba(36,46,78,.7);
+    }
+    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
+    }
+    .nav-left{display:flex;align-items:center;gap:8px;}
+    .logo-mark{
+      width:28px;height:28px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+    }
+    .logo-mark img{width:22px;height:22px;object-fit:contain;}
+    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
+    .nav-links a{text-decoration:none;}
+    @media(max-width:720px){.nav-links{display:none;}}
+
+    main{padding:26px 0 40px;}
+    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
+    h2{font-size:20px;margin:24px 0 8px;}
+    h3{font-size:16px;margin:18px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
+    ul{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 10px;}
+
+    .card{
+      background:rgba(9,14,30,.96);
+      border-radius:16px;
+      padding:16px 16px 14px;
+      border:1px solid var(--border);
+      margin-bottom:18px;
+    }
+    blockquote{
+      margin:10px 0;
+      padding:8px 10px;
+      border-left:3px solid rgba(61,213,176,.7);
+      font-size:14px;
+      color:var(--muted);
+      background:rgba(7,11,24,.96);
+    }
+    .meta{font-size:12px;color:var(--muted);}
+    footer{
+      border-top:1px solid rgba(36,46,78,.7);
+      padding:14px 0 22px;font-size:11px;
+      color:var(--muted);margin-top:10px;
+    }
+    .footer-row{
+      max-width:880px;margin:0 auto;padding:0 18px;
+      display:flex;justify-content:space-between;
+      gap:10px;flex-wrap:wrap;
+    }
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <nav aria-label="Breadcrumb">
-        <a href="index.html">Startseite</a> · <a href="app.html">App</a> · <a href="pro.html">Pro</a> · <a href="quickstart.html">Quickstart</a>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="status.html">Status</a>
+        <a href="help.html">Hilfe</a>
       </nav>
-      <h1>Presse & Medien</h1>
-      <p class="lead">SafeShare entfernt Tracking-Parameter (z. B. <code>utm_</code>, <code>gclid</code>, <code>fbclid</code>) und entpackt gängige Redirects – komplett lokal im Browser.</p>
-    </header>
-
-    <section class="card">
-      <h2>Kurzinfo</h2>
-      <ul>
-        <li><strong>Produkt:</strong> SafeShare (Web-App & Bookmarklets)</li>
-        <li><strong>Kernnutzen:</strong> Saubere, kurze Links ohne Tracking-Ballast</li>
-        <li><strong>Verarbeitung:</strong> 100 % lokal im Browser (Privacy-by-Design)</li>
-        <li><strong>Pro:</strong> Bulk-Clean, Redirect-Entpacken, Team-Whitelist</li>
-        <li><strong>PWA/Offline:</strong> Kernseiten funktionieren auch ohne Netz</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Kontakt & Material</h2>
-      <p>Für Presseanfragen, Zitate und Hintergrundinfos: <a href="impressum.html">Impressum / Kontakt</a></p>
-      <ul>
-        <li><a href="assets/press/logos.zip">Logopaket (ZIP)</a></li>
-        <li><a href="assets/press/screenshots.zip">Screenshots (ZIP)</a></li>
-        <li><a href="assets/press/presskit.zip">Komplettes Presskit (ZIP)</a></li>
-      </ul>
-    </section>
-
-<section aria-labelledby="press-howtos">
-  <h2 id="press-howtos">Produkt-Anleitungen</h2>
-  <ul>
-    <li><a href="how-utm-entfernen.html">Tracking-Parameter entfernen</a></li>
-    <li><a href="how-redirect-entpacken.html">Weiterleitungen entpacken</a></li>
-    <li><a href="how-bulk-clean.html">Bulk-Clean</a></li>
-    <li><a href="how-bookmarklet.html">Bookmarklet</a></li>
-    <li><a href="how-team-whitelist.html">Team-Whitelist</a></li>
-  </ul>
-</section>
-    
-    <section class="card">
-      <h2>Über SafeShare</h2>
-      <p>SafeShare ist ein leichtgewichtiges Hilfswerkzeug für saubere Links. Es entfernt gängige Tracking-Parameter und ersetzt verschachtelte Weiterleitungen durch Klarziele. Alles läuft lokal, wodurch keine Nutzungsdaten an Server von SafeShare übermittelt werden.</p>
-      <p><a href="app.html">Jetzt ausprobieren</a> · <a href="quickstart.html">Quickstart</a> · <a href="help.html">Hilfe & FAQ</a></p>
-    </section>
-
-    <footer>
-      <nav>
-        <a href="index.html">Startseite</a> ·
-        <a href="publisher.html">Publisher</a> ·
-        <a href="education.html">Education</a> ·
-        <a href="partners.html">Unternehmen & Partner</a> ·
-        <a href="compliance.html">Compliance</a> ·
-        <a href="press.html" aria-current="page">Presse</a> ·
-        <a href="impressum.html">Impressum</a> ·
-        <a href="datenschutz.html">Datenschutz</a> ·
-        <a href="terms.html">Terms</a> ·
-        <a href="kurz-terms.html">Kurz-Terms</a>
-      </nav>
-    </footer>
+    </div>
   </div>
+</header>
 
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251124"></script>
+<main>
+  <div class="shell">
+    <div class="card">
+      <h1>SafeShare Press</h1>
+      <p>
+        Diese Seite sammelt kompakte Informationen für Medien, Blogs und andere
+        Multiplikator:innen, die über SafeShare berichten möchten.
+      </p>
+    </div>
+
+    <section class="card">
+      <h2>Kurzbeschreibung</h2>
+      <p>
+        SafeShare ist ein schlankes Werkzeug, das Tracking-Parameter aus Links entfernt
+        und typische Redirects entpackt – mit Fokus auf Datenschutz, Übersichtlichkeit
+        und Alltagstauglichkeit.
+      </p>
+      <ul>
+        <li>Form: Web-App + Bookmarklets + Bulk-Clean</li>
+        <li>Schwerpunkt: UTM-Parameter, gclid, fbclid und ähnliche Anhängsel</li>
+        <li>Philosophie: möglichst lokal, ohne Accounts, ohne „Marketing-Suite“</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Mögliche Story-Winkel</h2>
+      <ul>
+        <li>„Digitaler Alltag ohne Tracking-Ballast“ – Links, die nicht alles mitschleppen.</li>
+        <li>„Kleines Tool statt großer Suite“ – Fokus auf ein konkretes Problem.</li>
+        <li>„Zwischen Datenschutz und Kampagnen-Tracking“ – wie Teams Whitelists nutzen.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Beispielzitate (in eigenen Worten nutzbar)</h2>
+      <blockquote>
+        „SafeShare soll kein weiteres Marketing-Dashboard sein, sondern ein kleines Werkzeug,
+        das Links respektvoller macht – für Menschen, die sie anklicken, und Teams, die sie
+        verschicken.“
+      </blockquote>
+      <blockquote>
+        „Viele Links verraten mehr über dich als über den Inhalt dahinter. SafeShare hilft,
+        diese Spuren ein Stück weit zu reduzieren.“
+      </blockquote>
+      <p class="meta">
+        Hinweis: Diese Zitate sind Vorschläge. Du kannst Formulierungen nach deinem Geschmack anpassen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Material &amp; Kontakt</h2>
+      <p>
+        Hier kannst du ergänzen:
+      </p>
+      <ul>
+        <li>Link zu Logo-/Icon-Paket,</li>
+        <li>Screenshots der App,</li>
+        <li>Kontaktadresse für Presseanfragen.</li>
+      </ul>
+      <p>
+        Allgemeine Informationen zu Nutzung und rechtlichen Rahmenbedingungen:
+      </p>
+      <ul>
+        <li><a href="terms.html">Terms</a> &amp; <a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="status.html">Status</a></li>
+        <li><a href="help.html">Hilfe &amp; FAQ</a></li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
