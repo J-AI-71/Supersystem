@@ -1,791 +1,385 @@
 <!DOCTYPE html>
 <html lang="de">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "SafeShare",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "description": "SafeShare entfernt UTM-Parameter und andere Tracking-Parameter aus Links und entpackt typische Redirects – lokal im Browser, ohne Account.",
-  "url": "https://j-ai-71.github.io/Supersystem/",
-  "image": "https://j-ai-71.github.io/Supersystem/assets/safeshare-cover.png",
-  "creator": {
-    "@type": "Person",
-    "name": "Jana Jergus"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "EUR"
-  }
-}
-</script>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
 
-  <title>SafeShare – Saubere Links ohne Tracking (UTM & Redirect Cleaner)</title>
-  <meta name="description" content="SafeShare entfernt Tracking-Parameter wie utm_, gclid, fbclid und entpackt Weiterleitungen – 100 % lokal im Browser, als PWA & Bookmarklets, ohne Accounts.">
+  <title>SafeShare – Link Cleaner für saubere, trackingfreie URLs</title>
+  <meta name="description" content="SafeShare entfernt Tracking-Parameter aus deinen Links, entpackt Weiterleitungen und erzeugt saubere URLs – lokal im Browser, ohne Login.">
 
+  <!-- Canonical -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/">
+
+  <!-- Favicon / App-Icon -->
   <link rel="icon" href="logo.svg" type="image/svg+xml">
+
+  <!-- Search Console / Bing -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <!-- BING: ersetze den Platzhalter durch deinen echten Code -->
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Saubere Links ohne Tracking">
-  <meta property="og:description" content="Entferne Tracking-Parameter (utm_, gclid, fbclid) und entpacke Redirects – lokal im Browser, ohne Accounts.">
+  <meta property="og:title" content="SafeShare – Link Cleaner für saubere, trackingfreie URLs">
+  <meta property="og:description" content="SafeShare entfernt Tracking-Parameter aus deinen Links, entpackt Weiterleitungen und erzeugt saubere URLs – lokal im Browser, ohne Login.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/safeshare-cover.png">
+  <meta property="og:site_name" content="SafeShare">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SafeShare – Saubere Links ohne Tracking">
-  <meta name="twitter:description" content="Clean tracking params locally: UTM, gclid, fbclid & redirects – all in your browser.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/safeshare-cover.png">
+  <meta name="twitter:title" content="SafeShare – Link Cleaner für saubere, trackingfreie URLs">
+  <meta name="twitter:description" content="SafeShare entfernt Tracking-Parameter aus deinen Links, entpackt Weiterleitungen und erzeugt saubere URLs – lokal im Browser, ohne Login.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
 
-  <!-- Structured Data: SoftwareApplication -->
+  <!-- Structured Data: SoftwareApplication (Startseite) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "SafeShare",
-    "alternateName": "SafeShare Link Cleaner",
-    "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "Web",
-    "description": "SafeShare ist eine Web-App und Bookmarklets, die Tracking-Parameter (utm_, gclid, fbclid, etc.) entfernt und typische Redirects entpackt – alles lokal im Browser, ohne Accounts.",
+    "applicationCategory": "SecurityApplication",
+    "description": "SafeShare bereinigt URLs, entfernt Tracking-Parameter wie UTM, gclid, fbclid und entpackt Weiterleitungen – lokal im Browser, ohne Login.",
     "url": "https://j-ai-71.github.io/Supersystem/",
-    "thumbnailUrl": "https://j-ai-71.github.io/Supersystem/assets/safeshare-cover.png",
+    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
     "author": {
       "@type": "Person",
       "name": "Jana Jergus"
     },
-    "offers": [
-      {
-        "@type": "Offer",
-        "name": "SafeShare Pro Person",
-        "url": "https://payhip.com/b/VDm3B",
-        "priceCurrency": "EUR",
-        "availability": "https://schema.org/InStock"
-      },
-      {
-        "@type": "Offer",
-        "name": "SafeShare Pro Team",
-        "url": "https://payhip.com/b/Yxh5T",
-        "priceCurrency": "EUR",
-        "availability": "https://schema.org/InStock"
-      }
-    ]
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "EUR",
+      "category": "Free",
+      "url": "https://j-ai-71.github.io/Supersystem/app.html"
+    }
   }
   </script>
 
   <style>
-    :root {
-      --bg: #050810;
-      --card: #0d111c;
-      --accent: #3dd5b0;
-      --accent-soft: rgba(61, 213, 176, 0.1);
-      --text: #f5f7ff;
-      --muted: #9aa4c6;
-      --border: #1b2335;
-      --danger: #ff5c7a;
-      --shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
-      --radius-lg: 18px;
-      --radius-md: 10px;
+    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:#8be5ca;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(16px);
+      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
+      border-bottom:1px solid rgba(36,46,78,.7);
+    }
+    .shell{max-width:980px;margin:0 auto;padding:0 18px;}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
+    }
+    .nav-left{display:flex;align-items:center;gap:8px;}
+    .logo-mark{
+      width:30px;height:30px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+    }
+    .logo-mark img{width:24px;height:24px;object-fit:contain;}
+    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
+    .nav-links a{text-decoration:none;}
+    @media(max-width:720px){.nav-links{display:none;}}
+
+    main{padding:28px 0 44px;}
+    h1{font-size:clamp(26px,4.5vw,34px);margin:0 0 10px;}
+    h2{font-size:20px;margin:20px 0 8px;}
+    h3{font-size:15px;margin:14px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 10px;}
+    ul{font-size:14px;color:var(--muted);padding-left:20px;margin:4px 0 10px;}
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);
+      gap:18px;
+      margin-top:12px;
+      align-items:stretch;
+    }
+    @media(max-width:880px){
+      .hero-grid{grid-template-columns:1fr;}
+    }
+    .card{
+      background:rgba(9,14,30,.96);
+      border-radius:18px;
+      padding:18px 16px 16px;
+      border:1px solid var(--border);
+      margin-bottom:18px;
+    }
+    .card-tight{padding:14px 14px 13px;}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:11px;padding:4px 9px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:rgba(5,11,24,.96);color:#ccefe4;
+      margin-bottom:10px;
+    }
+    .badge-dot{
+      width:7px;height:7px;border-radius:50%;
+      background:#3dd5b0;box-shadow:0 0 10px rgba(61,213,176,.8);
+    }
+    .eyebrow{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+    .hero-kicker{font-size:12px;color:var(--muted);margin-top:6px;}
+    .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      gap:6px;border-radius:999px;padding:9px 15px;
+      font-size:13px;border:1px solid transparent;
+      text-decoration:none;cursor:pointer;white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(120deg,#3dd5b0,#ffc98b);
+      color:#050810;font-weight:600;
+    }
+    .btn-ghost{
+      border-color:rgba(99,110,160,.8);
+      color:var(--muted);background:rgba(9,15,32,.9);
+    }
+    .hero-metrics{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .metric{
+      border-radius:14px;
+      border:1px solid rgba(45,58,102,.9);
+      background:radial-gradient(circle at 0 0,rgba(61,213,176,.12),rgba(8,10,22,.98));
+      padding:10px 10px 9px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .metric strong{display:block;font-size:15px;color:var(--text);margin-bottom:2px;}
+    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+    .pill{
+      border-radius:999px;
+      border:1px solid rgba(61,213,176,.6);
+      padding:3px 9px;
+      font-size:11px;
+      background:rgba(7,11,24,.98);
+      color:var(--muted);
     }
 
-    * {
-      box-sizing: border-box;
+    .section-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+      margin-top:8px;
+    }
+    @media(max-width:880px){
+      .section-grid{grid-template-columns:1fr;}
+    }
+    .section-title-row{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:6px;margin-bottom:4px;
+    }
+    .label{
+      font-size:11px;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.08em;
+    }
+    .hint{
+      font-size:12px;color:var(--muted);
+      border-left:2px solid rgba(61,213,176,.7);
+      padding-left:10px;margin:8px 0 12px;
     }
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #101626 0, #050810 55%, #020308 100%);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
+    footer{
+      border-top:1px solid rgba(36,46,78,.7);
+      padding:14px 0 22px;font-size:11px;
+      color:var(--muted);margin-top:8px;
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
+    .footer-row{
+      max-width:980px;margin:0 auto;padding:0 18px;
+      display:flex;justify-content:space-between;
+      gap:10px;flex-wrap:wrap;
     }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom, rgba(5, 8, 16, 0.92), rgba(5, 8, 16, 0.85), transparent);
-      border-bottom: 1px solid rgba(36, 46, 78, 0.7);
-    }
-
-    .shell {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      gap: 12px;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid rgba(61, 213, 176, 0.5);
-      background: radial-gradient(circle at 30% 0%, #f9eab0 0, #fbd2a7 14%, #ff9e9e 32%, #141827 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 18px rgba(61, 213, 176, 0.4);
-      overflow: hidden;
-    }
-
-    .logo-mark img {
-      width: 26px;
-      height: 26px;
-      object-fit: contain;
-    }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .logo-title {
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      font-size: 16px;
-    }
-
-    .logo-sub {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .nav-links a {
-      position: relative;
-      padding-bottom: 2px;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #3dd5b0, #ffc98b);
-      transition: width 0.18s ease-out;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .badge-pro {
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(250, 187, 124, 0.8);
-      background: radial-gradient(circle at 0 0, rgba(255, 210, 140, 0.25), transparent 60%);
-      font-size: 11px;
-      color: #ffdba3;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #ffd38a;
-      box-shadow: 0 0 12px rgba(255, 210, 138, 0.7);
-    }
-
-    .hero {
-      padding: 42px 0 32px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
-      gap: 40px;
-      align-items: center;
-    }
-
-    @media (max-width: 900px) {
-      .hero-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      header {
-        position: static;
-      }
-      .nav-links {
-        display: none;
-      }
-      .hero {
-        padding-top: 24px;
-      }
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 9px 4px 4px;
-      border-radius: 999px;
-      background: rgba(14, 20, 40, 0.95);
-      border: 1px solid rgba(61, 213, 176, 0.4);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .eyebrow-pill {
-      border-radius: 999px;
-      padding: 3px 9px;
-      background: radial-gradient(circle at 0 0, #3dd5b0, #fbd2a7);
-      font-weight: 600;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #041013;
-    }
-
-    h1 {
-      font-size: clamp(26px, 4vw, 34px);
-      line-height: 1.1;
-      margin: 0 0 16px;
-      letter-spacing: 0.01em;
-    }
-
-    h1 span.highlight {
-      background: linear-gradient(120deg, #3dd5b0, #ffc98b);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-sub {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-      max-width: 520px;
-      margin-bottom: 20px;
-    }
-
-    .hero-sub strong {
-      color: #e3e7ff;
-      font-weight: 500;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      padding: 9px 16px;
-      font-size: 14px;
-      border: 1px solid transparent;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      background: none;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(120deg, #3dd5b0, #ffc98b);
-      color: #050810;
-      font-weight: 600;
-      box-shadow: var(--shadow);
-    }
-
-    .btn-primary span.icon {
-      display: inline-flex;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      align-items: center;
-      justify-content: center;
-      background: rgba(5, 8, 16, 0.14);
-    }
-
-    .btn-ghost {
-      border-color: rgba(99, 110, 160, 0.8);
-      color: var(--muted);
-      background: rgba(9, 15, 32, 0.9);
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 18px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .hero-meta span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hero-meta span::before {
-      content: "●";
-      font-size: 7px;
-      color: #3dd5b0;
-    }
-
-    .hero-card {
-      background: radial-gradient(circle at top, rgba(61, 213, 176, 0.22), transparent 55%),
-                  linear-gradient(145deg, #090f20, #050810);
-      border-radius: var(--radius-lg);
-      padding: 20px 18px 18px;
-      border: 1px solid rgba(55, 73, 122, 0.9);
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-
-    .hero-card-title {
-      font-size: 13px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .hero-card-title span.dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #3dd5b0;
-      box-shadow: 0 0 10px rgba(61, 213, 176, 0.8);
-    }
-
-    .hero-card-tag {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(136, 148, 210, 0.7);
-      color: #d3dcff;
-      background: rgba(10, 16, 40, 0.9);
-    }
-
-    .hero-url-box {
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono",
-        "Courier New", monospace;
-      font-size: 11px;
-      padding: 10px 11px;
-      border-radius: var(--radius-md);
-      background: rgba(3, 7, 18, 0.95);
-      border: 1px solid rgba(52, 72, 120, 0.9);
-      color: #d6e0ff;
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-
-    .hero-url-clean {
-      margin-top: 8px;
-      padding: 8px 9px;
-      background: rgba(10, 24, 32, 0.95);
-      border-radius: var(--radius-md);
-      border: 1px dashed rgba(61, 213, 176, 0.5);
-      font-size: 11px;
-      color: #bfeee0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .hero-url-clean span.label {
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      font-size: 9px;
-      color: #7de5c8;
-    }
-
-    .hero-card-footer {
-      margin-top: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .hero-card-footer a {
-      font-size: 11px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(90, 107, 180, 0.8);
-      background: rgba(11, 17, 40, 0.9);
-    }
-
-    .section {
-      padding: 16px 0 32px;
-    }
-
-    .section h2 {
-      font-size: 18px;
-      margin: 0 0 10px;
-    }
-
-    .section p {
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 640px;
-      line-height: 1.6;
-    }
-
-    .features-grid {
-      margin-top: 18px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-    }
-
-    .feature-card {
-      background: rgba(10, 16, 38, 0.95);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      padding: 11px 12px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .feature-card strong {
-      display: block;
-      font-size: 13px;
-      color: #e5e9ff;
-      margin-bottom: 4px;
-    }
-
-    .feature-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      margin-top: 8px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(77, 99, 160, 0.9);
-      background: rgba(7, 13, 32, 0.9);
-      color: #c3cffc;
-    }
-
-    .feature-pill span.dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #3dd5b0;
-    }
-
-    .cta-row {
-      margin-top: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    footer {
-      border-top: 1px solid rgba(36, 46, 78, 0.7);
-      padding: 16px 0 22px;
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .footer-links a {
-      text-decoration: none;
-    }
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="shell">
-      <div class="nav">
-        <div class="nav-left">
-          <div class="logo-mark">
-            <img src="logo.svg" alt="SafeShare Logo">
-          </div>
-          <div class="logo-text">
-            <div class="logo-title">SafeShare</div>
-            <div class="logo-sub">Links ohne Tracking. Ein Klick.</div>
-          </div>
-        </div>
-        <nav class="nav-links">
-          <a href="app.html">App</a>
-          <a href="quickstart.html">Quickstart</a>
-          <a href="link-cleaner.html">Link Cleaner</a>
-          <a href="redirect-entpacken.html">Redirect entpacken</a>
-          <a href="publisher.html">Publisher</a>
-          <span class="badge-pro">
-            <span class="badge-dot"></span>
-            Pro &amp; Teams
-          </span>
-        </nav>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
       </div>
+      <nav class="nav-links">
+        <a href="app.html">App</a>
+        <a href="utm-parameter-entfernen.html">UTM-Guide</a>
+        <a href="tracking-parameter-entfernen.html">Tracking-Parameter</a>
+        <a href="url-cleaner-tool-vergleich.html">URL Cleaner Vergleich</a>
+        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="help.html">Hilfe</a>
+      </nav>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main>
-    <section class="hero">
-      <div class="shell">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow">
-              <span class="eyebrow-pill">Local-only</span>
-              Entfernt utm_, gclid, fbclid &amp; Co. direkt im Browser
-            </div>
+<main>
+  <div class="shell">
 
-            <h1>
-              <span class="highlight">Saubere Links ohne Tracking</span><br>
-              mit einem Klick – als App &amp; Bookmarklet.
-            </h1>
-
-            <p class="hero-sub">
-              SafeShare entfernt <strong>Tracking-Parameter (utm_, gclid, fbclid …)</strong>
-              und entpackt typische Redirects wie <code>google.com/url</code> oder
-              <code>t.co</code> – <strong>100&nbsp;% lokal</strong> im Browser,
-              ohne Accounts, ohne Server-Logs.
-            </p>
-
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="app.html">
-                <span class="icon">▶</span>
-                SafeShare App öffnen
-              </a>
-              <a class="btn btn-ghost" href="quickstart.html">
-                Quickstart in 60&nbsp;Sekunden
-              </a>
-              <a class="btn btn-ghost" href="utm-parameter-entfernen.html">
-                UTM-Parameter entfernen (Guide)
-              </a>
-            </div>
-
-            <div class="hero-meta">
-              <span>läuft im Browser – keine Installation nötig</span>
-              <span>funktioniert mit Desktop &amp; Mobil</span>
-              <span>Pro: Bulk-Clean &amp; Team-Whitelist</span>
-            </div>
-          </div>
-
-          <aside class="hero-card" aria-label="SafeShare Beispiel">
-            <div class="hero-card-header">
-              <div class="hero-card-title">
-                <span class="dot"></span>
-                Live-Clean einer URL
-              </div>
-              <div class="hero-card-tag">Tracking wird lokal entfernt</div>
-            </div>
-
-            <div class="hero-url-box">
-              https://beispiel.de/artikel?
-              utm_source=newsletter&amp;utm_medium=email&amp;
-              utm_campaign=herbst&amp;gclid=EAIaIQobChMI
-            </div>
-
-            <div class="hero-url-clean">
-              <div>
-                <span class="label">Gesäubert</span><br>
-                https://beispiel.de/artikel
-              </div>
-              <div>utm_, gclid, fbclid entfernt</div>
-            </div>
-
-            <div class="hero-card-footer">
-              <span>SafeShare arbeitet im Browser-Speicher. Deine Links verlassen dein Gerät nicht.</span>
-              <a href="link-cleaner.html">Mehr zur Reinigung&nbsp;→</a>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="shell">
-        <h2>Warum SafeShare?</h2>
+    <section class="hero-grid">
+      <article class="card">
+        <div class="badge"><span class="badge-dot"></span> Link Cleaner</div>
+        <div class="eyebrow">Saubere Links. Weniger Datenmüll.</div>
+        <h1>SafeShare entfernt Tracking-Parameter aus deinen Links.</h1>
         <p>
-          Tracking-Parameter machen Links lang, unübersichtlich und verraten oft mehr über dein
-          Verhalten, als dir lieb ist. Gleichzeitig brauchen Publisher und Teams verlässliche
-          Kampagnen-IDs. SafeShare löst dieses Spannungsfeld: Links werden konsequent gesäubert,
-          während eine konfigurierbare Whitelist wichtige Parameter erhalten kann.
+          UTM-Parameter, <code>gclid</code>, <code>fbclid</code> und andere
+          Tracking-Anhängsel machen URLs lang und durchschaubar. SafeShare
+          räumt für dich auf: direkt im Browser, ohne Login, ohne Installation.
+        </p>
+        <p class="hero-kicker">
+          Einmal aufgerufen, überall nutzbar – für einzelne Links, Listen und Teams.
         </p>
 
-        <div class="features-grid">
-          <div class="feature-card">
-            <strong>Tracking-Parameter entfernen</strong>
-            Entfernt utm_, gclid, fbclid und viele weitere Anhängsel, die für den Seitenaufruf
-            nicht nötig sind.
-            <div class="feature-pill">
-              <span class="dot"></span> Manuell oder 1-Klick über Bookmarklets
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <strong>Redirects entpacken</strong>
-            Ermittelt das Klarziel hinter Weiterleitungen wie <code>google.com/url</code>,
-            <code>t.co</code>, <code>l.facebook.com</code> u. a.
-            <div class="feature-pill">
-              <span class="dot"></span> Mehr Transparenz vor jedem Klick
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <strong>Komplett lokal &amp; ohne Account</strong>
-            Die Verarbeitung findet im Browser statt. Keine Logins, keine API-Keys, keine Server-Logs
-            zu deinen URLs.
-            <div class="feature-pill">
-              <span class="dot"></span> Privacy-first Architektur
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <strong>Pro: Bulk-Clean &amp; Teams</strong>
-            Bereinige ganze Linklisten, entferne Duplikate und definiere eine Team-Whitelist für
-            erlaubte Parameter.
-            <div class="feature-pill">
-              <span class="dot"></span> Ideal für Publisher &amp; Affiliates
-            </div>
-          </div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="app.html">SafeShare App öffnen</a>
+          <a class="btn btn-ghost" href="utm-parameter-entfernen.html">Mehr zu UTM-Parametern</a>
         </div>
 
-        <div class="cta-row">
-          <a class="btn btn-primary" href="bookmarklets.html">
-            Bookmarklets installieren
-          </a>
-          <a class="btn btn-ghost" href="bulk-clean.html">
-            Bulk-Clean für Linklisten
-          </a>
-          <a class="btn btn-ghost" href="pro.html">
-            SafeShare Pro &amp; Teams ansehen
-          </a>
+        <div class="pill-row">
+          <span class="pill">UTM entfernen</span>
+          <span class="pill">gclid / fbclid säubern</span>
+          <span class="pill">Listen bereinigen</span>
+          <span class="pill">ohne Login</span>
         </div>
+      </article>
+
+      <article class="card">
+        <h2 style="font-size:16px;margin-top:0;">Wie SafeShare in deinen Alltag passt</h2>
+        <p style="margin-bottom:8px;">Drei typische Szenarien:</p>
+        <ul>
+          <li>Du willst einen Link teilen, aber ohne Tracking-Parameter.</li>
+          <li>Du bereitest Newsletter- oder Social-Media-Links sauber vor.</li>
+          <li>Du erklärst anderen, wie sie „saubere Links“ verschicken können.</li>
+        </ul>
+        <div class="hint">
+          Nutze SafeShare wie ein Werkzeug auf deinem Schreibtisch:
+          Link kurz durchschicken, saubere Version kopieren, fertig.
+        </div>
+        <div class="hero-metrics">
+          <div class="metric">
+            <strong>1&nbsp;Klick</strong>
+            Links bereinigen, ohne zuerst ein Konto anzulegen oder eine App zu installieren.
+          </div>
+          <div class="metric">
+            <strong>Geräteübergreifend</strong>
+            Funktioniert im Browser auf Laptop, Tablet und Smartphone.
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section style="margin-top:10px;">
+      <div class="section-title-row">
+        <div class="label">Funktionen</div>
+        <div style="font-size:11px;color:var(--muted);">Für einzelne Links, Listen und Teams</div>
+      </div>
+      <div class="section-grid">
+        <article class="card card-tight">
+          <h3>Einzelne Links reinigen</h3>
+          <p>
+            Öffne die <a href="app.html">SafeShare App</a>, füge eine URL ein
+            und entferne typische Tracking-Parameter mit einem Klick.
+          </p>
+          <ul>
+            <li>UTM-Parameter entfernen</li>
+            <li>gclid, fbclid &amp; Co. loswerden</li>
+            <li>saubere Version kopieren und teilen</li>
+          </ul>
+          <a href="tracking-parameter-entfernen.html">Mehr zu Tracking-Parametern →</a>
+        </article>
+
+        <article class="card card-tight">
+          <h3>Viele Links auf einmal (Bulk-Clean)</h3>
+          <p>
+            Wenn du mit Listen aus Excel, Google Sheets oder Exporten arbeitest:
+            Mit <a href="bulk-clean.html">Bulk-Clean</a> bereinigst du mehrere
+            URLs in einem Durchgang.
+          </p>
+          <ul>
+            <li>eine URL pro Zeile einfügen</li>
+            <li>Tracking-Parameter entfernen</li>
+            <li>bereinigte Liste zurückkopieren</li>
+          </ul>
+          <a href="bulk-clean.html">Bulk-Clean öffnen →</a>
+        </article>
+
+        <article class="card card-tight">
+          <h3>Teams, Publisher &amp; Pro</h3>
+          <p>
+            Für Publisher, Affiliates und Teams gibt es erweiterte Optionen in
+            <a href="pro.html">SafeShare Pro</a> – z. B. Whitelists für eigene IDs.
+          </p>
+          <ul>
+            <li>eigene Kampagnen-Parameter behalten</li>
+            <li>fremdes Tracking konsequent entfernen</li>
+            <li>einfacher Standard für saubere Links im Team</li>
+          </ul>
+          <a href="publisher.html">Mehr für Publisher →</a>
+        </article>
       </div>
     </section>
 
-    <section class="section">
-      <div class="shell">
-        <h2>Für wen ist SafeShare gedacht?</h2>
-        <p>
-          SafeShare ist bewusst klein gehalten: kein Account-System, kein „Marketing-Cloud-Monster“.
-          Es richtet sich an Menschen, die Links teilen, veröffentlichen oder archivieren – und dabei
-          Kontrolle über das Tracking behalten wollen.
-        </p>
+    <section style="margin-top:14px;">
+      <div class="section-title-row">
+        <div class="label">Mehr erfahren</div>
+        <div style="font-size:11px;color:var(--muted);">Hintergrund, Bildung, Presse</div>
+      </div>
+      <div class="section-grid">
+        <article class="card card-tight">
+          <h3>Tracking verstehen</h3>
+          <p>
+            Was ist der Unterschied zwischen technischen Parametern und reinen
+            Marketing-Tags? Und welche kannst du meist gefahrlos löschen?
+          </p>
+          <a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen →</a>
+        </article>
 
-        <div class="features-grid">
-          <div class="feature-card">
-            <strong>Creator &amp; Newsletter-Autor:innen</strong>
-            Saubere Links für Newsletter, Blogs und Social Posts – ohne Tracking-Ballast.
-          </div>
-          <div class="feature-card">
-            <strong>Publisher &amp; Affiliates</strong>
-            Nutze die Team-Whitelist, um wichtige IDs zu behalten, während Standard-Tracking
-            automatisch entfernt wird.
-          </div>
-          <div class="feature-card">
-            <strong>Privacy-bewusste Nutzer:innen</strong>
-            Nutze SafeShare als kleines Werkzeug im Alltag: kopieren, säubern, teilen – in wenigen Sekunden.
-          </div>
-        </div>
+        <article class="card card-tight">
+          <h3>SafeShare in Bildung &amp; Workshops</h3>
+          <p>
+            Nutze SafeShare als praktisches Werkzeug, um digitale Hygiene und
+            Bewusstsein für Tracking in Kursen oder Trainings zu vermitteln.
+          </p>
+          <a href="education.html">Education &amp; Training →</a>
+        </article>
+
+        <article class="card card-tight">
+          <h3>Presse &amp; Hintergrund</h3>
+          <p>
+            Kurzportrait, Fakten und Kontaktmöglichkeiten für Medien, die über
+            SafeShare und digitale Link-Hygiene berichten möchten.
+          </p>
+          <a href="press.html">Presseseite →</a>
+        </article>
       </div>
     </section>
 
-    <section class="section">
-      <div class="shell">
-        <h2>Pro &amp; Team-Lizenz</h2>
-        <p>
-          SafeShare Pro schaltet zusätzliche Komfort- und Team-Funktionen frei – als Einmalzahlung über Payhip,
-          ohne Abo und ohne Nutzerkonten.
-        </p>
+  </div>
+</main>
 
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">
-            SafeShare Pro Person (Payhip)
-          </a>
-          <a class="btn btn-ghost" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">
-            SafeShare Pro Team (Payhip)
-          </a>
-          <a class="btn btn-ghost" href="pro.html">
-            Details zu Pro &amp; Aktivierung
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="shell">
-      <div class="footer-row">
-        <div>© SafeShare – Jana Jergus</div>
-        <div class="footer-links">
-          <a href="help.html">Hilfe</a>
-          <a href="status.html">Status</a>
-          <a href="impressum.html">Impressum</a>
-          <a href="datenschutz.html">Datenschutz</a>
-          <a href="terms.html">Terms</a>
-          <a href="kurz-terms.html">Kurz-Terms</a>
-        </div>
-      </div>
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Nutzungsbedingungen</a>
     </div>
-  </footer>
+  </div>
+</footer>
 </body>
 </html>
