@@ -1,146 +1,176 @@
-<!-- /Supersystem/compliance.html -->
-<!doctype html>
+<!-- compliance.html -->
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Compliance · SafeShare</title>
-  <meta name="description" content="Für Compliance-Teams: definierte Whitelist-Regeln, lokale Verarbeitung, Bulk-Clean für Audits. Keine App-Server-Logs.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SafeShare Compliance – verantwortungsvoller Einsatz</title>
+  <meta name="description" content="Hinweise zum verantwortungsvollen Einsatz von SafeShare im Kontext von Datenschutz, Tracking und internen Richtlinien.">
+
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/compliance.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/compliance.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/compliance.html">
-  <meta property="og:locale" content="de_DE">
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Compliance">
-  <meta property="og:description" content="Linkhygiene nach Richtlinie: Whitelist & Bulk-Clean, vollständig lokal im Browser.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/compliance.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-
-  <!-- Sicherheits-CSP (JSON-LD per Nonce) -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSFAQ';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
-
-  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b}
+    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
     }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:#9fe7c3}
-    .wrap{max-width:1000px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    table{width:100%;border-collapse:collapse;border:1px solid var(--line);background:var(--card);border-radius:12px;overflow:hidden}
-    th,td{padding:10px;border-top:1px solid var(--line);text-align:left}
-    th{color:var(--mut);font-weight:600}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
+    a{color:#8be5ca;text-decoration:none;}a:hover{text-decoration:underline;}
+    header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(16px);
+      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
+      border-bottom:1px solid rgba(36,46,78,.7);
+    }
+    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
+    }
+    .nav-left{display:flex;align-items:center;gap:8px;}
+    .logo-mark{
+      width:28px;height:28px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+    }
+    .logo-mark img{width:22px;height:22px;object-fit:contain;}
+    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
+    .nav-links a{text-decoration:none;}
+    @media(max-width:720px){.nav-links{display:none;}}
+
+    main{padding:26px 0 40px;}
+    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
+    h2{font-size:20px;margin:24px 0 8px;}
+    h3{font-size:16px;margin:18px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
+    ul{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 10px;}
+
+    .card{
+      background:rgba(9,14,30,.96);
+      border-radius:16px;
+      padding:16px 16px 14px;
+      border:1px solid var(--border);
+      margin-bottom:18px;
+    }
+    .note{font-size:12px;color:var(--muted);}
+    footer{
+      border-top:1px solid rgba(36,46,78,.7);
+      padding:14px 0 22px;font-size:11px;
+      color:var(--muted);margin-top:10px;
+    }
+    .footer-row{
+      max-width:880px;margin:0 auto;padding:0 18px;
+      display:flex;justify-content:space-between;
+      gap:10px;flex-wrap:wrap;
+    }
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
   </style>
-
-  <!-- JSON-LD: FAQ (Compliance) -->
-  <script type="application/ld+json" nonce="SSFAQ">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"Wie erzwingen wir Richtlinien?",
-        "acceptedAnswer":{"@type":"Answer","text":"Definieren Sie erlaubte Parameter in der Team-Whitelist. Alles andere wird entfernt. Bulk-Clean setzt Listen in einem Schritt durch."}
-      },
-      {
-        "@type":"Question",
-        "name":"Welche Daten verlässt das Gerät?",
-        "acceptedAnswer":{"@type":"Answer","text":"Keine Anwendungsdaten: SafeShare verarbeitet lokal im Browser und speichert nur teambezogene Whitelist-Werte im Local Storage."}
-      },
-      {
-        "@type":"Question",
-        "name":"Ist Offline-Betrieb möglich?",
-        "acceptedAnswer":{"@type":"Answer","text":"Ja. SafeShare ist eine PWA und funktioniert nach dem ersten Laden offline."}
-      }
-    ]
-  }
-  </script>
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
 </head>
 <body>
-  <div class="wrap">
-    <header class="row" style="justify-content:space-between;gap:16px">
-      <div>
-        <h1>Compliance</h1>
-        <p class="mut">Richtlinienkonformes Link-Management mit Whitelist und Bulk-Clean. Vollständig lokal – kein Server-Logging.</p>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
       </div>
-      <div class="row">
-        <a class="btn ghost" href="./">Startseite</a>
-        <a class="btn" href="team-setup.html">Team-Whitelist</a>
-      </div>
-    </header>
+      <nav class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="help.html">Hilfe</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="shell">
+    <div class="card">
+      <h1>Compliance &amp; verantwortungsvoller Einsatz</h1>
+      <p>
+        SafeShare ist ein Werkzeug, das Tracking-Parameter entfernt und Redirects entpackt.
+        Wie und in welchem Umfang du es einsetzt, sollte zu deinen rechtlichen Rahmenbedingungen
+        und internen Richtlinien passen.
+      </p>
+      <p class="note">
+        Wichtiger Hinweis: Diese Seite ist keine Rechtsberatung. Konkrete Fragen klärst du
+        am besten mit deiner Rechtsabteilung oder externen Berater:innen.
+      </p>
+    </div>
 
     <section class="card">
-      <h2 style="margin-top:0">Whitelist-Beispiel</h2>
-      <table aria-label="Whitelist-Beispiel">
-        <thead><tr><th>Parameter</th><th>Zweck</th></tr></thead>
-        <tbody>
-          <tr><td><code class="mono">tag</code></td><td>Affiliate-/Partnerzuordnung</td></tr>
-          <tr><td><code class="mono">ref</code></td><td>Referrer-Kennung ohne Tracking-Payload</td></tr>
-        </tbody>
-      </table>
-      <p class="mut" style="margin-top:8px">Konfiguration in <a href="team-setup.html">Team-Setup</a>; gilt für App, Bookmarklets und Bulk-Clean.</p>
-      <div class="row" style="margin-top:10px">
-        <a class="btn pri" href="bulk-clean.html">Bulk-Clean öffnen</a>
-        <a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a>
-        <a class="btn" href="help.html">Hilfe</a>
-      </div>
+      <h2>Datenschutz &amp; Tracking</h2>
+      <ul>
+        <li>SafeShare kann helfen, Tracking zu reduzieren, ersetzt aber kein DSGVO-Konzept.</li>
+        <li>Du entscheidest, welche Parameter du entfernst und welche du über eine Whitelist erlaubst.</li>
+        <li>In vielen Organisationen muss eine Datenschutzbeauftragung eingebunden werden.</li>
+      </ul>
+      <p>
+        Details zur Datenverarbeitung findest du in
+        <a href="datenschutz.html">Datenschutz</a>.
+      </p>
     </section>
 
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklet</a>
-        <a href="bulk-clean.html">Bulk-Clean</a>
-        <a href="team-setup.html">Team-Whitelist</a>
-        <a href="partners.html">Partner</a>
-        <a href="help.html">Hilfe</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-      </nav>
-    </footer>
+    <section class="card">
+      <h2>Interne Richtlinien &amp; Governance</h2>
+      <p>
+        Wenn SafeShare in Teams oder Organisationen genutzt wird, kann es sinnvoll sein,
+        einfache Richtlinien festzulegen, z. B.:
+      </p>
+      <ul>
+        <li>Welche Links vor Veröffentlichung standardmäßig über SafeShare laufen,</li>
+        <li>welche Parameter über die Whitelist erhalten bleiben dürfen,</li>
+        <li>wer Änderungen am Regelset vornehmen darf.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Risiken &amp; Grenzen</h2>
+      <p>
+        SafeShare soll Links vereinfachen und Tracking-„Müll“ entfernen. Es bleibt aber
+        möglich, dass:
+      </p>
+      <ul>
+        <li>eine URL ohne bestimmte Parameter anders ausgewertet wird,</li>
+        <li>Kampagnentracking einzelner Tools beeinträchtigt wird,</li>
+        <li>externe Systeme eigene Logs und IDs unabhängig von SafeShare führen.</li>
+      </ul>
+      <p>
+        Im Zweifel sollten Tests durchgeführt und interne Stakeholder (Marketing, Datenschutz,
+        IT) eingebunden werden.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Weitere Informationen</h2>
+      <ul>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="terms.html">Terms</a> und <a href="kurz-terms.html">Kurz-Terms</a></li>
+        <li><a href="publisher.html">SafeShare für Publisher &amp; Affiliates</a></li>
+      </ul>
+    </section>
   </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
