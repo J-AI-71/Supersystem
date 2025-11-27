@@ -3,74 +3,308 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Terms – SafeShare Nutzungsbedingungen</title>
-  <meta name="description" content="Allgemeine Nutzungsbedingungen für SafeShare.">
+
+  <title>Nutzungsbedingungen – SafeShare</title>
+  <meta name="description" content="Grundlegende Nutzungsbedingungen für SafeShare. Informiere dich, unter welchen Rahmenbedingungen du die Web-App verwenden kannst.">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/terms.html">
+
+  <!-- Favicon -->
   <link rel="icon" href="logo.svg" type="image/svg+xml">
+
+  <!-- Search Console / Bing -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nutzungsbedingungen – SafeShare">
+  <meta property="og:description" content="Überblick über die Nutzungsbedingungen von SafeShare. Bitte lies diese Hinweise, bevor du die Web-App verwendest.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/terms.html">
+  <meta property="og:site_name" content="SafeShare">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nutzungsbedingungen – SafeShare">
+  <meta name="twitter:description" content="Einfach formulierte Nutzungsbedingungen für SafeShare – ohne Juristendeutsch, aber mit klaren Regeln.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+
+  <!-- Structured Data: TermsOfService -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "SafeShare Nutzungsbedingungen",
+    "description": "Nutzungsbedingungen für die SafeShare Web-App.",
+    "url": "https://j-ai-71.github.io/Supersystem/terms.html",
+    "publisher": {
+      "@type": "Person",
+      "name": "Jana Jergus"
+    }
+  }
+  </script>
+
   <style>
-    :root{--bg:#050810;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
     *{box-sizing:border-box;}
-    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;background:#050810;color:var(--text);}
-    a{color:#8be5ca;text-decoration:none;}a:hover{text-decoration:underline;}
-    .shell{max-width:880px;margin:0 auto;padding:20px 18px 40px;}
-    h1{font-size:24px;margin:0 0 12px;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:#8be5ca;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(16px);
+      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
+      border-bottom:1px solid rgba(36,46,78,.7);
+    }
+    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
+    }
+    .nav-left{display:flex;align-items:center;gap:8px;}
+    .logo-mark{
+      width:28px;height:28px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+    }
+    .logo-mark img{width:22px;height:22px;object-fit:contain;}
+    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
+    .nav-links a{text-decoration:none;}
+    @media(max-width:720px){.nav-links{display:none;}}
+
+    main{padding:26px 0 40px;}
+    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
     h2{font-size:18px;margin:22px 0 8px;}
-    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 8px;}
-    ul{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 10px;}
-    hr{border:none;border-top:1px solid var(--border);margin:18px 0;}
+    h3{font-size:16px;margin:18px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
+    ul,ol{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 12px;}
+
+    .card{
+      background:rgba(9,14,30,.96);
+      border-radius:16px;
+      padding:18px 16px 16px;
+      border:1px solid var(--border);
+      margin-bottom:18px;
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:11px;padding:4px 9px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:rgba(5,11,24,.96);color:#ccefe4;
+      margin-bottom:10px;
+    }
+    .badge-dot{
+      width:7px;height:7px;border-radius:50%;
+      background:#3dd5b0;box-shadow:0 0 10px rgba(61,213,176,.8);
+    }
+    .hint{
+      font-size:12px;color:var(--muted);
+      border-left:2px solid rgba(61,213,176,.7);
+      padding-left:10px;margin:8px 0 12px;
+    }
+
+    footer{
+      border-top:1px solid rgba(36,46,78,.7);
+      padding:14px 0 22px;font-size:11px;
+      color:var(--muted);margin-top:10px;
+    }
+    .footer-row{
+      max-width:880px;margin:0 auto;padding:0 18px;
+      display:flex;justify-content:space-between;
+      gap:10px;flex-wrap:wrap;
+    }
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
   </style>
 </head>
 <body>
-<div class="shell">
-  <h1>SafeShare Nutzungsbedingungen (Terms)</h1>
-  <p>
-    Diese Nutzungsbedingungen regeln die Nutzung von SafeShare.
-  </p>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="help.html">Hilfe</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
+      </nav>
+    </div>
+  </div>
+</header>
 
-  <h2>1. Geltungsbereich</h2>
-  <p>
-    Beschreibe hier, für wen die Bedingungen gelten (z. B. alle Nutzer:innen der
-    SafeShare-Seiten und -Funktionen) und ggf. Unterschiede zwischen kostenloser
-    Nutzung und Pro.
-  </p>
+<main>
+  <div class="shell">
 
-  <h2>2. Leistungsbeschreibung</h2>
-  <p>
-    Beschreibe, was SafeShare bietet (z. B. Link Cleaner, Bulk-Clean, Whitelist),
-    ohne eine rechtlich verbindliche Erfolgsgarantie zu formulieren.
-  </p>
+    <article class="card">
+      <div class="badge"><span class="badge-dot"></span> Nutzungsbedingungen</div>
+      <h1>Nutzungsbedingungen für SafeShare</h1>
+      <p>
+        Mit der Nutzung von SafeShare erklärst du dich mit den folgenden
+        Nutzungsbedingungen einverstanden. Wenn du diesen Bedingungen nicht
+        zustimmst, solltest du SafeShare nicht verwenden.
+      </p>
+      <div class="hint">
+        Diese Nutzungsbedingungen sind bewusst einfach formuliert und ersetzen
+        keine individuelle Rechtsberatung.
+      </div>
+    </article>
 
-  <h2>3. Verantwortlichkeiten der Nutzer:innen</h2>
-  <ul>
-    <li>Eigene Verantwortung für die bereitgestellten Inhalte und Links,</li>
-    <li>Einhaltung geltender Gesetze bei der Nutzung,</li>
-    <li>kein Missbrauch des Dienstes.</li>
-  </ul>
+    <article class="card">
+      <h2>1. Anbieterin der Website</h2>
+      <p>
+        SafeShare wird bereitgestellt von:
+      </p>
+      <p>
+        Jana Jergus / SafeShare<br>
+        Auf dem Emdgenberg<br>
+        61250 Usingen, Germany<br>
+        E-Mail: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
+      </p>
+      <p>
+        Weitere Angaben findest du im <a href="impressum.html">Impressum</a>.
+      </p>
+    </article>
 
-  <h2>4. Haftungsausschluss</h2>
-  <p>
-    Beschreibe in angemessener Form, dass du keine Gewähr für Vollständigkeit,
-    Aktualität und Fehlerfreiheit der Link-Verarbeitung übernehmen kannst und
-    dass die Nutzung auf eigenes Risiko erfolgt – im Rahmen des rechtlich
-    Zulässigen.
-  </p>
+    <article class="card">
+      <h2>2. Leistungsumfang</h2>
+      <p>
+        SafeShare ist eine Web-Anwendung, die dir hilft, Links aufzuräumen:
+        insbesondere Tracking-Parameter zu entfernen und bestimmte Weiterleitungen
+        zu entpacken. Es besteht kein Anspruch auf:
+      </p>
+      <ul>
+        <li>ständige Verfügbarkeit,</li>
+        <li>Fehlerfreiheit aller Funktionen,</li>
+        <li>Unterstützung jeder möglichen URL-Variante.</li>
+      </ul>
+      <p>
+        SafeShare kann jederzeit in Funktion, Umfang oder Darstellung geändert,
+        erweitert, eingeschränkt oder eingestellt werden.
+      </p>
+    </article>
 
-  <h2>5. Änderungen der Bedingungen</h2>
-  <p>
-    Hinweis, dass du diese Bedingungen in Zukunft anpassen kannst, inklusive
-    Hinweis, wie du darüber informierst (z. B. über diese Seite).
-  </p>
+    <article class="card">
+      <h2>3. Eigene Verantwortung bei der Nutzung</h2>
+      <p>
+        Du bist selbst dafür verantwortlich, wie du SafeShare einsetzt und
+        welche Links du bereinigst, teilst oder veröffentlichst. Das bedeutet
+        insbesondere:
+      </p>
+      <ul>
+        <li>du prüfst selbst, ob eine bereinigte URL technisch und inhaltlich wie gewünscht funktioniert,</li>
+        <li>du berücksichtigst eigene vertragliche Pflichten (z. B. gegenüber Partnerprogrammen oder Kund:innen),</li>
+        <li>du achtest darauf, SafeShare nicht für rechtswidrige Zwecke zu nutzen.</li>
+      </ul>
+      <p>
+        SafeShare gibt dir Werkzeuge an die Hand, trifft aber keine Entscheidungen
+        darüber, welche Links du verwenden solltest.
+      </p>
+    </article>
 
-  <h2>6. Anwendbares Recht / Gerichtsstand</h2>
-  <p>
-    Rechtswahlklausel und ggf. Gerichtsstand – bitte nur verwenden, wenn du
-    weißt, was du tust und dies rechtlich zulässig ist.
-  </p>
+    <article class="card">
+      <h2>4. Keine Rechtsberatung, keine Garantie</h2>
+      <p>
+        SafeShare ersetzt keine Rechtsberatung. Hinweise zu Tracking, Datenschutz
+        oder „Link-Hygiene“ sind allgemeine Orientierung und kein rechtliches Gutachten.
+        Ob dein konkretes Setup rechtskonform ist, musst du mit geeigneten Fachleuten
+        (z. B. Datenschutzbeauftragten oder Rechtsanwält:innen) klären.
+      </p>
+      <p>
+        Es wird keine Garantie dafür übernommen, dass:
+      </p>
+      <ul>
+        <li>bestimmte Tracking-Parameter immer korrekt erkannt und entfernt werden,</li>
+        <li>alle Weiterleitungen vollständig entpackt werden,</li>
+        <li>keine neuen oder geänderten Parameter im Laufe der Zeit auftreten, die SafeShare nicht kennt.</li>
+      </ul>
+    </article>
 
-  <hr>
-  <p style="font-size:12px;color:var(--muted);">
-    Hinweis: Diese Seite ist nur eine Strukturhilfe und ersetzt keine Rechtsberatung.
-    Bitte lasse deine finalen Nutzungsbedingungen überprüfen.
-  </p>
-</div>
+    <article class="card">
+      <h2>5. Haftung</h2>
+      <p>
+        Für Schäden, die dir aus der Nutzung oder Nichtnutzung von SafeShare
+        entstehen, wird – soweit gesetzlich zulässig – keine Haftung übernommen.
+        Das gilt insbesondere für:
+      </p>
+      <ul>
+        <li>indirekte Schäden und Folgeschäden,</li>
+        <li>entgangene Umsätze oder Gewinne,</li>
+        <li>Datenverlust, der außerhalb des Einflussbereichs von SafeShare liegt.</li>
+      </ul>
+      <p>
+        Die Haftung für Vorsatz und grobe Fahrlässigkeit bleibt unberührt, soweit
+        eine solche Haftung nach anwendbarem Recht nicht ausgeschlossen werden kann.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>6. Externe Links</h2>
+      <p>
+        SafeShare kann Links zu anderen Websites oder Diensten enthalten. Für deren
+        Inhalte, Funktionen oder Datenschutzpraktiken wird keine Verantwortung
+        übernommen. Wenn du externe Links nutzt, tust du dies auf eigene Verantwortung.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>7. Änderungen der Nutzungsbedingungen</h2>
+      <p>
+        Diese Nutzungsbedingungen können in Zukunft angepasst werden, zum Beispiel
+        wenn sich Funktionen, rechtliche Rahmenbedingungen oder organisatorische
+        Aspekte ändern. Die jeweils aktuelle Fassung ist auf dieser Seite abrufbar.
+      </p>
+      <p>
+        Wenn du SafeShare nach einer Änderung weiterhin nutzt, gilt dies als
+        Zustimmung zur aktualisierten Fassung.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>8. Anwendbares Recht</h2>
+      <p>
+        Soweit nicht zwingend etwas anderes vorgeschrieben ist, gilt für diese
+        Nutzungsbedingungen das Recht der Bundesrepublik Deutschland.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>9. Kontakt</h2>
+      <p>
+        Bei Fragen zu diesen Nutzungsbedingungen:
+      </p>
+      <p>
+        Jana Jergus / SafeShare<br>
+        Auf dem Emdgenberg<br>
+        61250 Usingen, Germany<br>
+        E-Mail: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
+      </p>
+    </article>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
