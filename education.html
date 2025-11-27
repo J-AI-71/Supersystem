@@ -1,132 +1,176 @@
-<!-- /Supersystem/education.html -->
-<!doctype html>
+<!-- compliance.html -->
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>SafeShare für Bildung & NGOs</title>
-  <meta name="description" content="Privacy-freundliches Teilen: saubere, kurze Links ohne Tracking – gut für Lernumgebungen, Newsletter und Öffentlichkeitsarbeit.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Canonical / hreflang -->
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/education.html">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/education.html" hreflang="de">
-  <link rel="alternate" href="https://j-ai-71.github.io/Supersystem/education.html" hreflang="x-default">
+  <title>SafeShare Compliance – verantwortungsvoller Einsatz</title>
+  <meta name="description" content="Hinweise zum verantwortungsvollen Einsatz von SafeShare im Kontext von Datenschutz, Tracking und internen Richtlinien.">
 
-  <!-- Robots -->
-  <meta name="robots" content="index,follow">
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/compliance.html">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
 
-  <!-- Open Graph / Twitter -->
-  <meta property="og:locale" content="de_DE">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare für Bildung & NGOs">
-  <meta property="og:description" content="Saubere, kurze Links ohne Tracking – lokal im Browser. Ideal für Unterricht, Elternkommunikation, Öffentlichkeitsarbeit.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/education.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:#8be5ca;text-decoration:none;}a:hover{text-decoration:underline;}
+    header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(16px);
+      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
+      border-bottom:1px solid rgba(36,46,78,.7);
+    }
+    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
+    }
+    .nav-left{display:flex;align-items:center;gap:8px;}
+    .logo-mark{
+      width:28px;height:28px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+    }
+    .logo-mark img{width:22px;height:22px;object-fit:contain;}
+    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
+    .nav-links a{text-decoration:none;}
+    @media(max-width:720px){.nav-links{display:none;}}
 
-  <!-- Icons / Manifest -->
-  <link rel="icon" href="assets/icons/icon-32-kreis.png" sizes="32x32" type="image/png">
-  <link rel="icon" href="assets/icons/icon-16-kreis.png" sizes="16x16" type="image/png">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png" sizes="180x180">
-  <link rel="manifest" href="manifest.webmanifest">
+    main{padding:26px 0 40px;}
+    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
+    h2{font-size:20px;margin:24px 0 8px;}
+    h3{font-size:16px;margin:18px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
+    ul{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 10px;}
 
-  <!-- CSP -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self' 'nonce-SSJSON2';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
-
-  <!-- Styles / SW -->
-  <link rel="stylesheet" href="assets/styles.css?v=32">
-  <script defer src="js/sw-register.js?v=32"></script>
-
-  <!-- FAQ JSON-LD (kompakt) -->
-  <script type="application/ld+json" nonce="SSJSON2">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type":"Question",
-        "name":"Ist SafeShare datensparsam?",
-        "acceptedAnswer":{"@type":"Answer","text":"Ja. Verarbeitung geschieht lokal im Browser – keine Accounts, keine Server-Logs von SafeShare."}
-      },
-      {
-        "@type":"Question",
-        "name":"Eignet sich SafeShare für Unterricht & Elternkommunikation?",
-        "acceptedAnswer":{"@type":"Answer","text":"Ja. Links werden verkürzt und von gängigen Tracking-Parametern befreit, was Lesbarkeit und Datenschutz verbessert."}
-      },
-      {
-        "@type":"Question",
-        "name":"Funktioniert SafeShare offline?",
-        "acceptedAnswer":{"@type":"Answer","text":"Kernseiten sind als PWA installierbar; wesentliche Funktionen sind auch ohne Netz erreichbar."}
-      }
-    ]
-  }
-  </script>
+    .card{
+      background:rgba(9,14,30,.96);
+      border-radius:16px;
+      padding:16px 16px 14px;
+      border:1px solid var(--border);
+      margin-bottom:18px;
+    }
+    .note{font-size:12px;color:var(--muted);}
+    footer{
+      border-top:1px solid rgba(36,46,78,.7);
+      padding:14px 0 22px;font-size:11px;
+      color:var(--muted);margin-top:10px;
+    }
+    .footer-row{
+      max-width:880px;margin:0 auto;padding:0 18px;
+      display:flex;justify-content:space-between;
+      gap:10px;flex-wrap:wrap;
+    }
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
+  </style>
 </head>
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="publisher.html">Publisher</a>
+        <a href="education.html">Education</a>
+        <a href="help.html">Hilfe</a>
+      </nav>
+    </div>
+  </div>
+</header>
 
-  <main id="main" class="wrap">
-    <h1>SafeShare für Bildung &amp; NGOs</h1>
-    <p class="mut">Privacy-freundliches Teilen: saubere, kurze Links ohne Tracking – gut für Lernumgebungen, Newsletter und Öffentlichkeitsarbeit.</p>
-
-    <div class="row pillrow">
-      <span class="pill">Keine Accounts</span>
-      <span class="pill">PWA &amp; offline</span>
-      <span class="pill">Sichere Weitergabe</span>
-      <a class="pill" href="quickstart.html">Quickstart</a>
+<main>
+  <div class="shell">
+    <div class="card">
+      <h1>Compliance &amp; verantwortungsvoller Einsatz</h1>
+      <p>
+        SafeShare ist ein Werkzeug, das Tracking-Parameter entfernt und Redirects entpackt.
+        Wie und in welchem Umfang du es einsetzt, sollte zu deinen rechtlichen Rahmenbedingungen
+        und internen Richtlinien passen.
+      </p>
+      <p class="note">
+        Wichtiger Hinweis: Diese Seite ist keine Rechtsberatung. Konkrete Fragen klärst du
+        am besten mit deiner Rechtsabteilung oder externen Berater:innen.
+      </p>
     </div>
 
-    <section class="cards two">
-      <div class="card">
-        <h2>Einsatz in Schule &amp; Non-Profit</h2>
-        <ul>
-          <li><strong>Unterricht &amp; LMS:</strong> Beim Teilen bereinigter Links weniger Tracking-Rauschen.</li>
-          <li><strong>Eltern-/Stakeholder:</strong> Kürzere URLs in Newslettern &amp; Aushängen.</li>
-          <li><strong>Workshops &amp; Öffentlichkeit:</strong> <a href="quickstart.html">Quickstart</a> für schnellen Einstieg.</li>
-          <li><strong>Offline-tauglich:</strong> Als PWA installierbar; Kernseiten funktionieren auch ohne Netz.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h2>So startest du</h2>
-        <ul>
-          <li><a href="app.html">App öffnen</a> → Link einfügen → <em>Säubern</em>.</li>
-          <li><a href="bookmarklets.html">Bookmarklet</a> speichern, um Links direkt von Webseiten zu bereinigen.</li>
-          <li><a href="help.html">Hilfe</a> lesen (inkl. Schritt-für-Schritt für iOS/Android/Desktop).</li>
-        </ul>
-        <p class="mt">
-          <a class="btn pri" href="app.html">Jetzt ausprobieren</a>
-          <a class="btn" href="quickstart.html">Quickstart (PDF)</a>
-          <a class="btn" href="press.html">Presseinfo</a>
-        </p>
-      </div>
+    <section class="card">
+      <h2>Datenschutz &amp; Tracking</h2>
+      <ul>
+        <li>SafeShare kann helfen, Tracking zu reduzieren, ersetzt aber kein DSGVO-Konzept.</li>
+        <li>Du entscheidest, welche Parameter du entfernst und welche du über eine Whitelist erlaubst.</li>
+        <li>In vielen Organisationen muss eine Datenschutzbeauftragung eingebunden werden.</li>
+      </ul>
+      <p>
+        Details zur Datenverarbeitung findest du in
+        <a href="datenschutz.html">Datenschutz</a>.
+      </p>
     </section>
 
-    <hr class="mut" style="margin:24px 0">
+    <section class="card">
+      <h2>Interne Richtlinien &amp; Governance</h2>
+      <p>
+        Wenn SafeShare in Teams oder Organisationen genutzt wird, kann es sinnvoll sein,
+        einfache Richtlinien festzulegen, z. B.:
+      </p>
+      <ul>
+        <li>Welche Links vor Veröffentlichung standardmäßig über SafeShare laufen,</li>
+        <li>welche Parameter über die Whitelist erhalten bleiben dürfen,</li>
+        <li>wer Änderungen am Regelset vornehmen darf.</li>
+      </ul>
+    </section>
 
-    <footer class="foot">
-      <nav class="wrap small">
-        <a href="index.html">Startseite</a> ·
-        <a href="publisher.html">Publisher</a> ·
-        <a aria-current="page">Education</a> ·
-        <a href="partners.html">Unternehmen</a> ·
-        <a href="press.html">Presse</a> ·
-        <a href="impressum.html">Impressum</a> ·
-        <a href="datenschutz.html">Datenschutz</a>
-      </nav>
-    </footer>
-  </main>
+    <section class="card">
+      <h2>Risiken &amp; Grenzen</h2>
+      <p>
+        SafeShare soll Links vereinfachen und Tracking-„Müll“ entfernen. Es bleibt aber
+        möglich, dass:
+      </p>
+      <ul>
+        <li>eine URL ohne bestimmte Parameter anders ausgewertet wird,</li>
+        <li>Kampagnentracking einzelner Tools beeinträchtigt wird,</li>
+        <li>externe Systeme eigene Logs und IDs unabhängig von SafeShare führen.</li>
+      </ul>
+      <p>
+        Im Zweifel sollten Tests durchgeführt und interne Stakeholder (Marketing, Datenschutz,
+        IT) eingebunden werden.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Weitere Informationen</h2>
+      <ul>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="terms.html">Terms</a> und <a href="kurz-terms.html">Kurz-Terms</a></li>
+        <li><a href="publisher.html">SafeShare für Publisher &amp; Affiliates</a></li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
