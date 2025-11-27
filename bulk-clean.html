@@ -1,137 +1,137 @@
-<!-- /Supersystem/bulk-clean.html -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Bulk-Clean · SafeShare</title>
-  <meta name="description" content="Viele Links auf einmal säubern: Liste einfügen, SafeShare entfernt Tracking-Parameter und entpackt Redirects – lokal im Browser. Export als TXT.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SafeShare Bulk-Clean – viele Links auf einmal säubern</title>
+  <meta name="description" content="Bereinige ganze Linklisten: UTM entfernen, Redirects entpacken, Duplikate löschen – mit SafeShare Bulk-Clean.">
+
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
 
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
-  <meta property="og:locale" content="de_DE">
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare · Bulk-Clean">
-  <meta property="og:description" content="Mehrere Links gleichzeitig säubern und entpacken – 100% lokal.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/bulk-clean.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-
-  <!-- Sicherheits-CSP -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
-
-  <!-- Styles -->
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a;--pri:#2bd184;--ok:#5fe09f}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0;--pri:#22c07b;--ok:#14a44d}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:#9fe7c3}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#12181e;color:var(--fg);text-decoration:none;cursor:pointer}
-    .btn.pri{background:var(--pri);border-color:transparent;color:#062012;font-weight:700}
-    textarea{width:100%;min-height:220px;background:#0d1319;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:10px;box-sizing:border-box}
-    .grid-2{display:grid;grid-template-columns:1fr;gap:14px}
-    @media(min-width:980px){.grid-2{grid-template-columns:1fr 1fr}}
-    .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--mut);font-size:.9rem}
-    .chip.ok{background:var(--ok);border-color:transparent;color:#062012}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);color:var(--text);-webkit-font-smoothing:antialiased;}
+    a{color:#8be5ca;text-decoration:none;}a:hover{text-decoration:underline;}
+    header{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);border-bottom:1px solid rgba(36,46,78,.7);}
+    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0;font-size:13px;color:var(--muted);gap:10px;}
+    .nav-left{display:flex;align-items:center;gap:8px;}
+    .logo-mark{width:28px;height:28px;border-radius:999px;border:1px solid rgba(61,213,176,.5);background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .logo-mark img{width:22px;height:22px;object-fit:contain;}
+    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
+    .nav-links a{text-decoration:none;}
+    @media(max-width:720px){.nav-links{display:none;}}
+    main{padding:26px 0 40px;}
+    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
+    textarea{width:100%;min-height:120px;border-radius:10px;border:1px solid rgba(46,60,104,.9);background:rgba(7,12,30,.95);color:#d7e4ff;padding:9px 11px;font-size:13px;}
+    .card{background:rgba(9,14,30,.96);border-radius:16px;padding:16px 16px 14px;border:1px solid var(--border);margin-bottom:18px;}
+    .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:8px 14px;font-size:13px;border:1px solid transparent;text-decoration:none;cursor:pointer;white-space:nowrap;}
+    .btn-primary{background:linear-gradient(120deg,#3dd5b0,#ffc98b);color:#050810;font-weight:600;}
+    .btn-ghost{border-color:rgba(99,110,160,.8);color:var(--muted);background:rgba(9,15,32,.9);}
+    label{font-size:13px;color:var(--text);display:block;margin-bottom:4px;}
+    .switches{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12px;color:var(--muted);margin-top:4px;}
+    .switches label{display:inline-flex;align-items:center;gap:6px;margin-bottom:0;}
+    .switches input{margin:0;}
+    footer{border-top:1px solid rgba(36,46,78,.7);padding:14px 0 22px;font-size:11px;color:var(--muted);margin-top:10px;}
+    .footer-row{max-width:880px;margin:0 auto;padding:0 18px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
   </style>
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
-  <script defer src="js/cleaner.js?v=20251122"></script>
-  <script defer src="js/page-bulk-clean.js?v=20251122"></script>
 </head>
 <body>
-  <div class="wrap">
-    <header class="row" style="justify-content:space-between">
-      <div>
-        <h1>Bulk-Clean <span id="badge-pro" class="chip ok" style="display:none">Pro aktiv</span></h1>
-        <p class="mut">Viele Links gleichzeitig säubern &amp; Weiterleitungen entpacken – alles lokal im Browser.</p>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
       </div>
-      <div class="row">
-        <a class="btn ghost" href="./">Startseite</a>
-        <a class="btn ghost" href="help.html">Hilfe</a>
-      </div>
-    </header>
-
-    <section class="card">
-      <div class="grid-2">
-        <div>
-          <h2 style="margin-top:0">Eingabe</h2>
-          <textarea id="in-list" placeholder="Eine URL pro Zeile oder aus CSV einfügen …"></textarea>
-          <div class="row" style="margin-top:10px">
-            <label class="mut"><input id="opt-unwrap" type="checkbox" checked> Redirects entpacken</label>
-            <label class="mut"><input id="opt-dedup" type="checkbox"> Duplikate entfernen</label>
-            <label class="mut"><input id="opt-trim" type="checkbox" checked> Leerzeilen entfernen</label>
-          </div>
-          <div class="row" style="margin-top:10px">
-            <button id="btn-run" class="btn pri" type="button">Säubern</button>
-            <button id="btn-reset" class="btn" type="button">Zurücksetzen</button>
-          </div>
-        </div>
-
-        <div>
-          <h2 style="margin-top:0">Ergebnis</h2>
-          <textarea id="out-list" readonly placeholder="Ausgabe erscheint hier …"></textarea>
-          <div class="row" style="margin-top:10px">
-            <button id="btn-copy" class="btn" type="button">Kopieren</button>
-            <button id="btn-download" class="btn" type="button">Als TXT speichern</button>
-            <span id="stats" class="mut"></span>
-          </div>
-          <p class="mut" style="margin-top:8px">Whitelist aus <a href="team-setup.html">Team-Setup</a> wird berücksichtigt (z. B. <code class="mono">tag</code>, <code class="mono">ref</code>).</p>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="team-setup.html">Team-Whitelist</a>
-        <a href="help.html">Hilfe</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
+      <nav class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="link-cleaner.html">Link Cleaner</a>
+        <a href="pro.html">Pro</a>
       </nav>
-    </footer>
+    </div>
   </div>
+</header>
 
-  <noscript>
-    <div class="wrap"><div class="card">Bitte JavaScript aktivieren, um Bulk-Clean zu verwenden.</div></div>
-  </noscript>
+<main>
+  <div class="shell">
+    <div class="card">
+      <h1>Bulk-Clean – viele Links auf einmal säubern</h1>
+      <p>
+        Füge links eine Liste von URLs ein, wähle deine Optionen und lasse SafeShare
+        alle Links in einem Durchgang bereinigen.
+      </p>
+    </div>
+
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div>
+          <label for="bulk-input">Eingabe-Liste (eine URL pro Zeile)</label>
+          <textarea id="bulk-input" placeholder="https://…"></textarea>
+        </div>
+        <div>
+          <label for="bulk-output">Bereinigte Liste</label>
+          <textarea id="bulk-output" readonly placeholder="Hier erscheint die gesäuberte Liste …"></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-bulk-clean" type="button">Liste säubern</button>
+        <button class="btn btn-ghost" id="btn-bulk-copy" type="button">Bereinigte Liste kopieren</button>
+      </div>
+
+      <div class="switches">
+        <label>
+          <input type="checkbox" id="opt-bulk-unwrap" checked>
+          Redirects entpacken
+        </label>
+        <label>
+          <input type="checkbox" id="opt-bulk-strip" checked>
+          Tracking-Parameter entfernen
+        </label>
+        <label>
+          <input type="checkbox" id="opt-bulk-dedupe" checked>
+          Duplikate entfernen
+        </label>
+        <label>
+          <input type="checkbox" id="opt-bulk-trim-empty" checked>
+          Leerzeilen entfernen
+        </label>
+      </div>
+
+      <p style="font-size:12px;color:var(--muted);margin-top:8px;">
+        Hinweis: Stelle sicher, dass deine vorhandene JavaScript-Logik diese IDs
+        (<code>bulk-input</code>, <code>bulk-output</code>, <code>btn-bulk-clean</code>, …)
+        verwendet – oder passe sie entsprechend an.
+      </p>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);">
+      Für Teams und Publisher mit Whitelist-Funktionalität siehe
+      <a href="pro.html">SafeShare Pro</a> und <a href="publisher.html">Publisher</a>.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
