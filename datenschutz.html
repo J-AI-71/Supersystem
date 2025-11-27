@@ -1,144 +1,84 @@
-<!-- /Supersystem/datenschutz.html -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Datenschutz · SafeShare</title>
-  <meta name="description" content="Datenschutzerklärung für SafeShare. Verarbeitung lokal im Browser, keine App-Server-Logs. Angaben zu LocalStorage, Rechten und Kontakt.">
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/datenschutz.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
-
-  <!-- hreflang / Locale -->
-  <link rel="alternate" hreflang="de" href="https://j-ai-71.github.io/Supersystem/datenschutz.html">
-  <link rel="alternate" hreflang="x-default" href="https://j-ai-71.github.io/Supersystem/datenschutz.html">
-  <meta property="og:locale" content="de_DE">
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Datenschutz">
-  <meta property="og:description" content="SafeShare arbeitet lokal im Browser. Keine App-Server-Logs. Details zu LocalStorage, Rechten und Kontakt.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/datenschutz.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-
-  <!-- Sicherheits-CSP -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
-
-  <!-- Styles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Datenschutz – SafeShare</title>
+  <meta name="description" content="Datenschutzhinweise für die Nutzung von SafeShare.">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
   <style>
-    :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--card:#0f141a;--line:#26313a}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--card:#f6f8fa;--line:#e2e8f0}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    .wrap{max-width:900px;margin:0 auto;padding:24px}
-    .mut{color:var(--mut)}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
-    h1,h2{margin:.2rem 0}
-    a{color:#9fe7c3}
-    footer{border-top:1px solid var(--line);margin-top:28px}
-    footer .links{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
-    footer a{color:var(--mut);text-decoration:none}
-    ul{margin:.2rem 0 .6rem 1.1rem}
-    li{margin:.2rem 0}
-    code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    :root{--bg:#050810;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;background:#050810;color:var(--text);}
+    a{color:#8be5ca;text-decoration:none;}a:hover{text-decoration:underline;}
+    .shell{max-width:880px;margin:0 auto;padding:20px 18px 40px;}
+    h1{font-size:24px;margin:0 0 12px;}
+    h2{font-size:18px;margin:22px 0 8px;}
+    h3{font-size:15px;margin:16px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 8px;}
+    ul{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 10px;}
+    hr{border:none;border-top:1px solid var(--border);margin:18px 0;}
   </style>
-
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>Datenschutzerklärung</h1>
-      <p class="mut">Stand: 22.11.2025</p>
-    </header>
+<div class="shell">
+  <h1>Datenschutz</h1>
+  <p>
+    Diese Datenschutzerklärung informiert über Art, Umfang und Zweck der Verarbeitung
+    personenbezogener Daten im Rahmen von SafeShare.
+  </p>
 
-    <section class="card">
-      <h2>1. Verantwortliche</h2>
-      <p><strong>SafeShare</strong> · Inhaberin: Jana Jergus · Kontakt: <a href="mailto:kontakt@example.tld">support.safeshare@proton.me</a>. Weitere Angaben im <a href="impressum.html">Impressum</a>.</p>
-    </section>
+  <h2>1. Verantwortliche Stelle</h2>
+  <p>
+    [Name / Firma]<br>
+    [Anschrift]<br>
+    [E-Mail-Kontakt]
+  </p>
 
-    <section class="card">
-      <h2>2. Verarbeitungsgrundsätze</h2>
-      <ul>
-        <li><strong>Lokalität:</strong> SafeShare verarbeitet Links lokal in deinem Browser. Es existieren <em>keine</em> App-Server-Logs über deine Eingaben.</li>
-        <li><strong>Datenminimierung:</strong> Für Komfort werden wenige Einstellungen im <code>localStorage</code> gespeichert.</li>
-      </ul>
-    </section>
+  <h2>2. Grundsätzliche Hinweise</h2>
+  <p>
+    Beschreibe hier in eigenen Worten, welche Daten du verarbeitest, welche nicht,
+    und welche Grundsätze für dich gelten (z. B. keine Erstellung von Nutzungsprofilen,
+    keine Weitergabe an Dritte, etc. – falls das für dich zutrifft).
+  </p>
 
-    <section class="card">
-      <h2>3. Welche Daten werden lokal gespeichert?</h2>
-      <ul>
-        <li><code>ss_whitelist</code>: Team-Whitelist erlaubter Parameter (z. B. <code>tag</code>, <code>ref</code>).</li>
-        <li><code>ss_pro</code> / <code>safeshare.pro</code>: Pro-Aktivierungsflag (nach Kauf/Redirect).</li>
-        <li>PWA/Cache-Dateien durch den Service Worker zur Offline-Nutzung.</li>
-      </ul>
-      <p class="mut">Diese Werte bleiben lokal im Browser/Profil und werden nicht an uns übertragen.</p>
-    </section>
+  <h2>3. Protokolldaten und Hosting</h2>
+  <p>
+    Beschreibe hier, welche Daten der Hosting-Anbieter (z. B. GitHub Pages) ggf. in
+    Server-Logfiles verarbeitet (IP-Adresse, Zeitstempel, etc.) und verweise auf die
+    Datenschutzhinweise des Anbieters.
+  </p>
 
-    <section class="card">
-      <h2>4. Cookies, Protokolle, Drittanbieter</h2>
-      <ul>
-        <li><strong>Cookies:</strong> SafeShare setzt keine Tracking-Cookies.</li>
-        <li><strong>Server-Protokolle:</strong> GitHub Pages kann aus technischer Notwendigkeit Zugriffe serverseitig protokollieren (Infrastruktur des Hosters).</li>
-        <li><strong>Drittanbieter:</strong> Keine externe Einbettung von Analyse- oder Werbediensten.</li>
-      </ul>
-    </section>
+  <h2>4. Einsatz von SafeShare (lokale Verarbeitung)</h2>
+  <p>
+    Erläutere hier, dass SafeShare technisch darauf ausgelegt ist, Links lokal im Browser
+    zu verarbeiten und keine Nutzerkonten/Tracking-Cookies einzusetzen – sofern das mit
+    deiner tatsächlichen Implementierung übereinstimmt.
+  </p>
 
-    <section class="card">
-      <h2>5. Rechtsgrundlagen</h2>
-      <ul>
-        <li>Art. 6 Abs. 1 lit. b DSGVO (Vertrag/Anbahnung) für Funktionen, die du aktiv nutzt.</li>
-        <li>Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse) für sichere, effiziente Bereitstellung (z. B. PWA-Caching auf deinem Gerät).</li>
-      </ul>
-    </section>
+  <h2>5. Rechte der betroffenen Personen</h2>
+  <ul>
+    <li>Auskunft,</li>
+    <li>Berichtigung,</li>
+    <li>Löschung,</li>
+    <li>Einschränkung der Verarbeitung,</li>
+    <li>Widerspruch,</li>
+    <li>Datenübertragbarkeit,</li>
+    <li>Beschwerderecht bei einer Aufsichtsbehörde.</li>
+  </ul>
 
-    <section class="card">
-      <h2>6. Betroffenenrechte</h2>
-      <p>Du hast Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit sowie Widerspruch (Art. 15-21 DSGVO). Kontakt: <a href="mailto:kontakt@example.tld">support.safeshare@proton.me</a>.</p>
-      <p class="mut">Lokal gespeicherte Daten kannst du jederzeit selbst löschen (Browser-Einstellungen → Website-Daten/LocalStorage, sowie PWA/Cache entfernen).</p>
-    </section>
+  <h2>6. Änderungen dieser Erklärung</h2>
+  <p>
+    Hinweis, dass du diese Erklärung künftig anpassen kannst und ab wann die neue
+    Fassung gilt.
+  </p>
 
-    <section class="card">
-      <h2>7. Änderungen</h2>
-      <p>Diese Erklärung kann angepasst werden, um rechtliche oder technische Änderungen abzubilden. Maßgeblich ist die jeweils veröffentlichte Version.</p>
-    </section>
-
-    <footer>
-      <nav class="links" aria-label="Footer">
-        <a href="./">Startseite</a>
-        <a href="help.html">Hilfe</a>
-        <a href="terms.html">Terms</a>
-        <a href="kurz-terms.html">Kurz-Terms</a>
-        <a href="impressum.html">Impressum</a>
-      </nav>
-    </footer>
-  </div>
-
-  <noscript><div class="wrap"><div class="card">Hinweis: Für PWA-Funktionen ist JavaScript erforderlich.</div></div></noscript>
+  <hr>
+  <p style="font-size:12px;color:var(--muted);">
+    Hinweis: Diese Seite ist nur eine Strukturhilfe und ersetzt keine Rechtsberatung.
+    Bitte gleiche Inhalte mit qualifizierter Rechtsberatung und deiner tatsächlichen
+    technischen Umsetzung ab.
+  </p>
+</div>
 </body>
 </html>
