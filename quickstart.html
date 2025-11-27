@@ -1,125 +1,91 @@
-<!-- /Supersystem/quickstart.html -->
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- Basis -->
   <meta charset="utf-8">
+  <title>Quickstart – SafeShare</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Quickstart · SafeShare</title>
-  <meta name="description" content="Eine Seite, ein Blick: SafeShare in 60 Sekunden verstehen – inkl. QR-Code zur App.">
+  <meta name="description" content="In 3 Minuten startklar: App öffnen, Bookmarklet hinzufügen, Team-Whitelist setzen, Bulk-Clean & Redirect-Tool nutzen.">
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/quickstart.html">
-  <meta name="robots" content="index,follow,max-image-preview:large">
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare – Quickstart">
-  <meta property="og:description" content="So säuberst du Links in 60 Sekunden.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/quickstart.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg">
-
-  <!-- PWA / Icons -->
-  <link rel="manifest" href="manifest.webmanifest?v=20251122">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32-kreis.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16-kreis.png">
-  <meta name="theme-color" content="#0b0b0b">
-  <meta name="color-scheme" content="light dark">
-
-  <!-- Sicherheits-CSP -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
-
-  <!-- Styles (printfreundlich, 1 Seite) -->
+  <meta name="robots" content="index,follow">
+  <link rel="icon" href="assets/icons/icon-192.png">
   <style>
-    :root{--bg:#ffffff;--fg:#0b0b0b;--mut:#5f6368;--line:#e2e8f0;--pri:#22c07b}
-    @media (prefers-color-scheme:dark){
-      :root{--bg:#0b0b0b;--fg:#e9eef1;--mut:#aab6bf;--line:#26313a;--pri:#2bd184}
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    .page{max-width:900px;margin:0 auto;padding:28px}
-    h1{margin:.2rem 0}
-    .mut{color:var(--mut)}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px}
-    @media(min-width:900px){.grid{grid-template-columns:1.2fr .8fr}}
-    .card{border:1px solid var(--line);border-radius:12px;padding:16px}
-    ul{margin:.2rem 0 .6rem 1.1rem}
-    li{margin:.2rem 0}
-    .qr{display:flex;justify-content:center;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
-    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:inherit}
-    @page{size:A4;margin:12mm}
-    @media print{
-      .no-print{display:none !important}
-      .page{padding:0}
-      a{color:#000;text-decoration:none}
-    }
+    :root{--bg:#0b0e11;--fg:#e9eef2;--muted:#a8b3bd;--card:#12161a;--btn:#1f6feb;--ok:#1a7f37;}
+    html,body{background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0}
+    a{color:#7cc6ff;text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:960px;margin:0 auto;padding:24px}
+    .h1{font-size:28px;font-weight:700;margin:8px 0 20px}
+    .grid{display:grid;gap:16px}
+    @media(min-width:820px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid #222933;border-radius:12px;padding:16px}
+    .card h2{margin:0 0 8px;font-size:18px}
+    .btn{display:inline-block;background:var(--btn);color:#fff;padding:10px 14px;border-radius:8px;font-weight:600}
+    .btn.ok{background:var(--ok)}
+    ul{margin:8px 0 0 20px;color:var(--muted)}
+    footer{margin:28px 0 10px;color:var(--muted);font-size:14px}
+    nav a{margin-right:14px}
   </style>
+  <!-- (Optional) Google Ads global tag – ersetze IDs, siehe Anleitung oben -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=AW-XXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','AW-XXXXXXXXX');</script> -->
 
-  <!-- JS -->
-  <script defer src="js/sw-register.js?v=20251122"></script>
+  <!-- SW-Registration (falls genutzt) -->
+  <script defer src="js/sw-register.js?v=20251124-qs"></script>
 </head>
 <body>
-  <div class="page">
-    <header style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start" class="no-print">
-      <div>
-        <h1>Quickstart · SafeShare</h1>
-        <p class="mut">Eine Seite – installiert, verstanden, genutzt.</p>
-      </div>
-      <nav style="display:flex;gap:8px;flex-wrap:wrap">
-        <a class="btn" href="./">Startseite</a>
-        <a class="btn" href="app.html">App</a>
-        <a class="btn" href="help.html">Hilfe</a>
-      </nav>
-    </header>
+  <div class="wrap">
+    <nav>
+      <a href="index.html">Startseite</a>
+      <a href="app.html">App</a>
+      <a href="pro.html">Pro</a>
+      <a href="help.html">Hilfe</a>
+      <a href="status.html">Status</a>
+    </nav>
 
-    <main class="grid">
+    <div class="h1">Quickstart</div>
+
+    <div class="grid">
       <section class="card">
-        <h2 style="margin:.2rem 0">So startest du in 60&nbsp;Sekunden</h2>
-        <ol>
-          <li>Öffne die App: <a href="app.html"><strong>app.html</strong></a>.</li>
-          <li>Füge einen Link ein und klicke auf <em>„Säubern“</em>.</li>
-          <li>Ergebnis <em>kopieren</em>, <em>teilen</em> oder <em>öffnen</em>.</li>
-        </ol>
-        <h3 style="margin:.4rem 0">Optional</h3>
-        <ul>
-          <li>Bookmarklets: <a href="bookmarklets.html">bookmarklets.html</a> → Button in Lesezeichenleiste ziehen (Desktop) oder Code in Lesezeichen einsetzen (Mobil).</li>
-          <li>Team-Whitelist: <a href="team-setup.html">team-setup.html</a> → legitime Parameter (z.&nbsp;B. <code>tag</code>, <code>ref</code>) hinterlegen.</li>
-          <li>Bulk-Clean für Listen/CSV: <a href="bulk-clean.html">bulk-clean.html</a>.</li>
-          <li>Installierbar als PWA. iOS: Teilen → „Zum Home-Bildschirm“. Android/Chrome: „Installieren“.</li>
-        </ul>
-        <p class="mut">Drucken: <strong>Strg+P</strong> / <strong>⌘P</strong>. Diese Seite ist für eine DIN-A4-Seite optimiert.</p>
+        <h2>1) App öffnen</h2>
+        <p>Links säubern & Redirects entpacken – lokal im Browser.</p>
+        <p><a class="btn" href="app.html">Zur App</a></p>
+        <ul><li>Tipp: „Prüfen“ zeigt nur Befunde, „Säubern & öffnen“ ruft die Ziel-URL auf.</li></ul>
       </section>
 
-      <aside class="card">
-        <h2 style="margin:.2rem 0">QR zur App</h2>
-        <div class="qr">
-          <img src="assets/qr/app-qr.svg" alt="QR-Code zur SafeShare App" width="280" height="280" loading="lazy">
-        </div>
-        <p style="margin-top:10px"><a class="btn" href="assets/qr/app-qr.svg" download>QR speichern</a></p>
-        <p class="mut">Ziel: <code>https://j-ai-71.github.io/Supersystem/app.html</code></p>
-      </aside>
-    </main>
+      <section class="card">
+        <h2>2) Bookmarklet hinzufügen</h2>
+        <p>1-Klick-Säubern direkt aus jeder Seite.</p>
+        <p><a class="btn" href="bookmarklets.html">Bookmarklet holen</a></p>
+        <ul><li>Auf iOS: Lesezeichen anlegen → URL bearbeiten → Code einfügen.</li></ul>
+      </section>
 
-    <section class="card" style="margin-top:16px">
-      <h2 style="margin:.2rem 0">Was SafeShare entfernt</h2>
-      <p class="mut">Tracking-Parameter wie <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code> und ähnliche. Übliche Redirect-Wrapper (z. B. <code>google.com/url</code>, <code>l.facebook.com/l.php</code>) werden entpackt. Alles lokal im Browser – keine App-Server-Logs.</p>
-    </section>
+      <section class="card">
+        <h2>3) Team-Whitelist</h2>
+        <p>Legitime Parameter (z.&nbsp;B. <code>tag</code>, <code>ref</code>) erhalten.</p>
+        <p><a class="btn" href="team-setup.html">Whitelist setzen</a></p>
+      </section>
+
+      <section class="card">
+        <h2>4) Bulk-Clean</h2>
+        <p>Viele URLs in einem Rutsch säubern; optionaler CSV-Export.</p>
+        <p><a class="btn" href="bulk-clean.html">Bulk-Clean öffnen</a></p>
+      </section>
+
+      <section class="card">
+        <h2>5) Redirect-Tool</h2>
+        <p>Verschachtelte Weiterleitungen als Klarziele.</p>
+        <p><a class="btn" href="redirect-entschachteln.html">Redirects entpacken</a></p>
+      </section>
+
+      <section class="card">
+        <h2>6) Pro freischalten (optional)</h2>
+        <p>Lokale Aktivierung – kein Login, keine Server-Logs.</p>
+        <p><a class="btn ok" href="pro.html">Zu SafeShare&nbsp;Pro</a></p>
+      </section>
+    </div>
+
+    <footer>
+      © SafeShare · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="terms.html">Terms</a> · <a href="kurz-terms.html">Kurz-Terms</a>
+    </footer>
   </div>
-
-  <noscript>
-    <div class="page"><div class="card">Hinweis: Für vollständige Funktion bitte JavaScript aktivieren.</div></div>
-  </noscript>
 </body>
 </html>
