@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Tracking-Parameter entfernen: UTM, gclid & fbclid säubern</title>
-  <meta name="description" content="Was Tracking-Parameter sind, warum sie ein Problem sein können und wie du sie mit SafeShare und Browser-Tools aus deinen Links entfernst.">
+  <title>Tracking-Parameter in Links entfernen | SafeShare</title>
+  <meta name="description" content="Tracking-Parameter wie utm_*, gclid, fbclid & Co. verstehen und entfernen: warum sie deine Links aufblähen und wie du sie mit SafeShare bereinigst.">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html">
@@ -15,49 +15,54 @@
 
   <!-- Search Console / Bing -->
   <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+  <meta name="msvalidate.01" content="DEIN_BING_CODE_HIER">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Tracking-Parameter entfernen: UTM, gclid & fbclid säubern">
-  <meta property="og:description" content="Erfahre, wie du Tracking-Parameter wie UTM, gclid, fbclid und andere Anhängsel aus deinen Links entfernst und wann das sinnvoll ist.">
+  <meta property="og:title" content="Tracking-Parameter in Links entfernen">
+  <meta property="og:description" content="Lerne, welche Tracking-Parameter typischerweise in Links stecken und wie du sie vor dem Teilen mit SafeShare entfernen kannst.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html">
   <meta property="og:site_name" content="SafeShare">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tracking-Parameter entfernen: UTM, gclid & fbclid säubern">
-  <meta name="twitter:description" content="Was Tracking-Parameter sind, warum sie ein Problem sein können und wie du sie mit SafeShare und Browser-Tools aus deinen Links entfernst.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <meta name="twitter:title" content="Tracking-Parameter in Links entfernen">
+  <meta name="twitter:description" content="Tracking-Parameter erkennen, einordnen und mit SafeShare bereinigen – für klarere, datensparsamere Links.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
 
-  <!-- Structured Data: SoftwareApplication (Artikel-Kontext) -->
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SafeShare",
-    "operatingSystem": "Web",
-    "applicationCategory": "SecurityApplication",
-    "description": "SafeShare bereinigt URLs, entfernt Tracking-Parameter wie UTM, gclid, fbclid und entpackt Weiterleitungen – lokal im Browser, ohne Login.",
-    "url": "https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html",
-    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
+    "@type": "Article",
+    "headline": "Tracking-Parameter in Links entfernen",
+    "description": "Tracking-Parameter wie utm_*, gclid, fbclid & Co. verstehen und entfernen, um Links klarer und datensparsamer zu machen.",
     "author": {
       "@type": "Person",
       "name": "Jana Jergus"
     },
-    "offers": {
-      "@type": "Offer",
-      "price": "0.00",
-      "priceCurrency": "EUR",
-      "category": "Free",
-      "url": "https://j-ai-71.github.io/Supersystem/app.html"
-    }
+    "publisher": {
+      "@type": "Organization",
+      "name": "SafeShare",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://j-ai-71.github.io/Supersystem/logo.svg"
+      }
+    },
+    "mainEntityOfPage": "https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html"
   }
   </script>
 
   <style>
-    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    :root{
+      --bg:#050810;
+      --card:#0d111c;
+      --text:#f5f7ff;
+      --muted:#9aa4c6;
+      --border:#1b2335;
+      --accent:#3dd5b0;
+    }
     *{box-sizing:border-box;}
     body{
       margin:0;
@@ -66,7 +71,8 @@
       color:var(--text);
       -webkit-font-smoothing:antialiased;
     }
-    a{color:#8be5ca;text-decoration:none;}a:hover{text-decoration:underline;}
+    a{color:#8be5ca;text-decoration:none;}
+    a:hover{text-decoration:underline;}
     header{
       position:sticky;top:0;z-index:20;
       backdrop-filter:blur(16px);
@@ -93,8 +99,8 @@
 
     main{padding:26px 0 40px;}
     h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
-    h2{font-size:20px;margin:26px 0 10px;}
-    h3{font-size:16px;margin:20px 0 8px;}
+    h2{font-size:20px;margin:24px 0 10px;}
+    h3{font-size:16px;margin:18px 0 6px;}
     p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
     ul,ol{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 12px;}
 
@@ -136,8 +142,7 @@
       border-left:2px solid rgba(61,213,176,.7);
       padding-left:10px;margin:8px 0 12px;
     }
-    .toc{font-size:13px;}
-    .toc a{display:block;margin-bottom:4px;}
+    .faq-q{font-weight:600;font-size:14px;color:var(--text);margin:12px 0 4px;}
 
     footer{
       border-top:1px solid rgba(36,46,78,.7);
@@ -164,8 +169,9 @@
         <a href="index.html">Startseite</a>
         <a href="app.html">App</a>
         <a href="utm-parameter-entfernen.html">UTM-Guide</a>
-        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Vergleich</a>
         <a href="help.html">Hilfe</a>
+        <a href="pro.html">Pro</a>
       </nav>
     </div>
   </div>
@@ -175,368 +181,200 @@
   <div class="shell">
 
     <article class="card">
-      <div class="badge"><span class="badge-dot"></span> Guide</div>
-      <h1>Tracking-Parameter entfernen: saubere Links mit weniger Datenmüll</h1>
+      <div class="badge"><span class="badge-dot"></span> Grundlagen</div>
+      <h1>Tracking-Parameter in Links verstehen &amp; entfernen</h1>
       <p>
-        Fast jeder Link im Netz trägt heute unsichtbaren Ballast mit sich herum:
-        Tracking-Parameter wie <code>utm_source</code>, <code>gclid</code>,
-        <code>fbclid</code> und viele andere. Sie helfen Marketing-Teams beim
-        Auswerten von Kampagnen – machen URLs aber länger, unübersichtlicher und
-        verraten oft mehr über dich, als dir lieb ist.
+        Viele Links enthalten heute nicht nur die eigentliche Zieladresse, sondern
+        eine ganze Reihe zusätzlicher Parameter: UTM-Tags, Klick-IDs, Kampagnen-Infos.
+        Sie helfen beim Messen – und fühlen sich für viele Menschen trotzdem wie ein
+        „Daten-Rucksack“ an.
       </p>
       <p>
-        In diesem Guide erfährst du, was Tracking-Parameter sind, warum sie ein
-        Problem sein können und wie du sie loswirst – manuell, mit Browser-Funktionen
-        und mit Tools wie SafeShare.
+        In diesem Guide geht es darum, welche Tracking-Parameter typischerweise in
+        Links stecken, wie du sie erkennst und wie du sie mit SafeShare entfernen
+        kannst, bevor du Links weitergibst.
       </p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="app.html">Tracking-Parameter jetzt entfernen</a>
+        <a class="btn btn-ghost" href="utm-parameter-entfernen.html">UTM-Parameter im Detail</a>
+      </div>
+      <p class="hint">
+        Fokus dieses Guides: Verständlichkeit und Praxis. Es geht nicht darum, jede
+        mögliche Tracking-Technik im Detail zu sezieren, sondern dir einfache
+        Handlungsoptionen zu geben.
+      </p>
+    </article>
 
+    <article class="card">
+      <h2>Welche Tracking-Parameter gibt es typischerweise?</h2>
+      <p>
+        Neben UTM-Parametern (<code>utm_source</code>, <code>utm_medium</code> usw.)
+        tauchen in Links häufig weitere Parameter auf, z. B.:
+      </p>
+      <ul>
+        <li><code>gclid</code> – Klick-ID im Zusammenhang mit bestimmten Anzeigen-Systemen</li>
+        <li><code>fbclid</code> – Klick-ID bei Links aus einem sozialen Netzwerk</li>
+        <li><code>dclid</code>, <code>yclid</code>, <code>twclid</code> – weitere Klick-IDs verschiedener Plattformen</li>
+        <li><code>mc_cid</code>, <code>mc_eid</code> – Parameter aus bestimmten Newsletter-Systemen</li>
+        <li>Parameter mit Präfixen wie <code>pk_</code> oder <code>piwik_</code> – für bestimmte Analytics-Systeme</li>
+      </ul>
+      <p>
+        Für die betreibende Seite sind diese Werte oft interessant. Für Menschen,
+        die Links anklicken oder weiterleiten, sind sie in vielen Situationen
+        eher Ballast.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>Wo begegnen dir Tracking-Parameter im Alltag?</h2>
+      <ul>
+        <li><strong>Newsletter &amp; Automatisierungen:</strong> Jeder Link wird beim Versand automatisch „veredelt“.</li>
+        <li><strong>Werbeanzeigen:</strong> Kampagnen-Manager fügen zusätzliche Parameter für Auswertungen hinzu.</li>
+        <li><strong>Social-Feeds:</strong> Links, die du aus Feeds kopierst, enthalten oft Klick-IDs.</li>
+        <li><strong>Weiterempfehlungen:</strong> Du kopierst einen Link inkl. Tracking-Parametern – und leitest sie mit.</li>
+      </ul>
+      <p>
+        Je mehr Systeme beteiligt sind, desto länger und unübersichtlicher werden
+        die Links – und desto weniger klar ist, welche Teile wirklich nötig sind.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>Risiken &amp; Nebenwirkungen von Tracking-Parametern</h2>
+      <p>
+        Tracking-Parameter allein sind noch kein „gläserner Mensch“. In Kombination
+        mit anderen Faktoren können sie aber viel Kontext transportieren:
+      </p>
+      <ul>
+        <li>Welche Kampagne, welches Medium, welches Gerät du genutzt hast.</li>
+        <li>Über welchen Newsletter oder welches Profil du gekommen bist.</li>
+        <li>Wie oft bestimmte Links in bestimmten Kontexten geklickt werden.</li>
+      </ul>
+      <p>
+        Wenn du Links weiterleitest (z. B. an Freund:innen, Kund:innen, Teams),
+        nimmst du diesen Kontext oft unbewusst mit – obwohl er für das Gegenüber
+        nicht nötig ist.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>Tracking-Parameter erkennen</h2>
+      <p>Ein paar einfache Muster helfen dir, Tracking-Parameter zu identifizieren:</p>
+      <ul>
+        <li>alles, was mit <code>utm_</code> beginnt,</li>
+        <li>Klick-IDs wie <code>gclid</code>, <code>fbclid</code>, <code>twclid</code>,</li>
+        <li>Newsletter-Parameter wie <code>mc_cid</code>, <code>mc_eid</code>,</li>
+        <li>auffällige, sehr lange Werte mit vielen zufälligen Zeichenfolgen.</li>
+      </ul>
+      <p>
+        Sie stehen hinter dem Fragezeichen einer URL oder nach weiteren
+        Parametern mit <code>&amp;</code> voneinander getrennt.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>Tracking-Parameter entfernen – manuell vs. mit Tools</h2>
+      <h3>Manuell</h3>
+      <p>
+        Du kannst Tracking-Parameter manuell aus einem Link entfernen, indem du
+        sie im Textfeld suchst und löschst. Das ist für einen oder zwei Links
+        machbar, wird bei längeren Links oder vielen Links aber schnell mühsam.
+      </p>
+      <h3>Mit Tools (z. B. SafeShare)</h3>
+      <p>
+        Tools wie SafeShare sind dafür gebaut, typische Tracking-Parameter zu
+        erkennen und zu entfernen – ohne dass du jede Abkürzung kennen musst.
+      </p>
+      <ol>
+        <li>Link in die <a href="app.html">SafeShare App</a> einfügen.</li>
+        <li>Bereinigung ausführen.</li>
+        <li>Bereinigten Link direkt nutzen oder weitergeben.</li>
+      </ol>
+      <p>
+        SafeShare versucht zusätzlich, bestimmte Weiterleitungen zu entpacken,
+        sodass du die eigentliche Ziel-URL besser siehst.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>Mit SafeShare Tracking-Parameter entfernen</h2>
+      <p>Ein einfacher Workflow mit SafeShare könnte so aussehen:</p>
+      <ol>
+        <li>Du kopierst einen Link aus einem Newsletter, einer Anzeige oder einem Social-Feed.</li>
+        <li>Du öffnest die <a href="app.html">SafeShare App</a> und fügst den Link ein.</li>
+        <li>SafeShare entfernt typische Tracking-Parameter und entpackt – soweit möglich – Weiterleitungen.</li>
+        <li>Du nutzt den bereinigten Link in deiner eigenen Kommunikation (z. B. an Freund:innen, Kund:innen, in Dokumenten).</li>
+      </ol>
+      <p>
+        Wenn du täglich mit vielen Links arbeitest, hilft dir <a href="pro.html">SafeShare Pro</a>
+        dabei, Routinen und eigene Regeln zu etablieren, statt jeden Link einzeln zu
+        behandeln.
+      </p>
       <div class="btn-row">
         <a class="btn btn-primary" href="app.html">SafeShare App öffnen</a>
+        <a class="btn btn-ghost" href="pro.html">SafeShare Pro ansehen</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>Praktische Tipps für datensparsamere Links</h2>
+      <ul>
+        <li>Links vor dem Weiterleiten kurz prüfen – besonders, wenn sie aus Newslettern/Ads stammen.</li>
+        <li>Für eigene Kampagnen: nur so viele Parameter nutzen, wie du wirklich auswertest.</li>
+        <li>Interne Dokumente und PDFs nachträglich aufräumen, wenn sie langfristig genutzt werden.</li>
+        <li>In Teams klare Absprachen treffen, wie mit Tracking-Parametern umgegangen wird.</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>FAQ zu Tracking-Parametern</h2>
+
+      <p class="faq-q">Sind alle Parameter nach dem Fragezeichen Tracking?</p>
+      <p>
+        Nein. Manche Parameter werden technisch benötigt (z. B. Filter, Sortierungen,
+        Seitennummern). Andere dienen vor allem der Analyse. SafeShare konzentriert sich
+        auf typische Tracking-Parameter und lässt neutrale Parameter möglichst in Ruhe.
+      </p>
+
+      <p class="faq-q">Kann ich etwas kaputtmachen, wenn ich Tracking-Parameter entferne?</p>
+      <p>
+        In den meisten Fällen bleibt die Zielseite vollständig nutzbar, auch wenn
+        Tracking-Parameter entfernt werden. Es kann Ausnahmen geben, z. B. wenn
+        bestimmte Systeme ungewöhnlich implementiert sind. Im Zweifel: bereinigten
+        Link testen, bevor du ihn breit teilst.
+      </p>
+
+      <p class="faq-q">Hilft SafeShare auch gegen andere Formen von Tracking?</p>
+      <p>
+        SafeShare kümmert sich ausschließlich um den Bereich „Links aufräumen“. Es ersetzt
+        keine umfassenden Datenschutz-Einstellungen in Browsern, Systemen oder Tools – es
+        ist ein Baustein, kein Allheilmittel.
+      </p>
+
+      <p class="faq-q">Brauche ich technisches Wissen, um SafeShare zu nutzen?</p>
+      <p>
+        Nein. Du musst nicht wissen, wofür jeder Parameter genau steht. Die App ist
+        darauf ausgelegt, die typischen Tracking-Parameter zu erkennen und zu entfernen,
+        ohne dich mit Fachbegriffen zu überfordern.
+      </p>
+    </article>
+
+    <!-- CTA-Block unten -->
+    <article class="card">
+      <h2>Nächster Schritt: weniger Tracking in deinen Links</h2>
+      <p>
+        Wenn du Tracking-Parameter bewusster handhaben möchtest, kannst du direkt
+        starten:
+      </p>
+      <ul>
+        <li>nutze die <a href="app.html">SafeShare App</a> für einzelne Links,</li>
+        <li>überlege, in welchen Bereichen du auf aggressive Kampagnen-Parameter verzichten kannst,</li>
+        <li>falls du regelmäßig mit Links arbeitest: sieh dir <a href="pro.html">SafeShare Pro</a> an.</li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="app.html">Tracking-Parameter jetzt entfernen</a>
         <a class="btn btn-ghost" href="utm-parameter-entfernen.html">UTM-Guide lesen</a>
       </div>
-
-      <div class="hint">
-        Kurzfassung: Du kannst Tracking-Parameter in vielen Fällen einfach entfernen,
-        ohne dass sich die Zielseite ändert. Wenn du unsicher bist, teste den Link
-        einmal im privaten Fenster, bevor du ihn teilst.
-      </div>
-
-      <div class="toc">
-        <strong>Inhalt:</strong>
-        <a href="#was-sind-tracking-parameter">1. Was sind Tracking-Parameter?</a>
-        <a href="#warum-entfernen">2. Warum solltest du sie entfernen?</a>
-        <a href="#manuell-entfernen">3. Tracking-Parameter manuell entfernen</a>
-        <a href="#welche-parameter-loeschen">3a. Welche Parameter kannst du meist löschen?</a>
-        <a href="#technische-vs-marketing-parameter">3b. Technische vs. Marketing-Parameter</a>
-        <a href="#checkliste-link-teilen">3c. Checkliste zum Teilen</a>
-        <a href="#browser-tools">4. Browser-Funktionen &amp; Add-ons</a>
-        <a href="#safeshare">5. Tracking-Parameter automatisch mit SafeShare entfernen</a>
-        <a href="#teams">6. Für Teams, Publisher &amp; Pro-Nutzung</a>
-        <a href="#faqs">7. Häufige Fragen</a>
-      </div>
-    </article>
-
-    <article class="card" id="was-sind-tracking-parameter">
-      <h2>1. Was sind Tracking-Parameter?</h2>
-      <p>
-        Tracking-Parameter sind zusätzliche Teile einer URL, die nach einem
-        Fragezeichen <code>?</code> oder einem Kaufmanns-&amp; <code>&amp;</code>
-        angehängt werden. Sie bestehen aus einem Namen und einem Wert, zum Beispiel:
-      </p>
-      <p>
-        <code>https://example.com/artikel?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=herbstsale</code>
-      </p>
-      <p>
-        Häufige Beispiele:
-      </p>
-      <ul>
-        <li><strong>UTM-Parameter</strong> wie <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code></li>
-        <li><strong>Werbe-IDs</strong> wie <code>gclid</code> (Google Ads) oder <code>fbclid</code> (Meta/Facebook)</li>
-        <li><strong>Sitzungs- und Tracking-IDs</strong>, die Nutzer über mehrere Seiten hinweg wiedererkennen</li>
-      </ul>
-      <p>
-        Technisch sind das normale URL-Parameter. Der Unterschied ist die Absicht:
-        sie werden explizit dafür genutzt, Verhalten und Kampagnenperformance nachzuvollziehen.
-      </p>
-    </article>
-
-    <article class="card" id="warum-entfernen">
-      <h2>2. Warum solltest du Tracking-Parameter entfernen?</h2>
-      <h3>2.1 Kürzere, lesbare Links</h3>
-      <p>
-        Lange URLs mit vielen Parametern sehen unübersichtlich aus und machen es
-        schwerer zu erkennen, wohin ein Link führt. Eine bereinigte URL ist
-        leichter zu verstehen, zu merken und weiterzugeben.
-      </p>
-
-      <h3>2.2 Weniger Daten-Spuren</h3>
-      <p>
-        Tracking-Parameter verraten häufig:
-      </p>
-      <ul>
-        <li>von welcher Plattform du kommst,</li>
-        <li>welche Kampagne oder Anzeige du gesehen hast,</li>
-        <li>welches Mailing oder welcher Link im Newsletter dich bewegt hat.</li>
-      </ul>
-      <p>
-        Wenn du solche Links weiterleitest oder öffentlich teilst, übernimmst du
-        diese Markierungen – inklusive der Infos über deinen Weg dorthin.
-      </p>
-
-      <h3>2.3 Saubere Analytics-Daten</h3>
-      <p>
-        Für Website-Betreiber können zu viele unterschiedliche Parameter zu
-        „zersplitterten“ Auswertungen führen. In manchen Setups ist es sinnvoll,
-        bestimmte Parameter zu entfernen oder zu filtern, um die Daten lesbarer
-        zu halten. SafeShare richtet sich vor allem an die Menschen, die Links
-        teilen, nicht an die Tracking-Tools – aber beides hängt zusammen.
-      </p>
-    </article>
-
-    <article class="card" id="manuell-entfernen">
-      <h2>3. Tracking-Parameter manuell entfernen</h2>
-      <p>
-        Du kannst viele Tracking-Parameter einfach von Hand entfernen.
-      </p>
-      <ol>
-        <li>URL in die Adresszeile oder ein Textfeld kopieren.</li>
-        <li>Alles ab dem Fragezeichen <code>?</code> löschen – oder nur bestimmte Parameter.</li>
-        <li>Die bereinigte URL testen (neues Tab, privates Fenster).</li>
-      </ol>
-      <p>
-        Wenn die Seite normal lädt und der Inhalt identisch aussieht, kannst du
-        die bereinigte Version weitergeben.
-      </p>
-      <p>
-        Für einzelne Links funktioniert das gut. Sobald du regelmäßig viele Links
-        bereinigen musst, wird es jedoch schnell mühsam. Genau hier setzen
-        Link-Cleaner und Tools wie SafeShare an.
-      </p>
-    </article>
-
-    <article class="card" id="welche-parameter-loeschen">
-      <h2>3a. Welche Tracking-Parameter kannst du meist gefahrlos löschen?</h2>
-      <p>
-        Viele Tracking-Parameter dienen ausschließlich der Auswertung und sind für das
-        Anzeigen der Seite selbst nicht nötig. In der Praxis kannst du häufig
-        mindestens folgende Parameter entfernen, ohne dass sich der Inhalt der Seite
-        ändert:
-      </p>
-      <ul>
-        <li><strong>UTM-Parameter</strong>: <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_term</code>, <code>utm_content</code></li>
-        <li><strong>Werbe-IDs</strong>: <code>gclid</code> (Google Ads), <code>fbclid</code> (Meta/Facebook) und ähnliche Klick-IDs</li>
-        <li><strong>Newsletter-/Mailing-IDs</strong>: z. B. <code>mc_eid</code>, <code>mc_cid</code> und vergleichbare Parameter einzelner Anbieter</li>
-      </ul>
-      <p>
-        Eine einfache Faustregel:
-      </p>
-      <ul>
-        <li>Alles, was deine Herkunft beschreibt (Newsletter, Kampagne, Plattform) → meist reines Tracking.</li>
-        <li>Alles, was nach „Klick-ID“, „Session-ID“ oder „Campaign-ID“ aussieht → oft ebenfalls Tracking.</li>
-      </ul>
-      <p>
-        Wenn du unsicher bist, kannst du den Link einmal mit und einmal ohne Parameter in
-        einem privaten Fenster öffnen und vergleichen. Bleibt der Inhalt gleich, spricht
-        vieles dafür, dass es sich nur um Tracking handelt.
-      </p>
-    </article>
-
-    <article class="card" id="technische-vs-marketing-parameter">
-      <h2>3b. Technische Parameter vs. Marketing-Tracking: der Unterschied</h2>
-      <p>
-        Nicht jeder Parameter ist automatisch „böse“. Manche sind technisch notwendig,
-        andere dienen rein der Analyse. Grob kannst du unterscheiden zwischen:
-      </p>
-
-      <h3>Technische Parameter</h3>
-      <p>
-        Diese Parameter steuern, wie eine Seite sich verhält, z. B.:
-      </p>
-      <ul>
-        <li><code>page=2</code> (Paginierung, z. B. Seite 2 einer Liste)</li>
-        <li><code>q=</code> oder <code>search=</code> (Suchbegriffe)</li>
-        <li><code>lang=de</code> oder <code>locale=en</code> (Sprachauswahl)</li>
-        <li>Filter-Parameter wie <code>category=</code>, <code>sort=</code> oder <code>view=</code></li>
-      </ul>
-      <p>
-        Entfernst du diese, kann sich der Inhalt der Seite sichtbar ändern (andere
-        Sprache, andere Filter, andere Seite).
-      </p>
-
-      <h3>Marketing- und Tracking-Parameter</h3>
-      <p>
-        Diese Parameter beschreiben eher dich oder deinen Weg zur Seite:
-      </p>
-      <ul>
-        <li>von welcher Kampagne oder Anzeige du kommst (<code>utm_campaign</code>),</li>
-        <li>welcher Kanal oder welches Medium genutzt wurde (<code>utm_source</code>, <code>utm_medium</code>),</li>
-        <li>welche Klick-ID deinem Besuch zugeordnet wird (<code>gclid</code>, <code>fbclid</code>).</li>
-      </ul>
-      <p>
-        Entfernst du sie, ist der Inhalt meist identisch – aber die Messbarkeit in
-        Analytics wird eingeschränkt. SafeShare konzentriert sich genau auf diesen
-        Teil: Marketing-/Tracking-Anhängsel entfernen, nicht essenzielle Technik.
-      </p>
-    </article>
-
-    <article class="card" id="checkliste-link-teilen">
-      <h2>3c. Checkliste: Ist dieser Link bereit zum Teilen?</h2>
-      <p>
-        Bevor du einen Link in einem Chat, Social Media oder per Mail teilst, kannst du
-        dir kurz diese Fragen stellen:
-      </p>
-      <ul>
-        <li><strong>Ist die Domain klar erkennbar?</strong><br>
-          Siehst du auf einen Blick, wohin der Link führt? Misstrauische oder
-          kryptische Weiterleitungs-Domains kannst du mit SafeShare erst entpacken.
-        </li>
-        <li><strong>Sind offensichtliche Tracking-Parameter entfernt?</strong><br>
-          UTM-Parameter, <code>gclid</code>, <code>fbclid</code> &amp; Co. kannst du
-          in den meisten Fällen bedenkenlos streichen.
-        </li>
-        <li><strong>Funktioniert der Link im privaten Fenster?</strong><br>
-          Ein kurzer Test zeigt dir, ob die bereinigte Version wirklich dasselbe
-          Ziel hat wie der Original-Link.
-        </li>
-        <li><strong>Willst du deinen Weg dorthin mit-teilen?</strong><br>
-          Wenn ein Link verrät, aus welchem Newsletter oder aus welcher Kampagne du
-          kommst, ist das nicht immer notwendig – und manchmal sogar unerwünscht.
-        </li>
-      </ul>
-      <p>
-        SafeShare hilft dir dabei, diese Checkliste in ein paar Sekunden abzuarbeiten:
-        Link einkopieren, bereinigen, testen – fertig.
-      </p>
-    </article>
-
-    <article class="card" id="browser-tools">
-      <h2>4. Browser-Funktionen &amp; Add-ons</h2>
-      <p>
-        Einige moderne Browser und Erweiterungen bieten bereits Funktionen, um
-        bestimmte Tracking-Parameter automatisch zu entfernen. Teilweise kannst
-        du auch beim Kopieren einer URL eine „saubere“ Version wählen.
-      </p>
-      <p>
-        Typische Varianten:
-      </p>
-      <ul>
-        <li>eingebaute Datenschutz-/Tracking-Schutz-Funktionen,</li>
-        <li>Option „saubere URL kopieren“ oder ähnliche Menüpunkte,</li>
-        <li>Browser-Add-ons, die Parameter beim Aufruf entfernen.</li>
-      </ul>
-      <p>
-        Diese Lösungen sind praktisch, aber oft:
-      </p>
-      <ul>
-        <li>an einen bestimmten Browser gebunden,</li>
-        <li>schwerer erklärbar für weniger technische Nutzer,</li>
-        <li>schlecht geeignet, wenn du Listen von Links bereinigen willst.</li>
-      </ul>
-    </article>
-
-    <article class="card" id="safeshare">
-      <h2>5. Tracking-Parameter automatisch mit SafeShare entfernen</h2>
-      <p>
-        SafeShare ist eine kleine Web-App, die genau für diesen Zweck gebaut ist:
-        Links säubern, Tracking-Parameter entfernen und typische Redirects
-        entpacken – lokal im Browser, ohne Konto.
-      </p>
-
-      <h3>5.1 Einzelne Links reinigen</h3>
-      <ol>
-        <li>Öffne die <a href="app.html">SafeShare App</a>.</li>
-        <li>Füge deinen Link in das Eingabefeld ein.</li>
-        <li>Wähle, ob Redirects entpackt werden sollen.</li>
-        <li>Klicke auf „Bereinigen“ und kopiere die saubere URL.</li>
-      </ol>
-
-      <h3>5.2 Viele Links auf einmal (Bulk-Clean)</h3>
-      <p>
-        Wenn du mit Listen aus Excel, Google Sheets oder anderen Tools arbeitest:
-      </p>
-      <ol>
-        <li>Öffne <a href="bulk-clean.html">Bulk-Clean</a>.</li>
-        <li>Füge eine URL pro Zeile ein.</li>
-        <li>Aktiviere „Tracking entfernen“ und optional „Redirects entpacken“.</li>
-        <li>Kopiere die bereinigte Liste zurück in dein Dokument.</li>
-      </ol>
-
-      <h3>5.3 Vorteile im Alltag</h3>
-      <ul>
-        <li>kein Login, keine Kontenverwaltung,</li>
-        <li>funktioniert in jedem modernen Browser,</li>
-        <li>leicht im Team erklärbar („alle Links einmal durch SafeShare schicken“),</li>
-        <li>Pro-Funktionen für Whitelists, falls ihr eigene IDs behalten wollt.</li>
-      </ul>
-
-      <div class="btn-row">
-        <a class="btn btn-primary" href="app.html">Jetzt Link bereinigen</a>
-        <a class="btn btn-ghost" href="pro.html">Mehr zu SafeShare Pro</a>
-      </div>
-    </article>
-
-    <article class="card" id="teams">
-      <h2>6. Für Teams, Publisher &amp; Pro-Nutzung</h2>
-      <p>
-        Für Publisher, Agenturen und Unternehmen ist die Frage oft nicht nur:
-        „Wie werde ich Tracking los?“, sondern:
-      </p>
-      <ul>
-        <li>Welche Parameter sollen <em>bewusst</em> entfernt werden?</li>
-        <li>Welche Parameter wollen wir auswerten – und dürfen es datenschutzrechtlich?</li>
-        <li>Wie erklären wir Kolleg:innen, welche Links sie intern oder extern teilen sollen?</li>
-      </ul>
-      <p>
-        SafeShare Pro unterstützt euch dabei, indem ihr eine Whitelist definieren
-        könnt: bestimmte Parameter bleiben erlaubt (z. B. eigene Kampagnen-IDs),
-        während „fremde“ Tracking-Parameter entfernt werden.
-      </p>
-      <p>
-        Mehr dazu findest du auf:
-        <a href="publisher.html">SafeShare für Publisher &amp; Affiliates</a>.
-      </p>
-    </article>
-
-    <article class="card" id="faqs">
-      <h2>7. Häufige Fragen</h2>
-
-      <h3>Verliere ich Analytics-Daten, wenn ich Tracking-Parameter entferne?</h3>
-      <p>
-        Wenn du Links säuberst, bevor du sie teilst, sind bestimmte Messungen
-        (z. B. „Welche Kampagne hat geklickt?“) weniger genau oder nicht mehr
-        möglich. Das ist bewusst so: du entscheidest, ob du lieber maximale
-        Messbarkeit oder mehr Privatsphäre und Übersicht möchtest.
-      </p>
-
-      <h3>Ist jede URL mit Parametern „böse“?</h3>
-      <p>
-        Nein. Parameter können auch technisch nötig sein (Filter, Suchbegriffe,
-        Paging usw.). Es geht darum, bewusster mit Tracking-Parametern umzugehen
-        und unnötige Datenanhängsel zu entfernen.
-      </p>
-
-      <h3>Kann ich SafeShare kostenlos nutzen?</h3>
-      <p>
-        Die Kernfunktionen von SafeShare sind als Web-App kostenlos zugänglich.
-        Pro-Versionen mit zusätzlichen Möglichkeiten (z. B. Whitelists) kannst du
-        über Payhip erwerben. Details dazu findest du auf der Seite
-        <a href="pro.html">SafeShare Pro</a>.
-      </p>
-
-      <h3>Woran erkenne ich, ob ein Parameter wirklich nur Tracking ist?</h3>
-      <p>
-        Ein starkes Indiz ist der Name: Parameter wie <code>utm_source</code>,
-        <code>utm_campaign</code>, <code>gclid</code>, <code>fbclid</code> oder
-        <code>mc_eid</code> sind typische Tracking-Kandidaten. Oft kannst du den
-        Link testweise ohne diese Parameter im privaten Fenster öffnen. Bleibt der
-        Inhalt der gleiche, handelt es sich sehr wahrscheinlich um reines Tracking.
-      </p>
-
-      <h3>Ändert sich der Inhalt der Seite, wenn ich Tracking-Parameter entferne?</h3>
-      <p>
-        In vielen Fällen nicht – der Inhalt bleibt identisch, nur die Kampagnen-
-        Zuordnung im Hintergrund entfällt. Es gibt aber Ausnahmen, z. B. wenn eine
-        Seite über Parameter spezielle Landingpages, Personalisierung oder Filter
-        steuert. Daher ist ein kurzer Test mit und ohne Parameter immer sinnvoll.
-      </p>
-
-      <h3>Kann ich SafeShare auch nutzen, wenn ich selbst Kampagnen-Tracking brauche?</h3>
-      <p>
-        Ja. Wenn du eigene Kampagnen-Parameter nutzen möchtest, kannst du mit
-        SafeShare Pro über eine Whitelist festlegen, welche Parameter erhalten
-        bleiben sollen. So werden fremde Tracking-Anhängsel entfernt, während deine
-        eigenen IDs bestehen bleiben.
-      </p>
-
-      <h3>Gibt es Risiken, wenn ich bereinigte Links öffentlich teile?</h3>
-      <p>
-        Technisch sind bereinigte Links in vielen Fällen sogar klarer und
-        transparenter, weil sie nicht mehr deinen genauen Weg zur Seite verraten.
-        Ob und in welchem Umfang du Links teilst, hängt aber immer auch von den
-        Nutzungsbedingungen und Datenschutzregeln der jeweiligen Dienste ab. SafeShare
-        ersetzt keine rechtliche Prüfung, hilft dir aber, bewusster mit Tracking
-        umzugehen.
-      </p>
     </article>
 
   </div>
@@ -546,6 +384,10 @@
   <div class="footer-row">
     <div>© SafeShare – Jana Jergus</div>
     <div class="footer-links">
+      <a href="index.html">Startseite</a>
+      <a href="app.html">App</a>
+      <a href="pro.html">Pro</a>
+      <a href="help.html">Hilfe</a>
       <a href="impressum.html">Impressum</a>
       <a href="datenschutz.html">Datenschutz</a>
       <a href="terms.html">Terms</a>
