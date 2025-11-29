@@ -4,60 +4,59 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>SafeShare App – URL Cleaner im Browser ohne Login</title>
-  <meta name="description" content="Öffne die SafeShare Web-App, füge deinen Link ein und entferne Tracking-Parameter wie UTM, gclid und fbclid – direkt im Browser, ohne Konto.">
+  <title>SafeShare App – Tracking-Parameter entfernen & Links aufräumen</title>
+  <meta name="description" content="SafeShare App: Tracking-Parameter entfernen, Weiterleitungen entpacken und Links bereinigen – direkt im Browser, ohne Logins, ohne Abo.">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
 
-  <!-- Favicon / App-Icon -->
+  <!-- Favicon -->
   <link rel="icon" href="logo.svg" type="image/svg+xml">
 
   <!-- Search Console / Bing -->
   <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+  <meta name="msvalidate.01" content="DEIN_BING_CODE_HIER">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare App – URL Cleaner im Browser ohne Login">
-  <meta property="og:description" content="Öffne die SafeShare Web-App, füge deinen Link ein und entferne Tracking-Parameter wie UTM, gclid und fbclid – direkt im Browser, ohne Konto.">
+  <meta property="og:title" content="SafeShare App – Tracking-Parameter entfernen & Links aufräumen">
+  <meta property="og:description" content="Bereinige Links vor dem Teilen: entferne Tracking-Parameter, entpacke Weiterleitungen und teile saubere Ziel-URLs – mit der SafeShare Web-App.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html">
   <meta property="og:site_name" content="SafeShare">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SafeShare App – URL Cleaner im Browser ohne Login">
-  <meta name="twitter:description" content="Öffne die SafeShare Web-App, füge deinen Link ein und entferne Tracking-Parameter wie UTM, gclid und fbclid – direkt im Browser, ohne Konto.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <meta name="twitter:title" content="SafeShare App – Tracking-Parameter entfernen & Links aufräumen">
+  <meta name="twitter:description" content="Tracking-Parameter entfernen, Weiterleitungen entpacken und Links bereinigen – direkt im Browser, ohne Logins, ohne Abo.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
 
-  <!-- Structured Data: SoftwareApplication (App-View) -->
+  <!-- Structured Data: SoftwareApplication -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "SafeShare",
-    "operatingSystem": "Web",
-    "applicationCategory": "SecurityApplication",
-    "description": "Web-App, um URLs zu bereinigen, Tracking-Parameter wie UTM, gclid, fbclid zu entfernen und Weiterleitungen zu entpacken – direkt im Browser, ohne Login.",
+    "name": "SafeShare App",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "SafeShare ist eine Web-App, die hilft, Tracking-Parameter zu entfernen, Weiterleitungen zu entpacken und Links vor dem Teilen aufzuräumen – lokal im Browser.",
     "url": "https://j-ai-71.github.io/Supersystem/app.html",
-    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
-    "author": {
+    "publisher": {
       "@type": "Person",
       "name": "Jana Jergus"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0.00",
-      "priceCurrency": "EUR",
-      "category": "Free",
-      "url": "https://j-ai-71.github.io/Supersystem/app.html"
     }
   }
   </script>
 
   <style>
-    :root{--bg:#050810;--card:#0d111c;--text:#f5f7ff;--muted:#9aa4c6;--border:#1b2335;}
+    :root{
+      --bg:#050810;
+      --card:#0d111c;
+      --text:#f5f7ff;
+      --muted:#9aa4c6;
+      --border:#1b2335;
+      --accent:#3dd5b0;
+    }
     *{box-sizing:border-box;}
     body{
       margin:0;
@@ -74,32 +73,34 @@
       background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
       border-bottom:1px solid rgba(36,46,78,.7);
     }
-    .shell{max-width:980px;margin:0 auto;padding:0 18px;}
+    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
     .nav{
       display:flex;align-items:center;justify-content:space-between;
       padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
     }
     .nav-left{display:flex;align-items:center;gap:8px;}
     .logo-mark{
-      width:30px;height:30px;border-radius:999px;
+      width:28px;height:28px;border-radius:999px;
       border:1px solid rgba(61,213,176,.5);
       background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
       display:flex;align-items:center;justify-content:center;overflow:hidden;
     }
-    .logo-mark img{width:24px;height:24px;object-fit:contain;}
+    .logo-mark img{width:22px;height:22px;object-fit:contain;}
     .logo-title{font-weight:600;font-size:15px;color:var(--text);}
     .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
     .nav-links a{text-decoration:none;}
     @media(max-width:720px){.nav-links{display:none;}}
 
     main{padding:26px 0 40px;}
-    h1{font-size:clamp(24px,4.5vw,30px);margin:0 0 8px;}
-    h2{font-size:18px;margin:18px 0 8px;}
-    p{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 10px;}
+    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
+    h2{font-size:20px;margin:24px 0 10px;}
+    h3{font-size:16px;margin:18px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
+    ul,ol{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 12px;}
 
     .card{
       background:rgba(9,14,30,.96);
-      border-radius:18px;
+      border-radius:16px;
       padding:18px 16px 16px;
       border:1px solid var(--border);
       margin-bottom:18px;
@@ -114,6 +115,14 @@
     .badge-dot{
       width:7px;height:7px;border-radius:50%;
       background:#3dd5b0;box-shadow:0 0 10px rgba(61,213,176,.8);
+    }
+    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px;font-size:11px;}
+    .pill{
+      border-radius:999px;
+      border:1px solid rgba(61,213,176,.6);
+      padding:3px 9px;
+      background:rgba(7,11,24,.98);
+      color:var(--muted);
     }
     .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
     .btn{
@@ -131,68 +140,88 @@
       color:var(--muted);background:rgba(9,15,32,.9);
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
-      gap:18px;margin-top:12px;
+    .input-group{margin-top:10px;}
+    .input-label{
+      font-size:12px;color:var(--muted);margin-bottom:4px;
+      display:flex;justify-content:space-between;align-items:center;gap:8px;
     }
-    @media(max-width:880px){
-      .grid{grid-template-columns:1fr;}
+    .input-wrap{
+      position:relative;
     }
-
-    textarea{
+    textarea,input[type="text"]{
       width:100%;
-      min-height:120px;
-      resize:vertical;
-      border-radius:10px;
-      border:1px solid rgba(53,68,118,.9);
-      background:rgba(6,10,24,.96);
+      background:#050814;
+      border-radius:11px;
+      border:1px solid rgba(55,69,110,.9);
+      padding:9px 36px 9px 10px;
+      font-size:14px;
       color:var(--text);
-      padding:10px 11px;
-      font-size:13px;
-      font-family:SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
+      font-family:inherit;
+      resize:vertical;
+      min-height:40px;
     }
-    textarea::placeholder{color:#5f6b93;}
-    label{font-size:12px;color:var(--muted);}
-    .field-label{font-size:12px;color:var(--muted);margin-bottom:4px;}
+    textarea:focus,input[type="text"]:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(61,213,176,.4);
+    }
+    .clear-btn{
+      position:absolute;
+      right:8px;top:50%;transform:translateY(-50%);
+      width:20px;height:20px;border-radius:999px;
+      border:1px solid rgba(90,100,150,.8);
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;color:var(--muted);
+      background:rgba(6,10,22,.95);
+      cursor:pointer;
+    }
+    .clear-btn:hover{border-color:var(--accent);color:var(--accent);}
+
     .options-row{
-      display:flex;flex-wrap:wrap;gap:12px;
-      margin:8px 0 6px;
-      font-size:12px;color:var(--muted);
+      display:flex;flex-wrap:wrap;gap:10px;
+      font-size:12px;color:var(--muted);margin-top:10px;
     }
-    .options-row label{display:flex;align-items:center;gap:5px;cursor:pointer;}
-    input[type="checkbox"]{
-      width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(86,101,150,.9);
-      background:rgba(6,10,24,.96);
+    .options-row label{display:inline-flex;align-items:center;gap:5px;cursor:pointer;}
+    .options-row input[type="checkbox"]{accent-color:var(--accent);}
+
+    .result-box{
+      margin-top:12px;
+      border-radius:12px;
+      border:1px dashed rgba(68,83,132,.9);
+      padding:10px 10px 8px;
+      background:rgba(4,8,18,.95);
+      font-size:13px;
     }
-    .small-note{font-size:11px;color:var(--muted);margin-top:4px;}
-    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;font-size:11px;}
-    .pill{
-      border-radius:999px;
-      border:1px solid rgba(61,213,176,.6);
-      padding:3px 9px;
-      background:rgba(7,11,24,.98);
-      color:var(--muted);
+    .result-label{
+      font-size:12px;color:var(--muted);margin-bottom:4px;
+      display:flex;justify-content:space-between;align-items:center;gap:8px;
     }
-    .hint{
-      font-size:12px;color:var(--muted);
-      border-left:2px solid rgba(61,213,176,.7);
-      padding-left:10px;margin:8px 0 12px;
+    .result-url{
+      word-break:break-all;
+      font-family:ui-monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      font-size:12px;color:var(--text);
     }
+    .result-actions{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;
+    }
+    .btn-small{
+      font-size:12px;padding:5px 10px;border-radius:999px;
+      border:1px solid rgba(68,83,132,.9);background:rgba(6,11,24,.98);
+      color:var(--muted);cursor:pointer;
+    }
+    .btn-small:hover{border-color:var(--accent);color:var(--accent);}
     .status-line{
-      font-size:11px;color:var(--muted);
-      display:flex;justify-content:space-between;
-      gap:6px;margin-top:5px;
+      margin-top:6px;font-size:11px;color:var(--muted);
     }
+    .status-line strong{color:var(--text);}
 
     footer{
       border-top:1px solid rgba(36,46,78,.7);
       padding:14px 0 22px;font-size:11px;
-      color:var(--muted);margin-top:8px;
+      color:var(--muted);margin-top:10px;
     }
     .footer-row{
-      max-width:980px;margin:0 auto;padding:0 18px;
+      max-width:880px;margin:0 auto;padding:0 18px;
       display:flex;justify-content:space-between;
       gap:10px;flex-wrap:wrap;
     }
@@ -211,8 +240,9 @@
         <a href="index.html">Startseite</a>
         <a href="utm-parameter-entfernen.html">UTM-Guide</a>
         <a href="tracking-parameter-entfernen.html">Tracking-Parameter</a>
-        <a href="bulk-clean.html">Bulk-Clean</a>
+        <a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Vergleich</a>
         <a href="help.html">Hilfe</a>
+        <a href="pro.html">Pro</a>
       </nav>
     </div>
   </div>
@@ -221,56 +251,89 @@
 <main>
   <div class="shell">
 
+    <!-- Haupt-App-Karte -->
     <article class="card">
       <div class="badge"><span class="badge-dot"></span> Web-App</div>
-      <h1>SafeShare App – Links bereinigen direkt im Browser</h1>
+      <h1>SafeShare App – Links aufräumen vor dem Teilen</h1>
       <p>
-        Füge unten einen oder mehrere Links ein, entferne Tracking-Parameter wie
-        UTM, <code>gclid</code>, <code>fbclid</code> &amp; Co. und kopiere die
-        saubere Version. Alles passiert lokal in deinem Browser.
+        Füge einen Link ein, entferne Tracking-Parameter und entpacke – soweit möglich –
+        typische Weiterleitungen. Das passiert lokal in deinem Browser. Kein Login, kein
+        Konto, kein Abo.
       </p>
       <div class="pill-row">
-        <span class="pill">Einzelne Links</span>
-        <span class="pill">Listen (eine URL pro Zeile)</span>
-        <span class="pill">ohne Login</span>
+        <span class="pill">Tracking-Parameter entfernen</span>
+        <span class="pill">Weiterleitungen entpacken (soweit möglich)</span>
+        <span class="pill">lokale Verarbeitung im Browser</span>
       </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>1) Link einfügen</span>
+          <span>z. B. aus Newsletter, Social, Messenger …</span>
+        </div>
+        <div class="input-wrap">
+          <textarea id="input-url" placeholder="Hier deinen Link einfügen …"></textarea>
+          <button type="button" class="clear-btn" id="clear-input" aria-label="Eingabe löschen">×</button>
+        </div>
+      </div>
+
+      <div class="options-row">
+        <label>
+          <input type="checkbox" id="option-unpack" checked>
+          Weiterleitungen aus typischen Redirect-Parametern entpacken (z. B. <code>url=</code>, <code>u=</code>)
+        </label>
+        <label>
+          <input type="checkbox" id="option-strip-hash" checked>
+          offensichtliche Tracking-Fragmente im <code>#</code>-Teil entfernen (soweit erkennbar)
+        </label>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="clean-btn">
+          Tracking-Parameter jetzt entfernen
+        </button>
+        <button type="button" class="btn btn-ghost" id="demo-btn">
+          Beispiel-Link einsetzen
+        </button>
+      </div>
+
+      <div id="result-container" class="result-box" style="display:none;">
+        <div class="result-label">
+          <span>2) Bereinigter Link</span>
+          <span id="change-indicator"></span>
+        </div>
+        <div class="result-url" id="output-url"></div>
+        <div class="result-actions">
+          <button type="button" class="btn-small" id="copy-btn">Link kopieren</button>
+          <button type="button" class="btn-small" id="open-btn">Link in neuem Tab öffnen</button>
+        </div>
+        <div class="status-line" id="status-line"></div>
+      </div>
+
+      <div class="status-line" id="error-line" style="margin-top:10px;"></div>
     </article>
 
-    <section class="grid" aria-label="SafeShare Link Cleaner Oberfläche">
-      <article class="card">
-        <div class="field-label">Eingabe – Original-Links</div>
-        <textarea id="input" placeholder="Füge hier deine URL ein – oder mehrere, eine pro Zeile."></textarea>
-
-        <div class="options-row">
-          <label>
-            <input type="checkbox" id="removeTracking" checked>
-            <span>Tracking-Parameter entfernen (UTM, gclid, fbclid …)</span>
-          </label>
-        </div>
-        <div class="small-note">
-          Weiterleitungen entpacken und weitere Optionen kannst du später in SafeShare Pro konfigurieren.
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-primary" id="cleanBtn" type="button">Links bereinigen</button>
-          <button class="btn btn-ghost" id="copyBtn" type="button">Bereinigte Links kopieren</button>
-        </div>
-
-        <div class="status-line">
-          <span id="statusText">Bereit.</span>
-          <span id="countText"></span>
-        </div>
-      </article>
-
-      <article class="card">
-        <h2 style="font-size:16px;margin-top:0;">Ausgabe – bereinigte Links</h2>
-        <textarea id="output" placeholder="Hier erscheinen deine bereinigten Links." readonly></textarea>
-        <div class="hint">
-          Tipp: Du kannst SafeShare als Bookmarklet oder Homescreen-Icon einrichten,
-          um Links noch schneller zu säubern.
-        </div>
-        <a href="bookmarklets.html" style="font-size:12px;">Mehr zu Bookmarklets →</a>
-      </article>
+    <!-- CTA-Block: Pro-Hinweis -->
+    <section class="card" style="margin-top:18px;">
+      <h2>Mehr Möglichkeiten mit SafeShare Pro</h2>
+      <p>
+        Wenn du regelmäßig mit vielen Links arbeitest oder eigene Regeln für
+        Tracking-Parameter festlegen möchtest, kannst du SafeShare Pro nutzen.
+      </p>
+      <ul>
+        <li>Tracking-Parameter wie <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code> gezielt entfernen</li>
+        <li>Weiterleitungen von Newsletter-Tools, Kurzlinks &amp; Kampagnen entpacken</li>
+        <li>eigene Präferenzen für Link-Hygiene definieren</li>
+        <li>geeignet für Selbstständige, Creator &amp; kleine Teams</li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="pro.html">
+          SafeShare Pro ansehen
+        </a>
+        <a class="btn btn-ghost" href="utm-parameter-entfernen.html">
+          Mehr über UTM-Parameter erfahren
+        </a>
+      </div>
     </section>
 
   </div>
@@ -280,95 +343,319 @@
   <div class="footer-row">
     <div>© SafeShare – Jana Jergus</div>
     <div class="footer-links">
+      <a href="index.html">Startseite</a>
+      <a href="pro.html">Pro</a>
+      <a href="help.html">Hilfe</a>
       <a href="impressum.html">Impressum</a>
       <a href="datenschutz.html">Datenschutz</a>
-      <a href="terms.html">Nutzungsbedingungen</a>
+      <a href="terms.html">Terms</a>
     </div>
   </div>
 </footer>
 
 <script>
-  (function() {
-    const inputEl = document.getElementById('input');
-    const outputEl = document.getElementById('output');
-    const removeTrackingEl = document.getElementById('removeTracking');
-    const statusTextEl = document.getElementById('statusText');
-    const countTextEl = document.getElementById('countText');
-    const cleanBtn = document.getElementById('cleanBtn');
-    const copyBtn = document.getElementById('copyBtn');
+  (function(){
+    const inputEl = document.getElementById('input-url');
+    const clearBtn = document.getElementById('clear-input');
+    const cleanBtn = document.getElementById('clean-btn');
+    const demoBtn  = document.getElementById('demo-btn');
 
-    const trackingParams = [
-      'utm_source','utm_medium','utm_campaign','utm_term','utm_content',
-      'utm_id','utm_name','utm_source_platform','utm_creative_format','utm_marketing_tactic',
-      'gclid','gclsrc','fbclid','msclkid','dclid',
-      'mc_eid','mc_cid','vero_conv','vero_id','pk_campaign','pk_kwd'
-    ];
+    const resultBox = document.getElementById('result-container');
+    const outputEl  = document.getElementById('output-url');
+    const copyBtn   = document.getElementById('copy-btn');
+    const openBtn   = document.getElementById('open-btn');
+    const statusLine = document.getElementById('status-line');
+    const errorLine  = document.getElementById('error-line');
+    const changeIndicator = document.getElementById('change-indicator');
 
-    function cleanUrl(raw) {
-      const trimmed = raw.trim();
-      if (!trimmed) return '';
-      try {
-        const url = new URL(trimmed);
-        if (removeTrackingEl.checked) {
-          trackingParams.forEach(name => url.searchParams.delete(name));
-        }
-        // Entferne leeres '?' falls keine Suchparameter mehr vorhanden
-        let result = url.toString();
-        if (!url.search && result.includes('?')) {
-          result = result.replace(/\?$/,'');
-        }
-        return result;
-      } catch (e) {
-        // Kein valider URL-String, unverändert zurückgeben
-        return trimmed;
+    const unpackCheckbox = document.getElementById('option-unpack');
+    const stripHashCheckbox = document.getElementById('option-strip-hash');
+
+    function isProbablyUrl(text){
+      if(!text) return false;
+      const t = text.trim();
+      return t.startsWith('http://') ||
+             t.startsWith('https://') ||
+             t.startsWith('www.');
+    }
+
+    function normalizeUrl(text){
+      const t = text.trim();
+      if(!t) return null;
+      let candidate = t;
+      if(!/^https?:\/\//i.test(candidate)){
+        candidate = 'https://' + candidate;
+      }
+      try{
+        return new URL(candidate);
+      }catch(e){
+        return null;
       }
     }
 
-    function cleanInput() {
-      const value = inputEl.value || '';
-      const lines = value.split(/\r?\n/);
-      const cleaned = [];
-      let changedCount = 0;
+    function isTrackingParam(name){
+      if(!name) return false;
+      const n = name.toLowerCase();
 
-      for (const line of lines) {
-        if (!line.trim()) {
-          cleaned.push('');
+      if(n.startsWith('utm_')) return true;
+
+      const known = [
+        'gclid','fbclid','dclid','mc_cid','mc_eid',
+        'vero_conv','vero_id','oly_anon_id','oly_enc_id',
+        'igshid','wsid','yclid','twclid','rb_clickid',
+        'ml_subscriber','ml_subscriber_hash'
+      ];
+      if(known.indexOf(n) !== -1) return true;
+
+      const patterns = ['pk_', 'piwik_', 'ga_'];
+      for(const p of patterns){
+        if(n.startsWith(p)) return true;
+      }
+
+      return false;
+    }
+
+    function unwrapRedirect(url){
+      let current = url;
+      const maxHops = 3;
+
+      for(let i=0; i<maxHops; i++){
+        let found = null;
+        const params = current.searchParams;
+
+        const keys = ['url','u','redirect','redir','r','destination','dest','to','goto','q'];
+        for(const key of keys){
+          if(params.has(key)){
+            const val = params.get(key);
+            if(val && /^https?:\/\//i.test(val.trim())){
+              found = val.trim();
+              break;
+            }
+          }
+        }
+
+        if(!found) break;
+
+        try{
+          current = new URL(found);
+        }catch(e){
+          break;
+        }
+      }
+
+      return current;
+    }
+
+    function stripTrackingFromHash(url){
+      if(!url.hash) return;
+
+      let h = url.hash;
+      if(h.startsWith('#')) h = h.slice(1);
+
+      if(!h) return;
+
+      const parts = h.split(/[&;]/);
+      const keep = [];
+      let removedAny = false;
+
+      for(const part of parts){
+        if(!part) continue;
+        const eqIndex = part.indexOf('=');
+        if(eqIndex === -1){
+          keep.push(part);
           continue;
         }
-        const before = line.trim();
-        const after = cleanUrl(before);
-        cleaned.push(after);
-        if (before !== after) changedCount++;
+        const name = decodeURIComponent(part.slice(0, eqIndex));
+        const value = part.slice(eqIndex+1);
+        if(isTrackingParam(name) || /^(?:fbclid|gclid|utm_)/i.test(name)){
+          removedAny = true;
+          continue;
+        }
+        keep.push(name + '=' + value);
       }
 
-      outputEl.value = cleaned.join('\n');
-      const total = lines.filter(l => l.trim()).length;
-
-      statusTextEl.textContent = 'Bereinigung abgeschlossen.';
-      if (total > 0) {
-        countTextEl.textContent = changedCount > 0
-          ? `Geänderte Links: ${changedCount} von ${total}`
-          : `Keine Änderungen – Links waren bereits sauber.`;
-      } else {
-        countTextEl.textContent = '';
+      if(removedAny){
+        url.hash = keep.length ? ('#' + keep.join('&')) : '';
       }
     }
 
-    function copyOutput() {
-      const value = outputEl.value || '';
-      if (!value.trim()) {
-        statusTextEl.textContent = 'Nichts zum Kopieren vorhanden.';
+    function cleanUrlString(input, options){
+      let url = normalizeUrl(input);
+      if(!url){
+        throw new Error('Die Eingabe sieht nicht wie ein gültiger Link aus.');
+      }
+
+      const original = url.href;
+
+      if(options.unwrap){
+        url = unwrapRedirect(url);
+      }
+
+      const params = url.searchParams;
+      let removedCount = 0;
+
+      // Kopie der keys, sonst iterierst du über sich ändernde Map
+      const keys = [];
+      params.forEach((v,k) => keys.push(k));
+
+      for(const key of keys){
+        if(isTrackingParam(key)){
+          params.delete(key);
+          removedCount++;
+        }
+      }
+
+      if(options.stripHash){
+        stripTrackingFromHash(url);
+      }
+
+      const cleaned = url.href;
+      return {
+        original,
+        cleaned,
+        removedCount,
+        changed: cleaned !== original
+      };
+    }
+
+    function setError(msg){
+      errorLine.textContent = msg || '';
+      if(msg){
+        errorLine.style.color = '#ff9e9e';
+      }else{
+        errorLine.style.color = 'var(--muted)';
+      }
+    }
+
+    function setStatus(msg){
+      statusLine.textContent = msg || '';
+    }
+
+    function clearResult(){
+      resultBox.style.display = 'none';
+      outputEl.textContent = '';
+      setStatus('');
+      changeIndicator.textContent = '';
+    }
+
+    function handleClean(){
+      setError('');
+      clearResult();
+
+      const raw = inputEl.value.trim();
+      if(!raw){
+        setError('Bitte zuerst einen Link einfügen.');
         return;
       }
-      navigator.clipboard.writeText(value).then(() => {
-        statusTextEl.textContent = 'Bereinigte Links in Zwischenablage kopiert.';
-      }).catch(() => {
-        statusTextEl.textContent = 'Konnte nicht automatisch kopieren – bitte manuell markieren.';
-      });
+
+      // Falls jemand mehrere Zeilen einfügt: nimm die erste URL-artige Zeile
+      let candidate = raw;
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      if(lines.length > 1){
+        const urlish = lines.find(isProbablyUrl);
+        if(urlish){
+          candidate = urlish;
+        }
+      }
+
+      try{
+        const result = cleanUrlString(candidate, {
+          unwrap: unpackCheckbox.checked,
+          stripHash: stripHashCheckbox.checked
+        });
+
+        outputEl.textContent = result.cleaned;
+        resultBox.style.display = 'block';
+
+        if(result.changed){
+          changeIndicator.textContent = 'Link wurde bereinigt.';
+        }else{
+          changeIndicator.textContent = 'Link war bereits weitgehend sauber.';
+        }
+
+        const parts = [];
+        if(result.removedCount > 0){
+          parts.push(result.removedCount + ' Tracking-Parameter entfernt');
+        }
+        if(result.cleaned !== result.original){
+          parts.push('Weiterleitung/Struktur angepasst (soweit möglich)');
+        }
+        if(parts.length === 0){
+          parts.push('Keine offensichtlichen Tracking-Parameter gefunden.');
+        }
+        setStatus(parts.join(' · '));
+
+      }catch(e){
+        setError(e.message || 'Der Link konnte nicht verarbeitet werden.');
+      }
     }
 
-    cleanBtn.addEventListener('click', cleanInput);
-    copyBtn.addEventListener('click', copyOutput);
+    function handleCopy(){
+      const text = outputEl.textContent.trim();
+      if(!text){
+        return;
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){
+          setStatus('Bereinigter Link wurde in die Zwischenablage kopiert.');
+        }).catch(function(){
+          setStatus('Konnte den Link nicht in die Zwischenablage kopieren.');
+        });
+      }else{
+        // Fallback
+        const tmp = document.createElement('textarea');
+        tmp.value = text;
+        tmp.style.position = 'fixed';
+        tmp.style.left = '-9999px';
+        document.body.appendChild(tmp);
+        tmp.select();
+        try{
+          document.execCommand('copy');
+          setStatus('Bereinigter Link wurde in die Zwischenablage kopiert.');
+        }catch(err){
+          setStatus('Konnte den Link nicht in die Zwischenablage kopieren.');
+        }
+        document.body.removeChild(tmp);
+      }
+    }
+
+    function handleOpen(){
+      const text = outputEl.textContent.trim();
+      if(!text){
+        return;
+      }
+      try{
+        window.open(text, '_blank', 'noopener');
+      }catch(e){
+        setStatus('Konnte den Link nicht im neuen Tab öffnen.');
+      }
+    }
+
+    function handleDemo(){
+      const example = 'https://www.beispiel.de/artikel?utm_source=newsletter&utm_medium=email&utm_campaign=herbst&fbclid=XYZ123#section';
+      inputEl.value = example;
+      clearResult();
+      setError('');
+    }
+
+    clearBtn.addEventListener('click', function(){
+      inputEl.value = '';
+      inputEl.focus();
+      clearResult();
+      setError('');
+    });
+
+    cleanBtn.addEventListener('click', handleClean);
+    demoBtn.addEventListener('click', handleDemo);
+    copyBtn.addEventListener('click', handleCopy);
+    openBtn.addEventListener('click', handleOpen);
+
+    inputEl.addEventListener('keydown', function(e){
+      if((e.metaKey || e.ctrlKey) && e.key === 'Enter'){
+        e.preventDefault();
+        handleClean();
+      }
+    });
   })();
 </script>
 </body>
