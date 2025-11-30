@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="256" height="256" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <!-- Hintergrund-Verlauf wie beim Social Preview -->
+    <!-- Hintergrund-Verlauf (wie Social Preview, nur vereinfacht) -->
     <radialGradient id="bg" cx="0.3" cy="0" r="1.1">
       <stop offset="0%" stop-color="#f9eab0"/>
-      <stop offset="0.2" stop-color="#fbd2a7"/>
-      <stop offset="0.45" stop-color="#ff9e9e"/>
-      <stop offset="1" stop-color="#141827"/>
+      <stop offset="20%" stop-color="#fbd2a7"/>
+      <stop offset="45%" stop-color="#ff9e9e"/>
+      <stop offset="100%" stop-color="#141827"/>
     </radialGradient>
   </defs>
 
@@ -16,55 +16,57 @@
           stroke="#3dd5b0"
           stroke-width="1.8"/>
 
-  <!-- Hand-Silhouette (Stop-/Schutzhand) -->
-  <path
-    d="
-      M 24 46         <!-- Handwurzel links -->
-      L 24 28         <!-- linke Palmenseite hoch -->
-      L 26 26         <!-- Übergang zur Handfläche -->
-      L 26 16         <!-- kleiner Finger -->
-      C 26 14.5 27.3 13.2 29 13.2
-        30.7 13.2 32 14.5 32 16
-      L 32 24         <!-- Finger 1 oben -->
-      L 34 23         <!-- Übergang Finger 2 -->
-      L 34 14.5       <!-- Finger 2 -->
-      C 34 13 35.3 11.8 37 11.8
-        38.7 11.8 40 13 40 14.5
-      L 40 23         <!-- Finger 2 oben -->
-      L 42 24         <!-- Übergang Finger 3 -->
-      L 42 16         <!-- Finger 3 -->
-      C 42 14.5 43.3 13.2 45 13.2
-        46.7 13.2 48 14.5 48 16
-      L 48 27         <!-- Finger 3 oben -->
-      L 50 29         <!-- Daumen-Ansatz -->
-      L 50 46         <!-- rechte Kante der Hand -->
-      Z
-    "
-    fill="rgba(5,8,20,0.95)"
-    stroke="#8be5ca"
-    stroke-width="1.8"
-    stroke-linejoin="round"
-  />
+  <!-- Handfläche -->
+  <rect x="23.5" y="27.5" width="17" height="15"
+        rx="4" ry="4"
+        fill="#050814"
+        fill-opacity="0.95"
+        stroke="#8be5ca"
+        stroke-width="1.6"/>
 
-  <!-- Handfläche leicht betonen (Innenlinie) -->
-  <path
-    d="M 26 29 L 26 44 Q 31 49 38 44 L 48 44"
-    fill="none"
-    stroke="#3dd5b0"
-    stroke-width="1.2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    opacity="0.8"
-  />
+  <!-- Finger (4 einzelne, klar als Hand lesbar) -->
+  <rect x="23.5" y="17" width="3.5" height="11"
+        rx="1.7" ry="1.7"
+        fill="#050814"
+        fill-opacity="0.95"
+        stroke="#8be5ca"
+        stroke-width="1.4"/>
 
-  <!-- Schutz-Haken in der Handfläche -->
-  <path
-    d="M 30 35 L 34 39 L 40 31"
-    fill="none"
-    stroke="#8be5ca"
-    stroke-width="2.2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+  <rect x="28" y="15.5" width="3.5" height="12.5"
+        rx="1.7" ry="1.7"
+        fill="#050814"
+        fill-opacity="0.95"
+        stroke="#8be5ca"
+        stroke-width="1.4"/>
 
+  <rect x="32.5" y="15" width="3.5" height="13"
+        rx="1.7" ry="1.7"
+        fill="#050814"
+        fill-opacity="0.95"
+        stroke="#8be5ca"
+        stroke-width="1.4"/>
+
+  <rect x="37" y="16.5" width="3.5" height="11.5"
+        rx="1.7" ry="1.7"
+        fill="#050814"
+        fill-opacity="0.95"
+        stroke="#8be5ca"
+        stroke-width="1.4"/>
+
+  <!-- Daumen (schräg, damit es nicht wie Koffer aussieht) -->
+  <rect x="20" y="26" width="4.5" height="11"
+        rx="2.2" ry="2.2"
+        fill="#050814"
+        fill-opacity="0.95"
+        stroke="#8be5ca"
+        stroke-width="1.4"
+        transform="rotate(-25 22.25 31.5)"/>
+
+  <!-- Kleiner Haken in der Handfläche (Schutz/OK) -->
+  <path d="M 27.5 33.5 L 30.5 37 L 36 30.5"
+        fill="none"
+        stroke="#8be5ca"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
 </svg>
