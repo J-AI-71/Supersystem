@@ -1,55 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <!-- dezenter Hintergrund-Verlauf -->
+    <!-- Hintergrund-Verlauf -->
     <radialGradient id="bg" cx="0.3" cy="0" r="1.1">
-      <stop offset="0%" stop-color="#101626"/>
-      <stop offset="45%" stop-color="#050814"/>
-      <stop offset="100%" stop-color="#020308"/>
+      <stop offset="0%" stop-color="#f9eab0"/>
+      <stop offset="0.2" stop-color="#fbd2a7"/>
+      <stop offset="0.45" stop-color="#ff9e9e"/>
+      <stop offset="1" stop-color="#141827"/>
     </radialGradient>
+    <!-- Schild-Hintergrund -->
+    <linearGradient id="shieldBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050814"/>
+      <stop offset="100%" stop-color="#050814"/>
+    </linearGradient>
   </defs>
 
-  <!-- runde Marke, ohne grellen Rand -->
+  <!-- runde Marke -->
   <circle cx="32" cy="32" r="28"
-          fill="url(#bg)"/>
+          fill="url(#bg)"
+          stroke="#3dd5b0"
+          stroke-width="1.6"/>
 
-  <!-- Hand-Silhouette (Stop-/Schutzhand), weich und rund -->
+  <!-- Schild -->
   <path
     d="
-      M 24 46
-      Q 22 43 22 39
-      L 22 26
-      Q 22 22.5 24.3 21
-        26.5 19.5 28.7 21.2
-      L 30.2 22.4
-
-      L 30.2 17
-      Q 30.2 14.7 32 13.5
-        33.8 12.3 35.8 13.2
-        37.4 14 38 15.7
-        38.4 16.9 38.4 18.3
-      L 38.4 22.2
-
-      L 40.2 21.4
-      Q 42.2 20.5 44 21.4
-        45.7 22.1 46.4 23.8
-        47 25.1 47 26.7
-      L 47 35.5
-      Q 47 40.5 43.9 43.8
-        40.8 47 36 47.6
-      L 30.5 48.2
-      Q 26.5 48.5 24 46
+      M 22 18
+      L 42 18
+      Q 44 18 44 20
+      L 44 30
+      Q 44 36 40.5 39.5
+        37 43 32 45.5
+        27 43 23.5 39.5
+        20 36 20 30
+      L 20 20
+      Q 20 18 22 18
       Z
     "
-    fill="#050814"
-    fill-opacity="0.95"
+    fill="url(#shieldBg)"
     stroke="#8be5ca"
-    stroke-width="2"
+    stroke-width="1.8"
     stroke-linejoin="round"
   />
 
-  <!-- kleiner Haken in der Handfläche (Schutz/OK) -->
+  <!-- Haken im Schild -->
   <path
-    d="M 28 34 L 31.5 37.5 L 37.5 30.5"
+    d="M 26 30.5 L 30 34.5 L 38 26.5"
     fill="none"
     stroke="#8be5ca"
     stroke-width="2.2"
