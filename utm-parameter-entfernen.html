@@ -1,438 +1,350 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <title>UTM-Parameter entfernen: Tracking aus Links löschen | SafeShare</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>UTM-Parameter entfernen – verständlich erklärt | SafeShare</title>
-  <meta name="description" content="UTM-Parameter einfach erklärt: Was utm_source, utm_medium, utm_campaign bedeuten, wo sie herkommen und wie du sie mit SafeShare und einfachen Routinen entfernst.">
+  <meta name="description" content="Was sind UTM-Parameter und wie entfernst du sie aus Links? Erfahre, wie du Tracking-Parameter manuell, im Browser und mit der SafeShare-Web-App entfernst – für saubere, datensparsame URLs.">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/utm-parameter-entfernen.html">
 
-  <!-- Favicon -->
+  <!-- Favicon / Logo -->
   <link rel="icon" href="logo.svg" type="image/svg+xml">
-
-  <!-- Search Console / Bing -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="UTM-Parameter entfernen – verständlich erklärt">
-  <meta property="og:description" content="Lerne, wie UTM-Parameter funktionieren, warum sie deine Links aufblähen und wie du sie mit SafeShare und einfachen Routinen entfernst.">
+  <meta property="og:title" content="UTM-Parameter entfernen: Tracking aus Links löschen">
+  <meta property="og:description" content="UTM-Parameter aus Links entfernen – manuell, im Browser und mit der SafeShare-Web-App. Teile saubere Links ohne unnötiges Tracking.">
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/utm-parameter-entfernen.html">
   <meta property="og:site_name" content="SafeShare">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.svg">
 
-  <!-- Twitter Card -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="UTM-Parameter entfernen – verständlich erklärt">
-  <meta name="twitter:description" content="UTM-Parameter in Links erkennen, einordnen und entfernen – Schritt für Schritt, ohne Technik-Kauderwelsch.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
+  <meta name="twitter:title" content="UTM-Parameter entfernen: Tracking aus Links löschen">
+  <meta name="twitter:description" content="Erfahre, wie du UTM-Parameter aus Links entfernst und warum Link-Hygiene wichtig ist.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.svg">
 
-  <!-- Structured Data: Article + SoftwareApplication -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "UTM-Parameter entfernen – verständlich erklärt",
-    "description": "UTM-Parameter in Links erkennen, einordnen und entfernen – Schritt für Schritt, ohne Technik-Kauderwelsch.",
-    "author": {
-      "@type": "Person",
-      "name": "Jana Jergus"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "SafeShare",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://j-ai-71.github.io/Supersystem/logo.svg"
-      }
-    },
-    "mainEntityOfPage": "https://j-ai-71.github.io/Supersystem/utm-parameter-entfernen.html"
-  }
-  </script>
+  <!-- Verifikation -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SafeShare",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any",
-    "description": "SafeShare hilft, UTM-Parameter und andere Tracking-Parameter aus Links zu entfernen und Weiterleitungen zu entpacken.",
-    "url": "https://j-ai-71.github.io/Supersystem/app.html",
-    "publisher": {
-      "@type": "Person",
-      "name": "Jana Jergus"
-    }
-  }
-  </script>
-
-  <style>
-    :root{
-      --bg:#050810;
-      --card:#0d111c;
-      --text:#f5f7ff;
-      --muted:#9aa4c6;
-      --border:#1b2335;
-      --accent:#3dd5b0;
-    }
-    *{box-sizing:border-box;}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
-      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-    }
-    a{color:#8be5ca;text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    header{
-      position:sticky;top:0;z-index:20;
-      backdrop-filter:blur(16px);
-      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
-      border-bottom:1px solid rgba(36,46,78,.7);
-    }
-    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
-    }
-    .nav-left{display:flex;align-items:center;gap:8px;}
-    .logo-mark{
-      width:28px;height:28px;border-radius:999px;
-      border:1px solid rgba(61,213,176,.5);
-      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
-      display:flex;align-items:center;justify-content:center;overflow:hidden;
-    }
-    .logo-mark img{width:22px;height:22px;object-fit:contain;}
-    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
-    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
-    .nav-links a{text-decoration:none;}
-    @media(max-width:720px){.nav-links{display:none;}}
-
-    main{padding:26px 0 40px;}
-    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
-    h2{font-size:20px;margin:24px 0 10px;}
-    h3{font-size:16px;margin:18px 0 6px;}
-    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
-    ul,ol{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 12px;}
-
-    .card{
-      background:rgba(9,14,30,.96);
-      border-radius:16px;
-      padding:18px 16px 16px;
-      border:1px solid var(--border);
-      margin-bottom:18px;
-    }
-    .badge{
-      display:inline-flex;align-items:center;gap:6px;
-      font-size:11px;padding:4px 9px;border-radius:999px;
-      border:1px solid rgba(61,213,176,.5);
-      background:rgba(5,11,24,.96);color:#ccefe4;
-      margin-bottom:10px;
-    }
-    .badge-dot{
-      width:7px;height:7px;border-radius:50%;
-      background:#3dd5b0;box-shadow:0 0 10px rgba(61,213,176,.8);
-    }
-    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px;font-size:11px;}
-    .pill{
-      border-radius:999px;
-      border:1px solid rgba(61,213,176,.6);
-      padding:3px 9px;
-      background:rgba(7,11,24,.98);
-      color:var(--muted);
-    }
-    .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      gap:6px;border-radius:999px;padding:8px 14px;
-      font-size:13px;border:1px solid transparent;
-      text-decoration:none;cursor:pointer;white-space:nowrap;
-    }
-    .btn-primary{
-      background:linear-gradient(120deg,#3dd5b0,#ffc98b);
-      color:#050810;font-weight:600;
-    }
-    .btn-ghost{
-      border-color:rgba(99,110,160,.8);
-      color:var(--muted);background:rgba(9,15,32,.9);
-    }
-    .hint{
-      font-size:12px;color:var(--muted);
-      border-left:2px solid rgba(61,213,176,.7);
-      padding-left:10px;margin:8px 0 12px;
-    }
-    .faq-q{font-weight:600;font-size:14px;color:var(--text);margin:12px 0 4px;}
-
-    footer{
-      border-top:1px solid rgba(36,46,78,.7);
-      padding:14px 0 22px;font-size:11px;
-      color:var(--muted);margin-top:10px;
-    }
-    .footer-row{
-      max-width:880px;margin:0 auto;padding:0 18px;
-      display:flex;justify-content:space-between;
-      gap:10px;flex-wrap:wrap;
-    }
-    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
-  </style>
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<header>
-  <div class="shell">
-    <div class="nav">
-      <div class="nav-left">
-        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
-        <div class="logo-title">SafeShare</div>
-      </div>
-      <nav class="nav-links">
-        <a href="index.html">Startseite</a>
+<body class="page page-article">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">
+          <img src="logo.svg" alt="SafeShare Logo">
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">SafeShare</span>
+          <span class="brand-subtitle">Links ohne unnötiges Tracking</span>
+        </span>
+      </a>
+
+      <nav class="site-nav">
         <a href="app.html">App</a>
-        <a href="tracking-parameter-entfernen.html">Tracking-Parameter</a>
-        <a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Vergleich</a>
-        <a href="help.html">Hilfe</a>
         <a href="pro.html">Pro</a>
+        <a href="utm-parameter-entfernen.html" class="active">UTM entfernen</a>
+        <a href="tracking-parameter-entfernen.html">Tracking allgemein</a>
+        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="help.html">Hilfe</a>
       </nav>
     </div>
-  </div>
-</header>
+  </header>
 
-<main>
-  <div class="shell">
+  <main class="page-main">
+    <article class="article container">
+      <header class="article-header">
+        <p class="eyebrow">Link-Hygiene · Datenschutz</p>
+        <h1>UTM-Parameter entfernen: So machst du Links sauber, bevor du sie teilst</h1>
+        <p class="lead">
+          UTM-Parameter hängen an immer mehr Links. Sie helfen Website-Betreibern beim Tracking – 
+          für deine Freund:innen, Newsletter-Abos oder Messenger-Chats sind sie aber meistens nur eins: Ballast.
+          Hier erfährst du, was UTM-Parameter sind, warum du sie entfernen kannst und wie SafeShare dir die Arbeit abnimmt.
+        </p>
+      </header>
 
-    <article class="card">
-      <div class="badge"><span class="badge-dot"></span> Grundlagen</div>
-      <h1>UTM-Parameter entfernen – was sie sind und wie du sie loswirst</h1>
-      <p>
-        UTM-Parameter sind kleine Textstücke am Ende von Links, mit denen Kampagnen
-        und Klicks gemessen werden. Sie sehen harmlos aus, blähen Links aber schnell
-        auf und verraten sehr viel über den Kontext, in dem ein Link geklickt wurde.
-      </p>
-      <p>
-        In diesem Guide erfährst du, was UTM-Parameter genau sind, wann sie sinnvoll
-        sind, wann sie übertrieben werden – und wie du sie mit einfachen Routinen
-        und der SafeShare App entfernen kannst.
-      </p>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="app.html">
-          Direkt zum SafeShare Link-Cleaner
-        </a>
-        <a class="btn btn-ghost" href="pro.html">
-          Mehr Möglichkeiten mit SafeShare Pro
-        </a>
+      <nav class="article-toc">
+        <strong>Inhalt</strong>
+        <ol>
+          <li><a href="#was-sind-utm-parameter">Was sind UTM-Parameter?</a></li>
+          <li><a href="#warum-entfernen">Warum solltest du UTM-Parameter entfernen?</a></li>
+          <li><a href="#manuell-entfernen">UTM-Parameter manuell aus Links entfernen</a></li>
+          <li><a href="#automatisch-mit-safeshare">Automatisch mit SafeShare entfernen</a></li>
+          <li><a href="#typische-utm-parameter">Typische UTM-Parameter im Überblick</a></li>
+          <li><a href="#faq-utm-parameter-entfernen">Häufige Fragen</a></li>
+        </ol>
+      </nav>
+
+      <section id="was-sind-utm-parameter">
+        <h2>Was sind UTM-Parameter?</h2>
+        <p>
+          <strong>UTM-Parameter</strong> sind Zusatzinformationen in einer URL, mit denen z.&nbsp;B. Werbekampagnen 
+          und Klickquellen gemessen werden. Eine typische URL mit UTM-Parametern sieht so aus:
+        </p>
+        <pre><code>https://example.com/artikel?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=fruehjahr</code></pre>
+        <p>Die wichtigsten Bestandteile:</p>
+        <ul>
+          <li><code>utm_source</code>: Woher kommt der Besuch? (z.&nbsp;B. <code>newsletter</code>, <code>facebook</code>)</li>
+          <li><code>utm_medium</code>: Über welchen Kanal? (<code>email</code>, <code>social</code> …)</li>
+          <li><code>utm_campaign</code>: Name der Kampagne</li>
+          <li><code>utm_term</code>: Optional: Keyword bei Anzeigen</li>
+          <li><code>utm_content</code>: Optional: A/B-Varianten / verschiedene Links</li>
+        </ul>
+        <p>
+          Für die Betreiber:innen der Website sind diese Infos nützlich. Für Menschen, die einen Link 
+          nur schnell weiterleiten oder abspeichern wollen, sind sie in vielen Fällen überflüssig.
+        </p>
+      </section>
+
+      <section id="warum-entfernen">
+        <h2>Warum solltest du UTM-Parameter entfernen?</h2>
+        <p>Es gibt drei Hauptgründe, UTM-Parameter zu entfernen, bevor du einen Link teilst:</p>
+        <ol>
+          <li>
+            <strong>Weniger verstecktes Tracking</strong><br>
+            UTM-Parameter verraten, über welchen Kanal du auf einen Link gekommen bist und wie du dich durch 
+            Kampagnen bewegst. Wenn du Links weiterleitest, nimmst du dieses Tracking automatisch mit.
+          </li>
+          <li>
+            <strong>Saubere, lesbare URLs</strong><br>
+            Ein Link ohne Parameter ist kürzer, übersichtlicher und leichter zu prüfen. 
+            Gerade in Mails, Messengern oder Präsentationen wirkt das deutlich klarer.
+          </li>
+          <li>
+            <strong>Datensparsamkeit aus Prinzip</strong><br>
+            Du musst Tracking nicht „perfekt bekämpfen“, aber du kannst bewusst entscheiden, welche 
+            Informationen du weitergibst – und welche nicht.
+          </li>
+        </ol>
+        <p>
+          Wichtig: Wenn du selbst professionell Kampagnen trackst, brauchst du UTM-Parameter natürlich 
+          auf deinen eigenen Links. Für das private Weiterleiten fremder Links sind sie jedoch meistens entbehrlich.
+        </p>
+      </section>
+
+      <section id="manuell-entfernen">
+        <h2>UTM-Parameter manuell aus Links entfernen</h2>
+        <p>
+          Grundsätzlich kannst du UTM-Parameter auch von Hand loswerden. Das ist vor allem dann sinnvoll, 
+          wenn du nur gelegentlich bewusst einen Link „aufräumen“ willst.
+        </p>
+
+        <h3>Schritt-für-Schritt: UTM-Parameter manuell entfernen</h3>
+        <ol>
+          <li>Link in die Adresszeile oder ein Textfeld kopieren.</li>
+          <li>
+            Alles ab dem Fragezeichen <code>?</code> prüfen: Dort beginnen die Parameter, getrennt durch <code>&amp;</code>.
+          </li>
+          <li>
+            Alle Teile, die mit <code>utm_</code> anfangen (z.&nbsp;B. <code>utm_source=...</code>), markieren und löschen.
+          </li>
+          <li>
+            Falls noch andere Parameter wichtig sind (z.&nbsp;B. Sprache, Filter), kannst du sie stehen lassen.
+          </li>
+          <li>Den aufgeräumten Link testen und dann weitergeben.</li>
+        </ol>
+
+        <p>
+          Das Problem: Manuell wird das schnell mühsam – vor allem auf dem Smartphone oder wenn mehrere 
+          Links nacheinander bereinigt werden sollen. Genau hier setzt SafeShare an.
+        </p>
+      </section>
+
+      <section id="automatisch-mit-safeshare">
+        <h2>UTM-Parameter automatisch entfernen – mit der SafeShare-App</h2>
+        <p>
+          <strong>SafeShare</strong> ist eine kleine Web-App, die genau diesen Schritt für dich übernimmt. 
+          Du musst nichts installieren, kein Konto anlegen und keine Daten hochladen – die Verarbeitung 
+          läuft im Browser.
+        </p>
+
+        <h3>So funktioniert es</h3>
+        <ol>
+          <li>Öffne die App: <a href="app.html">SafeShare-App starten</a>.</li>
+          <li>Füge deinen Link in das Eingabefeld ein (Einfügen oder Einfügen &amp; Öffnen).</li>
+          <li>SafeShare entfernt typische UTM-Parameter und andere bekannte Tracking-Zusätze.</li>
+          <li>Du siehst die bereinigte URL und kannst sie kopieren oder direkt öffnen.</li>
+        </ol>
+
+        <div class="cta-block">
+          <h3>Jetzt ausprobieren</h3>
+          <p>Teste SafeShare direkt im Browser – ohne Login, ohne Installation.</p>
+          <p class="cta-actions">
+            <a class="btn btn-primary" href="app.html">Zur SafeShare-App</a>
+            <a class="btn btn-ghost" href="pro.html">Mehr über SafeShare&nbsp;Pro</a>
+          </p>
+        </div>
+
+        <p>
+          In <a href="tracking-parameter-entfernen.html">diesem Artikel zu Tracking-Parametern allgemein</a> 
+          erfährst du, welche weiteren Parameter – neben UTM – häufig in Links auftauchen.
+        </p>
+      </section>
+
+      <section id="typische-utm-parameter">
+        <h2>Typische UTM-Parameter im Überblick</h2>
+        <p>
+          Diese UTM-Parameter begegnen dir am häufigsten. SafeShare erkennt und entfernt sie standardmäßig:
+        </p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Bedeutung</th>
+              <th>Beispiel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>utm_source</code></td>
+              <td>Quelle (z.&nbsp;B. Newsletter, Plattform)</td>
+              <td><code>utm_source=newsletter</code></td>
+            </tr>
+            <tr>
+              <td><code>utm_medium</code></td>
+              <td>Medium/Kanal</td>
+              <td><code>utm_medium=email</code></td>
+            </tr>
+            <tr>
+              <td><code>utm_campaign</code></td>
+              <td>Name der Kampagne</td>
+              <td><code>utm_campaign=sommer_sale</code></td>
+            </tr>
+            <tr>
+              <td><code>utm_term</code></td>
+              <td>Keyword bei Anzeigen (optional)</td>
+              <td><code>utm_term=sneaker%20kaufen</code></td>
+            </tr>
+            <tr>
+              <td><code>utm_content</code></td>
+              <td>Unterscheidung von Varianten/Links (optional)</td>
+              <td><code>utm_content=button_a</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          Zusätzlich gibt es weitere Tracking-Parameter außerhalb des UTM-Schemas, z.&nbsp;B. 
+          <code>gclid</code> (Google Ads), <code>fbclid</code> (Facebook/Meta) oder komplexe 
+          Parameter mit Kodierungen. SafeShare versucht, beides zu berücksichtigen: 
+          klassische UTM-Parameter und andere gängige Tracking-Zusätze.
+        </p>
+
+        <p>
+          Einen Überblick über verschiedene Tools findest du im 
+          <a href="url-cleaner-tool-vergleich.html">Vergleich von URL-Cleaner-Tools</a>.
+        </p>
+      </section>
+
+      <section id="faq-utm-parameter-entfernen" class="article-faq">
+        <h2>Häufige Fragen zum Entfernen von UTM-Parametern</h2>
+
+        <h3>Geht beim Entfernen von UTM-Parametern etwas „kaputt“?</h3>
+        <p>
+          In den meisten Fällen nein: Die Seite lädt ganz normal, nur das Tracking im Hintergrund 
+          bekommt weniger Kontext. Manche Spezialfunktionen (z.&nbsp;B. exakt gemessene Kampagnen) 
+          funktionieren für die Betreiber:innen dann nicht mehr so präzise – für dich als Nutzer:in 
+          ändert sich aber nichts Wesentliches.
+        </p>
+
+        <h3>Sehen Webseiten-Betreiber dann gar nichts mehr?</h3>
+        <p>
+          Die meisten Seiten erfassen weiterhin Basisdaten (z.&nbsp;B. Seitenaufrufe, Browser, grobe Region), 
+          oft über eigene Webstatistiken oder externe Dienste. UTM-Parameter sind vor allem für 
+          Kampagnen-Feintuning gedacht. Ohne UTM schränkst du das „Feintuning“ ein – nicht jede Form 
+          der Analyse.
+        </p>
+
+        <h3>Reicht es, wenn ich nur UTM-Parameter entferne?</h3>
+        <p>
+          UTM-Parameter zu entfernen ist ein guter, einfacher Schritt in Richtung Datensparsamkeit. 
+          Wenn du noch weiter gehen möchtest, kannst du zusätzlich:
+        </p>
+        <ul>
+          <li>datenschutzfreundliche Browser und Suchmaschinen nutzen,</li>
+          <li>Tracker-Blocker einsetzen,</li>
+          <li>bewusst mit Logins und Freigaben umgehen.</li>
+        </ul>
+        <p>
+          SafeShare versteht sich als Baustein: Link-Hygiene – nicht als vollständiger 
+          Tracking-Schutzschirm.
+        </p>
+
+        <h3>Bietet SafeShare eine „Pro“-Variante?</h3>
+        <p>
+          Ja. Wenn du viele Links bearbeitest (z.&nbsp;B. als Newsletter-Owner, Blogger:in oder 
+          für kleine Teams), kannst du <strong>SafeShare&nbsp;Pro</strong> nutzen.  
+          Infos und Kaufmöglichkeit:
+          <a href="pro.html">SafeShare Pro ansehen</a>.
+        </p>
+      </section>
+
+      <section class="article-next">
+        <h2>Wie geht es weiter?</h2>
+        <p>
+          Wenn du einmal bewusst erlebt hast, wie viele Tracking-Parameter an Links hängen, 
+          möchtest du sie oft nicht mehr ungeprüft weitergeben. SafeShare hilft dir, das 
+          im Alltag schnell und ohne großen Aufwand umzusetzen.
+        </p>
+        <p class="cta-actions">
+          <a class="btn btn-primary" href="app.html">SafeShare jetzt testen</a>
+          <a class="btn btn-ghost" href="tracking-parameter-entfernen.html">Mehr zu Tracking-Parametern lesen</a>
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span>&copy; Jana Jergus / SafeShare</span>
       </div>
-      <p class="hint">
-        Dieser Text ersetzt keine Rechtsberatung – er soll dir helfen, bewusster mit
-        Links und Tracking umzugehen.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>Was sind UTM-Parameter?</h2>
-      <p>
-        UTM-Parameter sind zusätzliche Informationen am Ende einer URL. Sie beginnen
-        meistens mit <code>?utm_...</code> oder <code>&amp;utm_...</code> und werden von
-        Analyse-Tools wie Google Analytics genutzt, um zu erkennen, woher ein Klick
-        kommt.
-      </p>
-      <p>Typische Beispiele:</p>
-      <ul>
-        <li><code>utm_source=newsletter</code> – aus welchem Kanal kommt der Klick?</li>
-        <li><code>utm_medium=email</code> – welches Medium wurde genutzt?</li>
-        <li><code>utm_campaign=herbstaktion</code> – welche Kampagne steckt dahinter?</li>
-      </ul>
-      <p>
-        Für Webseitenbetreiber:innen kann das hilfreich sein. Für Menschen, die Links
-        anklicken oder weiterleiten, bedeuten diese Parameter aber: mehr Daten, mehr
-        Nachvollziehbarkeit, weniger Einfachheit.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>Wo UTM-Parameter typischerweise auftauchen</h2>
-      <p>In der Praxis begegnen dir UTM-Parameter vor allem hier:</p>
-      <ul>
-        <li><strong>Newsletter &amp; E-Mail-Kampagnen:</strong> Links in Mailings werden fast immer mit UTM-Parametern versehen.</li>
-        <li><strong>Social Media Posts &amp; Anzeigen:</strong> Kampagnen-Links enthalten zusätzliche Parameter, um Klicks zu messen.</li>
-        <li><strong>Blogger &amp; Affiliate-Links:</strong> Links werden erweitert, um zu sehen, welche Beiträge zu Klicks führen.</li>
-        <li><strong>PDFs, Präsentationen, QR-Codes:</strong> Auch hier werden oft UTM-Parameter genutzt, um Downloads und Aufrufe zu verfolgen.</li>
-      </ul>
-      <p>
-        Das Ergebnis: Links werden lang, schwer lesbar und transportieren Informationen,
-        die Empfänger:innen oft gar nicht kennen oder wollen.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>Warum UTM-Parameter entfernen?</h2>
-      <p>Es gibt mehrere gute Gründe, UTM-Parameter zu entfernen – zumindest, bevor du einen Link weitergibst:</p>
-      <ul>
-        <li><strong>Klarheit:</strong> Die eigentliche Zieladresse ist wieder sichtbar.</li>
-        <li><strong>Datensparsamkeit:</strong> Nicht jede:r muss wissen, aus welcher Kampagne dein Klick stammt.</li>
-        <li><strong>Weniger „Mitreisen“ von Kontext:</strong> Ein Link, den du privat weiterleitest, muss nicht deine ursprüngliche Quelle verraten.</li>
-        <li><strong>Weniger Durcheinander in Beiträgen &amp; PDFs:</strong> kürzere, übersichtlichere Links.</li>
-      </ul>
-      <p>
-        Wenn du selbst Kampagnen misst, kannst du UTM-Parameter bewusst und gezielt
-        einsetzen – und sie in vielen anderen Situationen weglassen.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>UTM-Parameter in einer URL erkennen</h2>
-      <p>
-        UTM-Parameter hängen meist nach einem Fragezeichen an der URL und sind mit
-        <code>&amp;</code> verknüpft.
-      </p>
-      <p>Beispiel:</p>
-      <p>
-        <code>https://www.beispiel.de/artikel?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=herbstaktion</code>
-      </p>
-      <p>
-        Alles, was mit <code>utm_</code> beginnt, ist ein UTM-Parameter. Zusätzlich
-        können noch andere Tracking-Parameter vorhanden sein (z. B. <code>gclid</code>
-        oder <code>fbclid</code>), um Werbe-Klicks genauer zuzuordnen.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>UTM-Parameter manuell entfernen – Schritt für Schritt</h2>
-      <ol>
-        <li>Kopiere den Link in ein Textfeld (z. B. Notizen oder ein Textfeld im Browser).</li>
-        <li>Suche nach <code>?utm_</code> oder <code>&amp;utm_</code>.</li>
-        <li>
-          Entferne alles ab dem Fragezeichen (wenn der Link nur aus UTM-Parametern
-          besteht) oder nur die einzelnen <code>utm_...</code>-Teile.
-        </li>
-        <li>Achte darauf, kein <code>/</code> oder Teile der eigentlichen Domain zu löschen.</li>
-        <li>Teste den bereinigten Link im Browser.</li>
-      </ol>
-      <p>
-        Manuell funktioniert das – ist aber mühsam, besonders bei langen Links oder
-        vielen Links auf einmal. Genau hier setzt SafeShare an.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>UTM-Parameter mit SafeShare entfernen</h2>
-      <p>
-        SafeShare ist eine kleine Web-App, die dir genau diese Arbeit abnimmt.
-        Du fügst einen Link ein, SafeShare entfernt typische Tracking-Parameter
-        (u. a. <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>) und zeigt
-        dir die bereinigte Ziel-URL.
-      </p>
-      <ol>
-        <li>Öffne die <a href="app.html">SafeShare App</a>.</li>
-        <li>Füge den kompletten Link in das Eingabefeld ein.</li>
-        <li>Klicke auf „Tracking-Parameter jetzt entfernen“.</li>
-        <li>Nutze den bereinigten Link zum Teilen, in Newslettern, Social-Posts oder PDFs.</li>
-      </ol>
-      <p>
-        Wenn du regelmäßig mit vielen Links arbeitest (z. B. Newsletter, Kampagnen,
-        Content-Planung), kann sich <a href="pro.html">SafeShare Pro</a> lohnen, um
-        Routinen und eigene Regeln zu etablieren.
-      </p>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="app.html">SafeShare App öffnen</a>
-        <a class="btn btn-ghost" href="pro.html">Mehr zu SafeShare Pro</a>
+      <div class="footer-right">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
       </div>
-    </article>
-
-    <article class="card">
-      <h2>Ethisches Tracking: Wann UTM-Parameter sinnvoll sind – und wann nicht</h2>
-      <p>
-        UTM-Parameter sind nicht per se „böse“. Sie können helfen, grob zu verstehen,
-        welche Kampagnen oder Kanäle funktionieren. Problematisch wird es, wenn:
-      </p>
-      <ul>
-        <li>jeder Link automatisch mit dutzenden Parametern überladen wird,</li>
-        <li>Empfänger:innen nicht verstehen, was alles mitübertragen wird,</li>
-        <li>Kombinationen mit anderen Tracking-Mechanismen entstehen (Profile, IDs, Logins).</li>
-      </ul>
-      <p>Ein paar einfache Leitlinien können helfen:</p>
-      <ul>
-        <li>UTM-Parameter sparsam und bewusst einsetzen.</li>
-        <li>Konsequent aufräumen, bevor du Links privat weiterleitest.</li>
-        <li>Transparenz, wenn du für andere Kampagnen baust („wir messen grob, nicht jede Bewegung“).</li>
-      </ul>
-    </article>
-
-    <article class="card">
-      <h2>FAQ: Häufige Fragen zu UTM-Parametern</h2>
-
-      <p class="faq-q">Sind UTM-Parameter verboten oder rechtlich problematisch?</p>
-      <p>
-        UTM-Parameter sind zunächst nur Textteile in einer URL. Ob und wie sie
-        rechtlich relevant sind, hängt vom Gesamtsystem ab (Analytics-Tools,
-        Cookies, Profilbildung etc.). Dieser Text ist keine Rechtsberatung –
-        er soll dir helfen, das Thema einzuordnen und bewusster mit Links
-        umzugehen.
-      </p>
-
-      <p class="faq-q">Brechen Links, wenn ich UTM-Parameter entferne?</p>
-      <p>
-        In der Regel nicht: die eigentliche Ziel-URL bleibt erhalten. UTM-Parameter
-        dienen vor allem der Messung. Seriöse Seiten sollten auch ohne diese
-        Parameter funktionieren. Es kann Ausnahmen geben – im Zweifel testest du
-        den bereinigten Link einmal im Browser.
-      </p>
-
-      <p class="faq-q">Kann ich weiterhin grob messen, ohne überall UTM dranzuhängen?</p>
-      <p>
-        Ja. Viele Systeme bieten bereits grundsätzliche Statistiken (z. B. Öffnungen
-        im Newsletter-Tool, Klicks auf einzelne Links), ohne dass du jedes Detail
-        mit UTM-Parametern markierst. Zusätzlich kannst du eigene, sparsame
-        Parameter nutzen – wichtig ist, dass du sie bewusst und nicht aus Gewohnheit
-        einsetzt.
-      </p>
-
-      <p class="faq-q">Wie passt SafeShare dazu?</p>
-      <p>
-        SafeShare hilft dir, Links aufzuräumen, bevor du sie teilst – unabhängig
-        davon, ob du sie von anderen bekommst oder selbst erstellt hast. Die App
-        ersetzt kein komplexes Analytics-Setup, sondern unterstützt dich dabei,
-        Datensparsamkeit im Alltag zu leben.
-      </p>
-    </article>
-
-    <!-- CTA-Block unten -->
-    <article class="card">
-      <h2>Nächster Schritt: Links bewusst bereinigen</h2>
-      <p>
-        Wenn du nach diesem Text bewusster mit UTM-Parametern umgehen möchtest,
-        kannst du sofort starten:
-      </p>
-      <ul>
-        <li>nutze die <a href="app.html">SafeShare App</a> für einzelne Links,</li>
-        <li>prüfe deine wichtigsten Newsletter- oder Social-Links,</li>
-        <li>entscheide, wo du künftig ohne UTM-Parameter auskommst.</li>
-      </ul>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="app.html">SafeShare App öffnen</a>
-        <a class="btn btn-ghost" href="pro.html">SafeShare Pro für Vielnutzer:innen</a>
-      </div>
-    </article>
-
-  </div>
-</main>
-
-<footer>
-  <div class="footer-row">
-    <div>© SafeShare – Jana Jergus</div>
-    <div class="footer-links">
-      <a href="index.html">Startseite</a>
-      <a href="app.html">App</a>
-      <a href="pro.html">Pro</a>
-      <a href="help.html">Hilfe</a>
-      <a href="impressum.html">Impressum</a>
-      <a href="datenschutz.html">Datenschutz</a>
-      <a href="terms.html">Terms</a>
     </div>
-  </div>
-</footer>
+  </footer>
+
+  <!-- FAQ-Schema für bessere Chancen auf Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Geht beim Entfernen von UTM-Parametern etwas kaputt?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "In den meisten Fällen nein. Die Seite lädt normal, nur das Tracking im Hintergrund bekommt weniger Kontext. UTM-Parameter werden vor allem für Kampagnen-Feintuning genutzt."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Reicht es, wenn ich nur UTM-Parameter entferne?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "UTM-Parameter zu entfernen ist ein guter Schritt in Richtung Datensparsamkeit. Wenn du weiter gehen möchtest, kannst du zusätzlich datenschutzfreundliche Browser, Tracker-Blocker und bewusste Logins nutzen."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Bietet SafeShare eine Pro-Variante?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ja. SafeShare Pro richtet sich an Menschen und Teams, die viele Links bearbeiten. Es baut auf der kostenlosen Web-App auf und ergänzt sie um zusätzliche Funktionen und Materialien."
+        }
+      }
+    ]
+  }
+  </script>
 </body>
 </html>
