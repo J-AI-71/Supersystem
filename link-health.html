@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Link-Health Check – schnelle URL-Analyse | SafeShare</title>
+  <meta name="description" content="Schneller Link-Health Check: Schema, Domain, Länge, Tracking-Parameter und grobe Lesbarkeit einer URL prüfen – ohne externe Requests.">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/link-health.html">
+
+  <!-- Favicon -->
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+
+  <!-- Search Console / Bing -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Link-Health Check – schnelle URL-Analyse">
+  <meta property="og:description" content="Prüfe Schema, Domain, Parameter und grobe Lesbarkeit einer URL, bevor du sie teilst – mit dem SafeShare Link-Health Check.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/link-health.html">
+  <meta property="og:site_name" content="SafeShare">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Link-Health Check – schnelle URL-Analyse">
+  <meta name="twitter:description" content="Leichter Linkchecker für Struktur, Tracking-Anteil und Lesbarkeit von URLs – ohne externe Requests.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
+
+  <style>
+    :root{
+      --bg:#050810;
+      --card:#0d111c;
+      --text:#f5f7ff;
+      --muted:#9aa4c6;
+      --border:#1b2335;
+      --accent:#3dd5b0;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:#8be5ca;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(16px);
+      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
+      border-bottom:1px solid rgba(36,46,78,.7);
+    }
+    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
+    }
+    .nav-left{display:flex;align-items:center;gap:8px;}
+    .logo-mark{
+      width:28px;height:28px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+    }
+    .logo-mark img{width:22px;height:22px;object-fit:contain;}
+    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
+    .nav-links a{text-decoration:none;}
+    @media(max-width:720px){.nav-links{display:none;}}
+
+    main{padding:26px 0 40px;}
+    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
+    h2{font-size:20px;margin:24px 0 10px;}
+    h3{font-size:16px;margin:18px 0 6px;}
+    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
+    ul,ol{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 12px;}
+
+    .card{
+      background:rgba(9,14,30,.96);
+      border-radius:16px;
+      padding:18px 16px 16px;
+      border:1px solid var(--border);
+      margin-bottom:18px;
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:11px;padding:4px 9px;border-radius:999px;
+      border:1px solid rgba(61,213,176,.5);
+      background:rgba(5,11,24,.96);color:#ccefe4;
+      margin-bottom:10px;
+    }
+    .badge-dot{
+      width:7px;height:7px;border-radius:50%;
+      background:#3dd5b0;box-shadow:0 0 10px rgba(61,213,176,.8);
+    }
+    .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      gap:6px;border-radius:999px;padding:8px 14px;
+      font-size:13px;border:1px solid transparent;
+      text-decoration:none;cursor:pointer;white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(120deg,#3dd5b0,#ffc98b);
+      color:#050810;font-weight:600;
+    }
+    .btn-ghost{
+      border-color:rgba(99,110,160,.8);
+      color:var(--muted);background:rgba(9,15,32,.9);
+    }
+    .hint{
+      font-size:12px;color:var(--muted);
+      border-left:2px solid rgba(61,213,176,.7);
+      padding-left:10px;margin:8px 0 12px;
+    }
+
+    .input-label{
+      font-size:12px;color:var(--muted);margin-bottom:4px;
+      display:flex;justify-content:space-between;gap:8px;
+    }
+    .input-wrap{position:relative;}
+    textarea{
+      width:100%;
+      background:#050814;
+      border-radius:11px;
+      border:1px solid rgba(55,69,110,.9);
+      padding:9px 36px 9px 10px;
+      font-size:14px;
+      color:var(--text);
+      font-family:inherit;
+      resize:vertical;
+      min-height:40px;
+    }
+    textarea:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(61,213,176,.4);
+    }
+    .clear-btn{
+      position:absolute;
+      right:8px;top:50%;transform:translateY(-50%);
+      width:20px;height:20px;border-radius:999px;
+      border:1px solid rgba(90,100,150,.8);
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;color:var(--muted);
+      background:rgba(6,10,22,.95);
+      cursor:pointer;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .metric{
+      border-radius:12px;
+      border:1px solid rgba(44,57,103,.9);
+      padding:10px 10px 8px;
+      background:rgba(7,11,24,.98);
+      font-size:13px;
+    }
+    .metric-title{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .metric-value{
+      font-size:13px;
+      color:var(--text);
+      margin-bottom:4px;
+    }
+    .metric-note{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .status-line{font-size:12px;color:var(--muted);margin-top:8px;}
+    #error-line{font-size:12px;margin-top:8px;}
+
+    footer{
+      border-top:1px solid rgba(36,46,78,.7);
+      padding:14px 0 22px;font-size:11px;
+      color:var(--muted);margin-top:10px;
+    }
+    .footer-row{
+      max-width:880px;margin:0 auto;padding:0 18px;
+      display:flex;justify-content:space-between;
+      gap:10px;flex-wrap:wrap;
+    }
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
+  </style>
+</head>
+<body>
+<header>
+  <div class="shell">
+    <div class="nav">
+      <div class="nav-left">
+        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
+        <div class="logo-title">SafeShare</div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="utm-parameter-entfernen.html">UTM-Guide</a>
+        <a href="tracking-parameter-entfernen.html">Tracking-Parameter</a>
+        <a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Vergleich</a>
+        <a href="help.html">Hilfe</a>
+        <a href="pro.html">Pro</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="shell">
+
+    <article class="card">
+      <div class="badge"><span class="badge-dot"></span> Link-Health</div>
+      <h1>Link-Health Check – schnelle URL-Analyse</h1>
+      <p>
+        Dieser leichte Linkchecker bewertet eine URL, ohne externe Server
+        anzusprechen. Er schaut sich Struktur, Länge, Schema und den Anteil
+        an Tracking-Parametern an – als Ergänzung zum SafeShare Link-Cleaner.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="app.html">Links direkt bereinigen</a>
+        <a class="btn btn-ghost" href="redirect-entschachteln.html">Weiterleitungen analysieren</a>
+      </div>
+      <p class="hint">
+        Kein Ersatz für vollwertige Security- und Status-Checks, sondern ein
+        schnelles Gefühl dafür, wie „gesund“ ein Link aussieht, bevor du ihn
+        teilst oder in Dokumente einbaust.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>Schnelle Struktur-Analyse für einen Link</h2>
+      <div class="input-label">
+        <span>1) Link einfügen</span>
+        <span>z. B. aus Mail, Social, Messenger …</span>
+      </div>
+      <div class="input-wrap">
+        <textarea id="input-url" placeholder="Hier die URL einfügen …"></textarea>
+        <button type="button" class="clear-btn" id="clear-input" aria-label="Eingabe löschen">×</button>
+      </div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button type="button" class="btn btn-primary" id="analyze-btn">Link-Health prüfen</button>
+        <button type="button" class="btn btn-ghost" id="demo-btn">Beispiellink einsetzen</button>
+      </div>
+      <div id="error-line"></div>
+
+      <div id="result-section" style="display:none;margin-top:14px;">
+        <div class="grid">
+          <div class="metric">
+            <div class="metric-title">Schema &amp; Domain</div>
+            <div class="metric-value" id="metric-scheme-domain"></div>
+            <div class="metric-note" id="note-scheme-domain"></div>
+          </div>
+          <div class="metric">
+            <div class="metric-title">Länge &amp; Komplexität</div>
+            <div class="metric-value" id="metric-length"></div>
+            <div class="metric-note" id="note-length"></div>
+          </div>
+          <div class="metric">
+            <div class="metric-title">Tracking-Anteil (geschätzt)</div>
+            <div class="metric-value" id="metric-tracking"></div>
+            <div class="metric-note" id="note-tracking"></div>
+          </div>
+          <div class="metric">
+            <div class="metric-title">Lesbarkeit</div>
+            <div class="metric-value" id="metric-readability"></div>
+            <div class="metric-note" id="note-readability"></div>
+          </div>
+        </div>
+        <div class="status-line" id="status-line"></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>Was dieser Link-Health Check nicht macht</h2>
+      <ul>
+        <li>keine HTTP-Requests zu fremden Servern</li>
+        <li>keine echten Statuscodes (200, 301, 404 etc.)</li>
+        <li>keine SSL-/Zertifikatsprüfung</li>
+        <li>keine Malware-/Phishing-Erkennung</li>
+      </ul>
+      <p>
+        Für all das brauchst du externe Linkchecker, Security-Scanner und ggf.
+        spezialisierte Dienste. SafeShare bleibt bewusst auf Link-Hygiene
+        spezialisiert: Struktur, Tracking-Anteil, Weiterleitungen in der URL.
+      </p>
+    </article>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>© SafeShare – Jana Jergus</div>
+    <div class="footer-links">
+      <a href="index.html">Startseite</a>
+      <a href="app.html">App</a>
+      <a href="pro.html">Pro</a>
+      <a href="help.html">Hilfe</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    const inputEl = document.getElementById('input-url');
+    const clearBtn = document.getElementById('clear-input');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const demoBtn = document.getElementById('demo-btn');
+    const errorLine = document.getElementById('error-line');
+    const resultSection = document.getElementById('result-section');
+    const statusLine = document.getElementById('status-line');
+
+    const metricSchemeDomain = document.getElementById('metric-scheme-domain');
+    const noteSchemeDomain = document.getElementById('note-scheme-domain');
+    const metricLength = document.getElementById('metric-length');
+    const noteLength = document.getElementById('note-length');
+    const metricTracking = document.getElementById('metric-tracking');
+    const noteTracking = document.getElementById('note-tracking');
+    const metricReadability = document.getElementById('metric-readability');
+    const noteReadability = document.getElementById('note-readability');
+
+    function setError(msg){
+      errorLine.textContent = msg || '';
+      errorLine.style.color = msg ? '#ff9e9e' : 'var(--muted)';
+    }
+
+    function normalizeUrl(text){
+      const t = text.trim();
+      if(!t) return null;
+      let candidate = t;
+      if(!/^https?:\/\//i.test(candidate)){
+        candidate = 'https://' + candidate;
+      }
+      try{return new URL(candidate);}catch(e){return null;}
+    }
+
+    function isTrackingParam(name){
+      if(!name) return false;
+      const n = name.toLowerCase();
+      if(n.startsWith('utm_')) return true;
+      const known = [
+        'gclid','fbclid','dclid','yclid','twclid',
+        'mc_cid','mc_eid','vero_conv','vero_id',
+        'igshid','rb_clickid','ml_subscriber','ml_subscriber_hash'
+      ];
+      if(known.indexOf(n) !== -1) return true;
+      const patterns = ['pk_','piwik_','ga_'];
+      for(const p of patterns){
+        if(n.startsWith(p)) return true;
+      }
+      return false;
+    }
+
+    function analyze(url){
+      const scheme = url.protocol.replace(':','');
+      const domain = url.hostname;
+      const full = url.href;
+      const length = full.length;
+
+      // Schema & Domain
+      metricSchemeDomain.textContent = scheme + '://' + domain;
+      if(scheme === 'https'){
+        noteSchemeDomain.textContent = 'HTTPS ist Standard und wird in den meisten Fällen empfohlen.';
+      }else if(scheme === 'http'){
+        noteSchemeDomain.textContent = 'HTTP ohne Verschlüsselung – für viele Szenarien heute nicht mehr ideal.';
+      }else{
+        noteSchemeDomain.textContent = 'Ungewöhnliches Schema – prüfe, ob du dem Link vertraust.';
+      }
+
+      // Länge
+      metricLength.textContent = length + ' Zeichen';
+      if(length <= 120){
+        noteLength.textContent = 'Kurz und übersichtlich – gut für Lesbarkeit und Kommunikation.';
+      }else if(length <= 250){
+        noteLength.textContent = 'Mittlere Länge – noch okay, aber nicht ideal für gedruckte Medien.';
+      }else{
+        noteLength.textContent = 'Sehr langer Link – deutet oft auf viele Parameter oder Tracking hin.';
+      }
+
+      // Tracking-Anteil
+      const params = url.searchParams;
+      let totalParams = 0;
+      let trackingParams = 0;
+      params.forEach((v,k) => {
+        totalParams++;
+        if(isTrackingParam(k)) trackingParams++;
+      });
+
+      let trackingLabel;
+      let trackingNote;
+      if(totalParams === 0){
+        trackingLabel = '0 / 0';
+        trackingNote = 'Keine sichtbaren Query-Parameter – sehr aufgeräumt.';
+      }else{
+        trackingLabel = trackingParams + ' / ' + totalParams;
+        const ratio = trackingParams / totalParams;
+        if(ratio === 0){
+          trackingNote = 'Keine typischen Tracking-Parameter erkannt.';
+        }else if(ratio <= 0.4){
+          trackingNote = 'Ein Teil der Parameter sieht nach Tracking aus – SafeShare kann hier helfen.';
+        }else{
+          trackingNote = 'Großer Teil der Parameter scheint Tracking zu sein – empfehlenswert, den Link mit SafeShare zu bereinigen.';
+        }
+      }
+      metricTracking.textContent = trackingLabel;
+      noteTracking.textContent = trackingNote;
+
+      // Lesbarkeit (sehr grob)
+      const path = url.pathname || '/';
+      const segments = path.split('/').filter(Boolean);
+      const encodedChars = (full.match(/%[0-9A-Fa-f]{2}/g) || []).length;
+      const hasManyEncoded = encodedChars > 8;
+      const hasManySegments = segments.length > 5;
+      const hasLongSegment = segments.some(s => s.length > 40);
+
+      if(!hasManyEncoded && !hasManySegments && !hasLongSegment && length <= 150){
+        metricReadability.textContent = 'gut lesbar';
+        noteReadability.textContent = 'Struktur wirkt übersichtlich, Pfad ist nicht übertrieben verschachtelt.';
+      }else if(length <= 260){
+        metricReadability.textContent = 'mittel';
+        noteReadability.textContent = 'Der Link ist okay, aber nicht besonders leserfreundlich – für interne Zwecke meist ausreichend.';
+      }else{
+        metricReadability.textContent = 'gering';
+        noteReadability.textContent = 'Sehr komplexe oder kodierte Struktur – für Kommunikation eher ungeeignet, besser vorher bereinigen oder kürzen.';
+      }
+
+      statusLine.textContent = 'Hinweis: Dieser Check bewertet nur die Struktur der URL, nicht die dahinterliegende Seite.';
+    }
+
+    function handleAnalyze(){
+      setError('');
+      resultSection.style.display = 'none';
+      statusLine.textContent = '';
+
+      const raw = inputEl.value.trim();
+      if(!raw){
+        setError('Bitte zuerst einen Link einfügen.');
+        return;
+      }
+      const lines = raw.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+      let candidate = raw;
+      if(lines.length>1){
+        const urlish = lines.find(l => l.startsWith('http://') || l.startsWith('https://') || l.startsWith('www.'));
+        if(urlish) candidate = urlish;
+      }
+      const url = normalizeUrl(candidate);
+      if(!url){
+        setError('Die Eingabe sieht nicht wie ein gültiger Link aus.');
+        return;
+      }
+      analyze(url);
+      resultSection.style.display = 'block';
+    }
+
+    function handleDemo(){
+      const example = 'https://www.beispiel.de/artikel/12345?utm_source=newsletter&utm_medium=email&utm_campaign=herbstaktion&gclid=ABC123';
+      inputEl.value = example;
+      setError('');
+      resultSection.style.display = 'none';
+      statusLine.textContent = '';
+    }
+
+    clearBtn.addEventListener('click', function(){
+      inputEl.value = '';
+      inputEl.focus();
+      setError('');
+      resultSection.style.display = 'none';
+      statusLine.textContent = '';
+    });
+
+    analyzeBtn.addEventListener('click', handleAnalyze);
+    demoBtn.addEventListener('click', handleDemo);
+  })();
+</script>
+</body>
+</html>
