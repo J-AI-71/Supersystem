@@ -1,0 +1,119 @@
+/* Basis-Layout */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #020617;
+  --bg-elevated: #020617;
+  --border-subtle: #1e293b;
+  --text: #e5e7eb;
+  --text-muted: #94a3b8;
+  --accent: #4adeb8;
+  --accent-soft: rgba(74, 222, 184, 0.16);
+  --accent-strong: #22c29b;
+  --danger: #f97373;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: radial-gradient(circle at top, #020617 0, #000 60%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Links */
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+}
+
+/* Layout-Hülle */
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+/* Header / Navigation */
+
+.site-header {
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(16px);
+}
+
+.site-header .page {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.logo a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text);
+}
+
+.logo a:hover {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.site-nav a {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+}
+
+.site-nav a[aria-current="page"] {
+  color: var(--accent-strong);
+  border-color: var(--accent-soft);
+  background: rgba(15, 118, 110, 0.16);
+}
+
+.site-nav a:hover {
+  color: var(--accent-strong);
+}
+
+/* Mobile */
+
+@media (max-width: 720px) {
+  .site-header .page {
+    flex-direction: column;
+    align-items: flex-start;
+   
