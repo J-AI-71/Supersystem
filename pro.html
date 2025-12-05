@@ -1,333 +1,495 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
+  <title>SafeShare Pro – Routinen für saubere Links</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SafeShare Pro hilft dir, Link-Hygiene im Alltag stabil zu verankern – mit Routinen, Checklisten und Vorlagen für Einzelpersonen und Teams.">
 
-  <title>SafeShare Pro – für Menschen und Teams, die täglich mit Links arbeiten</title>
-  <meta name="description" content="SafeShare Pro erweitert die SafeShare Web-App um Funktionen für Menschen und Teams, die regelmäßig mit Links arbeiten – mit fairen Lizenzen für Person und Team.">
-
-  <!-- Canonical -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro.html">
 
-  <!-- Favicon -->
-  <link rel="icon" href="logo.svg" type="image/svg+xml">
-
-  <!-- Search Console / Bing -->
+  <!-- Suchmaschinen-Verifikation -->
   <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
   <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
 
-  <!-- Open Graph -->
+  <!-- Open Graph / Social Preview -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SafeShare Pro – Link-Hygiene für Menschen und Teams">
-  <meta property="og:description" content="SafeShare Pro Person und SafeShare Pro Team – für alle, die Link-Hygiene bewusst in ihren Alltag integrieren möchten.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html">
   <meta property="og:site_name" content="SafeShare">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.svg">
+  <meta property="og:title" content="SafeShare Pro – Routinen für saubere Links">
+  <meta property="og:description" content="Vertiefe deine Link-Hygiene mit konkreten Routinen, Checklisten und Vorlagen für deinen Alltag und dein Team.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html">
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
 
-  <!-- Twitter Card -->
+  <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SafeShare Pro – Link-Hygiene für Menschen und Teams">
-  <meta name="twitter:description" content="Mehr Funktionen rund um Link-Hygiene, mit fairen Lizenzen für Einzelpersonen und kleine Teams.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.svg">
+  <meta name="twitter:title" content="SafeShare Pro – Routinen für saubere Links">
+  <meta name="twitter:description" content="Materialien und Routinen, damit Link-Hygiene ein fester, machbarer Teil deines Alltags wird.">
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
 
-  <!-- SoftwareApplication JSON-LD -->
+  <!-- JSON-LD: SoftwareApplication (gleich wie auf Start) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "SafeShare Pro",
-    "applicationCategory": "SecurityApplication",
-    "operatingSystem": "Any",
-    "description": "Erweiterte Funktionen rund um Link-Hygiene für Menschen und kleine Teams, die regelmäßig mit Links arbeiten – basierend auf der SafeShare Web-App.",
-    "url": "https://j-ai-71.github.io/Supersystem/pro.html",
-    "image": "https://j-ai-71.github.io/Supersystem/social-preview.svg",
-    "publisher": {
+    "@id": "https://j-ai-71.github.io/Supersystem/#safeshare",
+    "name": "SafeShare",
+    "operatingSystem": "Web",
+    "applicationCategory": "Utility",
+    "description": "SafeShare ist eine datensparsame Web-App, die Tracking-Parameter und unnötige Parameter aus Links entfernt, bevor du sie weitergibst.",
+    "url": "https://j-ai-71.github.io/Supersystem/",
+    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
+    "creator": {
       "@type": "Person",
       "name": "Jana Jergus"
     },
     "offers": [
       {
         "@type": "Offer",
-        "name": "SafeShare Pro Person",
+        "name": "SafeShare (Web-App)",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "name": "SafeShare Pro – Person",
+        "price": "19",
+        "priceCurrency": "EUR",
         "url": "https://payhip.com/b/VDm3B"
       },
       {
         "@type": "Offer",
-        "name": "SafeShare Pro Team (bis 5 Nutzer:innen)",
+        "name": "SafeShare Pro – Team",
+        "price": "49",
+        "priceCurrency": "EUR",
         "url": "https://payhip.com/b/Yxh5T"
       }
     ]
   }
   </script>
 
+  <!-- Layout / Styles (wie index) -->
   <style>
-    :root{
-      --bg:#050810;
-      --card:#0d111c;
-      --text:#f5f7ff;
-      --muted:#9aa4c6;
-      --border:#1b2335;
-      --accent:#3dd5b0;
-    }
-    *{box-sizing:border-box;}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
-      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-    }
-    a{color:#8be5ca;text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    header{
-      position:sticky;top:0;z-index:20;
-      backdrop-filter:blur(16px);
-      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
-      border-bottom:1px solid rgba(36,46,78,.7);
-    }
-    .shell{max-width:980px;margin:0 auto;padding:0 18px;}
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
-    }
-    .nav-left{display:flex;align-items:center;gap:8px;}
-    .logo-mark{
-      width:28px;height:28px;border-radius:999px;
-      border:1px solid rgba(61,213,176,.5);
-      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
-      display:flex;align-items:center;justify-content:center;overflow:hidden;
-    }
-    .logo-mark img{width:22px;height:22px;object-fit:contain;}
-    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
-    .nav-links{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;}
-    .nav-links a{text-decoration:none;}
-    @media(max-width:780px){.nav-links{display:none;}}
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
 
-    main{padding:26px 0 40px;}
-    h1{font-size:clamp(24px,4.5vw,30px);margin:0 0 10px;}
-    h2{font-size:20px;margin:20px 0 10px;}
-    h3{font-size:16px;margin:16px 0 6px;}
-    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
-    ul{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 12px;}
-
-    .card{
-      background:rgba(9,14,30,.96);
-      border-radius:16px;
-      padding:18px 16px 16px;
-      border:1px solid var(--border);
-      margin-bottom:18px;
-    }
-    .badge{
-      display:inline-flex;align-items:center;gap:6px;
-      font-size:11px;padding:4px 9px;border-radius:999px;
-      border:1px solid rgba(61,213,176,.5);
-      background:rgba(5,11,24,.96);color:#ccefe4;
-      margin-bottom:10px;
-    }
-    .badge-dot{
-      width:7px;height:7px;border-radius:50%;
-      background:#3dd5b0;box-shadow:0 0 10px rgba(61,213,176,.8);
-    }
-    .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      gap:6px;border-radius:999px;padding:8px 14px;
-      font-size:13px;border:1px solid transparent;
-      text-decoration:none;cursor:pointer;white-space:nowrap;
-    }
-    .btn-primary{
-      background:linear-gradient(120deg,#3dd5b0,#ffc98b);
-      color:#050810;font-weight:600;
-    }
-    .btn-ghost{
-      border-color:rgba(99,110,160,.8);
-      color:var(--muted);background:rgba(9,15,32,.9);
+    :root {
+      --bg: #020617;
+      --border-subtle: #1f2933;
+      --text: #e5e7eb;
+      --text-muted: #94a3b8;
+      --accent: #4adeb8;
+      --accent-soft: rgba(74, 222, 184, 0.14);
+      --accent-strong: #22c29b;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
     }
 
-    .columns{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:14px;
-      margin-top:8px;
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
     }
-    .plan{
-      background:rgba(7,11,24,.98);
-      border-radius:14px;
-      border:1px solid rgba(38,49,92,.9);
-      padding:12px 12px 10px;
-      font-size:13px;
-    }
-    .plan-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
-    .plan-tag{
-      display:inline-block;
-      font-size:11px;
-      padding:2px 8px;
-      border-radius:999px;
-      border:1px solid rgba(61,213,176,.7);
-      margin-bottom:4px;
-    }
-    .plan-foot{font-size:11px;color:var(--muted);margin-top:6px;}
 
-    footer{
-      border-top:1px solid rgba(36,46,78,.7);
-      padding:14px 0 22px;font-size:11px;
-      color:var(--muted);margin-top:10px;
+    body {
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top, #020617 0, #000 60%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
     }
-    .footer-row{
-      max-width:980px;margin:0 auto;padding:0 18px;
-      display:flex;justify-content:space-between;
-      gap:10px;flex-wrap:wrap;
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover, a:focus-visible { text-decoration: underline; }
+
+    .shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3.5rem;
     }
-    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
+
+    .site-header {
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .site-header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .brand-text-main {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-text-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+
+    .nav a {
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .nav a[aria-current="page"] {
+      color: var(--accent-strong);
+      border-color: var(--accent-soft);
+      background: rgba(15, 118, 110, 0.2);
+    }
+
+    .nav a:hover { color: var(--accent-strong); }
+
+    @media (max-width: 720px) {
+      .site-header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    main { margin-top: 2rem; }
+
+    .kicker {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 2.4vw + 1.5rem, 2.4rem);
+      margin: 0 0 0.75rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin: 2.1rem 0 0.6rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      margin: 1.3rem 0 0.4rem;
+    }
+
+    p {
+      line-height: 1.7;
+      margin: 0 0 0.9rem;
+    }
+
+    ul {
+      padding-left: 1.3rem;
+      margin: 0 0 1rem;
+      line-height: 1.7;
+    }
+
+    .lead {
+      font-size: 1.03rem;
+      color: var(--text-muted);
+      max-width: 56rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .hero-pro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      gap: 1.8rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 780px) {
+      .hero-pro {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+      }
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .badge {
+      font-size: 0.78rem;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .card {
+      border-radius: 1rem;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      padding: 1.3rem 1.35rem 1.2rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.4rem 0 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7rem 1.3rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #020617;
+      box-shadow: 0 10px 30px rgba(15, 118, 110, 0.35);
+    }
+
+    .btn-primary:hover { filter: brightness(1.05); text-decoration: none; }
+
+    .btn-outline {
+      border-color: var(--border-subtle);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-soft);
+      color: var(--accent-strong);
+      text-decoration: none;
+    }
+
+    .btn-subtle {
+      font-size: 0.9rem;
+      padding-inline: 0.9rem;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+    }
+
+    .pill {
+      font-size: 0.8rem;
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      margin-top: 2.4rem;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .links-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .links-grid a {
+      display: block;
+      border-radius: 0.8rem;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .links-grid a strong {
+      display: block;
+      color: var(--text);
+    }
+
+    .links-grid a:hover {
+      border-color: var(--accent-soft);
+      color: var(--accent-strong);
+      text-decoration: none;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 1.25rem 1.5rem 1.75rem;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      background: rgba(2, 6, 23, 0.96);
+    }
+
+    .site-footer a { color: var(--text-muted); }
+    .site-footer a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
-<header>
-  <div class="shell">
-    <div class="nav">
-      <div class="nav-left">
-        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
-        <div class="logo-title">SafeShare</div>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <div class="brand-logo">8</div>
+        <div>
+          <div class="brand-text-main">SafeShare</div>
+          <div class="brand-text-sub">Links ohne unnötiges Tracking</div>
+        </div>
       </div>
-      <nav class="nav-links">
-        <a href="index.html">Startseite</a>
-        <a href="app.html">App</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="utm-parameter-entfernen.html">UTM-Guide</a>
-        <a href="tracking-parameter-entfernen.html">Tracking-Parameter</a>
-        <a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Vergleich</a>
-        <a href="redirect-entschachteln.html">Weiterleitungen</a>
-        <a href="link-health.html">Link-Health</a>
-        <a href="help.html">Hilfe</a>
-        <a href="pro.html">Pro</a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="/Supersystem/index.html">Start</a>
+        <a href="/Supersystem/app.html">App</a>
+        <a href="/Supersystem/pro.html" aria-current="page">Pro</a>
+        <a href="/Supersystem/utm-parameter-entfernen.html">UTM entfernen</a>
+        <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking allgemein</a>
+        <a href="/Supersystem/url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="/Supersystem/help.html">Hilfe</a>
       </nav>
     </div>
-  </div>
-</header>
+  </header>
 
-<main>
   <div class="shell">
-
-    <section class="card">
-      <div class="badge"><span class="badge-dot"></span> SafeShare Pro</div>
-      <h1>SafeShare Pro – wenn Link-Hygiene Teil deiner Arbeit ist</h1>
-      <p>
-        SafeShare Pro ist für Menschen und kleine Teams gedacht, die regelmäßig
-        mit Links arbeiten und Link-Hygiene bewusst in ihren Alltag integrieren
-        möchten – statt nur „hin und wieder“ einen Link aufzuräumen.
-      </p>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">SafeShare Pro Person auf Payhip</a>
-        <a class="btn btn-primary" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">SafeShare Pro Team auf Payhip</a>
-        <a class="btn btn-ghost" href="app.html">Zur Web-App</a>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Zwei Lizenzen, kein Abo-Zwang</h2>
-      <div class="columns">
-        <div class="plan">
-          <div class="plan-tag">Einzelperson</div>
-          <div class="plan-title">SafeShare Pro Person</div>
-          <p>
-            Für Menschen, die Links bewusst einsetzen – z. B. Creator, Newsletter-
-            Autor:innen, Selbstständige, die regelmäßig in Mails und Social
-            kommunizieren.
+    <main>
+      <section class="hero-pro">
+        <div>
+          <div class="kicker">SafeShare Pro</div>
+          <h1>Routinen &amp; Materialien, damit Link-Hygiene bleibt</h1>
+          <p class="lead">
+            Die SafeShare-Web-App entfernt bereits Tracking-Parameter aus Links. SafeShare Pro hilft dir,
+            diese Link-Hygiene dauerhaft in deinen Alltag – oder in dein Team – zu integrieren.
           </p>
-          <ul>
-            <li>Lizenz für eine natürliche Person</li>
-            <li>für private und berufliche Projekte derselben Person</li>
-            <li>kein technischer Kopierschutz, aber Vertrauen in faire Nutzung</li>
-          </ul>
-          <p class="plan-foot">
-            Erwerb und Download laufen über Payhip. Dort findest du auch die
-            jeweils aktuellen Konditionen.
-          </p>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person auf Payhip</a>
+
+          <div class="badge-row">
+            <span class="badge">Für Viel-Teiler:innen &amp; Wissensarbeiter:innen</span>
+            <span class="badge">Routinen &amp; Checklisten</span>
           </div>
+
+          <h2>Du bekommst</h2>
+          <ul>
+            <li><strong>Grundlagen-Guide Link-Hygiene</strong> – kurz, verständlich, ohne Panikmache.</li>
+            <li><strong>7-Tage-Reset</strong> – tägliche Mini-Aufgaben, um deine wichtigsten Kanäle zu bereinigen.</li>
+            <li><strong>Vorlagen für Notizen &amp; Teams</strong> – z. B. Textbausteine, interne Richtlinien, Beispiele.</li>
+          </ul>
+          <p>
+            Alles als druckbare PDFs, die du in deinem Tempo durcharbeiten und bei Bedarf wiederholen kannst.
+          </p>
         </div>
 
-        <div class="plan">
-          <div class="plan-tag">Team (bis 5 Nutzer:innen)</div>
-          <div class="plan-title">SafeShare Pro Team</div>
-          <p>
-            Für kleine Teams, Redaktionen oder Projekte, die gemeinsam Links
-            erstellen und teilen – und dabei gemeinsame Standards für Link-Hygiene
-            etablieren möchten.
-          </p>
-          <ul>
-            <li>Lizenz für bis zu 5 Personen im selben Team/Unternehmen</li>
-            <li>gemeinsame Nutzung innerhalb eines Projekts oder einer Organisation</li>
-            <li>kein hartes technisches Enforcement – klare Vereinbarung statt Dark Patterns</li>
-          </ul>
-          <p class="plan-foot">
-            Wenn ihr wachst und mehr Plätze braucht, könnt ihr eine weitere Team-
-            Lizenz ergänzen oder direkt Kontakt aufnehmen.
-          </p>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team auf Payhip</a>
+        <aside>
+          <div class="card">
+            <h2>Pro-Varianten</h2>
+            <p><strong>SafeShare Pro – Person</strong><br>
+              Für eine Person, die ihren eigenen digitalen Alltag ordnen und stabil halten möchte.</p>
+            <p><strong>SafeShare Pro – Team</strong><br>
+              Für bis zu fünf Personen, die gemeinsam Links in Projekten, Dokus oder Wissensbasen nutzen.</p>
+
+            <div class="cta-row">
+              <a class="btn btn-primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">
+                Pro – Person
+              </a>
+              <a class="btn btn-outline" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">
+                Pro – Team (bis 5)
+              </a>
+            </div>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.6rem;">
+              Die Materialien selbst liegen bewusst bei dir – keine verpflichtenden Logins,
+              keine zusätzlichen Tracking-Cookies.
+            </p>
           </div>
+        </aside>
+      </section>
+
+      <section>
+        <h2>Für wen SafeShare Pro gedacht ist</h2>
+        <ul>
+          <li>Menschen, die täglich viele Links teilen (Messenger, Social Media, Communities).</li>
+          <li>Arbeit mit sensiblen Zielgruppen: z. B. Journalismus, Bildung, Beratung, NGOs.</li>
+          <li>Teams, die Links in internen Docs, Wikis, Tickets oder Projekt-Tools nutzen.</li>
+        </ul>
+        <p>
+          Wenn du erst einmal verstehen möchtest, <em>was</em> du eigentlich entfernst,
+          lies zuerst die Grundlagen:
+          <a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter entfernen</a> und
+          <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking-Parameter allgemein</a>.
+        </p>
+      </section>
+
+      <section>
+        <div class="section-label">Weitere Inhalte rund um SafeShare</div>
+        <div class="links-grid">
+          <a href="/Supersystem/app.html">
+            <strong>SafeShare-App</strong>
+            Tracking-Parameter jetzt direkt aus Links entfernen.
+          </a>
+          <a href="/Supersystem/url-cleaner-tool-vergleich.html">
+            <strong>URL-Cleaner-Tools im Vergleich</strong>
+            Wie SafeShare im Vergleich zu Browser-Plugins &amp; integrierten Funktionen steht.
+          </a>
         </div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Wie sich Pro von der Basis-Version unterscheidet</h2>
-      <p>
-        Die öffentliche Web-App bleibt bewusst schlank: ein Link, ein bereinigtes
-        Ergebnis, ohne Konto. SafeShare Pro ergänzt das um Inhalte und Werkzeuge,
-        die sich stärker an Menschen richten, die täglich mit Links arbeiten, z. B.:
-      </p>
-      <ul>
-        <li>Materialien zur Einführung von Link-Hygiene im Team-Alltag</li>
-        <li>Vorlagen und Beispiele für Richtlinien und interne Kommunikation</li>
-        <li>geordnete Übersichten zu typischen Tracking-Mustern und Workflows</li>
-        <li>Optionen, eigene Präferenzen zu definieren (z. B. welche Parameter ihr toleriert oder konsequent entfernt)</li>
-      </ul>
-      <p>
-        Die genaue Ausgestaltung kann sich weiterentwickeln. Entscheidend bleibt:
-        SafeShare Pro orientiert sich an Menschen und Teams, nicht an maximaler
-        Datenausbeute.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2>Fairer Umgang mit Lizenzen</h2>
-      <p>
-        SafeShare setzt bewusst nicht auf aggressive technische Schutzmechanismen.
-        Wenn du Pro Person kaufst und anderen deine Dateien weitergibst, ist das
-        technisch schwer zu verhindern – es bleibt aber eine Frage von Fairness:
-      </p>
-      <ul>
-        <li>Pro Person: für eine Person. Wenn mehrere Menschen dauerhaft damit arbeiten, ist Pro Team die passende Lizenz.</li>
-        <li>Pro Team: für bis zu 5 Menschen. Wenn ihr deutlich mehr seid, lohnt sich ein zweiter Lizenzblock oder ein kurzes Gespräch.</li>
-      </ul>
-      <p>
-        Wenn du unsicher bist, was in deinem Setup fair ist, kannst du dich
-        jederzeit per E-Mail melden:
-        <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>.
-      </p>
-    </section>
-
+      </section>
+    </main>
   </div>
-</main>
 
-<footer>
-  <div class="footer-row">
-    <div>© SafeShare – Jana Jergus</div>
-    <div class="footer-links">
-      <a href="index.html">Startseite</a>
-      <a href="app.html">App</a>
-      <a href="bookmarklets.html">Bookmarklets</a>
-      <a href="pro.html">Pro</a>
-      <a href="help.html">Hilfe</a>
-      <a href="impressum.html">Impressum</a>
-      <a href="datenschutz.html">Datenschutz</a>
-      <a href="terms.html">Terms</a>
+  <footer class="site-footer">
+    <div>
+      © SafeShare – Jana Jergus.
+      <a href="/Supersystem/datenschutz.html">Datenschutz</a> ·
+      <a href="/Supersystem/impressum.html">Impressum</a> ·
+      <a href="/Supersystem/status.html">Status</a>
     </div>
-  </div>
-</footer>
+  </footer>
 </body>
 </html>
