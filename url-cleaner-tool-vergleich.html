@@ -26,82 +26,24 @@
   <meta name="twitter:description" content="URL-Cleaner-Tools im Überblick und SafeShare als schlanke Web-App ohne Kontozwang.">
   <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
 
-  <!-- FAQ-Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Was ist ein URL-Cleaner-Tool?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Ein URL-Cleaner-Tool entfernt typische Tracking-Parameter und Weiterleitungs-Parameter aus Links, damit du kürzere, besser lesbare und datensparsamere URLs teilen kannst."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Woran erkenne ich ein seriöses URL-Cleaner-Tool?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Wichtige Kriterien sind Transparenz, keine versteckten Tracker, möglichst lokale Verarbeitung im Browser, klare Datenschutzhinweise und die Möglichkeit, das Verhalten des Tools nachzuvollziehen."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Was unterscheidet SafeShare von klassischen Browser-Erweiterungen?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "SafeShare läuft als schlanke Web-App ohne Installation. Es arbeitet nur, wenn du es bewusst nutzt, benötigt keine weitreichenden Browser-Berechtigungen und legt keine eigenen Profile an."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Ersetzt SafeShare andere Datenschutz-Tools?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Nein. SafeShare ergänzt Browser-Tracking-Schutz und Content-Blocker an einer sehr konkreten Stelle: es kümmert sich um die sichtbare URL und deine Link-Hygiene."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Sind URL-Cleaner-Tools legal?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Ja. Du entscheidest selbst, in welcher Form du Links weitergibst. Das Entfernen von Tracking-Parametern reduziert die mitgesendeten Zusatzdaten, ohne den Inhalt der Zielseite zu verändern."
-        }
-      }
-    ]
-  }
-  </script>
-
-  <!-- Layout / Styles – identisch wie oben -->
+  <!-- Layout / Styles -->
   <style>
     *,
     *::before,
-    *::after {
-      box-sizing: border-box;
-    }
+    *::after { box-sizing: border-box; }
 
     :root {
       --bg: #020617;
-      --bg-elevated: #020617;
-      --bg-soft: #020617;
       --border-subtle: #1f2933;
-      --border-strong: #22c29b;
       --text: #e5e7eb;
       --text-muted: #94a3b8;
       --accent: #4adeb8;
       --accent-soft: rgba(74, 222, 184, 0.14);
       --accent-strong: #22c29b;
-      --danger: #f97373;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
     }
 
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       min-height: 100%;
@@ -114,15 +56,8 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover,
-    a:focus-visible {
-      text-decoration: underline;
-    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover, a:focus-visible { text-decoration: underline; }
 
     .shell {
       max-width: 960px;
@@ -169,15 +104,8 @@
       color: var(--accent);
     }
 
-    .brand-text-main {
-      font-weight: 600;
-      letter-spacing: 0.04em;
-    }
-
-    .brand-text-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
+    .brand-text-main { font-weight: 600; letter-spacing: 0.04em; }
+    .brand-text-sub { font-size: 0.78rem; color: var(--text-muted); }
 
     .nav {
       display: flex;
@@ -200,9 +128,7 @@
       background: rgba(15, 118, 110, 0.2);
     }
 
-    .nav a:hover {
-      color: var(--accent-strong);
-    }
+    .nav a:hover { color: var(--accent-strong); }
 
     @media (max-width: 720px) {
       .site-header-inner {
@@ -211,9 +137,7 @@
       }
     }
 
-    main {
-      margin-top: 2rem;
-    }
+    main { margin-top: 2rem; }
 
     .kicker {
       font-size: 0.85rem;
@@ -243,8 +167,7 @@
       margin: 0 0 0.9rem;
     }
 
-    ul,
-    ol {
+    ul, ol {
       padding-left: 1.3rem;
       margin: 0 0 1rem;
       line-height: 1.7;
@@ -303,10 +226,7 @@
       box-shadow: 0 10px 30px rgba(15, 118, 110, 0.35);
     }
 
-    .btn-primary:hover {
-      filter: brightness(1.05);
-      text-decoration: none;
-    }
+    .btn-primary:hover { filter: brightness(1.05); text-decoration: none; }
 
     .btn-outline {
       border-color: var(--border-subtle);
@@ -320,13 +240,8 @@
       text-decoration: none;
     }
 
-    .faq h3 {
-      margin-top: 1.6rem;
-    }
-
-    .faq p {
-      margin-bottom: 0.6rem;
-    }
+    .faq h3 { margin-top: 1.6rem; }
+    .faq p { margin-bottom: 0.6rem; }
 
     .related {
       margin-top: 2.5rem;
@@ -339,9 +254,7 @@
       padding-left: 0;
     }
 
-    .related li {
-      margin-bottom: 0.35rem;
-    }
+    .related li { margin-bottom: 0.35rem; }
 
     .site-footer {
       border-top: 1px solid var(--border-subtle);
@@ -353,15 +266,165 @@
       background: rgba(2, 6, 23, 0.96);
     }
 
-    .site-footer a {
-      color: var(--text-muted);
-    }
-
-    .site-footer a:hover {
-      color: var(--accent);
-    }
+    .site-footer a { color: var(--text-muted); }
+    .site-footer a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <div class="
+    <div class="site-header-inner">
+      <div class="brand">
+        <div class="brand-logo">S</div>
+        <div>
+          <div class="brand-text-main">SafeShare</div>
+          <div class="brand-text-sub">Links ohne unnötiges Tracking</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="/Supersystem/index.html">App</a>
+        <a href="/Supersystem/pro.html">Pro</a>
+        <a href="/Supersystem/utm-parameter-entfernen.html">UTM entfernen</a>
+        <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking allgemein</a>
+        <a href="/Supersystem/url-cleaner-tool-vergleich.html" aria-current="page">Tool-Vergleich</a>
+        <a href="/Supersystem/help.html">Hilfe</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="shell">
+    <main>
+      <div class="kicker">Link-Hygiene · Tools im Überblick</div>
+      <h1>URL-Cleaner-Tools im Vergleich: worauf es wirklich ankommt</h1>
+      <p class="lead">
+        Es gibt viele Wege, Tracking-Parameter aus Links zu entfernen: Browser-Erweiterungen, integrierte Funktionen,
+        kleine Web-Tools. Hier erfährst du, worauf du achten solltest – und wie SafeShare sich dazwischen einordnet.
+      </p>
+
+      <div class="toc">
+        <div class="toc-title">Inhalt</div>
+        <ol>
+          <li><a href="#arten">Welche Arten von URL-Cleaner-Tools gibt es?</a></li>
+          <li><a href="#klassisch">Vor- und Nachteile klassischer URL-Cleaner</a></li>
+          <li><a href="#safeshare">Wie sich SafeShare positioniert</a></li>
+          <li><a href="#kriterien">Worauf du bei URL-Cleaner-Tools achten solltest</a></li>
+          <li><a href="#setup">SafeShare im Zusammenspiel mit anderen Schutzmaßnahmen</a></li>
+          <li><a href="#faq">Häufige Fragen</a></li>
+        </ol>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/Supersystem/app.html">SafeShare im Browser testen</a>
+        <a class="btn btn-outline" href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter im Detail verstehen</a>
+      </div>
+
+      <section id="arten">
+        <h2>Welche Arten von URL-Cleaner-Tools gibt es?</h2>
+        <p>Grob kannst du drei Kategorien unterscheiden:</p>
+        <ul>
+          <li><strong>Browser-Erweiterungen:</strong> laufen permanent im Hintergrund und greifen direkt in den Seitenaufruf ein.</li>
+          <li><strong>Eingebaute Funktionen in Browsern oder Apps:</strong> manche Browser kürzen Adressen sichtbar oder blockieren bekannte Tracker.</li>
+          <li><strong>Web-Apps wie SafeShare:</strong> du fügst Links bewusst ein, lässt sie bereinigen und nutzt dann die aufgeräumte Version.</li>
+        </ul>
+        <p>Welche Lösung zu dir passt, hängt davon ab, wie stark du automatisieren willst – und wie viel Kontrolle du dir behältst.</p>
+      </section>
+
+      <section id="klassisch">
+        <h2>Vor- und Nachteile klassischer URL-Cleaner</h2>
+        <p><strong>Browser-Erweiterungen</strong> sind bequem:</p>
+        <ul>
+          <li>Sie laufen automatisch im Hintergrund.</li>
+          <li>Sie können viele Links „on the fly“ bereinigen.</li>
+        </ul>
+        <p>Gleichzeitig haben sie typische Nachteile:</p>
+        <ul>
+          <li>Sie brauchen weitreichende Berechtigungen im Browser.</li>
+          <li>Sie laufen je nach Gerät/Betriebssystem unterschiedlich oder sind gar nicht verfügbar.</li>
+          <li>Du musst Updates, Kompatibilität und Vertrauen in den Code im Blick behalten.</li>
+        </ul>
+
+        <p><strong>Integrierte Funktionen</strong> (z. B. Tracking-Schutz im Browser) sind ein wichtiger Baustein, aber:</p>
+        <ul>
+          <li>Sie kümmern sich vor allem um Skripte, Cookies und Netzwerkanfragen.</li>
+          <li>Die sichtbare URL – also das, was du kopierst und weitergibst – bleibt oft unverändert.</li>
+        </ul>
+      </section>
+
+      <section id="safeshare">
+        <h2>Wie sich SafeShare positioniert</h2>
+        <p>SafeShare setzt bewusst an einer anderen Stelle an:</p>
+        <ul>
+          <li>Es läuft als kleine Web-App im Browser – ohne Installation.</li>
+          <li>Es fokussiert sich auf die <strong>sichtbare URL</strong>, nicht auf Skripte oder Cookies.</li>
+          <li>Es arbeitet nur dann, wenn du es bewusst nutzt (du fügst einen Link ein).</li>
+        </ul>
+        <p>Das hat mehrere Konsequenzen:</p>
+        <ul>
+          <li>Keine dauerhafte Hintergrundaktivität oder Erweiterung, die du managen musst.</li>
+          <li>Du kannst SafeShare auf jedem Gerät mit modernem Browser verwenden.</li>
+          <li>Du behältst die Kontrolle darüber, <em>wann</em> ein Link bereinigt wird.</li>
+        </ul>
+      </section>
+
+      <section id="kriterien">
+        <h2>Worauf du bei URL-Cleaner-Tools achten solltest</h2>
+        <p>Unabhängig vom Tool sind aus Datenschutzsicht einige Punkte entscheidend:</p>
+        <ol>
+          <li><strong>Transparenz:</strong> erklärt das Tool klar, welche Parameter es entfernt?</li>
+          <li><strong>Zurückhaltung:</strong> braucht es wirklich Konten, Logins, eigene Tracker?</li>
+          <li><strong>Kontrolle:</strong> kannst du nachvollziehen, ob der Link noch zum gleichen Ziel führt?</li>
+          <li><strong>Kompatibilität:</strong> passt das Tool zu deinen Browsern, Geräten und deinem Arbeitsstil?</li>
+        </ol>
+        <p>SafeShare steht bewusst auf der Seite der Datensparsamkeit: so wenig Eingriff wie nötig, so viel Kontrolle wie möglich.</p>
+      </section>
+
+      <section id="setup">
+        <h2>SafeShare im Zusammenspiel mit anderen Schutzmaßnahmen</h2>
+        <p>SafeShare ersetzt keine anderen Sicherheits- oder Datenschutztools – es ergänzt sie an einer sehr konkreten Stelle.</p>
+        <ul>
+          <li><strong>Browser-Tracking-Schutz</strong> kümmert sich um Skripte und Cookies.</li>
+          <li><strong>Content-Blocker</strong> filtern bekannte Tracker und Werbung.</li>
+          <li><strong>SafeShare</strong> kümmert sich um die sichtbare URL, bevor du sie speicherst oder weitergibst.</li>
+        </ul>
+        <p>So kannst du Schritt für Schritt ein Setup bauen, das zu deinem Alltag passt – ohne alles auf einmal umwerfen zu müssen.</p>
+      </section>
+
+      <section id="faq" class="faq">
+        <h2>Häufige Fragen zu URL-Cleaner-Tools</h2>
+
+        <h3>Was ist ein URL-Cleaner-Tool?</h3>
+        <p>Ein URL-Cleaner-Tool entfernt typische Tracking-Parameter und Weiterleitungs-Parameter aus Links, damit du eine kürzere, besser lesbare und datensparsamere URL weitergeben kannst.</p>
+
+        <h3>Woran erkenne ich ein seriöses URL-Cleaner-Tool?</h3>
+        <p>Wichtig sind Transparenz und Zurückhaltung: klare Erklärung, was das Tool genau tut, kein Zwang zu Konten, keine eigenen Tracker, möglichst lokale Verarbeitung im Browser und eine respektvolle Datenschutzerklärung.</p>
+
+        <h3>Was unterscheidet SafeShare von Browser-Extensions?</h3>
+        <p>SafeShare läuft als kleine Web-App im Browser und braucht keine Installation und keine Accounts. Du kannst es auf jedem Gerät mit einem modernen Browser nutzen, ohne dauerhaft eine Erweiterung im Hintergrund laufen zu lassen.</p>
+
+        <h3>Ersetzt SafeShare andere Datenschutz-Tools?</h3>
+        <p>Nein. SafeShare ergänzt bestehende Schutzmechanismen wie Tracking-Schutz im Browser oder Content-Blocker. Es kümmert sich um die sichtbare URL und die Link-Hygiene, während andere Tools Skripte und Cookies einschränken.</p>
+
+        <h3>Sind URL-Cleaner-Tools legal?</h3>
+        <p>Ja. Du entscheidest selbst, in welcher Form du Links weitergibst. Das Entfernen von Tracking-Parametern bedeutet in der Regel, dass du weniger Zusatzdaten mitschickst – der Inhalt der Seite bleibt unverändert.</p>
+      </section>
+
+      <section class="related">
+        <h2>Weiterführende Inhalte</h2>
+        <ul>
+          <li><a href="/Supersystem/app.html">SafeShare App – Links bereinigen</a></li>
+          <li><a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter im Detail verstehen</a></li>
+          <li><a href="/Supersystem/tracking-parameter-entfernen.html">Tracking-Parameter allgemein verstehen</a></li>
+          <li><a href="/Supersystem/pro.html">SafeShare Pro – Handbuch, Routinen &amp; Team-Guidelines</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div>
+      © SafeShare – Jana Jergus.
+      <a href="/Supersystem/datenschutz.html">Datenschutz</a> ·
+      <a href="/Supersystem/impressum.html">Impressum</a>
+    </div>
+  </footer>
+</body>
+</html>
