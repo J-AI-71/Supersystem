@@ -489,13 +489,25 @@
       const statusEl = document.getElementById('status-message');
 
       const TRACKING_PARAMS = [
-        'utm_source','utm_medium','utm_campaign','utm_term','utm_content',
-        'utm_id','utm_name',
-        'gclid','fbclid','dclid',
-        'mc_cid','mc_eid',
-        'igshid',
-        'vero_conv','vero_id'
-      ];
+  // Klassische UTM-Parameter
+  'utm_source','utm_medium','utm_campaign','utm_term','utm_content',
+  'utm_id','utm_name',
+
+  // Ad- und Klick-IDs
+  'gclid','fbclid','dclid','msclkid','twclid','li_fat_id',
+
+  // Newsletter / E-Mail
+  'mc_cid','mc_eid',
+
+  // Social / Apps
+  'igshid',
+
+  // Diverse Kampagnen-IDs
+  'vero_conv','vero_id',
+
+  // Referrer/Tracking-Weiterleitungen (z. B. Bild-Link)
+  't_ref','ref','referrer'
+];
 
       function cleanUrl(raw) {
         try {
