@@ -2,54 +2,50 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Über SafeShare &amp; Jana Jergus – Hintergrund &amp; Grundsätze</title>
+  <title>SafeShare Pro – Routinen, Pro-App & Materialien für konsequent saubere Links</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Wer hinter SafeShare steht, warum das Projekt entstanden ist und welche Grundsätze es leiten: Datensparsamkeit, Respekt vor Nutzer:innen und klare, ehrliche Kommunikation.">
+  <meta name="description" content="SafeShare Pro ergänzt die Web-App um eine Pro-App für mehrere Links auf einmal, eigene Parameterregeln und kompakte Materialien, damit Link-Hygiene ein fester, machbarer Teil deines Alltags wird – ohne extra Konten oder Tracking.">
 
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/about-safeshare.html">
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro.html">
 
   <!-- Suchmaschinen-Verifikation -->
   <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
   <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="article">
+  <meta property="og:type" content="product">
   <meta property="og:site_name" content="SafeShare">
-  <meta property="og:title" content="Über SafeShare & Jana Jergus – Hintergrund & Grundsätze">
-  <meta property="og:description" content="Ein Blick hinter SafeShare: Wer es gebaut hat, warum es existiert und welche Haltung es gegenüber Tracking und Daten teilt.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/about-safeshare.html">
+  <meta property="og:title" content="SafeShare Pro – Pro-App & Materialien für konsequent saubere Links">
+  <meta property="og:description" content="Mehrere Links auf einmal bereinigen, eigene Regeln für Parameter setzen und kompakte Materialien nutzen, um Link-Hygiene wirklich in deinen Alltag oder dein Team zu holen.">
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html">
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Über SafeShare & Jana Jergus – Hintergrund & Grundsätze">
-  <meta name="twitter:description" content="Wer hinter SafeShare steht und welche Rolle Datensparsamkeit, Klarheit und Respekt vor Nutzer:innen spielen.">
+  <meta name="twitter:title" content="SafeShare Pro – Pro-App & Materialien für konsequent saubere Links">
+  <meta name="twitter:description" content="Bulk-Reinigung, eigene Parameterregeln und klare Materialien rund um Link-Hygiene – lokal im Browser, ohne Konto.">
   <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
 
-  <!-- JSON-LD: AboutPage + Person/SoftwareApplication-Verknüpfung -->
+  <!-- JSON-LD: SoftwareApplication / Product-Hinweis -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "@id": "https://j-ai-71.github.io/Supersystem/about-safeshare.html#about",
-    "name": "Über SafeShare & Jana Jergus",
-    "url": "https://j-ai-71.github.io/Supersystem/about-safeshare.html",
-    "mainEntity": {
-      "@type": "SoftwareApplication",
-      "@id": "https://j-ai-71.github.io/Supersystem/#safeshare",
-      "name": "SafeShare",
-      "operatingSystem": "Web",
-      "applicationCategory": "Utility",
-      "url": "https://j-ai-71.github.io/Supersystem/"
-    },
-    "about": {
+    "@type": "SoftwareApplication",
+    "@id": "https://j-ai-71.github.io/Supersystem/#safeshare-pro",
+    "name": "SafeShare Pro",
+    "operatingSystem": "Web",
+    "applicationCategory": "Utility",
+    "description": "SafeShare Pro ergänzt die datensparsame Web-App SafeShare um eine Pro-App für mehrere Links auf einmal, eigene Parameterregeln und kompakte Materialien, damit Link-Hygiene ein fester Teil deines Alltags oder deines Teams werden kann.",
+    "url": "https://j-ai-71.github.io/Supersystem/pro.html",
+    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
+    "creator": {
       "@type": "Person",
       "name": "Jana Jergus"
     }
   }
   </script>
 
-  <!-- Layout / Styles (wie andere Content-Seiten) -->
+  <!-- Layout / Styles (wie andere Kernseiten) -->
   <style>
     *,
     *::before,
@@ -63,6 +59,7 @@
       --accent: #4adeb8;
       --accent-soft: rgba(74, 222, 184, 0.14);
       --accent-strong: #22c29b;
+      --danger-soft: rgba(239, 68, 68, 0.14);
       --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
     }
 
@@ -203,15 +200,86 @@
       margin-bottom: 1.4rem;
     }
 
-    .two-col {
+    .hero-card {
+      margin-top: 1.4rem;
+      padding: 1.2rem 1.3rem 1.3rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, rgba(74, 222, 184, 0.08), rgba(15, 23, 42, 0.97));
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .badge {
+      font-size: 0.78rem;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.4rem 0 0.4rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.4rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #020617;
+      box-shadow: 0 10px 30px rgba(15, 118, 110, 0.35);
+    }
+
+    .btn-primary:hover { filter: brightness(1.05); text-decoration: none; }
+
+    .btn-outline {
+      border-color: var(--border-subtle);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-soft);
+      color: var(--accent-strong);
+      text-decoration: none;
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .grid {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.3fr);
-      gap: 1.8rem;
-      margin-top: 1.8rem;
+      gap: 1.7rem;
+      margin-top: 2.2rem;
     }
 
     @media (max-width: 780px) {
-      .two-col { grid-template-columns: minmax(0, 1fr); }
+      .grid { grid-template-columns: minmax(0, 1fr); }
     }
 
     .card {
@@ -225,23 +293,21 @@
       margin-top: 0;
     }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .badge {
-      font-size: 0.78rem;
-      padding: 0.22rem 0.65rem;
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.9);
+    .card h3 {
+      margin-top: 0.9rem;
     }
 
     .list-tight li { margin-bottom: 0.4rem; }
+
+    .warning {
+      margin-top: 1.4rem;
+      padding: 0.9rem 1rem;
+      border-radius: 0.9rem;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: var(--danger-soft);
+      color: #fecaca;
+      font-size: 0.9rem;
+    }
 
     .related {
       margin-top: 2.5rem;
@@ -283,7 +349,7 @@
       <nav class="nav" aria-label="Hauptnavigation">
         <a href="/Supersystem/index.html">Start</a>
         <a href="/Supersystem/app.html">App</a>
-        <a href="/Supersystem/pro.html">Pro</a>
+        <a href="/Supersystem/pro.html" aria-current="page">Pro</a>
         <a href="/Supersystem/utm-parameter-entfernen.html">UTM entfernen</a>
         <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking allgemein</a>
         <a href="/Supersystem/url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
@@ -294,129 +360,132 @@
 
   <div class="shell">
     <main>
-      <div class="kicker">Hintergrund</div>
-      <h1>Über SafeShare &amp; Jana Jergus</h1>
-    <p>
-      Im Zentrum von SafeShare Pro steht die Pro-App: Sie bereinigt ganze Link-Listen auf einmal und berücksichtigt
-      deine eigenen Regeln für Parameter – alles lokal in deinem Browser. Dazu kommen kompakte PDFs, Checklisten
-      und Beispiele, die dir helfen, die App sinnvoll in deinen Alltag oder ein kleines Team einzubauen.
-    </p>
+      <div class="kicker">Erweiterung zur Web-App</div>
+      <h1>SafeShare Pro – Pro-App &amp; Materialien für konsequent saubere Links</h1>
+      <p class="lead">
+        SafeShare Pro ist die größere Variante der SafeShare-App: Du kannst mehrere Links auf einmal bereinigen,
+        eigene Regeln für Parameter festlegen und bekommst ergänzende Materialien, um Link-Hygiene wirklich in
+        deinen Alltag oder dein Team zu holen – ohne Konto, ohne Tracking.
+      </p>
 
-      <div class="two-col">
-        <section class="card" aria-labelledby="wer">
-          <div class="badge-row">
-            <span class="badge">Person hinter dem Projekt</span>
-          </div>
-          <h2 id="wer">Wer hinter SafeShare steht</h2>
-          <p>
-            Mein Name ist Jana Jergus. Ich lebe und arbeite in Deutschland und beschäftige mich seit Jahren mit
-            digitalen Werkzeugen, Selbstorganisation und der Frage, wie man mit Technik so umgehen kann, dass sie
-            unterstützt – ohne Menschen auszubeuten.
-          </p>
-          <p>
-            SafeShare ist eines meiner Projekte, das sehr konkret ansetzt: bei der sichtbaren URL. Viele Menschen
-            spüren, dass im Hintergrund zu viel mitläuft, wissen aber nicht genau, wo sie anfangen können. Hier
-            setzt SafeShare an.
-          </p>
-          <p>
-            Ich arbeite bewusst ohne großen Apparat, ohne Venture-Capital und ohne Tracking-Pixel. SafeShare soll
-            klein, klar und ehrlich bleiben.
-          </p>
-        </section>
-
-        <section class="card" aria-labelledby="warum">
-          <div class="badge-row">
-            <span class="badge">Motivation</span>
-          </div>
-          <h2 id="warum">Warum SafeShare entstanden ist</h2>
-          <p>
-            Ausgangspunkt war eine einfache Beobachtung: Fast jeder Link ist heute mit Zusatzdaten überladen.
-            UTM-Parameter, Klick-IDs, Referrer-Informationen – vieles davon ist für den Menschen, der den Link
-            anklickt, schlicht irrelevant.
-          </p>
-          <p>
-            Gleichzeitig ist der übliche Rat oft extrem oder schwer praktikabel: kompletten Rückzug aus großen
-            Plattformen, perfekt konfiguriertes Setup, viele Spezial-Tools. In der Realität haben die wenigsten
-            die Energie, das alles umzusetzen.
-          </p>
-          <p>
-            SafeShare soll genau dort ansetzen, wo Alltag passiert: beim Kopieren, Speichern und Weitergeben von
-            Links. Kein großes Versprechen, sondern ein kleiner, konkreter Schritt.
-          </p>
-        </section>
-      </div>
-
-      <div class="two-col">
-        <section class="card" aria-labelledby="grundsaetze">
-          <div class="badge-row">
-            <span class="badge">Grundsätze</span>
-          </div>
-          <h2 id="grundsaetze">Grundsätze, nach denen SafeShare gebaut ist</h2>
-          <ul class="list-tight">
-            <li><strong>Datensparsamkeit vor „Optimierung“:</strong> SafeShare soll helfen, weniger Daten unnötig mitzuschicken, nicht noch eine Datenquelle eröffnen.</li>
-            <li><strong>Keine Kontenpflicht:</strong> Die Web-App ist ohne Registrierung nutzbar. Es gibt keine SafeShare-Nutzerkonten.</li>
-            <li><strong>Keine eigenen Tracking-Pixel:</strong> SafeShare setzt keine Tracking-Pixel ein, um Nutzende querzuverfolgen.</li>
-            <li><strong>Transparente Grenzen:</strong> SafeShare entfernt sichtbare Parameter in der URL. Es ersetzt keine tiefgreifenden Sicherheits- oder Privacy-Maßnahmen.</li>
-            <li><strong>Ehrliche Produktgestaltung:</strong> Auch bei SafeShare Pro geht es nicht um Lock-in oder maximale Datenauswertung, sondern um Inhalte, die sich offline nutzen lassen.</li>
-          </ul>
-        </section>
-
-        <section class="card" aria-labelledby="was-nicht">
-          <div class="badge-row">
-            <span class="badge">Was SafeShare bewusst nicht tut</span>
-          </div>
-          <h2 id="was-nicht">Was SafeShare bewusst nicht tut</h2>
-          <ul class="list-tight">
-            <li>
-              <strong>Keine „perfekte Anonymität“ versprechen:</strong>
-              Es gibt viele Formen von Tracking, die jenseits der URL stattfinden. SafeShare deckt nicht alles ab
-              – und behauptet das auch nicht.
-            </li>
-            <li>
-              <strong>Keine neuen Abhängigkeiten schaffen:</strong>
-              SafeShare ist ein Werkzeug, kein Ökosystem, in das du komplette Lebensbereiche auslagern sollst.
-            </li>
-            <li>
-              <strong>Keine manipulativen Dark-Patterns:</strong>
-              Es gibt keine künstliche Verknappung, keine blinkenden Pop-ups, keine psychologischen Tricks, die
-              dich zu etwas drängen sollen.
-            </li>
-          </ul>
-          <p>
-            Wenn du SafeShare nutzt, sollst du möglichst klar sehen, was das Tool macht – und was nicht.
-          </p>
-        </section>
-      </div>
-
-      <section class="card" aria-labelledby="kontakt">
+      <div class="hero-card">
         <div class="badge-row">
-          <span class="badge">Kontakt &amp; weitere Infos</span>
+          <span class="badge">Einmaliger Kauf</span>
+          <span class="badge">Kein Abo</span>
+          <span class="badge">Datensparsamer Ansatz</span>
         </div>
-        <h2 id="kontakt">Kontakt &amp; weitere Infos</h2>
         <p>
-          Wenn du SafeShare in Artikeln, Vorträgen oder eigenen Projekten erwähnen möchtest oder Feedback zur
-          Funktionsweise hast, erreichst du mich unter:
+          Im Zentrum von SafeShare Pro steht die Pro-App: Sie bereinigt ganze Link-Listen auf einmal und berücksichtigt
+          deine eigenen Regeln für Parameter – alles lokal in deinem Browser. Dazu kommen kompakte PDFs, Checklisten
+          und Beispiele, die dir helfen, die App sinnvoll in deinen Alltag oder ein kleines Team einzubauen.
         </p>
-        <p>
-          <strong>Jana Jergus / SafeShare</strong><br>
-          Auf dem Emdgenberg, 61250 Usingen, Germany<br>
-          <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">
+            SafeShare Pro – Einzelperson
+          </a>
+          <a class="btn btn-outline" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">
+            SafeShare Pro – Team (bis 5 Personen)
+          </a>
+        </div>
+        <p class="hint">
+          Bezahlt wird direkt über Payhip. Du erhältst nach dem Kauf Zugriff auf die Pro-App und die Materialien
+          als Download.
         </p>
-        <p>
-          Rechtlich relevante Angaben findest du im <a href="/Supersystem/impressum.html">Impressum</a> und in der
-          <a href="/Supersystem/datenschutz.html">Datenschutzerklärung</a>.
-        </p>
+      </div>
+
+      <div class="grid">
+        <section class="card" aria-labelledby="was-ist-pro">
+          <h2 id="was-ist-pro">Was SafeShare Pro ergänzt – im Vergleich zur freien App</h2>
+          <p>
+            Die freie <a href="/Supersystem/app.html">SafeShare-App</a> macht eine Sache: einen Link bereinigen, lokal im
+            Browser. SafeShare Pro ergänzt das um ein Werkzeug für Menschen, die mit vielen Links arbeiten – plus Materialien,
+            die Routinen und Absprachen leichter machen.
+          </p>
+          <h3>SafeShare (frei)</h3>
+          <ul class="list-tight">
+            <li>Web-App ohne Konto, ohne Browser-Add-on</li>
+            <li>Entfernt typische Tracking-Parameter aus einzelnen Links</li>
+            <li>Fokus: schnell einen Link sauber machen</li>
+          </ul>
+          <h3>SafeShare Pro</h3>
+          <ul class="list-tight">
+            <li>Pro-App für mehrere Links auf einmal (Bulk-Bereinigung)</li>
+            <li>eigene Regeln für Parameter (zusätzlich entfernen / explizit behalten)</li>
+            <li>kompakter Grundlagen-Guide, 7-Tage-Reset und Notiz-/Dokuvorlagen als PDFs</li>
+            <li>Formulierungs- und Strukturhilfen für dich oder ein kleines Team</li>
+          </ul>
+        </section>
+
+        <section class="card" aria-labelledby="fuer-wen">
+          <h2 id="fuer-wen">Für wen SafeShare Pro sinnvoll ist – und für wen nicht</h2>
+          <h3>Gut geeignet, wenn …</h3>
+          <ul class="list-tight">
+            <li>du viele Links teilst oder sammelst (News, Tools, Inhalte, Newsletter),</li>
+            <li>du Link-Hygiene wirklich zu einer Gewohnheit machen willst,</li>
+            <li>du anderen Menschen kurz und verständlich erklären möchtest, was du da tust,</li>
+            <li>du privat, selbständig oder in einem kleinen Team unterwegs bist.</li>
+          </ul>
+          <h3>Eher nicht nötig, wenn …</h3>
+          <ul class="list-tight">
+            <li>du nur selten Links teilst oder speicherst,</li>
+            <li>dir Tracking und Datenweitergabe im Alltag egal sind,</li>
+            <li>du kein Interesse daran hast, Routinen oder Absprachen aufzubauen.</li>
+          </ul>
+          <div class="warning">
+            SafeShare Pro verspricht keine „perfekte Anonymität“ und ersetzt keine technischen Schutzmaßnahmen
+            wie gute Browser-Einstellungen oder Content-Blocker. Es ist ein ehrliches Produkt rund um Link-Hygiene,
+            nicht mehr und nicht weniger.
+          </div>
+        </section>
+      </div>
+
+      <section class="grid" aria-label="Inhalte von SafeShare Pro">
+        <section class="card">
+          <h2>Was konkret im Pro-Paket enthalten ist</h2>
+          <ul class="list-tight">
+            <li><strong>SafeShare Pro App (Web):</strong> Bereinigt mehrere Links auf einmal und nutzt deine eigenen Regeln für Parameter – lokal im Browser, ohne Konto.</li>
+            <li><strong>Kurz-Guide Link-Hygiene (PDF):</strong> Grundlagen, typische Beispiele und eine ehrliche Einordnung, was SafeShare leisten kann – und was nicht.</li>
+            <li><strong>„7-Tage-Reset“ (PDF):</strong> Jeden Tag eine kleine Aufgabe, um deine Links konsequent aufzuräumen und neue Gewohnheiten zu verankern.</li>
+            <li><strong>Notiz-/Dokuvorlagen:</strong> einfache Strukturen für Link-Listen, Ressourcen und Team-Dokus (z. B. für Notion, Obsidian, interne Wikis).</li>
+            <li><strong>Formulierungsbeispiele:</strong> wie du Link-Hygiene gegenüber anderen erklärst, ohne dramatisieren zu müssen.</li>
+          </ul>
+          <p class="hint">
+            Die Pro-App selbst läuft wie die freie App im Browser. Die Materialien kannst du offline nutzen, ausdrucken
+            oder in deine bestehenden Notizen übernehmen.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Einzelperson vs. Team-Lizenz</h2>
+          <h3>SafeShare Pro – Einzelperson</h3>
+          <p>
+            Für dich, wenn du die App und die Materialien nur für dich selbst nutzen möchtest – privat oder beruflich.
+            Du kannst die PDFs auf deinen Geräten speichern und ausdrucken, aber nicht an andere weitergeben.
+          </p>
+          <h3>SafeShare Pro – Team (bis 5 Personen)</h3>
+          <p>
+            Für kleine Teams, in denen mehrere Menschen bewusst mit Link-Hygiene arbeiten wollen. Ihr dürft die
+            Materialien innerhalb eures Teams bis zu 5 Personen weitergeben (z. B. per geteiltem Ordner oder Wiki)
+            und die Pro-App gemeinsam einsetzen.
+          </p>
+          <p class="hint">
+            Die Team-Version setzt auf ein faires Nutzungsmodell. SafeShare Pro nutzt keinen aggressiven Kopierschutz
+            und verfolgt euch nicht durch das Netz – die Idee ist, dass ihr bewusst entscheidet, wie ihr mit den
+            Materialien umgeht.
+          </p>
+        </section>
       </section>
 
       <section class="related">
-        <h2>Weiterführende Inhalte</h2>
+        <h2>Verwandte Inhalte &amp; Hintergründe</h2>
         <ul>
-          <li><a href="/Supersystem/index.html">SafeShare Startseite</a></li>
           <li><a href="/Supersystem/app.html">SafeShare-App – Links direkt bereinigen</a></li>
+          <li><a href="/Supersystem/app-pro.html">SafeShare Pro App – mehrere Links auf einmal bereinigen</a></li>
           <li><a href="/Supersystem/link-hygiene-im-alltag.html">Link-Hygiene im Alltag – Beispiele &amp; Routinen</a></li>
-          <li><a href="/Supersystem/pro.html">SafeShare Pro – Routinen &amp; Materialien</a></li>
           <li><a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter entfernen – Grundlagen &amp; Beispiele</a></li>
           <li><a href="/Supersystem/tracking-parameter-entfernen.html">Tracking-Parameter allgemein verstehen</a></li>
+          <li><a href="/Supersystem/url-cleaner-tool-vergleich.html">URL-Cleaner-Tools im Vergleich</a></li>
+          <li><a href="/Supersystem/help.html">SafeShare Hilfe – Fragen &amp; Anwendungsbeispiele</a></li>
         </ul>
       </section>
     </main>
