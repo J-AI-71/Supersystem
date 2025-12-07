@@ -48,7 +48,7 @@
   }
   </script>
 
-  <!-- Layout / Styles wie bei app.html -->
+  <!-- Layout / Styles -->
   <style>
     *,
     *::before,
@@ -249,7 +249,7 @@
     .controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.6rem;
       align-items: center;
       margin: 0.9rem 0 0.5rem;
     }
@@ -278,6 +278,14 @@
       border-color: var(--border-subtle);
       color: var(--text-muted);
       background: rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-ghost {
+      border-color: transparent;
+      color: var(--text-muted);
+      background: transparent;
+      font-size: 0.82rem;
+      padding-inline: 0.6rem;
     }
 
     .btn:disabled {
@@ -362,8 +370,8 @@
           <div class="field-hint">
             Füge hier mehrere Links ein – jeweils eine URL pro Zeile. Leere Zeilen werden ignoriert.
           </div>
-          <textarea id="inputLinks" placeholder="https://example.com/?utm_source=newsletter&amp;utm_medium=email
-https://www.beispiel.de/artikel?utm_campaign=kampagne&amp;gclid=123
+          <textarea id="inputLinks" placeholder="https://example.com/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=launch
+https://www.beispiel.de/artikel?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=promo&amp;gclid=ABC123
 …"></textarea>
 
           <div class="controls">
@@ -372,6 +380,12 @@ https://www.beispiel.de/artikel?utm_campaign=kampagne&amp;gclid=123
             </button>
             <button type="button" id="btnCopyOutput" class="btn btn-secondary" disabled>
               Bereinigte Liste kopieren
+            </button>
+            <button type="button" id="btnClearInput" class="btn btn-ghost">
+              Eingabe leeren
+            </button>
+            <button type="button" id="btnClearOutput" class="btn btn-ghost">
+              Ausgabe löschen
             </button>
             <span id="stats" class="stats"></span>
           </div>
@@ -416,6 +430,9 @@ session_id"></textarea>
             <button type="button" id="btnSaveRules" class="btn btn-secondary">
               Regeln speichern
             </button>
+            <button type="button" id="btnResetRules" class="btn btn-ghost">
+              Regeln zurücksetzen
+            </button>
             <span id="rulesStatus" class="stats"></span>
           </div>
 
@@ -458,11 +475,14 @@ session_id"></textarea>
     const outputEl = document.getElementById('outputLinks');
     const btnClean = document.getElementById('btnClean');
     const btnCopyOutput = document.getElementById('btnCopyOutput');
+    const btnClearInput = document.getElementById('btnClearInput');
+    const btnClearOutput = document.getElementById('btnClearOutput');
     const statsEl = document.getElementById('stats');
 
     const extraRemoveEl = document.getElementById('extraRemove');
     const whitelistEl = document.getElementById('whitelist');
     const btnSaveRules = document.getElementById('btnSaveRules');
+    const btnResetRules = document.getElementById('btnResetRules');
     const rulesStatusEl = document.getElementById('rulesStatus');
 
     function parseLines(value) {
@@ -507,6 +527,19 @@ session_id"></textarea>
       setTimeout(() => { rulesStatusEl.textContent = ''; }, 3000);
     }
 
+    function resetRules() {
+      extraRemoveEl.value = '';
+      whitelistEl.value = '';
+      try {
+        localStorage.removeItem(STORAGE_KEYS.remove);
+        localStorage.removeItem(STORAGE_KEYS.whitelist);
+      } catch (e) {
+        console.warn('Konnte Regeln nicht entfernen', e);
+      }
+      rulesStatusEl.textContent = 'Regeln zurückgesetzt.';
+      setTimeout(() => { rulesStatusEl.textContent = ''; }, 3000);
+    }
+
     function cleanUrl(raw, extraRemoveNames, whitelistNames) {
       let url;
       try {
@@ -523,7 +556,6 @@ session_id"></textarea>
       const extraSet = new Set(extraRemoveNames);
       const whiteSet = new Set(whitelistNames);
 
-      // Wir iterieren über eine Kopie der Keys, weil wir beim Löschen sonst Probleme bekommen
       const keys = [];
       params.forEach((_, key) => { keys.push(key); });
 
@@ -587,20 +619,59 @@ session_id"></textarea>
       const text = outputEl.value.trim();
       if (!text) return;
 
+      // Erst versuchen wir den modernen Clipboard-API-Weg
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          statsEl.textContent = 'Bereinigte Liste in die Zwischenablage kopiert.';
+          setTimeout(() => { statsEl.textContent = ''; }, 3000);
+          return;
+        } catch (e) {
+          console.warn('Clipboard API fehlgeschlagen, versuche Fallback.', e);
+        }
+      }
+
+      // Fallback für Browser, die navigator.clipboard nicht unterstützen
       try {
-        await navigator.clipboard.writeText(text);
-        statsEl.textContent = 'Bereinigte Liste in die Zwischenablage kopiert.';
+        const tmp = document.createElement('textarea');
+        tmp.value = text;
+        tmp.style.position = 'fixed';
+        tmp.style.left = '-9999px';
+        document.body.appendChild(tmp);
+        tmp.focus();
+        tmp.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(tmp);
+        if (successful) {
+          statsEl.textContent = 'Bereinigte Liste in die Zwischenablage kopiert.';
+        } else {
+          statsEl.textContent = 'Bitte Text manuell markieren und kopieren.';
+        }
       } catch (e) {
-        console.warn('Kopieren fehlgeschlagen', e);
-        statsEl.textContent = 'Konnte nicht in die Zwischenablage kopieren.';
+        console.warn('Fallback-Kopieren fehlgeschlagen', e);
+        statsEl.textContent = 'Bitte Text manuell markieren und kopieren.';
       }
 
       setTimeout(() => { statsEl.textContent = ''; }, 3000);
     }
 
+    function clearInput() {
+      inputEl.value = '';
+      statsEl.textContent = '';
+    }
+
+    function clearOutput() {
+      outputEl.value = '';
+      btnCopyOutput.disabled = true;
+      statsEl.textContent = '';
+    }
+
     btnClean.addEventListener('click', cleanAllLinks);
     btnCopyOutput.addEventListener('click', copyOutput);
+    btnClearInput.addEventListener('click', clearInput);
+    btnClearOutput.addEventListener('click', clearOutput);
     btnSaveRules.addEventListener('click', saveRules);
+    btnResetRules.addEventListener('click', resetRules);
 
     // Beim Laden: Regeln aus localStorage einlesen
     loadRules();
