@@ -1,610 +1,425 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <title>SafeShare-App – Tracking-Parameter jetzt entfernen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Füge einen Link ein, entferne Tracking-Parameter und nutze die bereinigte Version – direkt im Browser, ohne Konto.">
+  <meta charset="utf-8" />
+  <title>SafeShare App – Tracking-Parameter aus Links entfernen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Mit der SafeShare-App kannst du Tracking-Parameter wie UTM-Tags, Klick-IDs und mehr aus einzelnen Links entfernen – direkt im Browser, ohne Konto." />
 
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/app.html">
+  <!-- Verifikation -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY" />
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8" />
 
-  <!-- Suchmaschinen-Verifikation -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html" />
+  <meta property="og:title" content="SafeShare App – Tracking-Parameter aus Links entfernen" />
+  <meta property="og:description" content="Füge einen Link ein und erhalte eine aufgeräumte Version ohne unnötige Tracking-Parameter." />
+  <meta property="og:image" content="social-preview.png" />
 
-  <!-- Open Graph / Social Preview -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="SafeShare">
-  <meta property="og:title" content="SafeShare-App – Tracking-Parameter jetzt entfernen">
-  <meta property="og:description" content="Kopiere einen Link, füge ihn in SafeShare ein und erhalte eine bereinigte Version ohne unnötige Tracking-Parameter.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
 
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SafeShare-App – Tracking-Parameter jetzt entfernen">
-  <meta name="twitter:description" content="Links säubern, bevor du sie teilst – lokal im Browser, ohne Konto.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
-
-  <!-- JSON-LD: SoftwareApplication -->
+  <!-- SoftwareApplication Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "@id": "https://j-ai-71.github.io/Supersystem/#safeshare",
     "name": "SafeShare",
+    "applicationCategory": "UtilityApplication",
     "operatingSystem": "Web",
-    "applicationCategory": "Utility",
-    "description": "SafeShare ist eine datensparsame Web-App, die Tracking-Parameter und unnötige Parameter aus Links entfernt, bevor du sie weitergibst.",
     "url": "https://j-ai-71.github.io/Supersystem/app.html",
-    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
+    "description": "Browser-App zum Entfernen von Tracking-Parametern wie UTM-Tags und Klick-IDs aus einzelnen Links.",
     "creator": {
       "@type": "Person",
       "name": "Jana Jergus"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
     }
   }
   </script>
 
-  <!-- Layout / Styles (Basis + App-spezifisch) -->
   <style>
-    *,
-    *::before,
-    *::after { box-sizing: border-box; }
-
     :root {
-      --bg: #020617;
-      --border-subtle: #1f2933;
-      --border-strong: #64748b;
-      --text: #e5e7eb;
-      --text-muted: #94a3b8;
-      --accent: #4adeb8;
-      --accent-soft: rgba(74, 222, 184, 0.14);
-      --accent-strong: #22c29b;
-      --danger: #fb7185;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      color-scheme: dark;
+      --bg: #050814;
+      --bg-elevated: #0b1020;
+      --bg-soft: #11182a;
+      --border-subtle: #1d2335;
+      --accent: #3fe0b5;
+      --accent-soft: rgba(63, 224, 181, 0.14);
+      --text-main: #f5f5f7;
+      --text-muted: #a0a4b8;
+      --text-soft: #8288a2;
+      --danger: #ff6b81;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
     }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: var(--font-sans);
-      background: radial-gradient(circle at top, #020617 0, #000 60%);
-      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #11182a 0, #050814 55%, #02040a 100%);
+      color: var(--text-main);
+      text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }
-
     a { color: var(--accent); text-decoration: none; }
-    a:hover, a:focus-visible { text-decoration: underline; }
+    a:hover { text-decoration: underline; }
 
-    .shell {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 1.5rem 3.5rem;
-    }
-
-    .site-header {
+    header {
       border-bottom: 1px solid var(--border-subtle);
-      background: rgba(2, 6, 23, 0.92);
       backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom,
+        rgba(5, 8, 20, 0.9),
+        rgba(5, 8, 20, 0.85),
+        rgba(5, 8, 20, 0.75));
       position: sticky;
       top: 0;
       z-index: 20;
     }
-
-    .site-header-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0.85rem 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .brand-text-main {
-      font-weight: 600;
-      letter-spacing: 0.04em;
-    }
-
-    .brand-text-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
     .nav {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 14px 20px 10px;
       display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      font-size: 0.9rem;
+      align-items: center;
+      gap: 20px;
     }
-
-    .nav a {
-      padding: 0.3rem 0.75rem;
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: 0.01em;
+    }
+    .nav-logo {
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    .nav a[aria-current="page"] {
-      color: var(--accent-strong);
-      border-color: var(--accent-soft);
-      background: rgba(15, 118, 110, 0.2);
-    }
-
-    .nav a:hover { color: var(--accent-strong); }
-
-    @media (max-width: 720px) {
-      .site-header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    main { margin-top: 2rem; }
-
-    h1 {
-      font-size: clamp(1.7rem, 2.2vw + 1.4rem, 2.3rem);
-      margin: 0 0 0.5rem;
-    }
-
-    p {
-      line-height: 1.7;
-      margin: 0 0 0.9rem;
-    }
-
-    .lead {
-      font-size: 1.0rem;
-      color: var(--text-muted);
-      max-width: 56rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .app-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
-      gap: 1.8rem;
-      align-items: flex-start;
-    }
-
-    @media (max-width: 780px) {
-      .app-layout {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 1.5rem;
-      }
-    }
-
-    .app-card {
-      border-radius: 1rem;
-      border: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 70%, #000 100%);
-      padding: 1.2rem 1.3rem 1.3rem;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.7);
-    }
-
-    label {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    .input-row {
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      gap: 0.5rem;
-    }
-
-    .input-url {
-      flex: 1;
-      padding: 0.7rem 2.3rem 0.7rem 0.9rem;
-      border-radius: 0.75rem;
-      border: 1px solid var(--border-strong);
-      background: rgba(15, 23, 42, 0.95);
-      color: var(--text);
-      font-size: 0.92rem;
-      outline: none;
-    }
-
-    .input-url::placeholder {
-      color: rgba(148, 163, 184, 0.7);
-    }
-
-    .clear-btn {
-      position: absolute;
-      right: 0.55rem;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      cursor: pointer;
-      padding: 0;
-      line-height: 1;
-    }
-
-    .clear-btn:hover {
-      color: var(--accent-strong);
-    }
-
-    .btn-primary,
-    .btn-outline {
+      background: radial-gradient(circle at 30% 20%, #192635 0, #050814 65%);
+      border: 1px solid rgba(63, 224, 181, 0.45);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.7rem 1.3rem;
+      color: var(--accent);
+      font-size: 14px;
+      box-shadow: 0 0 0 1px rgba(10, 255, 196, 0.08);
+    }
+    .nav-tagline {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      margin-left: auto;
+      font-size: 14px;
+    }
+    .nav-link {
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      border: 1px solid transparent;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #020617;
-      box-shadow: 0 10px 30px rgba(15, 118, 110, 0.35);
-    }
-
-    .btn-primary:hover { filter: brightness(1.05); }
-
-    .btn-outline {
-      border-color: var(--border-subtle);
       color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.9);
+    }
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.02);
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .nav-link.active {
+      background: var(--accent-soft);
+      color: var(--accent);
     }
 
-    .btn-outline:hover {
-      border-color: var(--accent-soft);
-      color: var(--accent-strong);
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 32px 20px 72px;
     }
 
+    h1 {
+      font-size: clamp(26px, 3vw, 30px);
+      margin: 0 0 12px;
+    }
+    .lead {
+      margin: 0 0 16px;
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .app-card {
+      border-radius: var(--radius-lg);
+      background: rgba(7, 12, 28, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
+    }
+    .label {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+    .input-row {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .input {
+      width: 100%;
+      padding: 10px 34px 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(3, 6, 18, 0.96);
+      color: var(--text-main);
+      font-size: 14px;
+    }
+    .input::placeholder {
+      color: var(--text-soft);
+    }
+    .clear-btn {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-soft);
+      font-size: 11px;
+      cursor: pointer;
+    }
     .btn-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 0.9rem;
+      gap: 8px;
+      margin-bottom: 10px;
     }
-
-    .hint {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 0.45rem;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(5, 8, 20, 0.98);
+      color: var(--text-main);
+      cursor: pointer;
     }
-
-    .result-card {
-      border-radius: 0.9rem;
-      border: 1px dashed var(--border-strong);
-      background: rgba(15, 23, 42, 0.9);
-      padding: 0.9rem 0.95rem 0.95rem;
-      margin-top: 1.1rem;
-      font-size: 0.9rem;
+    .btn-primary {
+      background: var(--accent);
+      color: #020617;
+      border-color: rgba(10, 255, 196, 0.25);
     }
-
-    .result-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.25rem;
+    .btn-ghost {
+      background: transparent;
     }
-
-    .result-url {
+    .note {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+    .output {
       width: 100%;
-      border-radius: 0.6rem;
-      border: 1px solid var(--border-subtle);
-      background: #020617;
-      color: var(--text);
-      font-size: 0.9rem;
-      padding: 0.55rem 0.7rem;
-      word-break: break-all;
+      padding: 10px 34px 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(3, 6, 18, 0.96);
+      color: var(--text-main);
+      font-size: 14px;
     }
 
-    .result-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.6rem;
-    }
-
-    .status-message {
-      margin-top: 0.4rem;
-      font-size: 0.8rem;
+    .context-panel {
+      border-radius: var(--radius-lg);
+      background: rgba(7, 12, 28, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 16px 18px 16px;
+      font-size: 14px;
       color: var(--text-muted);
     }
-
-    .status-error {
-      color: var(--danger);
+    .context-panel h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .context-panel ul {
+      margin: 0 0 6px 18px;
+      padding: 0;
     }
 
-    .side-info h2 {
-      font-size: 1.2rem;
-      margin-top: 0;
-      margin-bottom: 0.4rem;
+    @media (max-width: 640px) {
+      .nav { padding-inline: 14px; }
+      main { padding-inline: 14px; }
     }
-
-    .side-info ul {
-      padding-left: 1.2rem;
-      margin-top: 0.2rem;
-      margin-bottom: 0.8rem;
-      font-size: 0.9rem;
-    }
-
-    .side-info li {
-      line-height: 1.6;
-    }
-
-    .side-links {
-      font-size: 0.86rem;
-      color: var(--text-muted);
-      margin-top: 0.6rem;
-    }
-
-    .site-footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 1.25rem 1.5rem 1.75rem;
-      margin-top: 3rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      text-align: center;
-      background: rgba(2, 6, 23, 0.96);
-    }
-
-    .site-footer a { color: var(--text-muted); }
-    .site-footer a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner">
-      <div class="brand">
-        <div class="brand-logo">8</div>
-        <div>
-          <div class="brand-text-main">SafeShare</div>
-          <div class="brand-text-sub">Links ohne unnötiges Tracking</div>
-        </div>
-      </div>
-      <nav class="nav" aria-label="Hauptnavigation">
-        <a href="/Supersystem/index.html">Start</a>
-        <a href="/Supersystem/app.html" aria-current="page">App</a>
-        <a href="/Supersystem/pro.html">Pro</a>
-        <a href="/Supersystem/utm-parameter-entfernen.html">UTM entfernen</a>
-        <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking allgemein</a>
-        <a href="/Supersystem/url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a href="/Supersystem/help.html">Hilfe</a>
-      </nav>
-    </div>
-  </header>
-
-  <div class="shell">
-    <main>
-      <section class="app-layout">
-        <div>
-          <h1>SafeShare-App: Tracking-Parameter jetzt entfernen</h1>
-          <p class="lead">
-            Kopiere einen Link, füge ihn hier ein und lass SafeShare typische Tracking-Parameter entfernen.
-            Du bekommst eine bereinigte Version, die du speichern, teilen oder direkt öffnen kannst.
-          </p>
-
-          <div class="app-card">
-            <form id="clean-form" novalidate>
-              <label for="input-url">Link zum Bereinigen</label>
-              <div class="input-row">
-                <input id="input-url" class="input-url" type="text"
-                       placeholder="https://beispiel.de/artikel?utm_source=newsletter&amp;gclid=..."
-                       autocomplete="off">
-                <button type="button" class="clear-btn" id="clear-btn" aria-label="Eingabe löschen">×</button>
-              </div>
-              <div class="btn-row">
-                <button type="submit" class="btn-primary">Bereinigen</button>
-              </div>
-              <div class="hint">
-                Die Verarbeitung passiert lokal in deinem Browser. SafeShare legt kein Nutzerkonto an
-                und setzt keine eigenen Tracking-Cookies.
-              </div>
-
-              <div id="result-section" class="result-card" hidden>
-                <div class="result-label">Bereinigter Link</div>
-                <div id="result-url" class="result-url"></div>
-                <div class="result-actions">
-                  <button type="button" class="btn-outline" id="open-btn">Bereinigten Link öffnen</button>
-                  <button type="button" class="btn-outline" id="copy-btn">In Zwischenablage kopieren</button>
-                </div>
-                <div id="status-message" class="status-message"></div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <aside class="side-info">
-          <h2>Was SafeShare entfernt</h2>
-          <p>Beispiele für typische Tracking-Parameter:</p>
-          <ul>
-            <li><code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_term</code>, <code>utm_content</code></li>
-            <li><code>gclid</code>, <code>fbclid</code>, <code>mc_cid</code>, <code>mc_eid</code></li>
-            <li>andere bekannte IDs, die nur fürs Tracking gebraucht werden</li>
-          </ul>
-          <p>
-            Wenn du genauer einsteigen möchtest, was diese Parameter bedeuten,
-            findest du mehr auf:
-          </p>
-          <ul>
-            <li><a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter entfernen</a></li>
-            <li><a href="/Supersystem/tracking-parameter-entfernen.html">Tracking-Parameter allgemein verstehen</a></li>
-          </ul>
-          <p class="side-links">
-            Für einen Vergleich mit Browser-Erweiterungen und anderen URL-Cleanern:
-            <a href="/Supersystem/url-cleaner-tool-vergleich.html">Tool-Vergleich ansehen</a>.
-          </p>
-        </aside>
-      </section>
-    </main>
+<header>
+  <div class="nav">
+    <a href="index.html" class="nav-brand">
+      <span class="nav-logo">8</span>
+      <span>
+        SafeShare
+        <div class="nav-tagline">Links teilen. Ohne Ballast.</div>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="app.html" class="nav-link active">App</a>
+      <a href="pro.html" class="nav-link">Pro</a>
+      <a href="help.html" class="nav-link">Hilfe</a>
+      <a href="bookmarklets.html" class="nav-link">Bookmarklets</a>
+    </nav>
   </div>
+</header>
 
-  <footer class="site-footer">
-    <div>
-      © SafeShare – Jana Jergus.
-      <a href="/Supersystem/datenschutz.html">Datenschutz</a> ·
-      <a href="/Supersystem/impressum.html">Impressum</a> ·
-      <a href="/Supersystem/status.html">Status</a>
+<main>
+  <h1>SafeShare-App</h1>
+  <p class="lead">
+    Füge einen Link ein, SafeShare entfernt typische Tracking-Parameter – und du bekommst eine
+    aufgeräumte URL zurück, die sich leichter und datensparsamer weitergeben lässt.
+  </p>
+
+  <section class="app-card" aria-label="SafeShare App">
+    <div class="label">Dein Link</div>
+    <div class="input-row">
+      <input id="input-url" class="input" type="url" inputmode="url"
+             placeholder="https://beispiel.de/artikel?utm_source=newsletter&amp;utm_campaign=..."
+             autocomplete="off" />
+      <button class="clear-btn" type="button" id="btn-clear-input">✕</button>
     </div>
-  </footer>
 
-  <!-- App-Logik -->
-  <script>
-    (function () {
-      const form = document.getElementById('clean-form');
-      const input = document.getElementById('input-url');
-      const clearBtn = document.getElementById('clear-btn');
-      const resultSection = document.getElementById('result-section');
-      const resultUrlEl = document.getElementById('result-url');
-      const openBtn = document.getElementById('open-btn');
-      const copyBtn = document.getElementById('copy-btn');
-      const statusEl = document.getElementById('status-message');
+    <div class="btn-row">
+      <button class="btn btn-primary" type="button" id="btn-clean">Link bereinigen</button>
+      <button class="btn btn-ghost" type="button" id="btn-copy-output">Bereinigten Link kopieren</button>
+    </div>
 
-      const TRACKING_PARAMS = [
-  // Klassische UTM-Parameter
-  'utm_source','utm_medium','utm_campaign','utm_term','utm_content',
-  'utm_id','utm_name',
+    <div class="label">Bereinigter Link</div>
+    <div class="input-row">
+      <input id="output-url" class="output" type="text" readonly />
+      <button class="clear-btn" type="button" id="btn-clear-output">✕</button>
+    </div>
 
-  // Ad- und Klick-IDs
-  'gclid','fbclid','dclid','msclkid','twclid','li_fat_id',
+    <p class="note">
+      Hinweis: SafeShare entfernt u. a. gängige UTM-Parameter und Klick-IDs. In
+      <a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a> und
+      <a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a>
+      findest du Beispiele, was genau damit gemeint ist.
+    </p>
+  </section>
 
-  // Newsletter / E-Mail
-  'mc_cid','mc_eid',
+  <section class="context-panel">
+    <h2>Mehr erfahren und Pro-Version</h2>
+    <p>
+      Wenn du regelmäßig viele Links auf einmal bereinigen willst oder eigene Regeln für Parameter brauchst,
+      ist <a href="pro.html">SafeShare Pro</a> die richtige Ergänzung. Dort kannst du:
+    </p>
+    <ul>
+      <li>Listen mit mehreren Links bereinigen,</li>
+      <li>zusätzliche Parameter definieren, die immer entfernt werden,</li>
+      <li>wichtige Parameter auf eine Whitelist setzen.</li>
+    </ul>
+    <p>
+      Hintergrundwissen rund um Tracking findest du in:
+    </p>
+    <ul>
+      <li><a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a></li>
+      <li><a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a></li>
+      <li><a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Tools im Vergleich</a></li>
+    </ul>
+  </section>
+</main>
 
-  // Social / Apps
-  'igshid',
+<script>
+  (function() {
+    const input = document.getElementById('input-url');
+    const output = document.getElementById('output-url');
+    const btnClean = document.getElementById('btn-clean');
+    const btnCopy = document.getElementById('btn-copy-output');
+    const btnClearInput = document.getElementById('btn-clear-input');
+    const btnClearOutput = document.getElementById('btn-clear-output');
 
-  // Diverse Kampagnen-IDs
-  'vero_conv','vero_id',
+    const KNOWN_PARAMS = [
+      // UTM
+      'utm_source','utm_medium','utm_campaign','utm_content','utm_term',
+      // Klick-IDs & Newsletter
+      'fbclid','gclid','mc_cid','mc_eid',
+      // Sonstiges
+      'igshid'
+    ];
 
-  // Referrer/Tracking-Weiterleitungen (z. B. Bild-Link)
-  't_ref','ref','referrer'
-];
+    function cleanUrl(raw) {
+      if (!raw) return '';
+      raw = raw.trim();
 
-      function cleanUrl(raw) {
-        try {
-          // falls kein Protokoll angegeben ist, versuchen, https:// voranzustellen
-          let candidate = raw.trim();
-          if (!candidate) {
-            return { ok: false, error: 'Bitte gib einen Link ein.' };
-          }
-          if (!/^https?:\/\//i.test(candidate)) {
-            candidate = 'https://' + candidate;
-          }
+      // Falls bare URL ohne Protokoll eingegeben wurde
+      if (!/^https?:\/\//i.test(raw)) {
+        raw = 'https://' + raw;
+      }
 
-          const url = new URL(candidate);
+      let url;
+      try {
+        url = new URL(raw);
+      } catch (e) {
+        return raw; // not a valid URL, return as-is
+      }
 
-          const params = url.searchParams;
-          TRACKING_PARAMS.forEach(name => {
-            if (params.has(name)) {
-              params.delete(name);
-            }
-          });
-
-          // leere Query entfernen
-          url.search = params.toString();
-          // Fragment bleibt unverändert
-          return { ok: true, url: url.toString() };
-        } catch (e) {
-          return { ok: false, error: 'Der Link konnte nicht gelesen werden. Bitte prüfe die Adresse.' };
+      // query params filtern
+      const params = url.searchParams;
+      // Wir sammeln alles, was wir behalten wollen
+      const toKeep = [];
+      for (const [key, value] of params.entries()) {
+        if (!KNOWN_PARAMS.includes(key.toLowerCase())) {
+          toKeep.push([key, value]);
         }
       }
 
-      form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        statusEl.textContent = '';
-        statusEl.classList.remove('status-error');
+      // Search zurücksetzen
+      url.search = '';
+      for (const [k, v] of toKeep) {
+        url.searchParams.append(k, v);
+      }
 
-        const raw = input.value;
-        const result = cleanUrl(raw);
+      // Hash unverändert lassen
+      return url.toString();
+    }
 
-        if (!result.ok) {
-          resultSection.hidden = false;
-          resultUrlEl.textContent = raw || '–';
-          statusEl.textContent = result.error;
-          statusEl.classList.add('status-error');
-          return;
-        }
+    function handleClean() {
+      const cleaned = cleanUrl(input.value);
+      output.value = cleaned;
+    }
 
-        resultSection.hidden = false;
-        resultUrlEl.textContent = result.url;
-        statusEl.textContent = 'Tracking-Parameter wurden, soweit bekannt, entfernt.';
-      });
+    function handleCopy() {
+      if (!output.value) return;
+      navigator.clipboard?.writeText(output.value).catch(() => {});
+    }
 
-      clearBtn.addEventListener('click', function () {
-        input.value = '';
-        resultSection.hidden = true;
-        statusEl.textContent = '';
-        statusEl.classList.remove('status-error');
-        input.focus();
-      });
+    btnClean.addEventListener('click', handleClean);
+    btnCopy.addEventListener('click', handleCopy);
+    btnClearInput.addEventListener('click', () => { input.value = ''; });
+    btnClearOutput.addEventListener('click', () => { output.value = ''; });
 
-      openBtn.addEventListener('click', function () {
-        const url = resultUrlEl.textContent.trim();
-        if (url && url !== '–') {
-          window.open(url, '_blank');
-        }
-      });
+    // Enter in Eingabe-Feld triggert Bereinigung
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleClean();
+      }
+    });
 
-      copyBtn.addEventListener('click', function () {
-        const url = resultUrlEl.textContent.trim();
-        if (!url || url === '–') return;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(url).then(function () {
-            statusEl.textContent = 'Bereinigter Link wurde in die Zwischenablage kopiert.';
-            statusEl.classList.remove('status-error');
-          }).catch(function () {
-            statusEl.textContent = 'Kopieren nicht möglich. Bitte manuell markieren.';
-            statusEl.classList.add('status-error');
-          });
-        } else {
-          statusEl.textContent = 'Kopieren nicht möglich. Bitte manuell markieren.';
-          statusEl.classList.add('status-error');
-        }
-      });
-
-      // ?url=… Parameter verarbeiten
-      (function handleUrlParam() {
-        const params = new URLSearchParams(window.location.search);
-        const raw = params.get('url');
-        if (!raw) return;
-        input.value = raw;
-        const result = cleanUrl(raw);
-        if (result.ok) {
-          resultSection.hidden = false;
-          resultUrlEl.textContent = result.url;
-          statusEl.textContent = 'Link aus URL-Parameter bereinigt.';
-        }
-      })();
-    })();
-  </script>
+    // ?url=-Parameter verarbeiten (z. B. app.html?url=...)
+    const sp = new URLSearchParams(window.location.search);
+    const urlParam = sp.get('url');
+    if (urlParam) {
+      input.value = urlParam;
+      handleClean();
+    }
+  })();
+</script>
 </body>
 </html>
