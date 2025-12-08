@@ -1,568 +1,388 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <title>Tracking-Parameter aus Links entfernen | SafeShare – Überblick jenseits von UTM</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Tracking-Parameter aus Links entfernen: Überblick über typische Parameter wie gclid, fbclid, Newsletter-IDs und Referrer-Parameter – und wie SafeShare damit umgeht.">
+  <meta charset="utf-8" />
+  <title>Tracking-Parameter entfernen: Welche Daten deine Links mittragen – und wie du sie loswirst | SafeShare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Tracking-Parameter in Links erkennen und entfernen: Beispiele für UTM, Klick-IDs und Redirect-Links – plus Anleitung, wie SafeShare dir die Bereinigung abnimmt." />
 
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html">
-
-  <!-- Suchmaschinen-Verifikation -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+  <!-- Verifikation -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY" />
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8" />
 
   <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="SafeShare">
-  <meta property="og:title" content="Tracking-Parameter aus Links entfernen – Überblick jenseits von UTM">
-  <meta property="og:description" content="Was Tracking-Parameter sind, welche Beispiele es jenseits von UTM gibt und wie SafeShare sie aus Links entfernt.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html" />
+  <meta property="og:title" content="Tracking-Parameter entfernen: Welche Daten deine Links mittragen – und wie du sie loswirst" />
+  <meta property="og:description" content="Welche Tracking-Parameter es in Links gibt, welche Risiken sie haben und wie du sie mit SafeShare entfernen kannst." />
+  <meta property="og:image" content="social-preview.png" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tracking-Parameter aus Links entfernen – Überblick jenseits von UTM">
-  <meta name="twitter:description" content="Typische Tracking-Parameter wie gclid, fbclid, Newsletter-IDs und Referrer-Parameter verstehen und entfernen.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
 
-  <!-- JSON-LD: SoftwareApplication (gleich wie auf anderen Kernseiten) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "@id": "https://j-ai-71.github.io/Supersystem/#safeshare",
-    "name": "SafeShare",
-    "operatingSystem": "Web",
-    "applicationCategory": "Utility",
-    "description": "SafeShare ist eine datensparsame Web-App, die Tracking-Parameter und unnötige Parameter aus Links entfernt, bevor du sie weitergibst.",
-    "url": "https://j-ai-71.github.io/Supersystem/",
-    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
-    "creator": {
-      "@type": "Person",
-      "name": "Jana Jergus"
-    }
-  }
-  </script>
-
-  <!-- Layout / Styles – wie url-cleaner-tool-vergleich.html -->
   <style>
-    *,
-    *::before,
-    *::after { box-sizing: border-box; }
-
     :root {
-      --bg: #020617;
-      --border-subtle: #1f2933;
-      --text: #e5e7eb;
-      --text-muted: #94a3b8;
-      --accent: #4adeb8;
-      --accent-soft: rgba(74, 222, 184, 0.14);
-      --accent-strong: #22c29b;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      color-scheme: dark;
+      --bg: #050814;
+      --bg-elevated: #0b1020;
+      --bg-soft: #11182a;
+      --border-subtle: #1d2335;
+      --accent: #3fe0b5;
+      --accent-soft: rgba(63, 224, 181, 0.14);
+      --text-main: #f5f5f7;
+      --text-muted: #a0a4b8;
+      --text-soft: #8288a2;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
     }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: var(--font-sans);
-      background: radial-gradient(circle at top, #020617 0, #000 60%);
-      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text","Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #11182a 0, #050814 55%, #02040a 100%);
+      color: var(--text-main);
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-
     a { color: var(--accent); text-decoration: none; }
-    a:hover, a:focus-visible { text-decoration: underline; }
+    a:hover { text-decoration: underline; }
 
-    .shell {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 1.5rem 3.5rem;
-    }
-
-    .site-header {
-      border-bottom: 1px solid var(--border-subtle);
-      background: rgba(2, 6, 23, 0.9);
-      backdrop-filter: blur(18px);
+    header {
       position: sticky;
       top: 0;
       z-index: 20;
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom,
+        rgba(5, 8, 20, 0.96),
+        rgba(5, 8, 20, 0.9),
+        rgba(5, 8, 20, 0.85));
     }
-
-    .site-header-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0.85rem 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .brand-text-main { font-weight: 600; letter-spacing: 0.04em; }
-    .brand-text-sub { font-size: 0.78rem; color: var(--text-muted); }
-
     .nav {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 14px 20px 10px;
       display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      font-size: 0.9rem;
+      align-items: center;
+      gap: 20px;
     }
-
-    .nav a {
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      white-space: nowrap;
+    .nav-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
-
-    .nav a[aria-current="page"] {
-      color: var(--accent-strong);
-      border-color: var(--accent-soft);
-      background: rgba(15, 118, 110, 0.2);
-    }
-
-    .nav a:hover { color: var(--accent-strong); }
-
-    @media (max-width: 720px) {
-      .site-header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    main { margin-top: 2rem; }
-
-    .kicker {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    h1 {
-      font-size: clamp(1.8rem, 2.2vw + 1.4rem, 2.4rem);
-      margin: 0 0 0.75rem;
-    }
-
-    h2 {
-      font-size: 1.4rem;
-      margin: 2rem 0 0.6rem;
-    }
-
-    h3 {
-      font-size: 1.1rem;
-      margin: 1.3rem 0 0.4rem;
-    }
-
-    p {
-      line-height: 1.7;
-      margin: 0 0 0.9rem;
-    }
-
-    ul, ol {
-      padding-left: 1.3rem;
-      margin: 0 0 1rem;
-      line-height: 1.7;
-    }
-
-    .lead {
-      font-size: 1.03rem;
-      color: var(--text-muted);
-      max-width: 56rem;
-      margin-bottom: 1.4rem;
-    }
-
-    .toc {
-      margin: 1.8rem 0 2rem;
-      padding: 1rem 1.25rem;
-      border-radius: 0.9rem;
-      border: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at top left, rgba(74, 222, 184, 0.08), rgba(15, 23, 42, 0.95));
-    }
-
-    .toc-title {
-      font-size: 0.95rem;
+    .nav-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 600;
-      margin-bottom: 0.4rem;
+      font-size: 17px;
     }
-
-    .toc ol {
-      margin: 0;
-      padding-left: 1.1rem;
-      font-size: 0.95rem;
-    }
-
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin: 2.25rem 0 2rem;
-    }
-
-    .btn {
+    .nav-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #192635 0, #050814 65%);
+      border: 1px solid rgba(63, 224, 181, 0.5);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.7rem 1.3rem;
+      color: var(--accent);
+      font-size: 14px;
+      box-shadow: 0 0 0 1px rgba(10, 255, 196, 0.08);
+    }
+    .nav-tagline {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      gap: 14px;
+      font-size: 14px;
+    }
+    .nav-link {
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      border: 1px solid transparent;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #020617;
-      box-shadow: 0 10px 30px rgba(15, 118, 110, 0.35);
-    }
-
-    .btn-primary:hover { filter: brightness(1.05); text-decoration: none; }
-
-    .btn-outline {
-      border-color: var(--border-subtle);
       color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.9);
     }
-
-    .btn-outline:hover {
-      border-color: var(--accent-soft);
-      color: var(--accent-strong);
+    .nav-link:hover {
+      background: rgba(255,255,255,0.02);
       text-decoration: none;
+      color: var(--text-main);
+    }
+    .nav-link.active {
+      background: var(--accent-soft);
+      color: var(--accent);
     }
 
-    .faq h3 { margin-top: 1.6rem; }
-    .faq p { margin-bottom: 0.6rem; }
-
-    .related {
-      margin-top: 2.5rem;
-      padding-top: 1.75rem;
-      border-top: 1px solid var(--border-subtle);
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 32px 20px 72px;
     }
-
-    .related ul {
-      list-style: none;
-      padding-left: 0;
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 10px;
     }
+    .breadcrumb a { color: var(--text-soft); }
+    .breadcrumb span { opacity: 0.7; }
 
-    .related li { margin-bottom: 0.35rem; }
-
-    .site-footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 1.25rem 1.5rem 1.75rem;
-      margin-top: 3rem;
+    .category {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: clamp(26px, 3.1vw, 30px);
+      line-height: 1.25;
+      margin: 0 0 8px;
+    }
+    .lead {
+      margin: 0 0 18px;
       color: var(--text-muted);
-      font-size: 0.85rem;
-      text-align: center;
-      background: rgba(2, 6, 23, 0.96);
+      font-size: 15px;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      gap: 6px;
+    }
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
     }
 
-    .site-footer a { color: var(--text-muted); }
-    .site-footer a:hover { color: var(--accent); }
+    .article-grid {
+      display: grid;
+      gap: 22px;
+    }
+    .toc-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left,
+          rgba(63, 224, 181, 0.16),
+          rgba(10, 18, 40, 0.96));
+      border: 1px solid rgba(63, 224, 181, 0.4);
+      padding: 16px 18px 14px;
+      box-shadow: var(--shadow-soft);
+    }
+    .toc-card h2 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+    .toc-card ol {
+      margin: 0 0 0 18px;
+      padding: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    section {
+      border-radius: var(--radius-lg);
+      background: rgba(7, 12, 28, 0.96);
+      border: 1px solid rgba(255,255,255,0.03);
+      padding: 20px 18px 18px;
+    }
+    section + section { margin-top: 14px; }
+
+    section h2 {
+      margin-top: 0;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin: 0 0 10px;
+    }
+    ul, ol {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin: 0 0 10px 20px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 13px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: rgba(10, 16, 32, 0.95);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: #c6ffef;
+    }
+
+    .note { font-size: 13px; color: var(--text-soft); }
+
+    .cta-list ul { margin-left: 18px; }
+
+    @media (max-width: 640px) {
+      .nav { padding-inline: 14px; }
+      main { padding-inline: 14px; }
+      section { padding-inline: 14px; }
+    }
   </style>
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": "https://j-ai-71.github.io/Supersystem/tracking-parameter-entfernen.html#faq",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Was sind Tracking-Parameter in Links?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Tracking-Parameter sind zusätzliche Bestandteile einer URL, mit denen z. B. Marketing- oder Analyse-Tools nachvollziehen, wie ein Link genutzt wurde. Dazu gehören UTM-Parameter, Klick-IDs oder spezielle Redirect-Parameter, die beim Aufruf automatisch mit übertragen werden."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Welche Arten von Tracking-Parametern gibt es?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Häufige Beispiele sind UTM-Parameter wie utm_source oder utm_campaign, Werbe-IDs wie gclid oder fbclid, Referrer-Parameter in Weiterleitungslinks und interne Kampagnen-Parameter von Shops oder News-Portalen. Viele Betreiber nutzen eigene Namensschemata, die sich im Query-Teil der URL wiederfinden."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Warum kann es sinnvoll sein, Tracking-Parameter zu entfernen?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Tracking-Parameter machen Links länger und tragen zusätzliche Informationen über dein Nutzungsverhalten, Kampagnen oder Quellen. Wenn du Links an andere weitergibst oder speicherst, kannst du durch das Entfernen ein Stück Datensparsamkeit praktizieren und für kürzere, übersichtlichere Adressen sorgen."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Wie kann ich Tracking-Parameter manuell entfernen?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Du kannst die URL in der Adresszeile oder in einem Textfeld öffnen und alle Teile hinter dem Fragezeichen oder bestimmten Parametern vorsichtig entfernen, solange der eigentliche Pfad zur Seite erhalten bleibt. Das erfordert etwas Erfahrung und ist bei komplexen Links fehleranfällig, weil schnell zu viel gelöscht wird."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Wie hilft SafeShare beim Entfernen von Tracking-Parametern?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "SafeShare analysiert eine eingegebene URL und entfernt typische Tracking-Parameter wie UTM-Parameter, Klick-IDs und ausgewählte Redirect-Parameter, ohne dass du die Struktur der Adresse im Detail kennen musst. Die Bereinigung findet lokal im Browser statt, es werden keine Konten oder Tracking-Cookies eingesetzt."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Schützt das Entfernen von Tracking-Parametern vollständig vor Tracking?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Nein. Es gibt viele weitere Formen von Tracking, zum Beispiel über Cookies, Gerätefingerprints oder eingebettete Skripte. Das Entfernen von Tracking-Parametern ist ein pragmatischer Schritt zu datensparsameren Links, ersetzt aber keinen umfassenden technischen oder organisatorischen Schutz."
-      }
-    }
-  ]
-}
-</script>
-  
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner">
-      <div class="brand">
-        <div class="brand-logo">8</div>
-        <div>
-          <div class="brand-text-main">SafeShare</div>
-          <div class="brand-text-sub">Links ohne unnötiges Tracking</div>
-        </div>
+<header>
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="nav-row">
+        <div class="nav-logo">8</div>
+        <span>SafeShare</span>
       </div>
-      <nav class="nav" aria-label="Hauptnavigation">
-        <a href="/Supersystem/index.html">Start</a>
-        <a href="/Supersystem/app.html">App</a>
-        <a href="/Supersystem/pro.html">Pro</a>
-        <a href="/Supersystem/utm-parameter-entfernen.html">UTM entfernen</a>
-        <a href="/Supersystem/tracking-parameter-entfernen.html" aria-current="page">Tracking allgemein</a>
-        <a href="/Supersystem/url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a href="/Supersystem/help.html">Hilfe</a>
-      </nav>
+      <span class="nav-tagline">Links ohne unnötiges Tracking</span>
     </div>
-  </header>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Start</a>
+      <a class="nav-link" href="app.html">App</a>
+      <a class="nav-link" href="pro.html">Pro</a>
+      <a class="nav-link" href="utm-parameter-entfernen.html">UTM entfernen</a>
+      <a class="nav-link active" href="tracking-parameter-entfernen.html">Tracking allgemein</a>
+      <a class="nav-link" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+      <a class="nav-link" href="help.html">Hilfe</a>
+    </div>
+  </nav>
+</header>
 
-  <div class="shell">
-    <main>
-      <div class="kicker">Link-Hygiene · Tracking verstehen</div>
-      <h1>Tracking-Parameter aus Links entfernen – Überblick jenseits von UTM</h1>
-      <p class="lead">
-        UTM-Parameter sind nur ein Teil der Tracking-Welt. Viele Links tragen zusätzliche IDs, Newsletter-Kennungen
-        oder Referrer-Parameter mit sich. Hier bekommst du einen Überblick, welche Arten von Tracking-Parametern es
-        gibt, wie sie funktionieren – und wie SafeShare damit umgeht.
-      </p>
-
-      <div class="toc">
-        <div class="toc-title">Inhalt</div>
-        <ol>
-          <li><a href="#was-sind-tracking-parameter">Was sind Tracking-Parameter?</a></li>
-          <li><a href="#beispiele">Typische Beispiele jenseits von UTM</a></li>
-          <li><a href="#redirects">Weiterleitungs-Parameter &amp; verschachtelte Redirects</a></li>
-          <li><a href="#safeshare">Wie SafeShare Tracking-Parameter behandelt</a></li>
-          <li><a href="#alltag">Wie du Tracking-Parameter im Alltag in den Griff bekommst</a></li>
-          <li><a href="#faq">Häufige Fragen</a></li>
-        </ol>
-      </div>
-
-      <div class="cta-row">
-        <a class="btn btn-primary" href="/Supersystem/app.html">SafeShare-App öffnen</a>
-        <a class="btn btn-outline" href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter im Detail verstehen</a>
-      </div>
-
-      <section id="was-sind-tracking-parameter">
-        <h2>Was sind Tracking-Parameter?</h2>
-        <p>
-          Tracking-Parameter sind Zusatzinformationen in einer URL, die vor allem den Betreibern einer Website helfen,
-          Nutzerwege und Kampagnen zu analysieren. Technisch sind es ganz normale Query-Parameter – also alles nach dem
-          <code>?</code> in einer Adresse.
-        </p>
-        <p>
-          Im Unterschied zu UTM-Parametern, die relativ einheitlich benannt sind, gibt es bei sonstigen Tracking-Parametern
-          keine gemeinsame Norm. Jeder Dienst, jedes Tool und jede Plattform kann eigene Namen und Strukturen verwenden.
-        </p>
-        <p>Wichtig ist die Unterscheidung:</p>
-        <ul>
-          <li><strong>Funktionale Parameter</strong> (z. B. <code>page</code>, <code>lang</code>, <code>id</code>) steuern die eigentliche Funktion der Seite.</li>
-          <li><strong>Tracking-Parameter</strong> (z. B. <code>gclid</code>, <code>fbclid</code>, <code>t_ref</code>) dienen primär dazu, Nutzerwege zu messen.</li>
-        </ul>
-      </section>
-
-      <section id="beispiele">
-        <h2>Typische Beispiele jenseits von UTM</h2>
-        <p>Einige häufige Tracking-Parameter, die dir im Alltag begegnen können:</p>
-        <ul>
-          <li><strong>Werbe- und Kampagnen-IDs</strong>
-            <ul>
-              <li><code>gclid</code> (Google Ads),</li>
-              <li><code>fbclid</code> (Facebook/Meta),</li>
-              <li><code>dclid</code>, <code>msclkid</code>, <code>twclid</code>, <code>li_fat_id</code>.</li>
-            </ul>
-          </li>
-          <li><strong>Newsletter-Parameter</strong>
-            <ul>
-              <li><code>mc_cid</code>, <code>mc_eid</code> (Mailchimp),</li>
-              <li>andere Dienste mit eigenen IDs für Kampagnen und Empfänger.</li>
-            </ul>
-          </li>
-          <li><strong>App- und Social-spezifische Parameter</strong>
-            <ul>
-              <li><code>igshid</code> (Instagram),</li>
-              <li>weitere IDs, die nur für die Plattform selbst sinnvoll sind.</li>
-            </ul>
-          </li>
-          <li><strong>Referrer-Parameter</strong>
-            <ul>
-              <li><code>t_ref</code> (z. B. bei News-Seiten),</li>
-              <li><code>ref</code>, <code>referrer</code> mit Angaben zur vorherigen Seite.</li>
-            </ul>
-          </li>
-        </ul>
-        <p>
-          Für dich als Person, die einen Link weitergibt, sind viele dieser Zusatzinfos nicht notwendig – sie verraten eher,
-          aus welchem Newsletter oder aus welcher Kampagne du kommst.
-        </p>
-      </section>
-
-      <section id="redirects">
-        <h2>Weiterleitungs-Parameter &amp; verschachtelte Redirects</h2>
-        <p>
-          Manchmal steckt der eigentliche Ziel-Link in einem weiteren Parameter – etwa wenn ein Dienst erst über eigene
-          Tracking-Server geht und dich dann zum eigentlichen Inhalt weiterleitet.
-        </p>
-        <p>Beispielhaft:</p>
-        <ul>
-          <li>Eine URL auf einer Plattform, die im Parameter <code>u=</code> oder <code>url=</code> den eigentlichen Ziel-Link enthält.</li>
-          <li>News- oder Social-Seiten, die dir einen Zwischenschritt „dazwischen schalten“.</li>
-        </ul>
-        <p>
-          Hier geht es weniger um einzelne Parameter-Namen, sondern darum, wie tief eine URL verschachtelt ist. SafeShare
-          konzentriert sich in seiner aktuellen Form auf die <strong>direkte</strong> URL und typische Parameter, nicht auf
-          komplexe mehrstufige Entschachtelung – damit das Tool transparent und kontrollierbar bleibt.
-        </p>
-      </section>
-
-      <section id="safeshare">
-        <h2>Wie SafeShare Tracking-Parameter behandelt</h2>
-        <p>
-          SafeShare arbeitet bewusst mit einer Liste bekannter Tracking-Parameter, die regelmäßig erweitert werden kann.
-          Statt „blind“ alles nach dem <code>?</code> zu entfernen, bleibt die eigentliche Funktion der Seite erhalten.
-        </p>
-        <p>Grundprinzipien von SafeShare:</p>
-        <ul>
-          <li><strong>Lokal im Browser:</strong> Die eingegebene URL wird im Browser verarbeitet, ohne Konto und ohne eigene Tracking-Cookies.</li>
-          <li><strong>Bekannte Tracking-Parameter entfernen:</strong> z. B. <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>, <code>mc_cid</code>, <code>mc_eid</code>, <code>t_ref</code>, <code>ref</code>, <code>referrer</code> und weitere.</li>
-          <li><strong>Funktionale Parameter respektieren:</strong> IDs, die für den Inhalt selbst nötig sind (z. B. Artikel-ID, Seitenzahl), bleiben erhalten.</li>
-        </ul>
-        <p>
-          Wenn du in deinem Alltag weitere verdächtige Parameter entdeckst, kannst du sie für dich markieren – und SafeShare
-          nach und nach gezielt um solche Fälle erweitern.
-        </p>
-      </section>
-
-      <section id="alltag">
-        <h2>Wie du Tracking-Parameter im Alltag in den Griff bekommst</h2>
-        <p>
-          Tracking-Parameter komplett zu vermeiden ist kaum möglich – aber du kannst bewusst damit umgehen, besonders dann,
-          wenn du Links speicherst oder weitergibst.
-        </p>
-        <ol>
-          <li>
-            <strong>Beim Teilen kurz innehalten:</strong> einen Link, den du in Chat, Social oder E-Mail weitergibst,
-            kannst du vorher durch SafeShare laufen lassen.
-          </li>
-          <li>
-            <strong>Eigene Lesezeichen sauber halten:</strong> Speichere wichtige Links in sauberer Form, damit du später
-            nicht durch Endlos-URLs scrollen musst.
-          </li>
-          <li>
-            <strong>Teams informieren:</strong> In Teams oder Projekten lohnt sich eine kurze Absprache, dass Links nach
-            Möglichkeit ohne Tracking-Parameter dokumentiert werden.
-          </li>
-        </ol>
-        <p>
-          Mit <a href="/Supersystem/pro.html">SafeShare Pro</a> kannst du solche Routinen gezielt aufbauen – für dich
-          allein oder als kleines Team.
-        </p>
-      </section>
-
-      <section id="faq" class="faq">
-        <h2>Häufige Fragen zu Tracking-Parametern</h2>
-
-        <h3>Ist das Entfernen von Tracking-Parametern erlaubt?</h3>
-        <p>
-          Ja. Du entscheidest selbst, in welcher Form du Links weitergibst. Tracking-Parameter zu entfernen bedeutet
-          in der Regel, dass du weniger Zusatzdaten mitschickst – der Inhalt der Seite bleibt unverändert.
-        </p>
-
-        <h3>Kann das Entfernen von Parametern Links „kaputt machen“?</h3>
-        <p>
-          In Einzelfällen kann ein Betreiber Parameter so verwenden, dass sie für die Funktion notwendig sind.
-          SafeShare arbeitet deshalb mit einer Auswahl typischer Tracking-Parameter, statt „alles“ zu löschen.
-          Wenn ein Link nach dem Bereinigen nicht wie erwartet funktioniert, solltest du ihn im Zweifel in Originalform nutzen.
-        </p>
-
-        <h3>Warum löscht SafeShare nicht alle unbekannten Parameter?</h3>
-        <p>
-          Viele Parameter sind funktional wichtig: z. B. um einen bestimmten Artikel, eine Spracheinstellung oder einen
-          Filterzustand zu steuern. SafeShare fokussiert sich deshalb auf bekannte Tracking-Namen, damit du deine
-          Links datensparsamer machen kannst, ohne die Zielseiten unnötig zu brechen.
-        </p>
-
-        <h3>Deckt SafeShare wirklich alle Tracking-Parameter ab?</h3>
-        <p>
-          Nein – und das ist ehrlich gesagt auch kaum möglich. Es gibt unzählige proprietäre Systeme. Das Ziel von SafeShare
-          ist nicht „perfekte“ Anonymität, sondern ein klarer, pragmatischer Schritt: typische Tracking-Anhänge entfernen
-          und Link-Hygiene verbessern.
-        </p>
-      </section>
-
-      <section class="related">
-        <h2>Weiterführende Inhalte</h2>
-        <ul>
-          <li><a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter entfernen – Grundlagen &amp; Beispiele</a></li>
-          <li><a href="/Supersystem/url-cleaner-tool-vergleich.html">URL-Cleaner-Tools im Vergleich</a></li>
-          <li><a href="/Supersystem/app.html">SafeShare-App – Links direkt bereinigen</a></li>
-          <li><a href="/Supersystem/pro.html">SafeShare Pro – Routinen &amp; Materialien</a></li>
-        </ul>
-      </section>
-    </main>
+<main>
+  <div class="breadcrumb">
+    <a href="index.html">SafeShare</a> <span>›</span> Tracking verstehen
   </div>
 
-  <footer class="site-footer">
-    <div>
-      © SafeShare – Jana Jergus.
-      <a href="/Supersystem/datenschutz.html">Datenschutz</a> ·
-      <a href="/Supersystem/impressum.html">Impressum</a> ·
-      <a href="/Supersystem/status.html">Status</a>
-    </div>
-  </footer>
-</body>
-</html>
+  <div class="category">Link-Hygiene · Tracking verstehen</div>
+  <h1>Tracking-Parameter entfernen: Welche Daten deine Links mittragen – und wie du sie loswirst</h1>
+  <p class="lead">
+    Viele Links sind heute mehr als nur eine Adresse. Sie tragen zusätzliche Informationen mit,
+    die für Analysen und Werbung genutzt werden: UTM-Parameter, Klick-IDs, verschachtelte Redirects.
+    Hier bekommst du einen Überblick, welche Tracking-Parameter typisch sind – und wie du sie entfernen kannst,
+    bevor du Links weitergibst.
+  </p>
+
+  <div class="meta-row">
+    <span class="chip"><span class="chip-dot"></span> Datensparsamkeit</span>
+    <span class="chip"><span class="chip-dot"></span> Kein Nutzerprofiling durch SafeShare</span>
+  </div>
+
+  <div class="article-grid">
+    <aside class="toc-card" aria-label="Inhaltsverzeichnis">
+      <h2>Inhalt</h2>
+      <ol>
+        <li><a href="#was-sind-tracking-parameter">Was sind Tracking-Parameter in Links?</a></li>
+        <li><a href="#typische-parameter">Typische Tracking-Parameter &amp; Beispiele</a></li>
+        <li><a href="#muster-erkennen">Tracking-Parameter erkennen: typische Muster</a></li>
+        <li><a href="#risiken">Risiken und Auswirkungen</a></li>
+        <li><a href="#manuell-entfernen">Tracking-Parameter manuell entfernen</a></li>
+        <li><a href="#safeShare">Tracking-Parameter automatisch entfernen mit SafeShare</a></li>
+        <li><a href="#bewusst-behalten">Wann solltest du Tracking-Parameter bewusst behalten?</a></li>
+        <li><a href="#faq">Häufige Fragen</a></li>
+      </ol>
+    </aside>
+
+    <section id="was-sind-tracking-parameter">
+      <h2>Was sind Tracking-Parameter in Links?</h2>
+      <p>
+        Tracking-Parameter sind zusätzliche Teile einer URL, die vor allem dazu dienen,
+        Nutzerströme zu messen, Kampagnen auszuwerten oder Klicks gezielt einzelnen Quellen
+        zuzuordnen. Sie werden an die eigentliche Adresse angehängt – meist nach einem
+        Fragezeichen <code>?</code> oder als Teil eines speziellen Redirect-Links.
+      </p>
+      <p>Ein vereinfachtes Beispiel:</p>
+      <p>
+        <code>https://beispiel.de/artikel?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=herbst</code>
+      </p>
+      <p>
+        Alles vor dem Fragezeichen ist die „eigentliche“ Adresse. Alles danach dient vor allem
+        Marketing- und Analysezwecken.
+      </p>
+    </section>
+
+    <section id="typische-parameter">
+      <h2>Typische Tracking-Parameter &amp; Beispiele</h2>
+      <ul>
+        <li><strong>utm_…</strong> – z. B. <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code></li>
+        <li><strong>fbclid</strong> – Facebook Click ID</li>
+        <li><strong>gclid</strong> – Google Ads Click ID</li>
+        <li><strong>mc_eid</strong> – Mailchimp-ID</li>
+        <li><strong>vero_id</strong>, <strong>hsCtaTracking</strong> und viele andere Tool-spezifische Parameter</li>
+      </ul>
+      <p>
+        Oft sind die Werte dahinter lange, kryptische Zeichenfolgen. Für den Menschen bringen sie
+        keine Vorteile – für Marketing-Teams liefern sie Auswertungen.
+      </p>
+    </section>
+
+    <section id="muster-erkennen">
+      <h2>Tracking-Parameter erkennen: typische Muster in URLs</h2>
+      <p>
+        Du kannst Tracking-Parameter relativ schnell erkennen, wenn du auf bestimmte Muster achtest:
+      </p>
+      <ul>
+        <li>Alles, was nach einem <code>?</code> beginnt und durch <code>&amp;</code> in mehrere Teile getrennt ist.</li>
+        <li>Begriffe wie <code>utm_</code>, <code>campaign</code>, <code>source</code>, <code>medium</code>, <code>clickid</code>.</li>
+        <li>Sehr lange, zufällige IDs (z. B. <code>fbclid=A1b2C3...</code> oder <code>gclid=EAIaIQobChMI...</code>).</li>
+      </ul>
+      <p>
+        Wenn eine Adresse sehr lang ist und viele <code>&amp;</code>-Zeichen enthält, ist fast sicher Tracking im Spiel.
+        Genau diese Teile kann SafeShare für dich entfernen.
+      </p>
+    </section>
+
+    <section id="risiken">
+      <h2>Welche Risiken und Auswirkungen haben Tracking-Parameter?</h2>
+      <p>
+        Für Website-Betreiber:innen sind Tracking-Parameter praktisch, weil sie Kampagnen
+        genauer auswerten können. Für dich als Person, die einen Link öffnet oder teilt,
+        bringen sie aber meist Nachteile:
+      </p>
+      <ul>
+        <li>zusätzliche Datenpunkte über dein Nutzungsverhalten,</li>
+        <li>längere, unübersichtliche Links,</li>
+        <li>potenziell mehr Daten, die zwischen mehreren Diensten ausgetauscht werden.</li>
+      </ul>
+      <p>
+        Du kannst Tracking im Web nicht vollständig abschalten – aber du kannst bewusster
+        entscheiden, welche Daten du mit jedem Link mitverschickst.
+      </p>
+    </section>
+
+    <section id="manuell-entfernen">
+      <h2>Tracking-Parameter manuell entfernen – Schritt für Schritt</h2>
+      <ol>
+        <li>Kopiere den vollständigen Link.</li>
+        <li>Suche das Fragezeichen <code>?</code> in der URL.</li>
+        <li>Alles ab <code>?</code> bis zum Ende löschen.</li>
+        <li>Den „gekürzten“ Link im Browser testen.</li>
+      </ol>
+      <p>
+        Das funktioniert, ist aber auf Dauer mühsam – vor allem, wenn du viele Links
+        in Chats oder Newslettern teilen willst. Genau hier setzt SafeShare an.
+      </p>
+    </section>
+
+    <section id="safeShare">
+      <h2>Tracking-Parameter automatisch entfernen mit SafeShare</h2>
+      <p>
+        SafeShare entfernt Tracking-Parameter direkt im Browser. Du fügst einen Link ein,
+        SafeShare bereinigt ihn lokal – ohne eigene Nutzerkonten, ohne zusätzliche
+        Tracking-Cookies.
+      </p>
+      <ul>
+        <li><a href="app.html">SafeShare
