@@ -1,505 +1,310 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <title>SafeShare Hilfe – Beispiele, Fragen & Unterstützung zur Link-Hygiene</title>
-<meta name="description" content="In der SafeShare Hilfe findest du Beispiele für typische Links, Antworten auf häufige Fragen und Hinweise zur Nutzung der Web-App – damit das Entfernen von Tracking-Parametern im Alltag leicht fällt." />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <title>SafeShare Hilfe – Fragen & Antworten zur Link-Bereinigung</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Hilfe zu SafeShare: Wie die App funktioniert, welche Tracking-Parameter entfernt werden, was SafeShare Pro zusätzlich kann und wo du mehr Hintergrundwissen findest." />
 
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/help.html">
-
-  <!-- Suchmaschinen-Verifikation -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8">
+  <!-- Verifikation -->
+  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY" />
+  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8" />
 
   <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="SafeShare">
-  <meta property="og:title" content="SafeShare Hilfe & Anwendungsbeispiele">
-  <meta property="og:description" content="Konkret sehen, wie du SafeShare im Alltag einsetzt: Links bereinigen, geben, speichern und mit anderen Tools kombinieren.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/help.html">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/help.html" />
+  <meta property="og:title" content="SafeShare Hilfe – Fragen & Antworten" />
+  <meta property="og:description" content="Antworten auf häufige Fragen zu SafeShare, Tracking-Parametern und SafeShare Pro." />
+  <meta property="og:image" content="social-preview.png" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SafeShare Hilfe & Anwendungsbeispiele">
-  <meta name="twitter:description" content="Schritt-für-Schritt-Beispiele, wann und wie du SafeShare nutzen kannst.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png">
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
 
-  <!-- JSON-LD: SoftwareApplication -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "@id": "https://j-ai-71.github.io/Supersystem/#safeshare",
-    "name": "SafeShare",
-    "operatingSystem": "Web",
-    "applicationCategory": "Utility",
-    "description": "SafeShare ist eine datensparsame Web-App, die Tracking-Parameter und unnötige Parameter aus Links entfernt, bevor du sie weitergibst.",
-    "url": "https://j-ai-71.github.io/Supersystem/",
-    "image": "https://j-ai-71.github.io/Supersystem/social-preview.png",
-    "creator": {
-      "@type": "Person",
-      "name": "Jana Jergus"
-    }
-  }
-  </script>
-
-  <!-- Layout / Styles (wie andere Content-Seiten) -->
   <style>
-    *,
-    *::before,
-    *::after { box-sizing: border-box; }
-
     :root {
-      --bg: #020617;
-      --border-subtle: #1f2933;
-      --text: #e5e7eb;
-      --text-muted: #94a3b8;
-      --accent: #4adeb8;
-      --accent-soft: rgba(74, 222, 184, 0.14);
-      --accent-strong: #22c29b;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      color-scheme: dark;
+      --bg: #050814;
+      --bg-elevated: #0b1020;
+      --bg-soft: #11182a;
+      --border-subtle: #1d2335;
+      --accent: #3fe0b5;
+      --accent-soft: rgba(63, 224, 181, 0.14);
+      --text-main: #f5f5f7;
+      --text-muted: #a0a4b8;
+      --text-soft: #8288a2;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
     }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: var(--font-sans);
-      background: radial-gradient(circle at top, #020617 0, #000 60%);
-      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #11182a 0, #050814 55%, #02040a 100%);
+      color: var(--text-main);
+      text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }
-
     a { color: var(--accent); text-decoration: none; }
-    a:hover, a:focus-visible { text-decoration: underline; }
+    a:hover { text-decoration: underline; }
 
-    .shell {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 1.5rem 3.5rem;
-    }
-
-    .site-header {
+    header {
       border-bottom: 1px solid var(--border-subtle);
-      background: rgba(2, 6, 23, 0.9);
       backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom,
+        rgba(5, 8, 20, 0.9),
+        rgba(5, 8, 20, 0.85),
+        rgba(5, 8, 20, 0.75));
       position: sticky;
       top: 0;
       z-index: 20;
     }
-
-    .site-header-inner {
-      max-width: 960px;
+    .nav {
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 0.85rem 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .brand {
+      padding: 14px 20px 10px;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 20px;
     }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: 0.01em;
+    }
+    .nav-logo {
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
-      border: 2px solid var(--accent);
-      display: flex;
+      background: radial-gradient(circle at 30% 20%, #192635 0, #050814 65%);
+      border: 1px solid rgba(63, 224, 181, 0.45);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
-      font-weight: 600;
+      color: var(--accent);
+      font-size: 14px;
+      box-shadow: 0 0 0 1px rgba(10, 255, 196, 0.08);
+    }
+    .nav-tagline {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      margin-left: auto;
+      font-size: 14px;
+    }
+    .nav-link {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--text-muted);
+    }
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.02);
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .nav-link.active {
+      background: var(--accent-soft);
       color: var(--accent);
     }
 
-    .brand-text-main { font-weight: 600; letter-spacing: 0.04em; }
-    .brand-text-sub { font-size: 0.78rem; color: var(--text-muted); }
-
-    .nav {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      font-size: 0.9rem;
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 32px 20px 72px;
     }
-
-    .nav a {
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
+    h1 {
+      font-size: clamp(26px, 3vw, 30px);
+      margin: 0 0 10px;
+    }
+    .lead {
+      margin: 0 0 18px;
+      font-size: 15px;
       color: var(--text-muted);
-      white-space: nowrap;
     }
 
-    .nav a[aria-current="page"] {
-      color: var(--accent-strong);
-      border-color: var(--accent-soft);
-      background: rgba(15, 118, 110, 0.2);
+    .faq-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 18px;
     }
 
-    .nav a:hover { color: var(--accent-strong); }
+    .faq-section {
+      border-radius: var(--radius-lg);
+      background: rgba(7, 12, 28, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 16px 18px 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .faq-section h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .faq-section h3 {
+      margin: 12px 0 6px;
+      font-size: 15px;
+    }
+    .faq-section p {
+      margin: 0 0 8px;
+    }
+    .faq-section ul {
+      margin: 0 0 6px 18px;
+      padding: 0;
+    }
 
-    @media (max-width: 720px) {
-      .site-header-inner {
-        flex-direction: column;
-        align-items: flex-start;
+    .topics {
+      border-radius: var(--radius-lg);
+      background: rgba(7, 12, 28, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 16px 18px 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .topics h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .topics ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .topics li {
+      margin: 4px 0;
+    }
+    .topics a {
+      color: var(--text-muted);
+    }
+    .topics a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 800px) {
+      .faq-grid {
+        grid-template-columns: minmax(0, 1fr);
       }
     }
-
-    main { margin-top: 2rem; }
-
-    .kicker {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
+    @media (max-width: 640px) {
+      .nav { padding-inline: 14px; }
+      main { padding-inline: 14px; }
     }
-
-    h1 {
-      font-size: clamp(1.8rem, 2.2vw + 1.4rem, 2.3rem);
-      margin: 0 0 0.75rem;
-    }
-
-    h2 {
-      font-size: 1.4rem;
-      margin: 2rem 0 0.6rem;
-    }
-
-    h3 {
-      font-size: 1.1rem;
-      margin: 1.3rem 0 0.4rem;
-    }
-
-    p {
-      line-height: 1.7;
-      margin: 0 0 0.9rem;
-    }
-
-    ul, ol {
-      padding-left: 1.3rem;
-      margin: 0 0 1rem;
-      line-height: 1.7;
-    }
-
-    .lead {
-      font-size: 1.03rem;
-      color: var(--text-muted);
-      max-width: 56rem;
-      margin-bottom: 1.4rem;
-    }
-
-    .toc {
-      margin: 1.8rem 0 2rem;
-      padding: 1rem 1.25rem;
-      border-radius: 0.9rem;
-      border: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at top left, rgba(74, 222, 184, 0.08), rgba(15, 23, 42, 0.95));
-    }
-
-    .toc-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-
-    .toc ol {
-      margin: 0;
-      padding-left: 1.1rem;
-      font-size: 0.95rem;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
-      gap: 1.8rem;
-      margin-top: 2rem;
-    }
-
-    @media (max-width: 780px) {
-      .two-col { grid-template-columns: minmax(0, 1fr); }
-    }
-
-    .card {
-      border-radius: 1rem;
-      border: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
-      padding: 1.3rem 1.35rem 1.2rem;
-    }
-
-    .card h2 {
-      margin-top: 0;
-    }
-
-    .step-list {
-      list-style: decimal;
-      padding-left: 1.3rem;
-    }
-
-    .step-list li { margin-bottom: 0.6rem; }
-
-    .hint {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 0.2rem;
-    }
-
-    .faq h3 { margin-top: 1.6rem; }
-    .faq p { margin-bottom: 0.6rem; }
-
-    .related {
-      margin-top: 2.5rem;
-      padding-top: 1.75rem;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .related ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .related li { margin-bottom: 0.35rem; }
-
-    .site-footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 1.25rem 1.5rem 1.75rem;
-      margin-top: 3rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      text-align: center;
-      background: rgba(2, 6, 23, 0.96);
-    }
-
-    .site-footer a { color: var(--text-muted); }
-    .site-footer a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner">
-      <div class="brand">
-        <div class="brand-logo">8</div>
-        <div>
-          <div class="brand-text-main">SafeShare</div>
-          <div class="brand-text-sub">Links ohne unnötiges Tracking</div>
-        </div>
-      </div>
-      <nav class="nav" aria-label="Hauptnavigation">
-        <a href="/Supersystem/index.html">Start</a>
-        <a href="/Supersystem/app.html">App</a>
-        <a href="/Supersystem/pro.html">Pro</a>
-        <a href="/Supersystem/utm-parameter-entfernen.html">UTM entfernen</a>
-        <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking allgemein</a>
-        <a href="/Supersystem/url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a href="/Supersystem/help.html" aria-current="page">Hilfe</a>
-      </nav>
-    </div>
-  </header>
+<header>
+  <div class="nav">
+    <a href="index.html" class="nav-brand">
+      <span class="nav-logo">8</span>
+      <span>
+        SafeShare
+        <div class="nav-tagline">Links teilen. Ohne Ballast.</div>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="app.html" class="nav-link">App</a>
+      <a href="pro.html" class="nav-link">Pro</a>
+      <a href="help.html" class="nav-link active">Hilfe</a>
+      <a href="bookmarklets.html" class="nav-link">Bookmarklets</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="shell">
-    <main>
-      <div class="kicker">Hilfe &amp; Beispiele</div>
-      <h1>SafeShare Hilfe &amp; Anwendungsbeispiele</h1>
-      <p class="lead">
-        Hier findest du eine Übersicht, wie du SafeShare im Alltag nutzen kannst: von „einfach nur Link bereinigen“ bis
-        hin zu Routinen, mit denen Link-Hygiene ein fester Teil deines digitalen Alltags wird.
+<main>
+  <h1>Hilfe & Fragen zu SafeShare</h1>
+  <p class="lead">
+    Hier findest du Antworten auf häufige Fragen: Wie SafeShare funktioniert, welche Tracking-Parameter
+    entfernt werden, was SafeShare Pro zusätzlich kann – und wo du mehr Hintergrundwissen bekommst.
+  </p>
+
+  <section class="faq-grid">
+    <div class="faq-section">
+      <h2>Wie funktioniert SafeShare?</h2>
+      <h3>Was macht die App genau?</h3>
+      <p>
+        SafeShare nimmt einen Link, analysiert die Parameter in der URL (alles, was nach <code>?</code>
+        bzw. <code>&amp;</code> kommt) und entfernt typische Tracking-Parameter wie UTM-Tags und
+        Klick-IDs. Das Ergebnis ist eine aufgeräumte URL, die weiterhin auf dieselbe Seite führt,
+        aber weniger Datenballast enthält.
+      </p>
+      <p>
+        Du kannst die App direkt im Browser nutzen:
+        <a href="app.html">SafeShare-App öffnen</a>.
       </p>
 
-      <div class="toc">
-        <div class="toc-title">Inhalt</div>
-        <ol>
-          <li><a href="#grundprinzip">Grundprinzip von SafeShare</a></li>
-          <li><a href="#beispiel-teilen">Beispiel: Link vor dem Teilen bereinigen</a></li>
-          <li><a href="#beispiel-bookmarks">Beispiel: Saubere Lesezeichen anlegen</a></li>
-          <li><a href="#homescreen">SafeShare wie eine App benutzen</a></li>
-          <li><a href="#kombination">SafeShare mit anderen Schutzmaßnahmen kombinieren</a></li>
-          <li><a href="#faq">Häufige Fragen</a></li>
-        </ol>
-      </div>
+      <h3>Welche Parameter werden entfernt?</h3>
+      <p>
+        SafeShare konzentriert sich u. a. auf:
+      </p>
+      <ul>
+        <li>UTM-Parameter wie <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>,</li>
+        <li>Klick- bzw. Tracking-IDs wie <code>fbclid</code>, <code>gclid</code>,</li>
+        <li>weitere typische Marketing-Parameter, die nicht nötig sind, damit der Link funktioniert.</li>
+      </ul>
+      <p>
+        Details und Beispiele findest du auf:
+        <a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a> und
+        <a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a>.
+      </p>
 
-      <section id="grundprinzip">
-        <h2>Grundprinzip von SafeShare</h2>
-        <p>
-          SafeShare ist eine kleine Web-App, die sich auf einen klaren Schritt konzentriert:
-          <strong>Tracking-Parameter und unnötige Zusätze aus Links entfernen</strong>, bevor du sie weitergibst
-          oder speicherst.
-        </p>
-        <ul>
-          <li>Du öffnest die <a href="/Supersystem/app.html">SafeShare-App</a> im Browser.</li>
-          <li>Du fügst einen Link ein (z. B. aus einem Newsletter oder Social Media).</li>
-          <li>SafeShare entfernt typische Tracking-Parameter und gibt dir eine bereinigte Version zurück.</li>
-        </ul>
-        <p>
-          Alle Schritte finden im Browser statt – ohne Konto, ohne Login, ohne eigene Tracking-Cookies.
-        </p>
-      </section>
-
-      <div class="two-col">
-        <section id="beispiel-teilen">
-          <h2>Beispiel: Link vor dem Teilen bereinigen</h2>
-          <ol class="step-list">
-            <li>Du siehst einen interessanten Artikel in einem Newsletter oder Social Feed.</li>
-            <li>Du tippst auf „Link kopieren“.</li>
-            <li>Du öffnest die <a href="/Supersystem/app.html">SafeShare-App</a> (z. B. über ein Lesezeichen oder Homescreen-Icon).</li>
-            <li>Du fügst den Link in das Eingabefeld ein und klickst auf „Bereinigen“.</li>
-            <li>SafeShare entfernt typische Tracking-Parameter (z. B. <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>, <code>t_ref</code>).</li>
-            <li>Du kopierst den bereinigten Link oder öffnest ihn direkt, um zu prüfen, ob er wie gewünscht funktioniert.</li>
-            <li>Du teilst diesen bereinigten Link im Chat, per Mail oder in einem Post.</li>
-          </ol>
-          <p class="hint">
-            So reduzierst du still und leise die Menge an überflüssigen Daten, die mit jedem geteilten Link mitwandern.
-          </p>
-        </section>
-
-        <section id="beispiel-bookmarks">
-          <h2>Beispiel: Saubere Lesezeichen anlegen</h2>
-          <ol class="step-list">
-            <li>Du möchtest einen Artikel in deinen Bookmarks speichern, ohne lange Tracking-Zusätze.</li>
-            <li>Du kopierst den Link aus der Adresszeile oder dem Teilen-Menü.</li>
-            <li>Du öffnest SafeShare und fügst den Link ein.</li>
-            <li>Du klickst auf „Bereinigen“ und prüfst kurz den bereinigten Link.</li>
-            <li>Du speicherst <em>diesen</em> kürzeren Link als Lesezeichen in deinem Browser oder Notizen-Tool.</li>
-          </ol>
-          <p class="hint">
-            Das hilft dir später auch bei der Übersicht: weniger „krypto-Parameter“, mehr Klarheit darüber,
-            wohin ein Link eigentlich führt.
-          </p>
-        </section>
-      </div>
-
-      <section id="homescreen">
-        <h2>SafeShare wie eine App benutzen</h2>
-        <p>
-          Auch wenn SafeShare im Browser läuft, kannst du es wie eine eigene App behandeln, indem du ein Icon auf deinem
-          Homescreen oder Desktop anlegst.
-        </p>
-        <h3>Auf dem Smartphone/Tablet (je nach Browser leicht abweichend)</h3>
-        <ul>
-          <li>Öffne <a href="/Supersystem/app.html">/Supersystem/app.html</a> in deinem mobilen Browser.</li>
-          <li>Öffne das Teilen- oder Menü-Symbol.</li>
-          <li>Wähle „Zum Home-Bildschirm hinzufügen“ oder einen ähnlichen Eintrag.</li>
-          <li>Benenne das Icon z. B. „SafeShare“ und bestätige.</li>
-        </ul>
-        <p>
-          Danach kannst du SafeShare direkt über dieses Icon starten – ohne erst den Browser öffnen und die Adresse
-          eintippen zu müssen.
-        </p>
-      </section>
-
-      <section id="kombination">
-        <h2>SafeShare mit anderen Schutzmaßnahmen kombinieren</h2>
-        <p>
-          SafeShare ersetzt keine anderen Datenschutz- oder Sicherheits-Tools, sondern ergänzt sie an einem sehr
-          konkreten Punkt: der <strong>sichtbaren URL</strong>.
-        </p>
-        <ul>
-          <li><strong>Browser-Tracking-Schutz</strong> kümmert sich um Skripte, Cookies und Netzwerkanfragen.</li>
-          <li><strong>Content-Blocker</strong> blockieren bekannte Tracker und Werbung.</li>
-          <li><strong>SafeShare</strong> kümmert sich darum, dass die Adresse, die du kopierst oder weitergibst,
-              von typischen Tracking-Parametern befreit ist.</li>
-        </ul>
-        <p>
-          Eine sinnvolle Reihenfolge kann sein:
-        </p>
-        <ol>
-          <li>Browser möglichst bewusst konfigurieren (Tracking-Schutz, Cookie-Einstellungen).</li>
-          <li>Bei Bedarf einen Content-Blocker nutzen.</li>
-          <li>SafeShare einsetzen, wenn du Links speicherst oder an andere Menschen weitergibst.</li>
-        </ol>
-        <p>
-          Mehr zu den Hintergründen findest du unter:
-          <a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter entfernen</a> und
-          <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking-Parameter allgemein</a>.
-        </p>
-      </section>
-<section aria-labelledby="hilfe-artikel">
-  <h2 id="hilfe-artikel">Weitere Artikel zur Link-Hygiene</h2>
-  <p>
-    Wenn du tiefer einsteigen möchtest, findest du hier ausführlichere Erklärungen zu Tracking-Parametern
-    und URL-Cleaner-Tools:
-  </p>
-  <ul>
-    <li>
-      <a href="utm-parameter-entfernen.html">
-        UTM-Parameter entfernen: So machst du Links sauber, bevor du sie teilst
-      </a>
-    </li>
-    <li>
-      <a href="tracking-parameter-entfernen.html">
-        Tracking-Parameter verstehen & entfernen: Welche Daten Links mittragen
-      </a>
-    </li>
-    <li>
-      <a href="url-cleaner-tool-vergleich.html">
-        URL-Cleaner-Tools im Vergleich: worauf es wirklich ankommt
-      </a>
-    </li>
-  </ul>
-</section>
-      <section id="faq" class="faq">
-        <h2>Häufige Fragen</h2>
-
-        <h3>Was, wenn ein Link nach dem Bereinigen nicht mehr funktioniert?</h3>
-        <p>
-          In seltenen Fällen können Betreiber Parameter so verwenden, dass sie für die Funktion nötig sind.
-          Wenn ein Link nach dem Bereinigen nicht wie erwartet funktioniert, solltest du im Zweifel die Originaladresse
-          verwenden. SafeShare zielt nicht auf „perfekte“ Filterung, sondern auf pragmatische Link-Hygiene.
-        </p>
-
-        <h3>Kann ich SafeShare auch offline nutzen?</h3>
-        <p>
-          SafeShare läuft im Browser und braucht für den Aufruf selbst eine Internetverbindung. Die eigentliche
-          Bereinigung der URL passiert jedoch lokal im Browser: Die eingegebene Adresse wird nicht an ein Konto oder
-          eine eigene Tracking-Infrastruktur von SafeShare gesendet.
-        </p>
-
-        <h3>Wo sehe ich, welche Parameter SafeShare entfernt?</h3>
-        <p>
-          Einen Überblick über typische Parameter findest du in den Artikeln
-          <a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter entfernen</a> und
-          <a href="/Supersystem/tracking-parameter-entfernen.html">Tracking-Parameter allgemein</a>.
-          Die interne Liste kann mit der Zeit erweitert werden, wenn neue Muster auftauchen.
-        </p>
-
-        <h3>Für wen lohnt sich SafeShare Pro?</h3>
-        <p>
-          <a href="/Supersystem/pro.html">SafeShare Pro</a> ist für Menschen gedacht, die nicht nur einzelne Links
-          bereinigen wollen, sondern wirkliche Routinen und Team-Absprachen zu Link-Hygiene aufbauen möchten – mit
-          Checklisten, Vorlagen und einfachen Erklärmaterialien.
-        </p>
-      </section>
-
-      <section class="related">
-  <h2>Weiterführende Inhalte</h2>
-  <ul>
-    <li><a href="/Supersystem/app.html">SafeShare-App – Links direkt bereinigen</a></li>
-    <li><a href="/Supersystem/link-hygiene-im-alltag.html">Link-Hygiene im Alltag – Beispiele &amp; Routinen</a></li>
-    <li><a href="/Supersystem/utm-parameter-entfernen.html">UTM-Parameter entfernen – Grundlagen &amp; Beispiele</a></li>
-    <li><a href="/Supersystem/tracking-parameter-entfernen.html">Tracking-Parameter allgemein verstehen</a></li>
-    <li><a href="/Supersystem/url-cleaner-tool-vergleich.html">URL-Cleaner-Tools im Vergleich</a></li>
-    <li><a href="/Supersystem/pro.html">SafeShare Pro – Routinen &amp; Materialien</a></li>
-  </ul>
-</section>
-    </main>
-  </div>
-
-  <footer class="site-footer">
-    <div>
-      © SafeShare – Jana Jergus.
-      <a href="/Supersystem/datenschutz.html">Datenschutz</a> ·
-      <a href="/Supersystem/impressum.html">Impressum</a> ·
-      <a href="/Supersystem/status.html">Status</a>
+      <h3>Speichert SafeShare Daten über mich?</h3>
+      <p>
+        SafeShare ist bewusst minimal gehalten: Die Bereinigung findet im Browser statt. Es gibt kein
+        Nutzerkonto, keinen Login und keine Profilbildung über dein Nutzungsverhalten. Du kannst SafeShare
+        nutzen, ohne dich irgendwo anzumelden.
+      </p>
     </div>
-  </footer>
+
+    <aside class="topics">
+      <h2>Mehr Hintergrund</h2>
+      <ul>
+        <li><a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a></li>
+        <li><a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a></li>
+        <li><a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Tools im Vergleich</a></li>
+      </ul>
+      <p style="margin-top:8px; font-size:13px; color:var(--text-soft);">
+        Diese Seiten erklären im Detail, welche Daten Links mittragen können und wie SafeShare in dieses
+        Bild passt.
+      </p>
+    </aside>
+  </section>
+
+  <section class="faq-section" style="margin-top:18px;">
+    <h2>Fragen zu SafeShare Pro</h2>
+    <h3>Was kann SafeShare Pro zusätzlich?</h3>
+    <p>
+      SafeShare Pro richtet sich an alle, die regelmäßig mit vielen Links arbeiten – zum Beispiel für
+      Newsletter, Blogs, Recherchen oder kleine Teams. Pro ergänzt die kostenlose App um:
+    </p>
+    <ul>
+      <li>die Möglichkeit, mehrere Links auf einmal zu bereinigen (eine Liste von URLs),</li>
+      <li>eigene Regeln für Parameter (zusätzlich entfernen / bewusst behalten),</li>
+      <li>Dokumente mit Routinen und Beispielen, um Link-Hygiene in deinen Alltag oder dein Team einzubauen.</li>
+    </ul>
+    <p>
+      Mehr dazu findest du auf der <a href="pro.html">Pro-Seite</a>, inklusive Links zu den
+      Payhip-Produkten für Einzelpersonen und Teams.
+    </p>
+
+    <h3>Wann brauche ich Pro – und wann reicht die App?</h3>
+    <ul>
+      <li>
+        Wenn du nur gelegentlich Einzel-Links aufräumst, reicht die kostenlose
+        <a href="app.html">SafeShare-App</a> völlig aus.
+      </li>
+      <li>
+        Wenn du regelmäßig viele Links auf einmal bereinigst (z. B. Newsletter, große Blogposts,
+        Ressourcen-Sammlungen) oder bestimmte Parameter bewusst steuern willst, lohnt sich ein Blick auf
+        <a href="pro.html">SafeShare Pro</a>.
+      </li>
+    </ul>
+  </section>
+</main>
 </body>
 </html>
