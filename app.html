@@ -1,425 +1,283 @@
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <title>SafeShare App – Tracking-Parameter aus Links entfernen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Mit der SafeShare-App kannst du Tracking-Parameter wie UTM-Tags, Klick-IDs und mehr aus einzelnen Links entfernen – direkt im Browser, ohne Konto." />
-
-  <!-- Verifikation -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY" />
-  <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html" />
-  <meta property="og:title" content="SafeShare App – Tracking-Parameter aus Links entfernen" />
-  <meta property="og:description" content="Füge einen Link ein und erhalte eine aufgeräumte Version ohne unnötige Tracking-Parameter." />
-  <meta property="og:image" content="social-preview.png" />
-
-  <link rel="icon" href="logo.svg" type="image/svg+xml" />
-
-  <!-- SoftwareApplication Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SafeShare",
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "Web",
-    "url": "https://j-ai-71.github.io/Supersystem/app.html",
-    "description": "Browser-App zum Entfernen von Tracking-Parametern wie UTM-Tags und Klick-IDs aus einzelnen Links.",
-    "creator": {
-      "@type": "Person",
-      "name": "Jana Jergus"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "EUR"
-    }
-  }
-  </script>
-
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #050814;
-      --bg-elevated: #0b1020;
-      --bg-soft: #11182a;
-      --border-subtle: #1d2335;
-      --accent: #3fe0b5;
-      --accent-soft: rgba(63, 224, 181, 0.14);
-      --text-main: #f5f5f7;
-      --text-muted: #a0a4b8;
-      --text-soft: #8288a2;
-      --danger: #ff6b81;
-      --radius-lg: 18px;
-      --radius-pill: 999px;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #11182a 0, #050814 55%, #02040a 100%);
-      color: var(--text-main);
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    header {
-      border-bottom: 1px solid var(--border-subtle);
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom,
-        rgba(5, 8, 20, 0.9),
-        rgba(5, 8, 20, 0.85),
-        rgba(5, 8, 20, 0.75));
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-    .nav {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 14px 20px 10px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      font-size: 17px;
-      letter-spacing: 0.01em;
-    }
-    .nav-logo {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #192635 0, #050814 65%);
-      border: 1px solid rgba(63, 224, 181, 0.45);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-      font-size: 14px;
-      box-shadow: 0 0 0 1px rgba(10, 255, 196, 0.08);
-    }
-    .nav-tagline {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-top: 1px;
-    }
-    .nav-links {
-      display: flex;
-      gap: 14px;
-      margin-left: auto;
-      font-size: 14px;
-    }
-    .nav-link {
-      padding: 6px 10px;
-      border-radius: 999px;
-      color: var(--text-muted);
-    }
-    .nav-link:hover {
-      background: rgba(255, 255, 255, 0.02);
-      text-decoration: none;
-      color: var(--text-main);
-    }
-    .nav-link.active {
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-
-    main {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 32px 20px 72px;
-    }
-
-    h1 {
-      font-size: clamp(26px, 3vw, 30px);
-      margin: 0 0 12px;
-    }
-    .lead {
-      margin: 0 0 16px;
-      font-size: 15px;
-      color: var(--text-muted);
-    }
-
-    .app-card {
-      border-radius: var(--radius-lg);
-      background: rgba(7, 12, 28, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 18px 18px 16px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 20px;
-    }
-    .label {
-      font-size: 13px;
-      color: var(--text-soft);
-      margin-bottom: 6px;
-    }
-    .input-row {
-      position: relative;
-      margin-bottom: 12px;
-    }
-    .input {
-      width: 100%;
-      padding: 10px 34px 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(3, 6, 18, 0.96);
-      color: var(--text-main);
-      font-size: 14px;
-    }
-    .input::placeholder {
-      color: var(--text-soft);
-    }
-    .clear-btn {
-      position: absolute;
-      right: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-soft);
-      font-size: 11px;
-      cursor: pointer;
-    }
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 7px 14px;
-      border-radius: var(--radius-pill);
-      font-size: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      background: rgba(5, 8, 20, 0.98);
-      color: var(--text-main);
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #020617;
-      border-color: rgba(10, 255, 196, 0.25);
-    }
-    .btn-ghost {
-      background: transparent;
-    }
-    .note {
-      font-size: 13px;
-      color: var(--text-soft);
-    }
-    .output {
-      width: 100%;
-      padding: 10px 34px 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(3, 6, 18, 0.96);
-      color: var(--text-main);
-      font-size: 14px;
-    }
-
-    .context-panel {
-      border-radius: var(--radius-lg);
-      background: rgba(7, 12, 28, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 16px 18px 16px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-    .context-panel h2 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-    .context-panel ul {
-      margin: 0 0 6px 18px;
-      padding: 0;
-    }
-
-    @media (max-width: 640px) {
-      .nav { padding-inline: 14px; }
-      main { padding-inline: 14px; }
-    }
-  </style>
-</head>
-<body>
-<header>
-  <div class="nav">
-    <a href="index.html" class="nav-brand">
-      <span class="nav-logo">8</span>
-      <span>
-        SafeShare
-        <div class="nav-tagline">Links teilen. Ohne Ballast.</div>
-      </span>
-    </a>
-    <nav class="nav-links">
-      <a href="app.html" class="nav-link active">App</a>
-      <a href="pro.html" class="nav-link">Pro</a>
-      <a href="help.html" class="nav-link">Hilfe</a>
-      <a href="bookmarklets.html" class="nav-link">Bookmarklets</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <h1>SafeShare-App</h1>
-  <p class="lead">
-    Füge einen Link ein, SafeShare entfernt typische Tracking-Parameter – und du bekommst eine
-    aufgeräumte URL zurück, die sich leichter und datensparsamer weitergeben lässt.
-  </p>
-
-  <section class="app-card" aria-label="SafeShare App">
-    <div class="label">Dein Link</div>
-    <div class="input-row">
-      <input id="input-url" class="input" type="url" inputmode="url"
-             placeholder="https://beispiel.de/artikel?utm_source=newsletter&amp;utm_campaign=..."
-             autocomplete="off" />
-      <button class="clear-btn" type="button" id="btn-clear-input">✕</button>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-primary" type="button" id="btn-clean">Link bereinigen</button>
-      <button class="btn btn-ghost" type="button" id="btn-copy-output">Bereinigten Link kopieren</button>
-    </div>
-
-    <div class="label">Bereinigter Link</div>
-    <div class="input-row">
-      <input id="output-url" class="output" type="text" readonly />
-      <button class="clear-btn" type="button" id="btn-clear-output">✕</button>
-    </div>
-
-    <p class="note">
-      Hinweis: SafeShare entfernt u. a. gängige UTM-Parameter und Klick-IDs. In
-      <a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a> und
-      <a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a>
-      findest du Beispiele, was genau damit gemeint ist.
-    </p>
-  </section>
-
-  <section class="context-panel">
-    <h2>Mehr erfahren und Pro-Version</h2>
-    <p>
-      Wenn du regelmäßig viele Links auf einmal bereinigen willst oder eigene Regeln für Parameter brauchst,
-      ist <a href="pro.html">SafeShare Pro</a> die richtige Ergänzung. Dort kannst du:
-    </p>
-    <ul>
-      <li>Listen mit mehreren Links bereinigen,</li>
-      <li>zusätzliche Parameter definieren, die immer entfernt werden,</li>
-      <li>wichtige Parameter auf eine Whitelist setzen.</li>
-    </ul>
-    <p>
-      Hintergrundwissen rund um Tracking findest du in:
-    </p>
-    <ul>
-      <li><a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a></li>
-      <li><a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a></li>
-      <li><a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Tools im Vergleich</a></li>
-    </ul>
-  </section>
-</main>
-
 <script>
-  (function() {
-    const input = document.getElementById('input-url');
-    const output = document.getElementById('output-url');
-    const btnClean = document.getElementById('btn-clean');
-    const btnCopy = document.getElementById('btn-copy-output');
-    const btnClearInput = document.getElementById('btn-clear-input');
-    const btnClearOutput = document.getElementById('btn-clear-output');
-
-    const KNOWN_PARAMS = [
-      // UTM
-      'utm_source','utm_medium','utm_campaign','utm_content','utm_term',
-      // Klick-IDs & Newsletter
-      'fbclid','gclid','mc_cid','mc_eid',
-      // Sonstiges
-      'igshid'
+  // ---- Abo-Code-Logik ----
+  (function () {
+    const VALID_CODES = [
+      "SS-PER-1",
+      "SS-TEAM-1"
     ];
 
-    function cleanUrl(raw) {
-      if (!raw) return '';
-      raw = raw.trim();
+    function normalizeCode(value) {
+      return value.trim().toUpperCase();
+    }
 
-      // Falls bare URL ohne Protokoll eingegeben wurde
-      if (!/^https?:\/\//i.test(raw)) {
-        raw = 'https://' + raw;
-      }
-
-      let url;
+    function hasValidCode() {
       try {
-        url = new URL(raw);
+        const stored = localStorage.getItem("safeshareProCode");
+        if (!stored) return false;
+        return VALID_CODES.includes(normalizeCode(stored));
       } catch (e) {
-        return raw; // not a valid URL, return as-is
+        return false;
+      }
+    }
+
+    function activatePro(code) {
+      try {
+        localStorage.setItem("safeshareProCode", normalizeCode(code));
+      } catch (e) {}
+      document.body.classList.add("pro-active");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const gate = document.getElementById("pro-gate");
+      const form = document.getElementById("pro-gate-form");
+      const input = document.getElementById("pro-gate-input");
+      const error = document.getElementById("pro-gate-error");
+
+      if (!gate || !form || !input) return;
+
+      if (hasValidCode()) {
+        activatePro(localStorage.getItem("safeshareProCode") || "");
+        return;
       }
 
-      // query params filtern
-      const params = url.searchParams;
-      // Wir sammeln alles, was wir behalten wollen
-      const toKeep = [];
-      for (const [key, value] of params.entries()) {
-        if (!KNOWN_PARAMS.includes(key.toLowerCase())) {
-          toKeep.push([key, value]);
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const value = normalizeCode(input.value);
+
+        if (!value) {
+          error.textContent = "Bitte gib deinen Abo-Code ein.";
+          return;
         }
-      }
 
-      // Search zurücksetzen
-      url.search = '';
-      for (const [k, v] of toKeep) {
-        url.searchParams.append(k, v);
-      }
+        if (!VALID_CODES.includes(value)) {
+          error.textContent = "Code ungültig oder abgelaufen.";
+          return;
+        }
 
-      // Hash unverändert lassen
-      return url.toString();
-    }
-
-    function handleClean() {
-      const cleaned = cleanUrl(input.value);
-      output.value = cleaned;
-    }
-
-    function handleCopy() {
-      if (!output.value) return;
-      navigator.clipboard?.writeText(output.value).catch(() => {});
-    }
-
-    btnClean.addEventListener('click', handleClean);
-    btnCopy.addEventListener('click', handleCopy);
-    btnClearInput.addEventListener('click', () => { input.value = ''; });
-    btnClearOutput.addEventListener('click', () => { output.value = ''; });
-
-    // Enter in Eingabe-Feld triggert Bereinigung
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        handleClean();
-      }
+        error.textContent = "";
+        activatePro(value);
+      });
     });
+  })();
 
-    // ?url=-Parameter verarbeiten (z. B. app.html?url=...)
-    const sp = new URLSearchParams(window.location.search);
-    const urlParam = sp.get('url');
-    if (urlParam) {
-      input.value = urlParam;
-      handleClean();
+  // ---- Pro-App-Logik ----
+  (function () {
+    const inputEl = document.getElementById("input-urls");
+    const outputEl = document.getElementById("output-urls");
+    const btnClean = document.getElementById("btn-clean");
+    const btnCopy = document.getElementById("btn-copy-output");
+    const btnClearInput = document.getElementById("btn-clear-input");
+    const btnClearOutput = document.getElementById("btn-clear-output");
+    const copyStatus = document.getElementById("copy-status");
+
+    const blacklistInput = document.getElementById("blacklist-input");
+    const whitelistInput = document.getElementById("whitelist-input");
+    const btnSaveRules = document.getElementById("btn-save-rules");
+    const btnResetRules = document.getElementById("btn-reset-rules");
+    const rulesStatus = document.getElementById("rules-status");
+
+    const RULES_KEY = "safeshareProRules";
+
+    const DEFAULT_TRACKING_PARAMS = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+      "utm_id",
+      "utm_referrer",
+      "utm_name",
+      "utm_creative",
+      "fbclid",
+      "gclid",
+      "dclid",
+      "msclkid",
+      "mc_cid",
+      "mc_eid",
+      "igshid",
+      "si",
+      "vero_conv",
+      "vero_id",
+      "t_ref" // neu: Bild-Ref-Parameter
+    ];
+
+    function loadRules() {
+      try {
+        const raw = localStorage.getItem(RULES_KEY);
+        if (!raw) return { blacklist: [], whitelist: [] };
+        const parsed = JSON.parse(raw);
+        return {
+          blacklist: Array.isArray(parsed.blacklist) ? parsed.blacklist : [],
+          whitelist: Array.isArray(parsed.whitelist) ? parsed.whitelist : []
+        };
+      } catch (e) {
+        return { blacklist: [], whitelist: [] };
+      }
     }
+
+    function saveRulesToStorage(blacklist, whitelist) {
+      try {
+        localStorage.setItem(
+          RULES_KEY,
+          JSON.stringify({ blacklist, whitelist })
+        );
+      } catch (e) {}
+    }
+
+    function getRulesFromInputs() {
+      const bl = (blacklistInput.value || "")
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const wl = (whitelistInput.value || "")
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      return { blacklist: bl, whitelist: wl };
+    }
+
+    function hydrateRuleInputs() {
+      const rules = loadRules();
+      if (rules.blacklist.length) {
+        blacklistInput.value = rules.blacklist.join("\n");
+      }
+      if (rules.whitelist.length) {
+        whitelistInput.value = rules.whitelist.join("\n");
+      }
+    }
+
+    function isTrackingParam(name, userBlacklist, userWhitelist) {
+      const n = name.toLowerCase();
+      const wlSet = new Set(userWhitelist.map((x) => x.toLowerCase()));
+
+      if (wlSet.has(n)) {
+        return false;
+      }
+
+      if (DEFAULT_TRACKING_PARAMS.includes(n)) {
+        return true;
+      }
+
+      const blSet = new Set(userBlacklist.map((x) => x.toLowerCase()));
+      if (blSet.has(n)) {
+        return true;
+      }
+
+      return false;
+    }
+
+    function tryUnwrapRedirect(url) {
+      try {
+        const u = new URL(url);
+
+        if (
+          (u.hostname === "www.google.com" || u.hostname === "www.google.de") &&
+          (u.pathname === "/url" || u.pathname === "/local_url")
+        ) {
+          const target = u.searchParams.get("q") || u.searchParams.get("url");
+          if (target) return target;
+        }
+
+        if (u.hostname === "l.facebook.com") {
+          const target = u.searchParams.get("u");
+          if (target) return target;
+        }
+
+        return url;
+      } catch (e) {
+        return url;
+      }
+    }
+
+    function cleanSingleUrl(raw, rules) {
+      const trimmed = raw.trim();
+      if (!trimmed) return "";
+
+      let current = tryUnwrapRedirect(trimmed);
+
+      try {
+        const u = new URL(current);
+        const newSearch = new URLSearchParams();
+
+        for (const [key, value] of u.searchParams.entries()) {
+          if (!isTrackingParam(key, rules.blacklist, rules.whitelist)) {
+            newSearch.append(key, value);
+          }
+        }
+
+        u.search = newSearch.toString();
+        return u.toString();
+      } catch (e) {
+        return trimmed;
+      }
+    }
+
+    function cleanList() {
+      const input = inputEl.value || "";
+      const lines = input.split(/\r?\n/);
+      const rulesFromInputs = getRulesFromInputs();
+      const rules = rulesFromInputs.blacklist.length || rulesFromInputs.whitelist.length
+        ? rulesFromInputs
+        : loadRules();
+
+      const cleanedLines = lines
+        .map((line) => cleanSingleUrl(line, rules))
+        .filter((l) => l !== "");
+      outputEl.value = cleanedLines.join("\n");
+      copyStatus.textContent = "";
+    }
+
+    function copyOutput() {
+      const value = outputEl.value || "";
+      if (!value.trim()) {
+        copyStatus.textContent = "Kein Ergebnis zum Kopieren.";
+        return;
+      }
+      try {
+        navigator.clipboard.writeText(value).then(
+          () => {
+            copyStatus.textContent = "Bereinigte Liste wurde in die Zwischenablage kopiert.";
+          },
+          () => {
+            copyStatus.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
+          }
+        );
+      } catch (e) {
+        copyStatus.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
+      }
+    }
+
+    function clearInput() {
+      inputEl.value = "";
+    }
+
+    function clearOutput() {
+      outputEl.value = "";
+      copyStatus.textContent = "";
+    }
+
+    function saveRules() {
+      const { blacklist, whitelist } = getRulesFromInputs();
+      saveRulesToStorage(blacklist, whitelist);
+      rulesStatus.textContent = "Regeln wurden lokal gespeichert.";
+    }
+
+    function resetRules() {
+      blacklistInput.value = "";
+      whitelistInput.value = "";
+      saveRulesToStorage([], []);
+      rulesStatus.textContent = "Regeln wurden zurückgesetzt.";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      hydrateRuleInputs();
+
+      btnClean.addEventListener("click", cleanList);
+      btnCopy.addEventListener("click", copyOutput);
+      btnClearInput.addEventListener("click", clearInput);
+      btnClearOutput.addEventListener("click", clearOutput);
+      btnSaveRules.addEventListener("click", saveRules);
+      btnResetRules.addEventListener("click", resetRules);
+    });
   })();
 </script>
-</body>
-</html>
