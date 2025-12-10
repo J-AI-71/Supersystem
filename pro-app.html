@@ -650,290 +650,288 @@
     </footer>
   </div>
 
-  <script>
-    // ---- Abo-Code-Logik ----
-    (function () {
-      // Hier trägst du die aktuellen gültigen Codes ein:
-      const VALID_CODES = [
-        "SS-PER-1",
-        "SS-TEAM-1"
-        // Später neue Codes ergänzen, alte bei Bedarf entfernen
-      ];
+<script>
+  // ---- Abo-Code-Logik ----
+  (function () {
+    const VALID_CODES = [
+      "SS-PER-1",
+      "SS-TEAM-1"
+    ];
 
-      function normalizeCode(value) {
-        return value.trim().toUpperCase();
+    function normalizeCode(value) {
+      return value.trim().toUpperCase();
+    }
+
+    function hasValidCode() {
+      try {
+        const stored = localStorage.getItem("safeshareProCode");
+        if (!stored) return false;
+        return VALID_CODES.includes(normalizeCode(stored));
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function activatePro(code) {
+      try {
+        localStorage.setItem("safeshareProCode", normalizeCode(code));
+      } catch (e) {}
+      document.body.classList.add("pro-active");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const gate = document.getElementById("pro-gate");
+      const form = document.getElementById("pro-gate-form");
+      const input = document.getElementById("pro-gate-input");
+      const error = document.getElementById("pro-gate-error");
+
+      if (!gate || !form || !input) return;
+
+      if (hasValidCode()) {
+        activatePro(localStorage.getItem("safeshareProCode") || "");
+        return;
       }
 
-      function hasValidCode() {
-        try {
-          const stored = localStorage.getItem("safeshareProCode");
-          if (!stored) return false;
-          return VALID_CODES.includes(normalizeCode(stored));
-        } catch (e) {
-          return false;
-        }
-      }
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const value = normalizeCode(input.value);
 
-      function activatePro(code) {
-        try {
-          localStorage.setItem("safeshareProCode", normalizeCode(code));
-        } catch (e) {
-          // Wenn localStorage blockiert ist, nutzen wir nur die aktuelle Session
-        }
-        document.body.classList.add("pro-active");
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const gate = document.getElementById("pro-gate");
-        const form = document.getElementById("pro-gate-form");
-        const input = document.getElementById("pro-gate-input");
-        const error = document.getElementById("pro-gate-error");
-
-        if (!gate || !form || !input) return;
-
-        if (hasValidCode()) {
-          activatePro(localStorage.getItem("safeshareProCode") || "");
+        if (!value) {
+          error.textContent = "Bitte gib deinen Abo-Code ein.";
           return;
         }
 
-        form.addEventListener("submit", function (event) {
-          event.preventDefault();
-          const value = normalizeCode(input.value);
+        if (!VALID_CODES.includes(value)) {
+          error.textContent = "Code ungültig oder abgelaufen.";
+          return;
+        }
 
-          if (!value) {
-            error.textContent = "Bitte gib deinen Abo-Code ein.";
-            return;
-          }
-
-          if (!VALID_CODES.includes(value)) {
-            error.textContent = "Code ungültig oder abgelaufen.";
-            return;
-          }
-
-          error.textContent = "";
-          activatePro(value);
-        });
+        error.textContent = "";
+        activatePro(value);
       });
-    })();
+    });
+  })();
 
-    // ---- Pro-App-Logik ----
-    (function () {
-      const inputEl = document.getElementById("input-urls");
-      const outputEl = document.getElementById("output-urls");
-      const btnClean = document.getElementById("btn-clean");
-      const btnCopy = document.getElementById("btn-copy-output");
-      const btnClearInput = document.getElementById("btn-clear-input");
-      const btnClearOutput = document.getElementById("btn-clear-output");
-      const copyStatus = document.getElementById("copy-status");
+  // ---- Pro-App-Logik ----
+  (function () {
+    const inputEl = document.getElementById("input-urls");
+    const outputEl = document.getElementById("output-urls");
+    const btnClean = document.getElementById("btn-clean");
+    const btnCopy = document.getElementById("btn-copy-output");
+    const btnClearInput = document.getElementById("btn-clear-input");
+    const btnClearOutput = document.getElementById("btn-clear-output");
+    const copyStatus = document.getElementById("copy-status");
 
-      const blacklistInput = document.getElementById("blacklist-input");
-      const whitelistInput = document.getElementById("whitelist-input");
-      const btnSaveRules = document.getElementById("btn-save-rules");
-      const btnResetRules = document.getElementById("btn-reset-rules");
-      const rulesStatus = document.getElementById("rules-status");
+    const blacklistInput = document.getElementById("blacklist-input");
+    const whitelistInput = document.getElementById("whitelist-input");
+    const btnSaveRules = document.getElementById("btn-save-rules");
+    const btnResetRules = document.getElementById("btn-reset-rules");
+    const rulesStatus = document.getElementById("rules-status");
 
-      const RULES_KEY = "safeshareProRules";
+    const RULES_KEY = "safeshareProRules";
 
-      const DEFAULT_TRACKING_PARAMS = [
-        "utm_source",
-        "utm_medium",
-        "utm_campaign",
-        "utm_term",
-        "utm_content",
-        "utm_id",
-        "utm_referrer",
-        "utm_name",
-        "utm_creative",
-        "fbclid",
-        "gclid",
-        "dclid",
-        "msclkid",
-        "mc_cid",
-        "mc_eid",
-        "igshid",
-        "si",
-        "vero_conv",
-        "vero_id"
-      ];
+    const DEFAULT_TRACKING_PARAMS = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+      "utm_id",
+      "utm_referrer",
+      "utm_name",
+      "utm_creative",
+      "fbclid",
+      "gclid",
+      "dclid",
+      "msclkid",
+      "mc_cid",
+      "mc_eid",
+      "igshid",
+      "si",
+      "vero_conv",
+      "vero_id",
+      "t_ref" // neu: Bild-Ref-Parameter
+    ];
 
-      function loadRules() {
-        try {
-          const raw = localStorage.getItem(RULES_KEY);
-          if (!raw) return { blacklist: [], whitelist: [] };
-          const parsed = JSON.parse(raw);
-          return {
-            blacklist: Array.isArray(parsed.blacklist) ? parsed.blacklist : [],
-            whitelist: Array.isArray(parsed.whitelist) ? parsed.whitelist : []
-          };
-        } catch (e) {
-          return { blacklist: [], whitelist: [] };
-        }
+    function loadRules() {
+      try {
+        const raw = localStorage.getItem(RULES_KEY);
+        if (!raw) return { blacklist: [], whitelist: [] };
+        const parsed = JSON.parse(raw);
+        return {
+          blacklist: Array.isArray(parsed.blacklist) ? parsed.blacklist : [],
+          whitelist: Array.isArray(parsed.whitelist) ? parsed.whitelist : []
+        };
+      } catch (e) {
+        return { blacklist: [], whitelist: [] };
       }
+    }
 
-      function saveRulesToStorage(blacklist, whitelist) {
-        try {
-          localStorage.setItem(
-            RULES_KEY,
-            JSON.stringify({ blacklist, whitelist })
-          );
-        } catch (e) {
-          // ignore
-        }
+    function saveRulesToStorage(blacklist, whitelist) {
+      try {
+        localStorage.setItem(
+          RULES_KEY,
+          JSON.stringify({ blacklist, whitelist })
+        );
+      } catch (e) {}
+    }
+
+    function getRulesFromInputs() {
+      const bl = (blacklistInput.value || "")
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const wl = (whitelistInput.value || "")
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      return { blacklist: bl, whitelist: wl };
+    }
+
+    function hydrateRuleInputs() {
+      const rules = loadRules();
+      if (rules.blacklist.length) {
+        blacklistInput.value = rules.blacklist.join("\n");
       }
-
-      function getRulesFromInputs() {
-        const bl = (blacklistInput.value || "")
-          .split(/\r?\n/)
-          .map((s) => s.trim())
-          .filter(Boolean);
-        const wl = (whitelistInput.value || "")
-          .split(/\r?\n/)
-          .map((s) => s.trim())
-          .filter(Boolean);
-        return { blacklist: bl, whitelist: wl };
+      if (rules.whitelist.length) {
+        whitelistInput.value = rules.whitelist.join("\n");
       }
+    }
 
-      function hydrateRuleInputs() {
-        const rules = loadRules();
-        if (rules.blacklist.length) {
-          blacklistInput.value = rules.blacklist.join("\n");
-        }
-        if (rules.whitelist.length) {
-          whitelistInput.value = rules.whitelist.join("\n");
-        }
-      }
+    function isTrackingParam(name, userBlacklist, userWhitelist) {
+      const n = name.toLowerCase();
+      const wlSet = new Set(userWhitelist.map((x) => x.toLowerCase()));
 
-      function isTrackingParam(name, userBlacklist, userWhitelist) {
-        const n = name.toLowerCase();
-        const wlSet = new Set(userWhitelist.map((x) => x.toLowerCase()));
-
-        if (wlSet.has(n)) {
-          return false;
-        }
-
-        if (DEFAULT_TRACKING_PARAMS.includes(n)) {
-          return true;
-        }
-
-        const blSet = new Set(userBlacklist.map((x) => x.toLowerCase()));
-        if (blSet.has(n)) {
-          return true;
-        }
-
+      if (wlSet.has(n)) {
         return false;
       }
 
-      function tryUnwrapRedirect(url) {
-        try {
-          const u = new URL(url);
-          // typischer Google-Redirect
-          if (
-            (u.hostname === "www.google.com" || u.hostname === "www.google.de") &&
-            (u.pathname === "/url" || u.pathname === "/local_url")
-          ) {
-            const target = u.searchParams.get("q") || u.searchParams.get("url");
-            if (target) return target;
+      if (DEFAULT_TRACKING_PARAMS.includes(n)) {
+        return true;
+      }
+
+      const blSet = new Set(userBlacklist.map((x) => x.toLowerCase()));
+      if (blSet.has(n)) {
+        return true;
+      }
+
+      return false;
+    }
+
+    function tryUnwrapRedirect(url) {
+      try {
+        const u = new URL(url);
+
+        if (
+          (u.hostname === "www.google.com" || u.hostname === "www.google.de") &&
+          (u.pathname === "/url" || u.pathname === "/local_url")
+        ) {
+          const target = u.searchParams.get("q") || u.searchParams.get("url");
+          if (target) return target;
+        }
+
+        if (u.hostname === "l.facebook.com") {
+          const target = u.searchParams.get("u");
+          if (target) return target;
+        }
+
+        return url;
+      } catch (e) {
+        return url;
+      }
+    }
+
+    function cleanSingleUrl(raw, rules) {
+      const trimmed = raw.trim();
+      if (!trimmed) return "";
+
+      let current = tryUnwrapRedirect(trimmed);
+
+      try {
+        const u = new URL(current);
+        const newSearch = new URLSearchParams();
+
+        for (const [key, value] of u.searchParams.entries()) {
+          if (!isTrackingParam(key, rules.blacklist, rules.whitelist)) {
+            newSearch.append(key, value);
           }
-          // Facebook / l.facebook.com
-          if (u.hostname === "l.facebook.com") {
-            const target = u.searchParams.get("u");
-            if (target) return target;
+        }
+
+        u.search = newSearch.toString();
+        return u.toString();
+      } catch (e) {
+        return trimmed;
+      }
+    }
+
+    function cleanList() {
+      const input = inputEl.value || "";
+      const lines = input.split(/\r?\n/);
+      const rulesFromInputs = getRulesFromInputs();
+      const rules = rulesFromInputs.blacklist.length || rulesFromInputs.whitelist.length
+        ? rulesFromInputs
+        : loadRules();
+
+      const cleanedLines = lines
+        .map((line) => cleanSingleUrl(line, rules))
+        .filter((l) => l !== "");
+      outputEl.value = cleanedLines.join("\n");
+      copyStatus.textContent = "";
+    }
+
+    function copyOutput() {
+      const value = outputEl.value || "";
+      if (!value.trim()) {
+        copyStatus.textContent = "Kein Ergebnis zum Kopieren.";
+        return;
+      }
+      try {
+        navigator.clipboard.writeText(value).then(
+          () => {
+            copyStatus.textContent = "Bereinigte Liste wurde in die Zwischenablage kopiert.";
+          },
+          () => {
+            copyStatus.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
           }
-          return url;
-        } catch (e) {
-          return url;
-        }
+        );
+      } catch (e) {
+        copyStatus.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
       }
+    }
 
-      function cleanSingleUrl(raw, rules) {
-        const trimmed = raw.trim();
-        if (!trimmed) return "";
+    function clearInput() {
+      inputEl.value = "";
+    }
 
-        let current = tryUnwrapRedirect(trimmed);
+    function clearOutput() {
+      outputEl.value = "";
+      copyStatus.textContent = "";
+    }
 
-        try {
-          const u = new URL(current);
-          const newSearch = new URLSearchParams();
+    function saveRules() {
+      const { blacklist, whitelist } = getRulesFromInputs();
+      saveRulesToStorage(blacklist, whitelist);
+      rulesStatus.textContent = "Regeln wurden lokal gespeichert.";
+    }
 
-          for (const [key, value] of u.searchParams.entries()) {
-            if (!isTrackingParam(key, rules.blacklist, rules.whitelist)) {
-              newSearch.append(key, value);
-            }
-          }
+    function resetRules() {
+      blacklistInput.value = "";
+      whitelistInput.value = "";
+      saveRulesToStorage([], []);
+      rulesStatus.textContent = "Regeln wurden zurückgesetzt.";
+    }
 
-          u.search = newSearch.toString();
-          return u.toString();
-        } catch (e) {
-          // kein valider URL – einfach zurückgeben
-          return trimmed;
-        }
-      }
+    document.addEventListener("DOMContentLoaded", function () {
+      hydrateRuleInputs();
 
-      function cleanList() {
-        const input = inputEl.value || "";
-        const lines = input.split(/\r?\n/);
-        const rules = getRulesFromInputs().blacklist.length || getRulesFromInputs().whitelist.length
-          ? getRulesFromInputs()
-          : loadRules();
-
-        const cleanedLines = lines.map((line) => cleanSingleUrl(line, rules)).filter((l) => l !== "");
-        outputEl.value = cleanedLines.join("\n");
-        copyStatus.textContent = "";
-      }
-
-      function copyOutput() {
-        const value = outputEl.value || "";
-        if (!value.trim()) {
-          copyStatus.textContent = "Kein Ergebnis zum Kopieren.";
-          return;
-        }
-        try {
-          navigator.clipboard.writeText(value).then(
-            () => {
-              copyStatus.textContent = "Bereinigte Liste wurde in die Zwischenablage kopiert.";
-            },
-            () => {
-              copyStatus.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
-            }
-          );
-        } catch (e) {
-          copyStatus.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
-        }
-      }
-
-      function clearInput() {
-        inputEl.value = "";
-      }
-
-      function clearOutput() {
-        outputEl.value = "";
-        copyStatus.textContent = "";
-      }
-
-      function saveRules() {
-        const { blacklist, whitelist } = getRulesFromInputs();
-        saveRulesToStorage(blacklist, whitelist);
-        rulesStatus.textContent = "Regeln wurden lokal gespeichert.";
-      }
-
-      function resetRules() {
-        blacklistInput.value = "";
-        whitelistInput.value = "";
-        saveRulesToStorage([], []);
-        rulesStatus.textContent = "Regeln wurden zurückgesetzt.";
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        hydrateRuleInputs();
-
-        btnClean.addEventListener("click", cleanList);
-        btnCopy.addEventListener("click", copyOutput);
-        btnClearInput.addEventListener("click", clearInput);
-        btnClearOutput.addEventListener("click", clearOutput);
-        btnSaveRules.addEventListener("click", saveRules);
-        btnResetRules.addEventListener("click", resetRules);
-      });
-    })();
-  </script>
+      btnClean.addEventListener("click", cleanList);
+      btnCopy.addEventListener("click", copyOutput);
+      btnClearInput.addEventListener("click", clearInput);
+      btnClearOutput.addEventListener("click", clearOutput);
+      btnSaveRules.addEventListener("click", saveRules);
+      btnResetRules.addEventListener("click", resetRules);
+    });
+  })();
+</script>
 </body>
 </html>
