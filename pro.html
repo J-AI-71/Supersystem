@@ -706,7 +706,6 @@ filter"></textarea>
         try {
           const u = new URL(url);
 
-          // Google-Redirects
           if (
             (u.hostname === "www.google.com" || u.hostname === "www.google.de") &&
             (u.pathname === "/url" || u.pathname === "/local_url")
@@ -715,7 +714,6 @@ filter"></textarea>
             if (target) return target;
           }
 
-          // Facebook / l.facebook.com
           if (u.hostname === "l.facebook.com") {
             const target = u.searchParams.get("u");
             if (target) return target;
@@ -778,7 +776,6 @@ filter"></textarea>
 
       function isTrackingParam(name) {
         const n = name.toLowerCase();
-        // Whitelist dominiert
         if (customWhitelist.includes(n)) {
           return false;
         }
@@ -887,9 +884,7 @@ filter"></textarea>
 
         loadRules();
 
-        btnActivate.addEventListener("click", function () {
-          handleActivate();
-        });
+        btnActivate.addEventListener("click", handleActivate);
         btnCleanList.addEventListener("click", handleCleanList);
         btnClearList.addEventListener("click", handleClearList);
         btnCopyList.addEventListener("click", handleCopyList);
