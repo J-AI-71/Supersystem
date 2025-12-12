@@ -2,51 +2,26 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <title>SafeShare Pro – Links in Serie bereinigen & eigene Regeln</title>
-
+  <title>SafeShare Pro – mehrere Links ohne Tracking bereinigen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="SafeShare Pro hilft dir, mehrere Links in einem Rutsch zu bereinigen und eigene Regeln für Tracking-Parameter festzulegen. Für Menschen und Teams, die Link-Hygiene ernst nehmen." />
+  <meta name="description" content="SafeShare Pro bereinigt mehrere Links auf einmal von Tracking-Parametern (UTM, fbclid, gclid, t_ref und mehr) und erlaubt eigene Regeln für Link-Hygiene." />
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro.html" />
 
   <!-- Verifikation -->
   <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY" />
   <meta name="msvalidate.01" content="7BD74FEEFCA9C7B540613485C050EFF8" />
 
-  <!-- Open Graph / Social -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="SafeShare Pro – Link-Hygiene im Abo" />
-  <meta property="og:description" content="Bereinige mehrere Links auf einmal, setze eigene Regeln für Tracking-Parameter und halte deine Link-Hygiene mit SafeShare Pro im Abo dauerhaft sauber." />
+  <meta property="og:title" content="SafeShare Pro – mehrere Links ohne Tracking" />
+  <meta property="og:description" content="Bereinige mehrere Links in einem Rutsch von Tracking-Parametern und definiere eigene Regeln für Link-Hygiene." />
   <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html" />
   <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png" />
-  <meta property="og:site_name" content="SafeShare" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SafeShare Pro – Link-Hygiene im Abo" />
-  <meta name="twitter:description" content="SafeShare Pro unterstützt dich dabei, Links respektvoll und ohne unnötiges Tracking zu teilen – im Abo, jederzeit kündbar." />
+  <meta name="twitter:title" content="SafeShare Pro – mehrere Links ohne Tracking" />
+  <meta name="twitter:description" content="SafeShare Pro hilft dir, mehrere Links auf einmal von Tracking-Parametern zu befreien – lokal im Browser." />
   <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png" />
-
-  <!-- Schema.org SoftwareApplication -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SafeShare Pro",
-    "operatingSystem": "Web",
-    "applicationCategory": "SecurityApplication",
-    "description": "SafeShare Pro hilft dir, mehrere Links in einem Rutsch zu bereinigen und eigene Regeln für Tracking-Parameter festzulegen – lokal im Browser, ohne Konto, ohne Tracking.",
-    "url": "https://j-ai-71.github.io/Supersystem/pro.html",
-    "author": {
-      "@type": "Person",
-      "name": "Jana Jergus"
-    },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "EUR",
-      "price": "0.00",
-      "category": "subscription"
-    }
-  }
-  </script>
 
   <style>
     :root {
@@ -59,7 +34,6 @@
       --accent-soft: rgba(63, 224, 181, 0.18);
       --accent-blue: #15bbff;
       --border-subtle: rgba(148, 163, 199, 0.32);
-      --border-strong: rgba(63, 224, 181, 0.5);
       --danger: #ff6b81;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
@@ -191,85 +165,77 @@
       }
     }
 
-    main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 22px;
-      align-items: flex-start;
-    }
-
-    @media (max-width: 880px) {
-      main {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .hero {
-      padding: 20px 20px 18px;
-      border-radius: 22px;
+    .gate {
+      padding: 18px 18px 16px;
+      border-radius: 20px;
       border: 1px solid rgba(148, 163, 199, 0.45);
       background:
         radial-gradient(circle at 0 0, rgba(63, 224, 181, 0.2), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(21, 187, 255, 0.18), transparent 55%),
         linear-gradient(145deg, var(--bg-elevated), #050814);
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
-    }
-
-    .hero-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      padding: 3px 9px 3px 4px;
-      border-radius: 999px;
-      border: 1px solid rgba(63, 224, 181, 0.45);
-      background: radial-gradient(circle at 0 0, rgba(63, 224, 181, 0.32), transparent 65%);
-      color: var(--fg-muted);
-      margin-bottom: 10px;
-    }
-
-    .hero-kicker-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0, #befce6, #16a34a);
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.9), 0 0 18px rgba(34, 197, 94, 0.7);
-    }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: 26px;
-    }
-
-    .hero-lead {
-      margin: 0 0 14px;
-      font-size: 14px;
-      color: var(--fg-muted);
-    }
-
-    .hero-highlight {
       font-size: 13px;
-      padding: 8px 10px;
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.78);
-      border: 1px solid rgba(148, 163, 199, 0.45);
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
-    .hero-actions {
+    .gate h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .gate p {
+      margin: 0 0 8px;
+      color: var(--fg-muted);
+    }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12px;
+      color: var(--fg-muted);
+      margin-bottom: 4px;
+    }
+
+    .field-label span {
+      opacity: 0.9;
+    }
+
+    .field-label small {
+      font-size: 11px;
+      opacity: 0.85;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 199, 0.6);
+      background: rgba(3, 5, 14, 0.95);
+      color: var(--fg);
+      padding: 8px 11px;
+      font-size: 13px;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: rgba(63, 224, 181, 0.75);
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .controls-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
+      margin-top: 8px;
       margin-bottom: 6px;
     }
 
-    .btn-primary,
-    .btn-ghost {
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 8px 13px;
+      padding: 7px 12px;
       font-size: 13px;
       border-radius: 999px;
       border: none;
@@ -281,12 +247,11 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-blue));
       color: #020617;
-      box-shadow: 0 14px 32px rgba(63, 224, 181, 0.5);
+      box-shadow: 0 12px 30px rgba(63, 224, 181, 0.5);
     }
 
     .btn-primary:hover {
-      box-shadow: 0 18px 42px rgba(63, 224, 181, 0.65);
-      text-decoration: none;
+      box-shadow: 0 16px 40px rgba(63, 224, 181, 0.65);
     }
 
     .btn-ghost {
@@ -298,80 +263,15 @@
     .btn-ghost:hover {
       border-color: rgba(148, 163, 199, 0.9);
       color: var(--fg);
-      text-decoration: none;
     }
 
-    .hero-note {
-      margin: 0;
-      font-size: 12px;
-      color: var(--fg-muted);
-    }
-
-    .hero-note strong {
-      color: var(--accent);
-    }
-
-    .side-card {
-      padding: 16px 16px 14px;
-      border-radius: 20px;
-      border: 1px solid rgba(148, 163, 199, 0.45);
-      background:
-        radial-gradient(circle at 100% 0, rgba(21, 187, 255, 0.22), transparent 55%),
-        linear-gradient(145deg, #050816, #02030a);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
-      font-size: 13px;
-    }
-
-    .side-card h2 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-
-    .side-card p {
-      margin: 0 0 9px;
-      color: var(--fg-muted);
-    }
-
-    .side-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 4px;
-    }
-
-    .side-list li {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 6px;
-      color: var(--fg-muted);
-    }
-
-    .side-list span.bullet {
-      margin-top: 2px;
-      font-size: 14px;
-      color: var(--accent);
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 199, 0.6);
+    .hint {
       font-size: 11px;
       color: var(--fg-muted);
-      gap: 6px;
+      margin-top: 2px;
     }
 
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0, #facc15, #f97316);
-      box-shadow: 0 0 10px rgba(250, 204, 21, 0.9);
-    }
-
-    .sections {
-      margin-top: 26px;
+    main {
       display: grid;
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
       gap: 18px;
@@ -379,78 +279,90 @@
     }
 
     @media (max-width: 880px) {
-      .sections {
+      main {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
-    .section-card {
-      padding: 16px 16px 14px;
+    .card {
+      padding: 18px 18px 16px;
       border-radius: 20px;
-      border: 1px solid rgba(148, 163, 199, 0.35);
+      border: 1px solid rgba(148, 163, 199, 0.45);
       background:
-        radial-gradient(circle at 0 0, rgba(63, 224, 181, 0.15), transparent 60%),
-        linear-gradient(145deg, #050814, #02030a);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+        radial-gradient(circle at 0 0, rgba(63, 224, 181, 0.2), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(21, 187, 255, 0.18), transparent 55%),
+        linear-gradient(145deg, var(--bg-elevated), #050814);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
       font-size: 13px;
     }
 
-    .section-card h2 {
-      margin: 0 0 10px;
-      font-size: 17px;
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
     }
 
-    .section-card h3 {
-      margin: 10px 0 6px;
-      font-size: 14px;
-    }
-
-    .section-card p {
+    .card p {
       margin: 0 0 8px;
       color: var(--fg-muted);
     }
 
-    .section-card ul {
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 199, 0.5);
+      background: rgba(3, 5, 14, 0.95);
+      color: var(--fg);
+      padding: 10px 11px;
+      font-size: 13px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: rgba(63, 224, 181, 0.75);
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    textarea[readonly] {
+      background: radial-gradient(circle at 0 0, rgba(63, 224, 181, 0.12), rgba(3, 5, 14, 0.98));
+    }
+
+    .side {
+      padding: 16px 16px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 199, 0.35);
+      background:
+        radial-gradient(circle at 100% 0, rgba(21, 187, 255, 0.22), transparent 55%),
+        linear-gradient(145deg, #050816, #02030a);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      font-size: 13px;
+    }
+
+    .side h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .side p {
+      margin: 0 0 8px;
+      color: var(--fg-muted);
+    }
+
+    .side ul {
       margin: 0 0 8px 1.15rem;
       padding: 0;
       color: var(--fg-muted);
     }
 
-    .section-card li {
+    .side li {
       margin-bottom: 4px;
     }
 
-    .section-tagline {
-      font-size: 12px;
-      color: var(--fg-muted);
-      margin-bottom: 6px;
-    }
-
-    .faq-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .faq-item + .faq-item {
-      margin-top: 8px;
-      padding-top: 6px;
-      border-top: 1px dashed rgba(148, 163, 199, 0.4);
-    }
-
-    .faq-q {
-      font-weight: 600;
-      font-size: 13px;
-      margin-bottom: 2px;
-    }
-
-    .faq-a {
-      font-size: 13px;
-      color: var(--fg-muted);
-    }
-
     footer {
-      margin-top: 28px;
+      margin-top: 26px;
       padding-top: 14px;
       border-top: 1px solid rgba(15, 23, 42, 0.9);
       font-size: 11px;
@@ -474,6 +386,23 @@
 
     .footer-links a:hover {
       color: var(--fg);
+    }
+
+    #pro-main {
+      display: none;
+    }
+
+    #pro-status {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    #pro-status.ok {
+      color: var(--accent);
+    }
+
+    #pro-status.err {
+      color: var(--danger);
     }
   </style>
 </head>
@@ -499,215 +428,142 @@
       </nav>
     </header>
 
-    <main>
-      <section class="hero">
-        <div class="hero-kicker">
-          <div class="hero-kicker-dot"></div>
-          <span>SafeShare Pro · Abo, jederzeit kündbar</span>
-        </div>
-        <h1>SafeShare Pro – Link-Hygiene im Alltag wirklich umsetzen</h1>
-        <p class="hero-lead">
-          Mit SafeShare Pro bereinigst du mehrere Links in einem Rutsch, definierst eigene Regeln für Tracking-Parameter
-          und bekommst alle Unterlagen, die du brauchst, um Link-Hygiene dauerhaft in deinen Alltag oder dein Team zu bringen.
+    <!-- Freischalt-Bereich -->
+    <section id="pro-gate" class="gate">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>SafeShare Pro · Freischaltung</span>
+      </div>
+      <h1>SafeShare Pro freischalten</h1>
+      <p>
+        SafeShare Pro erweitert die kostenlose App:
+        du kannst mehrere Links auf einmal bereinigen
+        und eigene Regeln für Tracking-Parameter definieren.
+      </p>
+      <p>
+        Wenn du SafeShare Pro gekauft hast, trage hier deinen
+        <strong>Pro-Code</strong> ein. Der Code wird nur lokal
+        in deinem Browser gespeichert.
+      </p>
+
+      <div class="field-label">
+        <span>Pro-Code eingeben</span>
+        <small>Groß-/Kleinschreibung egal</small>
+      </div>
+      <input id="pro-code-input" type="text" placeholder="z. B. SS-PER-1 oder SS-TEAM-1" />
+      <div class="controls-row">
+        <button id="btn-activate" class="btn btn-primary" type="button">
+          Pro freischalten
+        </button>
+        <a class="btn btn-ghost" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">
+          SafeShare Pro kaufen (Person)
+        </a>
+        <a class="btn btn-ghost" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">
+          SafeShare Pro kaufen (Team)
+        </a>
+      </div>
+      <div id="pro-status" class="hint"></div>
+      <p class="hint">
+        Hinweis: SafeShare Pro verwendet keine Nutzerkonten und keine eigenen Tracking-Profile.
+        Der Pro-Status wird lokal im Browser (localStorage) gespeichert.
+      </p>
+    </section>
+
+    <!-- Pro-Hauptbereich -->
+    <main id="pro-main">
+      <section class="card">
+        <h2>Mehrere Links auf einmal bereinigen</h2>
+        <p>
+          Füge hier mehrere Links ein, jeweils eine URL pro Zeile. SafeShare Pro entfernt
+          typische Tracking-Parameter (inkl. deiner eigenen Regeln) und gibt dir eine
+          bereinigte Liste zurück.
         </p>
-        <div class="hero-highlight">
-          <strong>Alles läuft lokal im Browser.</strong> Keine Logins, keine Nutzerprofile, keine Click-Tracking-Auswertung –
-          nur ein Abo, das dir Zugang zu Pro-Funktionen und laufenden Updates gibt.
+
+        <div>
+          <div class="field-label">
+            <span>Eingabe – Links (einer pro Zeile)</span>
+            <small>komplette URLs einfügen</small>
+          </div>
+          <textarea id="input-list" placeholder="https://www.beispiel.de/artikel?utm_source=newsletter
+https://www.shop.de/produkt?fbclid=XYZ123
+https://www.bild.de/?t_ref=..."></textarea>
+          <div class="controls-row">
+            <button id="btn-clean-list" class="btn btn-primary" type="button">
+              Liste bereinigen
+            </button>
+            <button id="btn-clear-list" class="btn btn-ghost" type="button">
+              Eingabe &amp; Ergebnis leeren
+            </button>
+          </div>
         </div>
-        <div class="hero-actions">
-          <!-- Wenn deine Pro-App anders heißt als pro-app.html, diesen Link anpassen -->
-          <a href="pro-app.html" class="btn-primary">SafeShare Pro App öffnen</a>
-          <a href="https://payhip.com/b/VDm3B" class="btn-ghost" target="_blank" rel="noopener">
-            Abo für 1 Person auf Payhip
-          </a>
-          <a href="https://payhip.com/b/Yxh5T" class="btn-ghost" target="_blank" rel="noopener">
-            Team-Abo (bis 5 Personen)
-          </a>
+
+        <div style="margin-top:10px;">
+          <div class="field-label">
+            <span>Bereinigte Links</span>
+            <small>bereit zum Kopieren &amp; Einfügen</small>
+          </div>
+          <textarea id="output-list" readonly placeholder="Die bereinigten Links erscheinen hier, jeweils eine URL pro Zeile."></textarea>
+          <div class="controls-row">
+            <button id="btn-copy-list" class="btn btn-primary" type="button">
+              Bereinigte Liste kopieren
+            </button>
+          </div>
+          <div id="copy-status-list" class="hint"></div>
         </div>
-        <p class="hero-note">
-          <strong>Hinweis:</strong> SafeShare Pro ist ein reines Browser-Tool. Du kannst es auf beliebigen Geräten nutzen,
-          ohne dass SafeShare dich trackt – dein Abo-Code dient nur dazu, die Pro-Funktionen freizuschalten.
-        </p>
       </section>
 
-      <aside class="side-card">
-        <h2>Was macht SafeShare Pro anders?</h2>
-        <p class="section-tagline">Pro baut auf der kostenlosen SafeShare-App auf – erweitert um Komfort und Struktur.</p>
-        <ul class="side-list">
-          <li>
-            <span class="bullet">•</span>
-            <span>Bereinige <strong>Listen von Links</strong> statt nur einzelne URLs.</span>
-          </li>
-          <li>
-            <span class="bullet">•</span>
-            <span>Definiere <strong>eigene Regeln</strong> (Whitelist/Blacklist) für Tracking-Parameter.</span>
-          </li>
-          <li>
-            <span class="bullet">•</span>
-            <span>Speichere deine Regeln lokal im Browser – SafeShare sieht sie nicht.</span>
-          </li>
-          <li>
-            <span class="bullet">•</span>
-            <span>Kopiere bereinigte Listen mit einem Klick in Newsletter-Tools, Social-Posts oder Dokumente.</span>
-          </li>
-          <li>
-            <span class="bullet">•</span>
-            <span>Nutze begleitende PDFs, Checklisten und Routinen, um Link-Hygiene wirklich zur Gewohnheit zu machen.</span>
-          </li>
-        </ul>
+      <aside class="side">
+        <h2>Eigene Regeln für Tracking-Parameter</h2>
         <p>
-          Wenn du möchtest, kannst du später jederzeit vom Personal-Abo auf ein Team-Abo wechseln – ohne neue Tools, ohne
-          komplexes Setup.
+          SafeShare Pro kennt eine Standardliste typischer Tracking-Parameter (UTM, fbclid,
+          gclid, t_ref usw.). Zusätzlich kannst du eigene Regeln definieren:
         </p>
-        <div class="pill">
-          <span class="pill-dot"></span>
-          <span>Keine Logins · Keine Nutzerprofile · Nur Abo-Code im Browser</span>
+        <ul>
+          <li><strong>Blacklist</strong> – immer entfernen, wenn vorhanden.</li>
+          <li><strong>Whitelist</strong> – darf bleiben, auch wenn verdächtig.</li>
+        </ul>
+
+        <div>
+          <div class="field-label">
+            <span>Blacklist (immer entfernen)</span>
+            <small>ein Parameter pro Zeile, z. B. <code>mc_eid</code></small>
+          </div>
+          <textarea id="blacklist" placeholder="mc_eid
+mc_cid
+trk_id"></textarea>
         </div>
+
+        <div style="margin-top:10px;">
+          <div class="field-label">
+            <span>Whitelist (darf bleiben)</span>
+            <small>z. B. sprach- oder filterbezogene Parameter</small>
+          </div>
+          <textarea id="whitelist" placeholder="lang
+id
+filter"></textarea>
+        </div>
+
+        <div class="controls-row" style="margin-top:10px;">
+          <button id="btn-save-rules" class="btn btn-primary" type="button">
+            Regeln speichern
+          </button>
+          <button id="btn-reset-rules" class="btn btn-ghost" type="button">
+            Regeln zurücksetzen
+          </button>
+        </div>
+        <div id="rules-status" class="hint"></div>
+
+        <p class="hint" style="margin-top:10px;">
+          Die Regeln werden lokal in deinem Browser gespeichert (localStorage) und gelten
+          zusätzlich zur Standardliste. Wenn du den Browser-Speicher löschst, gehen sie verloren.
+        </p>
+
+        <p class="hint">
+          Für einzelne Links oder schnelle Checks kannst du weiterhin jederzeit die
+          <a href="app.html">kostenlose SafeShare App</a> nutzen.
+        </p>
       </aside>
     </main>
-
-    <div class="sections">
-      <section class="section-card">
-        <p class="section-tagline">Funktionen im Überblick</p>
-        <h2>SafeShare Pro im Detail</h2>
-
-        <h3>1. Mehrere Links auf einmal bereinigen</h3>
-        <p>
-          Statt jede URL einzeln in die kostenlose App zu kopieren, kannst du in SafeShare Pro eine ganze Liste einfügen –
-          z. B. Newsletter-Links, Social-Posts oder Kampagnen-Links.
-        </p>
-        <ul>
-          <li>Einfügen – bereinigen – bereinigte Liste kopieren.</li>
-          <li>Ideal für Newsletter, Blogs, Kampagnen oder wöchentliche Sammel-Links.</li>
-        </ul>
-
-        <h3>2. Eigene Regeln für Tracking-Parameter</h3>
-        <p>
-          Pro enthält eine Standard-Liste typischer Tracking-Parameter (UTM, fbclid, gclid usw.). Zusätzlich kannst du
-          eigene Regeln festlegen:
-        </p>
-        <ul>
-          <li><strong>Blacklist:</strong> diese Parameter sollen immer entfernt werden.</li>
-          <li><strong>Whitelist:</strong> diese Parameter dürfen bleiben (z. B. wenn du technisch etwas brauchst).</li>
-          <li>Deine Regeln werden lokal im Browser gespeichert, nicht auf einem Server.</li>
-        </ul>
-
-        <h3>3. Begleitende PDFs & Routinen</h3>
-        <p>
-          Zum Abo gehören PDFs, die dir helfen, Link-Hygiene praktisch im Alltag zu verankern – ohne dass du dich durch
-          lange Fachtexte kämpfen musst.
-        </p>
-        <ul>
-          <li>Start-Guide: SafeShare Pro in 10 Minuten verstehen.</li>
-          <li>Link-Hygiene Basics: typische Parameter, Risiken, Beispiele.</li>
-          <li>Routinen: einfache Abläufe für persönliche Nutzung und Team-Setup.</li>
-        </ul>
-
-        <h3>4. Laufende Updates statt Einmal-Download</h3>
-        <p>
-          Tracking-Parameter ändern sich, Plattformen erfinden neue Varianten. Dein Abo stellt sicher, dass SafeShare Pro
-          und die Unterlagen mitwachsen – ohne dass du ständig neu suchen musst.
-        </p>
-      </section>
-
-      <section class="section-card">
-        <p class="section-tagline">Abo & Code erklärt</p>
-        <h2>Wie Abo & Abo-Code funktionieren</h2>
-
-        <h3>Personal vs. Team</h3>
-        <p>
-          <strong>Personal-Abo:</strong> für eine Person, die SafeShare Pro regelmäßig nutzt.<br />
-          <strong>Team-Abo (bis 5 Personen):</strong> für kleine Teams, die sich eine gemeinsame Link-Hygiene-Regel
-          geben wollen.
-        </p>
-
-        <h3>So läuft das praktisch ab</h3>
-        <ul>
-          <li>Du buchst das Abo auf Payhip (Personal oder Team).</li>
-          <li>Du erhältst einen Abo-Code, den du in der SafeShare Pro App eingibst.</li>
-          <li>Die App merkt sich lokal im Browser, dass Pro freigeschaltet ist.</li>
-          <li>Solange dein Abo aktiv ist, erhältst du neue Versionen und Unterlagen.</li>
-          <li>Du kannst jederzeit kündigen – dann gibt es keine neuen Codes/Updates mehr.</li>
-        </ul>
-
-        <h3>Fair-Use statt Überwachung</h3>
-        <p>
-          Der Abo-Code ist bewusst einfach gehalten. Er soll:
-        </p>
-        <ul>
-          <li>dir Zugang geben, ohne dass du ein Nutzerprofil anlegen musst,</li>
-          <li>Teams bis 5 Personen ermöglichen, Pro gemeinsam zu nutzen,</li>
-          <li>Missbrauch begrenzen, ohne technische Überwachung oder Tracking.</li>
-        </ul>
-        <p>
-          Bitte teile deinen Code nicht außerhalb deines Teams. Je fairer du SafeShare nutzt, desto unabhängiger kann das
-          Projekt bleiben.
-        </p>
-      </section>
-    </div>
-
-    <div class="sections">
-      <section class="section-card">
-        <p class="section-tagline">Für wen?</p>
-        <h2>Wann sich SafeShare Pro lohnt</h2>
-        <p>
-          Die kostenlose App reicht, wenn du gelegentlich einzelne Links bereinigst. SafeShare Pro lohnt sich, wenn du
-          regelmäßig mit Links arbeitest – für dich oder ein kleines Team.
-        </p>
-        <ul>
-          <li>Newsletter-Autor:innen, die respektvoll mit Leserdaten umgehen wollen.</li>
-          <li>Journalist:innen und NGOs, die Links weitergeben, ohne Profile aufzubauen.</li>
-          <li>Selbstständige, die Tools testen und weiterempfehlen, ohne Maximal-Tracking.</li>
-          <li>Teams, die eine klare, schriftliche Link-Hygiene-Regel etablieren möchten.</li>
-        </ul>
-        <p>
-          Du kannst jederzeit mit dem Personal-Abo starten und später auf ein Team-Abo wechseln.
-        </p>
-      </section>
-
-      <section class="section-card">
-        <p class="section-tagline">Fragen & Antworten</p>
-        <h2>SafeShare Pro – FAQ</h2>
-        <ul class="faq-list">
-          <li class="faq-item">
-            <div class="faq-q">Brauche ich einen Account, um SafeShare Pro zu nutzen?</div>
-            <div class="faq-a">
-              Nein. SafeShare Pro läuft im Browser ohne Login. Dein Abo-Code wird nur lokal im Browser gespeichert,
-              SafeShare sieht nicht, wer wann wie oft etwas nutzt.
-            </div>
-          </li>
-          <li class="faq-item">
-            <div class="faq-q">Kann ich das Abo jederzeit kündigen?</div>
-            <div class="faq-a">
-              Ja. Du kannst dein Abo auf Payhip jederzeit kündigen. Danach erhältst du keine neuen Codes und keine neuen
-              Unterlagen mehr.
-            </div>
-          </li>
-          <li class="faq-item">
-            <div class="faq-q">Was ist der Unterschied zwischen Personal und Team?</div>
-            <div class="faq-a">
-              Das Personal-Abo ist für eine Person. Das Team-Abo darf intern im Team von bis zu 5 Personen genutzt
-              werden und enthält zusätzliche Team-Unterlagen (Hausregeln, Onboarding).
-            </div>
-          </li>
-          <li class="faq-item">
-            <div class="faq-q">Was passiert mit meinen Daten?</div>
-            <div class="faq-a">
-              SafeShare verarbeitet Links lokal im Browser. Es werden keine Nutzungsprofile, Klick-Logs oder
-              Tracking-Events gespeichert. Für den Verkauf und die Abo-Verwaltung nutzt du Payhip; Details dazu findest du in den
-              dortigen Datenschutzangaben.
-            </div>
-          </li>
-          <li class="faq-item">
-            <div class="faq-q">Kann ich Pro testen, bevor ich ein Abo abschließe?</div>
-            <div class="faq-a">
-              Du kannst jederzeit mit der kostenlosen SafeShare-App starten und schauen, ob Link-Hygiene in deinen Alltag
-              passt. Pro baut darauf auf und bringt Komfort & Struktur dazu.
-            </div>
-          </li>
-        </ul>
-      </section>
-    </div>
 
     <footer>
       <div>© 2025 Jana Jergus / SafeShare</div>
@@ -720,5 +576,281 @@
       </div>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      const PRO_CODES = ["SS-PER-1", "SS-TEAM-1"]; // deine gültigen Codes
+      const STORAGE_KEY_PRO = "safeshare_pro_unlocked";
+      const STORAGE_KEY_RULES = "safeshare_pro_rules";
+
+      const DEFAULT_TRACKING_PARAMS = [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_term",
+        "utm_content",
+        "utm_id",
+        "utm_referrer",
+        "utm_name",
+        "utm_creative",
+        "fbclid",
+        "gclid",
+        "dclid",
+        "msclkid",
+        "mc_cid",
+        "mc_eid",
+        "igshid",
+        "si",
+        "vero_conv",
+        "vero_id",
+        "t_ref"
+      ];
+
+      const gateEl = document.getElementById("pro-gate");
+      const mainEl = document.getElementById("pro-main");
+      const proCodeInput = document.getElementById("pro-code-input");
+      const btnActivate = document.getElementById("btn-activate");
+      const proStatus = document.getElementById("pro-status");
+
+      const inputListEl = document.getElementById("input-list");
+      const outputListEl = document.getElementById("output-list");
+      const btnCleanList = document.getElementById("btn-clean-list");
+      const btnClearList = document.getElementById("btn-clear-list");
+      const btnCopyList = document.getElementById("btn-copy-list");
+      const copyStatusList = document.getElementById("copy-status-list");
+
+      const blacklistEl = document.getElementById("blacklist");
+      const whitelistEl = document.getElementById("whitelist");
+      const btnSaveRules = document.getElementById("btn-save-rules");
+      const btnResetRules = document.getElementById("btn-reset-rules");
+      const rulesStatus = document.getElementById("rules-status");
+
+      let customBlacklist = [];
+      let customWhitelist = [];
+
+      function loadProStatus() {
+        try {
+          return localStorage.getItem(STORAGE_KEY_PRO) === "true";
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function saveProStatus(active) {
+        try {
+          localStorage.setItem(STORAGE_KEY_PRO, active ? "true" : "false");
+        } catch (e) {}
+      }
+
+      function showPro() {
+        gateEl.style.display = "none";
+        mainEl.style.display = "grid";
+      }
+
+      function showGate() {
+        gateEl.style.display = "block";
+        mainEl.style.display = "none";
+      }
+
+      function normalizeCode(code) {
+        return (code || "").trim().toUpperCase();
+      }
+
+      function isValidCode(code) {
+        const normalized = normalizeCode(code);
+        return PRO_CODES.includes(normalized);
+      }
+
+      function tryUnwrapRedirect(url) {
+        try {
+          const u = new URL(url);
+
+          // Google-Redirects
+          if (
+            (u.hostname === "www.google.com" || u.hostname === "www.google.de") &&
+            (u.pathname === "/url" || u.pathname === "/local_url")
+          ) {
+            const target = u.searchParams.get("q") || u.searchParams.get("url");
+            if (target) return target;
+          }
+
+          // Facebook / l.facebook.com
+          if (u.hostname === "l.facebook.com") {
+            const target = u.searchParams.get("u");
+            if (target) return target;
+          }
+
+          return url;
+        } catch (e) {
+          return url;
+        }
+      }
+
+      function loadRules() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY_RULES);
+          if (!raw) {
+            customBlacklist = [];
+            customWhitelist = [];
+            blacklistEl.value = "";
+            whitelistEl.value = "";
+            return;
+          }
+          const parsed = JSON.parse(raw);
+          customBlacklist = Array.isArray(parsed.blacklist) ? parsed.blacklist : [];
+          customWhitelist = Array.isArray(parsed.whitelist) ? parsed.whitelist : [];
+          blacklistEl.value = customBlacklist.join("\n");
+          whitelistEl.value = customWhitelist.join("\n");
+        } catch (e) {
+          customBlacklist = [];
+          customWhitelist = [];
+        }
+      }
+
+      function saveRules() {
+        const bLines = (blacklistEl.value || "").split("\n").map(s => s.trim()).filter(Boolean);
+        const wLines = (whitelistEl.value || "").split("\n").map(s => s.trim()).filter(Boolean);
+        customBlacklist = bLines;
+        customWhitelist = wLines;
+        const payload = {
+          blacklist: customBlacklist,
+          whitelist: customWhitelist
+        };
+        try {
+          localStorage.setItem(STORAGE_KEY_RULES, JSON.stringify(payload));
+          rulesStatus.textContent = "Regeln gespeichert.";
+        } catch (e) {
+          rulesStatus.textContent = "Konnte die Regeln nicht dauerhaft speichern.";
+        }
+      }
+
+      function resetRules() {
+        customBlacklist = [];
+        customWhitelist = [];
+        blacklistEl.value = "";
+        whitelistEl.value = "";
+        try {
+          localStorage.removeItem(STORAGE_KEY_RULES);
+        } catch (e) {}
+        rulesStatus.textContent = "Regeln zurückgesetzt (nur Standardliste aktiv).";
+      }
+
+      function isTrackingParam(name) {
+        const n = name.toLowerCase();
+        // Whitelist dominiert: Eintrag in Whitelist => nie entfernen
+        if (customWhitelist.includes(n)) {
+          return false;
+        }
+        // Standardliste
+        if (DEFAULT_TRACKING_PARAMS.includes(n)) {
+          return true;
+        }
+        // Alle utm_* außer explizit freigegebene
+        if (n.startsWith("utm_")) {
+          return true;
+        }
+        // Custom-Blacklist
+        if (customBlacklist.includes(n)) {
+          return true;
+        }
+        return false;
+      }
+
+      function cleanUrl(raw) {
+        const trimmed = raw.trim();
+        if (!trimmed) return "";
+
+        let current = tryUnwrapRedirect(trimmed);
+
+        try {
+          const u = new URL(current);
+          const newSearch = new URLSearchParams();
+
+          for (const [key, value] of u.searchParams.entries()) {
+            if (!isTrackingParam(key)) {
+              newSearch.append(key, value);
+            }
+          }
+
+          u.search = newSearch.toString();
+          return u.toString();
+        } catch (e) {
+          return trimmed;
+        }
+      }
+
+      function handleCleanList() {
+        const input = inputListEl.value || "";
+        const lines = input.split("\n");
+        const cleaned = lines.map(line => cleanUrl(line)).filter(l => l.trim().length > 0);
+        outputListEl.value = cleaned.join("\n");
+        copyStatusList.textContent = "";
+      }
+
+      function handleClearList() {
+        inputListEl.value = "";
+        outputListEl.value = "";
+        copyStatusList.textContent = "";
+      }
+
+      function handleCopyList() {
+        const value = outputListEl.value || "";
+        if (!value.trim()) {
+          copyStatusList.textContent = "Keine bereinigte Liste zum Kopieren.";
+          return;
+        }
+        try {
+          navigator.clipboard.writeText(value).then(
+            () => {
+              copyStatusList.textContent = "Bereinigte Liste wurde in die Zwischenablage kopiert.";
+            },
+            () => {
+              copyStatusList.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
+            }
+          );
+        } catch (e) {
+          copyStatusList.textContent = "Konnte nicht automatisch kopieren – bitte manuell markieren & kopieren.";
+        }
+      }
+
+      function handleActivate() {
+        const code = proCodeInput.value || "";
+        if (!code.trim()) {
+          proStatus.textContent = "Bitte einen Pro-Code eingeben.";
+          proStatus.className = "hint err";
+          return;
+        }
+        if (!isValidCode(code)) {
+          proStatus.textContent = "Der eingegebene Code wurde nicht erkannt. Bitte prüfen.";
+          proStatus.className = "hint err";
+          return;
+        }
+        saveProStatus(true);
+        proStatus.textContent = "SafeShare Pro wurde in diesem Browser freigeschaltet.";
+        proStatus.className = "hint ok";
+        showPro();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Pro-Status prüfen
+        if (loadProStatus()) {
+          showPro();
+        } else {
+          showGate();
+        }
+
+        // Regeln laden
+        loadRules();
+
+        // Events
+        btnActivate.addEventListener("click", handleActivate);
+        btnCleanList.addEventListener("click", handleCleanList);
+        btnClearList.addEventListener("click", handleClearList);
+        btnCopyList.addEventListener("click", handleCopyList);
+        btnSaveRules.addEventListener("click", saveRules);
+        btnResetRules.addEventListener("click", resetRules);
+      });
+    })();
+  </script>
 </body>
 </html>
