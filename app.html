@@ -502,7 +502,7 @@
         "si",
         "vero_conv",
         "vero_id",
-        "t_ref"  // neu: Bild-Ref-Parameter
+        "t_ref"
       ];
 
       function tryUnwrapRedirect(url) {
@@ -597,6 +597,18 @@
         btnClean.addEventListener("click", handleClean);
         btnClear.addEventListener("click", handleClear);
         btnCopy.addEventListener("click", handleCopy);
+
+        // NEU: ?url= Parameter verarbeiten (für Bookmarklet)
+        try {
+          const current = new URL(window.location.href);
+          const param = current.searchParams.get("url");
+          if (param) {
+            inputEl.value = decodeURIComponent(param);
+            handleClean();
+          }
+        } catch (e) {
+          // falls kaputt: App normal weiterlaufen lassen
+        }
       });
     })();
   </script>
