@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare Pro – mehrere Links & eigene Regeln</title>
-  <meta name="description" content="SafeShare Pro bereinigt mehrere Links auf einmal und erlaubt eigene Regeln (Blacklist/Whitelist). Alles läuft lokal im Browser – ohne Konto." />
+  <title>SafeShare Pro – Bulk-Cleaning & eigene Regeln</title>
+  <meta name="description" content="SafeShare Pro bereinigt mehrere Links auf einmal und erlaubt eigene Regeln (Whitelist/Blacklist) – lokal im Browser, ohne Konto." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -49,7 +49,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --bad: rgba(255,95,95,.18);
-        --focus: 0 0 0 3px rgba(17, 130, 98, .22);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
 
@@ -66,7 +66,6 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    /* Header */
     header{
       display:flex;
       align-items:center;
@@ -91,16 +90,8 @@
       flex: 0 0 auto;
       overflow:hidden;
     }
-    .logoWrap img{
-      width: 28px; height: 28px;
-      display:block;
-    }
-    .logoFallback{
-      font-weight: 800;
-      color: var(--mint);
-      font-size: 14px;
-      line-height: 1;
-    }
+    .logoWrap img{ width: 28px; height: 28px; display:block; }
+    .logoFallback{ font-weight: 800; color: var(--mint); font-size: 14px; line-height: 1; }
     .brandText{ min-width:0; }
     .brandText .title{
       font-size: 16px;
@@ -119,7 +110,6 @@
       text-overflow:ellipsis;
     }
 
-    /* Tabs bar (wie Screenshot) */
     .tabsBar{
       position: sticky;
       top: 0;
@@ -133,14 +123,13 @@
       display:flex;
       align-items:center;
       gap: 10px;
-      flex-wrap: nowrap;
       padding: 10px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
       box-shadow: var(--shadow);
       overflow-x:auto;
-      scrollbar-width: none;
+      scrollbar-width:none;
     }
     .tabs::-webkit-scrollbar{ display:none; }
     .tab{
@@ -192,11 +181,7 @@
       line-height: 1.15;
       letter-spacing: -0.2px;
     }
-    h2{
-      margin: 0 0 8px;
-      font-size: 20px;
-      letter-spacing: -0.1px;
-    }
+    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
 
     .cols{
@@ -219,7 +204,7 @@
     }
     .labelHint{ color: var(--muted2); font-weight: 500; }
 
-    textarea, input[type="text"]{
+    textarea, input[type="text"], select{
       width: 100%;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.10);
@@ -229,7 +214,10 @@
       font-size: 15px;
       outline: none;
     }
-    textarea:focus, input[type="text"]:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
+    textarea:focus, input[type="text"]:focus, select:focus{
+      box-shadow: var(--focus);
+      border-color: rgba(47,227,183,.35);
+    }
     .big{
       min-height: 140px;
       resize: vertical;
@@ -258,10 +246,7 @@
       border-color: rgba(47,227,183,.35);
     }
     .btn.primary:hover{ background: var(--mint3); }
-    .btn.ghost{
-      background: transparent;
-      color: var(--muted);
-    }
+    .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
     .status{
@@ -284,22 +269,6 @@
       line-height: 1.45;
     }
 
-    .list{
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-    .list li{ margin: 6px 0; }
-
-    .small{
-      font-size: 12px;
-      color: var(--muted2);
-      line-height: 1.45;
-    }
-
-    .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
-
     details{
       margin-top: 10px;
       border: 1px solid rgba(255,255,255,.10);
@@ -316,11 +285,30 @@
     }
     details > summary::-webkit-details-marker{ display:none; }
 
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    .small{ font-size: 12px; color: var(--muted2); line-height: 1.45; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
+
+    .kv{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .kv .line{ color: var(--muted); line-height: 1.5; }
+    .kv .line strong{ color: var(--text); font-weight: 700; }
+    .scrollKeys{
+      display:block;
+      max-height: 180px;
+      overflow:auto;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      line-height: 1.5;
+      word-break: break-word;
     }
 
-    /* Footer */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -357,23 +345,21 @@
 
 <body>
   <div class="wrap">
-    <!-- Header: SafeShare + Logo -->
     <header>
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
-          <!-- Wenn du dein Logo als logo.svg neben diese Datei legst, wird es hier angezeigt -->
-          <img id="logoImg" src="logo.svg" alt="SafeShare" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <!-- Lege logo.svg in denselben Ordner wie pro-app.html -->
+          <img src="logo.svg" alt="SafeShare" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
           <span id="logoFallback" class="logoFallback" style="display:none;">8</span>
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Links teilen. Ohne Ballast.</div>
+          <div class="sub">Pro App · Bulk-Cleaning & Regeln</div>
         </div>
       </div>
-      <div class="small">Pro App</div>
+      <div class="small">Alles lokal · keine Accounts</div>
     </header>
 
-    <!-- Navi Tabs -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="app.html">App</a>
@@ -386,25 +372,25 @@
       </div>
     </div>
 
-    <!-- Pro App Main -->
     <section class="card">
-      <div class="badge"><span class="dot" aria-hidden="true"></span> SafeShare Pro App · mehrere Links &amp; eigene Regeln</div>
+      <div class="badge"><span class="dot" aria-hidden="true"></span> SafeShare Pro App · praxisgerecht zum Experimentieren</div>
 
       <h1>Mehrere Links in einem Rutsch bereinigen</h1>
       <p>
-        Füge unten eine Liste von Links ein (je Zeile ein Link), lege bei Bedarf eigene Regeln für Parameter fest und kopiere die bereinigte Liste wieder heraus.
-        Alles läuft lokal in deinem Browser.
+        Füge Links ein (1 pro Zeile), wähle einen Modus, passe Regeln an und kopiere das Ergebnis.
+        „Was wurde geändert?“ listet nachvollziehbar auf, was entfernt/behalten wurde – inkl. Whitelist/Affiliate.
       </p>
 
       <div class="cols">
         <div>
           <label for="inputList">
-            <span>Eingabe – Links (einer pro Zeile)</span>
-            <span class="labelHint">z. B. aus Newsletter, Social Media, Dokumenten</span>
+            <span>Eingabe – Links (1 pro Zeile)</span>
+            <span class="labelHint">z. B. aus Newsletter, Social, Dokumenten</span>
           </label>
           <textarea id="inputList" class="big" placeholder="https://example.com/?utm_source=newsletter&#10;https://www.beispiel.de/artikel?fbclid=ABC123&utm_medium=social" autocapitalize="off" autocomplete="off" spellcheck="false"></textarea>
 
           <div class="row">
+            <button class="btn" id="pasteBtn" type="button">Aus Zwischenablage</button>
             <button class="btn primary" id="cleanBtn" type="button">Liste bereinigen</button>
             <button class="btn" id="clearInputBtn" type="button">Eingabe leeren</button>
             <button class="btn ghost" id="clearOutputBtn" type="button">Ergebnis leeren</button>
@@ -412,71 +398,88 @@
 
           <div class="status" id="statusMsg"></div>
 
-          <div class="small">
-            Hinweis: Unbekannte Parameter bleiben standardmäßig erhalten (stabiler). Mit Whitelist kannst du funktionale Parameter gezielt erlauben.
+          <div class="sep"></div>
+
+          <label for="preset">
+            <span>Modus (Preset)</span>
+            <span class="labelHint">ändert Standardverhalten für Affiliate</span>
+          </label>
+          <select id="preset">
+            <option value="private">Privat (empfohlen) – Affiliate entfernen</option>
+            <option value="publisher">Publisher unterstützen – Affiliate behalten</option>
+            <option value="team">Team (Policy) – frei konfigurierbar</option>
+          </select>
+
+          <div class="row" style="margin-top:10px;">
+            <label style="margin:0; width:auto; display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;">
+              <input type="checkbox" id="removeAffiliate" checked />
+              Affiliate entfernen (tag/ref/aff_…)
+            </label>
+          </div>
+
+          <div class="small" style="margin-top:8px;">
+            Hinweis: Whitelist hat immer Vorrang. Groß/Klein ist egal (Parameter werden case-insensitiv verglichen).
           </div>
         </div>
 
         <div>
           <label for="outputList">
             <span>Ausgabe – bereinigte Links</span>
-            <span class="labelHint">werden ohne Tracking-Parameter ausgegeben</span>
+            <span class="labelHint">je Zeile ein bereinigter Link</span>
           </label>
-          <textarea id="outputList" class="big" placeholder="Die bereinigte Liste erscheint hier – je Zeile ein Link." readonly></textarea>
+          <textarea id="outputList" class="big" placeholder="Die bereinigte Liste erscheint hier." readonly></textarea>
 
           <div class="row">
-            <button class="btn primary" id="copyBtn" type="button">Bereinigte Liste kopieren</button>
+            <button class="btn primary" id="copyBtn" type="button">Liste kopieren</button>
             <button class="btn" id="openFirstBtn" type="button">Ersten Link öffnen</button>
           </div>
 
           <div class="small" id="statsLine"></div>
 
           <details id="receiptDetails" hidden>
-            <summary>Was wurde geändert? (Zusammenfassung)</summary>
-            <div class="small" style="margin-top:10px;">
-              <div><strong>Entfernt (Kategorien):</strong> <span id="removedCats" class="mono"></span></div>
-              <div style="margin-top:6px;"><strong>Beispiel entfernte Keys:</strong> <span id="removedKeys" class="mono"></span></div>
-              <div style="margin-top:10px;"><strong>Behalten (Whitelist):</strong> <span id="keptWhitelist" class="mono"></span></div>
-              <div style="margin-top:6px;"><strong>Entfernt (Blacklist):</strong> <span id="removedBlacklist" class="mono"></span></div>
-              <div style="margin-top:10px;">
-                Tipp: Wenn du <span class="mono">tag</span>/<span class="mono">ref</span> whitelisten willst, schreibe sie einfach – Groß/Klein ist egal.
+            <summary>Was wurde geändert? (vollständig)</summary>
+            <div class="kv">
+              <div class="line"><strong>Entfernt (Standard):</strong></div>
+              <div class="scrollKeys mono" id="removedStd">—</div>
+
+              <div class="line"><strong>Entfernt (Blacklist):</strong></div>
+              <div class="scrollKeys mono" id="removedBlacklist">—</div>
+
+              <div class="line"><strong>Entfernt (Affiliate-Regel):</strong></div>
+              <div class="scrollKeys mono" id="removedAffiliate">—</div>
+
+              <div class="line"><strong>Behalten (Whitelist):</strong></div>
+              <div class="scrollKeys mono" id="keptWhitelist">—</div>
+
+              <div class="line"><strong>Behalten (sonst):</strong></div>
+              <div class="scrollKeys mono" id="keptOther">—</div>
+
+              <div class="small" style="margin-top:6px;">
+                Keys sind dedupliziert (nur Parameternamen, ohne Werte). Bei vielen Links wird die Liste lang – deshalb mit Scrollbereich.
               </div>
             </div>
           </details>
 
           <div class="hintBox">
-            Tipp: Nutze <strong>Whitelist</strong>, wenn ein Parameter bleiben muss (z. B. Token).
-            Nutze <strong>Blacklist</strong>, wenn du etwas immer entfernen willst – zusätzlich zur Standardliste.
+            Praxis: Wenn ein Link „kaputt“ wird, whiteliste den benötigten Parameter (z. B. <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">state</span>).
+            Wenn du Publisher fair unterstützen willst: Modus „Publisher“ oder Affiliate-Regel aus.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Rules -->
     <section class="card">
-      <h2>Eigene Regeln für Tracking-Parameter</h2>
+      <h2>Eigene Regeln (Whitelist/Blacklist)</h2>
       <p>
-        SafeShare Pro kennt bereits eine Standardliste üblicher Tracking-Parameter (UTM, fbclid, gclid usw.).
-        Zusätzlich kannst du eigene Regeln ergänzen:
+        SafeShare Pro entfernt standardmäßig typische Tracking-Parameter (UTM, Click-IDs, Newsletter-IDs usw.).
+        Zusätzlich kannst du Regeln setzen:
       </p>
-      <ul class="list">
-        <li><strong>Blacklist:</strong> wird entfernt (zusätzlich zur Standardliste), außer es steht auf der Whitelist.</li>
-        <li><strong>Whitelist:</strong> darf bleiben – hat Vorrang (auch wenn es wie Tracking aussieht).</li>
-      </ul>
-      <p class="small">
-        Eintrag je Zeile, nur Parameternamen ohne „?“ oder „=“ (z. B. <span class="mono">utm_source</span>).
-        Regeln werden lokal im Browser (<span class="mono">localStorage</span>) gespeichert – nicht auf einem Server.
-      </p>
-
-      <div class="sep"></div>
-
-      <h2 style="margin-top:0;">Regeln bearbeiten</h2>
 
       <div class="cols">
         <div>
           <label for="blacklist">
             <span>Blacklist</span>
-            <span class="labelHint">immer entfernen (zusätzlich zur Standardliste)</span>
+            <span class="labelHint">immer entfernen (zusätzlich)</span>
           </label>
           <textarea id="blacklist" class="big" placeholder="z. B.&#10;ref_src&#10;source&#10;spm"></textarea>
         </div>
@@ -493,17 +496,31 @@
       <div class="row">
         <button class="btn primary" id="saveRulesBtn" type="button">Regeln speichern</button>
         <button class="btn" id="resetRulesBtn" type="button">Regeln zurücksetzen</button>
+        <button class="btn ghost" id="exportRulesBtn" type="button">Regeln exportieren</button>
+        <button class="btn ghost" id="importRulesBtn" type="button">Regeln importieren</button>
       </div>
 
       <div class="status" id="rulesMsg"></div>
+
+      <details style="margin-top:10px;">
+        <summary>Beispiele zum Testen (copy/paste)</summary>
+        <div class="small" style="margin-top:10px;">
+          <div class="mono scrollKeys" id="examplesBox" style="max-height:260px;">
+https://example.com/artikel?utm_source=newsletter&utm_medium=email&utm_campaign=dezember&fbclid=EXAMPLE
+https://shop.example.com/p/123?gclid=EXAMPLE&utm_source=google&utm_medium=cpc&utm_campaign=brand
+https://www.amazon.de/dp/B000000000?tag=dein-tag-21&ref=abc&utm_source=newsletter
+https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s&utm_source=twitter&fbclid=EXAMPLE
+https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsletter
+          </div>
+        </div>
+      </details>
     </section>
 
-    <!-- Footer -->
     <footer>
       <div class="footGrid">
         <div>
           <div><strong>SafeShare Pro</strong> – Link-Hygiene, lokal im Browser.</div>
-          <div>Keine Accounts. Keine Server-Logs. Regeln &amp; Verlauf bleiben auf deinem Gerät.</div>
+          <div>Keine Accounts. Keine Server-Logs. Regeln bleiben auf deinem Gerät (localStorage).</div>
         </div>
         <div class="footLinks">
           <a href="app.html">App</a>
@@ -523,6 +540,7 @@
     const ui = {
       input: $("inputList"),
       output: $("outputList"),
+      paste: $("pasteBtn"),
       clean: $("cleanBtn"),
       clearInput: $("clearInputBtn"),
       clearOutput: $("clearOutputBtn"),
@@ -531,34 +549,46 @@
       status: $("statusMsg"),
       stats: $("statsLine"),
 
+      preset: $("preset"),
+      removeAffiliate: $("removeAffiliate"),
+
       receiptDetails: $("receiptDetails"),
-      removedCats: $("removedCats"),
-      removedKeys: $("removedKeys"),
-      keptWhitelist: $("keptWhitelist"),
+      removedStd: $("removedStd"),
       removedBlacklist: $("removedBlacklist"),
+      removedAffiliate: $("removedAffiliate"),
+      keptWhitelist: $("keptWhitelist"),
+      keptOther: $("keptOther"),
 
       blacklist: $("blacklist"),
       whitelist: $("whitelist"),
       saveRules: $("saveRulesBtn"),
       resetRules: $("resetRulesBtn"),
+      exportRules: $("exportRulesBtn"),
+      importRules: $("importRulesBtn"),
       rulesMsg: $("rulesMsg"),
     };
 
-    const LS_BLACK = "ss_pro_blacklist_v2";
-    const LS_WHITE = "ss_pro_whitelist_v2";
+    const LS_BLACK = "ss_pro_blacklist_v3";
+    const LS_WHITE = "ss_pro_whitelist_v3";
+    const LS_PRESET = "ss_pro_preset_v1";
+    const LS_AFF = "ss_pro_remove_affiliate_v1";
 
-    // Standardliste: bewusst konservativ (weitere Keys kannst du später ergänzen)
+    // Standard Tracking Rules (conservative, but useful)
     const STD_REMOVE_EXACT = new Set([
-      "gclid","dclid","gbraid","wbraid","msclkid","fbclid","ttclid","twclid","igshid",
+      // click ids / ads
+      "gclid","dclid","gbraid","wbraid","msclkid","fbclid","ttclid","twclid","igshid","yclid",
+      // email/newsletter
       "mc_cid","mc_eid","mkt_tok","oly_anon_id","oly_enc_id","vero_id","vero_conv",
-      "gclsrc","ref_src","ref_url"
+      // misc
+      "gclsrc","ref_src","ref_url","fb_action_ids","fb_action_types"
     ]);
 
     const STD_REMOVE_REGEX = [
-      /^utm_/i,
-      /(^|_)(clickid|clkid)$/i,
+      /^utm_/i,                         // utm_*
+      /(^|_)(clickid|clkid)$/i,         // generic click ids
       /^(ad|ads|adid|ad_id|adgroup|adgroupid|campaign|campaignid|cmp|cmpid|creative|keyword|matchtype|device)$/i,
-      /^(abtest|variant|experiment|bucket)$/i
+      /^(abtest|variant|experiment|bucket)$/i,
+      /^(scm|spm|srsltid)$/i
     ];
 
     function setMsg(el, text, kind=""){
@@ -573,7 +603,7 @@
       return s;
     }
 
-    // Case-insensitive rules: alles lowercase speichern/vergleichen
+    // Case-insensitive rules: store lowercase
     function parseRulesTextarea(text){
       return new Set(
         String(text || "")
@@ -610,28 +640,56 @@
       setMsg(ui.rulesMsg, "Regeln zurückgesetzt.", "ok");
     }
 
+    function exportRules(){
+      const obj = {
+        preset: ui.preset.value,
+        removeAffiliate: !!ui.removeAffiliate.checked,
+        blacklist: ui.blacklist.value || "",
+        whitelist: ui.whitelist.value || ""
+      };
+      const text = JSON.stringify(obj, null, 2);
+      navigator.clipboard?.writeText(text).then(
+        () => setMsg(ui.rulesMsg, "Regeln exportiert (in Zwischenablage kopiert).", "ok"),
+        () => setMsg(ui.rulesMsg, "Export nicht möglich – kopiere manuell aus dem Dialog.", "bad")
+      );
+      // fallback dialog (always)
+      prompt("Regeln (JSON) – kopieren:", text);
+    }
+
+    function importRules(){
+      const raw = prompt("Regeln (JSON) einfügen:");
+      if (!raw) return;
+      try{
+        const obj = JSON.parse(raw);
+        if (obj.preset) ui.preset.value = obj.preset;
+        if (typeof obj.removeAffiliate === "boolean") ui.removeAffiliate.checked = obj.removeAffiliate;
+        if (typeof obj.blacklist === "string") ui.blacklist.value = obj.blacklist;
+        if (typeof obj.whitelist === "string") ui.whitelist.value = obj.whitelist;
+        persistMode();
+        saveRules();
+      }catch(e){
+        setMsg(ui.rulesMsg, "Ungültiges JSON.", "bad");
+      }
+    }
+
     function isStdTrackingParam(keyLower){
       if (STD_REMOVE_EXACT.has(keyLower)) return true;
       for (const rx of STD_REMOVE_REGEX) if (rx.test(keyLower)) return true;
       return false;
     }
 
-    function categorizeKey(keyLower){
-      if (/^utm_/i.test(keyLower)) return "UTM";
-      if (/(^|_)(gclid|dclid|gbraid|wbraid|msclkid|fbclid|ttclid|twclid|igshid)$/i.test(keyLower)) return "CLICK_ID";
-      if (/^(mc_cid|mc_eid|mkt_tok|oly_anon_id|oly_enc_id|vero_id|vero_conv)$/i.test(keyLower)) return "EMAIL";
-      if (/^(abtest|variant|experiment|bucket)$/i.test(keyLower)) return "EXPERIMENT";
-      if (/^(ref|tag|aff|aff_id|affid|partner|partner_id|ascsubtag|clickref|irclickid)$/i.test(keyLower)) return "AFFILIATE";
-      if (/^(source|spm|scm|cmpid|campaignid|ad_id|adgroupid|creative|keyword|matchtype|device|gclsrc|ref_src|ref_url)$/i.test(keyLower)) return "OTHER";
-      return "UNKNOWN";
+    function isAffiliateParam(keyLower){
+      // bewusst breit, damit Nutzer in Pro experimentieren können
+      return /^(tag|ref|ref_|aff|aff_id|affid|affiliate|partner|partner_id|ascsubtag|clickref|irclickid|utm_referrer)$/i.test(keyLower);
     }
 
-    function cleanOneUrl(rawUrl, rules){
+    function cleanOneUrl(rawUrl, rules, removeAffiliate){
       const url = new URL(rawUrl);
-      const removed = [];
-      const kept = [];
-      const keptByWhitelist = new Set();
-      const removedByBlacklist = new Set();
+      const removedStd = new Set();
+      const removedBlack = new Set();
+      const removedAff = new Set();
+      const keptWhite = new Set();
+      const keptOther = new Set();
 
       const entries = Array.from(url.searchParams.entries());
       url.search = "";
@@ -639,75 +697,138 @@
       for (const [k,v] of entries){
         const keyLower = String(k).toLowerCase();
 
-        // Whitelist always wins
-        if (rules.whitelist.has(keyLower)) {
-          kept.push({key: k, category: categorizeKey(keyLower), reason: "whitelist"});
-          keptByWhitelist.add(keyLower);
+        // 1) Whitelist always wins
+        if (rules.whitelist.has(keyLower)){
+          keptWhite.add(keyLower);
           url.searchParams.append(k, v);
           continue;
         }
 
-        const isBlack = rules.blacklist.has(keyLower);
-        const isStd = isStdTrackingParam(keyLower);
-
-        if (isBlack || isStd) {
-          removed.push({key: k, category: categorizeKey(keyLower), reason: isBlack ? "blacklist" : "standard"});
-          if (isBlack) removedByBlacklist.add(keyLower);
+        // 2) Affiliate rule (optional)
+        if (removeAffiliate && isAffiliateParam(keyLower)){
+          removedAff.add(keyLower);
           continue;
         }
 
-        kept.push({key: k, category: categorizeKey(keyLower), reason: "kept"});
+        // 3) Blacklist
+        if (rules.blacklist.has(keyLower)){
+          removedBlack.add(keyLower);
+          continue;
+        }
+
+        // 4) Standard tracking
+        if (isStdTrackingParam(keyLower)){
+          removedStd.add(keyLower);
+          continue;
+        }
+
+        // 5) Keep
+        keptOther.add(keyLower);
         url.searchParams.append(k, v);
       }
 
-      return { cleaned: url.toString(), removed, kept, keptByWhitelist, removedByBlacklist };
-    }
-
-    async function copyToClipboard(text){
-      try{
-        if (navigator.clipboard?.writeText){
-          await navigator.clipboard.writeText(text);
-          return true;
-        }
-      }catch(e){}
-      try{
-        ui.output.focus();
-        ui.output.select();
-        document.execCommand("copy");
-        return true;
-      }catch(e){
-        return false;
-      }
-    }
-
-    function buildReceiptSummary(allRemoved){
-      const cats = {};
-      const keys = new Set();
-      for (const r of allRemoved){
-        cats[r.category] = (cats[r.category] || 0) + 1;
-        keys.add(String(r.key).toLowerCase());
-      }
-      const catsSorted = Object.entries(cats)
-        .sort((a,b)=>b[1]-a[1])
-        .map(([c,n]) => `${c}:${n}`);
-
       return {
-        catsLine: catsSorted.join(" · ") || "—",
-        keysLine: Array.from(keys).slice(0, 24).join(", ") + (keys.size > 24 ? " …" : "")
+        cleaned: url.toString(),
+        removedStd, removedBlack, removedAff,
+        keptWhite, keptOther
       };
     }
 
-    function cleanList(){
-      const rules = loadRules();
-      const lines = String(ui.input.value || "").split(/\r?\n/);
+    function formatSet(s){
+      const arr = Array.from(s);
+      arr.sort();
+      return arr.length ? arr.join(", ") : "—";
+    }
 
+    async function pasteFromClipboard(){
+      try{
+        if (navigator.clipboard?.readText){
+          const text = await navigator.clipboard.readText();
+          if (text){
+            ui.input.value = text.trim();
+            setMsg(ui.status, "Aus Zwischenablage eingefügt.", "ok");
+          } else {
+            setMsg(ui.status, "Zwischenablage ist leer.");
+          }
+        } else {
+          setMsg(ui.status, "Zwischenablage nicht verfügbar. Bitte manuell einfügen.");
+        }
+      }catch(e){
+        setMsg(ui.status, "Zugriff auf Zwischenablage nicht erlaubt.", "bad");
+      }
+    }
+
+    async function copyOutput(){
+      const text = String(ui.output.value || "").trim();
+      if (!text){
+        setMsg(ui.status, "Kein Ergebnis zum Kopieren.", "bad");
+        return;
+      }
+      try{
+        if (navigator.clipboard?.writeText){
+          await navigator.clipboard.writeText(text);
+          setMsg(ui.status, "Liste kopiert.", "ok");
+          return;
+        }
+      }catch(e){}
+      ui.output.focus();
+      ui.output.select();
+      try{
+        document.execCommand("copy");
+        setMsg(ui.status, "Liste kopiert.", "ok");
+      }catch(e){
+        setMsg(ui.status, "Kopieren nicht verfügbar – bitte manuell markieren.", "bad");
+      }
+    }
+
+    function openFirst(){
+      const first = String(ui.output.value || "").split(/\r?\n/).map(x=>x.trim()).find(Boolean);
+      if (!first){
+        setMsg(ui.status, "Kein Link zum Öffnen vorhanden.", "bad");
+        return;
+      }
+      window.open(first, "_blank", "noopener");
+    }
+
+    function persistMode(){
+      localStorage.setItem(LS_PRESET, ui.preset.value);
+      localStorage.setItem(LS_AFF, ui.removeAffiliate.checked ? "1" : "0");
+    }
+
+    function applyPreset(p){
+      // Presets affect only affiliate toggle (Whitelist still wins)
+      if (p === "private") ui.removeAffiliate.checked = true;
+      if (p === "publisher") ui.removeAffiliate.checked = false;
+      // team: user decides (do not force)
+      persistMode();
+    }
+
+    function loadMode(){
+      const p = localStorage.getItem(LS_PRESET);
+      const a = localStorage.getItem(LS_AFF);
+      if (p) ui.preset.value = p;
+      if (a === "1" || a === "0") ui.removeAffiliate.checked = (a === "1");
+      // if no saved state: preset default implies affiliate on
+      if (!p && (a !== "1" && a !== "0")){
+        applyPreset(ui.preset.value);
+      }
+    }
+
+    function cleanList(){
+      const rules = loadRules(); // sync from storage/ui
+      const removeAffiliate = !!ui.removeAffiliate.checked;
+
+      const lines = String(ui.input.value || "").split(/\r?\n/);
       const out = [];
+
       let total = 0, ok = 0, bad = 0;
       let removedCount = 0;
 
-      const removedAll = [];
-      const keptWhitelistAll = new Set();
-      const removedBlacklistAll = new Set();
+      const removedStdAll = new Set();
+      const removedBlackAll = new Set();
+      const removedAffAll = new Set();
+      const keptWhiteAll = new Set();
+      const keptOtherAll = new Set();
 
       for (const line of lines){
         const raw = normalizeUrl(line);
@@ -720,14 +841,17 @@
         }
 
         try{
-          const res = cleanOneUrl(raw, rules);
+          const res = cleanOneUrl(raw, rules, removeAffiliate);
           out.push(res.cleaned);
           ok++;
 
-          removedCount += res.removed.length;
-          res.removed.forEach(r => removedAll.push(r));
-          res.keptByWhitelist.forEach(k => keptWhitelistAll.add(k));
-          res.removedByBlacklist.forEach(k => removedBlacklistAll.add(k));
+          res.removedStd.forEach(k => removedStdAll.add(k));
+          res.removedBlack.forEach(k => removedBlackAll.add(k));
+          res.removedAff.forEach(k => removedAffAll.add(k));
+          res.keptWhite.forEach(k => keptWhiteAll.add(k));
+          res.keptOther.forEach(k => keptOtherAll.add(k));
+
+          removedCount += res.removedStd.size + res.removedBlack.size + res.removedAff.size;
         }catch(e){
           bad++;
         }
@@ -750,15 +874,15 @@
       }
 
       setMsg(ui.status, "Liste bereinigt.", "ok");
-      ui.stats.textContent = `${ok}/${total} Links bereinigt · ${removedCount} Parameter entfernt${bad ? ` · ${bad} ungültig` : ""}`;
+      ui.stats.textContent =
+        `${ok}/${total} Links bereinigt · ${removedCount} Parameter entfernt` + (bad ? ` · ${bad} ungültig` : "");
 
-      // Receipt summary
-      const summary = buildReceiptSummary(removedAll);
       ui.receiptDetails.hidden = false;
-      ui.removedCats.textContent = summary.catsLine;
-      ui.removedKeys.textContent = summary.keysLine || "—";
-      ui.keptWhitelist.textContent = keptWhitelistAll.size ? (Array.from(keptWhitelistAll).slice(0, 24).join(", ") + (keptWhitelistAll.size > 24 ? " …" : "")) : "—";
-      ui.removedBlacklist.textContent = removedBlacklistAll.size ? (Array.from(removedBlacklistAll).slice(0, 24).join(", ") + (removedBlacklistAll.size > 24 ? " …" : "")) : "—";
+      ui.removedStd.textContent = formatSet(removedStdAll);
+      ui.removedBlacklist.textContent = formatSet(removedBlackAll);
+      ui.removedAffiliate.textContent = formatSet(removedAffAll);
+      ui.keptWhitelist.textContent = formatSet(keptWhiteAll);
+      ui.keptOther.textContent = formatSet(keptOtherAll);
     }
 
     function clearInput(){
@@ -772,35 +896,7 @@
       setMsg(ui.status, "");
     }
 
-    async function copyOutput(){
-      const text = String(ui.output.value || "").trim();
-      if (!text){
-        setMsg(ui.status, "Kein Ergebnis zum Kopieren.", "bad");
-        return;
-      }
-      const ok = await copyToClipboard(text);
-      setMsg(ui.status, ok ? "Bereinigte Liste kopiert." : "Kopieren nicht verfügbar – bitte manuell markieren.", ok ? "ok" : "bad");
-    }
-
-    function openFirst(){
-      const first = String(ui.output.value || "").split(/\r?\n/).map(x=>x.trim()).find(Boolean);
-      if (!first){
-        setMsg(ui.status, "Kein Link zum Öffnen vorhanden.", "bad");
-        return;
-      }
-      window.open(first, "_blank", "noopener");
-    }
-
-    ui.clean.addEventListener("click", cleanList);
-    ui.clearInput.addEventListener("click", clearInput);
-    ui.clearOutput.addEventListener("click", clearOutput);
-    ui.copy.addEventListener("click", copyOutput);
-    ui.openFirst.addEventListener("click", openFirst);
-
-    ui.saveRules.addEventListener("click", saveRules);
-    ui.resetRules.addEventListener("click", resetRules);
-
-    // Autosave (lokal)
+    // Autosave rules (local only)
     let saveTimer = null;
     function scheduleAutoSave(){
       clearTimeout(saveTimer);
@@ -810,13 +906,31 @@
         setMsg(ui.rulesMsg, "Regeln gespeichert (lokal).", "ok");
       }, 450);
     }
+
+    // Events
+    ui.paste.addEventListener("click", pasteFromClipboard);
+    ui.clean.addEventListener("click", cleanList);
+    ui.clearInput.addEventListener("click", clearInput);
+    ui.clearOutput.addEventListener("click", clearOutput);
+    ui.copy.addEventListener("click", copyOutput);
+    ui.openFirst.addEventListener("click", openFirst);
+
+    ui.preset.addEventListener("change", () => applyPreset(ui.preset.value));
+    ui.removeAffiliate.addEventListener("change", persistMode);
+
     ui.blacklist.addEventListener("input", scheduleAutoSave);
     ui.whitelist.addEventListener("input", scheduleAutoSave);
 
-    // init
+    ui.saveRules.addEventListener("click", saveRules);
+    ui.resetRules.addEventListener("click", resetRules);
+    ui.exportRules.addEventListener("click", exportRules);
+    ui.importRules.addEventListener("click", importRules);
+
+    // Init
+    loadMode();
     loadRules();
 
-    // If coming from app.html with ?url=..., prefill as single line and clean once
+    // If coming from app.html with ?url=..., prefill and clean once
     (function initFromQuery(){
       const qs = new URLSearchParams(location.search);
       const u = qs.get("url");
