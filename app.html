@@ -3,248 +3,270 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Link säubern (ohne Tracking)</title>
-  <meta name="description" content="SafeShare entfernt Tracking-Parameter aus Links – lokal im Browser. Saubere Links kopieren oder teilen." />
+  <title>SafeShare App – Tracking-Parameter aus Links entfernen</title>
+  <meta name="description" content="SafeShare entfernt Tracking-Parameter aus Links – lokal im Browser. Bereinigte Links kopieren oder teilen. Ohne Konto." />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <meta name="color-scheme" content="light dark" />
   <style>
     :root{
-      --bg: #0b0c10;
+      --bg0:#070a12;
+      --bg1:#070b14;
+      --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.09);
+      --card2: rgba(255,255,255,.045);
+      --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
-      --border: rgba(255,255,255,.14);
-      --shadow: 0 10px 30px rgba(0,0,0,.25);
-      --radius: 16px;
-      --pad: 16px;
-      --max: 980px;
-      --btn: rgba(255,255,255,.10);
-      --btn2: rgba(255,255,255,.16);
-      --ok: rgba(87, 226, 170, .18);
-      --warn: rgba(255, 197, 84, .18);
-      --bad: rgba(255, 95, 95, .16);
-      --focus: 0 0 0 3px rgba(87, 226, 170, .25);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,95,95,.16);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+      --max: 1060px;
     }
+
     @media (prefers-color-scheme: light){
       :root{
-        --bg: #f6f7fb;
-        --card: #ffffff;
-        --card2: #f3f5ff;
-        --text: rgba(17, 24, 39, .95);
-        --muted: rgba(17, 24, 39, .65);
-        --border: rgba(17, 24, 39, .12);
-        --shadow: 0 10px 30px rgba(17,24,39,.08);
-        --btn: rgba(17,24,39,.06);
-        --btn2: rgba(17,24,39,.10);
-        --ok: rgba(87, 226, 170, .20);
-        --warn: rgba(255, 197, 84, .22);
-        --bad: rgba(255, 95, 95, .18);
+        --bg0:#f6f7fb;
+        --bg1:#ffffff;
+        --bg2:#f2f6ff;
+        --card:#ffffff;
+        --card2:#f5f7ff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,95,95,.18);
         --focus: 0 0 0 3px rgba(17, 130, 98, .22);
       }
     }
-    *{ box-sizing: border-box; }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: var(--bg);
-      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
-    a{ color: inherit; }
-    .wrap{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 20px 16px 42px;
-    }
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 6px 2px 18px;
+
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 18px 16px 44px; }
+
+    /* Header / Nav (wie dein Layout) */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 10px 6px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      gap: 16px;
     }
     .brand{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width: 0;
+      display:flex; align-items:center; gap: 10px; min-width:0;
     }
-    .logo{
-      width: 36px; height: 36px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(87,226,170,.40), rgba(255,197,84,.28));
-      border: 1px solid var(--border);
+    .mark{
+      width:36px; height:36px; border-radius: 999px;
+      display:grid; place-items:center;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.25), rgba(255,197,84,.10));
       box-shadow: var(--shadow);
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
-    .brand h1{
-      margin:0;
-      font-size: 16px;
-      line-height: 1.1;
-      letter-spacing: .2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .mark span{
+      font-weight: 800;
+      color: var(--mint);
+      font-size: 14px;
     }
-    .brand .sub{
-      display:block;
+    .brandText{ min-width:0; }
+    .brandText .title{
+      font-size: 16px; font-weight: 750; margin:0; line-height:1.15;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      display:block; font-size: 12px; color: var(--muted2);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      margin-top: 2px;
+    }
+    nav{
+      display:flex; align-items:center; gap: 14px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .navlink{
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    .navlink:hover{ border-color: var(--border); background: rgba(255,255,255,.04); }
+    .navlink.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.10);
+    }
+
+    /* Main */
+    .hero{
+      padding: 22px 6px 12px;
+    }
+    .hero h1{
+      margin: 0 0 10px;
+      font-size: clamp(22px, 4vw, 36px);
+      line-height: 1.12;
+      letter-spacing: -0.2px;
+    }
+    .hero p{
+      margin:0 0 14px;
+      color: var(--muted);
+      max-width: 72ch;
+      line-height: 1.5;
+    }
+    .chips{ display:flex; gap: 10px; flex-wrap:wrap; margin-top: 10px; }
+    .chip{
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      border-radius: 999px;
       font-size: 12px;
       color: var(--muted);
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
-    .topActions{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-end;
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
     }
+    @media(min-width: 940px){
+      .grid{ grid-template-columns: 1.1fr .9fr; }
+    }
+
     .card{
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: var(--pad);
+      padding: 16px;
     }
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-    @media (min-width: 900px){
-      .grid{ grid-template-columns: 1.1fr .9fr; }
-    }
+
     label{
       display:block;
       font-size: 13px;
       color: var(--muted);
       margin: 0 0 8px;
     }
+
     textarea, input[type="text"]{
-      width: 100%;
+      width:100%;
       border-radius: 14px;
-      border: 1px solid var(--border);
+      border:1px solid rgba(255,255,255,.10);
       background: var(--card2);
       color: var(--text);
       padding: 12px 12px;
       font-size: 15px;
-      line-height: 1.3;
-      outline: none;
+      outline:none;
     }
-    textarea:focus, input[type="text"]:focus{
-      box-shadow: var(--focus);
-      border-color: rgba(87,226,170,.45);
-    }
-    textarea{
-      min-height: 92px;
-      resize: vertical;
-    }
-    .row{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-      margin-top: 12px;
-    }
+    textarea{ min-height: 92px; resize: vertical; }
+    textarea:focus, input[type="text"]:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
       appearance:none;
-      border: 1px solid var(--border);
-      background: var(--btn);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
       color: var(--text);
       padding: 10px 12px;
       border-radius: 999px;
       font-size: 14px;
       cursor:pointer;
-      text-decoration:none;
+      user-select:none;
       display:inline-flex;
       align-items:center;
       gap: 8px;
-      user-select:none;
     }
-    .btn:hover{ background: var(--btn2); }
+    .btn:hover{ background: rgba(255,255,255,.10); }
     .btn.primary{
-      background: rgba(87,226,170,.18);
-      border-color: rgba(87,226,170,.35);
+      background: var(--mint2);
+      border-color: rgba(47,227,183,.35);
+      color: var(--text);
     }
-    .btn.primary:hover{ background: rgba(87,226,170,.24); }
+    .btn.primary:hover{ background: var(--mint3); }
     .btn.danger{
-      background: rgba(255,95,95,.14);
+      background: var(--bad);
       border-color: rgba(255,95,95,.30);
     }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--btn);
+    .btn.link{
+      background: transparent;
+      border-color: rgba(255,255,255,.10);
       color: var(--muted);
-      font-size: 12px;
     }
-    .muted{ color: var(--muted); }
-    .msg{
+    .btn.link:hover{ color: var(--text); }
+
+    .status{
       margin-top: 10px;
       font-size: 13px;
       color: var(--muted);
+      min-height: 18px;
     }
-    .msg.ok{ color: rgba(87,226,170,.95); }
-    .msg.bad{ color: rgba(255,95,95,.95); }
-    .resultBox{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:flex-start;
-    }
-    .resultBox input{ flex: 1 1 420px; }
-    .mini{
+    .status.ok{ color: rgba(47,227,183,.95); }
+    .status.bad{ color: rgba(255,95,95,.95); }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
       font-size: 12px;
       color: var(--muted);
     }
+
+    .resultBox{ display:flex; gap: 10px; flex-wrap:wrap; align-items:flex-start; }
+    .resultBox input{ flex: 1 1 420px; }
+
     details{
       margin-top: 10px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,.10);
       border-radius: 14px;
       padding: 10px 12px;
       background: rgba(255,255,255,.03);
     }
     details > summary{
       cursor:pointer;
-      font-weight: 600;
+      font-weight: 650;
       font-size: 13px;
       color: var(--text);
       list-style: none;
-      outline: none;
     }
     details > summary::-webkit-details-marker{ display:none; }
-    .receiptBlock{
-      margin-top: 10px;
-      display:grid;
-      gap: 10px;
-    }
+
+    .receiptBlock{ margin-top: 10px; display:grid; gap: 10px; }
     .rcItem{
       padding: 10px 12px;
       border-radius: 14px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
     }
-    .rcItem strong{
-      display:block;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-    .rcItem .keys{
+    .rcItem strong{ display:block; font-size: 13px; margin-bottom: 4px; }
+    .keys{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       font-size: 12px;
       color: var(--muted);
       word-break: break-word;
+      line-height: 1.45;
     }
     .hint{
       border-left: 3px solid rgba(255,197,84,.55);
@@ -254,36 +276,54 @@
       color: var(--text);
       font-size: 13px;
     }
-    .footer{
-      margin-top: 16px;
+
+    .small{
+      margin-top: 10px;
       font-size: 12px;
-      color: var(--muted);
+      color: var(--muted2);
+      line-height: 1.45;
     }
-    .sep{ height: 1px; background: var(--border); margin: 12px 0; }
+    .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header>
+    <div class="topbar">
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>SafeShare</h1>
-          <span class="sub">Link säubern · lokal · ohne Tracking</span>
+        <div class="mark" aria-hidden="true"><span>8</span></div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <span class="sub">Links teilen. Ohne Ballast.</span>
         </div>
       </div>
 
-      <div class="topActions">
-        <a class="btn" href="pro-app.html" id="topProLink">Pro</a>
+      <nav aria-label="Navigation">
+        <a class="navlink active" href="app.html">App</a>
+        <a class="navlink" href="pro-app.html">Pro</a>
+        <a class="navlink" href="hilfe.html">Hilfe</a>
+        <a class="navlink" href="bookmarklets.html">Bookmarklets</a>
+      </nav>
+    </div>
+
+    <section class="hero">
+      <h1>Links säubern – lokal im Browser.</h1>
+      <p>
+        SafeShare entfernt UTM-Tags, Klick-IDs und typische Tracking-Parameter, bevor du Links kopierst oder teilst.
+        Der Unterschied: Du siehst transparent, <em>was</em> entfernt wurde.
+      </p>
+      <div class="chips">
+        <span class="chip">läuft im Browser</span>
+        <span class="chip">kein Login, kein Konto</span>
+        <span class="chip">Fokus: Datensparsamkeit</span>
       </div>
-    </header>
+    </section>
 
     <div class="grid">
-      <!-- LEFT: Input -->
+      <!-- Input -->
       <section class="card">
-        <label for="urlInput">Link</label>
-        <textarea id="urlInput" placeholder="Link einfügen… (https://…)" autocapitalize="off" autocomplete="off" spellcheck="false"></textarea>
+        <label for="urlInput">Link einfügen</label>
+        <textarea id="urlInput" placeholder="https://…" autocapitalize="off" autocomplete="off" spellcheck="false"></textarea>
 
         <div class="row">
           <button class="btn" id="pasteBtn" type="button">Aus Zwischenablage</button>
@@ -291,80 +331,67 @@
           <button class="btn danger" id="clearBtn" type="button">Leeren</button>
         </div>
 
-        <div class="msg" id="statusMsg"></div>
+        <div class="status" id="statusMsg"></div>
 
         <div class="sep"></div>
 
-        <div class="mini">
-          Standard-Modus: <strong>Privat</strong> (entfernt Klick-IDs/UTM/Newsletter-Tracker; unbekannte Parameter werden behalten, damit Links nicht kaputtgehen).
+        <div class="small">
+          Standard-Modus: <strong>Privat</strong>.
+          Unbekannte Parameter werden standardmäßig behalten, damit Links nicht kaputtgehen.
+          In <strong>Pro</strong> kannst du Presets, Domain-Regeln und Parameter-Toggles nutzen.
         </div>
       </section>
 
-      <!-- RIGHT: Output -->
+      <!-- Output -->
       <section class="card" aria-live="polite">
         <div class="pill" id="modePill">Ergebnis</div>
 
-        <div id="outputSection" hidden>
-          <div style="margin-top:10px;">
-            <label for="cleanedOutput">Bereinigter Link</label>
-            <div class="resultBox">
-              <input id="cleanedOutput" type="text" readonly />
-              <a class="btn" id="openBtn" href="#" target="_blank" rel="noopener">Öffnen</a>
-            </div>
-
-            <div class="row">
-              <button class="btn" id="copyBtn" type="button">Kopieren</button>
-              <button class="btn" id="shareBtn" type="button">Teilen</button>
-              <a class="btn" id="goPro" href="pro-app.html">Details & Regeln (Pro)</a>
-              <button class="btn danger" id="undoBtn" type="button">Undo (Original)</button>
-            </div>
-
-            <section id="receipt" style="margin-top:12px;">
-              <div id="receiptSummary" class="muted"></div>
-
-              <details>
-                <summary>Was wurde geändert?</summary>
-
-                <div class="receiptBlock">
-                  <div class="rcItem" id="receiptRemovedBox">
-                    <strong>Entfernt</strong>
-                    <div id="receiptRemoved" class="keys"></div>
-                  </div>
-
-                  <div class="rcItem" id="receiptKeptBox">
-                    <strong>Behalten</strong>
-                    <div id="receiptKept" class="keys"></div>
-                  </div>
-
-                  <div class="hint" id="receiptHint" hidden>
-                    Hinweis: Manche Seiten nutzen signierte Parameter. Wenn etwas nicht funktioniert, nutze <strong>Undo (Original)</strong>.
-                  </div>
-                </div>
-              </details>
-
-              <div class="footer">
-                Pro zeigt Presets, Domain-Regeln und Parameter-Toggles. Alles lokal gespeichert (localStorage).
-              </div>
-            </section>
-          </div>
+        <div id="emptyState" class="small" style="margin-top:10px;">
+          Hier erscheint der bereinigte Link.
         </div>
 
-        <div id="emptyState" class="muted" style="margin-top:10px;">
-          Hier erscheint der bereinigte Link.
+        <div id="outputSection" hidden style="margin-top:10px;">
+          <label for="cleanedOutput">Bereinigter Link</label>
+          <div class="resultBox">
+            <input id="cleanedOutput" type="text" readonly />
+            <a class="btn" id="openBtn" href="#" target="_blank" rel="noopener">Öffnen</a>
+          </div>
+
+          <div class="row">
+            <button class="btn primary" id="copyBtn" type="button">Kopieren</button>
+            <button class="btn" id="shareBtn" type="button">Teilen</button>
+            <a class="btn link" id="goPro" href="pro-app.html">Details & Regeln (Pro)</a>
+            <button class="btn danger" id="undoBtn" type="button">Undo (Original)</button>
+          </div>
+
+          <!-- Receipt -->
+          <div class="small" id="receiptSummary" style="margin-top:10px;"></div>
+
+          <details>
+            <summary>Was wurde geändert?</summary>
+
+            <div class="receiptBlock">
+              <div class="rcItem">
+                <strong>Entfernt</strong>
+                <div id="receiptRemoved" class="keys">—</div>
+              </div>
+
+              <div class="rcItem">
+                <strong>Behalten</strong>
+                <div id="receiptKept" class="keys">—</div>
+              </div>
+
+              <div class="hint" id="receiptHint" hidden>
+                Hinweis: Manche Seiten nutzen signierte Parameter. Wenn etwas nicht funktioniert, nutze <strong>Undo (Original)</strong>.
+              </div>
+            </div>
+          </details>
         </div>
       </section>
     </div>
   </div>
 
   <script>
-    // ---------------------------
-    // SafeShare (app.html) – Free/Basis
-    // - Clean: utm_* + Click IDs + gängige Newsletter/Marketing IDs
-    // - Keep unknowns to avoid breaking links
-    // - Show compact "Receipt" (entfernt/behalten)
-    // - Pro deep control lives in pro-app.html (next step)
-    // ---------------------------
-
     const $ = (id) => document.getElementById(id);
 
     const ui = {
@@ -374,28 +401,25 @@
       clear: $("clearBtn"),
       msg: $("statusMsg"),
 
-      outputSection: $("outputSection"),
       emptyState: $("emptyState"),
+      outputSection: $("outputSection"),
       cleanedOutput: $("cleanedOutput"),
       openBtn: $("openBtn"),
       copyBtn: $("copyBtn"),
       shareBtn: $("shareBtn"),
       undoBtn: $("undoBtn"),
       goPro: $("goPro"),
-      topProLink: $("topProLink"),
+      modePill: $("modePill"),
 
       receiptSummary: $("receiptSummary"),
       receiptRemoved: $("receiptRemoved"),
       receiptKept: $("receiptKept"),
       receiptHint: $("receiptHint"),
-      modePill: $("modePill"),
     };
 
     let lastOriginal = "";
-    let lastCleaned = "";
-    let lastResult = null;
+    let lastCleaned  = "";
 
-    // --- Categories (for human-readable receipt) ---
     const CATEGORY_LABEL = {
       CLICK_ID: "Werbe-Klick-IDs",
       UTM: "Kampagnen-Tracking",
@@ -405,6 +429,21 @@
       OTHER_TRACK: "Allgemeines Tracking",
       UNKNOWN: "Unbekannt (behalten)"
     };
+
+    function setMsg(text, kind=""){
+      ui.msg.textContent = text || "";
+      ui.msg.className = "status" + (kind ? " " + kind : "");
+    }
+
+    function normalizeUrl(raw){
+      let s = String(raw || "").trim();
+      if (!s) return "";
+      // simple domain -> add https://
+      if (!/^https?:\/\//i.test(s) && /^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(s)) {
+        s = "https://" + s;
+      }
+      return s;
+    }
 
     function categorizeParam(k){
       const key = String(k || "");
@@ -417,26 +456,18 @@
       return "UNKNOWN";
     }
 
+    // Free/Privat: remove common trackers; keep unknowns to avoid breaking links
     function shouldRemoveInFree(key){
       const k = String(key || "");
       if (/^utm_/i.test(k)) return true;
       if (/(^|_)(gclid|dclid|gbraid|wbraid|msclkid|fbclid|ttclid|twclid|igshid)$/i.test(k)) return true;
       if (/^(mc_cid|mc_eid|mkt_tok|oly_anon_id|oly_enc_id|vero_id|vero_conv)$/i.test(k)) return true;
       if (/^(abtest|variant|experiment|bucket|hsctatracking|__hsfp|__hssc|__hstc)$/i.test(k)) return true;
-      // Affiliate: im Free/Privat standardmäßig entfernen (Pro kann es behalten)
-      if (/^(ref|tag|aff|aff_id|affid|partner|partner_id|ascsubtag|clickref|irclickid)$/i.test(k)) return true;
-      // sonst nicht entfernen (unknowns behalten)
-      return false;
-    }
 
-    function normalizeUrl(raw){
-      let s = String(raw || "").trim();
-      if (!s) return "";
-      // If user pasted without scheme, try https://
-      if (!/^https?:\/\//i.test(s) && /^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(s)) {
-        s = "https://" + s;
-      }
-      return s;
+      // Affiliate im Free/Privat standardmäßig raus (Pro kann behalten)
+      if (/^(ref|tag|aff|aff_id|affid|partner|partner_id|ascsubtag|clickref|irclickid)$/i.test(k)) return true;
+
+      return false;
     }
 
     function cleanUrl(rawUrl){
@@ -444,52 +475,37 @@
       const removed = [];
       const kept = [];
 
-      // Collect first (URLSearchParams is live while mutating)
       const entries = Array.from(url.searchParams.entries());
-
-      // Reset and rebuild
       url.search = "";
 
       for (const [k,v] of entries){
         const cat = categorizeParam(k);
         if (shouldRemoveInFree(k)){
-          removed.push({ key: k, value: v, category: cat });
+          removed.push({ key:k, value:v, category:cat });
         } else {
-          kept.push({ key: k, value: v, category: cat });
+          kept.push({ key:k, value:v, category:cat });
           url.searchParams.append(k, v);
         }
       }
 
-      return {
-        cleaned: url.toString(),
-        removed,
-        kept,
-        host: url.host
-      };
-    }
-
-    function setMsg(text, kind=""){
-      ui.msg.textContent = text || "";
-      ui.msg.className = "msg" + (kind ? " " + kind : "");
+      return { cleaned: url.toString(), removed, kept, host: url.host };
     }
 
     function renderResult(original, result){
       lastOriginal = original;
       lastCleaned = result.cleaned;
-      lastResult = result;
 
-      ui.outputSection.hidden = false;
       ui.emptyState.hidden = true;
+      ui.outputSection.hidden = false;
 
       ui.cleanedOutput.value = result.cleaned;
       ui.openBtn.href = result.cleaned;
+      ui.modePill.textContent = "Ergebnis · Privat";
 
-      // Pro links: pass ORIGINAL (so Pro kann komplett entscheiden)
+      // Pro bekommt die ORIGINAL-URL (wichtig für echte Kontrolle in Pro)
       const encoded = encodeURIComponent(original);
       ui.goPro.href = `pro-app.html?url=${encoded}`;
-      ui.topProLink.href = `pro-app.html?url=${encoded}`;
 
-      // Summary
       ui.receiptSummary.textContent =
         `${result.removed.length} entfernt · ${result.kept.length} behalten · Domain: ${result.host}`;
 
@@ -499,6 +515,7 @@
         removedByCat[r.category] ||= [];
         removedByCat[r.category].push(r.key);
       }
+
       const removedLines = Object.entries(removedByCat).map(([cat, keys]) => {
         const uniq = [...new Set(keys)];
         const short = uniq.slice(0, 10).join(", ") + (uniq.length > 10 ? " …" : "");
@@ -507,31 +524,26 @@
 
       ui.receiptRemoved.textContent = removedLines.length ? removedLines.join(" · ") : "—";
 
-      // Kept (compact)
       const keptKeys = [...new Set(result.kept.map(p => p.key))];
       ui.receiptKept.textContent =
         keptKeys.length ? (keptKeys.slice(0, 18).join(", ") + (keptKeys.length > 18 ? " …" : "")) : "—";
 
-      // Hint: show if many removed or affiliate removed (common “why?”)
       const removedAffiliate = result.removed.some(r => r.category === "AFFILIATE");
       ui.receiptHint.hidden = !(result.removed.length >= 6 || removedAffiliate);
-
-      // Mode pill
-      ui.modePill.textContent = "Ergebnis · Privat";
     }
 
     async function pasteFromClipboard(){
       try{
-        if (navigator.clipboard && navigator.clipboard.readText){
+        if (navigator.clipboard?.readText){
           const text = await navigator.clipboard.readText();
-          if (text) {
+          if (text){
             ui.input.value = text.trim();
             setMsg("Aus Zwischenablage eingefügt.", "ok");
           } else {
-            setMsg("Zwischenablage ist leer.", "");
+            setMsg("Zwischenablage ist leer.");
           }
         } else {
-          setMsg("Zwischenablage nicht verfügbar. Bitte manuell einfügen.", "");
+          setMsg("Zwischenablage nicht verfügbar. Bitte manuell einfügen.");
         }
       }catch(e){
         setMsg("Zugriff auf Zwischenablage nicht erlaubt. Bitte manuell einfügen.", "bad");
@@ -540,13 +552,12 @@
 
     async function copyToClipboard(text){
       try{
-        if (navigator.clipboard && navigator.clipboard.writeText){
+        if (navigator.clipboard?.writeText){
           await navigator.clipboard.writeText(text);
           setMsg("Kopiert.", "ok");
           return true;
         }
       }catch(e){}
-      // Fallback
       try{
         ui.cleanedOutput.focus();
         ui.cleanedOutput.select();
@@ -562,16 +573,14 @@
     async function shareLink(url){
       try{
         if (navigator.share){
-          await navigator.share({ title: "SafeShare", text: "Bereinigter Link", url });
+          await navigator.share({ title:"SafeShare", text:"Bereinigter Link", url });
           setMsg("Geteilt.", "ok");
           return true;
         }
-        // fallback
         await copyToClipboard(url);
         return true;
       }catch(e){
-        // user cancelled share is not an error
-        setMsg("Teilen abgebrochen.", "");
+        setMsg("Teilen abgebrochen.");
         return false;
       }
     }
@@ -590,13 +599,7 @@
       try{
         const result = cleanUrl(raw);
         renderResult(raw, result);
-
-        // If nothing removed, be explicit
-        if (result.removed.length === 0){
-          setMsg("Keine typischen Tracking-Parameter gefunden.", "ok");
-        } else {
-          setMsg("Link bereinigt.", "ok");
-        }
+        setMsg(result.removed.length ? "Link bereinigt." : "Keine typischen Tracking-Parameter gefunden.", "ok");
       }catch(e){
         setMsg("Das sieht nicht wie ein gültiger Link aus.", "bad");
       }
@@ -610,11 +613,9 @@
       ui.modePill.textContent = "Ergebnis";
       lastOriginal = "";
       lastCleaned = "";
-      lastResult = null;
       setMsg("");
     }
 
-    // --- Events ---
     ui.paste.addEventListener("click", pasteFromClipboard);
     ui.clean.addEventListener("click", runClean);
     ui.clear.addEventListener("click", clearAll);
@@ -637,7 +638,7 @@
       setMsg("Original wiederhergestellt (kopiert).", "ok");
     });
 
-    // Auto-load if URL param provided (optional)
+    // optional: ?url=... prefill
     (function initFromQuery(){
       const qs = new URLSearchParams(location.search);
       const u = qs.get("url");
