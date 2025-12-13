@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare Pro App – mehrere Links & eigene Regeln</title>
-  <meta name="description" content="SafeShare Pro bereinigt mehrere Links auf einmal und erlaubt eigene Regeln (Blacklist/Whitelist) für Parameter. Alles läuft lokal im Browser." />
+  <title>SafeShare Pro – mehrere Links & eigene Regeln</title>
+  <meta name="description" content="SafeShare Pro bereinigt mehrere Links auf einmal und erlaubt eigene Regeln (Blacklist/Whitelist). Alles läuft lokal im Browser – ohne Konto." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -64,15 +64,67 @@
         linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
     a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    .wrap{ max-width:var(--max); margin:0 auto; padding: 14px 16px 44px; }
+    /* Header */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 10px 2px 12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width:0;
+    }
+    .logoWrap{
+      width: 38px; height: 38px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+      overflow:hidden;
+    }
+    .logoWrap img{
+      width: 28px; height: 28px;
+      display:block;
+    }
+    .logoFallback{
+      font-weight: 800;
+      color: var(--mint);
+      font-size: 14px;
+      line-height: 1;
+    }
+    .brandText{ min-width:0; }
+    .brandText .title{
+      font-size: 16px;
+      font-weight: 780;
+      line-height:1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      font-size: 12px;
+      color: var(--muted2);
+      margin-top: 2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
 
-    /* Top tabs bar (wie Screenshot) */
+    /* Tabs bar (wie Screenshot) */
     .tabsBar{
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 10px 0 14px;
+      padding: 8px 0 14px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
@@ -81,14 +133,16 @@
       display:flex;
       align-items:center;
       gap: 10px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       padding: 10px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
       box-shadow: var(--shadow);
-      overflow-x: auto;
+      overflow-x:auto;
+      scrollbar-width: none;
     }
+    .tabs::-webkit-scrollbar{ display:none; }
     .tab{
       font-size: 13px;
       color: var(--muted);
@@ -96,6 +150,7 @@
       border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap;
+      flex: 0 0 auto;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{
@@ -163,6 +218,7 @@
       margin: 0 0 8px;
     }
     .labelHint{ color: var(--muted2); font-weight: 500; }
+
     textarea, input[type="text"]{
       width: 100%;
       border-radius: 16px;
@@ -263,11 +319,61 @@
     .mono{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
+
+    /* Footer */
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
   </style>
 </head>
 
 <body>
   <div class="wrap">
+    <!-- Header: SafeShare + Logo -->
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <!-- Wenn du dein Logo als logo.svg neben diese Datei legst, wird es hier angezeigt -->
+          <img id="logoImg" src="logo.svg" alt="SafeShare" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback" style="display:none;">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Links teilen. Ohne Ballast.</div>
+        </div>
+      </div>
+      <div class="small">Pro App</div>
+    </header>
+
+    <!-- Navi Tabs -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="app.html">App</a>
@@ -276,6 +382,7 @@
         <a class="tab" href="tracking-parameter.html">Tracking</a>
         <a class="tab" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
         <a class="tab" href="hilfe.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html">Bookmarklets</a>
       </div>
     </div>
 
@@ -304,6 +411,10 @@
           </div>
 
           <div class="status" id="statusMsg"></div>
+
+          <div class="small">
+            Hinweis: Unbekannte Parameter bleiben standardmäßig erhalten (stabiler). Mit Whitelist kannst du funktionale Parameter gezielt erlauben.
+          </div>
         </div>
 
         <div>
@@ -325,12 +436,16 @@
             <div class="small" style="margin-top:10px;">
               <div><strong>Entfernt (Kategorien):</strong> <span id="removedCats" class="mono"></span></div>
               <div style="margin-top:6px;"><strong>Beispiel entfernte Keys:</strong> <span id="removedKeys" class="mono"></span></div>
-              <div style="margin-top:6px;"><strong>Hinweis:</strong> Unbekannte Parameter werden standardmäßig behalten, damit Links nicht kaputtgehen. Wenn doch etwas nicht funktioniert: Parameter per Whitelist erlauben.</div>
+              <div style="margin-top:10px;"><strong>Behalten (Whitelist):</strong> <span id="keptWhitelist" class="mono"></span></div>
+              <div style="margin-top:6px;"><strong>Entfernt (Blacklist):</strong> <span id="removedBlacklist" class="mono"></span></div>
+              <div style="margin-top:10px;">
+                Tipp: Wenn du <span class="mono">tag</span>/<span class="mono">ref</span> whitelisten willst, schreibe sie einfach – Groß/Klein ist egal.
+              </div>
             </div>
           </details>
 
           <div class="hintBox">
-            Tipp: Nutze <strong>Whitelist</strong>, wenn ein Parameter bleiben muss (z. B. funktionale Tokens).
+            Tipp: Nutze <strong>Whitelist</strong>, wenn ein Parameter bleiben muss (z. B. Token).
             Nutze <strong>Blacklist</strong>, wenn du etwas immer entfernen willst – zusätzlich zur Standardliste.
           </div>
         </div>
@@ -345,12 +460,12 @@
         Zusätzlich kannst du eigene Regeln ergänzen:
       </p>
       <ul class="list">
-        <li><strong>Blacklist:</strong> wird entfernt, wenn nicht explizit auf der Whitelist.</li>
-        <li><strong>Whitelist:</strong> darf bleiben – selbst wenn es wie ein Tracking-Parameter aussieht.</li>
+        <li><strong>Blacklist:</strong> wird entfernt (zusätzlich zur Standardliste), außer es steht auf der Whitelist.</li>
+        <li><strong>Whitelist:</strong> darf bleiben – hat Vorrang (auch wenn es wie Tracking aussieht).</li>
       </ul>
       <p class="small">
         Eintrag je Zeile, nur Parameternamen ohne „?“ oder „=“ (z. B. <span class="mono">utm_source</span>).
-        Regeln werden im Browser (<span class="mono">localStorage</span>) gespeichert, nicht auf einem Server.
+        Regeln werden lokal im Browser (<span class="mono">localStorage</span>) gespeichert – nicht auf einem Server.
       </p>
 
       <div class="sep"></div>
@@ -371,7 +486,7 @@
             <span>Whitelist</span>
             <span class="labelHint">immer behalten (hat Vorrang)</span>
           </label>
-          <textarea id="whitelist" class="big" placeholder="z. B.&#10;t&#10;start&#10;token"></textarea>
+          <textarea id="whitelist" class="big" placeholder="z. B.&#10;tag&#10;ref&#10;t&#10;token"></textarea>
         </div>
       </div>
 
@@ -382,6 +497,24 @@
 
       <div class="status" id="rulesMsg"></div>
     </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare Pro</strong> – Link-Hygiene, lokal im Browser.</div>
+          <div>Keine Accounts. Keine Server-Logs. Regeln &amp; Verlauf bleiben auf deinem Gerät.</div>
+        </div>
+        <div class="footLinks">
+          <a href="app.html">App</a>
+          <a href="pro-app.html">Pro</a>
+          <a href="hilfe.html">Hilfe</a>
+          <a href="bookmarklets.html">Bookmarklets</a>
+          <a href="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html">Impressum</a>
+        </div>
+      </div>
+    </footer>
   </div>
 
   <script>
@@ -401,6 +534,8 @@
       receiptDetails: $("receiptDetails"),
       removedCats: $("removedCats"),
       removedKeys: $("removedKeys"),
+      keptWhitelist: $("keptWhitelist"),
+      removedBlacklist: $("removedBlacklist"),
 
       blacklist: $("blacklist"),
       whitelist: $("whitelist"),
@@ -409,27 +544,23 @@
       rulesMsg: $("rulesMsg"),
     };
 
-    const LS_BLACK = "ss_pro_blacklist_v1";
-    const LS_WHITE = "ss_pro_whitelist_v1";
+    const LS_BLACK = "ss_pro_blacklist_v2";
+    const LS_WHITE = "ss_pro_whitelist_v2";
 
-    // ---- Standard Tracking Rules (Pro basis) ----
+    // Standardliste: bewusst konservativ (weitere Keys kannst du später ergänzen)
     const STD_REMOVE_EXACT = new Set([
-      // click ids / ads
       "gclid","dclid","gbraid","wbraid","msclkid","fbclid","ttclid","twclid","igshid",
-      // email/newsletter
       "mc_cid","mc_eid","mkt_tok","oly_anon_id","oly_enc_id","vero_id","vero_conv",
-      // misc
       "gclsrc","ref_src","ref_url"
     ]);
 
     const STD_REMOVE_REGEX = [
-      /^utm_/i, // all utm_*
-      /(^|_)(clickid|clkid)$/i, // generic click ids
+      /^utm_/i,
+      /(^|_)(clickid|clkid)$/i,
       /^(ad|ads|adid|ad_id|adgroup|adgroupid|campaign|campaignid|cmp|cmpid|creative|keyword|matchtype|device)$/i,
       /^(abtest|variant|experiment|bucket)$/i
     ];
 
-    // ---- Helpers ----
     function setMsg(el, text, kind=""){
       el.textContent = text || "";
       el.className = "status" + (kind ? " " + kind : "");
@@ -442,6 +573,7 @@
       return s;
     }
 
+    // Case-insensitive rules: alles lowercase speichern/vergleichen
     function parseRulesTextarea(text){
       return new Set(
         String(text || "")
@@ -449,6 +581,7 @@
           .map(x => x.trim())
           .filter(x => x && !x.startsWith("#"))
           .map(x => x.replace(/^[?&]/,"").replace(/=.*$/,""))
+          .map(x => x.toLowerCase())
       );
     }
 
@@ -477,21 +610,19 @@
       setMsg(ui.rulesMsg, "Regeln zurückgesetzt.", "ok");
     }
 
-    function isStdTrackingParam(key){
-      const k = String(key || "");
-      if (STD_REMOVE_EXACT.has(k)) return true;
-      for (const rx of STD_REMOVE_REGEX) if (rx.test(k)) return true;
+    function isStdTrackingParam(keyLower){
+      if (STD_REMOVE_EXACT.has(keyLower)) return true;
+      for (const rx of STD_REMOVE_REGEX) if (rx.test(keyLower)) return true;
       return false;
     }
 
-    function categorizeKey(key){
-      const k = String(key || "");
-      if (/^utm_/i.test(k)) return "UTM";
-      if (/(^|_)(gclid|dclid|gbraid|wbraid|msclkid|fbclid|ttclid|twclid|igshid)$/i.test(k)) return "CLICK_ID";
-      if (/^(mc_cid|mc_eid|mkt_tok|oly_anon_id|oly_enc_id|vero_id|vero_conv)$/i.test(k)) return "EMAIL";
-      if (/^(abtest|variant|experiment|bucket)$/i.test(k)) return "EXPERIMENT";
-      if (/^(ref|tag|aff|aff_id|affid|partner|partner_id|ascsubtag|clickref|irclickid)$/i.test(k)) return "AFFILIATE";
-      if (/^(source|spm|scm|cmpid|campaignid|ad_id|adgroupid|creative|keyword|matchtype|device|gclsrc|ref_src|ref_url)$/i.test(k)) return "OTHER";
+    function categorizeKey(keyLower){
+      if (/^utm_/i.test(keyLower)) return "UTM";
+      if (/(^|_)(gclid|dclid|gbraid|wbraid|msclkid|fbclid|ttclid|twclid|igshid)$/i.test(keyLower)) return "CLICK_ID";
+      if (/^(mc_cid|mc_eid|mkt_tok|oly_anon_id|oly_enc_id|vero_id|vero_conv)$/i.test(keyLower)) return "EMAIL";
+      if (/^(abtest|variant|experiment|bucket)$/i.test(keyLower)) return "EXPERIMENT";
+      if (/^(ref|tag|aff|aff_id|affid|partner|partner_id|ascsubtag|clickref|irclickid)$/i.test(keyLower)) return "AFFILIATE";
+      if (/^(source|spm|scm|cmpid|campaignid|ad_id|adgroupid|creative|keyword|matchtype|device|gclsrc|ref_src|ref_url)$/i.test(keyLower)) return "OTHER";
       return "UNKNOWN";
     }
 
@@ -499,26 +630,37 @@
       const url = new URL(rawUrl);
       const removed = [];
       const kept = [];
+      const keptByWhitelist = new Set();
+      const removedByBlacklist = new Set();
 
       const entries = Array.from(url.searchParams.entries());
       url.search = "";
 
       for (const [k,v] of entries){
-        const key = String(k);
-        if (rules.whitelist.has(key)) {
-          kept.push({key, category: categorizeKey(key)});
+        const keyLower = String(k).toLowerCase();
+
+        // Whitelist always wins
+        if (rules.whitelist.has(keyLower)) {
+          kept.push({key: k, category: categorizeKey(keyLower), reason: "whitelist"});
+          keptByWhitelist.add(keyLower);
           url.searchParams.append(k, v);
           continue;
         }
-        if (rules.blacklist.has(key) || isStdTrackingParam(key)) {
-          removed.push({key, category: categorizeKey(key)});
+
+        const isBlack = rules.blacklist.has(keyLower);
+        const isStd = isStdTrackingParam(keyLower);
+
+        if (isBlack || isStd) {
+          removed.push({key: k, category: categorizeKey(keyLower), reason: isBlack ? "blacklist" : "standard"});
+          if (isBlack) removedByBlacklist.add(keyLower);
           continue;
         }
-        kept.push({key, category: categorizeKey(key)});
+
+        kept.push({key: k, category: categorizeKey(keyLower), reason: "kept"});
         url.searchParams.append(k, v);
       }
 
-      return { cleaned: url.toString(), removed, kept };
+      return { cleaned: url.toString(), removed, kept, keptByWhitelist, removedByBlacklist };
     }
 
     async function copyToClipboard(text){
@@ -528,7 +670,6 @@
           return true;
         }
       }catch(e){}
-      // fallback
       try{
         ui.output.focus();
         ui.output.select();
@@ -544,7 +685,7 @@
       const keys = new Set();
       for (const r of allRemoved){
         cats[r.category] = (cats[r.category] || 0) + 1;
-        keys.add(r.key);
+        keys.add(String(r.key).toLowerCase());
       }
       const catsSorted = Object.entries(cats)
         .sort((a,b)=>b[1]-a[1])
@@ -557,32 +698,36 @@
     }
 
     function cleanList(){
-      const rules = loadRules(); // ensures UI is in sync
+      const rules = loadRules();
       const lines = String(ui.input.value || "").split(/\r?\n/);
 
       const out = [];
       let total = 0, ok = 0, bad = 0;
       let removedCount = 0;
+
       const removedAll = [];
-      const removedCatsSet = new Set();
+      const keptWhitelistAll = new Set();
+      const removedBlacklistAll = new Set();
 
       for (const line of lines){
         const raw = normalizeUrl(line);
         if (!raw) continue;
         total++;
+
         if (!/^https?:\/\//i.test(raw)){
           bad++;
           continue;
         }
+
         try{
           const res = cleanOneUrl(raw, rules);
           out.push(res.cleaned);
           ok++;
+
           removedCount += res.removed.length;
-          for (const r of res.removed){
-            removedAll.push(r);
-            removedCatsSet.add(r.category);
-          }
+          res.removed.forEach(r => removedAll.push(r));
+          res.keptByWhitelist.forEach(k => keptWhitelistAll.add(k));
+          res.removedByBlacklist.forEach(k => removedBlacklistAll.add(k));
         }catch(e){
           bad++;
         }
@@ -607,17 +752,13 @@
       setMsg(ui.status, "Liste bereinigt.", "ok");
       ui.stats.textContent = `${ok}/${total} Links bereinigt · ${removedCount} Parameter entfernt${bad ? ` · ${bad} ungültig` : ""}`;
 
-      // Show receipt summary only if something was removed
-      if (removedCount > 0){
-        const summary = buildReceiptSummary(removedAll);
-        ui.receiptDetails.hidden = false;
-        ui.removedCats.textContent = summary.catsLine;
-        ui.removedKeys.textContent = summary.keysLine || "—";
-      } else {
-        ui.receiptDetails.hidden = false;
-        ui.removedCats.textContent = "—";
-        ui.removedKeys.textContent = "—";
-      }
+      // Receipt summary
+      const summary = buildReceiptSummary(removedAll);
+      ui.receiptDetails.hidden = false;
+      ui.removedCats.textContent = summary.catsLine;
+      ui.removedKeys.textContent = summary.keysLine || "—";
+      ui.keptWhitelist.textContent = keptWhitelistAll.size ? (Array.from(keptWhitelistAll).slice(0, 24).join(", ") + (keptWhitelistAll.size > 24 ? " …" : "")) : "—";
+      ui.removedBlacklist.textContent = removedBlacklistAll.size ? (Array.from(removedBlacklistAll).slice(0, 24).join(", ") + (removedBlacklistAll.size > 24 ? " …" : "")) : "—";
     }
 
     function clearInput(){
@@ -650,7 +791,6 @@
       window.open(first, "_blank", "noopener");
     }
 
-    // --- events ---
     ui.clean.addEventListener("click", cleanList);
     ui.clearInput.addEventListener("click", clearInput);
     ui.clearOutput.addEventListener("click", clearOutput);
@@ -660,7 +800,7 @@
     ui.saveRules.addEventListener("click", saveRules);
     ui.resetRules.addEventListener("click", resetRules);
 
-    // Autosave (leicht, ohne Server)
+    // Autosave (lokal)
     let saveTimer = null;
     function scheduleAutoSave(){
       clearTimeout(saveTimer);
@@ -676,7 +816,7 @@
     // init
     loadRules();
 
-    // If coming from app.html with ?url=..., prefill input and clean
+    // If coming from app.html with ?url=..., prefill as single line and clean once
     (function initFromQuery(){
       const qs = new URLSearchParams(location.search);
       const u = qs.get("url");
