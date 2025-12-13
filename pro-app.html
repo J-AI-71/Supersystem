@@ -34,7 +34,6 @@
       --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1060px;
     }
-
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb;
@@ -204,7 +203,7 @@
     }
     .labelHint{ color: var(--muted2); font-weight: 500; }
 
-    textarea, input[type="text"], select{
+    textarea, input[type="text"]{
       width: 100%;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.10);
@@ -214,7 +213,7 @@
       font-size: 15px;
       outline: none;
     }
-    textarea:focus, input[type="text"]:focus, select:focus{
+    textarea:focus, input[type="text"]:focus{
       box-shadow: var(--focus);
       border-color: rgba(47,227,183,.35);
     }
@@ -289,12 +288,7 @@
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
     .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
 
-    .kv{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-      margin-top: 8px;
-    }
+    .kv{ display:grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px; }
     .kv .line{ color: var(--muted); line-height: 1.5; }
     .kv .line strong{ color: var(--text); font-weight: 700; }
     .scrollKeys{
@@ -373,25 +367,25 @@
     </div>
 
     <section class="card">
-      <div class="badge"><span class="dot" aria-hidden="true"></span> SafeShare Pro App · praxisgerecht zum Experimentieren</div>
+      <div class="badge"><span class="dot" aria-hidden="true"></span> SafeShare Pro App · praxisgerecht</div>
 
-      <h1>Mehrere Links in einem Rutsch bereinigen</h1>
+      <h1>Mehrere Links bereinigen (egal wie eingefügt)</h1>
       <p>
-        Füge Links ein (1 pro Zeile), wähle einen Modus, passe Regeln an und kopiere das Ergebnis.
-        „Was wurde geändert?“ listet nachvollziehbar auf, was entfernt/behalten wurde – inkl. Whitelist/Affiliate.
+        Du kannst Links als Liste, Textblock, Nummerierung oder aus Mails einfügen – SafeShare Pro extrahiert alle URLs.
+        Danach siehst du vollständig, was entfernt oder behalten wurde (Standard/Blacklist/Affiliate/Whitelist).
       </p>
 
       <div class="cols">
         <div>
           <label for="inputList">
-            <span>Eingabe – Links (1 pro Zeile)</span>
-            <span class="labelHint">z. B. aus Newsletter, Social, Dokumenten</span>
+            <span>Eingabe</span>
+            <span class="labelHint">Text oder Links einfügen</span>
           </label>
-          <textarea id="inputList" class="big" placeholder="https://example.com/?utm_source=newsletter&#10;https://www.beispiel.de/artikel?fbclid=ABC123&utm_medium=social" autocapitalize="off" autocomplete="off" spellcheck="false"></textarea>
+          <textarea id="inputList" class="big" placeholder="1) https://example.com/?utm_source=newsletter&fbclid=EXAMPLE&#10;2) https://www.amazon.de/dp/B000000000?tag=dein-tag-21&ref=abc&utm_source=newsletter" autocapitalize="off" autocomplete="off" spellcheck="false"></textarea>
 
           <div class="row">
             <button class="btn" id="pasteBtn" type="button">Aus Zwischenablage</button>
-            <button class="btn primary" id="cleanBtn" type="button">Liste bereinigen</button>
+            <button class="btn primary" id="cleanBtn" type="button">Bereinigen</button>
             <button class="btn" id="clearInputBtn" type="button">Eingabe leeren</button>
             <button class="btn ghost" id="clearOutputBtn" type="button">Ergebnis leeren</button>
           </div>
@@ -400,32 +394,36 @@
 
           <div class="sep"></div>
 
-          <label for="preset">
-            <span>Modus (Preset)</span>
-            <span class="labelHint">ändert Standardverhalten für Affiliate</span>
+          <label>
+            <span>Modus</span>
+            <span class="labelHint">2 Klicks – fertig</span>
           </label>
-          <select id="preset">
-            <option value="private">Privat (empfohlen) – Affiliate entfernen</option>
-            <option value="publisher">Publisher unterstützen – Affiliate behalten</option>
-            <option value="team">Team (Policy) – frei konfigurierbar</option>
-          </select>
 
-          <div class="row" style="margin-top:10px;">
-            <label style="margin:0; width:auto; display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;">
-              <input type="checkbox" id="removeAffiliate" checked />
-              Affiliate entfernen (tag/ref/aff_…)
-            </label>
+          <div class="row" style="margin-top:6px;">
+            <button class="btn" id="modePrivateBtn" type="button">Privat</button>
+            <button class="btn" id="modePublisherBtn" type="button">Publisher</button>
           </div>
 
-          <div class="small" style="margin-top:8px;">
-            Hinweis: Whitelist hat immer Vorrang. Groß/Klein ist egal (Parameter werden case-insensitiv verglichen).
-          </div>
+          <div class="small" id="modeHelp" style="margin-top:8px;"></div>
+
+          <details style="margin-top:10px;">
+            <summary>Erweitert</summary>
+            <div class="small" style="margin-top:10px;">
+              <label style="margin:0; display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;">
+                <input type="checkbox" id="removeAffiliate" checked />
+                Affiliate entfernen (tag/ref/aff_…)
+              </label>
+              <div class="small" style="margin-top:8px;">
+                Whitelist hat immer Vorrang. Groß/Klein ist egal.
+              </div>
+            </div>
+          </details>
         </div>
 
         <div>
           <label for="outputList">
             <span>Ausgabe – bereinigte Links</span>
-            <span class="labelHint">je Zeile ein bereinigter Link</span>
+            <span class="labelHint">je Zeile ein Link</span>
           </label>
           <textarea id="outputList" class="big" placeholder="Die bereinigte Liste erscheint hier." readonly></textarea>
 
@@ -446,7 +444,7 @@
               <div class="scrollKeys mono" id="removedBlacklist">—</div>
 
               <div class="line"><strong>Entfernt (Affiliate-Regel):</strong></div>
-              <div class="scrollKeys mono" id="removedAffiliate">—</div>
+              <div class="scrollKeys mono" id="removedAffiliateBox">—</div>
 
               <div class="line"><strong>Behalten (Whitelist):</strong></div>
               <div class="scrollKeys mono" id="keptWhitelist">—</div>
@@ -455,14 +453,14 @@
               <div class="scrollKeys mono" id="keptOther">—</div>
 
               <div class="small" style="margin-top:6px;">
-                Keys sind dedupliziert (nur Parameternamen, ohne Werte). Bei vielen Links wird die Liste lang – deshalb mit Scrollbereich.
+                Keys sind dedupliziert (nur Parameternamen, ohne Werte).
               </div>
             </div>
           </details>
 
           <div class="hintBox">
-            Praxis: Wenn ein Link „kaputt“ wird, whiteliste den benötigten Parameter (z. B. <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">state</span>).
-            Wenn du Publisher fair unterstützen willst: Modus „Publisher“ oder Affiliate-Regel aus.
+            Wenn ein Link „kaputt“ wird: benötigten Parameter whitelisten (z. B. <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">state</span>).
+            Publisher unterstützen: Modus „Publisher“ (Affiliate bleibt).
           </div>
         </div>
       </div>
@@ -471,8 +469,8 @@
     <section class="card">
       <h2>Eigene Regeln (Whitelist/Blacklist)</h2>
       <p>
-        SafeShare Pro entfernt standardmäßig typische Tracking-Parameter (UTM, Click-IDs, Newsletter-IDs usw.).
-        Zusätzlich kannst du Regeln setzen:
+        Standard entfernt UTM/Click-IDs/Newsletter-IDs usw. – zusätzlich kannst du eigene Regeln setzen.
+        Eintrag je Zeile, nur Parameternamen (ohne „?“/„=“). Regeln werden lokal gespeichert.
       </p>
 
       <div class="cols">
@@ -487,7 +485,7 @@
         <div>
           <label for="whitelist">
             <span>Whitelist</span>
-            <span class="labelHint">immer behalten (hat Vorrang)</span>
+            <span class="labelHint">immer behalten (Vorrang)</span>
           </label>
           <textarea id="whitelist" class="big" placeholder="z. B.&#10;tag&#10;ref&#10;t&#10;token"></textarea>
         </div>
@@ -503,9 +501,9 @@
       <div class="status" id="rulesMsg"></div>
 
       <details style="margin-top:10px;">
-        <summary>Beispiele zum Testen (copy/paste)</summary>
+        <summary>Test-Beispiele (copy/paste)</summary>
         <div class="small" style="margin-top:10px;">
-          <div class="mono scrollKeys" id="examplesBox" style="max-height:260px;">
+          <div class="mono scrollKeys" style="max-height:260px;">
 https://example.com/artikel?utm_source=newsletter&utm_medium=email&utm_campaign=dezember&fbclid=EXAMPLE
 https://shop.example.com/p/123?gclid=EXAMPLE&utm_source=google&utm_medium=cpc&utm_campaign=brand
 https://www.amazon.de/dp/B000000000?tag=dein-tag-21&ref=abc&utm_source=newsletter
@@ -549,13 +547,16 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       status: $("statusMsg"),
       stats: $("statsLine"),
 
-      preset: $("preset"),
+      modePrivateBtn: $("modePrivateBtn"),
+      modePublisherBtn: $("modePublisherBtn"),
+      modeHelp: $("modeHelp"),
+
       removeAffiliate: $("removeAffiliate"),
 
       receiptDetails: $("receiptDetails"),
       removedStd: $("removedStd"),
       removedBlacklist: $("removedBlacklist"),
-      removedAffiliate: $("removedAffiliate"),
+      removedAffiliateBox: $("removedAffiliateBox"),
       keptWhitelist: $("keptWhitelist"),
       keptOther: $("keptOther"),
 
@@ -568,24 +569,20 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       rulesMsg: $("rulesMsg"),
     };
 
-    const LS_BLACK = "ss_pro_blacklist_v3";
-    const LS_WHITE = "ss_pro_whitelist_v3";
-    const LS_PRESET = "ss_pro_preset_v1";
-    const LS_AFF = "ss_pro_remove_affiliate_v1";
+    const LS_BLACK = "ss_pro_blacklist_v4";
+    const LS_WHITE = "ss_pro_whitelist_v4";
+    const LS_MODE  = "ss_pro_mode_v1"; // private|publisher
+    const LS_AFF   = "ss_pro_remove_affiliate_v2";
 
-    // Standard Tracking Rules (conservative, but useful)
+    // Standard Tracking Rules (conservative)
     const STD_REMOVE_EXACT = new Set([
-      // click ids / ads
       "gclid","dclid","gbraid","wbraid","msclkid","fbclid","ttclid","twclid","igshid","yclid",
-      // email/newsletter
       "mc_cid","mc_eid","mkt_tok","oly_anon_id","oly_enc_id","vero_id","vero_conv",
-      // misc
       "gclsrc","ref_src","ref_url","fb_action_ids","fb_action_types"
     ]);
-
     const STD_REMOVE_REGEX = [
-      /^utm_/i,                         // utm_*
-      /(^|_)(clickid|clkid)$/i,         // generic click ids
+      /^utm_/i,
+      /(^|_)(clickid|clkid)$/i,
       /^(ad|ads|adid|ad_id|adgroup|adgroupid|campaign|campaignid|cmp|cmpid|creative|keyword|matchtype|device)$/i,
       /^(abtest|variant|experiment|bucket)$/i,
       /^(scm|spm|srsltid)$/i
@@ -596,11 +593,23 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       el.className = "status" + (kind ? " " + kind : "");
     }
 
-    function normalizeUrl(raw){
-      let s = String(raw || "").trim();
-      if (!s) return "";
-      if (!/^https?:\/\//i.test(s) && /^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(s)) s = "https://" + s;
-      return s;
+    // Extract ALL URLs from any text block (lists, bullets, paragraphs)
+    function extractUrlsFromText(text){
+      const t = String(text || "");
+
+      const httpMatches = t.match(/https?:\/\/[^\s<>"')]+/gi) || [];
+
+      let domainMatches = [];
+      if (httpMatches.length === 0){
+        domainMatches = t.match(/\b[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s<>"')]+)?/gi) || [];
+        domainMatches = domainMatches.map(x => "https://" + x);
+      }
+
+      const cleaned = [...httpMatches, ...domainMatches]
+        .map(u => u.replace(/[),.;]+$/g, "").trim())
+        .filter(Boolean);
+
+      return Array.from(new Set(cleaned));
     }
 
     // Case-insensitive rules: store lowercase
@@ -620,10 +629,7 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       const w = localStorage.getItem(LS_WHITE) || "";
       ui.blacklist.value = b;
       ui.whitelist.value = w;
-      return {
-        blacklist: parseRulesTextarea(b),
-        whitelist: parseRulesTextarea(w),
-      };
+      return { blacklist: parseRulesTextarea(b), whitelist: parseRulesTextarea(w) };
     }
 
     function saveRules(){
@@ -642,18 +648,18 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
 
     function exportRules(){
       const obj = {
-        preset: ui.preset.value,
+        mode: localStorage.getItem(LS_MODE) || "private",
         removeAffiliate: !!ui.removeAffiliate.checked,
         blacklist: ui.blacklist.value || "",
         whitelist: ui.whitelist.value || ""
       };
       const text = JSON.stringify(obj, null, 2);
-      navigator.clipboard?.writeText(text).then(
-        () => setMsg(ui.rulesMsg, "Regeln exportiert (in Zwischenablage kopiert).", "ok"),
-        () => setMsg(ui.rulesMsg, "Export nicht möglich – kopiere manuell aus dem Dialog.", "bad")
-      );
-      // fallback dialog (always)
+      // dialog fallback
       prompt("Regeln (JSON) – kopieren:", text);
+      navigator.clipboard?.writeText(text).then(
+        () => setMsg(ui.rulesMsg, "Regeln exportiert (in Zwischenablage).", "ok"),
+        () => setMsg(ui.rulesMsg, "Export: bitte aus dem Dialog kopieren.", "bad")
+      );
     }
 
     function importRules(){
@@ -661,11 +667,11 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       if (!raw) return;
       try{
         const obj = JSON.parse(raw);
-        if (obj.preset) ui.preset.value = obj.preset;
+        if (obj.mode) setMode(obj.mode);
         if (typeof obj.removeAffiliate === "boolean") ui.removeAffiliate.checked = obj.removeAffiliate;
         if (typeof obj.blacklist === "string") ui.blacklist.value = obj.blacklist;
         if (typeof obj.whitelist === "string") ui.whitelist.value = obj.whitelist;
-        persistMode();
+        localStorage.setItem(LS_AFF, ui.removeAffiliate.checked ? "1" : "0");
         saveRules();
       }catch(e){
         setMsg(ui.rulesMsg, "Ungültiges JSON.", "bad");
@@ -679,12 +685,12 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
     }
 
     function isAffiliateParam(keyLower){
-      // bewusst breit, damit Nutzer in Pro experimentieren können
       return /^(tag|ref|ref_|aff|aff_id|affid|affiliate|partner|partner_id|ascsubtag|clickref|irclickid|utm_referrer)$/i.test(keyLower);
     }
 
     function cleanOneUrl(rawUrl, rules, removeAffiliate){
       const url = new URL(rawUrl);
+
       const removedStd = new Set();
       const removedBlack = new Set();
       const removedAff = new Set();
@@ -697,47 +703,126 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       for (const [k,v] of entries){
         const keyLower = String(k).toLowerCase();
 
-        // 1) Whitelist always wins
         if (rules.whitelist.has(keyLower)){
           keptWhite.add(keyLower);
           url.searchParams.append(k, v);
           continue;
         }
 
-        // 2) Affiliate rule (optional)
         if (removeAffiliate && isAffiliateParam(keyLower)){
           removedAff.add(keyLower);
           continue;
         }
 
-        // 3) Blacklist
         if (rules.blacklist.has(keyLower)){
           removedBlack.add(keyLower);
           continue;
         }
 
-        // 4) Standard tracking
         if (isStdTrackingParam(keyLower)){
           removedStd.add(keyLower);
           continue;
         }
 
-        // 5) Keep
         keptOther.add(keyLower);
         url.searchParams.append(k, v);
       }
 
-      return {
-        cleaned: url.toString(),
-        removedStd, removedBlack, removedAff,
-        keptWhite, keptOther
-      };
+      return { cleaned: url.toString(), removedStd, removedBlack, removedAff, keptWhite, keptOther };
     }
 
     function formatSet(s){
       const arr = Array.from(s);
       arr.sort();
       return arr.length ? arr.join(", ") : "—";
+    }
+
+    function setMode(mode){
+      const m = (mode === "publisher") ? "publisher" : "private";
+      localStorage.setItem(LS_MODE, m);
+
+      // Mode defaults:
+      if (m === "private") ui.removeAffiliate.checked = true;
+      if (m === "publisher") ui.removeAffiliate.checked = false;
+
+      // UI highlight
+      ui.modePrivateBtn.classList.toggle("primary", m === "private");
+      ui.modePublisherBtn.classList.toggle("primary", m === "publisher");
+
+      ui.modeHelp.textContent =
+        m === "private"
+          ? "Privat: entfernt UTM/Click-IDs + Affiliate (Standard)."
+          : "Publisher: entfernt UTM/Click-IDs, behält Affiliate-Links (fair).";
+
+      // persist affiliate checkbox state as user-visible setting
+      localStorage.setItem(LS_AFF, ui.removeAffiliate.checked ? "1" : "0");
+    }
+
+    function loadMode(){
+      const m = localStorage.getItem(LS_MODE) || "private";
+      const a = localStorage.getItem(LS_AFF);
+      if (a === "1" || a === "0") ui.removeAffiliate.checked = (a === "1");
+      setMode(m); // also refreshes UI/help text (and sets defaults for checkbox)
+      // If user had explicit checkbox saved, restore it after defaults:
+      if (a === "1" || a === "0") {
+        ui.removeAffiliate.checked = (a === "1");
+        localStorage.setItem(LS_AFF, a);
+      }
+    }
+
+    function cleanList(){
+      const rules = loadRules();
+      const removeAffiliate = !!ui.removeAffiliate.checked;
+
+      const urls = extractUrlsFromText(ui.input.value);
+      const out = [];
+
+      let total = urls.length;
+      let ok = 0;
+      let removedCount = 0;
+
+      const removedStdAll = new Set();
+      const removedBlackAll = new Set();
+      const removedAffAll = new Set();
+      const keptWhiteAll = new Set();
+      const keptOtherAll = new Set();
+
+      for (const raw of urls){
+        try{
+          const res = cleanOneUrl(raw, rules, removeAffiliate);
+          out.push(res.cleaned);
+          ok++;
+
+          res.removedStd.forEach(k => removedStdAll.add(k));
+          res.removedBlack.forEach(k => removedBlackAll.add(k));
+          res.removedAff.forEach(k => removedAffAll.add(k));
+          res.keptWhite.forEach(k => keptWhiteAll.add(k));
+          res.keptOther.forEach(k => keptOtherAll.add(k));
+
+          removedCount += res.removedStd.size + res.removedBlack.size + res.removedAff.size;
+        }catch(e){
+          // skip invalid URL silently (already extracted)
+        }
+      }
+
+      ui.output.value = out.join("\n");
+
+      if (total === 0){
+        setMsg(ui.status, "Keine URLs gefunden. Füge Links ein (Text reicht).", "bad");
+        ui.stats.textContent = "";
+        ui.receiptDetails.hidden = true;
+        return;
+      }
+
+      setMsg(ui.status, "Bereinigt.", "ok");
+      ui.stats.textContent = `${ok}/${total} Links bereinigt · ${removedCount} Parameter entfernt`;
+
+      ui.receiptDetails.hidden = false;
+      ui.removedStd.textContent = formatSet(removedStdAll);
+      ui.removedBlacklist.textContent = formatSet(removedBlackAll);
+      ui.removedAffiliateBox.textContent = formatSet(removedAffAll);
+      ui.keptWhitelist.textContent = formatSet(keptWhiteAll);
+      ui.keptOther.textContent = formatSet(keptOtherAll);
     }
 
     async function pasteFromClipboard(){
@@ -751,10 +836,10 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
             setMsg(ui.status, "Zwischenablage ist leer.");
           }
         } else {
-          setMsg(ui.status, "Zwischenablage nicht verfügbar. Bitte manuell einfügen.");
+          setMsg(ui.status, "Zwischenablage nicht verfügbar.", "bad");
         }
       }catch(e){
-        setMsg(ui.status, "Zugriff auf Zwischenablage nicht erlaubt.", "bad");
+        setMsg(ui.status, "Zwischenablage-Zugriff nicht erlaubt.", "bad");
       }
     }
 
@@ -790,101 +875,6 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       window.open(first, "_blank", "noopener");
     }
 
-    function persistMode(){
-      localStorage.setItem(LS_PRESET, ui.preset.value);
-      localStorage.setItem(LS_AFF, ui.removeAffiliate.checked ? "1" : "0");
-    }
-
-    function applyPreset(p){
-      // Presets affect only affiliate toggle (Whitelist still wins)
-      if (p === "private") ui.removeAffiliate.checked = true;
-      if (p === "publisher") ui.removeAffiliate.checked = false;
-      // team: user decides (do not force)
-      persistMode();
-    }
-
-    function loadMode(){
-      const p = localStorage.getItem(LS_PRESET);
-      const a = localStorage.getItem(LS_AFF);
-      if (p) ui.preset.value = p;
-      if (a === "1" || a === "0") ui.removeAffiliate.checked = (a === "1");
-      // if no saved state: preset default implies affiliate on
-      if (!p && (a !== "1" && a !== "0")){
-        applyPreset(ui.preset.value);
-      }
-    }
-
-    function cleanList(){
-      const rules = loadRules(); // sync from storage/ui
-      const removeAffiliate = !!ui.removeAffiliate.checked;
-
-      const lines = String(ui.input.value || "").split(/\r?\n/);
-      const out = [];
-
-      let total = 0, ok = 0, bad = 0;
-      let removedCount = 0;
-
-      const removedStdAll = new Set();
-      const removedBlackAll = new Set();
-      const removedAffAll = new Set();
-      const keptWhiteAll = new Set();
-      const keptOtherAll = new Set();
-
-      for (const line of lines){
-        const raw = normalizeUrl(line);
-        if (!raw) continue;
-        total++;
-
-        if (!/^https?:\/\//i.test(raw)){
-          bad++;
-          continue;
-        }
-
-        try{
-          const res = cleanOneUrl(raw, rules, removeAffiliate);
-          out.push(res.cleaned);
-          ok++;
-
-          res.removedStd.forEach(k => removedStdAll.add(k));
-          res.removedBlack.forEach(k => removedBlackAll.add(k));
-          res.removedAff.forEach(k => removedAffAll.add(k));
-          res.keptWhite.forEach(k => keptWhiteAll.add(k));
-          res.keptOther.forEach(k => keptOtherAll.add(k));
-
-          removedCount += res.removedStd.size + res.removedBlack.size + res.removedAff.size;
-        }catch(e){
-          bad++;
-        }
-      }
-
-      ui.output.value = out.join("\n");
-
-      if (total === 0){
-        setMsg(ui.status, "Bitte Links einfügen (je Zeile ein Link).", "bad");
-        ui.stats.textContent = "";
-        ui.receiptDetails.hidden = true;
-        return;
-      }
-
-      if (ok === 0){
-        setMsg(ui.status, "Keine gültigen http/https-Links gefunden.", "bad");
-        ui.stats.textContent = "";
-        ui.receiptDetails.hidden = true;
-        return;
-      }
-
-      setMsg(ui.status, "Liste bereinigt.", "ok");
-      ui.stats.textContent =
-        `${ok}/${total} Links bereinigt · ${removedCount} Parameter entfernt` + (bad ? ` · ${bad} ungültig` : "");
-
-      ui.receiptDetails.hidden = false;
-      ui.removedStd.textContent = formatSet(removedStdAll);
-      ui.removedBlacklist.textContent = formatSet(removedBlackAll);
-      ui.removedAffiliate.textContent = formatSet(removedAffAll);
-      ui.keptWhitelist.textContent = formatSet(keptWhiteAll);
-      ui.keptOther.textContent = formatSet(keptOtherAll);
-    }
-
     function clearInput(){
       ui.input.value = "";
       setMsg(ui.status, "");
@@ -896,7 +886,7 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
       setMsg(ui.status, "");
     }
 
-    // Autosave rules (local only)
+    // autosave rules (local only)
     let saveTimer = null;
     function scheduleAutoSave(){
       clearTimeout(saveTimer);
@@ -915,8 +905,11 @@ https://app.example.io/open?token=SIGNED_TOKEN_123&state=abc123&utm_source=newsl
     ui.copy.addEventListener("click", copyOutput);
     ui.openFirst.addEventListener("click", openFirst);
 
-    ui.preset.addEventListener("change", () => applyPreset(ui.preset.value));
-    ui.removeAffiliate.addEventListener("change", persistMode);
+    ui.modePrivateBtn.addEventListener("click", () => setMode("private"));
+    ui.modePublisherBtn.addEventListener("click", () => setMode("publisher"));
+    ui.removeAffiliate.addEventListener("change", () => {
+      localStorage.setItem(LS_AFF, ui.removeAffiliate.checked ? "1" : "0");
+    });
 
     ui.blacklist.addEventListener("input", scheduleAutoSave);
     ui.whitelist.addEventListener("input", scheduleAutoSave);
