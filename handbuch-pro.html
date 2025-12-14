@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>SafeShare Pro Handbuch – Policy & Audit</title>
+  <meta name="description" content="Handbuch für SafeShare Pro: Profile, Audit, Whitelist-Fix, Policies, Domain Overrides, Exporte (CSV/JSON) – lokal im Browser." />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <style>
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,95,95,.16);
+      --ok: rgba(47,227,183,.16);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+      --max: 980px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff; --card2:#f5f7ff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,95,95,.18);
+        --ok: rgba(47,227,183,.18);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 14px; padding: 10px 2px 12px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{
+      font-size: 16px; font-weight: 780; line-height:1.1;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      font-size: 12px; color: var(--muted2); margin-top:2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
+    }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 3.8vw, 34px);
+      line-height: 1.15;
+      letter-spacing: -0.2px;
+    }
+    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    code, .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .monoBox{
+      margin-top:10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .okBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .warnBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{
+      background: var(--mint2);
+      border-color: rgba(47,227,183,.35);
+    }
+    .btn.primary:hover{ background: var(--mint3); }
+    .toc a{
+      display:block;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin: 8px 0;
+    }
+    .toc a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Pro Handbuch · Policy & Audit</div>
+        </div>
+      </div>
+      <div class="small">local-first</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="app.html">App</a>
+        <a class="tab" href="pro-app.html">Pro</a>
+        <a class="tab active" href="handbuch-pro.html">Handbuch</a>
+        <a class="tab" href="hilfe.html">Hilfe</a>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1>Handbuch: SafeShare Pro</h1>
+      <p>
+        SafeShare Pro ist für Workflows mit vielen Links: Bulk → Audit → Export.
+        Der Fokus ist deterministisch (gleiches Ergebnis bei gleicher Policy) und nachvollziehbar (jede Änderung erklärbar).
+      </p>
+
+      <div class="okBox">
+        Kurzstart: Textblock einfügen → <strong>Bereinigen</strong> → Audit prüfen (OK/WARN/RISK) → Export CSV/JSON.
+      </div>
+
+      <div class="card toc" style="margin-top:14px;">
+        <h2>Inhalt</h2>
+        <a href="#profiles">1) Profile</a>
+        <a href="#audit">2) Audit: OK / WARN / RISK</a>
+        <a href="#whitelist-fix">3) Whitelist-Fix (Signatur/Token)</a>
+        <a href="#policy">4) Policy Editor: Whitelist & Blacklist</a>
+        <a href="#domain-overrides">5) Domain Overrides</a>
+        <a href="#unwrap">6) Redirect/Wrapper entpacken</a>
+        <a href="#allowlist-first">7) Allowlist-First (Strict)</a>
+        <a href="#exports">8) Exporte: Output.txt + Audit CSV/JSON + Policy JSON</a>
+        <a href="#faq">9) FAQ: Link kaputt?</a>
+      </div>
+    </section>
+
+    <section class="card" id="profiles">
+      <h2>1) Profile</h2>
+      <p>Profile setzen Defaults. Du kannst danach alles manuell anpassen.</p>
+      <ul>
+        <li><strong>Journalismus/Redaktion:</strong> Tracking + Affiliate entfernen, Unwrap an, Guardrails strikt.</li>
+        <li><strong>Social/Creator:</strong> Tracking entfernen, Affiliate standardmäßig aus (Toggle), schnell & kanonisch.</li>
+        <li><strong>Publisher/Affiliate:</strong> Tracking entfernen, Affiliate bleibt (fair).</li>
+        <li><strong>Team/Compliance:</strong> audit-lastig, Unwrap an, optional „Allowlist-First“.</li>
+      </ul>
+      <div class="warnBox">
+        Profi-Praxis: Tracking (UTM/click-IDs) meist raus. Tokens/Signaturen niemals blind entfernen → Whitelist/Fix nutzen.
+      </div>
+    </section>
+
+    <section class="card" id="audit">
+      <h2>2) Audit: OK / WARN / RISK</h2>
+      <p>Das Audit zeigt pro Link, was passiert ist (Original → Clean, Parameter-Entscheidungen, Warnungen).</p>
+      <ul>
+        <li><strong>OK:</strong> keine riskanten Eingriffe erkannt.</li>
+        <li><strong>WARN:</strong> Hinweise (z. B. Wrapper nicht offline entpackbar).</li>
+        <li><strong>RISK:</strong> es wurden signatur-/token-ähnliche Keys entfernt (Link könnte brechen).</li>
+      </ul>
+      <div class="monoBox">
+Beispiele für RISK-Keys:
+token, sig, signature, hmac, expires, state, nonce, X-Amz-*
+      </div>
+    </section>
+
+    <section class="card" id="whitelist-fix">
+      <h2>3) Whitelist-Fix</h2>
+      <p>
+        Wenn SafeShare Pro <strong>RISK</strong> meldet, kannst du per <strong>Whitelist-Fix</strong> die betroffenen Keys automatisch
+        zur Whitelist hinzufügen und direkt neu bereinigen.
+      </p>
+      <ul>
+        <li>Nutze Fix, wenn ein Link nach dem Cleaning nicht mehr funktioniert.</li>
+        <li>Whitelist gewinnt immer: diese Keys werden künftig behalten.</li>
+      </ul>
+    </section>
+
+    <section class="card" id="policy">
+      <h2>4) Policy Editor</h2>
+      <p><strong>Whitelist</strong> (immer behalten) hat Vorrang vor allem. <strong>Blacklist</strong> entfernt zusätzlich.</p>
+      <h3>Whitelist (typisch)</h3>
+      <div class="monoBox">token
+sig
+signature
+state
+expires</div>
+
+      <h3>Blacklist (typisch)</h3>
+      <div class="monoBox">ref_src
+source
+spm</div>
+    </section>
+
+    <section class="card" id="domain-overrides">
+      <h2>5) Domain Overrides</h2>
+      <p>
+        Domain Overrides erlauben Regeln pro Host (z. B. Amazon, YouTube). Format ist JSON.
+      </p>
+      <div class="monoBox">{
+  "amazon.de": { "removeAffiliate": false, "whitelist": ["tag","ref"] },
+  "youtube.com": { "whitelist": ["v","t"] }
+}</div>
+      <div class="warnBox">
+        Tipp: Overrides klein halten. Nur das, was du wirklich brauchst.
+      </div>
+    </section>
+
+    <section class="card" id="unwrap">
+      <h2>6) Redirect/Wrapper entpacken</h2>
+      <p>
+        Manche Links sind Umleitungen (Newsletter/Plattformen). SafeShare Pro kann offline nur entpacken, wenn die Ziel-URL in Parametern steckt
+        (z. B. <code>url=</code>, <code>u=</code>, <code>redirect=</code>).
+      </p>
+      <div class="warnBox">
+        Hinweis: <code>t.co</code> lässt sich offline meistens nicht entpacken (Server-Redirect).
+      </div>
+    </section>
+
+    <section class="card" id="allowlist-first">
+      <h2>7) Allowlist-First (Strict)</h2>
+      <p>
+        Strict Mode behält nur Keys aus der Whitelist (plus ggf. Domain-Overrides) und entfernt alles andere.
+        Für Compliance/Standardisierung nützlich – aber kann Links schneller brechen.
+      </p>
+      <div class="warnBox">
+        Empfehlung: erst mit normalen Defaults starten. Strict erst, wenn du die nötigen Keys pro Domain kennst.
+      </div>
+    </section>
+
+    <section class="card" id="exports">
+      <h2>8) Exporte</h2>
+      <ul>
+        <li><strong>Liste .txt:</strong> nur bereinigte URLs.</li>
+        <li><strong>Audit JSON:</strong> volle Detaildaten pro Link.</li>
+        <li><strong>Audit CSV:</strong> für Sheets/Redaktion/Weitergabe.</li>
+        <li><strong>Policy JSON:</strong> versioniert, teilbar (Team/mehrere Geräte).</li>
+      </ul>
+    </section>
+
+    <section class="card" id="faq">
+      <h2>9) FAQ: Link kaputt?</h2>
+      <h3>Was ist der häufigste Grund?</h3>
+      <p>Tokens/Signaturen wurden entfernt (RISK). Lösung: <strong>Whitelist-Fix</strong> oder manuell whitelisten.</p>
+
+      <h3>Warum ist ein Link trotz Cleaning noch „lang“?</h3>
+      <p>Weil funktionale Parameter (Suche/Filter/IDs) absichtlich bleiben. SafeShare entfernt primär Tracking-Ballast.</p>
+
+      <h3>Warum entpackt Unwrap nicht jeden Wrapper?</h3>
+      <p>Offline kann SafeShare nur entpacken, wenn die Ziel-URL als Parameter vorliegt. Server-Redirects brauchen Online-Auflösung.</p>
+
+      <div class="row">
+        <a class="btn primary" href="pro-app.html#audit">Zur Pro-App · Audit</a>
+        <a class="btn" href="pro-app.html#policy">Zur Pro-App · Policy</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footLinks">
+        <a href="app.html">App</a>
+        <a href="pro-app.html">Pro</a>
+        <a href="handbuch-pro.html">Handbuch</a>
+        <a href="hilfe.html">Hilfe</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
