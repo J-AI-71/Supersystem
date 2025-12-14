@@ -1,307 +1,283 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Impressum – SafeShare</title>
+  <meta name="description" content="Impressum von SafeShare." />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
 
-  <title>Datenschutzerklärung | SafeShare</title>
-  <meta name="description" content="Datenschutzerklärung für die Nutzung von SafeShare – Informationen zu Art, Umfang und Zweck der Verarbeitung von Daten.">
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/datenschutz.html">
-
-  <!-- Favicon -->
-  <link rel="icon" href="logo.svg" type="image/svg+xml">
-
-  <!-- Search Console / Bing -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY">
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
+  <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Datenschutzerklärung | SafeShare">
-  <meta property="og:description" content="Informationen zum Datenschutz bei SafeShare: lokale Verarbeitung, Hosting und Rechte der betroffenen Personen.">
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/datenschutz.html">
-  <meta property="og:site_name" content="SafeShare">
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Datenschutzerklärung | SafeShare">
-  <meta name="twitter:description" content="Überblick über die Verarbeitung personenbezogener Daten bei Nutzung von SafeShare.">
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/logo.svg">
 
   <style>
     :root{
-      --bg:#050810;
-      --card:#0d111c;
-      --text:#f5f7ff;
-      --muted:#9aa4c6;
-      --border:#1b2335;
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --max: 1120px;
     }
-    *{box-sizing:border-box;}
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+      }
+    }
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
-      background:radial-gradient(circle at top,#101626 0,#050810 55%,#020308 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
-      -webkit-font-smoothing:antialiased;
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
-    a{color:#8be5ca;text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    header{
-      position:sticky;top:0;z-index:20;
-      backdrop-filter:blur(16px);
-      background:linear-gradient(to bottom,rgba(5,8,16,.95),rgba(5,8,16,.85),transparent);
-      border-bottom:1px solid rgba(36,46,78,.7);
-    }
-    .shell{max-width:880px;margin:0 auto;padding:0 18px;}
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:12px 0;font-size:13px;color:var(--muted);gap:10px;
-    }
-    .nav-left{display:flex;align-items:center;gap:8px;}
-    .logo-mark{
-      width:28px;height:28px;border-radius:999px;
-      border:1px solid rgba(61,213,176,.5);
-      background:radial-gradient(circle at 30% 0%,#f9eab0 0,#fbd2a7 14%,#ff9e9e 32%,#141827 100%);
-      display:flex;align-items:center;justify-content:center;overflow:hidden;
-    }
-    .logo-mark img{width:22px;height:22px;object-fit:contain;}
-    .logo-title{font-weight:600;font-size:15px;color:var(--text);}
-    .nav-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;}
-    .nav-links a{text-decoration:none;}
-    @media(max-width:720px){.nav-links{display:none;}}
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    main{padding:26px 0 40px;}
-    h1{font-size:clamp(24px,4vw,30px);margin:0 0 10px;}
-    h2{font-size:20px;margin:24px 0 10px;}
-    h3{font-size:16px;margin:18px 0 6px;}
-    p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 10px;}
-    ul,ol{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 12px;}
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+
+    .more{ position:relative; }
+    .more > summary{ list-style:none; }
+    .more > summary::-webkit-details-marker{ display:none; }
+    .menu{
+      position:absolute; right:0; top: calc(100% + 8px);
+      min-width: 220px; padding: 8px; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.92);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      display:flex; flex-direction:column; gap: 6px; z-index: 80;
+    }
+    @media (prefers-color-scheme: light){
+      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
+    }
+    .menu a{
+      padding: 10px 10px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted); font-size: 13px;
+    }
+    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
     .card{
-      background:rgba(9,14,30,.96);
-      border-radius:16px;
-      padding:18px 16px 16px;
-      border:1px solid var(--border);
-      margin-bottom:18px;
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
     }
-    .hint{
-      font-size:12px;color:var(--muted);
-      border-left:2px solid rgba(61,213,176,.7);
-      padding-left:10px;margin:8px 0 12px;
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 3.8vw, 40px);
+      line-height: 1.12;
+      letter-spacing: -0.2px;
+    }
+    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .warnBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
     }
 
-    footer{
-      border-top:1px solid rgba(36,46,78,.7);
-      padding:14px 0 22px;font-size:11px;
-      color:var(--muted);margin-top:10px;
+    footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
+    .footLinks{
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
     }
-    .footer-row{
-      max-width:880px;margin:0 auto;padding:0 18px;
-      display:flex;justify-content:space-between;
-      gap:10px;flex-wrap:wrap;
+    .footLinks a{
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
     }
-    .footer-links{display:flex;flex-wrap:wrap;gap:10px;}
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
   </style>
 </head>
+
 <body>
-<header>
-  <div class="shell">
-    <div class="nav">
-      <div class="nav-left">
-        <div class="logo-mark"><img src="logo.svg" alt="SafeShare Logo"></div>
-        <div class="logo-title">SafeShare</div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub" id="pageSub">Impressum</div>
+        </div>
       </div>
-      <nav class="nav-links">
+      <div class="small" id="pageTag">§ 5 TMG</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+        <details class="more" id="navMore">
+          <summary class="tab" data-page="more">Mehr ▾</summary>
+          <div class="menu" role="menu" aria-label="Mehr">
+            <a href="index.html" data-page="index.html">Start</a>
+            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="education.html" data-page="education.html">Schule</a>
+            <a href="press.html" data-page="press.html">Presse</a>
+            <a href="status.html" data-page="status.html">Status</a>
+            <a href="impressum.html" data-page="impressum.html">Impressum</a>
+            <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1>Impressum</h1>
+      <p>Angaben gemäß § 5 TMG.</p>
+
+      <h2>Anbieter</h2>
+      <div class="monoBox">
+Name: BITTE EINTRAGEN (z.B. Jana …)
+Anschrift: BITTE EINTRAGEN (Straße, PLZ, Ort, Land)
+      </div>
+
+      <h2>Kontakt</h2>
+      <div class="monoBox">
+E-Mail: BITTE EINTRAGEN
+Telefon (optional): BITTE EINTRAGEN
+      </div>
+
+      <h2>Unternehmensangaben (falls vorhanden)</h2>
+      <div class="monoBox">
+USt-IdNr. (optional): BITTE EINTRAGEN
+Handelsregister (optional): BITTE EINTRAGEN
+      </div>
+
+      <h2>Verantwortlich für den Inhalt</h2>
+      <p>(Falls journalistisch-redaktionelle Inhalte nach § 18 MStV veröffentlicht werden.)</p>
+      <div class="monoBox">
+BITTE EINTRAGEN (Name + Anschrift)
+      </div>
+
+      <div class="warnBox">
+        Hinweis: Impressum-Pflichten hängen von deiner konkreten Situation ab (Unternehmen/Privat, Inhalte, Geschäftsmodell).
+        Trage hier nur das ein, was du rechtlich benötigtst – und konsistent mit Payhip/Business-Auftritt.
+      </div>
+    </section>
+
+    <footer>
+      <div class="footLinks">
         <a href="index.html">Startseite</a>
         <a href="app.html">App</a>
-        <a href="utm-parameter-entfernen.html">UTM-Guide</a>
-        <a href="tracking-parameter-entfernen.html">Tracking-Parameter</a>
-        <a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Vergleich</a>
-        <a href="help.html">Hilfe</a>
         <a href="pro.html">Pro</a>
-      </nav>
-    </div>
+        <a href="help.html">Hilfe</a>
+        <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="utm-parameter-entfernen.html">UTM</a>
+        <a href="tracking-parameter.html">Tracking</a>
+        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="education.html">Schule</a>
+        <a href="press.html">Presse</a>
+        <a href="status.html">Status</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </footer>
   </div>
-</header>
 
-<main>
-  <div class="shell">
-
-    <article class="card">
-      <h1>Datenschutzerklärung</h1>
-      <p class="hint">
-        Diese Datenschutzerklärung informiert dich darüber, welche Daten im
-        Zusammenhang mit SafeShare verarbeitet werden und welche Rechte du hast.
-        Sie erhebt keinen Anspruch auf Vollständigkeit und ersetzt keine
-        individuelle Rechtsberatung.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>1. Verantwortliche Stelle</h2>
-      <p>
-        Verantwortlich für die Datenverarbeitung im Zusammenhang mit SafeShare ist:
-      </p>
-      <p>
-        Jana Jergus / SafeShare<br>
-        Auf dem Emdgenberg<br>
-        61250 Usingen<br>
-        Germany
-      </p>
-      <p>
-        E-Mail: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>2. Grundsätzliche Hinweise</h2>
-      <p>
-        SafeShare ist darauf ausgerichtet, datensparsam zu arbeiten. Die Anwendung
-        soll dir helfen, Links aufzuräumen und Tracking-Parameter zu entfernen,
-        nicht dich als Person zu analysieren.
-      </p>
-      <p>
-        Es werden nur solche personenbezogenen Daten verarbeitet, die für Betrieb,
-        Sicherheit und ggf. Abwicklung von Käufen (SafeShare Pro) erforderlich sind.
-        Es werden keine umfassenden Nutzungsprofile erstellt und keine Daten zu
-        Marketingzwecken an Dritte verkauft.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>3. Protokolldaten und Hosting</h2>
-      <p>
-        SafeShare wird (zum Zeitpunkt dieser Fassung) technisch über GitHub Pages
-        bereitgestellt. Beim Aufruf der Seiten können durch den Hosting-Anbieter
-        technische Protokolldaten verarbeitet werden, z. B.:
-      </p>
-      <ul>
-        <li>IP-Adresse des anfragenden Geräts,</li>
-        <li>Datum und Uhrzeit des Abrufs,</li>
-        <li>aufgerufene Datei/URL,</li>
-        <li>übertragene Datenmenge,</li>
-        <li>Referrer-URL (sofern übertragen),</li>
-        <li>Informationen zu verwendeten Browsern/Endgeräten.</li>
-      </ul>
-      <p>
-        Diese Protokolldaten dienen typischerweise zur Sicherstellung des Betriebs,
-        zur Fehleranalyse sowie zum Schutz vor Angriffen. Die Verarbeitung erfolgt
-        auf Grundlage berechtigter Interessen im Sinne von Art. 6 Abs. 1 lit. f DSGVO.
-      </p>
-      <p>
-        Weitere Informationen findest du in den Datenschutzhinweisen des jeweiligen
-        Hosting-Anbieters (z. B. GitHub).
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>4. Einsatz von SafeShare (lokale Verarbeitung von Links)</h2>
-      <p>
-        Die zentrale Funktion von SafeShare besteht darin, von dir eingegebene
-        Links technisch zu verarbeiten (z. B. Entfernen typischer Tracking-Parameter,
-        Entpacken bestimmter Weiterleitungen) und dir eine bereinigte Variante des
-        Links anzuzeigen.
-      </p>
-      <p>
-        Die Verarbeitung findet im Browser statt. SafeShare ist nicht darauf
-        ausgelegt, umfassende Profile über dein Nutzungsverhalten zu erstellen.
-      </p>
-      <p>
-        Bitte beachte: Wenn du Links eingibst, können diese selbst personenbezogene
-        Daten enthalten (z. B. IDs, Tokens, E-Mail-Adressen in der URL). Gehe
-        entsprechend sorgfältig damit um und verzichte darauf, hochsensible Links
-        auf fremden Geräten zu verarbeiten.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>5. SafeShare Pro, Käufe und Zahlungsabwicklung</h2>
-      <p>
-        SafeShare Pro (z. B. Pro Person, Pro Team) kann über externe Anbieter
-        wie Payhip erworben werden. In diesem Rahmen werden personenbezogene
-        Daten (z. B. Name, E-Mail-Adresse, Zahlungsinformationen) verarbeitet,
-        um den Kauf abzuwickeln.
-      </p>
-      <p>
-        Die eigentliche Zahlungsabwicklung erfolgt über die Systeme der jeweiligen
-        Zahlungsdienstleister (z. B. Payhip, Payment-Provider). Für diese gelten
-        die Datenschutzbestimmungen der jeweiligen Anbieter. Bitte lies diese
-        Dokumente direkt bei den Anbieter:innen.
-      </p>
-      <p>
-        Im Rahmen der Kaufabwicklung können Bestelldaten gespeichert werden, um
-        Nachweise zu erfüllen (z. B. steuerliche Aufbewahrungspflichten) und dir
-        bei Fragen helfen zu können.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>6. Kommunikation per E-Mail</h2>
-      <p>
-        Wenn du per E-Mail Kontakt aufnimmst, werden die von dir übermittelten
-        Angaben (z. B. E-Mail-Adresse, Inhalt, Name) verarbeitet, um deine
-        Anfrage zu bearbeiten.
-      </p>
-      <p>
-        Die Rechtsgrundlage ist in der Regel Art. 6 Abs. 1 lit. b DSGVO
-        (Vertrag/Vorvertrag) oder lit. f DSGVO (berechtigtes Interesse an
-        Kommunikation). E-Mails werden so lange gespeichert, wie es für die
-        Bearbeitung und etwaige Rückfragen erforderlich ist oder gesetzliche
-        Aufbewahrungspflichten bestehen.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>7. Rechte der betroffenen Personen</h2>
-      <p>
-        Als betroffene Person hast du nach der DSGVO insbesondere folgende Rechte:
-      </p>
-      <ul>
-        <li>Recht auf Auskunft über die verarbeiteten personenbezogenen Daten,</li>
-        <li>Recht auf Berichtigung unrichtiger oder unvollständiger Daten,</li>
-        <li>Recht auf Löschung („Recht auf Vergessenwerden“),</li>
-        <li>Recht auf Einschränkung der Verarbeitung,</li>
-        <li>Recht auf Widerspruch gegen bestimmte Verarbeitungen,</li>
-        <li>Recht auf Datenübertragbarkeit, sofern anwendbar,</li>
-        <li>Recht auf Beschwerde bei einer zuständigen Aufsichtsbehörde.</li>
-      </ul>
-      <p>
-        Um diese Rechte geltend zu machen, kannst du dich an die oben genannte
-        Kontaktadresse wenden.
-      </p>
-    </article>
-
-    <article class="card">
-      <h2>8. Änderungen dieser Datenschutzerklärung</h2>
-      <p>
-        Diese Datenschutzerklärung kann in Zukunft angepasst werden, wenn sich
-        SafeShare weiterentwickelt oder rechtliche Rahmenbedingungen sich ändern.
-      </p>
-      <p>
-        Die jeweils aktuelle Fassung ist auf dieser Seite abrufbar. Eine weitere
-        Nutzung von SafeShare nach einer Änderung kann als Zustimmung zur neuen
-        Fassung gewertet werden, soweit rechtlich zulässig.
-      </p>
-    </article>
-
-  </div>
-</main>
-
-<footer>
-  <div class="footer-row">
-    <div>© SafeShare – Jana Jergus</div>
-    <div class="footer-links">
-      <a href="index.html">Startseite</a>
-      <a href="app.html">App</a>
-      <a href="pro.html">Pro</a>
-      <a href="help.html">Hilfe</a>
-      <a href="impressum.html">Impressum</a>
-      <a href="terms.html">Terms</a>
-    </div>
-  </div>
-</footer>
+  <script>
+    (function () {
+      const path = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+      const navMore = document.getElementById('navMore');
+      document.querySelectorAll('.menu a').forEach(a => {
+        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
+      });
+    })();
+  </script>
 </body>
 </html>
