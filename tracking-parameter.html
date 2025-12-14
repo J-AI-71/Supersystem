@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Tracking-Parameter – was sie sind und warum sie beim Teilen nerven (SafeShare)</title>
-  <meta name="description" content="Tracking-Parameter verständlich erklärt: UTM, Click-IDs, Affiliate-Parameter, Session/Functional. Warum entfernen? Wann behalten? Mit Praxis-Regeln und Start in SafeShare App/Pro." />
+  <title>Tracking-Parameter – erklärt & entfernen mit SafeShare</title>
+  <meta name="description" content="Tracking-Parameter: Was das ist (ohne Panik), Beispiele (gclid, fbclid, msclkid, utm), und wie SafeShare Links local-first bereinigt." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -28,7 +28,6 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
-      --bad: rgba(255,95,95,.16);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -42,7 +41,6 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
-        --bad: rgba(255,95,95,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -72,6 +70,7 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -97,28 +96,6 @@
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
-    .more{ position:relative; }
-    .more > summary{ list-style:none; }
-    .more > summary::-webkit-details-marker{ display:none; }
-    .menu{
-      position:absolute; right:0; top: calc(100% + 8px);
-      min-width: 240px; padding: 8px; border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.92);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex; flex-direction:column; gap: 6px; z-index: 80;
-    }
-    @media (prefers-color-scheme: light){
-      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
-    }
-    .menu a{
-      padding: 10px 10px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted); font-size: 13px;
-    }
-    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
-
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -127,27 +104,11 @@
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 40px);
-      line-height: 1.12;
-      letter-spacing: -0.2px;
-    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
-    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
-    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
-    }
-    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -170,43 +131,42 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .okBox{
-      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
+    .note,.warn{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
     }
-    .warnBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
-    .badBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,95,95,.55);
-      background: var(--bad); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
-    .monoBox{
-      margin-top:10px;
+    .example{
+      margin-top: 10px;
       padding: 12px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
+      font-size: 13px;
+      line-height: 1.5;
       word-break: break-word;
     }
-    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
-    @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
-    .tile{
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 14px;
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+      white-space: nowrap;
     }
-    .tile h3{ margin: 0 0 8px; }
-    .tile p{ margin: 0 0 10px; }
+    .chip b{ color: var(--text); font-weight: 800; }
 
     footer{
       margin-top: 18px;
@@ -226,6 +186,56 @@
       color: var(--muted);
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
 
@@ -240,10 +250,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Tracking · Erklärung</div>
+          <div class="sub">Tracking-Parameter</div>
         </div>
       </div>
-      <div class="small" id="pageTag">Bewusstsein</div>
+      <div class="small">Guide</div>
     </header>
 
     <div class="tabsBar">
@@ -252,156 +262,123 @@
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-
-        <details class="more" id="navMore">
-          <summary class="tab" data-page="more">Mehr ▾</summary>
-          <div class="menu" role="menu" aria-label="Mehr">
-            <a href="index.html" data-page="index.html">Start</a>
-            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-            <a href="education.html" data-page="education.html">Schule</a>
-            <a href="press.html" data-page="press.html">Presse</a>
-            <a href="status.html" data-page="status.html">Status</a>
-            <a href="impressum.html" data-page="impressum.html">Impressum</a>
-            <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          </div>
-        </details>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
-    <section class="card" id="top">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Tracking-Parameter</div>
-      <h1>Was sind Tracking-Parameter – und warum sollten sie beim Teilen oft weg?</h1>
+    <section class="card">
+      <h1>Tracking-Parameter – was ist das?</h1>
       <p>
-        Viele Links enthalten Zusatz-Parameter, die nicht zum Inhalt gehören, sondern zur Messung/Zuordnung.
-        Manchmal sind sie sinnvoll (z. B. Kampagnenmessung, Affiliate), oft sind sie beim Weitergeben unnötiger Ballast.
+        Tracking-Parameter sind Zusatzwerte in der URL, die messen helfen, <b>woher ein Klick kommt</b>.
+        Sie sind eher <b>Etiketten</b> am Link als „Virus“. SafeShare entfernt diese Etiketten, wenn du es willst.
       </p>
-
       <div class="row">
-        <a class="btn primary" href="app.html">Jetzt bereinigen</a>
-        <a class="btn" href="pro.html">Pro: Policies & Audit</a>
-        <a class="btn ghost" href="#kategorien">Parameter-Typen</a>
-      </div>
-
-      <div class="okBox">
-        Keine Panik: Parameter sind kein „Virus“. Eher Etiketten/Anhänger am Link – manchmal nützlich, oft überflüssig.
+        <a class="btn primary" href="app.html">Link bereinigen</a>
+        <a class="btn" href="education.html">Schule</a>
+        <a class="btn ghost" href="pro.html">Pro</a>
       </div>
     </section>
 
-    <section class="card" id="kategorien">
-      <h2>Welche Arten gibt es?</h2>
-
-      <div class="grid">
-        <div class="tile">
-          <h3>1) Kampagnen/Marketing (UTM)</h3>
-          <p><code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code> …</p>
-          <p>Für Messung der Herkunft. Beim Weiterleiten häufig nicht nötig.</p>
-          <div class="row"><a class="btn ghost" href="utm-parameter-entfernen.html">UTM im Detail</a></div>
-        </div>
-
-        <div class="tile">
-          <h3>2) Click-IDs (Ad-Plattformen)</h3>
-          <p>Beispiele: <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code> …</p>
-          <p>Oft reines Tracking. Beim Teilen in der Regel entfernbar.</p>
-        </div>
-
-        <div class="tile">
-          <h3>3) Affiliate/Partner (Attribution)</h3>
-          <p>Beispiele: <code>tag</code>, <code>ref</code>, <code>aff</code>, <code>partner</code> …</p>
-          <p>Kann gewollt sein, weil es Einnahmen/Kredit sichert. Professionell: bewusst behalten (Whitelist/Pro).</p>
-        </div>
-
-        <div class="tile">
-          <h3>4) Funktional (nicht Tracking)</h3>
-          <p>Beispiele: Sprache/Region, Produkt-Varianten, Sortierung, Filters, Session-Keys …</p>
-          <p>Hier ist „alles löschen“ riskant – kann Inhalte kaputt machen oder falsche Varianten öffnen.</p>
-        </div>
+    <section class="card">
+      <h2>Beispiel</h2>
+      <div class="example mono">
+        https://shop.example.com/product?utm_source=insta&utm_campaign=launch&fbclid=XYZ&gclid=ABC
+      </div>
+      <div class="chips" aria-label="Beispiele für Tracking-Parameter">
+        <span class="chip"><b>utm_*</b> Kampagnen</span>
+        <span class="chip"><b>gclid</b> Google Ads Klick-ID</span>
+        <span class="chip"><b>msclkid</b> Microsoft Ads Klick-ID</span>
+        <span class="chip"><b>fbclid</b> Facebook Click ID</span>
+        <span class="chip"><b>igshid</b> Instagram</span>
+      </div>
+      <div class="note">
+        In der App werden typische Tracking-Parameter entfernt. In Pro kannst du bewusst Parameter <b>behalten</b> (Whitelist) oder pro Domain regeln.
       </div>
     </section>
 
-    <section class="card" id="warum">
-      <h2>Warum sollten Nicht-Profis Links reinigen?</h2>
+    <section class="card">
+      <h2>Warum das praktisch relevant ist</h2>
       <ul>
-        <li><strong>Minimierung:</strong> Beim Teilen nicht unnötig Zusatzinfos mitschicken.</li>
-        <li><strong>Sauberkeit:</strong> Kürzere Links sind lesbarer und wirken seriöser.</li>
-        <li><strong>Bewusstsein:</strong> Man erkennt, dass Links oft „mehr“ enthalten als nur den Inhalt.</li>
+        <li><b>Du teilst weniger Metadaten</b> (Kampagne/Plattform/Klick-ID).</li>
+        <li><b>Links wirken seriöser</b> (gerade bei Journalismus, NGO, Bildung).</li>
+        <li><b>Weniger Bruchstellen</b>: manche Apps kürzen/umbauen lange URLs.</li>
+        <li><b>Respekt</b>: du gibst anderen nicht ungefragt Tracking-Etiketten weiter.</li>
       </ul>
-      <div class="warnBox">
-        „Man wird doch eh überall getrackt“ stimmt als Gefühl oft – aber Link-Hygiene ist trotzdem sinnvoll:
-        Es reduziert unnötige Weitergabe und setzt eine klare Grenze beim Teilen.
+      <div class="warn">
+        Wichtig: Das Entfernen von Parametern macht nicht „unsichtbar“. Es ist ein konkreter Hygiene-Schritt beim Teilen.
       </div>
     </section>
 
-    <section class="card" id="praxis">
-      <h2>Praxis-Regeln (Kurzform)</h2>
-      <div class="monoBox">Wenn du teilst (privat/öffentlich):
-- Entferne UTM + Click-IDs (meist sinnvoll)
-- Behalte funktionale Parameter, wenn du unsicher bist
-- Affiliate/Partner: bewusst entscheiden (Pro: Whitelist)
-
-Wenn du selbst Kampagnen misst:
-- UTM bewusst behalten (oder sauber neu setzen)
-- Audit nutzen, damit du nachvollziehen kannst, was passierte</div>
-
+    <section class="card">
+      <h2>Wann sollte man Parameter nicht entfernen?</h2>
+      <p>Wenn ein Parameter funktional ist (z. B. Sprache, ID, Session) oder wenn du bewusst Attribution brauchst.</p>
+      <ul>
+        <li><b>Affiliate-Links:</b> „ref“, „tag“, „affid“ können Geld/Zuordnung sein.</li>
+        <li><b>Paywall/Login:</b> manche Parameter sind für Zugriff nötig.</li>
+      </ul>
       <div class="row">
-        <a class="btn primary" href="app.html">In der App testen</a>
-        <a class="btn" href="pro.html">Pro Presets</a>
-        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a class="btn primary" href="pro-app.html">Pro App (Whitelist/Audit)</a>
+        <a class="btn" href="help.html">FAQ</a>
       </div>
     </section>
 
     <footer>
       <div class="footLinks">
-        <a href="index.html">Startseite</a>
+        <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="help.html">Hilfe</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="utm-parameter-entfernen.html">UTM</a>
-        <a href="tracking-parameter.html">Tracking</a>
-        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a href="education.html">Schule</a>
-        <a href="press.html">Presse</a>
-        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
     </footer>
   </div>
 
-  <script>
-    (function () {
-      const path = location.pathname.split('/').pop() || 'index.html';
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Öffentlich</div>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="press.html" data-page="press.html">Presse</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <div class="divider"></div>
+    <div class="menuHint">System</div>
+    <a href="status.html" data-page="status.html">Status</a>
+  </nav>
 
+  <script>
+    (function(){
+      // active tab
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      const navMore = document.getElementById('navMore');
-      document.querySelectorAll('.menu a').forEach(a => {
-        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
-      });
+      // more sheet
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
 
-      const sub = document.getElementById('pageSub');
-      const tag = document.getElementById('pageTag');
-      const map = {
-        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
-        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "FAQ"],
-        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "status.html": ["Status · Service Worker", "Cache/Updates"],
-        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
-        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
-        "press.html": ["Presse · Media Kit", "Kontakt"],
-        "impressum.html": ["Impressum", "§ 5 TMG"],
-        "datenschutz.html": ["Datenschutz", "DSGVO"]
-      };
-      if (sub && map[path]) sub.textContent = map[path][0];
-      if (tag && map[path]) tag.textContent = map[path][1];
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+      }
+      btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
     })();
   </script>
 </body>
