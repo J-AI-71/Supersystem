@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare – Links teilen. Ohne Ballast.</title>
-  <meta name="description" content="SafeShare entfernt unnötige Tracking-Parameter aus Links – local-first im Browser. App für schnelle Link-Hygiene. Pro für Profis: Presets, Whitelist, Audit, Export." />
+  <meta name="description" content="SafeShare entfernt unnötige Tracking-Parameter aus Links – local-first im Browser. App für schnelle Link-Hygiene. Pro für Profis: Presets/Policies, Whitelist, Audit und Export." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -19,7 +19,6 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/og/og-index.jpg" />
 
-  <!-- JSON-LD (leicht, stabil) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -47,7 +46,6 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
-      --bad: rgba(255,95,95,.16);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -61,7 +59,6 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
-        --bad: rgba(255,95,95,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -134,8 +131,6 @@
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
-    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
@@ -173,11 +168,6 @@
       background: var(--ok); padding: 10px 12px; border-radius: 12px;
       color: var(--text); font-size: 13px; line-height: 1.45;
     }
-    .warnBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
 
     .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
     @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
@@ -188,7 +178,6 @@
       padding: 14px;
     }
     .tile h3{ margin: 0 0 8px; }
-    .tile p{ margin: 0 0 10px; }
 
     footer{
       margin-top: 18px;
@@ -209,7 +198,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ========= Mehr Overlay (iOS-sicher) ========= */
+    /* ===== Mehr (Portal) – iPad/Safari fix ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -279,22 +268,10 @@
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
 
-        <!-- Mehr (Overlay, iPad-sicher) -->
+        <!-- Mehr: nur Button (Menü ist unten im DOM) -->
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
           Mehr ▾
         </button>
-        <div class="moreOverlay" id="moreOverlay" hidden></div>
-        <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-          <a href="index.html" data-page="index.html">Start</a>
-          <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-          <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-          <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-          <a href="education.html" data-page="education.html">Schule</a>
-          <a href="press.html" data-page="press.html">Presse</a>
-          <a href="status.html" data-page="status.html">Status</a>
-          <a href="impressum.html" data-page="impressum.html">Impressum</a>
-          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-        </nav>
       </div>
     </div>
 
@@ -332,8 +309,8 @@
         <div class="tile">
           <h3>SafeShare Pro</h3>
           <p>
-            Für Social Media, Publisher, Journalismus und Teams: Presets/Policies, domainbasierte Whitelist,
-            Audit („was wurde geändert – und warum?“) und professionelle Workflows.
+            Für Social Media, Publisher, Journalismus und Teams:
+            Presets/Policies, domainbasierte Whitelist, Audit („was wurde geändert – und warum?“) und Export.
           </p>
           <div class="row">
             <a class="btn" href="pro.html">Zu Pro</a>
@@ -346,8 +323,8 @@
     <section class="card">
       <h2>Warum local-first?</h2>
       <p>
-        Links können sensibel sein (Redaktion, Kund:innen, interne Recherchen). Local-first heißt:
-        Verarbeitung im Browser – ohne dass du URLs an einen Tool-Server schicken musst.
+        Links können sensibel sein (Redaktion, Kund:innen, interne Recherchen).
+        Local-first heißt: Verarbeitung im Browser – ohne dass du URLs an einen Tool-Server schicken musst.
       </p>
       <div class="row">
         <a class="btn ghost" href="datenschutz.html">Datenschutz</a>
@@ -368,9 +345,23 @@
     </footer>
   </div>
 
+  <!-- Mehr-Menü (Portal: direkt unter body, iPad/Safari-sicher) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="press.html" data-page="press.html">Presse</a>
+    <a href="status.html" data-page="status.html">Status</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+  </nav>
+
   <script>
     (function () {
-      // Active Tab (App/Pro/Hilfe/Bookmarklets)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
 
@@ -378,13 +369,12 @@
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // Page labels (optional)
       const sub = document.getElementById('pageSub');
       const tag = document.getElementById('pageTag');
       const map = {
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
+        "pro.html": ["Pro · Policies, Audit, Export", "für Profis"],
         "help.html": ["Hilfe · App & Pro", "FAQ"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
@@ -403,14 +393,12 @@
 
   <script>
     (function () {
-      // Mehr Overlay (iOS-sicher)
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
       if (!btn || !menu || !overlay) return;
 
       function placeMenu(){
-        menu.hidden = false; // damit offsetWidth/Height stimmt
         const r = btn.getBoundingClientRect();
         const gap = 8;
 
@@ -421,6 +409,7 @@
           window.innerWidth - menuW - 12,
           Math.max(12, r.right - menuW)
         );
+
         const top = Math.min(
           window.innerHeight - menuH - 12,
           r.bottom + gap
@@ -432,8 +421,11 @@
 
       function openMenu(){
         overlay.hidden = false;
-        placeMenu();
+        menu.hidden = false;
         btn.setAttribute('aria-expanded', 'true');
+
+        // iOS: 2 Frames warten, dann messen/positionieren
+        requestAnimationFrame(() => requestAnimationFrame(placeMenu));
       }
 
       function closeMenu(){
@@ -449,14 +441,7 @@
       });
 
       overlay.addEventListener('click', closeMenu);
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMenu();
-      });
-
-      menu.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => closeMenu());
-      });
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
       window.addEventListener('resize', () => {
         if (btn.getAttribute('aria-expanded') === 'true') placeMenu();
