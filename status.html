@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Status – SafeShare</title>
-  <meta name="description" content="Statusseite für SafeShare: Service-Worker-Version, Update aktivieren, Cache-Status." />
-  <meta name="robots" content="index,follow" />
+  <title>SafeShare – Status</title>
+  <meta name="description" content="SafeShare Status: Service Worker Version, Cache-Status, Update prüfen und Update aktivieren (SKIP_WAITING)." />
+  <meta name="robots" content="noindex,follow" />
   <meta name="color-scheme" content="dark light" />
 
   <!-- Google Search Console -->
@@ -29,7 +29,6 @@
       --warn: rgba(255,197,84,.16);
       --bad: rgba(255,95,95,.16);
       --ok: rgba(47,227,183,.16);
-      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -44,7 +43,6 @@
         --warn: rgba(255,197,84,.22);
         --bad: rgba(255,95,95,.18);
         --ok: rgba(47,227,183,.18);
-        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -60,10 +58,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 14px; padding: 10px 2px 12px;
-    }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -75,14 +70,8 @@
     .logoWrap img{ width:28px; height:28px; display:block; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
-    .brandText .title{
-      font-size: 16px; font-weight: 780; line-height:1.1;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .brandText .sub{
-      font-size: 12px; color: var(--muted2); margin-top:2px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -106,11 +95,29 @@
       white-space: nowrap; flex: 0 0 auto;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{
-      color: var(--text);
-      border-color: rgba(47,227,183,.35);
-      background: rgba(47,227,183,.12);
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+
+    .more{ position:relative; }
+    .more > summary{ list-style:none; }
+    .more > summary::-webkit-details-marker{ display:none; }
+    .menu{
+      position:absolute; right:0; top: calc(100% + 8px);
+      min-width: 220px; padding: 8px; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.92);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      display:flex; flex-direction:column; gap: 6px; z-index: 80;
     }
+    @media (prefers-color-scheme: light){
+      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
+    }
+    .menu a{
+      padding: 10px 10px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted); font-size: 13px;
+    }
+    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
     .card{
       margin-top: 14px;
@@ -122,8 +129,8 @@
     }
     h1{
       margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 34px);
-      line-height: 1.15;
+      font-size: clamp(22px, 3.8vw, 36px);
+      line-height: 1.12;
       letter-spacing: -0.2px;
     }
     h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
@@ -145,81 +152,55 @@
       gap: 8px;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{
-      background: var(--mint2);
-      border-color: rgba(47,227,183,.35);
-    }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
     .btn.primary:hover{ background: var(--mint3); }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+    .btn.danger{ background: rgba(255,95,95,.14); border-color: rgba(255,95,95,.30); }
+
+    .okBox{
+      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
+    }
+    .warnBox{
+      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
+    }
+    .badBox{
+      margin-top: 12px; border-left: 3px solid rgba(255,95,95,.55);
+      background: var(--bad); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
+    }
 
     .kv{
       display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start;
-      padding: 10px 10px;
-      border-radius: 14px;
+      padding: 10px 10px; border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       margin-top: 10px;
     }
-    .kv .k{ color: var(--muted2); font-size: 12px; min-width: 150px; }
-    .kv .v{ color: var(--muted); font-size: 12px; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .kv .k{ color: var(--muted2); font-size: 12px; min-width: 200px; }
+    .kv .v{ color: var(--muted); font-size: 12px; word-break: break-word; }
 
-    .okBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
-      display:none;
-    }
-    .warnBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
-      display:none;
-    }
-    .badBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,95,95,.55);
-      background: var(--bad);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
-      display:none;
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
 
-    footer{
-      margin-top: 18px;
-      padding: 18px 4px 10px;
-      color: var(--muted2);
-      font-size: 12px;
-      line-height: 1.55;
-    }
+    footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
     .footLinks{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 14px;
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
     }
     .footLinks a{
-      padding: 6px 10px;
-      border-radius: 999px;
+      padding: 6px 10px; border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* hidden utility */
+    .hidden{ display:none !important; }
   </style>
 </head>
 
@@ -234,58 +215,81 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Status · Service Worker</div>
+          <div class="sub" id="pageSub">Status · Service Worker</div>
         </div>
       </div>
-      <div style="font-size:12px;color:var(--muted2);">Cache/Updates</div>
+      <div class="small" id="pageTag">Cache/Updates</div>
     </header>
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="app.html">App</a>
-        <a class="tab" href="pro.html">Pro</a>
-        <a class="tab" href="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html">Bookmarklets</a>
-        <a class="tab active" href="status.html">Status</a>
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+        <details class="more" id="navMore">
+          <summary class="tab" data-page="more">Mehr ▾</summary>
+          <div class="menu" role="menu" aria-label="Mehr">
+            <a href="index.html" data-page="index.html">Start</a>
+            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="press.html" data-page="press.html">Presse</a>
+            <a href="status.html" data-page="status.html">Status</a>
+          </div>
+        </details>
       </div>
     </div>
 
     <section class="card">
-      <h1>Status – SafeShare</h1>
+      <h1>Status</h1>
       <p>
-        Diese Seite zeigt die aktive Service-Worker-Version und kann Updates aktivieren (wenn eine neue Version wartet).
-        Das behebt typische „Cache hängt fest“-Effekte auf iPad/Safari.
+        Diese Seite ist dafür da, Updates zuverlässig zu aktivieren, wenn GitHub Pages / Service Worker cachen.
+        Wenn du “komische” Effekte hast (Header fehlt, 404, alte Version), mach es hier.
       </p>
 
-      <div class="kv">
-        <div class="k">Aktive SW-Version</div>
-        <div class="v" id="swVersion">—</div>
-      </div>
-
-      <div class="kv">
-        <div class="k">SW wartet (Update verfügbar)</div>
-        <div class="v" id="swWaiting">—</div>
-      </div>
-
-      <div class="kv">
-        <div class="k">Seite geladen</div>
-        <div class="v" id="pageUrl">—</div>
-      </div>
-
       <div class="row">
-        <button class="btn" id="btnCheck">Status aktualisieren</button>
-        <button class="btn primary" id="btnUpdate" disabled>Update aktivieren (SKIP_WAITING)</button>
-        <button class="btn" id="btnReload">Seite neu laden</button>
+        <button class="btn primary" id="btnRefresh">Status aktualisieren</button>
+        <button class="btn" id="btnCheckUpdate">Update prüfen</button>
+        <button class="btn primary hidden" id="btnActivate">Update aktivieren (SKIP_WAITING)</button>
+        <button class="btn danger" id="btnUnregister">SW abmelden (Notfall)</button>
       </div>
 
-      <div class="okBox" id="msgOk"></div>
-      <div class="warnBox" id="msgWarn"></div>
-      <div class="badBox" id="msgBad"></div>
+      <div class="warnBox" id="boxUpdate" style="display:none;">
+        Update wartet. Klicke <strong>„Update aktivieren“</strong>, dann lädt die Seite neu.
+      </div>
+
+      <div class="okBox" id="boxOk" style="display:none;">
+        OK.
+      </div>
+
+      <div class="badBox" id="boxErr" style="display:none;">
+        Fehler.
+      </div>
     </section>
 
     <section class="card">
-      <h2>Kontakt</h2>
-      <p>support.safeshare@proton.me</p>
+      <h2>Technischer Status</h2>
+
+      <div class="kv"><div class="k">Seite</div><div class="v mono" id="vPage">–</div></div>
+      <div class="kv"><div class="k">Service Worker Support</div><div class="v mono" id="vSupport">–</div></div>
+      <div class="kv"><div class="k">Service Worker Controller</div><div class="v mono" id="vController">–</div></div>
+      <div class="kv"><div class="k">Registrierung</div><div class="v mono" id="vReg">–</div></div>
+      <div class="kv"><div class="k">Aktive SW Script URL</div><div class="v mono" id="vActive">–</div></div>
+      <div class="kv"><div class="k">Waiting SW</div><div class="v mono" id="vWaiting">–</div></div>
+      <div class="kv"><div class="k">Installierende SW</div><div class="v mono" id="vInstalling">–</div></div>
+      <div class="kv"><div class="k">SW Version (GET_VERSION)</div><div class="v mono" id="vVersion">–</div></div>
+      <div class="kv"><div class="k">Letzte Aktion</div><div class="v mono" id="vLast">–</div></div>
+    </section>
+
+    <section class="card">
+      <h2>Praktische Fixes</h2>
+      <p><strong>1)</strong> Öffne diese Seite mit Cache-Buster:</p>
+      <div class="kv"><div class="k">URL</div><div class="v mono" id="vBusted">–</div></div>
+
+      <p><strong>2)</strong> Wenn ein Update wartet: <strong>„Update aktivieren (SKIP_WAITING)”</strong>.</p>
+      <p><strong>3)</strong> Wenn alles hängt: <strong>SW abmelden</strong> (Notfall) → Seite neu laden → SW wird neu registriert.</p>
     </section>
 
     <footer>
@@ -295,7 +299,11 @@
         <a href="pro.html">Pro</a>
         <a href="help.html">Hilfe</a>
         <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="utm-parameter-entfernen.html">UTM</a>
+        <a href="tracking-parameter.html">Tracking</a>
+        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
         <a href="press.html">Presse</a>
+        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
@@ -303,120 +311,199 @@
   </div>
 
   <script>
-    const elSwVersion = document.getElementById('swVersion');
-    const elSwWaiting = document.getElementById('swWaiting');
-    const elPageUrl   = document.getElementById('pageUrl');
-
-    const btnCheck  = document.getElementById('btnCheck');
-    const btnUpdate = document.getElementById('btnUpdate');
-    const btnReload = document.getElementById('btnReload');
-
-    const msgOk   = document.getElementById('msgOk');
-    const msgWarn = document.getElementById('msgWarn');
-    const msgBad  = document.getElementById('msgBad');
-
-    function setMsg(ok, warn, bad) {
-      msgOk.style.display   = ok ? 'block' : 'none';
-      msgWarn.style.display = warn ? 'block' : 'none';
-      msgBad.style.display  = bad ? 'block' : 'none';
-      if (ok) msgOk.textContent = ok;
-      if (warn) msgWarn.textContent = warn;
-      if (bad) msgBad.textContent = bad;
-    }
-
-    async function getSwVersionViaMessage() {
-      if (!navigator.serviceWorker || !navigator.serviceWorker.controller) return null;
-
-      return new Promise((resolve) => {
-        const channel = new MessageChannel();
-        const timeout = setTimeout(() => resolve(null), 1200);
-
-        channel.port1.onmessage = (event) => {
-          clearTimeout(timeout);
-          if (event.data && event.data.type === 'SW_VERSION') resolve(event.data.value || null);
-          else resolve(null);
-        };
-
-        navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [channel.port2]);
+    (function () {
+      // Active nav + dropdown close
+      const path = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
-    }
+      const moreSummary = document.querySelector('.more > summary');
+      const menuActive = document.querySelector('.menu a.active');
+      if (menuActive && moreSummary) moreSummary.classList.add('active');
+      const navMore = document.getElementById('navMore');
+      document.querySelectorAll('.menu a').forEach(a => {
+        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
+      });
 
-    async function ensureSwRegistered() {
-      if (!('serviceWorker' in navigator)) return null;
-      try {
-        // Wichtig: sw.js liegt bei dir unter /Supersystem/ – relative passt, wenn status.html auch dort liegt.
-        const reg = await navigator.serviceWorker.register('sw.js');
+      // UI helpers
+      const $ = (id) => document.getElementById(id);
+      const boxOk = $('boxOk'), boxErr = $('boxErr'), boxUpdate = $('boxUpdate');
+      const btnActivate = $('btnActivate');
+
+      function showOk(msg){
+        boxOk.style.display = 'block';
+        boxErr.style.display = 'none';
+        boxUpdate.style.display = 'none';
+        boxOk.textContent = msg || 'OK.';
+      }
+      function showErr(msg){
+        boxErr.style.display = 'block';
+        boxOk.style.display = 'none';
+        boxUpdate.style.display = 'none';
+        boxErr.textContent = msg || 'Fehler.';
+      }
+      function showUpdate(msg){
+        boxUpdate.style.display = 'block';
+        boxOk.style.display = 'none';
+        boxErr.style.display = 'none';
+        boxUpdate.innerHTML = msg || 'Update wartet. Klicke <strong>„Update aktivieren“</strong>.';
+      }
+      function setLast(s){ $('vLast').textContent = s; }
+
+      // Cache-busted URL display
+      const busted = location.origin + location.pathname + '?v=' + Date.now();
+      $('vBusted').textContent = busted;
+      $('vPage').textContent = location.href;
+
+      // Core status
+      const supported = ('serviceWorker' in navigator);
+      $('vSupport').textContent = supported ? 'yes' : 'no';
+      $('vController').textContent = navigator.serviceWorker && navigator.serviceWorker.controller ? 'yes' : 'no';
+
+      async function ensureRegistration(){
+        if (!supported) return null;
+
+        // Prefer existing registration
+        let reg = await navigator.serviceWorker.getRegistration();
+        if (!reg) {
+          // Register explicitly (scope = current folder)
+          reg = await navigator.serviceWorker.register('sw.js');
+        }
         return reg;
-      } catch (e) {
-        return null;
-      }
-    }
-
-    async function refreshStatus() {
-      setMsg('', '', '');
-      elPageUrl.textContent = location.href;
-
-      const reg = await ensureSwRegistered();
-      if (!reg) {
-        elSwVersion.textContent = '—';
-        elSwWaiting.textContent = '—';
-        btnUpdate.disabled = true;
-        setMsg('', '', 'Service Worker konnte nicht registriert werden (Browser/Scope?).');
-        return;
       }
 
-      // Wartendes Update?
-      const hasWaiting = !!reg.waiting;
-      elSwWaiting.textContent = hasWaiting ? 'Ja (waiting vorhanden)' : 'Nein';
-
-      // SW-Version via Message (von active/controller)
-      const v = await getSwVersionViaMessage();
-      elSwVersion.textContent = v || '(unbekannt – noch kein Controller aktiv)';
-
-      // Button aktivieren, wenn waiting vorhanden
-      btnUpdate.disabled = !hasWaiting;
-
-      if (hasWaiting) {
-        setMsg('', 'Update wartet. Button drücken: "Update aktivieren (SKIP_WAITING)".', '');
-      } else {
-        setMsg('Kein wartendes Update erkannt.', '', '');
-      }
-    }
-
-    async function activateUpdate() {
-      setMsg('', '', '');
-
-      const reg = await navigator.serviceWorker.getRegistration();
-      if (!reg || !reg.waiting) {
-        btnUpdate.disabled = true;
-        setMsg('Kein wartendes Update gefunden.', '', '');
-        return;
+      function regToText(reg){
+        if (!reg) return 'none';
+        const scope = reg.scope || '';
+        return 'scope=' + scope;
       }
 
-      setMsg('', 'Aktiviere Update… (SKIP_WAITING)', '');
+      function swScriptURL(sw){
+        if (!sw) return 'none';
+        // serviceworker doesn't expose scriptURL in all contexts, but most do
+        return sw.scriptURL || 'unknown';
+      }
 
-      // Sobald Controller wechselt, reloaden
-      let reloaded = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (reloaded) return;
-        reloaded = true;
-        location.reload();
-      });
+      function updateButtons(reg){
+        const waiting = !!(reg && reg.waiting);
+        $('vWaiting').textContent = waiting ? 'yes' : 'no';
+        $('vInstalling').textContent = (reg && reg.installing) ? 'yes' : 'no';
+        btnActivate.classList.toggle('hidden', !waiting);
 
-      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        if (waiting) showUpdate('Update wartet. Klicke <strong>„Update aktivieren (SKIP_WAITING)”</strong>, dann wird neu geladen.');
+      }
 
-      // Fallback: wenn controllerchange nicht triggert, nach kurzer Zeit reload
-      setTimeout(() => {
-        if (!reloaded) location.reload();
-      }, 1800);
-    }
+      async function queryVersion(reg){
+        try{
+          const sw = (reg && (reg.waiting || reg.active)) || null;
+          if (!sw) { $('vVersion').textContent = 'n/a'; return; }
 
-    btnCheck.addEventListener('click', refreshStatus);
-    btnUpdate.addEventListener('click', activateUpdate);
-    btnReload.addEventListener('click', () => location.reload());
+          // MessageChannel for GET_VERSION
+          const mc = new MessageChannel();
+          const p = new Promise((resolve) => {
+            const t = setTimeout(() => resolve(null), 1200);
+            mc.port1.onmessage = (ev) => { clearTimeout(t); resolve(ev.data); };
+          });
+          sw.postMessage({ type:'GET_VERSION' }, [mc.port2]);
+          const msg = await p;
 
-    // initial
-    refreshStatus();
+          if (msg && msg.type === 'SW_VERSION') $('vVersion').textContent = String(msg.value);
+          else $('vVersion').textContent = 'unknown';
+        }catch(e){
+          $('vVersion').textContent = 'error';
+        }
+      }
+
+      async function refreshStatus(){
+        try{
+          setLast('Refreshing…');
+          $('vController').textContent = navigator.serviceWorker && navigator.serviceWorker.controller ? 'yes' : 'no';
+
+          const reg = await ensureRegistration();
+          $('vReg').textContent = regToText(reg);
+          $('vActive').textContent = reg && reg.active ? swScriptURL(reg.active) : 'none';
+          updateButtons(reg);
+          await queryVersion(reg);
+
+          showOk('Status aktualisiert.');
+          setLast('OK @ ' + new Date().toLocaleString());
+        }catch(e){
+          showErr('Status konnte nicht geladen werden: ' + (e && e.message ? e.message : String(e)));
+          setLast('ERR @ ' + new Date().toLocaleString());
+        }
+      }
+
+      async function checkUpdate(){
+        try{
+          setLast('Checking update…');
+          const reg = await ensureRegistration();
+          if (!reg) { showErr('Keine Registrierung.'); return; }
+
+          // Ask browser to check sw.js again
+          await reg.update();
+
+          // After update(), a waiting SW may appear
+          updateButtons(reg);
+          $('vActive').textContent = reg && reg.active ? swScriptURL(reg.active) : 'none';
+          await queryVersion(reg);
+
+          if (reg.waiting) showUpdate('Update wartet. Klicke <strong>„Update aktivieren (SKIP_WAITING)”</strong>.');
+          else showOk('Kein wartendes Update gefunden.');
+          setLast('Checked @ ' + new Date().toLocaleString());
+        }catch(e){
+          showErr('Update-Check fehlgeschlagen: ' + (e && e.message ? e.message : String(e)));
+          setLast('ERR @ ' + new Date().toLocaleString());
+        }
+      }
+
+      async function activateWaiting(){
+        try{
+          setLast('Activating…');
+          const reg = await navigator.serviceWorker.getRegistration();
+          if (!reg || !reg.waiting){
+            showErr('Kein wartendes Update vorhanden.');
+            return;
+          }
+
+          let reloaded = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (reloaded) return;
+            reloaded = true;
+            location.reload();
+          });
+
+          reg.waiting.postMessage({ type:'SKIP_WAITING' });
+
+          // Fallback: reload anyway
+          setTimeout(() => { if (!reloaded) location.reload(); }, 1800);
+        }catch(e){
+          showErr('Aktivieren fehlgeschlagen: ' + (e && e.message ? e.message : String(e)));
+          setLast('ERR @ ' + new Date().toLocaleString());
+        }
+      }
+
+      async function unregisterAll(){
+        try{
+          setLast('Unregistering…');
+          const reg = await navigator.serviceWorker.getRegistration();
+          if (reg) await reg.unregister();
+
+          showOk('Service Worker abgemeldet. Seite lädt neu…');
+          setTimeout(() => location.reload(), 600);
+        }catch(e){
+          showErr('Abmelden fehlgeschlagen: ' + (e && e.message ? e.message : String(e)));
+          setLast('ERR @ ' + new Date().toLocaleString());
+        }
+      }
+
+      $('btnRefresh').addEventListener('click', refreshStatus);
+      $('btnCheckUpdate').addEventListener('click', checkUpdate);
+      $('btnActivate').addEventListener('click', activateWaiting);
+      $('btnUnregister').addEventListener('click', unregisterAll);
+
+      // Auto refresh on load
+      refreshStatus();
+    })();
   </script>
 </body>
 </html>
