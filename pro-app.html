@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>SafeShare Pro App</title>
+  <meta name="description" content="SafeShare Pro App: Presets/Policies, Domain-Whitelist, Audit – local-first im Browser." />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <style>
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 3.8vw, 38px);
+      line-height: 1.10;
+      letter-spacing: -0.2px;
+    }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; }
+    .row.mt{ margin-top: 12px; }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+    .btn.small{ padding: 8px 10px; font-size: 13px; }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    label{ display:block; font-size: 12px; color: var(--muted2); margin: 10px 0 6px; }
+    .input, .select, .textarea{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    .textarea{ min-height: 140px; resize: vertical; }
+    .input:focus, .select:focus, .textarea:focus{
+      border-color: rgba(47,227,183,.35);
+      box-shadow: 0 0 0 4px rgba(47,227,183,.10);
+    }
+
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+    }
+    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
+
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+    @media(min-width: 980px){ .grid{ grid-template-columns: 1.2fr .8fr; } }
+
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 10px 12px;
+    }
+    details summary{
+      cursor:pointer;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13px;
+      list-style: none;
+    }
+    details summary::-webkit-details-marker{ display:none; }
+    .hint{ font-size: 12px; color: var(--muted2); margin-top: 6px; }
+
+    .resultsTop{
+      display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .kpiRow{ display:flex; gap: 10px; flex-wrap:wrap; }
+    .kpi{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .resultList{ margin-top: 10px; display:flex; flex-direction:column; gap: 10px; }
+    .resCard{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .resHead{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      margin-bottom: 8px;
+    }
+    .resTitle{ font-weight: 750; font-size: 13px; color: var(--text); }
+    .resMeta{ font-size: 12px; color: var(--muted2); }
+    .resUrl{
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      color: var(--text);
+      word-break: break-word;
+      line-height: 1.45;
+    }
+    .auditBox{
+      margin-top: 10px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    .auditLine b{ color: var(--text); }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footLinks{
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+    }
+    .footLinks a{
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet (stabil) ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      top: auto;
+
+      max-height: min(70vh, 520px);
+      overflow: auto;
+
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub" id="pageSub">Pro App · Policies, Whitelist, Audit</div>
+        </div>
+      </div>
+      <div class="small" id="pageTag">Pro</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
+          Mehr ▾
+        </button>
+      </div>
+    </div>
+
+    <!-- Gate -->
+    <section class="card" id="gateCard" style="display:none">
+      <div class="pill"><span class="dot" aria-hidden="true"></span> Zugriff</div>
+      <h1>Pro ist nicht aktiviert.</h1>
+      <p>Diese Seite ist für Pro-Nutzer:innen. Bitte aktiviere Pro (lokal im Browser) und öffne dann die Pro App erneut.</p>
+      <div class="row mt">
+        <a class="btn primary" href="pro-activate.html">Jetzt aktivieren</a>
+        <a class="btn" href="pro.html">Zur Pro Seite</a>
+      </div>
+      <div class="warn">
+        Hinweis: Pro-Status wird local-first gespeichert. Wenn du Website-Daten löschst, musst du ggf. neu aktivieren.
+      </div>
+    </section>
+
+    <!-- App -->
+    <section class="card" id="appCard" style="display:none">
+      <div class="pill"><span class="dot" aria-hidden="true"></span> Pro App</div>
+      <h1>Policies. Whitelist. Audit.</h1>
+      <p>
+        Für Profis: mehrere Links auf einmal, klare Modi, Domain-Whitelist und vollständiges Audit (removed/kept).
+      </p>
+
+      <div class="grid">
+        <!-- Left: Input & results -->
+        <div>
+          <label for="inputUrls">Links (1 pro Zeile)</label>
+          <textarea id="inputUrls" class="textarea mono" placeholder="https://…"></textarea>
+
+          <div class="row mt">
+            <button class="btn primary" id="btnClean" type="button">Bereinigen</button>
+            <button class="btn" id="btnCopyAll" type="button">Alle Ergebnisse kopieren</button>
+            <button class="btn ghost" id="btnClear" type="button">Leeren</button>
+          </div>
+
+          <div id="msgBox" class="note" style="display:none"></div>
+
+          <div class="resultsTop">
+            <div class="kpiRow">
+              <div class="kpi" id="kpiTotal">Links: 0</div>
+              <div class="kpi" id="kpiCleaned">Bereinigt: 0</div>
+              <div class="kpi" id="kpiErrors">Fehler: 0</div>
+            </div>
+            <div class="row">
+              <button class="btn small" id="btnExportCsv" type="button">CSV Export</button>
+              <button class="btn small ghost" id="btnToggleValues" type="button">Audit-Werte: aus</button>
+            </div>
+          </div>
+
+          <div class="resultList" id="results"></div>
+        </div>
+
+        <!-- Right: Policy / Whitelist -->
+        <div>
+          <h2>Policy</h2>
+
+          <label for="preset">Preset</label>
+          <select id="preset" class="select">
+            <option value="share_safe">Share-clean (safe)</option>
+            <option value="affiliate_safe">Affiliate-safe</option>
+            <option value="privacy_max">Privacy-max (aggressiv)</option>
+          </select>
+
+          <div class="hint">
+            <b>Safe</b> entfernt nur bekannte Tracking-Parameter. <b>Aggressiv</b> entfernt alles außer Allowlist.
+          </div>
+
+          <details style="margin-top:12px" open>
+            <summary>Whitelist pro Domain</summary>
+            <div class="hint">Behalte Parameter gezielt (z. B. Affiliate). Gilt nur für die gewählte Domain.</div>
+
+            <label for="domain">Domain</label>
+            <input id="domain" class="input mono" placeholder="z. B. amazon.de" />
+
+            <label for="allowParams">Allowlist (Parameternamen, komma-getrennt)</label>
+            <input id="allowParams" class="input mono" placeholder="z. B. tag, ref" />
+
+            <div class="row mt">
+              <button class="btn" id="btnSaveDomain" type="button">Speichern</button>
+              <button class="btn ghost" id="btnLoadFromInput" type="button">Domain aus Input</button>
+              <button class="btn ghost" id="btnClearDomain" type="button">Löschen</button>
+            </div>
+
+            <div class="row mt">
+              <button class="btn small" id="btnQuickAmazon" type="button">Quick: Amazon (tag,ref)</button>
+              <button class="btn small" id="btnQuickYT" type="button">Quick: YouTube (v,t)</button>
+            </div>
+          </details>
+
+          <details style="margin-top:12px">
+            <summary>Advanced</summary>
+
+            <label class="hint" style="margin-top:10px">
+              <input type="checkbox" id="keepUtm" />
+              UTM behalten (utm_source, utm_campaign …)
+            </label>
+
+            <label class="hint" style="margin-top:8px">
+              <input type="checkbox" id="keepFragment" checked />
+              Fragment behalten (#…)
+            </label>
+
+            <label class="hint" style="margin-top:8px">
+              <input type="checkbox" id="dedupeParams" checked />
+              Duplicate Parameter deduplizieren (Name+Wert)
+            </label>
+
+            <div class="warn" style="margin-top:12px">
+              Wenn du <b>tag/ref</b> erwartest „entfernt“ zu sehen: Das passiert nur, wenn sie in der gewählten Policy entfernt werden.
+              In <b>Share-clean (safe)</b> bleiben unbekannte Parameter normalerweise erhalten. Nutze <b>Privacy-max</b> oder entferne sie explizit.
+            </div>
+          </details>
+
+          <details style="margin-top:12px">
+            <summary>Testbeispiele</summary>
+            <div class="hint">Tippe auf „Einfügen“, um Beispiele in das Eingabefeld zu übernehmen.</div>
+            <div class="row mt">
+              <button class="btn small" id="btnPasteTests" type="button">Einfügen</button>
+            </div>
+            <div class="hint mono" style="margin-top:10px">
+https://example.com/page?utm_source=twitter&utm_campaign=test&gclid=123&ref=abc
+https://www.amazon.de/dp/B0XXXXXXX?tag=partner-21&ref_=abc123&ascsubtag=foo&utm_source=newsletter
+https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s&si=XYZ&utm_source=share
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footLinks">
+        <a href="index.html">Start</a>
+        <a href="app.html">App</a>
+        <a href="pro.html">Pro</a>
+        <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="help.html">Hilfe</a>
+        <a href="education.html">Schule</a>
+        <a href="press.html">Presse</a>
+        <a href="status.html">Status</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Öffentlich</div>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="press.html" data-page="press.html">Presse</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <div class="divider"></div>
+    <div class="menuHint">System</div>
+    <a href="status.html" data-page="status.html">Status</a>
+  </nav>
+
+  <script>
+    (function () {
+      // Active tab highlight
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      // More menu
+      const btnMore = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function openMenu(){
+        overlay.hidden = false;
+        menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btnMore.setAttribute('aria-expanded', 'true');
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btnMore.setAttribute('aria-expanded', 'false');
+        setTimeout(() => { menu.hidden = true; overlay.hidden = true; }, 180);
+      }
+      btnMore.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isOpen = btnMore.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+      // ===== Pro gate =====
+      const KEY_NAME = 'ss_pro_key';
+      const gateCard = document.getElementById('gateCard');
+      const appCard = document.getElementById('appCard');
+      const hasKey = () => {
+        const k = localStorage.getItem(KEY_NAME);
+        return !!(k && k.trim().length >= 8);
+      };
+      if (!hasKey()) {
+        gateCard.style.display = '';
+        appCard.style.display = 'none';
+        return;
+      } else {
+        gateCard.style.display = 'none';
+        appCard.style.display = '';
+      }
+
+      // ===== Storage keys =====
+      const LS_DOMAIN_ALLOW = 'ss_pro_domain_allow_v1'; // { "amazon.de":["tag","ref"], ... }
+      const LS_SETTINGS = 'ss_pro_settings_v1'; // preset/flags
+      const LS_LAST_INPUT = 'ss_pro_last_input_v1';
+
+      // ===== UI elements =====
+      const inputUrls = document.getElementById('inputUrls');
+      const preset = document.getElementById('preset');
+      const keepUtm = document.getElementById('keepUtm');
+      const keepFragment = document.getElementById('keepFragment');
+      const dedupeParams = document.getElementById('dedupeParams');
+
+      const domain = document.getElementById('domain');
+      const allowParams = document.getElementById('allowParams');
+
+      const msgBox = document.getElementById('msgBox');
+      const resultsEl = document.getElementById('results');
+
+      const kpiTotal = document.getElementById('kpiTotal');
+      const kpiCleaned = document.getElementById('kpiCleaned');
+      const kpiErrors = document.getElementById('kpiErrors');
+
+      const btnToggleValues = document.getElementById('btnToggleValues');
+
+      // ===== Helpers =====
+      const KNOWN_TRACKING = new Set([
+        'gclid','dclid','gbraid','wbraid',
+        'fbclid','msclkid','ttclid','twclid','igshid',
+        'yclid','_gl',
+        'mc_cid','mc_eid',
+        'spm','scm',
+        'ref_src','ref_url',
+        'si' // e.g. YouTube share param (often tracking-ish)
+      ]);
+
+      function isUtm(name){ return name.toLowerCase().startsWith('utm_'); }
+      function isHs(name){ return name.toLowerCase().startsWith('_hs'); } // hubspot
+      function isParsely(name){ return name.toLowerCase().startsWith('pq_') || name.toLowerCase()==='utm_reader'; }
+      function normalizeList(csv){
+        return (csv || '')
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean)
+          .map(s => s.toLowerCase());
+      }
+
+      function getDomainAllowMap(){
+        try { return JSON.parse(localStorage.getItem(LS_DOMAIN_ALLOW) || '{}'); }
+        catch { return {}; }
+      }
+      function setDomainAllowMap(map){
+        localStorage.setItem(LS_DOMAIN_ALLOW, JSON.stringify(map || {}));
+      }
+
+      function show(type, text){
+        msgBox.style.display = 'block';
+        msgBox.className = type;
+        msgBox.textContent = text;
+      }
+      function hideMsg(){ msgBox.style.display = 'none'; }
+
+      // Audit values toggle
+      let auditShowValues = false;
+      function setAuditValuesBtn(){
+        btnToggleValues.textContent = 'Audit-Werte: ' + (auditShowValues ? 'an' : 'aus');
+      }
+      setAuditValuesBtn();
+
+      // ===== Settings load/save =====
+      function loadSettings(){
+        try{
+          const s = JSON.parse(localStorage.getItem(LS_SETTINGS) || '{}');
+          if (s.preset) preset.value = s.preset;
+          keepUtm.checked = !!s.keepUtm;
+          keepFragment.checked = (s.keepFragment !== undefined) ? !!s.keepFragment : true;
+          dedupeParams.checked = (s.dedupeParams !== undefined) ? !!s.dedupeParams : true;
+          auditShowValues = !!s.auditShowValues;
+          setAuditValuesBtn();
+        } catch {}
+        const last = localStorage.getItem(LS_LAST_INPUT);
+        if (last) inputUrls.value = last;
+      }
+      function saveSettings(){
+        const s = {
+          preset: preset.value,
+          keepUtm: keepUtm.checked,
+          keepFragment: keepFragment.checked,
+          dedupeParams: dedupeParams.checked,
+          auditShowValues
+        };
+        localStorage.setItem(LS_SETTINGS, JSON.stringify(s));
+        localStorage.setItem(LS_LAST_INPUT, inputUrls.value || '');
+      }
+      loadSettings();
+
+      // ===== Domain helpers =====
+      function extractFirstDomainFromInput(){
+        const lines = (inputUrls.value || '').split('\n').map(l => l.trim()).filter(Boolean);
+        for (const line of lines) {
+          try {
+            const u = new URL(line);
+            return u.hostname.toLowerCase();
+          } catch {}
+        }
+        return '';
+      }
+      function loadDomainAllow(domainName){
+        const map = getDomainAllowMap();
+        const arr = map[(domainName || '').toLowerCase()] || [];
+        return Array.isArray(arr) ? arr : [];
+      }
+      function saveDomainAllow(domainName, arr){
+        const d = (domainName || '').toLowerCase();
+        if (!d) return;
+        const map = getDomainAllowMap();
+        map[d] = Array.from(new Set(arr.map(x => x.toLowerCase())));
+        setDomainAllowMap(map);
+      }
+      function deleteDomainAllow(domainName){
+        const d = (domainName || '').toLowerCase();
+        const map = getDomainAllowMap();
+        delete map[d];
+        setDomainAllowMap(map);
+      }
+
+      // ===== Preset logic =====
+      function presetAddAllow(host){
+        const h = (host || '').toLowerCase();
+        const p = preset.value;
+
+        if (p === 'affiliate_safe') {
+          // minimal, common affiliate keep rules (domain-specific)
+          if (h.includes('amazon.')) return ['tag','ref'];
+          if (h.includes('amzn.to')) return []; // shortener has no params usually
+          return ['tag','ref']; // generic suggestion; user can override per domain
+        }
+        if (p === 'privacy_max') {
+          // aggressive: default allowlist for functionality (can be extended)
+          // Keep common content IDs for major platforms
+          if (h.includes('youtube.com') || h.includes('youtu.be')) return ['v','t'];
+          return [];
+        }
+        // share_safe
+        return [];
+      }
+
+      function shouldRemoveParam(name, allowSet, modeAggressive){
+        const n = name.toLowerCase();
+        if (allowSet.has(n)) return false;
+
+        if (keepUtm.checked && isUtm(n)) return false;
+
+        if (modeAggressive) {
+          // remove everything except allowlist (and optional UTM kept above)
+          return true;
+        }
+
+        // safe mode: remove known tracking signals
+        if (isUtm(n)) return true;
+        if (KNOWN_TRACKING.has(n)) return true;
+        if (isHs(n)) return true;
+        if (isParsely(n)) return true;
+        if (n.startsWith('vero_')) return true;
+        if (n.startsWith('mkt_')) return true;
+        if (n === 'trk' || n === 'trkcampaign') return true;
+        if (n === 'cmpid' || n === 'campaignid') return true;
+        if (n === 's_cid') return true;
+
+        return false;
+      }
+
+      // ===== Cleaner =====
+      function cleanOne(urlStr){
+        const original = urlStr;
+        const u = new URL(urlStr);
+        const host = u.hostname.toLowerCase();
+
+        const modeAggressive = (preset.value === 'privacy_max');
+
+        // Allowlist = domain allow + preset allow (domain-based) + manual allow (current form)
+        const allowDomain = loadDomainAllow(host);
+        const allowManual = normalizeList(allowParams.value);
+        const allowPreset = presetAddAllow(host);
+
+        const allowSet = new Set([...allowDomain, ...allowManual, ...allowPreset].map(x => x.toLowerCase()));
+
+        // Build new params
+        const seen = new Set();
+        const kept = [];
+        const removed = [];
+
+        // iterate existing
+        for (const [k, v] of u.searchParams.entries()) {
+          const name = (k || '').toLowerCase();
+          const value = v ?? '';
+
+          // dedupe (name+value)
+          const sig = name + '=' + value;
+          if (dedupeParams.checked) {
+            if (seen.has(sig)) continue;
+            seen.add(sig);
+          }
+
+          if (shouldRemoveParam(name, allowSet, modeAggressive)) {
+            removed.push([k, value]);
+          } else {
+            kept.push([k, value]);
+          }
+        }
+
+        // reconstruct URL
+        const out = new URL(u.toString());
+        out.search = '';
+        for (const [k, v] of kept) out.searchParams.append(k, v);
+
+        if (!keepFragment.checked) out.hash = '';
+
+        // audit
+        const removedNames = Array.from(new Set(removed.map(x => (x[0] || '').toLowerCase())));
+        const keptNames = Array.from(new Set(kept.map(x => (x[0] || '').toLowerCase())));
+
+        return {
+          ok: true,
+          host,
+          original,
+          cleaned: out.toString(),
+          removed,
+          kept,
+          removedNames,
+          keptNames,
+          mode: modeAggressive ? 'aggressiv' : 'safe',
+          allow: Array.from(allowSet)
+        };
+      }
+
+      function renderResults(items){
+        resultsEl.innerHTML = '';
+        let cleanedCount = 0;
+        let errorCount = 0;
+
+        for (const it of items) {
+          if (!it.ok) errorCount++;
+          else cleanedCount++;
+
+          const card = document.createElement('div');
+          card.className = 'resCard';
+
+          const head = document.createElement('div');
+          head.className = 'resHead';
+
+          const left = document.createElement('div');
+          left.innerHTML = `<div class="resTitle">${it.ok ? it.host : 'Ungültige URL'}</div>
+                            <div class="resMeta">${it.ok ? `Policy: ${it.mode}` : (it.error || '')}</div>`;
+
+          const right = document.createElement('div');
+          right.className = 'row';
+          if (it.ok) {
+            const btnCopy = document.createElement('button');
+            btnCopy.className = 'btn small';
+            btnCopy.type = 'button';
+            btnCopy.textContent = 'Kopieren';
+            btnCopy.addEventListener('click', async () => {
+              try{
+                await navigator.clipboard.writeText(it.cleaned);
+                show('note', 'Kopiert.');
+                setTimeout(hideMsg, 900);
+              } catch {
+                show('warn', 'Kopieren nicht erlaubt. Markiere den Text manuell.');
+              }
+            });
+            right.appendChild(btnCopy);
+          }
+          head.appendChild(left);
+          head.appendChild(right);
+
+          card.appendChild(head);
+
+          if (it.ok) {
+            const urlBox = document.createElement('div');
+            urlBox.className = 'resUrl mono';
+            urlBox.textContent = it.cleaned;
+            card.appendChild(urlBox);
+
+            const audit = document.createElement('div');
+            audit.className = 'auditBox mono';
+
+            const removedStr = it.removed.length
+              ? (auditShowValues
+                ? it.removed.map(([k,v]) => `${k}=${v}`).join(', ')
+                : it.removedNames.join(', '))
+              : '—';
+
+            const keptStr = it.kept.length
+              ? (auditShowValues
+                ? it.kept.map(([k,v]) => `${k}=${v}`).join(', ')
+                : it.keptNames.join(', '))
+              : '—';
+
+            const allowStr = it.allow.length ? it.allow.join(', ') : '—';
+
+            audit.innerHTML =
+              `<div class="auditLine"><b>Removed</b>: ${removedStr}</div>
+               <div class="auditLine"><b>Kept</b>: ${keptStr}</div>
+               <div class="auditLine"><b>Allowlist</b>: ${allowStr}</div>`;
+
+            card.appendChild(audit);
+          } else {
+            const bad = document.createElement('div');
+            bad.className = 'bad';
+            bad.textContent = it.error || 'Ungültige Eingabe.';
+            card.appendChild(bad);
+          }
+
+          resultsEl.appendChild(card);
+        }
+
+        kpiTotal.textContent = `Links: ${items.length}`;
+        kpiCleaned.textContent = `Bereinigt: ${cleanedCount}`;
+        kpiErrors.textContent = `Fehler: ${errorCount}`;
+      }
+
+      function parseLines(){
+        return (inputUrls.value || '')
+          .split('\n')
+          .map(l => l.trim())
+          .filter(Boolean);
+      }
+
+      // ===== Actions =====
+      document.getElementById('btnClean').addEventListener('click', () => {
+        saveSettings();
+        hideMsg();
+
+        const lines = parseLines();
+        if (!lines.length) {
+          show('warn', 'Bitte mindestens einen Link einfügen.');
+          return;
+        }
+
+        // If domain field is empty, auto-set from first valid URL
+        if (!domain.value.trim()) {
+          const d = extractFirstDomainFromInput();
+          if (d) {
+            domain.value = d;
+            allowParams.value = loadDomainAllow(d).join(', ');
+          }
+        }
+
+        const items = lines.map((line) => {
+          try{
+            return cleanOne(line);
+          } catch (e) {
+            return { ok:false, original: line, error: 'Ungültige URL (muss mit http/https starten).' };
+          }
+        });
+
+        renderResults(items);
+        show('note', 'Fertig. Audit listet removed/kept vollständig pro Link.');
+        setTimeout(hideMsg, 1200);
+      });
+
+      document.getElementById('btnCopyAll').addEventListener('click', async () => {
+        const cards = resultsEl.querySelectorAll('.resUrl');
+        const all = Array.from(cards).map(x => x.textContent).filter(Boolean).join('\n');
+        if (!all) { show('warn', 'Keine Ergebnisse zum Kopieren.'); return; }
+        try{
+          await navigator.clipboard.writeText(all);
+          show('note', 'Alle Ergebnisse kopiert.');
+          setTimeout(hideMsg, 900);
+        } catch {
+          show('warn', 'Kopieren nicht erlaubt. Markiere den Text manuell.');
+        }
+      });
+
+      document.getElementById('btnClear').addEventListener('click', () => {
+        inputUrls.value = '';
+        resultsEl.innerHTML = '';
+        kpiTotal.textContent = 'Links: 0';
+        kpiCleaned.textContent = 'Bereinigt: 0';
+        kpiErrors.textContent = 'Fehler: 0';
+        localStorage.removeItem(LS_LAST_INPUT);
+        hideMsg();
+      });
+
+      document.getElementById('btnToggleValues').addEventListener('click', () => {
+        auditShowValues = !auditShowValues;
+        setAuditValuesBtn();
+        saveSettings();
+        // rerender stays as-is; user can press Clean again to refresh audit formatting
+        show('note', 'Einstellung gespeichert. (Neu bereinigen aktualisiert die Darstellung.)');
+        setTimeout(hideMsg, 1100);
+      });
+
+      // CSV export (original, cleaned, removedNames, keptNames, mode, host)
+      document.getElementById('btnExportCsv').addEventListener('click', () => {
+        const cards = resultsEl.querySelectorAll('.resCard');
+        if (!cards.length) { show('warn', 'Keine Ergebnisse zum Export.'); return; }
+
+        // Recompute from current input (authoritative)
+        const lines = parseLines();
+        const items = lines.map((line) => {
+          try{ return cleanOne(line); }
+          catch { return { ok:false, original: line, cleaned:'', removedNames:[], keptNames:[], mode:'', host:'' }; }
+        });
+
+        const esc = (s) => `"${String(s ?? '').replaceAll('"','""')}"`;
+        const rows = [
+          ['host','mode','original','cleaned','removed','kept'].map(esc).join(',')
+        ];
+        for (const it of items) {
+          rows.push([
+            it.host || '',
+            it.mode || '',
+            it.original || '',
+            it.cleaned || '',
+            (it.removedNames || []).join(' '),
+            (it.keptNames || []).join(' ')
+          ].map(esc).join(','));
+        }
+        const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'safeshare-pro-export.csv';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          URL.revokeObjectURL(a.href);
+          a.remove();
+        }, 500);
+      });
+
+      // Settings persistence hooks
+      [preset, keepUtm, keepFragment, dedupeParams].forEach(el => el.addEventListener('change', saveSettings));
+      inputUrls.addEventListener('input', () => localStorage.setItem(LS_LAST_INPUT, inputUrls.value || ''));
+
+      // Domain whitelist actions
+      document.getElementById('btnLoadFromInput').addEventListener('click', () => {
+        const d = extractFirstDomainFromInput();
+        if (!d) { show('warn', 'Keine gültige URL gefunden, um eine Domain zu erkennen.'); return; }
+        domain.value = d;
+        allowParams.value = loadDomainAllow(d).join(', ');
+        show('note', 'Domain übernommen und gespeicherte Allowlist geladen (falls vorhanden).');
+        setTimeout(hideMsg, 1100);
+      });
+
+      document.getElementById('btnSaveDomain').addEventListener('click', () => {
+        const d = (domain.value || '').trim().toLowerCase();
+        if (!d) { show('warn', 'Bitte eine Domain angeben.'); return; }
+        const arr = normalizeList(allowParams.value);
+        saveDomainAllow(d, arr);
+        show('note', 'Domain-Allowlist gespeichert.');
+        setTimeout(hideMsg, 1100);
+      });
+
+      document.getElementById('btnClearDomain').addEventListener('click', () => {
+        const d = (domain.value || '').trim().toLowerCase();
+        if (!d) { show('warn', 'Bitte eine Domain angeben.'); return; }
+        deleteDomainAllow(d);
+        allowParams.value = '';
+        show('warn', 'Domain-Allowlist gelöscht.');
+        setTimeout(hideMsg, 1100);
+      });
+
+      document.getElementById('btnQuickAmazon').addEventListener('click', () => {
+        if (!domain.value.trim()) domain.value = 'amazon.de';
+        const list = new Set([...normalizeList(allowParams.value), 'tag', 'ref']);
+        allowParams.value = Array.from(list).join(', ');
+        show('note', 'Quick gesetzt: tag, ref');
+        setTimeout(hideMsg, 900);
+      });
+
+      document.getElementById('btnQuickYT').addEventListener('click', () => {
+        if (!domain.value.trim()) domain.value = 'youtube.com';
+        const list = new Set([...normalizeList(allowParams.value), 'v', 't']);
+        allowParams.value = Array.from(list).join(', ');
+        show('note', 'Quick gesetzt: v, t');
+        setTimeout(hideMsg, 900);
+      });
+
+      document.getElementById('btnPasteTests').addEventListener('click', () => {
+        inputUrls.value =
+`https://example.com/page?utm_source=twitter&utm_campaign=test&gclid=123&ref=abc
+https://www.amazon.de/dp/B0XXXXXXX?tag=partner-21&ref_=abc123&ascsubtag=foo&utm_source=newsletter
+https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s&si=XYZ&utm_source=share`;
+        localStorage.setItem(LS_LAST_INPUT, inputUrls.value);
+        show('note', 'Testbeispiele eingefügt.');
+        setTimeout(hideMsg, 900);
+      });
+
+      // When domain changes, load stored allowlist automatically
+      domain.addEventListener('input', () => {
+        const d = (domain.value || '').trim().toLowerCase();
+        if (!d) return;
+        const stored = loadDomainAllow(d);
+        if (stored.length) allowParams.value = stored.join(', ');
+      });
+    })();
+  </script>
+</body>
+</html>
