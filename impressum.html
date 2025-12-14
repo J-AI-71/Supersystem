@@ -53,7 +53,7 @@
         radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
         linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
-    a{ color:inherit; text-decoration:none; }
+    a{ color:inherit; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
@@ -70,6 +70,7 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -91,80 +92,32 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      text-decoration:none;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
-
-    .more{ position:relative; }
-    .more > summary{ list-style:none; }
-    .more > summary::-webkit-details-marker{ display:none; }
-    .menu{
-      position:absolute; right:0; top: calc(100% + 8px);
-      min-width: 220px; padding: 8px; border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.92);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex; flex-direction:column; gap: 6px; z-index: 80;
-    }
-    @media (prefers-color-scheme: light){
-      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
-    }
-    .menu a{
-      padding: 10px 10px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted); font-size: 13px;
-    }
-    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
     .card{
       margin-top: 14px;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 18px;
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 40px);
-      line-height: 1.12;
-      letter-spacing: -0.2px;
-    }
-    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-
-    .monoBox{
-      margin-top:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 40px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 10px; color: var(--muted); line-height: 1.6; }
+    .kv{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
+      border-radius: 16px;
+      padding: 12px;
+      margin-top: 10px;
     }
-    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
-    .btn{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      cursor:pointer;
-      user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-    }
-    .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
-    .btn.primary:hover{ background: var(--mint3); }
-    .btn.ghost{ background: transparent; color: var(--muted); }
-    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+    .k{ font-size: 12px; color: var(--muted2); }
+    .v{ font-weight: 780; margin-top: 4px; word-break: break-word; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     footer{
       margin-top: 18px;
@@ -182,8 +135,60 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
+      text-decoration:none;
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+      text-decoration:none;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
 
@@ -198,10 +203,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Impressum</div>
+          <div class="sub">Impressum</div>
         </div>
       </div>
-      <div class="small" id="pageTag">§ 5 TMG</div>
+      <div class="small">§ 5 TMG</div>
     </header>
 
     <div class="tabsBar">
@@ -210,115 +215,129 @@
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-
-        <details class="more" id="navMore">
-          <summary class="tab" data-page="more">Mehr ▾</summary>
-          <div class="menu" role="menu" aria-label="Mehr">
-            <a href="index.html" data-page="index.html">Start</a>
-            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-            <a href="education.html" data-page="education.html">Schule</a>
-            <a href="press.html" data-page="press.html">Presse</a>
-            <a href="status.html" data-page="status.html">Status</a>
-            <a href="impressum.html" data-page="impressum.html">Impressum</a>
-            <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          </div>
-        </details>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
     <section class="card">
       <h1>Impressum</h1>
 
-      <h2>Angaben gemäß § 5 TMG</h2>
-      <div class="monoBox">Jana Jergus
-Auf dem Emdgenberg
-61250 Usingen
-Germany</div>
+      <div class="kv">
+        <div class="k">Anbieterin</div>
+        <div class="v">Jana Jergus</div>
+      </div>
 
-      <h2>Kontakt</h2>
-      <div class="monoBox">E-Mail: support.safeshare@proton.me</div>
+      <div class="kv">
+        <div class="k">Anschrift</div>
+        <div class="v">Auf dem Emdgenberg, 61250 Usingen, Germany</div>
+      </div>
 
-      <h2>Umsatzsteuer</h2>
-      <p>Keine Umsatzsteuer-Identifikationsnummer vorhanden.</p>
+      <div class="kv">
+        <div class="k">Kontakt</div>
+        <div class="v"><a class="mono" href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a></div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Telefon</div>
+        <div class="v">–</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">USt-IdNr.</div>
+        <div class="v">–</div>
+      </div>
 
       <h2>Haftung für Inhalte</h2>
       <p>
-        Als Diensteanbieterin bin ich gemäß den allgemeinen Gesetzen für eigene Inhalte auf diesen Seiten verantwortlich.
-        Ich übernehme jedoch keine Gewähr für die Aktualität, Richtigkeit und Vollständigkeit der bereitgestellten Inhalte.
+        Als Diensteanbieterin bin ich gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+        Nach §§ 8 bis 10 TMG bin ich als Diensteanbieterin jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
+        oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+      </p>
+      <p>
+        Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.
+        Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich.
+        Bei Bekanntwerden von entsprechenden Rechtsverletzungen werde ich diese Inhalte umgehend entfernen.
       </p>
 
       <h2>Haftung für Links</h2>
       <p>
-        Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe.
-        Für diese fremden Inhalte kann ich keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.
+        Mein Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe.
+        Deshalb kann ich für diese fremden Inhalte auch keine Gewähr übernehmen.
+        Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+      </p>
+      <p>
+        Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft.
+        Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.
+        Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar.
+        Bei Bekanntwerden von Rechtsverletzungen werde ich derartige Links umgehend entfernen.
       </p>
 
       <h2>Urheberrecht</h2>
       <p>
         Die durch die Seitenbetreiberin erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.
-        Beiträge Dritter sind als solche gekennzeichnet. Eine Vervielfältigung, Bearbeitung oder Verbreitung außerhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung.
+        Beiträge Dritter sind als solche gekennzeichnet.
+        Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen
+        der schriftlichen Zustimmung der jeweiligen Autorin bzw. des jeweiligen Autors.
       </p>
-
-      <div class="row">
-        <a class="btn primary" href="mailto:support.safeshare@proton.me">E-Mail</a>
-        <a class="btn" href="datenschutz.html">Datenschutz</a>
-        <a class="btn ghost" href="index.html">Start</a>
-      </div>
     </section>
 
     <footer>
       <div class="footLinks">
-        <a href="index.html">Startseite</a>
+        <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="help.html">Hilfe</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="utm-parameter-entfernen.html">UTM</a>
-        <a href="tracking-parameter.html">Tracking</a>
-        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a href="education.html">Schule</a>
-        <a href="press.html">Presse</a>
-        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
     </footer>
   </div>
 
-  <script>
-    (function () {
-      const path = location.pathname.split('/').pop() || 'index.html';
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Öffentlich</div>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="press.html" data-page="press.html">Presse</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <div class="divider"></div>
+    <div class="menuHint">System</div>
+    <a href="status.html" data-page="status.html">Status</a>
+  </nav>
 
+  <script>
+    (function(){
+      // active tab
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      const navMore = document.getElementById('navMore');
-      document.querySelectorAll('.menu a').forEach(a => {
-        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
-      });
+      // more sheet
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
 
-      const sub = document.getElementById('pageSub');
-      const tag = document.getElementById('pageTag');
-      const map = {
-        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
-        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
-        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "status.html": ["Status · Service Worker", "Cache/Updates"],
-        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
-        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
-        "press.html": ["Presse · Media Kit", "Kontakt"],
-        "impressum.html": ["Impressum", "§ 5 TMG"],
-        "datenschutz.html": ["Datenschutz", "DSGVO"]
-      };
-      if (sub && map[path]) sub.textContent = map[path][0];
-      if (tag && map[path]) tag.textContent = map[path][1];
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+      }
+      btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
     })();
   </script>
 </body>
