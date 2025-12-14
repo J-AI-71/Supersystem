@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>URL-Cleaner Vergleich – SafeShare vs. Link-Reiniger</title>
-  <meta name="description" content="Vergleich: SafeShare (local-first) vs typische URL-/UTM-Cleaner. Was ist praktisch wichtig: Kontrolle, Audit, Presets, Whitelist/Affiliate-Attribution, Team-Workflows." />
+  <title>URL-Cleaner Tool-Vergleich – worauf Profis achten (SafeShare)</title>
+  <meta name="description" content="Tool-Vergleich für URL-Cleaner: Kriterien, Praxisfälle, Profi-Anforderungen (Policy, Audit, Whitelist, Export). SafeShare App (schnell) und Pro (professionell)." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -102,7 +102,7 @@
     .more > summary::-webkit-details-marker{ display:none; }
     .menu{
       position:absolute; right:0; top: calc(100% + 8px);
-      min-width: 220px; padding: 8px; border-radius: 16px;
+      min-width: 260px; padding: 8px; border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(10,14,25,.92);
       box-shadow: 0 18px 45px rgba(0,0,0,.35);
@@ -133,8 +133,8 @@
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
-    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
@@ -180,21 +180,9 @@
       background: var(--warn); padding: 10px 12px; border-radius: 12px;
       color: var(--text); font-size: 13px; line-height: 1.45;
     }
-    .badBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,95,95,.55);
-      background: var(--bad); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-    }
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+    @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
     .tile{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
@@ -203,34 +191,59 @@
     }
     .tile h3{ margin: 0 0 8px; }
     .tile p{ margin: 0 0 10px; }
-
-    .table{
-      width:100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      overflow:hidden;
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
-      border-radius: 16px;
       background: rgba(255,255,255,.03);
-      margin-top: 10px;
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
-    .table th, .table td{
-      text-align:left;
-      padding: 10px 10px;
+
+    .tableWrap{
+      margin-top: 10px;
+      overflow:auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+    }
+    table{
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+    th, td{
+      padding: 12px 12px;
       border-bottom: 1px solid rgba(255,255,255,.08);
       vertical-align: top;
-      font-size: 13px;
+      text-align: left;
       color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
     }
-    .table th{
+    th{
       color: var(--text);
-      font-weight: 700;
-      background: rgba(255,255,255,.04);
+      font-weight: 780;
+      background: rgba(255,255,255,.03);
+      position: sticky;
+      top: 0;
+      z-index: 1;
     }
-    .table tr:last-child td{ border-bottom: none; }
-    .k{ color: var(--text); font-weight:700; }
-    .yes{ color: var(--text); }
-    .no{ color: var(--muted2); }
+    .badge{
+      display:inline-flex;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12px;
+      margin-right: 6px;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
 
     footer{
       margin-top: 18px;
@@ -264,10 +277,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Vergleich · Tools</div>
+          <div class="sub" id="pageSub">Tool-Vergleich · URL Cleaner</div>
         </div>
       </div>
-      <div class="small" id="pageTag">Einordnung</div>
+      <div class="small" id="pageTag">Kriterien</div>
     </header>
 
     <div class="tabsBar">
@@ -295,112 +308,159 @@
     </div>
 
     <section class="card" id="top">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> URL-Cleaner Vergleich</div>
-      <h1>SafeShare vs. typische Link-Reiniger</h1>
+      <div class="pill"><span class="dot" aria-hidden="true"></span> Vergleich</div>
+      <h1>URL-Cleaner Tool-Vergleich: Was zählt in der Praxis?</h1>
       <p>
-        Viele Tools können <em>ein paar</em> Parameter entfernen. In der Praxis (Social/Journalismus/Publisher) zählt aber:
-        <strong>Kontrolle</strong>, <strong>Nachvollziehbarkeit</strong> und <strong>Workflows</strong>.
+        Viele Tools können „Parameter entfernen“. Profis brauchen mehr:
+        reproduzierbare Policies, Whitelist pro Domain, Audit/Begründung, Bulk-Workflows und Export.
       </p>
+
       <div class="row">
-        <a class="btn primary" href="app.html">App testen</a>
-        <a class="btn" href="pro.html">Pro Workflows</a>
-        <a class="btn ghost" href="#matrix">Vergleichsmatrix</a>
+        <a class="btn primary" href="app.html">App (schnell)</a>
+        <a class="btn" href="pro.html">Pro (Policy + Audit)</a>
+        <a class="btn ghost" href="#kriterien">Kriterien</a>
       </div>
+
       <div class="okBox">
-        SafeShare App = schnell sauber machen. SafeShare Pro = professionell: Presets, Whitelists, Audit, Export, Team.
+        Wichtigster Unterschied: „Einmal säubern“ vs. „regelbasiert & nachvollziehbar säubern“.
       </div>
     </section>
 
-    <section class="card" id="praxis">
-      <h2>Was ist in der Praxis wirklich wichtig?</h2>
-      <ul>
-        <li><strong>Keine Überraschungen:</strong> „Warum ging der Affiliate-Link kaputt?“ → Whitelist/Regeln.</li>
-        <li><strong>Audit:</strong> Was wurde entfernt / behalten – und warum?</li>
-        <li><strong>Presets:</strong> 1 Klick für definierte Policies (Share-clean / Keep-UTM / Affiliate-safe).</li>
-        <li><strong>Batch:</strong> Viele Links auf einmal (Listen/Artikel/Newsletter).</li>
-        <li><strong>Export:</strong> Für Redaktionen/Teams: Ergebnislisten + Änderungslog.</li>
-      </ul>
-      <div class="warnBox">
-        „Einfach alles löschen“ ist nicht professionell. Professionell ist: <strong>Policies</strong> + <strong>Ausnahmen</strong> + <strong>Beleg (Audit)</strong>.
+    <section class="card" id="kriterien">
+      <h2>Kriterien (Profi-Brille)</h2>
+
+      <div class="grid">
+        <div class="tile">
+          <h3>1) Local-first vs. Server</h3>
+          <p>
+            Werden URLs an einen Server geschickt – oder bleibt alles im Browser? Für sensible Workflows ist local-first ein klarer Pluspunkt.
+          </p>
+          <span class="badge">Datensparsamkeit</span><span class="badge">Redaktions-/Kundendaten</span>
+        </div>
+
+        <div class="tile">
+          <h3>2) Policy/Preset statt „Zufall“</h3>
+          <p>
+            Gibt es feste Modi (z. B. Share-clean, Keep-UTM, Affiliate-safe), die im Team identisch arbeiten?
+          </p>
+          <span class="badge">Team-Konsistenz</span><span class="badge">Wiederholbarkeit</span>
+        </div>
+
+        <div class="tile">
+          <h3>3) Whitelist/Allowlist pro Domain</h3>
+          <p>
+            Kannst du pro Domain definieren, welche Parameter bleiben dürfen (z. B. Affiliate/Partner), ohne „alles zu behalten“?
+          </p>
+          <span class="badge">Affiliate-safe</span><span class="badge">Fehlerreduktion</span>
+        </div>
+
+        <div class="tile">
+          <h3>4) Audit: Was wurde geändert – und warum?</h3>
+          <p>
+            Für Profis zählt Nachvollziehbarkeit: removed/kept + Regel/Whitelist-Grund. Ohne Audit ist Debugging/QA schwer.
+          </p>
+          <span class="badge">QA</span><span class="badge">Begründbarkeit</span>
+        </div>
+
+        <div class="tile">
+          <h3>5) Bulk-Workflows & Export</h3>
+          <p>
+            Listen, Copy/Paste-Batches, CSV/JSON-Export, Reporting. Ein Tool ist nur so gut wie sein Workflow unter Zeitdruck.
+          </p>
+          <span class="badge">Bulk</span><span class="badge">Export</span>
+        </div>
+
+        <div class="tile">
+          <h3>6) Robustheit</h3>
+          <p>
+            Entfernt das Tool nur „bekannte“ Parameter oder kann es Regeln definieren (Patterns), ohne Links kaputt zu machen?
+          </p>
+          <span class="badge">Regeln</span><span class="badge">Stabilität</span>
+        </div>
       </div>
     </section>
 
     <section class="card" id="matrix">
-      <h2>Vergleichsmatrix (prinzipiell)</h2>
+      <h2>Tool-Typen im Vergleich (ohne Marketing-Namen)</h2>
+      <p>So unterscheiden sich Klassen von Tools in der Praxis:</p>
 
-      <table class="table" aria-label="Vergleichsmatrix">
-        <thead>
-          <tr>
-            <th>Funktion</th>
-            <th>Typischer URL-Cleaner</th>
-            <th>SafeShare</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="k">Local-first (ohne Proxy)</td>
-            <td class="no">oft unklar / teils serverbasiert</td>
-            <td class="yes">Ja (Kernfunktion im Browser)</td>
-          </tr>
-          <tr>
-            <td class="k">Presets / Policies</td>
-            <td class="no">selten</td>
-            <td class="yes">Ja (App/Pro: definierte Modi)</td>
-          </tr>
-          <tr>
-            <td class="k">Whitelist / Allowlist</td>
-            <td class="no">selten</td>
-            <td class="yes">Ja (z. B. Affiliate/Partner-Parameter bewusst behalten)</td>
-          </tr>
-          <tr>
-            <td class="k">Audit („was wurde geändert“)</td>
-            <td class="no">meist nein</td>
-            <td class="yes">Ja (Pro: nachvollziehbar + exportierbar)</td>
-          </tr>
-          <tr>
-            <td class="k">Batch / Listen-Reinigung</td>
-            <td class="no">manchmal</td>
-            <td class="yes">Ja (SafeShare Bulk / Pro-Workflows)</td>
-          </tr>
-          <tr>
-            <td class="k">Export (CSV/Copy-Ready)</td>
-            <td class="no">selten</td>
-            <td class="yes">Ja (Pro: Redaktions-/Team-fähig)</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p style="color:var(--muted2); font-size:12px; margin-top:10px;">
-        Hinweis: Der Vergleich ist bewusst „funktional“ (Workflows) statt Tool-Namen-Liste.
-        Wenn du konkrete Konkurrenznamen willst, sag „weiter: Konkurrenzliste“ – dann suche ich live im Web und liste die wichtigsten auf.
-      </p>
-    </section>
-
-    <section class="card" id="abheben">
-      <h2>Womit SafeShare Pro sich klar abhebt (professionell)</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>1) Audit & Begründung</h3>
-          <p>Jede Bereinigung erzeugt ein Änderungsprotokoll: entfernt/behalten + Grund (Regel/Whitelist).</p>
-        </div>
-        <div class="tile">
-          <h3>2) Affiliate-safe Preset</h3>
-          <p>Preset, das typische Tracking entfernt, aber Affiliate/Partner-Attribution erhält.</p>
-        </div>
-        <div class="tile">
-          <h3>3) Domain-Policies</h3>
-          <p>Regeln pro Domain/Publisher: z. B. bei YouTube anders als bei Shop/News.</p>
-        </div>
-        <div class="tile">
-          <h3>4) Team-Workflow</h3>
-          <p>Gemeinsame Policy + gleiches Ergebnis für alle (Konsistenz in Redaktionen).</p>
-        </div>
+      <div class="tableWrap" role="region" aria-label="Vergleichsmatrix">
+        <table>
+          <thead>
+            <tr>
+              <th>Tool-Typ</th>
+              <th>Stärken</th>
+              <th>Grenzen</th>
+              <th>Für wen?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Einfacher „UTM Remover“</strong></td>
+              <td>Klick & fertig, gut für Basics</td>
+              <td>Kaum Policies, kaum Whitelist, selten Audit/Export</td>
+              <td>Nicht-Profis, gelegentliches Teilen</td>
+            </tr>
+            <tr>
+              <td><strong>Browser-Extension</strong></td>
+              <td>Automatisierung beim Surfen, komfortabel</td>
+              <td>Berechtigungen/Angriffsfläche, schwierig im Team zu standardisieren</td>
+              <td>Power-User, persönliches Setup</td>
+            </tr>
+            <tr>
+              <td><strong>Online-Tool (Server)</strong></td>
+              <td>Einfach erreichbar, kein Setup</td>
+              <td>URL geht zum Anbieter; selten Audit/Policy/Whitelists</td>
+              <td>Ad-hoc, unkritische Links</td>
+            </tr>
+            <tr>
+              <td><strong>Pro-Policy Tool (local-first)</strong></td>
+              <td>Presets/Policies, Whitelist pro Domain, Audit, Export</td>
+              <td>Mehr UI/Optionen nötig (dafür kontrollierbar)</td>
+              <td>Social/Journalismus, Teams, QA</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
+      <div class="warnBox">
+        „Mehr Features“ ist nicht automatisch besser. Entscheidend ist: Policies + Audit + Whitelist + Workflow.
+      </div>
+    </section>
+
+    <section class="card" id="safeshare">
+      <h2>Wo SafeShare bewusst anders ist</h2>
+
+      <div class="monoBox">SafeShare App:
+- Schnell reinigen (Share-clean Default)
+- Local-first
+
+SafeShare Pro:
+- Presets/Policies (z. B. Share-clean / Keep-UTM / Affiliate-safe)
+- Whitelist/Allowlist pro Domain
+- Audit: removed/kept + Grund
+- Bulk & Export (für Workflows/Teams)</div>
+
       <div class="row">
-        <a class="btn primary" href="pro.html">Pro ansehen</a>
-        <a class="btn" href="help.html">FAQ</a>
-        <a class="btn ghost" href="tracking-parameter.html">Tracking erklärt</a>
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="pro.html">Pro öffnen</a>
+        <a class="btn ghost" href="help.html">FAQ</a>
+      </div>
+    </section>
+
+    <section class="card" id="praxis">
+      <h2>Praxisfälle (Check)</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Journalismus / Redaktion</h3>
+          <p>Link soll sauber, überprüfbar, ohne Plattform-Click-IDs weitergegeben werden. Audit hilft bei interner Qualitätssicherung.</p>
+          <span class="badge">Audit</span><span class="badge">Policy</span>
+        </div>
+        <div class="tile">
+          <h3>Social Media / Publisher</h3>
+          <p>Affiliate-Attribution darf nicht kaputt gehen. Dafür braucht es Domain-Whitelist (z. B. tag/ref) + klare Presets.</p>
+          <span class="badge">Affiliate-safe</span><span class="badge">Whitelist</span>
+        </div>
       </div>
     </section>
 
@@ -442,13 +502,13 @@
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
+        "help.html": ["Hilfe · App & Pro", "FAQ"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich · URL Cleaner", "Kriterien"],
+        "education.html": ["SafeShare-Schule", "ohne Panik"],
         "press.html": ["Presse · Media Kit", "Kontakt"],
         "impressum.html": ["Impressum", "§ 5 TMG"],
         "datenschutz.html": ["Datenschutz", "DSGVO"]
