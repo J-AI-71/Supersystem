@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare – Links teilen. Ohne Ballast.</title>
-  <meta name="description" content="SafeShare entfernt unnötige Tracking-Parameter aus Links – local-first im Browser. App für schnelle Link-Hygiene. Pro für Profis: Presets/Policies, Whitelist, Audit und Export." />
+  <meta name="description" content="SafeShare entfernt unnötige Tracking-Parameter aus Links – local-first im Browser. App für schnelle Link-Hygiene. Pro für Profis: Policies, Whitelist, Audit und Export." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -13,7 +13,6 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Open Graph (optional) -->
   <meta property="og:title" content="SafeShare – Links teilen. Ohne Ballast." />
   <meta property="og:description" content="Local-first URL Cleaner: unnötige Tracking-Parameter entfernen. App (schnell) + Pro (Policies, Audit, Export)." />
   <meta property="og:type" content="website" />
@@ -198,28 +197,40 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr (Portal) – iPad/Safari fix ===== */
+    /* ===== Mehr: Bottom-Sheet (stabil, kein Rumhüpfen) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.15);
+      background: rgba(0,0,0,.25);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
     .moreBtn{ appearance:none; cursor:pointer; }
+
     .moreMenu{
       position: fixed;
-      min-width: 240px;
-      padding: 8px;
-      border-radius: 16px;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      top: auto;
+
+      max-height: min(70vh, 520px);
+      overflow: auto;
+
+      padding: 10px;
+      border-radius: 18px;
       border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.92);
+      background: rgba(10,14,25,.96);
       box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
       z-index: 9999;
+
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{
+      transform: translateY(0);
+      opacity: 1;
     }
     @media (prefers-color-scheme: light){
       .moreOverlay{ background: rgba(17,24,39,.06); }
@@ -230,13 +241,16 @@
       }
     }
     .moreMenu a{
-      padding: 10px 10px;
-      border-radius: 12px;
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
+      margin-bottom: 8px;
       font-size: 13px;
     }
+    .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{
       color: var(--text);
       background: rgba(255,255,255,.08);
@@ -268,7 +282,6 @@
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
 
-        <!-- Mehr: nur Button (Menü ist unten im DOM) -->
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
           Mehr ▾
         </button>
@@ -327,8 +340,8 @@
         Local-first heißt: Verarbeitung im Browser – ohne dass du URLs an einen Tool-Server schicken musst.
       </p>
       <div class="row">
-        <a class="btn ghost" href="datenschutz.html">Datenschutz</a>
         <a class="btn ghost" href="press.html">Presse</a>
+        <a class="btn ghost" href="education.html">Schule</a>
       </div>
     </section>
 
@@ -345,7 +358,7 @@
     </footer>
   </div>
 
-  <!-- Mehr-Menü (Portal: direkt unter body, iPad/Safari-sicher) -->
+  <!-- Mehr (Bottom-Sheet) – OHNE Impressum/Datenschutz (die sind im Footer) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
 
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
@@ -356,8 +369,6 @@
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="press.html" data-page="press.html">Presse</a>
     <a href="status.html" data-page="status.html">Status</a>
-    <a href="impressum.html" data-page="impressum.html">Impressum</a>
-    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
   </nav>
 
   <script>
@@ -398,58 +409,30 @@
       const overlay = document.getElementById('moreOverlay');
       if (!btn || !menu || !overlay) return;
 
-      function placeMenu(){
-        const r = btn.getBoundingClientRect();
-        const gap = 8;
-
-        const menuW = menu.offsetWidth;
-        const menuH = menu.offsetHeight;
-
-        const left = Math.min(
-          window.innerWidth - menuW - 12,
-          Math.max(12, r.right - menuW)
-        );
-
-        const top = Math.min(
-          window.innerHeight - menuH - 12,
-          r.bottom + gap
-        );
-
-        menu.style.left = left + 'px';
-        menu.style.top  = top  + 'px';
-      }
-
       function openMenu(){
         overlay.hidden = false;
         menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
         btn.setAttribute('aria-expanded', 'true');
-
-        // iOS: 2 Frames warten, dann messen/positionieren
-        requestAnimationFrame(() => requestAnimationFrame(placeMenu));
       }
 
       function closeMenu(){
-        overlay.hidden = true;
-        menu.hidden = true;
+        menu.classList.remove('open');
         btn.setAttribute('aria-expanded', 'false');
+        setTimeout(() => {
+          menu.hidden = true;
+          overlay.hidden = true;
+        }, 180);
       }
 
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        const open = btn.getAttribute('aria-expanded') === 'true';
-        open ? closeMenu() : openMenu();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
       });
 
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
-      window.addEventListener('resize', () => {
-        if (btn.getAttribute('aria-expanded') === 'true') placeMenu();
-      }, { passive:true });
-
-      window.addEventListener('scroll', () => {
-        if (btn.getAttribute('aria-expanded') === 'true') closeMenu();
-      }, { passive:true });
     })();
   </script>
 </body>
