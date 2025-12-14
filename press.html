@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Presse</title>
-  <meta name="description" content="Presse-Infos zu SafeShare: Kurzbeschreibung, Pitch, Features (App/Pro), Kontakt, Links, Logos." />
+  <title>Presse – SafeShare Media Kit</title>
+  <meta name="description" content="Presse/Media Kit: SafeShare entfernt Tracking-Parameter aus Links (local-first). Fakten, Kurzbeschreibung, Assets, Links und Kontakt." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -28,7 +28,6 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
-      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -42,7 +41,6 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
-        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -73,14 +71,8 @@
     .logoWrap img{ width:28px; height:28px; display:block; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
-    .brandText .title{
-      font-size: 16px; font-weight: 780; line-height:1.1;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .brandText .sub{
-      font-size: 12px; color: var(--muted2); margin-top:2px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -104,44 +96,27 @@
       white-space: nowrap; flex: 0 0 auto;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{
-      color: var(--text);
-      border-color: rgba(47,227,183,.35);
-      background: rgba(47,227,183,.12);
-    }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
     .more{ position:relative; }
     .more > summary{ list-style:none; }
     .more > summary::-webkit-details-marker{ display:none; }
     .menu{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      min-width: 220px;
-      padding: 8px;
-      border-radius: 16px;
+      position:absolute; right:0; top: calc(100% + 8px);
+      min-width: 220px; padding: 8px; border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(10,14,25,.92);
       box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-      z-index: 80;
+      display:flex; flex-direction:column; gap: 6px; z-index: 80;
     }
     @media (prefers-color-scheme: light){
-      .menu{
-        background: rgba(255,255,255,.98);
-        border: 1px solid rgba(17,24,39,.12);
-        box-shadow: 0 18px 45px rgba(17,24,39,.12);
-      }
+      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
     }
     .menu a{
-      padding: 10px 10px;
-      border-radius: 12px;
+      padding: 10px 10px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size: 13px;
+      color: var(--muted); font-size: 13px;
     }
     .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
@@ -155,7 +130,7 @@
     }
     h1{
       margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 36px);
+      font-size: clamp(22px, 3.8vw, 40px);
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
@@ -183,52 +158,48 @@
       gap: 8px;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{
-      background: rgba(47,227,183,.18);
-      border-color: rgba(47,227,183,.35);
-    }
-    .btn.primary:hover{ background: rgba(47,227,183,.28); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .kv{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start;
-      padding: 10px 10px;
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
       margin-top: 10px;
     }
-    .kv .k{ color: var(--muted2); font-size: 12px; min-width: 180px; }
-    .kv .v{ color: var(--muted); font-size: 12px; word-break: break-word; }
-
-    .okBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+    @media(min-width: 980px){
+      .grid{ grid-template-columns: 1fr 1fr; }
     }
-
-    footer{
-      margin-top: 18px;
-      padding: 18px 4px 10px;
-      color: var(--muted2);
-      font-size: 12px;
-      line-height: 1.55;
+    .tile{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
     }
+    .tile h3{ margin: 0 0 8px; }
+    .tile p{ margin: 0 0 10px; }
+
+    footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
     .footLinks{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 14px;
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
     }
     .footLinks a{
-      padding: 6px 10px;
-      border-radius: 999px;
+      padding: 6px 10px; border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -248,10 +219,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Presse · Infos</div>
+          <div class="sub" id="pageSub">Presse · Media Kit</div>
         </div>
       </div>
-      <div class="small" id="pageTag">Material</div>
+      <div class="small" id="pageTag">Fakten & Assets</div>
     </header>
 
     <div class="tabsBar">
@@ -268,6 +239,7 @@
             <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
             <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
             <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="education.html" data-page="education.html">Schule</a>
             <a href="press.html" data-page="press.html">Presse</a>
             <a href="status.html" data-page="status.html">Status</a>
           </div>
@@ -276,81 +248,83 @@
     </div>
 
     <section class="card" id="top">
-      <h1>Press Kit – SafeShare</h1>
+      <h1>SafeShare Media Kit</h1>
       <p>
-        SafeShare entfernt Tracking-Parameter aus Links – lokal im Browser. Für Profis gibt es SafeShare Pro mit Policy, Audit und Export.
+        SafeShare entfernt typische Tracking-Parameter aus Links – local-first im Browser.
+        App für schnelle Bereinigung, Pro für professionelle Workflows (Policy/Audit/Export).
       </p>
 
       <div class="row">
-        <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn" href="pro.html">Pro ansehen</a>
-        <a class="btn" href="mailto:support.safeshare@proton.me">Kontakt</a>
-      </div>
-
-      <div class="okBox">
-        Kurzsatz (zitierfähig): „SafeShare ist Link-Hygiene: weniger Tracking-Ballast im Link, ohne Unsichtbarkeit zu versprechen.“
+        <a class="btn primary" href="index.html">Start</a>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="pro.html">Pro</a>
       </div>
     </section>
 
-    <section class="card">
-      <h2>Produkt in 3 Sätzen</h2>
-      <p>
-        SafeShare ist ein local-first Link-Reiniger, der Tracking-Parameter wie <code>utm_*</code>, <code>fbclid</code> oder <code>gclid</code>
-        entfernt. Die kostenlose App deckt den Alltag ab; SafeShare Pro ergänzt Regeln (Policy), Audit-Logs und Exporte für professionelle Workflows.
-        Das Ziel: saubere, nachvollziehbare Links beim Teilen – ohne unnötige Zusatzinformationen.
-      </p>
+    <section class="card" id="kurzbeschreibung">
+      <h2>Kurzbeschreibung (1 Satz)</h2>
+      <div class="monoBox">
+SafeShare bereinigt Links von typischen Tracking-Anhängen – lokal im Browser – und bietet mit Pro Audit, Policy und Export für professionelle Nutzung.
+      </div>
 
-      <h3>Warum jetzt?</h3>
+      <h2>Kurzbeschreibung (3 Sätze)</h2>
+      <div class="monoBox">
+Viele Links enthalten Tracking-Parameter wie UTM, gclid oder fbclid. SafeShare entfernt diese Zusätze local-first im Browser, ohne Proxy. SafeShare Pro richtet sich an Profis (Social/Redaktion/Publisher) mit Policy-Regeln, Audit-Transparenz und Export.
+      </div>
+    </section>
+
+    <section class="card" id="facts">
+      <h2>Fakten</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Was es ist</h3>
+          <ul>
+            <li>Web-App (läuft im Browser)</li>
+            <li>Link-Hygiene: Tracking-Anhänge entfernen</li>
+            <li>App + Pro (Professionals)</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>Was es nicht ist</h3>
+          <ul>
+            <li>Kein “Unsichtbarkeits”-Versprechen</li>
+            <li>Kein URL-Shortener-Proxy</li>
+            <li>Keine Anti-Tracking-Suite</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="links">
+      <h2>Links</h2>
       <ul>
-        <li>Links werden immer länger und enthalten immer mehr Tracking-Anhänge.</li>
-        <li>In Social/Redaktion/Newsletter ist „sauberer Link“ ein Qualitätsmerkmal.</li>
-        <li>Local-first ist ein klarer Gegenentwurf zu Tools, die Links serverseitig verarbeiten.</li>
+        <li><strong>Start:</strong> <code>index.html</code></li>
+        <li><strong>App:</strong> <code>app.html</code></li>
+        <li><strong>Pro:</strong> <code>pro.html</code></li>
+        <li><strong>Hilfe:</strong> <code>help.html</code></li>
+        <li><strong>Erklärseiten:</strong> <code>tracking-parameter.html</code>, <code>utm-parameter-entfernen.html</code></li>
       </ul>
     </section>
 
-    <section class="card">
-      <h2>Key Facts</h2>
-      <div class="kv"><div class="k">Name</div><div class="v">SafeShare</div></div>
-      <div class="kv"><div class="k">Kategorie</div><div class="v">Link Hygiene / URL Cleaner / Tracking-Parameter entfernen</div></div>
-      <div class="kv"><div class="k">Betrieb</div><div class="v">Local-first (Browser)</div></div>
-      <div class="kv"><div class="k">Zielgruppen</div><div class="v">Social Media, Journalismus, Publisher, Teams</div></div>
-      <div class="kv"><div class="k">Kostenlos</div><div class="v">SafeShare App</div></div>
-      <div class="kv"><div class="k">Paid</div><div class="v">SafeShare Pro (Policy / Audit / Export)</div></div>
-      <div class="kv"><div class="k">Kontakt</div><div class="v">support.safeshare@proton.me</div></div>
+    <section class="card" id="assets">
+      <h2>Assets (Dateien im Repo)</h2>
+      <ul>
+        <li><strong>Logo SVG:</strong> <code>logo.svg</code></li>
+        <li><strong>Icons:</strong> <code>assets/icons/</code></li>
+        <li><strong>Open Graph:</strong> <code>assets/og/og-index.jpg</code></li>
+      </ul>
+
+      <p>Optional: hier kannst du später ein ZIP mit Assets verlinken (falls du eins ins Repo legst).</p>
     </section>
 
-    <section class="card">
-      <h2>Links</h2>
-      <div class="kv"><div class="k">Start</div><div class="v"><a href="index.html">index.html</a></div></div>
-      <div class="kv"><div class="k">App</div><div class="v"><a href="app.html">app.html</a></div></div>
-      <div class="kv"><div class="k">Pro</div><div class="v"><a href="pro.html">pro.html</a></div></div>
-      <div class="kv"><div class="k">Hilfe</div><div class="v"><a href="help.html">help.html</a></div></div>
-      <div class="kv"><div class="k">UTM erklärt</div><div class="v"><a href="utm-parameter-entfernen.html">utm-parameter-entfernen.html</a></div></div>
-      <div class="kv"><div class="k">Tracking erklärt</div><div class="v"><a href="tracking-parameter.html">tracking-parameter.html</a></div></div>
-      <div class="kv"><div class="k">Tool-Vergleich</div><div class="v"><a href="url-cleaner-tool-vergleich.html">url-cleaner-tool-vergleich.html</a></div></div>
-    </section>
-
-    <section class="card">
-      <h2>Logos & Assets</h2>
+    <section class="card" id="kontakt">
+      <h2>Kontakt</h2>
       <p>
-        <strong>Logo:</strong> <code>logo.svg</code> (liegt im Repo). Wenn du zusätzlich PNG-Varianten hast, verlinke sie hier.
+        Trage hier deinen Kontakt ein (Mail/Signal/Website). Wenn du nichts öffentlich willst: nur ein Formular-Link.
       </p>
-      <div class="row">
-        <a class="btn" href="logo.svg">logo.svg öffnen</a>
-      </div>
-      <p style="margin-top:10px;">
-        Tipp: Für Presse kannst du einen Ordner <code>assets/press/</code> anlegen (Logo-PNG, Screenshots, OG-Bilder).
-      </p>
-    </section>
-
-    <section class="card">
-      <h2>Interview / Anfrage</h2>
-      <p>
-        Wenn du über SafeShare schreiben willst, nenne gerne:
-        <strong>Use-Case</strong> (Social/Redaktion/Newsletter), <strong>Beispiel-Links</strong> und ob du Pro-Features sehen willst (Audit/Export).
-      </p>
-      <div class="row">
-        <a class="btn primary" href="mailto:support.safeshare@proton.me?subject=Press%20Request%20%E2%80%93%20SafeShare">Mail schreiben</a>
+      <div class="monoBox">
+E-Mail: kontakt@deinedomain.tld
+Presse: presse@deinedomain.tld
       </div>
     </section>
 
@@ -364,6 +338,7 @@
         <a href="utm-parameter-entfernen.html">UTM</a>
         <a href="tracking-parameter.html">Tracking</a>
         <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="education.html">Schule</a>
         <a href="press.html">Presse</a>
         <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
@@ -392,7 +367,7 @@
       const sub = document.getElementById('pageSub');
       const tag = document.getElementById('pageTag');
       const map = {
-        "index.html": ["Start · Überblick", "Links teilen. Ohne Ballast."],
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
         "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
@@ -401,7 +376,8 @@
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
         "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "press.html": ["Presse · Infos", "Material"]
+        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "press.html": ["Presse · Media Kit", "Fakten & Assets"]
       };
       if (sub && map[path]) sub.textContent = map[path][0];
       if (tag && map[path]) tag.textContent = map[path][1];
