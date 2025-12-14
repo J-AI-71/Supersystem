@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare Pro – Policy & Audit für Profis</title>
-  <meta name="description" content="SafeShare Pro: Bulk-Link-Cleaning, Policies (Whitelist/Blacklist), Audit pro Link und Export (CSV/JSON) – local-first, ohne Konto." />
+  <title>SafeShare Pro – Policy · Audit · Export</title>
+  <meta name="description" content="SafeShare Pro für Profis: Policy/Regeln, Audit-Log (Was wurde geändert?), Batch, Export (CSV/JSON), Whitelist/Blacklist, Domain-Overrides. Local-first." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -17,7 +17,6 @@
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.045);
       --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
@@ -28,22 +27,22 @@
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,95,95,.16);
       --ok: rgba(47,227,183,.16);
-      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff; --card2:#f5f7ff;
+        --card:#ffffff;
         --border: rgba(17,24,39,.12);
         --text: rgba(17,24,39,.95);
         --muted: rgba(17,24,39,.72);
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,95,95,.18);
         --ok: rgba(47,227,183,.18);
-        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -111,6 +110,41 @@
       background: rgba(47,227,183,.12);
     }
 
+    .more{ position:relative; }
+    .more > summary{ list-style:none; }
+    .more > summary::-webkit-details-marker{ display:none; }
+    .menu{
+      position:absolute;
+      right:0;
+      top: calc(100% + 8px);
+      min-width: 220px;
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.92);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      z-index: 80;
+    }
+    @media (prefers-color-scheme: light){
+      .menu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menu a{
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -121,13 +155,17 @@
     }
     h1{
       margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 34px);
-      line-height: 1.15;
+      font-size: clamp(22px, 3.8vw, 40px);
+      line-height: 1.12;
       letter-spacing: -0.2px;
     }
     h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
@@ -163,25 +201,6 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr 1fr; }
-    }
-
-    .box{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 14px;
-      min-height: 120px;
-    }
-    .box p{ margin: 6px 0 0; }
-
     .okBox{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
@@ -202,11 +221,66 @@
       font-size: 13px;
       line-height: 1.45;
     }
-    .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
-    .small{ font-size: 12px; color: var(--muted2); line-height: 1.45; }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .badBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,95,95,.55);
+      background: var(--bad);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
 
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    .tile{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .tile h3{ margin: 0 0 8px; }
+    .tile p{ margin: 0 0 10px; }
+
+    .tableWrap{
+      overflow:auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+    table{ width:100%; border-collapse: collapse; min-width: 760px; }
+    th, td{
+      text-align:left;
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align: top;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    th{ color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    .yes{ color: var(--text); }
+    .no{ color: var(--muted2); }
+
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
     footer{
       margin-top: 18px;
@@ -215,21 +289,13 @@
       font-size: 12px;
       line-height: 1.55;
     }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 14px;
-    }
-    @media(min-width: 920px){
-      .footGrid{ grid-template-columns: 1.2fr .8fr; }
-    }
     .footLinks{
       display:flex;
       gap: 10px;
       flex-wrap: wrap;
       justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
     }
     .footLinks a{
       padding: 6px 10px;
@@ -253,168 +319,347 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Pro · für Social & Journalismus</div>
+          <div class="sub" id="pageSub">Pro · für Social & Journalismus</div>
         </div>
       </div>
-      <div class="small">Policy · Audit · Export</div>
+      <div class="small" id="pageTag">Policy · Audit · Export</div>
     </header>
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="app.html">App</a>
-        <a class="tab active" href="pro.html">Pro</a>
-        <a class="tab" href="utm-parameter-entfernen.html">UTM</a>
-        <a class="tab" href="tracking-parameter.html">Tracking</a>
-        <a class="tab" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a class="tab" href="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html">Bookmarklets</a>
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+        <details class="more" id="navMore">
+          <summary class="tab" data-page="more">Mehr ▾</summary>
+          <div class="menu" role="menu" aria-label="Mehr">
+            <a href="index.html" data-page="index.html">Start</a>
+            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="press.html" data-page="press.html">Presse</a>
+            <a href="status.html" data-page="status.html">Status</a>
+          </div>
+        </details>
       </div>
     </div>
 
+    <!-- Hero -->
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> SafeShare Pro</div>
-      <h1>Policy & Audit für Links – gebaut für Profis.</h1>
+      <h1>Pro ist nicht „mehr Reiniger“. Pro ist ein Workflow für Profis.</h1>
       <p>
-        SafeShare Pro ist der professionelle Workflow für alle, die täglich Links veröffentlichen:
-        Bulk bereinigen, Regeln standardisieren, Änderungen nachvollziehen und als CSV/JSON exportieren –
-        local-first, ohne Konto.
+        Wenn du Links beruflich nutzt (Social, Redaktion, Newsletter, Publisher, Team): Du brauchst Regeln,
+        Nachvollziehbarkeit und Exporte – nicht nur „remove utm“.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person kaufen</a>
-        <a class="btn" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team kaufen</a>
-        <a class="btn" href="app.html">Kostenlose App öffnen</a>
+        <a class="btn primary" href="#kaufen">Pro kaufen</a>
+        <a class="btn" href="app.html">Kostenlose App</a>
         <a class="btn ghost" href="#features">Features</a>
-        <a class="btn ghost" href="#workflow">Workflow</a>
+      </div>
+
+      <div class="okBox">
+        SafeShare Pro arbeitet local-first: Links bleiben bei dir. Kein Proxy, kein „schick mir deine URL“-Server.
+      </div>
+    </section>
+
+    <!-- For whom -->
+    <section class="card" id="fuerwen">
+      <h2>Für wen ist Pro?</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Social Media Teams</h3>
+          <p>Viele Links, viele Plattformen, wenig Zeit. Pro standardisiert Regeln pro Kanal und liefert Audit/Export.</p>
+          <ul>
+            <li>Preset pro Plattform (z. B. IG, X, LinkedIn)</li>
+            <li>Batch-Listen</li>
+            <li>CSV/JSON Export</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>Journalismus / Redaktion</h3>
+          <p>Du willst saubere, überprüfbare Links – und du musst begründen können, was du entfernt hast.</p>
+          <ul>
+            <li>Audit: „Was wurde geändert?“</li>
+            <li>Whitelist für funktionale Parameter</li>
+            <li>Deterministische Ergebnisse (QA)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature set -->
+    <section class="card" id="features">
+      <h2>Was Pro konkret liefert</h2>
+
+      <div class="grid">
+        <div class="tile">
+          <h3>1) Policy (Regeln)</h3>
+          <ul>
+            <li>Profile/Presets pro Use-Case</li>
+            <li>Domain-Overrides (z. B. „bei domain X diese Keys behalten“)</li>
+            <li>Whitelist/Blacklist (Keys, optional Patterns)</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>2) Audit (Nachvollziehbarkeit)</h3>
+          <ul>
+            <li>Liste „Entfernt“ und „Behalten“</li>
+            <li>Ideal zum Debuggen, wenn Links brechen</li>
+            <li>Audit ist die Grundlage für professionelle Qualitätssicherung</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="tile">
+          <h3>3) Batch & QA</h3>
+          <ul>
+            <li>Mehrere Links auf einmal verarbeiten</li>
+            <li>Vergleich vorher/nachher</li>
+            <li>Sauberer Output für Copy/Paste/Sheets</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>4) Export</h3>
+          <ul>
+            <li>CSV/JSON Export (z. B. fürs Team, Doku, Review)</li>
+            <li>Wiederholbarkeit: gleiche Regeln → gleiche Ergebnisse</li>
+            <li>Transparenz statt Black Box</li>
+          </ul>
+        </div>
       </div>
 
       <div class="warnBox">
-        Wichtig: Die Pro-App selbst liegt nicht öffentlich auf dieser Website, sondern wird nach Kauf als Download bereitgestellt.
+        Warum Audit/Whitelist wichtig ist: Manche Parameter sind funktional oder sicherheitsrelevant (Token/Signaturen).
+        Pro hilft dir, nicht blind zu entfernen.
+      </div>
+
+      <div class="row">
+        <a class="btn primary" href="help.html#pro">So nutzt man Pro</a>
+        <a class="btn" href="tracking-parameter.html">Tracking erklärt</a>
+        <a class="btn ghost" href="bookmarklets.html">Bookmarklets (1-Klick)</a>
       </div>
     </section>
 
-    <section class="card" id="features">
-      <h2>Was Pro von normalen URL-Cleanern unterscheidet</h2>
-      <p>Pro ist nicht „mehr entfernen“. Pro ist: <strong>kontrolliert</strong>, <strong>erklärbar</strong>, <strong>wiederholbar</strong>.</p>
+    <!-- Practical matrix -->
+    <section class="card" id="matrix">
+      <h2>Praxis-Kriterien (warum Pro anders ist)</h2>
+      <div class="tableWrap" role="region" aria-label="Pro Kriterien" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th>Kriterium</th>
+              <th>SafeShare App</th>
+              <th>SafeShare Pro</th>
+              <th>Typische Cleaner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Local-first</strong></td>
+              <td class="yes">Ja</td>
+              <td class="yes">Ja</td>
+              <td class="no">Oft nein</td>
+            </tr>
+            <tr>
+              <td><strong>Policy/Profile</strong></td>
+              <td class="no">Nein</td>
+              <td class="yes">Ja</td>
+              <td class="no">Selten</td>
+            </tr>
+            <tr>
+              <td><strong>Whitelist/Blacklist</strong></td>
+              <td class="no">Nein</td>
+              <td class="yes">Ja</td>
+              <td class="no">Meist nur „remove list“</td>
+            </tr>
+            <tr>
+              <td><strong>Audit-Log</strong></td>
+              <td class="no">Basis/Minimal</td>
+              <td class="yes">Voll</td>
+              <td class="no">Selten</td>
+            </tr>
+            <tr>
+              <td><strong>Batch</strong></td>
+              <td class="no">Optional separat</td>
+              <td class="yes">Ja</td>
+              <td class="no">Unterschiedlich</td>
+            </tr>
+            <tr>
+              <td><strong>Export (CSV/JSON)</strong></td>
+              <td class="no">Nein</td>
+              <td class="yes">Ja</td>
+              <td class="no">Selten</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="card" id="workflow">
+      <h2>So sieht der Pro-Workflow aus</h2>
+      <ol style="margin:0 0 12px 18px; color:var(--muted); line-height:1.55;">
+        <li>Preset wählen (Use-Case oder Plattform)</li>
+        <li>Link(s) einfügen (einzeln oder Batch)</li>
+        <li>Bereinigen + Audit prüfen („Entfernt/Behalten“)</li>
+        <li>Falls nötig: Whitelist/Override anpassen (Domain/Keys)</li>
+        <li>Output kopieren oder exportieren (CSV/JSON)</li>
+      </ol>
+
+      <div class="row">
+        <a class="btn primary" href="help.html#beispiele">Testlinks</a>
+        <a class="btn" href="status.html">Cache/Update (Status)</a>
+      </div>
+    </section>
+
+    <!-- Purchase -->
+    <section class="card" id="kaufen">
+      <h2>Pro kaufen</h2>
+      <p>Du hast zwei Varianten:</p>
 
       <div class="grid">
-        <div class="box">
-          <h3>Audit pro Link</h3>
-          <p>Original → Clean mit Gründen (STD/Blacklist/Affiliate/Whitelist) + Status OK/WARN/RISK.</p>
+        <div class="tile">
+          <h3>Pro Person</h3>
+          <p>Für Einzelpersonen (Creator, Journalist:in, Social Manager).</p>
+          <div class="row">
+            <a class="btn primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Kaufen</a>
+            <a class="btn" href="#zugang">Zugang nach Kauf</a>
+          </div>
+          <p style="margin-top:10px; color:var(--muted2); font-size:12px;">
+            Payhip: https://payhip.com/b/VDm3B
+          </p>
         </div>
-        <div class="box">
-          <h3>Policies statt Bauchgefühl</h3>
-          <p>Whitelist/Blacklist, Profile und Domain-Overrides – lokal gespeichert, teilbar als Policy JSON.</p>
-        </div>
-        <div class="box">
-          <h3>Export für Profis</h3>
-          <p>Audit als CSV/JSON. Perfekt für Redaktion, Doku, QA und Team-Workflows.</p>
+
+        <div class="tile">
+          <h3>Pro Team</h3>
+          <p>Für Teams/Organisationen (gemeinsame Regeln, Standards, QA).</p>
+          <div class="row">
+            <a class="btn primary" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Kaufen</a>
+            <a class="btn" href="team-setup.html">Team Setup</a>
+          </div>
+          <p style="margin-top:10px; color:var(--muted2); font-size:12px;">
+            Payhip: https://payhip.com/b/Yxh5T
+          </p>
         </div>
       </div>
 
-      <div class="sep"></div>
+      <div class="warnBox" id="zugang">
+        Nach dem Kauf solltest du im Payhip-Download/Handbuch einen Link zur Pro-App haben (z. B. <code>pro-app.html</code>)
+        oder einen Aktivierungs-/Zugangsflow (z. B. <code>pro-activate.html</code>).
+        Wenn du willst, hänge ich das sauber zusammen (ohne 404): pro.html → pro-activate.html → pro-app.html.
+      </div>
+    </section>
 
-      <h3>Für wen ist das?</h3>
-      <ul>
-        <li><strong>Social / Creator:</strong> viele Links, schnell, konsistent, optional affiliate-fair.</li>
-        <li><strong>Journalismus / Redaktion / NGOs:</strong> sauber teilen + nachvollziehbar dokumentieren.</li>
-        <li><strong>Newsletter / PR:</strong> Textblock rein, Linkliste raus, Wrapper/Redirects optional.</li>
-      </ul>
+    <!-- Affiliates -->
+    <section class="card" id="affiliates">
+      <h2>Affiliates / Partner</h2>
+      <p>
+        Wenn du Affiliate-Links nutzt, soll das mit SafeShare nicht kaputtgehen. Praxisregel:
+        Tracking-Parameter entfernen – aber Partner-Attribution bewusst steuern.
+      </p>
+
+      <h3>Payhip Affiliate-Ref (Beispiel)</h3>
+      <div class="monoBox">
+Pro Person:
+https://payhip.com/b/VDm3B?ref=DEINCODE
+
+Pro Team:
+https://payhip.com/b/Yxh5T?ref=DEINCODE
+      </div>
 
       <div class="okBox">
-        Guardrails statt Risiko: Signatur/Token-Keys werden als <strong>RISK</strong> markiert (Link könnte brechen), nicht „still“ kaputt gemacht.
+        Pro ist genau dafür da: du kannst „ref“ (oder andere Affiliate-Keys) whitelisten,
+        während du UTM/Click-IDs entfernst.
+      </div>
+
+      <div class="row">
+        <a class="btn" href="partners.html">Partners</a>
+        <a class="btn ghost" href="help.html#pro">Wie Whitelist funktioniert</a>
       </div>
     </section>
 
-    <section class="card" id="workflow">
-      <h2>Der Pro-Workflow</h2>
-      <p>So arbeitet man in der Praxis, wenn Links sauber und reproduzierbar sein sollen:</p>
-
-      <div class="grid">
-        <div class="box">
-          <h3>1) Bulk Input</h3>
-          <p>Textblock einfügen (Mails, Notizen, Listen). SafeShare erkennt alle URLs.</p>
-        </div>
-        <div class="box">
-          <h3>2) Audit prüfen</h3>
-          <p>OK/WARN/RISK. Bei RISK: Whitelist-Fix oder manuell whitelisten.</p>
-        </div>
-        <div class="box">
-          <h3>3) Export & Standard</h3>
-          <p>Audit exportieren (CSV/JSON). Policy exportieren und im Team wiederverwenden.</p>
-        </div>
-      </div>
-
-      <div class="sep"></div>
-
-      <h3>Was Pro praktisch löst</h3>
-      <ul>
-        <li><strong>Bulk:</strong> viele Links aus Textblöcken auf einmal.</li>
-        <li><strong>Nachvollziehbarkeit:</strong> jede Änderung im Audit sichtbar.</li>
-        <li><strong>Standardisierung:</strong> gleiche Policy → gleiche Ergebnisse.</li>
-        <li><strong>Weitergabe:</strong> Policies als Datei exportierbar (Team).</li>
-      </ul>
-    </section>
-
-    <section class="card" id="paket">
-      <h2>Was du nach Kauf bekommst</h2>
-      <p>Du erhältst ein Download-Paket (ZIP), das lokal im Browser läuft.</p>
-
-      <ul>
-        <li><strong>pro-app.html</strong> (Pro Workspace: Bulk → Audit → Export)</li>
-        <li><strong>handbuch-pro.html</strong> (HTML-Handbuch, offline nutzbar)</li>
-        <li><strong>logo.svg</strong> (Branding-Asset)</li>
-        <li>optional: <strong>start.html</strong> (Launcher, 1 Klick zu Pro/Handbuch)</li>
-      </ul>
-
-      <div class="small">
-        Hinweis: Wenn du das Paket auf eigenem Webspace hosten willst, ist das technisch möglich – dann liegt der Zugriffsschutz in deiner Verantwortung.
-      </div>
-    </section>
-
+    <!-- FAQ -->
     <section class="card" id="faq">
       <h2>FAQ</h2>
 
-      <h3>Warum reicht die kostenlose App nicht?</h3>
+      <h3>Ist Pro eine „zweite App“?</h3>
       <p>
-        Für „ein Link rein, sauber raus“ reicht sie. Pro ist für Workflows, bei denen du <strong>nachweisen</strong> willst,
-        was geändert wurde und warum – und das als Standard (Policy) wiederholen möchtest.
+        App = Alltag. Pro = Workflow + Kontrolle (Policy/Audit/Export). Die Bereinigung ist nicht das Feature – die Nachvollziehbarkeit ist es.
       </p>
 
-      <h3>Was bedeutet OK/WARN/RISK?</h3>
+      <h3>Warum local-first?</h3>
       <p>
-        <strong>OK</strong>: unkritisch. <strong>WARN</strong>: Hinweis (z. B. Wrapper offline nicht entpackbar).
-        <strong>RISK</strong>: token/signatur-ähnliche Keys wurden entfernt – Link könnte brechen → Whitelist-Fix.
+        Weil Links Inhalte, Kontexte und sensible Recherchen enthalten können. Pro ist bewusst kein Serverdienst.
       </p>
 
-      <h3>Ist das „Privacy total“?</h3>
+      <h3>Warum brechen manche Links nach dem Reinigen?</h3>
       <p>
-        Nein. SafeShare entfernt unnötigen Ballast im Link. Es ist Link-Hygiene, kein Unsichtbarkeits-Versprechen.
+        Weil manche Parameter funktional sind (Token/Signaturen, Checkout-IDs). Pro zeigt dir genau, was betroffen ist.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person kaufen</a>
-        <a class="btn" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team kaufen</a>
-        <a class="btn" href="app.html">Kostenlose App</a>
+        <a class="btn primary" href="help.html">Hilfe öffnen</a>
+        <a class="btn" href="status.html">Status (Cache/Update)</a>
       </div>
     </section>
 
     <footer>
-      <div class="footGrid">
-        <div>
-          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>Pro: Policy & Audit · local-first · ohne Konto.</div>
-        </div>
-        <div class="footLinks">
-          <a href="app.html">App</a>
-          <a href="pro.html">Pro</a>
-          <a href="help.html">Hilfe</a>
-          <a href="bookmarklets.html">Bookmarklets</a>
-          <a href="datenschutz.html">Datenschutz</a>
-          <a href="impressum.html">Impressum</a>
-        </div>
+      <div class="footLinks">
+        <a href="index.html">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="pro.html">Pro</a>
+        <a href="help.html">Hilfe</a>
+        <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="utm-parameter-entfernen.html">UTM</a>
+        <a href="tracking-parameter.html">Tracking</a>
+        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="press.html">Presse</a>
+        <a href="status.html">Status</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
       </div>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      const path = location.pathname.split('/').pop() || 'index.html';
+
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      const moreSummary = document.querySelector('.more > summary');
+      const menuActive = document.querySelector('.menu a.active');
+      if (menuActive && moreSummary) moreSummary.classList.add('active');
+
+      const navMore = document.getElementById('navMore');
+      document.querySelectorAll('.menu a').forEach(a => {
+        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
+      });
+
+      const sub = document.getElementById('pageSub');
+      const tag = document.getElementById('pageTag');
+      const map = {
+        "index.html": ["Start · Überblick", "Links teilen. Ohne Ballast."],
+        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
+        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
+        "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
+        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
+        "status.html": ["Status · Service Worker", "Cache/Updates"],
+        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
+        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
+        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
+        "press.html": ["Presse · Infos", "Material"]
+      };
+      if (sub && map[path]) sub.textContent = map[path][0];
+      if (tag && map[path]) tag.textContent = map[path][1];
+    })();
+  </script>
 </body>
 </html>
