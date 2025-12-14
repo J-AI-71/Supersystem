@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Datenschutz – SafeShare</title>
-  <meta name="description" content="Datenschutzerklärung für SafeShare. Local-first Link-Reinigung im Browser, Hinweise zu Hosting, Pro-Kauf (Payhip), Rechten nach DSGVO." />
+  <title>Datenschutzerklärung – SafeShare</title>
+  <meta name="description" content="Datenschutzerklärung zu SafeShare (local-first). Informationen zur Verarbeitung personenbezogener Daten, Kontakt, Hosting und Cookies." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -28,7 +28,6 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
-      --bad: rgba(255,95,95,.16);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -42,7 +41,6 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
-        --bad: rgba(255,95,95,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -55,7 +53,7 @@
         radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
         linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
-    a{ color:inherit; text-decoration:none; }
+    a{ color:inherit; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
@@ -72,6 +70,7 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -93,104 +92,46 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      text-decoration:none;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
-
-    .more{ position:relative; }
-    .more > summary{ list-style:none; }
-    .more > summary::-webkit-details-marker{ display:none; }
-    .menu{
-      position:absolute; right:0; top: calc(100% + 8px);
-      min-width: 220px; padding: 8px; border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.92);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex; flex-direction:column; gap: 6px; z-index: 80;
-    }
-    @media (prefers-color-scheme: light){
-      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
-    }
-    .menu a{
-      padding: 10px 10px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted); font-size: 13px;
-    }
-    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
     .card{
       margin-top: 14px;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 18px;
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 40px);
-      line-height: 1.12;
-      letter-spacing: -0.2px;
-    }
-    h2{ margin: 14px 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 12px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
-    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 40px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 16px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 10px; color: var(--muted); line-height: 1.6; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
-    .monoBox{
-      margin-top:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
+    .kv{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
+      border-radius: 16px;
+      padding: 12px;
+      margin-top: 10px;
     }
+    .k{ font-size: 12px; color: var(--muted2); }
+    .v{ font-weight: 780; margin-top: 4px; word-break: break-word; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
-    .okBox{
+    .note,.warn{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
       padding: 10px 12px;
       border-radius: 12px;
-      color: var(--text);
       font-size: 13px;
       line-height: 1.45;
-    }
-    .warnBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
       color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
     }
-
-    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
-    .btn{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      cursor:pointer;
-      user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-    }
-    .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
-    .btn.primary:hover{ background: var(--mint3); }
-    .btn.ghost{ background: transparent; color: var(--muted); }
-    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
     footer{
       margin-top: 18px;
@@ -208,8 +149,60 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
+      text-decoration:none;
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+      text-decoration:none;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
 
@@ -224,10 +217,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Datenschutz</div>
+          <div class="sub">Datenschutzerklärung</div>
         </div>
       </div>
-      <div class="small" id="pageTag">DSGVO</div>
+      <div class="small">DSGVO</div>
     </header>
 
     <div class="tabsBar">
@@ -236,191 +229,174 @@
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-
-        <details class="more" id="navMore">
-          <summary class="tab" data-page="more">Mehr ▾</summary>
-          <div class="menu" role="menu" aria-label="Mehr">
-            <a href="index.html" data-page="index.html">Start</a>
-            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-            <a href="education.html" data-page="education.html">Schule</a>
-            <a href="press.html" data-page="press.html">Presse</a>
-            <a href="status.html" data-page="status.html">Status</a>
-            <a href="impressum.html" data-page="impressum.html">Impressum</a>
-            <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          </div>
-        </details>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
     <section class="card">
       <h1>Datenschutzerklärung</h1>
-      <p>
-        Diese Datenschutzerklärung informiert darüber, welche personenbezogenen Daten beim Besuch dieser Website
-        und bei der Nutzung von SafeShare verarbeitet werden.
-      </p>
 
-      <div class="okBox">
-        Grundprinzip von SafeShare: Link-Bereinigung erfolgt <strong>local-first im Browser</strong>.
-        Das heißt: Die eingegebenen Links werden (für die Kernfunktion) nicht an einen SafeShare-Server gesendet.
+      <div class="kv">
+        <div class="k">Verantwortliche</div>
+        <div class="v">Jana Jergus</div>
       </div>
 
-      <h2>1. Verantwortliche Stelle</h2>
-      <div class="monoBox">Jana Jergus
-Auf dem Emdgenberg
-61250 Usingen
-Germany
-E-Mail: support.safeshare@proton.me</div>
+      <div class="kv">
+        <div class="k">Kontakt</div>
+        <div class="v"><a class="mono" href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a></div>
+      </div>
 
-      <h2>2. Überblick: Was wird verarbeitet?</h2>
-      <h3>2.1 Besuch der Website</h3>
-      <p>
-        Beim Aufruf einer Website werden technisch bedingt Daten verarbeitet, z. B. IP-Adresse, Datum/Uhrzeit,
-        aufgerufene Seite, User-Agent/Browser. Diese Daten fallen typischerweise in Server-Logs des Hosters an.
+      <div class="kv">
+        <div class="k">Anschrift</div>
+        <div class="v">Auf dem Emdgenberg, 61250 Usingen, Germany</div>
+      </div>
+
+      <p style="margin-top:12px">
+        Diese Datenschutzerklärung informiert über Art, Umfang und Zweck der Verarbeitung personenbezogener Daten
+        beim Besuch dieser Website und bei der Nutzung der SafeShare Web-App.
       </p>
 
-      <h3>2.2 Nutzung der App-Funktion</h3>
+      <div class="note">
+        Kernprinzip: SafeShare ist <b>local-first</b>. Link-Bereinigung findet im Browser statt.
+        Es werden keine bereinigten Links an einen SafeShare-Server übertragen.
+      </div>
+
+      <h2>1. Hosting / Bereitstellung der Website</h2>
       <p>
-        Die Link-Reinigung findet im Browser statt. Die von dir eingefügten URLs werden nicht automatisch an SafeShare übertragen.
-        Die Verarbeitung erfolgt lokal auf deinem Gerät.
+        Diese Website wird über GitHub Pages bereitgestellt (GitHub, Inc.). Beim Aufruf der Website werden durch den Hosting-Anbieter
+        technisch erforderliche Zugriffsdaten verarbeitet (z. B. IP-Adresse, Datum/Uhrzeit, angeforderte Seite, User-Agent),
+        um die Auslieferung der Website zu ermöglichen und die Sicherheit/Fehleranalyse zu gewährleisten.
+      </p>
+      <p>
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherer und stabiler Bereitstellung).
       </p>
 
-      <h3>2.3 Kontaktaufnahme</h3>
+      <h2>2. SafeShare App: Verarbeitung im Browser (local-first)</h2>
       <p>
-        Wenn du per E-Mail Kontakt aufnimmst, werden die von dir übermittelten Daten (z. B. E-Mail-Adresse, Inhalt)
+        Die Link-Bereinigung (Entfernen von Tracking-Parametern) erfolgt clientseitig im Browser.
+        Die von dir eingegebenen oder eingefügten URLs werden nicht an mich übertragen.
+      </p>
+
+      <h2>3. Speicherungen im Browser (LocalStorage / Cache / Service Worker)</h2>
+      <p>
+        Zur Funktionalität und Komfort kann SafeShare Daten lokal im Browser speichern, z. B.:
+      </p>
+      <ul>
+        <li>Einstellungen/Presets (z. B. bevorzugte Bereinigungsmodi)</li>
+        <li>Whitelist/Allowlist-Regeln (insb. für Pro)</li>
+        <li>Service-Worker-Cache (Offline-Fähigkeit / schnellere Ladezeiten)</li>
+      </ul>
+      <p>
+        Diese Daten verbleiben auf deinem Gerät und können jederzeit in den Browser-Einstellungen gelöscht werden
+        (Website-Daten, Cache, LocalStorage).
+      </p>
+      <div class="warn">
+        Hinweis: Der Service Worker speichert Dateien (HTML/CSS/JS) für Offline/Speed. Das ist kein Tracking.
+      </div>
+
+      <h2>4. Cookies</h2>
+      <p>
+        SafeShare setzt selbst keine Tracking-Cookies. Technisch notwendige Speicherungen können durch den Browser (Cache)
+        bzw. den Service Worker erfolgen (siehe oben).
+      </p>
+
+      <h2>5. Kontaktaufnahme</h2>
+      <p>
+        Wenn du per E-Mail Kontakt aufnimmst, werden die von dir übermittelten Daten (z. B. E-Mail-Adresse, Inhalt der Nachricht)
         zur Bearbeitung der Anfrage verarbeitet.
       </p>
-
-      <h2>3. Hosting</h2>
       <p>
-        Diese Website ist als statische Website gehostet (z. B. GitHub Pages). Der Hosting-Anbieter kann im Rahmen des Betriebs
-        Server-Logdaten verarbeiten (insbesondere IP-Adresse und technische Zugriffsdaten).
-      </p>
-      <p>
-        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherem und stabilem Betrieb der Website).
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche/vertragliche Kommunikation) bzw.
+        Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Bearbeitung von Anfragen).
       </p>
 
-      <h2>4. Cookies, Tracking, Analytics</h2>
+      <h2>6. Externe Links (z. B. Payhip)</h2>
       <p>
-        SafeShare setzt nach aktuellem Stand <strong>keine</strong> eigenen Tracking-Cookies und nutzt <strong>keine</strong> Analytics/Profiling,
-        um Nutzer:innen zu verfolgen.
-      </p>
-      <div class="warnBox">
-        Hinweis: Externe Plattformen, die du über Links aufrufst (z. B. Payhip), können eigene Cookies/Tracking einsetzen.
-        Es gelten dann deren Datenschutzbestimmungen.
-      </div>
-
-      <h2>5. Pro-Kauf (Payhip)</h2>
-      <p>
-        Für den Kauf/Bezahlvorgang der Pro-Version wird auf Payhip verlinkt (externer Anbieter).
-        Beim Besuch/Bestellvorgang bei Payhip werden Daten durch Payhip verarbeitet (z. B. Zahlungs- und Bestelldaten).
-      </p>
-      <p>
-        Rechtsgrundlage für die Weiterleitung/Einbindung als externer Link: Art. 6 Abs. 1 lit. b DSGVO (Vertrag/Anbahnung) und/oder
-        Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am Vertrieb des Produkts).
+        Diese Website kann Links zu externen Anbietern enthalten (z. B. Payhip für den Kauf).
+        Beim Anklicken gelten die Datenschutzbestimmungen des jeweiligen Anbieters.
       </p>
 
-      <h2>6. Service Worker / Offline-Funktion</h2>
+      <h2>7. Deine Rechte</h2>
       <p>
-        SafeShare kann einen Service Worker verwenden, um Inhalte lokal im Browser zwischenzuspeichern (Cache) und Offline-Funktionalität zu ermöglichen.
-        Das betrifft Dateien/Assets der Website (z. B. HTML/CSS/JS) und dient der Performance.
+        Du hast nach DSGVO insbesondere folgende Rechte: Auskunft (Art. 15), Berichtigung (Art. 16),
+        Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20), Widerspruch (Art. 21)
+        sowie Beschwerde bei einer Aufsichtsbehörde (Art. 77).
+      </p>
+      <p>
+        Da SafeShare die Link-Verarbeitung local-first im Browser durchführt, liegen mir in der Regel keine Link-Daten von dir vor.
+        Bei Fragen zur Kontaktkommunikation (E-Mail) kannst du dich jederzeit an die oben genannte Adresse wenden.
       </p>
 
-      <h2>7. Empfänger:innen von Daten</h2>
-      <ul>
-        <li>Hosting-Anbieter (technisch notwendige Verarbeitung, z. B. Server-Logs)</li>
-        <li>E-Mail-Anbieter bei Kontaktaufnahme</li>
-        <li>Payhip (nur, wenn du dort kaufst bzw. den Link aufrufst)</li>
-      </ul>
-
-      <h2>8. Speicherdauer</h2>
-      <ul>
-        <li>Server-Logdaten: abhängig vom Hosting-Anbieter (typischerweise begrenzt zur Sicherheits-/Fehleranalyse).</li>
-        <li>E-Mail-Anfragen: solange erforderlich zur Bearbeitung und ggf. gesetzlicher Aufbewahrungspflichten.</li>
-        <li>Lokale Browser-Daten (Cache/Service Worker): bis du den Browser-Cache/Website-Daten löschst oder ein Update sie ersetzt.</li>
-      </ul>
-
-      <h2>9. Deine Rechte</h2>
-      <p>Du hast nach DSGVO insbesondere folgende Rechte:</p>
-      <ul>
-        <li>Auskunft (Art. 15 DSGVO)</li>
-        <li>Berichtigung (Art. 16 DSGVO)</li>
-        <li>Löschung (Art. 17 DSGVO)</li>
-        <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
-        <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
-        <li>Widerspruch (Art. 21 DSGVO)</li>
-        <li>Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO)</li>
-      </ul>
+      <h2>8. Änderungen</h2>
       <p>
-        Wenn du deine Rechte geltend machen willst, schreibe an:
-        <a href="mailto:support.safeshare@proton.me"><strong>support.safeshare@proton.me</strong></a>
+        Ich kann diese Datenschutzerklärung anpassen, wenn sich rechtliche Anforderungen oder die Website-Funktionen ändern.
+        Es gilt die jeweils aktuelle Version auf dieser Seite.
       </p>
 
-      <h2>10. Änderungen dieser Datenschutzerklärung</h2>
-      <p>
-        Diese Datenschutzerklärung kann aktualisiert werden, wenn sich Funktionen, Hosting oder rechtliche Anforderungen ändern.
+      <p style="margin-top:14px; color:var(--muted2); font-size:12px">
+        Stand: <span id="stand"></span>
       </p>
-
-      <div class="row">
-        <a class="btn primary" href="mailto:support.safeshare@proton.me">Kontakt</a>
-        <a class="btn" href="impressum.html">Impressum</a>
-        <a class="btn ghost" href="index.html">Start</a>
-      </div>
     </section>
 
     <footer>
       <div class="footLinks">
-        <a href="index.html">Startseite</a>
+        <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="help.html">Hilfe</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="utm-parameter-entfernen.html">UTM</a>
-        <a href="tracking-parameter.html">Tracking</a>
-        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a href="education.html">Schule</a>
-        <a href="press.html">Presse</a>
-        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
     </footer>
   </div>
 
-  <script>
-    (function () {
-      const path = location.pathname.split('/').pop() || 'index.html';
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Öffentlich</div>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="press.html" data-page="press.html">Presse</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <div class="divider"></div>
+    <div class="menuHint">System</div>
+    <a href="status.html" data-page="status.html">Status</a>
+  </nav>
 
+  <script>
+    (function(){
+      // date
+      const d = new Date();
+      const fmt = new Intl.DateTimeFormat('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
+      document.getElementById('stand').textContent = fmt.format(d);
+
+      // active tab
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      const navMore = document.getElementById('navMore');
-      document.querySelectorAll('.menu a').forEach(a => {
-        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
-      });
+      // more sheet
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
 
-      const sub = document.getElementById('pageSub');
-      const tag = document.getElementById('pageTag');
-      const map = {
-        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
-        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
-        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "status.html": ["Status · Service Worker", "Cache/Updates"],
-        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
-        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
-        "press.html": ["Presse · Media Kit", "Kontakt"],
-        "impressum.html": ["Impressum", "§ 5 TMG"],
-        "datenschutz.html": ["Datenschutz", "DSGVO"]
-      };
-      if (sub && map[path]) sub.textContent = map[path][0];
-      if (tag && map[path]) tag.textContent = map[path][1];
-    })();
-  </script>
-</body>
-</html>
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+      }
+      btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('
