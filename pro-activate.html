@@ -1,110 +1,433 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <!-- Basis -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/Supersystem/">
-  <title>Pro aktivieren · SafeShare</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>SafeShare Pro – Aktivieren</title>
+  <meta name="description" content="SafeShare Pro aktivieren: Lizenz-/Zugangscode eingeben, local-first speichern und danach die Pro App öffnen." />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="color-scheme" content="dark light" />
 
-  <!-- Indexierung -->
-  <meta name="robots" content="noindex,follow">
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Canonical nur informativ (noindex-Seite) -->
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/pro-activate.html">
+  <style>
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-  <!-- Beschreibung (kurz, rein informativ) -->
-  <meta name="description" content="Aktiviere SafeShare Pro lokal in deinem Browser nach dem Kauf bei Payhip.">
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
-  <!-- CSP (ohne Inline-Skripte) -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 base-uri 'self';
-                 frame-ancestors 'none';
-                 object-src 'none';
-                 img-src 'self' data:;
-                 style-src 'self' 'unsafe-inline';
-                 script-src 'self';
-                 font-src 'self';
-                 worker-src 'self';
-                 manifest-src 'self';
-                 connect-src 'self'">
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
-  <!-- PWA / Icons (optional – falls bereits vorhanden) -->
-  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-  <link rel="manifest" href="manifest.webmanifest">
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      padding: 16px;
+    }
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 3.8vw, 38px);
+      line-height: 1.10;
+      letter-spacing: -0.2px;
+    }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
 
-  <!-- CSS (falls deine Seite eine gemeinsame CSS-Datei nutzt) -->
-  <link rel="stylesheet" href="css/style.css">
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .note{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .warn{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,84,84,.55);
+      background: var(--bad);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    label{ display:block; font-size: 12px; color: var(--muted2); margin: 12px 0 6px; }
+    .input{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    .input:focus{ border-color: rgba(47,227,183,.35); box-shadow: 0 0 0 4px rgba(47,227,183,.10); }
+
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      word-break: break-word;
+    }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footLinks{
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+    }
+    .footLinks a{
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet (stabil) ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      top: auto;
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+  </style>
 </head>
+
 <body>
-  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Pro aktivieren</div>
+        </div>
+      </div>
+      <div class="small">local-first</div>
+    </header>
 
-  <header class="site-header">
-    <nav class="topnav">
-      <a class="brand" href="index.html">SafeShare</a>
-      <div class="spacer"></div>
-      <a class="btn" href="index.html">Startseite</a>
-      <a class="btn" href="app.html">App</a>
-      <a class="btn" href="status.html">Status</a>
-      <a class="btn" href="help.html">Hilfe</a>
-    </nav>
-  </header>
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
 
-  <main id="main" class="container">
-    <h1>Pro aktivieren</h1>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
+          Mehr ▾
+        </button>
+      </div>
+    </div>
 
     <section class="card">
-      <p>Wenn du von Payhip hierher weitergeleitet wurdest, ist <strong>Pro jetzt aktiviert</strong> (lokal im Browser gespeichert).</p>
+      <h1>SafeShare Pro aktivieren</h1>
+      <p>
+        Gib deinen Payhip-Lizenz-/Zugangscode ein. Er wird <strong>local-first</strong> in deinem Browser gespeichert
+        (localStorage). Danach kannst du die Pro App öffnen.
+      </p>
 
-      <div class="btn-row">
-        <a class="btn pri" id="go-pro" href="pro.html">Zur Pro-Seite</a>
-        <a class="btn" href="app.html">App öffnen</a>
-        <a class="btn" href="status.html">Status prüfen</a>
+      <label for="key">Lizenz-/Zugangscode</label>
+      <input id="key" class="input mono" placeholder="z. B. XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" />
+
+      <div class="row">
+        <button class="btn primary" id="btnActivate" type="button">Aktivieren</button>
+        <button class="btn" id="btnOpen" type="button">Pro App öffnen</button>
+        <button class="btn ghost" id="btnReset" type="button">Zurücksetzen</button>
       </div>
 
-      <p class="note">Hinweis: Die Aktivierung gilt je Gerät/Browser. Bei Browser- oder Profilwechsel bitte erneut aktivieren.</p>
-    </section>
+      <div id="msg" class="note" style="display:none"></div>
 
-    <section class="card">
-      <h2>Manuell aktivieren (falls Weiterleitung fehlte)</h2>
-      <div class="btn-row">
-        <a class="btn" href="pro-activate.html?pro=1&plan=personal&return=pro">Aktivieren (Personal)</a>
-        <a class="btn" href="pro-activate.html?pro=1&plan=team&return=pro">Aktivieren (Team)</a>
+      <div class="warn">
+        Wenn du Browser-Daten löschst (Website-Daten/Cache), kann der lokale Schlüssel entfernt werden.
+        Dann musst du erneut aktivieren.
       </div>
-      <p class="muted">Direktaufrufe setzen den lokalen Pro-Status und springen anschließend zurück (Standard: Pro-Seite).</p>
+
+      <div class="monoBox" style="margin-top:12px; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.03); color:var(--muted);">
+Flow (ohne 404):
+1) pro.html → Kaufen
+2) pro-activate.html → Key speichern
+3) pro-app.html → Arbeiten
+      </div>
     </section>
 
-    <section class="card">
-      <h2>Troubleshooting</h2>
-      <ul>
-        <li><strong>Wartende Version:</strong> <a href="status.html">Status</a> öffnen → „Wartende Version aktivieren“.</li>
-        <li><strong>Veraltete Inhalte:</strong> Seite mit <code>?nocache=YYYYMMDD</code> neu laden.</li>
-        <li><strong>Pro nicht erkannt:</strong> Cookies/LocalStorage für diese Domain erlauben.</li>
-        <li><strong>Rücksprung ändern:</strong> <code>&return=pro</code> oder <code>&return=app</code> an die URL hängen.</li>
-      </ul>
-      <details id="debugBox" class="debug" hidden>
-        <summary>Debug</summary>
-        <pre id="debugOut"></pre>
-      </details>
-    </section>
-  </main>
+    <footer>
+      <div class="footLinks">
+        <a href="index.html">Start</a>
+        <a href="app.html">App</a>
+        <a href="pro.html">Pro</a>
+        <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="help.html">Hilfe</a>
+        <a href="education.html">Schule</a>
+        <a href="press.html">Presse</a>
+        <a href="status.html">Status</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </footer>
+  </div>
 
-  <footer class="site-footer">
-    <nav class="footnav">
-      <a href="index.html">Startseite</a> ·
-      <a href="app.html">App</a> ·
-      <a href="pro.html">Pro</a> ·
-      <a href="help.html">Hilfe</a> ·
-      <a href="impressum.html">Impressum</a> ·
-      <a href="datenschutz.html">Datenschutz</a>
-    </nav>
-  </footer>
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
 
-  <noscript><p class="warn">Zum Aktivieren von Pro wird JavaScript benötigt.</p></noscript>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Öffentlich</div>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="press.html" data-page="press.html">Presse</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <div class="divider"></div>
+    <div class="menuHint">System</div>
+    <a href="status.html" data-page="status.html">Status</a>
+  </nav>
 
-  <!-- JS -->
-<script defer src="js/sw-register.js?v=20251124-04"></script>
-<script defer src="js/page-pro-activate.js?v=20251124-04"></script>
+  <script>
+    (function () {
+      // Active Tab highlight
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      const KEY_NAME = 'ss_pro_key';
+      const msg = document.getElementById('msg');
+      const keyInput = document.getElementById('key');
+
+      function show(type, text){
+        msg.style.display = 'block';
+        msg.className = type;
+        msg.textContent = text;
+      }
+      function normalizeKey(k){
+        return (k || '').trim();
+      }
+      function hasKey(){
+        const k = localStorage.getItem(KEY_NAME);
+        return !!(k && k.trim().length >= 8);
+      }
+
+      // Prefill if exists
+      if (hasKey()) {
+        keyInput.value = localStorage.getItem(KEY_NAME);
+        show('note', 'Pro ist bereits aktiviert (lokal gespeichert).');
+      }
+
+      document.getElementById('btnActivate').addEventListener('click', () => {
+        const k = normalizeKey(keyInput.value);
+        if (!k || k.length < 8) {
+          show('bad', 'Bitte einen gültigen Code eingeben (mind. 8 Zeichen).');
+          return;
+        }
+        localStorage.setItem(KEY_NAME, k);
+        show('note', 'Aktiviert. Du kannst jetzt die Pro App öffnen.');
+      });
+
+      document.getElementById('btnOpen').addEventListener('click', () => {
+        if (!hasKey()) {
+          show('warn', 'Noch nicht aktiviert. Bitte zuerst den Code speichern.');
+          return;
+        }
+        location.href = 'pro-app.html';
+      });
+
+      document.getElementById('btnReset').addEventListener('click', () => {
+        localStorage.removeItem(KEY_NAME);
+        keyInput.value = '';
+        show('warn', 'Lokaler Pro-Key entfernt. Du kannst neu aktivieren.');
+      });
+
+      // More menu (bottom sheet)
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function openMenu(){
+        overlay.hidden = false;
+        menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        setTimeout(() => { menu.hidden = true; overlay.hidden = true; }, 180);
+      }
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    })();
+  </script>
+</body>
 </html>
