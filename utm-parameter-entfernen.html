@@ -1,1012 +1,445 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>SafeShare – UTM-Parameter entfernen</title>
+  <meta name="description" content="UTM-Parameter einfach erklärt: Was ist utm_source/utm_campaign? Warum sind sie in geteilten Links unnötig? Wie entfernt SafeShare sie lokal im Browser?" />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
 
-  <title>UTM-Parameter entfernen – Anleitung & Tool (SafeShare)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- utm-parameter-entfernen.html -->
-  <meta name="description" content="UTM-Parameter entfernen: Erfahre, wie UTM-Tags funktionieren, welche Daten sie verraten und wie du sie mit SafeShare Schritt für Schritt aus deinen Links entfernst." />
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/utm-parameter-entfernen.html" />
-
-  <!-- Verification -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY" />
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
+  <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="UTM-Parameter entfernen: Links sauber teilen" />
-  <meta property="og:description" content="Lerne, was UTM-Parameter sind, wie sie funktionieren und wie du sie vor dem Teilen aus Links entfernst – Schritt für Schritt, datensparsam und ohne Konto." />
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/utm-parameter-entfernen.html" />
-  <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png" />
-  <meta property="og:locale" content="de_DE" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="UTM-Parameter entfernen: Links sauber teilen" />
-  <meta name="twitter:description" content="UTM-Parameter verstehen und entfernen – damit du Links klar, kurz und respektvoll weitergeben kannst." />
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/social-preview.png" />
-
-  <!-- SoftwareApplication Schema (SafeShare) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SafeShare",
-    "operatingSystem": "Browser",
-    "applicationCategory": "WebApplication",
-    "description": "SafeShare hilft dir, Tracking-Parameter wie UTM-Tags, Klick-IDs und verschachtelte Redirects aus Links zu entfernen, bevor du sie teilst.",
-    "url": "https://j-ai-71.github.io/Supersystem/app.html",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "EUR"
-    },
-    "creator": {
-      "@type": "Person",
-      "name": "Jana Jergus"
-    }
-  }
-  </script>
-
-  <!-- FAQ Schema für diese UTM-Seite -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Was sind UTM-Parameter genau?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "UTM-Parameter sind zusätzliche Teile einer URL, die mit utm_ beginnen, zum Beispiel utm_source, utm_medium oder utm_campaign. Sie helfen Website-Betreiber:innen dabei, Klicks bestimmten Kampagnen oder Kanälen zuzuordnen."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Brauche ich UTM-Parameter als Empfänger:in überhaupt?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "In den meisten Fällen nicht. Für dich als Empfänger:in ist nur der eigentliche Link interessant – der Teil vor dem Fragezeichen. Die UTM-Parameter dahinter enthalten vor allem Analyse-Informationen für den Absender."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Wie entferne ich UTM-Parameter sicher aus einem Link?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Du kannst alles ab dem Fragezeichen inklusive UTM-Parametern manuell löschen oder den Link in SafeShare einfügen. SafeShare erkennt typische Tracking-Parameter automatisch und gibt dir eine bereinigte Version des Links zurück."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Wann können UTM-Parameter trotzdem sinnvoll sein?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Wenn du selbst Kampagnen misst, können UTM-Parameter hilfreich sein, zum Beispiel in deinem eigenen Newsletter. Für Links, die du weiterleitest oder privat speicherst, ist es aber meist besser, nur die bereinigte Zieladresse zu verwenden."
-        }
-      }
-    ]
-  }
-  </script>
-
-  <link rel="icon" href="https://j-ai-71.github.io/Supersystem/logo.svg" type="image/svg+xml" />
-
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #050814;
-      --bg-elevated: #0b1020;
-      --bg-soft: #101626;
-      --fg: #f5f7ff;
-      --fg-muted: #a8b2d6;
-      --accent: #3fe0b5;
-      --accent-soft: rgba(63, 224, 181, 0.18);
-      --accent-strong: rgba(63, 224, 181, 0.35);
-      --danger: #ff6b81;
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --radius-lg: 18px;
-      --radius-xl: 24px;
-      --radius-pill: 999px;
-      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      --max-width: 1160px;
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+      --max: 1120px;
     }
-
-    * {
-      box-sizing: border-box;
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
+      }
     }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: var(--font-sans);
-      background: radial-gradient(circle at top, #101732 0, #050814 52%, #03040a 100%);
-      color: var(--fg);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    header.site-header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom,
-        rgba(5, 8, 20, 0.96),
-        rgba(5, 8, 20, 0.88),
-        rgba(5, 8, 20, 0.82));
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .header-inner {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 14px 16px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 14px;
-      background: radial-gradient(circle at 30% 0%, #122c3b, #060812 70%, #03040a 100%);
-      border: 1px solid rgba(63, 224, 181, 0.6);
-      box-shadow:
-        0 0 0 1px rgba(0, 0, 0, 0.9),
-        0 0 34px rgba(63, 224, 181, 0.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .brand-mark::before {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: 12px;
-      background: radial-gradient(circle at 30% 0%, #10192a, #02030a 70%);
-    }
-
-    .brand-mark svg {
-      position: relative;
-      width: 18px;
-      height: 18px;
-      stroke: var(--accent);
-      stroke-width: 1.7;
-      fill: none;
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-name {
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      font-size: 15px;
-      color: #f8fbff;
-    }
-
-    .brand-tagline {
-      font-size: 11px;
-      color: var(--fg-muted);
-      opacity: 0.94;
-    }
-
-    nav.main-nav {
-      display: flex;
-      gap: 8px;
-      font-size: 14px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .nav-link {
-      padding: 6px 11px;
-      border-radius: 999px;
-      color: var(--fg-muted);
-      text-decoration: none;
-      border: 1px solid transparent;
-      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-    }
-
-    .nav-link:hover {
-      background: rgba(255, 255, 255, 0.03);
-      color: var(--fg);
-    }
-
-    .nav-link.is-active {
-      background: rgba(63, 224, 181, 0.16);
-      color: #e9fffa;
-      border-color: rgba(63, 224, 181, 0.6);
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.85);
-    }
-
-    main {
-      flex: 1;
-    }
-
-    .page {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 26px 16px 48px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
-      gap: 32px;
-      align-items: center;
-      margin-bottom: 36px;
-    }
-
-    .hero-eyebrow {
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--fg-muted);
-      margin-bottom: 10px;
-    }
-
-    .hero-title {
-      font-size: 30px;
-      line-height: 1.1;
-      margin: 0 0 14px;
-    }
-
-    .hero-lead {
-      margin: 0 0 18px;
-      color: var(--fg-muted);
-      font-size: 15px;
-      max-width: 35rem;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .hero-pill {
-      border-radius: var(--radius-pill);
-      padding: 4px 10px;
-      font-size: 11px;
-      background: rgba(9, 148, 103, 0.16);
-      border: 1px solid rgba(63, 224, 181, 0.5);
-      color: #d7fff3;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hero-pill span.dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 10px rgba(63, 224, 181, 0.7);
-    }
-
-    .hero-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 4px;
-    }
-
-    .hero-link {
-      font-size: 13px;
-      color: var(--fg-muted);
-    }
-
-    .hero-link a {
-      color: var(--accent);
-    }
-
-    .hero-card {
-      border-radius: var(--radius-xl);
-      padding: 18px 18px 16px;
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
       background:
-        radial-gradient(circle at 0 0, rgba(63, 224, 181, 0.2), transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(21, 187, 255, 0.18), transparent 55%),
-        linear-gradient(145deg, #050814, #080d1a);
-      border: 1px solid rgba(63, 224, 181, 0.4);
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      align-items: stretch;
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 14px; padding: 10px 2px 12px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{
+      font-size: 16px; font-weight: 780; line-height:1.1;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      font-size: 12px; color: var(--muted2); margin-top:2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
 
-    .hero-card-badge {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--fg-muted);
-      opacity: 0.9;
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
     }
-
-    .hero-card-main {
-      display: flex;
-      align-items: center;
-      gap: 18px;
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
     }
-
-    .hero-icon-shell {
-      width: 80px;
-      height: 80px;
-      border-radius: 26px;
-      background: radial-gradient(circle at 30% 0%, #132c3b, #050814 68%, #03040a 100%);
-      border: 1px solid rgba(63, 224, 181, 0.8);
-      box-shadow:
-        0 0 0 1px rgba(0, 0, 0, 0.9),
-        0 0 40px rgba(63, 224, 181, 0.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-icon-shell::before {
-      content: "";
-      position: absolute;
-      inset: 3px;
-      border-radius: 22px;
-      background: radial-gradient(circle at 30% 0%, #10192a, #02030a 70%);
-    }
-
-    .hero-icon-shell svg {
-      position: relative;
-      width: 40px;
-      height: 40px;
-      stroke: var(--accent);
-      stroke-width: 1.8;
-      fill: none;
-    }
-
-    .hero-card-text h2 {
-      margin: 0 0 6px;
-      font-size: 17px;
-    }
-
-    .hero-card-text p {
-      margin: 0;
-      font-size: 13px;
-      color: var(--fg-muted);
-    }
-
-    .hero-card-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .btn {
-      border-radius: var(--radius-pill);
-      padding: 8px 14px;
-      font-size: 13px;
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      color: var(--fg);
-      transition: background 0.18s ease, border-color 0.18s ease, transform 0.16s ease,
-        box-shadow 0.16s ease;
+      white-space: nowrap; flex: 0 0 auto;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #3fe0b5, #15bbff);
-      color: #020409;
-      box-shadow:
-        0 12px 30px rgba(63, 224, 181, 0.35),
-        0 0 0 1px rgba(0, 0, 0, 0.85);
-      font-weight: 600;
+    .more{ position:relative; }
+    .more > summary{ list-style:none; }
+    .more > summary::-webkit-details-marker{ display:none; }
+    .menu{
+      position:absolute;
+      right:0;
+      top: calc(100% + 8px);
+      min-width: 220px;
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.92);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      z-index: 80;
     }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow:
-        0 16px 40px rgba(63, 224, 181, 0.45),
-        0 0 0 1px rgba(0, 0, 0, 0.9);
-      text-decoration: none;
-    }
-
-    .btn-ghost {
-      border-color: rgba(255, 255, 255, 0.12);
-      color: var(--fg-muted);
-      background: rgba(6, 10, 24, 0.9);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(12, 18, 36, 0.98);
-      border-color: rgba(63, 224, 181, 0.5);
-      color: #e6fff8;
-      text-decoration: none;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
-      gap: 30px;
-    }
-
-    .toc-card {
-      border-radius: var(--radius-lg);
-      background: radial-gradient(circle at top left,
-        rgba(63, 224, 181, 0.16),
-        rgba(10, 18, 40, 0.9));
-      border: 1px solid rgba(63, 224, 181, 0.35);
-      padding: 16px 18px 14px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    @media (min-width: 1024px) {
-      .toc-card {
-        position: sticky;
-        top: 96px;
+    @media (prefers-color-scheme: light){
+      .menu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
     }
-
-    .toc-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 0 0 8px;
-    }
-
-    .toc-desc {
-      margin: 0 0 10px;
-      font-size: 12px;
-      color: var(--fg-muted);
-    }
-
-    .toc-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .menu a{
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
       font-size: 13px;
     }
+    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
-    .toc-list li {
-      margin-bottom: 6px;
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 3.8vw, 36px);
+      line-height: 1.12;
+      letter-spacing: -0.2px;
+    }
+    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
 
-    .toc-list a {
-      color: var(--fg-muted);
-      text-decoration: none;
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
     }
+    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
 
-    .toc-list a:hover {
-      color: var(--accent);
-      text-decoration: underline;
-    }
-
-    .section {
-      margin-bottom: 32px;
-    }
-
-    .section-header {
-      margin-bottom: 10px;
-    }
-
-    .eyebrow {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--fg-muted);
-      margin: 0 0 6px;
-    }
-
-    .section h2 {
-      margin: 0 0 10px;
-      font-size: 21px;
-    }
-
-    .section h3 {
-  margin: 0 0 6px;
-  font-size: 15px;
-}
-
-.section ol {
-  margin: 0 0 10px 1.2rem;
-  padding: 0;
-  color: var(--fg-muted);
-  font-size: 14px;
-}
-
-    .section p {
-      margin: 0 0 10px;
-      color: var(--fg-muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .section ul {
-      margin: 0 0 10px 1.2rem;
-      padding: 0;
-      color: var(--fg-muted);
-      font-size: 14px;
-    }
-
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-        "Courier New", monospace;
-      font-size: 12px;
-      padding: 2px 5px;
-      border-radius: 4px;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #e5fff8;
-    }
-
-    .hint {
-      font-size: 13px;
-      color: var(--fg-muted);
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       padding: 10px 12px;
-      border-radius: 10px;
-      background: rgba(8, 16, 32, 0.95);
-      border: 1px dashed rgba(63, 224, 181, 0.4);
-      margin-top: 6px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{
+      background: var(--mint2);
+      border-color: rgba(47,227,183,.35);
+    }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .okBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .warnBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
+
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    .highlight-card {
-      border-radius: var(--radius-lg);
-      background: radial-gradient(circle at top left,
-        rgba(63, 224, 181, 0.16),
-        rgba(10, 18, 40, 0.95));
-      border: 1px solid rgba(63, 224, 181, 0.55);
-      padding: 16px 18px 14px;
-      box-shadow: var(--shadow-soft);
-      margin-top: 10px;
-    }
-
-    .highlight-card h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-
-    .inline-link {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .inline-link:hover {
-      text-decoration: underline;
-    }
-
-    .faq-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .faq-item h3 {
-      margin: 0 0 6px;
-      font-size: 15px;
-    }
-
-    .faq-item p {
-      margin: 0;
-    }
-
-    footer.site-footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      margin-top: 24px;
-    }
-
-    .footer-inner {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 18px 16px 24px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
       font-size: 12px;
-      color: var(--fg-muted);
+      line-height: 1.55;
     }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
+    .footLinks{
+      display:flex;
       gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
     }
-
-    .footer-links a {
-      color: var(--fg-muted);
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
     }
-
-    .footer-links a:hover {
-      color: var(--accent);
-    }
-
-    @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .hero-card {
-        order: -1;
-      }
-      .layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav.main-nav {
-        justify-content: flex-start;
-      }
-      .hero-title {
-        font-size: 24px;
-      }
-      .page {
-        padding-inline: 14px;
-      }
-    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
   </style>
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M7 11.5c0 2.5 1.5 4 5 6.5c3.5-2.5 5-4 5-6.5v-4A3.5 3.5 0 0 0 13.5 4h-3A3.5 3.5 0 0 0 7 7.5z" />
-            <path d="M10.5 11.5l2 2l3-3.5" />
-          </svg>
+  <div class="wrap">
+    <!-- Unified Header -->
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
         </div>
-        <div class="brand-text">
-          <div class="brand-name">SafeShare</div>
-          <div class="brand-tagline">Links ohne unnötiges Tracking</div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub" id="pageSub">UTM · Erklärung</div>
         </div>
-      </a>
+      </div>
+      <div class="small" id="pageTag">SEO/Marketing</div>
+    </header>
 
-      <nav class="main-nav" aria-label="Hauptnavigation">
-        <a class="nav-link" href="index.html">Start</a>
-        <a class="nav-link" href="app.html">App</a>
-        <a class="nav-link" href="pro.html">Pro</a>
-        <a class="nav-link is-active" href="utm-parameter-entfernen.html">UTM entfernen</a>
-        <a class="nav-link" href="tracking-parameter-entfernen.html">Tracking allgemein</a>
-        <a class="nav-link" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a class="nav-link" href="help.html">Hilfe</a>
-      </nav>
-    </div>
-  </header>
+    <!-- Unified Nav -->
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
 
-  <main>
-    <div class="page">
-      <section class="hero">
-        <div>
-          <div class="hero-eyebrow">UTM-Parameter • Link-Hygiene</div>
-          <h1 class="hero-title">UTM-Parameter entfernen: So machst du Links sauber, bevor du sie teilst</h1>
-          <p class="hero-lead">
-            UTM-Parameter helfen Absender:innen beim Messen von Klicks – für dich als Empfänger:in
-            sind sie meist nur Ballast. Hier erfährst du, was UTM-Parameter genau sind, wie du sie
-            erkennst und wie du sie Schritt für Schritt loswirst.
-          </p>
-
-          <div class="hero-meta">
-            <div class="hero-pill">
-              <span class="dot"></span>
-              Fokus: UTM-Tags verstehen
-            </div>
-            <div class="hero-pill">
-              Lesezeit: ca. 6&nbsp;Minuten
-            </div>
+        <details class="more" id="navMore">
+          <summary class="tab" data-page="more">Mehr ▾</summary>
+          <div class="menu" role="menu" aria-label="Mehr">
+            <a href="index.html" data-page="index.html">Start</a>
+            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="press.html" data-page="press.html">Presse</a>
+            <a href="status.html" data-page="status.html">Status</a>
           </div>
-
-          <div class="hero-links">
-            <div class="hero-link">
-              Direkt ausprobieren? &rarr; <a href="app.html">SafeShare-App öffnen</a>
-            </div>
-            <div class="hero-link">
-              Mehr Hintergrund zu Tracking allgemein &rarr; <a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a>
-            </div>
-          </div>
-        </div>
-
-        <aside class="hero-card" aria-label="UTM-Kurzüberblick">
-          <div class="hero-card-badge">Kurz erklärt</div>
-          <div class="hero-card-main">
-            <div class="hero-icon-shell" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M5 9a7 7 0 0 1 7-5a7 7 0 0 1 7 5v4c0 4-2 6-7 8c-5-2-7-4-7-8z" />
-                <path d="M9 11l2.2 2.2a1 1 0 0 0 1.4 0L15 11" />
-                <path d="M9 8h6" />
-              </svg>
-            </div>
-            <div class="hero-card-text">
-              <h2>Was UTM-Parameter tun</h2>
-              <p>
-                UTM-Parameter markieren, woher ein Klick kommt: Newsletter, Social Media,
-                Anzeige-Kampagne. Für dich als Empfänger:in kannst du sie meist gefahrlos entfernen –
-                der Link führt trotzdem zum gleichen Inhalt.
-              </p>
-            </div>
-          </div>
-
-          <div class="hero-card-actions">
-            <a class="btn btn-primary" href="app.html">
-              SafeShare-App öffnen
-            </a>
-            <a class="btn btn-ghost" href="pro.html">
-              SafeShare Pro ansehen
-            </a>
-          </div>
-        </aside>
-      </section>
-
-      <section class="layout" aria-label="Inhalt und Erklärung zu UTM-Parametern">
-        <aside class="toc-card">
-          <h2 class="toc-title">Inhalt</h2>
-          <p class="toc-desc">Sprungmarken zu den wichtigsten Abschnitten.</p>
-          <ol class="toc-list">
-            <li><a href="#was-sind-utm">1. Was sind UTM-Parameter?</a></li>
-            <li><a href="#typische-utm">2. Typische UTM-Parameter &amp; Beispiele</a></li>
-            <li><a href="#risiken">3. Risiken &amp; Auswirkungen</a></li>
-            <li><a href="#manuell-entfernen">4. UTM-Parameter manuell entfernen</a></li>
-            <li><a href="#safeshare">5. UTM-Parameter mit SafeShare entfernen</a></li>
-            <li><a href="#utm-vs-tracking">6. UTM vs. Tracking allgemein</a></li>
-            <li><a href="#faq">7. Häufige Fragen (FAQ)</a></li>
-          </ol>
-        </aside>
-
-        <div>
-          <!-- 1. Was sind UTM-Parameter -->
-          <section id="was-sind-utm" class="section">
-            <header class="section-header">
-              <p class="eyebrow">Grundlagen</p>
-              <h2>1. Was sind UTM-Parameter?</h2>
-            </header>
-            <p>
-              UTM-Parameter sind zusätzliche Teile einer URL, die mit <code>utm_</code> beginnen –
-              zum Beispiel <code>utm_source</code>, <code>utm_medium</code> oder
-              <code>utm_campaign</code>. Sie wurden ursprünglich von Google Analytics eingeführt,
-              funktionieren aber inzwischen mit vielen Analyse-Tools.
-            </p>
-            <p>Ein typischer Link mit UTM-Parametern sieht zum Beispiel so aus:</p>
-            <p>
-              <code>https://example.com/artikel?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=fruehling</code>
-            </p>
-            <p>
-              Der erste Teil vor dem Fragezeichen ist die eigentliche Adresse. Alles danach sind
-              zusätzliche Informationen für das Tracking.
-            </p>
-            <div class="hint">
-              Als Empfänger:in brauchst du UTM-Parameter in der Regel nicht. Der eigentliche Inhalt der
-              Seite ist derselbe – mit oder ohne UTM.
-            </div>
-          </section>
-
-          <!-- 2. Typische UTM-Parameter -->
-          <section id="typische-utm" class="section">
-            <header class="section-header">
-              <p class="eyebrow">Praxis</p>
-              <h2>2. Typische UTM-Parameter &amp; Beispiele</h2>
-            </header>
-            <p>Die bekanntesten UTM-Parameter sind:</p>
-            <ul>
-              <li><code>utm_source</code> – von welcher Quelle kommt der Klick? (z. B. newsletter, twitter)</li>
-              <li><code>utm_medium</code> – über welchen Kanal? (z. B. email, social, cpc)</li>
-              <li><code>utm_campaign</code> – zu welcher Kampagne gehört der Link?</li>
-              <li><code>utm_term</code> – oft für Suchbegriffe in Anzeigen verwendet</li>
-              <li><code>utm_content</code> – um verschiedene Varianten eines Links zu unterscheiden</li>
-            </ul>
-            <p>
-              In der Praxis hängen an vielen Marketing-Links gleich mehrere dieser Parameter –
-              manchmal noch kombiniert mit weiteren Tracking-IDs.
-            </p>
-            <p>
-              Auf der Seite <a class="inline-link" href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a>
-              findest du zusätzlich Beispiele für andere Tracking-Tags wie <code>fbclid</code> oder
-              <code>gclid</code>, die nicht mit <code>utm_</code> beginnen.
-            </p>
-          </section>
-
-          <!-- 3. Risiken & Auswirkungen -->
-          <section id="risiken" class="section">
-            <header class="section-header">
-              <p class="eyebrow">Warum es dich betreffen kann</p>
-              <h2>3. Welche Auswirkungen haben UTM-Parameter?</h2>
-            </header>
-            <p>UTM-Parameter sind nicht automatisch „böse“, aber sie haben ein paar Folgen:</p>
-            <ul>
-              <li>
-                <strong>Mehr Daten über dich:</strong> Wer den Link erstellt hat, kann besser
-                nachvollziehen, woher Klicks kommen.
-              </li>
-              <li>
-                <strong>Unübersichtliche Links:</strong> Gerade in Mails oder Chats wirken Links mit
-                langen Parametern schnell wie Daten-Schlangen.
-              </li>
-              <li>
-                <strong>Weitergabe von Tracking-Infos:</strong> Wenn du solche Links weiterleitest,
-                übernimmst du die Tracking-Einstellungen des Absenders – auch für andere Personen.
-              </li>
-            </ul>
-            <p>
-              Aus Sicht von Menschen, die Links nutzen und teilen, sind UTM-Parameter deshalb eher
-              „Meta-Daten“, die man bewusst entfernen kann.
-            </p>
-          </section>
-
-          <!-- 4. UTM-Parameter manuell entfernen -->
-          <section id="manuell-entfernen" class="section">
-            <header class="section-header">
-              <p class="eyebrow">Schritt für Schritt</p>
-              <h2>4. UTM-Parameter manuell entfernen</h2>
-            </header>
-            <p>Als schnelle Notlösung kannst du UTM-Parameter auch von Hand entfernen:</p>
-            <ol>
-              <li>Kopiere den Link in die Adressleiste oder einen Text-Editor.</li>
-              <li>Suche das erste Fragezeichen <code>?</code> in der Adresse.</li>
-              <li>
-                Schneide alles ab dem Fragezeichen ab – oder zumindest die Teile,
-                die mit <code>utm_</code> beginnen.
-              </li>
-              <li>Nutze den gekürzten Link zum Teilen, Speichern oder Weiterleiten.</li>
-            </ol>
-            <p>Aus</p>
-            <p>
-              <code>https://example.com/artikel?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=fruehling</code>
-            </p>
-            <p>wird zum Beispiel</p>
-            <p><code>https://example.com/artikel</code></p>
-            <div class="hint">
-              Achtung: Manche Seiten nutzen auch andere Parameter (z. B. <code>?id=123</code>) für
-              die eigentliche Funktion. Wenn du unsicher bist, hilft dir die
-              <a class="inline-link" href="app.html">SafeShare-App</a> beim Testen.
-            </div>
-          </section>
-
-          <!-- 5. SafeShare -->
-          <section id="safeshare" class="section">
-            <header class="section-header">
-              <p class="eyebrow">Mit SafeShare</p>
-              <h2>5. UTM-Parameter mit SafeShare entfernen</h2>
-            </header>
-            <p>
-              Wenn du häufiger Links bereinigst, wird das manuelle Abschneiden schnell mühsam.
-              SafeShare nimmt dir diesen Schritt ab:
-            </p>
-            <ul>
-              <li>Du fügst einen Link in die <a class="inline-link" href="app.html">SafeShare-Web-App</a> ein.</li>
-              <li>SafeShare erkennt typische UTM-Parameter und andere Tracking-Tags automatisch.</li>
-              <li>Du bekommst eine bereinigte Version des Links zum Kopieren.</li>
-            </ul>
-            <div class="highlight-card">
-              <h3>Mehr Komfort mit SafeShare Pro</h3>
-              <p>
-                Mit <a class="inline-link" href="pro.html">SafeShare Pro</a> kannst du mehrere Links
-                auf einmal bereinigen und eigene Regeln definieren – etwa, welche Parameter immer
-                entfernt oder ausnahmsweise behalten werden sollen.
-              </p>
-            </div>
-          </section>
-
-          <!-- 6. UTM vs Tracking -->
-          <section id="utm-vs-tracking" class="section">
-            <header class="section-header">
-              <p class="eyebrow">Einordnung</p>
-              <h2>6. UTM-Parameter im Vergleich zu anderen Tracking-Tags</h2>
-            </header>
-            <p>
-              UTM-Parameter sind nur eine Art von Tracking-Parameter. In vielen Links findest du
-              zusätzlich Kennzeichnungen wie <code>fbclid</code>, <code>gclid</code> oder
-              kryptische IDs in Redirect-Links.
-            </p>
-            <p>
-              Auf der Seite <a class="inline-link" href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a>
-              findest du eine breitere Übersicht, welche Daten Links transportieren können – und wie
-              du sie loswirst.
-            </p>
-            <p>
-              Wenn du verschiedene Tools zum Bereinigen von Links vergleichen möchtest, hilft dir
-              außerdem der <a class="inline-link" href="url-cleaner-tool-vergleich.html">URL-Cleaner-Tool-Vergleich</a>.
-            </p>
-          </section>
-
-          <!-- 7. FAQ -->
-          <section id="faq" class="section">
-            <header class="section-header">
-              <p class="eyebrow">Häufige Fragen (FAQ)</p>
-              <h2>7. Häufige Fragen zu UTM-Parametern</h2>
-            </header>
-            <div class="faq-list">
-              <article class="faq-item" id="faq-was-sind-utm">
-                <h3>Was sind UTM-Parameter genau?</h3>
-                <p>
-                  UTM-Parameter sind zusätzliche Teile einer URL, die mit <code>utm_</code>
-                  beginnen. Sie markieren zum Beispiel, dass ein Klick aus einem Newsletter, einer
-                  Anzeige oder einem bestimmten Social-Media-Post stammt.
-                </p>
-              </article>
-
-              <article class="faq-item" id="faq-brauche-ich-die-als-empfaengerin">
-                <h3>Brauche ich UTM-Parameter als Empfänger:in überhaupt?</h3>
-                <p>
-                  In den meisten Fällen nicht. Für dich als Empfänger:in ist nur der eigentliche
-                  Link interessant – der Teil vor dem Fragezeichen. Die UTM-Parameter sind vor allem
-                  für die Statistik der Absender:innen relevant.
-                </p>
-              </article>
-
-              <article class="faq-item" id="faq-wie-entfernen">
-                <h3>Wie entferne ich UTM-Parameter sicher aus einem Link?</h3>
-                <p>
-                  Du kannst sie manuell abschneiden oder den Link in SafeShare einfügen.
-                  SafeShare erkennt typische UTM-Parameter automatisch und gibt dir eine bereinigte
-                  Version zurück, die du zum Teilen verwenden kannst.
-                </p>
-              </article>
-
-              <article class="faq-item" id="faq-wann-utm-ok">
-                <h3>Wann können UTM-Parameter trotzdem sinnvoll sein?</h3>
-                <p>
-                  Wenn du selbst einen Newsletter oder Kampagnen betreibst, helfen dir UTM-Parameter
-                  beim Auswerten. Für Links, die du privat speicherst oder an andere weitergibst, ist
-                  es aber meist besser, nur die bereinigte Zieladresse zu nutzen.
-                </p>
-              </article>
-            </div>
-          </section>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div>© SafeShare – Links ohne unnötiges Tracking</div>
-      <div class="footer-links">
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="status.html">Status</a>
+        </details>
       </div>
     </div>
-  </footer>
+
+    <!-- Content -->
+    <section class="card" id="top">
+      <div class="pill"><span class="dot" aria-hidden="true"></span> UTM</div>
+      <h1>UTM-Parameter entfernen: was das ist – und warum du sie beim Teilen nicht brauchst</h1>
+      <p>
+        UTM-Parameter sind Marketing-Anhänge am Link, z. B. <code>utm_source</code> oder <code>utm_campaign</code>.
+        Sie helfen Publishern zu messen, wo Klicks herkommen – beim Weiterleiten sind sie für Empfänger:innen meist unnötig.
+      </p>
+
+      <div class="row">
+        <a class="btn primary" href="app.html">UTM jetzt entfernen (App)</a>
+        <a class="btn" href="pro.html">Pro (Policy & Audit)</a>
+        <a class="btn ghost" href="#beispiele">Beispiele</a>
+      </div>
+
+      <div class="okBox">
+        Kurz: UTM sind wie „Etiketten“ am Link. SafeShare entfernt diese Etiketten, bevor du den Link teilst.
+      </div>
+    </section>
+
+    <section class="card" id="was-ist">
+      <h2>Was sind UTM-Parameter?</h2>
+      <p>
+        UTM ist ein Standard aus dem Online-Marketing. Typische Keys sind:
+        <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_term</code>, <code>utm_content</code>.
+      </p>
+      <ul>
+        <li><strong>utm_source</strong>: Quelle (z. B. newsletter, twitter)</li>
+        <li><strong>utm_medium</strong>: Kanal (z. B. email, social)</li>
+        <li><strong>utm_campaign</strong>: Kampagne (z. B. launch_dez)</li>
+        <li><strong>utm_term</strong>/<strong>utm_content</strong>: Varianten/Keywords</li>
+      </ul>
+
+      <div class="warnBox">
+        UTM ist nicht “böse”. Es ist Messung. Problematisch wird es, wenn du die Etiketten ungefragt weiterverteilst.
+      </div>
+    </section>
+
+    <section class="card" id="warum">
+      <h2>Warum UTM beim Teilen entfernen?</h2>
+      <ul>
+        <li><strong>Datensparsamkeit:</strong> weniger unnötige Zusatzinfos im Umlauf</li>
+        <li><strong>Saubere Links:</strong> kürzer, lesbarer, vertrauenswürdiger</li>
+        <li><strong>Kontext-Neutralität:</strong> Empfänger:innen bekommen den Inhalt – nicht deine Quelle/Kampagne</li>
+        <li><strong>Weniger Plattform-Abhängigkeit:</strong> weniger Tracking-Artefakte aus Social/Ads</li>
+      </ul>
+    </section>
+
+    <section class="card" id="beispiele">
+      <h2>Beispiele</h2>
+
+      <h3>Beispiel 1 (klassisch)</h3>
+      <div class="monoBox">
+Vorher:
+https://example.com/artikel?utm_source=newsletter&utm_medium=email&utm_campaign=dezember
+
+Nachher:
+https://example.com/artikel
+      </div>
+
+      <h3>Beispiel 2 (UTM + Klick-ID)</h3>
+      <div class="monoBox">
+Vorher:
+https://example.com/shop?utm_campaign=launch&utm_source=instagram&fbclid=ABC123
+
+Nachher:
+https://example.com/shop
+      </div>
+
+      <div class="row">
+        <a class="btn primary" href="app.html">Jetzt in der App testen</a>
+        <a class="btn" href="help.html#app">App-Hilfe</a>
+      </div>
+    </section>
+
+    <section class="card" id="praxis">
+      <h2>Praxis: Was bleibt, was geht?</h2>
+      <p>
+        SafeShare entfernt primär Tracking-Ballast. Funktionale Parameter (z. B. Suche/Filter/IDs) bleiben eher erhalten.
+        Wenn ein Link nach dem Entfernen nicht mehr funktioniert, steckt oft ein Token/Signatur-Key drin (Pro hilft mit Audit/Whitelist).
+      </p>
+      <div class="row">
+        <a class="btn" href="tracking-parameter.html">Mehr: Tracking-Parameter</a>
+        <a class="btn" href="pro.html">Pro: Audit & Whitelist</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footLinks">
+        <a href="index.html">Startseite</a>
+        <a href="app.html">App</a>
+        <a href="pro.html">Pro</a>
+        <a href="help.html">Hilfe</a>
+        <a href="bookmarklets.html">Bookmarklets</a>
+        <a href="utm-parameter-entfernen.html">UTM</a>
+        <a href="tracking-parameter.html">Tracking</a>
+        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="press.html">Presse</a>
+        <a href="status.html">Status</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const path = location.pathname.split('/').pop() || 'index.html';
+
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      const moreSummary = document.querySelector('.more > summary');
+      const menuActive = document.querySelector('.menu a.active');
+      if (menuActive && moreSummary) moreSummary.classList.add('active');
+
+      const navMore = document.getElementById('navMore');
+      document.querySelectorAll('.menu a').forEach(a => {
+        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
+      });
+
+      const sub = document.getElementById('pageSub');
+      const tag = document.getElementById('pageTag');
+      const map = {
+        "index.html": ["Start · Überblick", "Links teilen. Ohne Ballast."],
+        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
+        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
+        "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
+        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
+        "status.html": ["Status · Service Worker", "Cache/Updates"],
+        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
+        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
+        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
+        "press.html": ["Presse · Infos", "Material"]
+      };
+      if (sub && map[path]) sub.textContent = map[path][0];
+      if (tag && map[path]) tag.textContent = map[path][1];
+    })();
+  </script>
 </body>
 </html>
