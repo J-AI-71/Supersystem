@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>URL Cleaner Vergleich – SafeShare vs. typische Link-Reiniger</title>
-  <meta name="description" content="URL-Cleaner Vergleich: Was können typische Link-Reiniger (UTM entfernen) – und wo hebt sich SafeShare Pro ab (Policy, Audit-Log, Whitelist/Overrides, Batch, Export, local-first)?" />
+  <meta name="description" content="Vergleich: SafeShare vs typische URL Cleaner. local-first, ohne Proxy. Pro: Policy, Audit und Export für Profis. Wann reichen einfache Tools, wann braucht man Pro-Workflows?" />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -58,10 +58,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 14px; padding: 10px 2px 12px;
-    }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -73,14 +70,8 @@
     .logoWrap img{ width:28px; height:28px; display:block; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
-    .brandText .title{
-      font-size: 16px; font-weight: 780; line-height:1.1;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .brandText .sub{
-      font-size: 12px; color: var(--muted2); margin-top:2px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -104,44 +95,27 @@
       white-space: nowrap; flex: 0 0 auto;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{
-      color: var(--text);
-      border-color: rgba(47,227,183,.35);
-      background: rgba(47,227,183,.12);
-    }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
     .more{ position:relative; }
     .more > summary{ list-style:none; }
     .more > summary::-webkit-details-marker{ display:none; }
     .menu{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      min-width: 220px;
-      padding: 8px;
-      border-radius: 16px;
+      position:absolute; right:0; top: calc(100% + 8px);
+      min-width: 220px; padding: 8px; border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(10,14,25,.92);
       box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-      z-index: 80;
+      display:flex; flex-direction:column; gap: 6px; z-index: 80;
     }
     @media (prefers-color-scheme: light){
-      .menu{
-        background: rgba(255,255,255,.98);
-        border: 1px solid rgba(17,24,39,.12);
-        box-shadow: 0 18px 45px rgba(17,24,39,.12);
-      }
+      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
     }
     .menu a{
-      padding: 10px 10px;
-      border-radius: 12px;
+      padding: 10px 10px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size: 13px;
+      color: var(--muted); font-size: 13px;
     }
     .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
@@ -164,9 +138,7 @@
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
-    code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-    }
+    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
@@ -194,60 +166,20 @@
       gap: 8px;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{
-      background: var(--mint2);
-      border-color: rgba(47,227,183,.35);
-    }
-    .btn.primary:hover{ background: var(--mint3); }
+    .btn.primary{ background: rgba(47,227,183,.18); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: rgba(47,227,183,.28); }
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
     .okBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
     .warnBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .tableWrap{
-      overflow:auto;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    table{ width:100%; border-collapse: collapse; min-width: 860px; }
-    th, td{
-      text-align:left;
-      padding: 12px 12px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      vertical-align: top;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-    th{ color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-
-    .tag{
-      display:inline-flex; align-items:center;
-      padding: 4px 8px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
-      margin-right: 6px;
+      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
 
     .grid{
@@ -267,6 +199,26 @@
     }
     .tile h3{ margin: 0 0 8px; }
     .tile p{ margin: 0 0 10px; }
+
+    .tableWrap{
+      overflow:auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+    table{ width:100%; border-collapse: collapse; min-width: 980px; }
+    th, td{
+      text-align:left;
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align: top;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    th{ color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    .yes{ color: rgba(47,227,183,.95); }
+    .no{ color: rgba(255,197,84,.95); }
 
     footer{
       margin-top: 18px;
@@ -305,7 +257,7 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Tool-Vergleich · URL Cleaner</div>
+          <div class="sub" id="pageSub">Vergleich · Tools</div>
         </div>
       </div>
       <div class="small" id="pageTag">Einordnung</div>
@@ -325,6 +277,7 @@
             <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
             <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
             <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="education.html" data-page="education.html">Schule</a>
             <a href="press.html" data-page="press.html">Presse</a>
             <a href="status.html" data-page="status.html">Status</a>
           </div>
@@ -334,162 +287,170 @@
 
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> Vergleich</div>
-      <h1>URL-Cleaner Vergleich: wo SafeShare Pro sich klar abhebt</h1>
+      <h1>SafeShare vs. typische URL Cleaner</h1>
       <p>
-        Viele Tools können “UTM entfernen”. Das ist gut – aber für professionelle Praxis reicht das oft nicht.
-        Entscheidend sind Regeln, Audit und Exporte.
+        Viele Tools “reinigen” Links. Der Unterschied liegt nicht nur im Entfernen von Parametern,
+        sondern im <strong>Wie</strong>: local-first, ohne Proxy – und für Profis mit Policy/Audit/Export.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="app.html">Kostenlose App</a>
+        <a class="btn primary" href="app.html">App testen</a>
         <a class="btn" href="pro.html">Pro ansehen</a>
         <a class="btn ghost" href="#matrix">Matrix</a>
       </div>
 
       <div class="okBox">
-        SafeShare: local-first (Browser), keine Link-Weitergabe an einen Server, keine Proxy-Kürzer.
+        Wenn du nur “einmal kurz UTM raus” willst, reichen einfache Cleaner. Wenn du nachvollziehbar arbeiten musst: Pro.
       </div>
     </section>
 
-    <section class="card" id="was-tools-können">
-      <h2>Was typische Link-Reiniger gut können</h2>
-      <ul>
-        <li>UTM und bekannte Click-IDs entfernen (gclid, fbclid …)</li>
-        <li>Links kürzen/“schöner machen”</li>
-        <li>Browser-Extensions oder Online-Formulare</li>
-      </ul>
-
-      <div class="warnBox">
-        In der Praxis fehlt oft: Nachvollziehbarkeit (Audit), kontrollierte Ausnahmen (Whitelist) und Team-Standards (Policy).
-      </div>
-    </section>
-
-    <section class="card" id="warum-pro">
-      <h2>Was in der Praxis wirklich wichtig ist (Pro-Realität)</h2>
-
+    <section class="card" id="tooltypen">
+      <h2>Welche Tool-Typen gibt es?</h2>
       <div class="grid">
         <div class="tile">
-          <h3>1) Nicht blind entfernen</h3>
-          <p>
-            Manche Parameter sind funktional (Token/Signatur/Checkout). Ohne Audit merkst du erst später, dass Links brechen.
-          </p>
-          <p><span class="tag">Pro</span> Audit + Domain-Overrides</p>
+          <h3>1) Simple Cleaner</h3>
+          <p>Ein Feld, ein Button. Entfernt Standard-Parameter. Keine Regeln, kein Audit, kein Export.</p>
         </div>
         <div class="tile">
-          <h3>2) Standards</h3>
-          <p>
-            Teams brauchen klare Regeln: Welche Keys entfernen wir immer? Welche sind erlaubt? Pro macht das als Policy/Profile.
-          </p>
-          <p><span class="tag">Pro</span> Presets/Profiles</p>
+          <h3>2) Shortener/Redirect</h3>
+          <p>Kürzen per Weiterleitung. Praktisch, aber oft ein zusätzlicher “Mittelsmann”.</p>
         </div>
         <div class="tile">
-          <h3>3) Batch & QA</h3>
-          <p>
-            Profis bearbeiten viele Links am Stück (Planung, Redaktion, Kampagne). Batch + Vergleich spart Zeit.
-          </p>
-          <p><span class="tag">Pro</span> Batch-Workflow</p>
+          <h3>3) Browser-Extensions</h3>
+          <p>Automatisierung möglich, aber oft mehr Berechtigungen, teils unklarer Datenfluss.</p>
         </div>
         <div class="tile">
-          <h3>4) Export & Dokumentation</h3>
-          <p>
-            Professionelle Arbeit ist nachvollziehbar: du willst Ergebnisse exportieren (CSV/JSON) und später prüfen.
-          </p>
-          <p><span class="tag">Pro</span> CSV/JSON Export</p>
+          <h3>4) Privacy-Suites</h3>
+          <p>Blocker/Schutz im Browser. Nicht primär für Link-Hygiene beim Teilen.</p>
         </div>
+      </div>
+
+      <div class="warnBox">
+        SafeShare ist kein “All-in-One-Tracker-Blocker”. Es ist bewusst fokussiert: Link-Hygiene beim Teilen.
       </div>
     </section>
 
     <section class="card" id="matrix">
-      <h2>Feature-Matrix (kompakt)</h2>
-
-      <div class="tableWrap" role="region" aria-label="Feature-Matrix" tabindex="0">
+      <h2>Vergleichsmatrix (konzeptionell)</h2>
+      <div class="tableWrap" role="region" aria-label="Vergleichsmatrix" tabindex="0">
         <table>
           <thead>
             <tr>
               <th>Feature</th>
-              <th>SafeShare App</th>
-              <th>SafeShare Pro</th>
-              <th>Typische Cleaner</th>
+              <th>Simple Cleaner</th>
+              <th>Shortener/Proxy</th>
+              <th>Extension</th>
+              <th><strong>SafeShare</strong></th>
+              <th><strong>SafeShare Pro</strong></th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Local-first</strong> (keine URL an Server)</td>
-              <td>Ja</td>
-              <td>Ja</td>
-              <td>Unterschiedlich</td>
+              <td>Standard-Parameter entfernen (UTM, gclid, fbclid)</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
             </tr>
             <tr>
-              <td><strong>Audit</strong> (Entfernt/Behalten transparent)</td>
-              <td>Minimal</td>
-              <td>Voll</td>
-              <td>Selten</td>
+              <td>local-first (kein Server-Proxy)</td>
+              <td class="no">∼</td>
+              <td class="no">✗</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
             </tr>
             <tr>
-              <td><strong>Whitelist/Blacklist</strong> (Keys/Patterns)</td>
-              <td>Nein</td>
-              <td>Ja</td>
-              <td>Selten</td>
+              <td>Audit: „Was wurde entfernt / behalten?“</td>
+              <td class="no">✗</td>
+              <td class="no">✗</td>
+              <td class="no">∼</td>
+              <td class="no">∼</td>
+              <td class="yes">✓</td>
             </tr>
             <tr>
-              <td><strong>Domain-Overrides</strong> (Ausnahmen pro Domain)</td>
-              <td>Nein</td>
-              <td>Ja</td>
-              <td>Sehr selten</td>
+              <td>Policy/Regeln (Presets, Domain-Overrides)</td>
+              <td class="no">✗</td>
+              <td class="no">✗</td>
+              <td class="no">∼</td>
+              <td class="no">✗</td>
+              <td class="yes">✓</td>
             </tr>
             <tr>
-              <td><strong>Batch</strong> (Listen bearbeiten)</td>
-              <td>Optional separat</td>
-              <td>Ja</td>
-              <td>Unterschiedlich</td>
+              <td>Batch-Workflows (Listen)</td>
+              <td class="no">∼</td>
+              <td class="no">∼</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
             </tr>
             <tr>
-              <td><strong>Export</strong> (CSV/JSON)</td>
-              <td>Nein</td>
-              <td>Ja</td>
-              <td>Selten</td>
+              <td>Export (CSV/JSON) für Dokumentation</td>
+              <td class="no">✗</td>
+              <td class="no">✗</td>
+              <td class="no">∼</td>
+              <td class="no">✗</td>
+              <td class="yes">✓</td>
             </tr>
             <tr>
-              <td><strong>Pro-Workflow</strong> (Preset → QA → Output)</td>
-              <td>Nein</td>
-              <td>Ja</td>
-              <td>Meist nein</td>
+              <td>Team-Setup / Preset-Sharing</td>
+              <td class="no">✗</td>
+              <td class="no">✗</td>
+              <td class="no">∼</td>
+              <td class="no">✗</td>
+              <td class="yes">✓</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="row">
-        <a class="btn primary" href="pro.html">Pro ansehen</a>
-        <a class="btn" href="help.html#pro">Wie Pro genutzt wird</a>
+      <p style="margin-top:10px; color: var(--muted2); font-size: 12px;">
+        Legende: ✓ vorhanden · ∼ teilweise/uneinheitlich · ✗ typischerweise nicht
+      </p>
+    </section>
+
+    <section class="card" id="wann-was">
+      <h2>Wann reicht ein einfacher Cleaner – und wann brauchst du Pro?</h2>
+
+      <div class="grid">
+        <div class="tile">
+          <h3>Simple Cleaner reicht, wenn …</h3>
+          <ul>
+            <li>du nur gelegentlich UTM/Click-IDs entfernen willst</li>
+            <li>du keine Nachweise brauchst</li>
+            <li>du keine Regeln pro Domain pflegen willst</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="app.html">SafeShare App</a>
+          </div>
+        </div>
+
+        <div class="tile">
+          <h3>Pro ist sinnvoll, wenn …</h3>
+          <ul>
+            <li>du beruflich mit Links arbeitest (Social/Redaktion/Publisher)</li>
+            <li>du “Regeln statt Bauchgefühl” willst (Policy)</li>
+            <li>du erklären/dokumentieren musst, was entfernt wurde (Audit/Export)</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="pro.html">SafeShare Pro</a>
+            <a class="btn" href="help.html#pro">Workflow</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="okBox">
+        “Pro” ist nicht “mehr Entfernen”. Pro ist <strong>kontrolliertes Entfernen</strong> – mit nachvollziehbarer Begründung.
       </div>
     </section>
 
-    <section class="card" id="entscheidung">
-      <h2>Wann reicht ein normaler Cleaner – wann brauchst du Pro?</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>Normaler Cleaner reicht, wenn…</h3>
-          <ul>
-            <li>du selten Links teilst</li>
-            <li>du nur UTM/Click-IDs loswerden willst</li>
-            <li>du keine Team-Standards brauchst</li>
-          </ul>
-          <div class="row">
-            <a class="btn primary" href="app.html">Zur App</a>
-          </div>
-        </div>
-        <div class="tile">
-          <h3>Pro lohnt sich, wenn…</h3>
-          <ul>
-            <li>du beruflich Links nutzt (Social/Redaktion/Publisher)</li>
-            <li>du Links in Menge verarbeitest</li>
-            <li>du Audit/Whitelist/Exports brauchst</li>
-          </ul>
-          <div class="row">
-            <a class="btn primary" href="pro.html">Zu Pro</a>
-          </div>
-        </div>
+    <section class="card" id="intern">
+      <h2>Weiterführend</h2>
+      <div class="row">
+        <a class="btn" href="tracking-parameter.html">Tracking erklärt</a>
+        <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
+        <a class="btn ghost" href="education.html">Schule</a>
       </div>
     </section>
 
@@ -503,6 +464,7 @@
         <a href="utm-parameter-entfernen.html">UTM</a>
         <a href="tracking-parameter.html">Tracking</a>
         <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="education.html">Schule</a>
         <a href="press.html">Presse</a>
         <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
@@ -531,16 +493,17 @@
       const sub = document.getElementById('pageSub');
       const tag = document.getElementById('pageTag');
       const map = {
-        "index.html": ["Start · Überblick", "Links teilen. Ohne Ballast."],
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
+        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
         "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "press.html": ["Presse · Infos", "Material"]
+        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "press.html": ["Presse · Media Kit", "Fakten & Assets"]
       };
       if (sub && map[path]) sub.textContent = map[path][0];
       if (tag && map[path]) tag.textContent = map[path][1];
