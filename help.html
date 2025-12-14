@@ -2,318 +2,489 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <title>SafeShare Hilfe – Fragen & Antworten zur Link-Bereinigung</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- help.html -->
-  <meta name="description" content="SafeShare Hilfe: Kurz-Anleitung zur App, Erklärung der Pro-Funktionen, Bookmarklets und Antworten auf häufige Fragen rund um saubere Links ohne unnötiges Tracking." />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>SafeShare Hilfe – App & Pro</title>
+  <meta name="description" content="Hilfe für SafeShare: Links bereinigen, Tracking-Parameter entfernen, häufige Probleme (Link kaputt), Pro-Workflow (Audit/Policy/Export)." />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
 
-  <!-- Verifikation -->
-  <meta name="google-site-verification" content="KFkKxZrXyKiS_KzE0YwkYAeXoLNKtQGjbeg9ocdBiOY" />
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
+  <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/help.html" />
-  <meta property="og:title" content="SafeShare Hilfe – Fragen & Antworten" />
-  <meta property="og:description" content="Antworten auf häufige Fragen zu SafeShare, Tracking-Parametern und SafeShare Pro." />
-  <meta property="og:image" content="social-preview.png" />
-
-  <link rel="icon" href="logo.svg" type="image/svg+xml" />
-
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #050814;
-      --bg-elevated: #0b1020;
-      --bg-soft: #11182a;
-      --border-subtle: #1d2335;
-      --accent: #3fe0b5;
-      --accent-soft: rgba(63, 224, 181, 0.14);
-      --text-main: #f5f5f7;
-      --text-muted: #a0a4b8;
-      --text-soft: #8288a2;
-      --radius-lg: 18px;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,95,95,.16);
+      --ok: rgba(47,227,183,.16);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+      --max: 1120px;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #11182a 0, #050814 55%, #02040a 100%);
-      color: var(--text-main);
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    header {
-      border-bottom: 1px solid var(--border-subtle);
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom,
-        rgba(5, 8, 20, 0.9),
-        rgba(5, 8, 20, 0.85),
-        rgba(5, 8, 20, 0.75));
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-    .nav {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 14px 20px 10px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      font-size: 17px;
-      letter-spacing: 0.01em;
-    }
-    .nav-logo {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #192635 0, #050814 65%);
-      border: 1px solid rgba(63, 224, 181, 0.45);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-      font-size: 14px;
-      box-shadow: 0 0 0 1px rgba(10, 255, 196, 0.08);
-    }
-    .nav-tagline {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-top: 1px;
-    }
-    .nav-links {
-      display: flex;
-      gap: 14px;
-      margin-left: auto;
-      font-size: 14px;
-    }
-    .nav-link {
-      padding: 6px 10px;
-      border-radius: 999px;
-      color: var(--text-muted);
-    }
-    .nav-link:hover {
-      background: rgba(255, 255, 255, 0.02);
-      text-decoration: none;
-      color: var(--text-main);
-    }
-    .nav-link.active {
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-
-    main {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 32px 20px 72px;
-    }
-    h1 {
-      font-size: clamp(26px, 3vw, 30px);
-      margin: 0 0 10px;
-    }
-    .lead {
-      margin: 0 0 18px;
-      font-size: 15px;
-      color: var(--text-muted);
-    }
-
-    .faq-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 18px;
-    }
-
-    .faq-section {
-      border-radius: var(--radius-lg);
-      background: rgba(7, 12, 28, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 16px 18px 16px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-    .faq-section h2 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-    .faq-section h3 {
-      margin: 12px 0 6px;
-      font-size: 15px;
-    }
-    .faq-section p {
-      margin: 0 0 8px;
-    }
-    .faq-section ul {
-      margin: 0 0 6px 18px;
-      padding: 0;
-    }
-
-    .topics {
-      border-radius: var(--radius-lg);
-      background: rgba(7, 12, 28, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 16px 18px 16px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-    .topics h2 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-    .topics ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .topics li {
-      margin: 4px 0;
-    }
-    .topics a {
-      color: var(--text-muted);
-    }
-    .topics a:hover {
-      color: var(--accent);
-      text-decoration: underline;
-    }
-
-    @media (max-width: 800px) {
-      .faq-grid {
-        grid-template-columns: minmax(0, 1fr);
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff; --card2:#f5f7ff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,95,95,.18);
+        --ok: rgba(47,227,183,.18);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
-    @media (max-width: 640px) {
-      .nav { padding-inline: 14px; }
-      main { padding-inline: 14px; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 14px; padding: 10px 2px 12px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{
+      font-size: 16px; font-weight: 780; line-height:1.1;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      font-size: 12px; color: var(--muted2); margin-top:2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
+    }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 3.8vw, 34px);
+      line-height: 1.15;
+      letter-spacing: -0.2px;
+    }
+    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    code, .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{
+      background: var(--mint2);
+      border-color: rgba(47,227,183,.35);
+    }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+    }
+    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .okBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .warnBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .badBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,95,95,.55);
+      background: var(--bad);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
+    .small{ font-size: 12px; color: var(--muted2); line-height: 1.45; }
+
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 780;
+      color: var(--text);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
   </style>
 </head>
+
 <body>
-<header>
-  <div class="nav">
-    <a href="index.html" class="nav-brand">
-      <span class="nav-logo">8</span>
-      <span>
-        SafeShare
-        <div class="nav-tagline">Links teilen. Ohne Ballast.</div>
-      </span>
-    </a>
-    <nav class="nav-links">
-      <a href="app.html" class="nav-link">App</a>
-      <a href="pro.html" class="nav-link">Pro</a>
-      <a href="help.html" class="nav-link active">Hilfe</a>
-      <a href="bookmarklets.html" class="nav-link">Bookmarklets</a>
-    </nav>
-  </div>
-</header>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Hilfe · App & Pro</div>
+        </div>
+      </div>
+      <div class="small">Kurz, praxisnah</div>
+    </header>
 
-<main>
-  <h1>Hilfe & Fragen zu SafeShare</h1>
-  <p class="lead">
-    Hier findest du Antworten auf häufige Fragen: Wie SafeShare funktioniert, welche Tracking-Parameter
-    entfernt werden, was SafeShare Pro zusätzlich kann – und wo du mehr Hintergrundwissen bekommst.
-  </p>
-
-  <section class="faq-grid">
-    <div class="faq-section">
-      <h2>Wie funktioniert SafeShare?</h2>
-      <h3>Was macht die App genau?</h3>
-      <p>
-        SafeShare nimmt einen Link, analysiert die Parameter in der URL (alles, was nach <code>?</code>
-        bzw. <code>&amp;</code> kommt) und entfernt typische Tracking-Parameter wie UTM-Tags und
-        Klick-IDs. Das Ergebnis ist eine aufgeräumte URL, die weiterhin auf dieselbe Seite führt,
-        aber weniger Datenballast enthält.
-      </p>
-      <p>
-        Du kannst die App direkt im Browser nutzen:
-        <a href="app.html">SafeShare-App öffnen</a>.
-      </p>
-
-      <h3>Welche Parameter werden entfernt?</h3>
-      <p>
-        SafeShare konzentriert sich u. a. auf:
-      </p>
-      <ul>
-        <li>UTM-Parameter wie <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>,</li>
-        <li>Klick- bzw. Tracking-IDs wie <code>fbclid</code>, <code>gclid</code>,</li>
-        <li>weitere typische Marketing-Parameter, die nicht nötig sind, damit der Link funktioniert.</li>
-      </ul>
-      <p>
-        Details und Beispiele findest du auf:
-        <a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a> und
-        <a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a>.
-      </p>
-
-      <h3>Speichert SafeShare Daten über mich?</h3>
-      <p>
-        SafeShare ist bewusst minimal gehalten: Die Bereinigung findet im Browser statt. Es gibt kein
-        Nutzerkonto, keinen Login und keine Profilbildung über dein Nutzungsverhalten. Du kannst SafeShare
-        nutzen, ohne dich irgendwo anzumelden.
-      </p>
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="app.html">App</a>
+        <a class="tab" href="pro.html">Pro</a>
+        <a class="tab" href="utm-parameter-entfernen.html">UTM</a>
+        <a class="tab" href="tracking-parameter.html">Tracking</a>
+        <a class="tab" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a class="tab active" href="hilfe.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html">Bookmarklets</a>
+      </div>
     </div>
 
-    <aside class="topics">
-      <h2>Mehr Hintergrund</h2>
-      <ul>
-        <li><a href="tracking-parameter-entfernen.html">Tracking-Parameter entfernen</a></li>
-        <li><a href="utm-parameter-entfernen.html">UTM-Parameter entfernen</a></li>
-        <li><a href="url-cleaner-tool-vergleich.html">URL-Cleaner-Tools im Vergleich</a></li>
-      </ul>
-      <p style="margin-top:8px; font-size:13px; color:var(--text-soft);">
-        Diese Seiten erklären im Detail, welche Daten Links mittragen können und wie SafeShare in dieses
-        Bild passt.
+    <section class="card" id="start">
+      <div class="pill"><span class="dot" aria-hidden="true"></span> Hilfe</div>
+      <h1>So nutzt du SafeShare – ohne Umwege</h1>
+      <p>
+        SafeShare entfernt Tracking-Anhänge aus Links (der „Ballast“ am Link). Für Profis gibt es SafeShare Pro (Policy, Audit, Export).
       </p>
-    </aside>
-  </section>
 
-  <section class="faq-section" style="margin-top:18px;">
-    <h2>Fragen zu SafeShare Pro</h2>
-    <h3>Was kann SafeShare Pro zusätzlich?</h3>
-    <p>
-      SafeShare Pro richtet sich an alle, die regelmäßig mit vielen Links arbeiten – zum Beispiel für
-      Newsletter, Blogs, Recherchen oder kleine Teams. Pro ergänzt die kostenlose App um:
-    </p>
-    <ul>
-      <li>die Möglichkeit, mehrere Links auf einmal zu bereinigen (eine Liste von URLs),</li>
-      <li>eigene Regeln für Parameter (zusätzlich entfernen / bewusst behalten),</li>
-      <li>Dokumente mit Routinen und Beispielen, um Link-Hygiene in deinen Alltag oder dein Team einzubauen.</li>
-    </ul>
-    <p>
-      Mehr dazu findest du auf der <a href="pro.html">Pro-Seite</a>, inklusive Links zu den
-      Payhip-Produkten für Einzelpersonen und Teams.
-    </p>
-    <h3>Wann brauche ich Pro – und wann reicht die App?</h3>
-    <ul>
-      <li>
-        Wenn du nur gelegentlich Einzel-Links aufräumst, reicht die kostenlose
-        <a href="app.html">SafeShare-App</a> völlig aus.
-      </li>
-      <li>
-        Wenn du regelmäßig viele Links auf einmal bereinigst (z. B. Newsletter, große Blogposts,
-        Ressourcen-Sammlungen) oder bestimmte Parameter bewusst steuern willst, lohnt sich ein Blick auf
-        <a href="pro.html">SafeShare Pro</a>.
-      </li>
-    </ul>
-    <h2>SafeShare als Bookmarklet nutzen</h2>
-<p>
-  Wenn du SafeShare direkt aus deinem Browser heraus nutzen möchtest, kannst du dir
-  kleine Bookmarklets in die Lesezeichenleiste ziehen.
-</p>
-<p>
-  Eine Übersicht und fertige Buttons findest du hier:
-  <a href="bookmarklets.html">SafeShare Bookmarklets</a>.
-</p>
-  </section>
-</main>
+      <div class="row">
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="pro.html">Pro ansehen</a>
+        <a class="btn ghost" href="#faq">FAQ</a>
+        <a class="btn ghost" href="#pro">Pro Hilfe</a>
+      </div>
+
+      <div class="okBox">
+        Merksatz: Viele Links tragen „Aufkleber“ (z. B. <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>). SafeShare entfernt diese, bevor du den Link teilst.
+      </div>
+    </section>
+
+    <section class="card" id="app">
+      <h2>App (kostenlos): Rein → raus</h2>
+      <p>Für schnelle Link-Hygiene ohne Entscheidungen.</p>
+
+      <div class="grid">
+        <div class="box">
+          <h3>So geht’s</h3>
+          <ul>
+            <li>Link einfügen</li>
+            <li><strong>Bereinigen</strong> drücken</li>
+            <li>Bereinigten Link kopieren und teilen</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="app.html">App öffnen</a>
+          </div>
+        </div>
+        <div class="box">
+          <h3>Was die App entfernt</h3>
+          <ul>
+            <li>Standard-Tracking (z. B. <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, <code>msclkid</code>)</li>
+            <li>Newsletter-/Kampagnen-Ballast (je nach Quelle)</li>
+          </ul>
+          <div class="warnBox">
+            Die App ist bewusst konservativ: funktionale Parameter bleiben.
+          </div>
+        </div>
+      </div>
+
+      <details>
+        <summary>Beispiel</summary>
+        <p class="small"><strong>Vorher</strong></p>
+        <p class="small mono">https://beispiel.de/artikel?utm_source=newsletter&utm_campaign=dezember&fbclid=XYZ</p>
+        <p class="small"><strong>Nachher</strong></p>
+        <p class="small mono">https://beispiel.de/artikel</p>
+      </details>
+    </section>
+
+    <section class="card" id="wann-nicht">
+      <h2>Wann du vorsichtig sein solltest</h2>
+      <p>Manche Links enthalten Parameter, die zur Funktion/Sicherheit gehören.</p>
+
+      <div class="warnBox">
+        Wenn ein Link nach dem Bereinigen nicht mehr funktioniert, liegt es oft an Token/Signatur-Parametern (z. B. <code>token</code>, <code>sig</code>, <code>expires</code>, <code>state</code>, <code>X-Amz-*</code>).
+      </div>
+
+      <div class="row">
+        <a class="btn" href="#pro">→ Lösung: SafeShare Pro (Audit + Whitelist-Fix)</a>
+      </div>
+    </section>
+
+    <section class="card" id="pro">
+      <h2>Pro: Policy · Audit · Export (für Profis)</h2>
+      <p>
+        SafeShare Pro ist für Social/Creator, Journalist:innen, Redaktionen, Newsletter-Teams:
+        Bulk-Input, nachvollziehbares Audit pro Link, Policies (Whitelist/Blacklist) und Exporte (CSV/JSON).
+      </p>
+
+      <div class="grid">
+        <div class="box">
+          <h3>Pro Workflow</h3>
+          <ul>
+            <li>Textblock mit vielen Links einfügen</li>
+            <li><strong>Bereinigen</strong></li>
+            <li>Audit prüfen (OK/WARN/RISK)</li>
+            <li>Export (CSV/JSON) oder Output-Liste kopieren</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Warum Pro?</h3>
+          <ul>
+            <li><strong>Auditierbar:</strong> was wurde entfernt und warum</li>
+            <li><strong>Reproduzierbar:</strong> gleiche Policy → gleiche Ergebnisse</li>
+            <li><strong>Teamfähig:</strong> Policy als JSON exportieren/teilen</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person kaufen</a>
+            <a class="btn" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team kaufen</a>
+          </div>
+        </div>
+      </div>
+
+      <details>
+        <summary>OK / WARN / RISK – was bedeutet das?</summary>
+        <ul>
+          <li><strong>OK:</strong> unkritisch, keine riskanten Eingriffe erkannt.</li>
+          <li><strong>WARN:</strong> Hinweis (z. B. Wrapper offline nicht entpackbar).</li>
+          <li><strong>RISK:</strong> token-/signaturähnliche Keys wurden entfernt → Link könnte brechen.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Whitelist-Fix (wenn Links kaputt gehen)</summary>
+        <p class="small">
+          Bei <strong>RISK</strong> kannst du die betroffenen Keys per <strong>Whitelist-Fix</strong> automatisch auf die Whitelist setzen und neu bereinigen.
+        </p>
+      </details>
+
+      <details>
+        <summary>Handbuch (nach Kauf)</summary>
+        <p class="small">
+          Das Pro-Paket enthält ein Offline-HTML-Handbuch (<code>handbuch-pro.html</code>) mit Profile, Audit, Policies, Domain Overrides und Export.
+        </p>
+      </details>
+    </section>
+
+    <section class="card" id="faq">
+      <h2>FAQ</h2>
+
+      <details open>
+        <summary>Warum sollte ich Links überhaupt reinigen?</summary>
+        <p class="small">
+          Viele Links enthalten „Aufkleber“ (Tracking-Anhänge). Wenn du den Link teilst, teilst du diese Zusatzinfos mit.
+          SafeShare entfernt diesen Ballast – ohne Panik, einfach weniger unnötige Daten im Umlauf.
+        </p>
+      </details>
+
+      <details>
+        <summary>Wird man dadurch unsichtbar?</summary>
+        <p class="small">
+          Nein. SafeShare ist Link-Hygiene. Es verhindert nicht Cookies, Fingerprinting oder Login-Tracking.
+          Es reduziert nur unnötige Tracking-Anteile im Link selbst.
+        </p>
+      </details>
+
+      <details>
+        <summary>Mein Link funktioniert nach dem Bereinigen nicht mehr – was tun?</summary>
+        <p class="small">
+          Nutze SafeShare Pro: Schau ins Audit (RISK) und setze die betroffenen Keys per Whitelist-Fix auf die Whitelist.
+          Typische Kandidaten: <code>token</code>, <code>sig</code>, <code>expires</code>, <code>state</code>, <code>X-Amz-*</code>.
+        </p>
+      </details>
+
+      <details>
+        <summary>Warum ist der Link manchmal trotzdem lang?</summary>
+        <p class="small">
+          Weil funktionale Parameter (z. B. Suche, Filter, IDs) absichtlich bleiben. SafeShare entfernt primär Tracking-Ballast.
+        </p>
+      </details>
+
+      <details>
+        <summary>Kann SafeShare Redirects entpacken?</summary>
+        <p class="small">
+          In Pro optional: offline nur dann, wenn die Ziel-URL als Parameter im Wrapper steckt (z. B. <code>url=</code>, <code>u=</code>, <code>redirect=</code>).
+          Server-Redirects (z. B. viele <code>t.co</code>) sind offline nicht zuverlässig auflösbar.
+        </p>
+      </details>
+
+      <div class="row">
+        <a class="btn primary" href="app.html">Zur App</a>
+        <a class="btn" href="pro.html">Zur Pro-Seite</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell & einfach · Pro: Policy & Audit für Profis.</div>
+        </div>
+        <div class="footLinks">
+          <a href="app.html">App</a>
+          <a href="pro.html">Pro</a>
+          <a href="hilfe.html">Hilfe</a>
+          <a href="bookmarklets.html">Bookmarklets</a>
+          <a href="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html">Impressum</a>
+        </div>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
