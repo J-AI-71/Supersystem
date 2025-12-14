@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Datenschutz – SafeShare</title>
-  <meta name="description" content="Datenschutzerklärung für SafeShare: local-first Link-Bereinigung, Hosting/Server-Logs, Service Worker/Cache, externe Links (Payhip) und Rechte nach DSGVO." />
+  <meta name="description" content="Datenschutzerklärung für SafeShare. Local-first Link-Reinigung im Browser, Hinweise zu Hosting, Pro-Kauf (Payhip), Rechten nach DSGVO." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -28,6 +28,7 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,95,95,.16);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -41,6 +42,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,95,95,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -131,11 +133,22 @@
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
-    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    h2{ margin: 14px 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 12px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
-    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
     .okBox{
       margin-top: 12px;
@@ -157,19 +170,35 @@
       font-size: 13px;
       line-height: 1.45;
     }
-    .monoBox{
-      margin-top:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
 
-    footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
     .footLinks{
       display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
       border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
@@ -195,10 +224,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Datenschutz</div>
+          <div class="sub" id="pageSub">Datenschutz</div>
         </div>
       </div>
-      <div class="small">DSGVO</div>
+      <div class="small" id="pageTag">DSGVO</div>
     </header>
 
     <div class="tabsBar">
@@ -227,7 +256,15 @@
 
     <section class="card">
       <h1>Datenschutzerklärung</h1>
-      <p>Stand: 14.12.2025</p>
+      <p>
+        Diese Datenschutzerklärung informiert darüber, welche personenbezogenen Daten beim Besuch dieser Website
+        und bei der Nutzung von SafeShare verarbeitet werden.
+      </p>
+
+      <div class="okBox">
+        Grundprinzip von SafeShare: Link-Bereinigung erfolgt <strong>local-first im Browser</strong>.
+        Das heißt: Die eingegebenen Links werden (für die Kernfunktion) nicht an einen SafeShare-Server gesendet.
+      </div>
 
       <h2>1. Verantwortliche Stelle</h2>
       <div class="monoBox">Jana Jergus
@@ -236,84 +273,100 @@ Auf dem Emdgenberg
 Germany
 E-Mail: support.safeshare@proton.me</div>
 
-      <h2>2. Grundprinzip von SafeShare (local-first)</h2>
+      <h2>2. Überblick: Was wird verarbeitet?</h2>
+      <h3>2.1 Besuch der Website</h3>
       <p>
-        SafeShare ist eine Web-App zur Link-Hygiene. Die Bereinigung von Links erfolgt nach Möglichkeit
-        <strong>lokal im Browser</strong>. Das bedeutet: Der eingegebene Link muss nicht an einen Server übertragen werden,
-        damit die Bereinigung funktioniert (sofern du keine externen Dienste nutzt).
+        Beim Aufruf einer Website werden technisch bedingt Daten verarbeitet, z. B. IP-Adresse, Datum/Uhrzeit,
+        aufgerufene Seite, User-Agent/Browser. Diese Daten fallen typischerweise in Server-Logs des Hosters an.
       </p>
-      <div class="okBox">
-        Ziel: Datensparsamkeit. Keine unnötige Weitergabe von Links/Parametern an Dritte für die Kernfunktion.
-      </div>
 
-      <h2>3. Hosting / Zugriffsdaten</h2>
+      <h3>2.2 Nutzung der App-Funktion</h3>
       <p>
-        Beim Aufruf dieser Website verarbeitet der Hosting-Provider technische Zugriffsdaten
-        (z. B. IP-Adresse, Zeitpunkt, angeforderte Datei, User-Agent), um die Website auszuliefern und die Sicherheit zu gewährleisten.
+        Die Link-Reinigung findet im Browser statt. Die von dir eingefügten URLs werden nicht automatisch an SafeShare übertragen.
+        Die Verarbeitung erfolgt lokal auf deinem Gerät.
+      </p>
+
+      <h3>2.3 Kontaktaufnahme</h3>
+      <p>
+        Wenn du per E-Mail Kontakt aufnimmst, werden die von dir übermittelten Daten (z. B. E-Mail-Adresse, Inhalt)
+        zur Bearbeitung der Anfrage verarbeitet.
+      </p>
+
+      <h2>3. Hosting</h2>
+      <p>
+        Diese Website ist als statische Website gehostet (z. B. GitHub Pages). Der Hosting-Anbieter kann im Rahmen des Betriebs
+        Server-Logdaten verarbeiten (insbesondere IP-Adresse und technische Zugriffsdaten).
       </p>
       <p>
-        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Betrieb und Sicherheit).
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherem und stabilem Betrieb der Website).
+      </p>
+
+      <h2>4. Cookies, Tracking, Analytics</h2>
+      <p>
+        SafeShare setzt nach aktuellem Stand <strong>keine</strong> eigenen Tracking-Cookies und nutzt <strong>keine</strong> Analytics/Profiling,
+        um Nutzer:innen zu verfolgen.
       </p>
       <div class="warnBox">
-        Hinweis: Diese Website wird über GitHub Pages bereitgestellt. Wenn du zusätzlich Netlify/andere Dienste verwendest,
-        ergänze hier den jeweiligen Anbieter und ggf. Angaben zu Logfiles/Speicherdauer.
+        Hinweis: Externe Plattformen, die du über Links aufrufst (z. B. Payhip), können eigene Cookies/Tracking einsetzen.
+        Es gelten dann deren Datenschutzbestimmungen.
       </div>
 
-      <h2>4. Service Worker / Offline-Cache</h2>
+      <h2>5. Pro-Kauf (Payhip)</h2>
       <p>
-        SafeShare kann einen Service Worker einsetzen, um Seiten/Assets im Browser zwischenzuspeichern (Cache),
-        damit die Website schneller lädt und offline robuster ist. Diese Speicherung passiert <strong>auf deinem Gerät</strong>.
+        Für den Kauf/Bezahlvorgang der Pro-Version wird auf Payhip verlinkt (externer Anbieter).
+        Beim Besuch/Bestellvorgang bei Payhip werden Daten durch Payhip verarbeitet (z. B. Zahlungs- und Bestelldaten).
       </p>
+      <p>
+        Rechtsgrundlage für die Weiterleitung/Einbindung als externer Link: Art. 6 Abs. 1 lit. b DSGVO (Vertrag/Anbahnung) und/oder
+        Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am Vertrieb des Produkts).
+      </p>
+
+      <h2>6. Service Worker / Offline-Funktion</h2>
+      <p>
+        SafeShare kann einen Service Worker verwenden, um Inhalte lokal im Browser zwischenzuspeichern (Cache) und Offline-Funktionalität zu ermöglichen.
+        Das betrifft Dateien/Assets der Website (z. B. HTML/CSS/JS) und dient der Performance.
+      </p>
+
+      <h2>7. Empfänger:innen von Daten</h2>
       <ul>
-        <li>Speicherort: Browser-Cache (Cache Storage)</li>
-        <li>Zweck: Performance, Offline-Funktion, Stabilität</li>
-        <li>Du kannst den Cache in <code>status.html</code> löschen bzw. den Service Worker entfernen.</li>
+        <li>Hosting-Anbieter (technisch notwendige Verarbeitung, z. B. Server-Logs)</li>
+        <li>E-Mail-Anbieter bei Kontaktaufnahme</li>
+        <li>Payhip (nur, wenn du dort kaufst bzw. den Link aufrufst)</li>
       </ul>
 
-      <h2>5. Kontaktaufnahme</h2>
-      <p>
-        Wenn du per E-Mail Kontakt aufnimmst, verarbeiten wir die von dir übermittelten Daten (z. B. E-Mail-Adresse, Inhalt),
-        um dein Anliegen zu bearbeiten.
-      </p>
-      <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertraglich/Vertrag) oder Art. 6 Abs. 1 lit. f DSGVO.</p>
+      <h2>8. Speicherdauer</h2>
+      <ul>
+        <li>Server-Logdaten: abhängig vom Hosting-Anbieter (typischerweise begrenzt zur Sicherheits-/Fehleranalyse).</li>
+        <li>E-Mail-Anfragen: solange erforderlich zur Bearbeitung und ggf. gesetzlicher Aufbewahrungspflichten.</li>
+        <li>Lokale Browser-Daten (Cache/Service Worker): bis du den Browser-Cache/Website-Daten löschst oder ein Update sie ersetzt.</li>
+      </ul>
 
-      <h2>6. Externe Links / Drittanbieter (z. B. Payhip)</h2>
-      <p>
-        Auf dieser Website können Links zu externen Anbietern enthalten sein (z. B. Payhip für den Kauf von SafeShare Pro).
-        Wenn du einem externen Link folgst, verlässt du diese Website. Ab dann gelten die Datenschutzregeln des jeweiligen Anbieters.
-      </p>
-      <div class="monoBox">Payhip Pro Person: https://payhip.com/b/VDm3B
-Payhip Pro Team:   https://payhip.com/b/Yxh5T</div>
-
-      <h2>7. Affiliate-/Referral-Links (falls genutzt)</h2>
-      <p>
-        Wenn Affiliate-Links verwendet werden, kann der Zielanbieter Parameter zur Zuordnung (Attribution) nutzen.
-        SafeShare entfernt Tracking-Parameter standardmäßig häufig – bei Affiliate-/Partnerlinks kann das die Zuordnung beeinflussen.
-        In SafeShare Pro können Regeln/Whitelists genutzt werden, um bewusst zu steuern, was erhalten bleiben soll.
-      </p>
-
-      <h2>8. Cookies / Tracking</h2>
-      <p>
-        SafeShare setzt für die Kernfunktion grundsätzlich kein serverseitiges Tracking voraus.
-        Falls zukünftig Analyse-/Tracking-Tools eingesetzt werden, muss dieser Abschnitt erweitert werden
-        (inkl. Einwilligung/Consent, Anbieter, Zweck, Rechtsgrundlage, Speicherdauer).
-      </p>
-
-      <h2>9. Deine Rechte (DSGVO)</h2>
+      <h2>9. Deine Rechte</h2>
+      <p>Du hast nach DSGVO insbesondere folgende Rechte:</p>
       <ul>
         <li>Auskunft (Art. 15 DSGVO)</li>
         <li>Berichtigung (Art. 16 DSGVO)</li>
         <li>Löschung (Art. 17 DSGVO)</li>
-        <li>Einschränkung (Art. 18 DSGVO)</li>
+        <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
         <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
         <li>Widerspruch (Art. 21 DSGVO)</li>
         <li>Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO)</li>
       </ul>
-
-      <h2>10. Änderungen</h2>
       <p>
-        Diese Datenschutzerklärung kann aktualisiert werden, wenn sich Funktionen oder eingesetzte Dienste ändern.
+        Wenn du deine Rechte geltend machen willst, schreibe an:
+        <a href="mailto:support.safeshare@proton.me"><strong>support.safeshare@proton.me</strong></a>
       </p>
+
+      <h2>10. Änderungen dieser Datenschutzerklärung</h2>
+      <p>
+        Diese Datenschutzerklärung kann aktualisiert werden, wenn sich Funktionen, Hosting oder rechtliche Anforderungen ändern.
+      </p>
+
+      <div class="row">
+        <a class="btn primary" href="mailto:support.safeshare@proton.me">Kontakt</a>
+        <a class="btn" href="impressum.html">Impressum</a>
+        <a class="btn ghost" href="index.html">Start</a>
+      </div>
     </section>
 
     <footer>
@@ -338,13 +391,35 @@ Payhip Pro Team:   https://payhip.com/b/Yxh5T</div>
   <script>
     (function () {
       const path = location.pathname.split('/').pop() || 'index.html';
+
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
+
       const navMore = document.getElementById('navMore');
       document.querySelectorAll('.menu a').forEach(a => {
         a.addEventListener('click', () => { if (navMore) navMore.open = false; });
       });
+
+      const sub = document.getElementById('pageSub');
+      const tag = document.getElementById('pageTag');
+      const map = {
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
+        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
+        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
+        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
+        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
+        "status.html": ["Status · Service Worker", "Cache/Updates"],
+        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
+        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
+        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
+        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "press.html": ["Presse · Media Kit", "Kontakt"],
+        "impressum.html": ["Impressum", "§ 5 TMG"],
+        "datenschutz.html": ["Datenschutz", "DSGVO"]
+      };
+      if (sub && map[path]) sub.textContent = map[path][0];
+      if (tag && map[path]) tag.textContent = map[path][1];
     })();
   </script>
 </body>
