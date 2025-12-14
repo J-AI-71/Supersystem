@@ -27,6 +27,7 @@
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -39,6 +40,7 @@
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -129,9 +131,8 @@
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
-    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .monoBox{
       margin-top:10px;
@@ -144,18 +145,34 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-    .warnBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
       color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
     }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
     .footLinks{
       display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
       border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
@@ -181,10 +198,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Impressum</div>
+          <div class="sub" id="pageSub">Impressum</div>
         </div>
       </div>
-      <div class="small">§ 5 TMG</div>
+      <div class="small" id="pageTag">§ 5 TMG</div>
     </header>
 
     <div class="tabsBar">
@@ -213,9 +230,8 @@
 
     <section class="card">
       <h1>Impressum</h1>
-      <p>Angaben gemäß § 5 TMG.</p>
 
-      <h2>Anbieter</h2>
+      <h2>Angaben gemäß § 5 TMG</h2>
       <div class="monoBox">Jana Jergus
 Auf dem Emdgenberg
 61250 Usingen
@@ -224,15 +240,31 @@ Germany</div>
       <h2>Kontakt</h2>
       <div class="monoBox">E-Mail: support.safeshare@proton.me</div>
 
-      <h2>Verantwortlich für den Inhalt</h2>
-      <p>(Falls journalistisch-redaktionelle Inhalte nach § 18 MStV veröffentlicht werden.)</p>
-      <div class="monoBox">Jana Jergus
-Auf dem Emdgenberg
-61250 Usingen
-Germany</div>
+      <h2>Umsatzsteuer</h2>
+      <p>Keine Umsatzsteuer-Identifikationsnummer vorhanden.</p>
 
-      <div class="warnBox">
-        Hinweis: Falls du später eine USt-IdNr. oder einen Handelsregistereintrag hast, kannst du diesen Abschnitt ergänzen.
+      <h2>Haftung für Inhalte</h2>
+      <p>
+        Als Diensteanbieterin bin ich gemäß den allgemeinen Gesetzen für eigene Inhalte auf diesen Seiten verantwortlich.
+        Ich übernehme jedoch keine Gewähr für die Aktualität, Richtigkeit und Vollständigkeit der bereitgestellten Inhalte.
+      </p>
+
+      <h2>Haftung für Links</h2>
+      <p>
+        Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe.
+        Für diese fremden Inhalte kann ich keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.
+      </p>
+
+      <h2>Urheberrecht</h2>
+      <p>
+        Die durch die Seitenbetreiberin erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.
+        Beiträge Dritter sind als solche gekennzeichnet. Eine Vervielfältigung, Bearbeitung oder Verbreitung außerhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung.
+      </p>
+
+      <div class="row">
+        <a class="btn primary" href="mailto:support.safeshare@proton.me">E-Mail</a>
+        <a class="btn" href="datenschutz.html">Datenschutz</a>
+        <a class="btn ghost" href="index.html">Start</a>
       </div>
     </section>
 
@@ -258,13 +290,35 @@ Germany</div>
   <script>
     (function () {
       const path = location.pathname.split('/').pop() || 'index.html';
+
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
+
       const navMore = document.getElementById('navMore');
       document.querySelectorAll('.menu a').forEach(a => {
         a.addEventListener('click', () => { if (navMore) navMore.open = false; });
       });
+
+      const sub = document.getElementById('pageSub');
+      const tag = document.getElementById('pageTag');
+      const map = {
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
+        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
+        "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
+        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
+        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
+        "status.html": ["Status · Service Worker", "Cache/Updates"],
+        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
+        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
+        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
+        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "press.html": ["Presse · Media Kit", "Kontakt"],
+        "impressum.html": ["Impressum", "§ 5 TMG"],
+        "datenschutz.html": ["Datenschutz", "DSGVO"]
+      };
+      if (sub && map[path]) sub.textContent = map[path][0];
+      if (tag && map[path]) tag.textContent = map[path][1];
     })();
   </script>
 </body>
