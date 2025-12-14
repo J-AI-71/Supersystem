@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Hilfe</title>
-  <meta name="description" content="SafeShare Hilfe: App (Alltag), Pro (Policy/Audit/Export), typische Parameter, Batch-Workflow, iPad/Safari und Cache/Update (Status-Seite)." />
+  <title>Presse – SafeShare Media Kit</title>
+  <meta name="description" content="Presse/Media Kit: SafeShare entfernt Tracking-Parameter aus Links (local-first). Fakten, Kurzbeschreibung, Assets, Links und Kontakt." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -27,7 +27,6 @@
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
-      --bad: rgba(255,95,95,.16);
       --ok: rgba(47,227,183,.16);
       --max: 1120px;
     }
@@ -41,7 +40,6 @@
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
-        --bad: rgba(255,95,95,.18);
         --ok: rgba(47,227,183,.18);
       }
     }
@@ -58,7 +56,10 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 14px; padding: 10px 2px 12px;
+    }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -68,7 +69,7 @@
       display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
     }
     .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: #2fe3b7; font-size: 14px; line-height:1; display:none; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -129,7 +130,7 @@
     }
     h1{
       margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 36px);
+      font-size: clamp(22px, 3.8vw, 40px);
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
@@ -162,22 +163,6 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .okBox{
-      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
-    .warnBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
-    .badBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,95,95,.55);
-      background: var(--bad); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
-
     .monoBox{
       margin-top:10px;
       padding: 12px 12px;
@@ -193,12 +178,20 @@
     .grid{
       display:grid;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 12px;
       margin-top: 10px;
     }
     @media(min-width: 980px){
       .grid{ grid-template-columns: 1fr 1fr; }
     }
+    .tile{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .tile h3{ margin: 0 0 8px; }
+    .tile p{ margin: 0 0 10px; }
 
     footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
     .footLinks{
@@ -226,10 +219,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Hilfe · App & Pro</div>
+          <div class="sub" id="pageSub">Presse · Media Kit</div>
         </div>
       </div>
-      <div class="small" id="pageTag">Kurz, praxisnah</div>
+      <div class="small" id="pageTag">Fakten & Assets</div>
     </header>
 
     <div class="tabsBar">
@@ -246,6 +239,7 @@
             <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
             <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
             <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="education.html" data-page="education.html">Schule</a>
             <a href="press.html" data-page="press.html">Presse</a>
             <a href="status.html" data-page="status.html">Status</a>
           </div>
@@ -254,115 +248,83 @@
     </div>
 
     <section class="card" id="top">
-      <h1>Hilfe</h1>
+      <h1>SafeShare Media Kit</h1>
       <p>
-        Hier steht alles, was du in der Praxis brauchst: App für Alltag, Pro für professionelle Workflows,
-        plus “Cache/Update”-Fix, wenn GitHub Pages alte Versionen zeigt.
+        SafeShare entfernt typische Tracking-Parameter aus Links – local-first im Browser.
+        App für schnelle Bereinigung, Pro für professionelle Workflows (Policy/Audit/Export).
       </p>
 
       <div class="row">
-        <a class="btn primary" href="#app">App</a>
-        <a class="btn" href="#pro">Pro</a>
-        <a class="btn" href="#cache">Cache/Update</a>
+        <a class="btn primary" href="index.html">Start</a>
+        <a class="btn" href="app.html">App</a>
+        <a class="btn" href="pro.html">Pro</a>
       </div>
     </section>
 
-    <section class="card" id="app">
-      <h2>App (Alltag)</h2>
-      <p>Workflow:</p>
-      <ul>
-        <li>Link einfügen</li>
-        <li>Bereinigen</li>
-        <li>Sauberen Link kopieren/teilen</li>
-      </ul>
-
-      <h3>Welche Parameter entfernt SafeShare?</h3>
-      <p>
-        Typisch: <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, <code>msclkid</code> und ähnliche “Klick-IDs”.
-      </p>
-
-      <div class="okBox">
-        SafeShare entfernt Tracking-„Etiketten“ – das ist Link-Hygiene. Kein Unsichtbarkeitsversprechen.
-      </div>
-
-      <div class="row">
-        <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn ghost" href="tracking-parameter.html">Tracking erklärt</a>
-      </div>
-    </section>
-
-    <section class="card" id="pro">
-      <h2>Pro (Policy · Audit · Export)</h2>
-      <p>Pro ist für Social/Journalismus/Publisher/Teams. Du bekommst Kontrolle und Nachvollziehbarkeit.</p>
-
-      <div class="grid">
-        <div class="card" style="margin:0;">
-          <h3>Policy (Regeln)</h3>
-          <ul>
-            <li>Profile/Presets pro Use-Case</li>
-            <li>Domain-Overrides</li>
-            <li>Whitelist/Blacklist für Parameter</li>
-          </ul>
-        </div>
-        <div class="card" style="margin:0;">
-          <h3>Audit (Was wurde geändert?)</h3>
-          <ul>
-            <li>zeigt “entfernt” und “behalten”</li>
-            <li>ideal für QA/Redaktion</li>
-            <li>hilft, wenn Links nach dem Entfernen brechen</li>
-          </ul>
-        </div>
-      </div>
-
-      <h3>Warum Pro praktisch ist</h3>
-      <ul>
-        <li>du kannst “funktionale Parameter” erlauben (Whitelist) und trotzdem Tracking entfernen</li>
-        <li>du kannst Workflows standardisieren (Profile)</li>
-        <li>du kannst Ergebnisse exportieren (CSV/JSON)</li>
-      </ul>
-
-      <div class="warnBox">
-        Wenn ein Link nach dem Bereinigen nicht mehr funktioniert, war wahrscheinlich ein Token/Signatur-Parameter dabei.
-        Pro hilft dir, genau das sichtbar zu machen.
-      </div>
-
-      <div class="row">
-        <a class="btn primary" href="pro.html">Pro öffnen</a>
-        <a class="btn" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person</a>
-        <a class="btn" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team</a>
-      </div>
-    </section>
-
-    <section class="card" id="beispiele">
-      <h2>Test-Beispiele</h2>
-      <p>Zum Reinkopieren in App/Pro:</p>
-
+    <section class="card" id="kurzbeschreibung">
+      <h2>Kurzbeschreibung (1 Satz)</h2>
       <div class="monoBox">
-https://example.com/article?utm_source=newsletter&utm_medium=email&utm_campaign=dez
-https://example.com/shop?gclid=ABC123&utm_campaign=launch&utm_source=ig
-https://example.com/page?fbclid=XYZ987
-https://example.com/search?q=safeshare&utm_source=twitter&utm_medium=social
+SafeShare bereinigt Links von typischen Tracking-Anhängen – lokal im Browser – und bietet mit Pro Audit, Policy und Export für professionelle Nutzung.
       </div>
 
-      <div class="row">
-        <a class="btn primary" href="app.html">In App testen</a>
-        <a class="btn" href="pro.html">In Pro testen</a>
+      <h2>Kurzbeschreibung (3 Sätze)</h2>
+      <div class="monoBox">
+Viele Links enthalten Tracking-Parameter wie UTM, gclid oder fbclid. SafeShare entfernt diese Zusätze local-first im Browser, ohne Proxy. SafeShare Pro richtet sich an Profis (Social/Redaktion/Publisher) mit Policy-Regeln, Audit-Transparenz und Export.
       </div>
     </section>
 
-    <section class="card" id="cache">
-      <h2>Cache/Update (wenn „alte Version“ angezeigt wird)</h2>
-      <p>Wenn z. B. das SafeShare-Logo oben “verschwindet” oder Seiten 404 zeigen, ist es oft Service-Worker-Cache.</p>
+    <section class="card" id="facts">
+      <h2>Fakten</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Was es ist</h3>
+          <ul>
+            <li>Web-App (läuft im Browser)</li>
+            <li>Link-Hygiene: Tracking-Anhänge entfernen</li>
+            <li>App + Pro (Professionals)</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>Was es nicht ist</h3>
+          <ul>
+            <li>Kein “Unsichtbarkeits”-Versprechen</li>
+            <li>Kein URL-Shortener-Proxy</li>
+            <li>Keine Anti-Tracking-Suite</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-      <h3>Fix in 30 Sekunden</h3>
+    <section class="card" id="links">
+      <h2>Links</h2>
       <ul>
-        <li>Öffne <a href="status.html">status.html</a></li>
-        <li>Klicke <strong>„Update prüfen”</strong></li>
-        <li>Wenn ein Update wartet: <strong>„Update aktivieren (SKIP_WAITING)”</strong></li>
+        <li><strong>Start:</strong> <code>index.html</code></li>
+        <li><strong>App:</strong> <code>app.html</code></li>
+        <li><strong>Pro:</strong> <code>pro.html</code></li>
+        <li><strong>Hilfe:</strong> <code>help.html</code></li>
+        <li><strong>Erklärseiten:</strong> <code>tracking-parameter.html</code>, <code>utm-parameter-entfernen.html</code></li>
+      </ul>
+    </section>
+
+    <section class="card" id="assets">
+      <h2>Assets (Dateien im Repo)</h2>
+      <ul>
+        <li><strong>Logo SVG:</strong> <code>logo.svg</code></li>
+        <li><strong>Icons:</strong> <code>assets/icons/</code></li>
+        <li><strong>Open Graph:</strong> <code>assets/og/og-index.jpg</code></li>
       </ul>
 
-      <div class="okBox">
-        status.html ist dein “Reset-Panel” für SW-Versionen.
+      <p>Optional: hier kannst du später ein ZIP mit Assets verlinken (falls du eins ins Repo legst).</p>
+    </section>
+
+    <section class="card" id="kontakt">
+      <h2>Kontakt</h2>
+      <p>
+        Trage hier deinen Kontakt ein (Mail/Signal/Website). Wenn du nichts öffentlich willst: nur ein Formular-Link.
+      </p>
+      <div class="monoBox">
+E-Mail: kontakt@deinedomain.tld
+Presse: presse@deinedomain.tld
       </div>
     </section>
 
@@ -376,6 +338,7 @@ https://example.com/search?q=safeshare&utm_source=twitter&utm_medium=social
         <a href="utm-parameter-entfernen.html">UTM</a>
         <a href="tracking-parameter.html">Tracking</a>
         <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="education.html">Schule</a>
         <a href="press.html">Presse</a>
         <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
@@ -404,7 +367,7 @@ https://example.com/search?q=safeshare&utm_source=twitter&utm_medium=social
       const sub = document.getElementById('pageSub');
       const tag = document.getElementById('pageTag');
       const map = {
-        "index.html": ["Start · Überblick", "Links teilen. Ohne Ballast."],
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
         "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
@@ -413,7 +376,8 @@ https://example.com/search?q=safeshare&utm_source=twitter&utm_medium=social
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
         "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "press.html": ["Presse · Infos", "Material"]
+        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "press.html": ["Presse · Media Kit", "Fakten & Assets"]
       };
       if (sub && map[path]) sub.textContent = map[path][0];
       if (tag && map[path]) tag.textContent = map[path][1];
