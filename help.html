@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Presse – SafeShare Media Kit</title>
-  <meta name="description" content="Presse/Media Kit: SafeShare entfernt Tracking-Parameter aus Links (local-first). Fakten, Kurzbeschreibung, Assets, Links und Kontakt." />
+  <title>Hilfe – SafeShare (App & Pro)</title>
+  <meta name="description" content="SafeShare Hilfe: App und Pro nutzen, häufige Fragen, Status/Cache, Presets, Whitelist/Overrides, Audit, Batch und Export." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -27,6 +27,7 @@
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,95,95,.16);
       --ok: rgba(47,227,183,.16);
       --max: 1120px;
     }
@@ -40,6 +41,7 @@
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,95,95,.18);
         --ok: rgba(47,227,183,.18);
       }
     }
@@ -56,10 +58,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 14px; padding: 10px 2px 12px;
-    }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -138,6 +137,7 @@
     h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     code{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
@@ -163,6 +163,37 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
+    .okBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .warnBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .badBox{
+      margin-top: 12px;
+      border-left: 3px solid rgba(255,95,95,.55);
+      background: var(--bad);
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
     .monoBox{
       margin-top:10px;
       padding: 12px 12px;
@@ -175,23 +206,19 @@
       word-break: break-word;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
+    .toc{
+      display:flex; flex-wrap:wrap; gap: 8px;
+      margin-top: 8px;
     }
-    @media(min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-    }
-    .tile{
+    .toc a{
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 14px;
+      color: var(--muted);
+      font-size: 13px;
     }
-    .tile h3{ margin: 0 0 8px; }
-    .tile p{ margin: 0 0 10px; }
+    .toc a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
     footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
     .footLinks{
@@ -219,10 +246,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Presse · Media Kit</div>
+          <div class="sub" id="pageSub">Hilfe · App & Pro</div>
         </div>
       </div>
-      <div class="small" id="pageTag">Fakten & Assets</div>
+      <div class="small" id="pageTag">Kurz & praxisnah</div>
     </header>
 
     <div class="tabsBar">
@@ -248,84 +275,172 @@
     </div>
 
     <section class="card" id="top">
-      <h1>SafeShare Media Kit</h1>
-      <p>
-        SafeShare entfernt typische Tracking-Parameter aus Links – local-first im Browser.
-        App für schnelle Bereinigung, Pro für professionelle Workflows (Policy/Audit/Export).
-      </p>
+      <h1>Hilfe</h1>
+      <p>Hier steht alles, was du brauchst – App für schnelle Bereinigung, Pro für professionelle Workflows.</p>
+
+      <div class="toc">
+        <a href="#app">App</a>
+        <a href="#pro">Pro</a>
+        <a href="#presets">Presets</a>
+        <a href="#audit">Audit</a>
+        <a href="#batch">Batch</a>
+        <a href="#export">Export</a>
+        <a href="#status">Status/Cache</a>
+        <a href="#faq">FAQ</a>
+      </div>
 
       <div class="row">
-        <a class="btn primary" href="index.html">Start</a>
-        <a class="btn" href="app.html">App</a>
-        <a class="btn" href="pro.html">Pro</a>
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="pro.html">Pro öffnen</a>
+        <a class="btn ghost" href="status.html">Status</a>
       </div>
     </section>
 
-    <section class="card" id="kurzbeschreibung">
-      <h2>Kurzbeschreibung (1 Satz)</h2>
-      <div class="monoBox">
-SafeShare bereinigt Links von typischen Tracking-Anhängen – lokal im Browser – und bietet mit Pro Audit, Policy und Export für professionelle Nutzung.
+    <section class="card" id="app">
+      <h2>App (schnell)</h2>
+      <ol>
+        <li>Link einfügen</li>
+        <li>Bereinigen</li>
+        <li>Sauberen Link kopieren/teilen</li>
+      </ol>
+
+      <div class="okBox">
+        Die App ist für “mal eben” – Pro ist für nachvollziehbare Regeln, Audit, Batch und Exporte.
       </div>
 
-      <h2>Kurzbeschreibung (3 Sätze)</h2>
-      <div class="monoBox">
-Viele Links enthalten Tracking-Parameter wie UTM, gclid oder fbclid. SafeShare entfernt diese Zusätze local-first im Browser, ohne Proxy. SafeShare Pro richtet sich an Profis (Social/Redaktion/Publisher) mit Policy-Regeln, Audit-Transparenz und Export.
-      </div>
-    </section>
-
-    <section class="card" id="facts">
-      <h2>Fakten</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>Was es ist</h3>
-          <ul>
-            <li>Web-App (läuft im Browser)</li>
-            <li>Link-Hygiene: Tracking-Anhänge entfernen</li>
-            <li>App + Pro (Professionals)</li>
-          </ul>
-        </div>
-        <div class="tile">
-          <h3>Was es nicht ist</h3>
-          <ul>
-            <li>Kein “Unsichtbarkeits”-Versprechen</li>
-            <li>Kein URL-Shortener-Proxy</li>
-            <li>Keine Anti-Tracking-Suite</li>
-          </ul>
-        </div>
+      <div class="row">
+        <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+        <a class="btn ghost" href="tracking-parameter.html">Tracking erklärt</a>
       </div>
     </section>
 
-    <section class="card" id="links">
-      <h2>Links</h2>
-      <ul>
-        <li><strong>Start:</strong> <code>index.html</code></li>
-        <li><strong>App:</strong> <code>app.html</code></li>
-        <li><strong>Pro:</strong> <code>pro.html</code></li>
-        <li><strong>Hilfe:</strong> <code>help.html</code></li>
-        <li><strong>Erklärseiten:</strong> <code>tracking-parameter.html</code>, <code>utm-parameter-entfernen.html</code></li>
-      </ul>
-    </section>
-
-    <section class="card" id="assets">
-      <h2>Assets (Dateien im Repo)</h2>
-      <ul>
-        <li><strong>Logo SVG:</strong> <code>logo.svg</code></li>
-        <li><strong>Icons:</strong> <code>assets/icons/</code></li>
-        <li><strong>Open Graph:</strong> <code>assets/og/og-index.jpg</code></li>
-      </ul>
-
-      <p>Optional: hier kannst du später ein ZIP mit Assets verlinken (falls du eins ins Repo legst).</p>
-    </section>
-
-    <section class="card" id="kontakt">
-      <h2>Kontakt</h2>
+    <section class="card" id="pro">
+      <h2>Pro (professionell)</h2>
       <p>
-        Trage hier deinen Kontakt ein (Mail/Signal/Website). Wenn du nichts öffentlich willst: nur ein Formular-Link.
+        Pro ist für Social/Redaktion/Publisher/Teams. Es geht nicht nur um “entfernen”, sondern um
+        <strong>Policy</strong> (Regeln) + <strong>Audit</strong> (Nachvollziehbarkeit) + <strong>Export</strong> (Dokumentation).
       </p>
-      <div class="monoBox">
-E-Mail: kontakt@deinedomain.tld
-Presse: presse@deinedomain.tld
+
+      <h3>Pro-Workflow (kurz)</h3>
+      <ol>
+        <li><strong>Preset wählen</strong> (z. B. “Hygiene” oder “Attribution”)</li>
+        <li><strong>Link(s) einfügen</strong> (einzeln oder als Liste)</li>
+        <li><strong>Audit prüfen</strong> (“Was wurde entfernt?” / “Was blieb?”)</li>
+        <li><strong>Output</strong> kopieren oder exportieren</li>
+      </ol>
+
+      <div class="row">
+        <a class="btn primary" href="pro.html">Pro öffnen</a>
+        <a class="btn" href="#presets">Presets verstehen</a>
       </div>
+    </section>
+
+    <section class="card" id="presets">
+      <h2>Presets: was bedeutet das?</h2>
+      <p>
+        Presets sind “Regelpakete”. In Pro kannst du damit schnell zwischen verschiedenen Anforderungen wechseln:
+      </p>
+      <ul>
+        <li><strong>Hygiene</strong>: Entfernt typische Tracking-Anhänge (für Teilen/Zitate)</li>
+        <li><strong>Attribution</strong>: Lässt bewusst bestimmte Parameter drin (für Kampagnen/Publisher)</li>
+        <li><strong>Strict</strong>: Entfernt aggressiver (nur wenn du sicher bist)</li>
+      </ul>
+
+      <div class="warnBox">
+        “Strict” kann Links brechen, wenn funktionale Parameter dabei sind. Nutze Audit + Domain-Overrides.
+      </div>
+    </section>
+
+    <section class="card" id="audit">
+      <h2>Audit: „Was wurde geändert?“</h2>
+      <p>
+        Das Audit listet alle Änderungen auf – nicht nur “den ersten Link”. In Pro sollte jede Zeile/URL ein eigenes Ergebnis haben:
+      </p>
+      <ul>
+        <li>entfernte Keys (z. B. utm_*, gclid, fbclid …)</li>
+        <li>behaltene Keys (z. B. funktionale Parameter)</li>
+        <li>Regelgrund (Preset/Whitelist/Override)</li>
+      </ul>
+
+      <div class="okBox">
+        Wenn du im Audit nichts siehst: dann wurde entweder nichts entfernt, oder dein Preset/Whitelist erlaubt die Keys.
+      </div>
+    </section>
+
+    <section class="card" id="batch">
+      <h2>Batch (Listen bereinigen)</h2>
+      <ol>
+        <li>Mehrere Links (eine pro Zeile) einfügen</li>
+        <li>Bereinigen</li>
+        <li>Ergebnisse pro Zeile prüfen (Audit)</li>
+      </ol>
+      <div class="row">
+        <a class="btn" href="bulk-clean.html">Bulk Clean</a>
+      </div>
+    </section>
+
+    <section class="card" id="export">
+      <h2>Export (CSV/JSON)</h2>
+      <p>
+        Pro sollte Exporte ermöglichen, damit du Ergebnisse dokumentieren kannst (QA/Redaktion/Team):
+      </p>
+      <ul>
+        <li><strong>CSV</strong>: gut für Tabellen/Redaktionsplan</li>
+        <li><strong>JSON</strong>: gut für technische Weiterverarbeitung</li>
+      </ul>
+      <div class="okBox">
+        Exporte sind die “Profi-Schere” gegenüber einfachen Cleanern.
+      </div>
+    </section>
+
+    <section class="card" id="status">
+      <h2>Status / Cache / Updates</h2>
+      <p>
+        Wenn du “alte” Versionen siehst oder Elemente fehlen, ist oft der Service Worker Cache aktiv.
+      </p>
+
+      <h3>Symptome</h3>
+      <ul>
+        <li>UI wirkt “alt”, obwohl du Code geändert hast</li>
+        <li>Buttons fehlen (z. B. Update-Button in Status)</li>
+        <li>404/alte Pfade bleiben hängen</li>
+      </ul>
+
+      <h3>Fix (ohne Desktop)</h3>
+      <ol>
+        <li><strong>Status öffnen</strong>: <code>status.html</code></li>
+        <li><strong>Update / Skip Waiting</strong> auslösen (falls Button vorhanden)</li>
+        <li>Seite neu laden</li>
+      </ol>
+
+      <div class="warnBox">
+        Wenn Status keinen Button zeigt, fehlt wahrscheinlich das UI-Element in <code>status.html</code>.
+        Dann müssen wir <code>status.html</code> komplett setzen (mit Button + SW-Handshake).
+      </div>
+
+      <div class="row">
+        <a class="btn primary" href="status.html">Status öffnen</a>
+      </div>
+    </section>
+
+    <section class="card" id="faq">
+      <h2>FAQ</h2>
+
+      <h3>„Warum entfernt er nur beim ersten Link?“</h3>
+      <p>
+        Dann ist dein Batch-Parser vermutlich auf “erste Zeile” begrenzt. Pro sollte jede Zeile separat verarbeiten.
+      </p>
+
+      <h3>„Ich sehe nicht, dass utm/ref entfernt wurde.“</h3>
+      <p>
+        Entweder waren die Keys nicht im Entfernen-Set des Presets, oder sie stehen auf einer Whitelist.
+        Pro zeigt im Audit “entfernt” vs “behalten”.
+      </p>
+
+      <h3>„Pro-Seite 404 wenn ich sie direkt öffne.“</h3>
+      <p>
+        Das ist meistens ein Pfad-/Dateiname-Problem oder Service Worker Cache. Prüfe: exakter Dateiname, Links, und Status/Cache.
+      </p>
     </section>
 
     <footer>
@@ -370,7 +485,7 @@ Presse: presse@deinedomain.tld
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
+        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
