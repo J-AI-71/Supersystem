@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Tracking-Parameter erklärt – was hängt an Links? (SafeShare)</title>
-  <meta name="description" content="Tracking-Parameter sind Zusatzinfos am Link (z.B. utm_, gclid, fbclid). Hier siehst du Kategorien, Beispiele und wann Entfernen sinnvoll ist – ohne Panik, aber mit Kontrolle." />
+  <title>Tracking-Parameter – was sie sind und warum sie beim Teilen nerven (SafeShare)</title>
+  <meta name="description" content="Tracking-Parameter verständlich erklärt: UTM, Click-IDs, Affiliate-Parameter, Session/Functional. Warum entfernen? Wann behalten? Mit Praxis-Regeln und Start in SafeShare App/Pro." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -27,8 +27,8 @@
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
-      --bad: rgba(255,95,95,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,95,95,.16);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -41,8 +41,8 @@
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
-        --bad: rgba(255,95,95,.18);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,95,95,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -102,7 +102,7 @@
     .more > summary::-webkit-details-marker{ display:none; }
     .menu{
       position:absolute; right:0; top: calc(100% + 8px);
-      min-width: 220px; padding: 8px; border-radius: 16px;
+      min-width: 240px; padding: 8px; border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(10,14,25,.92);
       box-shadow: 0 18px 45px rgba(0,0,0,.35);
@@ -133,8 +133,8 @@
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
-    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
@@ -186,24 +186,6 @@
       color: var(--text); font-size: 13px; line-height: 1.45;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-    }
-    .tile{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 14px;
-    }
-    .tile h3{ margin: 0 0 8px; }
-    .tile p{ margin: 0 0 10px; }
-
     .monoBox{
       margin-top:10px;
       padding: 12px 12px;
@@ -215,6 +197,16 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+    @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
+    .tile{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .tile h3{ margin: 0 0 8px; }
+    .tile p{ margin: 0 0 10px; }
 
     footer{
       margin-top: 18px;
@@ -280,99 +272,82 @@
 
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> Tracking-Parameter</div>
-      <h1>Was sind Tracking-Parameter – und warum hängen sie an Links?</h1>
+      <h1>Was sind Tracking-Parameter – und warum sollten sie beim Teilen oft weg?</h1>
       <p>
-        Tracking-Parameter sind <strong>Zusatzstücke am Ende einer URL</strong>.
-        Du kannst dir das wie <strong>Etiketten/Aufkleber</strong> vorstellen: Sie ändern nicht den Inhalt,
-        aber sie transportieren Zusatzinfos (z. B. Quelle, Kampagne, Click-ID).
+        Viele Links enthalten Zusatz-Parameter, die nicht zum Inhalt gehören, sondern zur Messung/Zuordnung.
+        Manchmal sind sie sinnvoll (z. B. Kampagnenmessung, Affiliate), oft sind sie beim Weitergeben unnötiger Ballast.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="app.html">Link bereinigen</a>
-        <a class="btn" href="pro.html">Pro: Regeln/Audit</a>
-        <a class="btn ghost" href="#kategorien">Kategorien</a>
+        <a class="btn primary" href="app.html">Jetzt bereinigen</a>
+        <a class="btn" href="pro.html">Pro: Policies & Audit</a>
+        <a class="btn ghost" href="#kategorien">Parameter-Typen</a>
       </div>
 
       <div class="okBox">
-        Kein Alarmismus: Entfernen heißt nicht „unsichtbar werden“. Es heißt: <strong>weniger unnötige Zusatzinfos weitergeben</strong>.
+        Keine Panik: Parameter sind kein „Virus“. Eher Etiketten/Anhänger am Link – manchmal nützlich, oft überflüssig.
       </div>
-    </section>
-
-    <section class="card" id="beispiele">
-      <h2>Typische Beispiele</h2>
-      <div class="monoBox">
-https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch
-https://shop.example.com/?gclid=EAIaIQobChMI...&utm_campaign=winter
-https://news.example.com/?fbclid=IwAR...&ref=homepage
-https://example.com/?igshid=YmMyMTA2M2Y=
-      </div>
-      <p style="color:var(--muted2); font-size:12px;">
-        Wichtig: Nicht jeder Parameter ist Tracking. Manche sind technisch notwendig (z. B. Sprache, Produktvariante).
-      </p>
     </section>
 
     <section class="card" id="kategorien">
-      <h2>Kategorien von Parametern</h2>
+      <h2>Welche Arten gibt es?</h2>
 
       <div class="grid">
         <div class="tile">
-          <h3>1) Kampagnen-Parameter (Marketing)</h3>
-          <p><code>utm_*</code> wie <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>.</p>
-          <div class="row">
-            <a class="btn ghost" href="utm-parameter-entfernen.html">UTM erklärt</a>
-          </div>
+          <h3>1) Kampagnen/Marketing (UTM)</h3>
+          <p><code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code> …</p>
+          <p>Für Messung der Herkunft. Beim Weiterleiten häufig nicht nötig.</p>
+          <div class="row"><a class="btn ghost" href="utm-parameter-entfernen.html">UTM im Detail</a></div>
         </div>
 
         <div class="tile">
-          <h3>2) Click-IDs (Werbenetzwerke)</h3>
-          <p>Beispiele: <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code>. Dienen oft zur Zuordnung eines Klicks.</p>
+          <h3>2) Click-IDs (Ad-Plattformen)</h3>
+          <p>Beispiele: <code>gclid</code>, <code>fbclid</code>, <code>msclkid</code> …</p>
+          <p>Oft reines Tracking. Beim Teilen in der Regel entfernbar.</p>
         </div>
 
         <div class="tile">
-          <h3>3) Referral/Quelle</h3>
-          <p>Beispiele: <code>ref</code>, <code>ref_src</code>. Oft „woher kommt der Traffic“.</p>
+          <h3>3) Affiliate/Partner (Attribution)</h3>
+          <p>Beispiele: <code>tag</code>, <code>ref</code>, <code>aff</code>, <code>partner</code> …</p>
+          <p>Kann gewollt sein, weil es Einnahmen/Kredit sichert. Professionell: bewusst behalten (Whitelist/Pro).</p>
         </div>
 
         <div class="tile">
-          <h3>4) Affiliate/Partner-Attribution</h3>
-          <p>Parameter wie <code>aff_id</code>, <code>tag</code>, <code>partner</code> können für Provision/Zuordnung wichtig sein.</p>
+          <h3>4) Funktional (nicht Tracking)</h3>
+          <p>Beispiele: Sprache/Region, Produkt-Varianten, Sortierung, Filters, Session-Keys …</p>
+          <p>Hier ist „alles löschen“ riskant – kann Inhalte kaputt machen oder falsche Varianten öffnen.</p>
         </div>
-      </div>
-
-      <div class="warnBox">
-        Profi-Regel: Affiliate/Partner-Parameter nicht blind löschen. In Pro über Presets/Whitelist bewusst steuern.
       </div>
     </section>
 
     <section class="card" id="warum">
-      <h2>Was ist in der Praxis wichtig?</h2>
+      <h2>Warum sollten Nicht-Profis Links reinigen?</h2>
       <ul>
-        <li><strong>Lesbarkeit:</strong> Kürzere Links sind verständlicher und wirken seriöser.</li>
-        <li><strong>Minimierung:</strong> Beim Weitergeben nicht unnötig Kampagnen-/Click-IDs mitschicken.</li>
-        <li><strong>Kontext:</strong> Für eigene Reports kann es sinnvoll sein, UTM bewusst zu behalten.</li>
-        <li><strong>Nachvollziehbarkeit (Pro):</strong> Was wurde entfernt, was blieb – und warum?</li>
+        <li><strong>Minimierung:</strong> Beim Teilen nicht unnötig Zusatzinfos mitschicken.</li>
+        <li><strong>Sauberkeit:</strong> Kürzere Links sind lesbarer und wirken seriöser.</li>
+        <li><strong>Bewusstsein:</strong> Man erkennt, dass Links oft „mehr“ enthalten als nur den Inhalt.</li>
       </ul>
-
-      <div class="okBox">
-        SafeShare App = schnell sauber machen. SafeShare Pro = kontrolliert arbeiten (Policy, Audit, Export).
-      </div>
-
-      <div class="row">
-        <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn" href="pro.html">Pro öffnen</a>
-        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+      <div class="warnBox">
+        „Man wird doch eh überall getrackt“ stimmt als Gefühl oft – aber Link-Hygiene ist trotzdem sinnvoll:
+        Es reduziert unnötige Weitergabe und setzt eine klare Grenze beim Teilen.
       </div>
     </section>
 
-    <section class="card" id="schule">
-      <h2>Für Nicht-Profis: ohne Panik, aber mit Verantwortung</h2>
-      <p>
-        Viele Menschen wissen nicht, dass Links oft Zusatzinfos tragen. Eine einfache Faustregel:
-        <strong>Wenn du beim Teilen keinen Grund für die Zusatzteile hast, kannst du sie meist entfernen.</strong>
-      </p>
+    <section class="card" id="praxis">
+      <h2>Praxis-Regeln (Kurzform)</h2>
+      <div class="monoBox">Wenn du teilst (privat/öffentlich):
+- Entferne UTM + Click-IDs (meist sinnvoll)
+- Behalte funktionale Parameter, wenn du unsicher bist
+- Affiliate/Partner: bewusst entscheiden (Pro: Whitelist)
+
+Wenn du selbst Kampagnen misst:
+- UTM bewusst behalten (oder sauber neu setzen)
+- Audit nutzen, damit du nachvollziehen kannst, was passierte</div>
+
       <div class="row">
-        <a class="btn" href="education.html">Zur SafeShare-Schule</a>
-        <a class="btn ghost" href="help.html">Hilfe/FAQ</a>
+        <a class="btn primary" href="app.html">In der App testen</a>
+        <a class="btn" href="pro.html">Pro Presets</a>
+        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
       </div>
     </section>
 
@@ -414,4 +389,20 @@ https://example.com/?igshid=YmMyMTA2M2Y=
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["
+        "help.html": ["Hilfe · App & Pro", "FAQ"],
+        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
+        "status.html": ["Status · Service Worker", "Cache/Updates"],
+        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
+        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
+        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
+        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "press.html": ["Presse · Media Kit", "Kontakt"],
+        "impressum.html": ["Impressum", "§ 5 TMG"],
+        "datenschutz.html": ["Datenschutz", "DSGVO"]
+      };
+      if (sub && map[path]) sub.textContent = map[path][0];
+      if (tag && map[path]) tag.textContent = map[path][1];
+    })();
+  </script>
+</body>
+</html>
