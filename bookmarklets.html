@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Bookmarklets</title>
-  <meta name="description" content="SafeShare Bookmarklets: Link bereinigen in einem Klick. Für Browser-Leiste, iOS/iPadOS und Desktop. Local-first." />
+  <title>Bookmarklets – SafeShare</title>
+  <meta name="description" content="SafeShare Bookmarklets: 1-Klick Link bereinigen, App öffnen, Pro öffnen. Anleitung für iOS/iPad und Desktop." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -110,7 +110,7 @@
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    ol, ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -133,7 +133,7 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn,.bad{
+    .note,.warn{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -144,40 +144,46 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
-    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .bookmarkletGrid{
+    .grid2{
       display:grid;
       grid-template-columns: 1fr;
       gap: 12px;
       margin-top: 10px;
     }
     @media(min-width: 980px){
-      .bookmarkletGrid{ grid-template-columns: 1fr 1fr; }
+      .grid2{ grid-template-columns: 1fr 1fr; }
     }
-    .bcard{
+    .box{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       border-radius: 16px;
       padding: 12px;
     }
-    .btitle{ font-weight: 850; margin: 0 0 6px; }
-    .bdesc{ margin: 0 0 10px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
     .code{
-      width:100%;
-      padding: 10px 10px;
-      border-radius: 12px;
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
-      color: var(--text);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
       font-size: 12px;
-      line-height: 1.35;
-      word-break: break-all;
+      line-height: 1.5;
+      word-break: break-word;
     }
-    @media (prefers-color-scheme: light){
-      .code{ background: rgba(17,24,39,.04); border-color: rgba(17,24,39,.10); }
+    .copyRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+    .copyBtn{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor:pointer;
     }
+    .copyBtn:hover{ background: rgba(255,255,255,.10); }
 
     footer{
       margin-top: 18px;
@@ -232,6 +238,7 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
+      .box{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -280,94 +287,81 @@
     <section class="card">
       <h1>Bookmarklets</h1>
       <p>
-        Bookmarklets sind kleine Lesezeichen, die Code ausführen. Damit kannst du SafeShare direkt aus der Lesezeichenleiste starten.
-        Alle Varianten öffnen SafeShare im Browser – local-first.
+        Bookmarklets sind Lesezeichen, die ein kleines Script ausführen. Damit kannst du SafeShare mit 1 Klick starten.
+        (Auf iOS/iPad ist das eingeschränkt – dort ist „Shortcut/Share Sheet“ meist besser.)
       </p>
+
       <div class="row">
-        <a class="btn primary" href="app.html">Zur App</a>
-        <a class="btn" href="pro-app.html">Zur Pro App</a>
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="pro.html">Pro</a>
         <a class="btn ghost" href="help.html">Hilfe</a>
       </div>
+
       <div class="warn">
-        iOS/iPadOS: Bookmarklets sind möglich, aber das Hinzufügen ist etwas „fummelig“. Nutze die Anleitung unten.
+        iOS Safari: Bookmarklets funktionieren nicht immer zuverlässig. Wenn es zickt, nutze SafeShare App + Kopieren/Einfügen.
       </div>
     </section>
 
     <section class="card">
-      <h2>Bookmarklets (Copy/Paste)</h2>
-      <p>Du kannst sie als Lesezeichen-URL einfügen. Sie öffnen SafeShare und übergeben (wenn möglich) die aktuelle URL.</p>
+      <h2>1) SafeShare öffnen (mit aktueller URL)</h2>
+      <p>Öffnet die SafeShare App und übergibt die aktuelle Seiten-URL als Parameter <span class="mono">u</span>.</p>
 
-      <div class="bookmarkletGrid">
-
-        <div class="bcard">
-          <div class="btitle">SafeShare App – aktuelle Seite (sofern möglich)</div>
-          <p class="bdesc">
-            Öffnet <b>app.html</b> und hängt die aktuelle URL als <span class="mono">#u=…</span> an.
-          </p>
-          <textarea class="code mono" readonly rows="4" onclick="this.select()"
-            aria-label="Bookmarklet SafeShare App">
-javascript:(()=>{try{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html#u='+encodeURIComponent(u);window.open(t,'_blank','noopener');}catch(e){window.open('https://j-ai-71.github.io/Supersystem/app.html','_blank','noopener');}})();
-          </textarea>
-          <div class="row">
-            <button class="btn" type="button" data-copy="app">Kopieren</button>
-            <a class="btn ghost" href="app.html">App öffnen</a>
-          </div>
+      <div class="box">
+        <h3>Bookmarklet</h3>
+        <div class="code mono" id="codeOpenApp">
+javascript:(function(){try{var u=location.href;location.href='app.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();
         </div>
-
-        <div class="bcard">
-          <div class="btitle">SafeShare Pro – aktuelle Seite (sofern möglich)</div>
-          <p class="bdesc">
-            Öffnet <b>pro-app.html</b> und hängt die aktuelle URL als <span class="mono">#u=…</span> an.
-          </p>
-          <textarea class="code mono" readonly rows="4" onclick="this.select()"
-            aria-label="Bookmarklet SafeShare Pro">
-javascript:(()=>{try{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/pro-app.html#u='+encodeURIComponent(u);window.open(t,'_blank','noopener');}catch(e){window.open('https://j-ai-71.github.io/Supersystem/pro-app.html','_blank','noopener');}})();
-          </textarea>
-          <div class="row">
-            <button class="btn" type="button" data-copy="pro">Kopieren</button>
-            <a class="btn ghost" href="pro-app.html">Pro App öffnen</a>
-          </div>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codeOpenApp">Code kopieren</button>
         </div>
-
-        <div class="bcard">
-          <div class="btitle">SafeShare App – nur öffnen</div>
-          <p class="bdesc">Öffnet die App ohne Übergabe (robust, falls Seiten-Sandboxing Probleme macht).</p>
-          <textarea class="code mono" readonly rows="3" onclick="this.select()"
-            aria-label="Bookmarklet SafeShare App öffnen">
-javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/app.html','_blank','noopener');})();
-          </textarea>
-          <div class="row">
-            <button class="btn" type="button" data-copy="appOpen">Kopieren</button>
-          </div>
-        </div>
-
-        <div class="bcard">
-          <div class="btitle">SafeShare Pro – nur öffnen</div>
-          <p class="bdesc">Öffnet die Pro App ohne Übergabe (robust).</p>
-          <textarea class="code mono" readonly rows="3" onclick="this.select()"
-            aria-label="Bookmarklet SafeShare Pro öffnen">
-javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/pro-app.html','_blank','noopener');})();
-          </textarea>
-          <div class="row">
-            <button class="btn" type="button" data-copy="proOpen">Kopieren</button>
-          </div>
-        </div>
-
       </div>
 
-      <div id="copyMsg" class="note" style="display:none"></div>
+      <div class="note">
+        Hinweis: Damit das funktioniert, sollte <span class="mono">app.html</span> den Query-Parameter <span class="mono">u</span> lesen
+        und ins Eingabefeld übernehmen. (Wenn du willst, ergänze ich dir das in der App/Pro App.)
+      </div>
     </section>
 
     <section class="card">
-      <h2>Installation (iOS/iPadOS – kurz)</h2>
-      <ol style="margin:0 0 0 18px; color:var(--muted); line-height:1.6">
-        <li>In Safari irgendeine Seite öffnen.</li>
-        <li>Teilen → <b>Lesezeichen</b> hinzufügen (Name z. B. „SafeShare“).</li>
-        <li>Dann: Lesezeichen öffnen → <b>Bearbeiten</b>.</li>
-        <li>Die URL des Lesezeichens durch den Bookmarklet-Code ersetzen (aus dem Feld oben).</li>
+      <h2>2) SafeShare Pro öffnen (mit aktueller URL)</h2>
+      <p>Öffnet Pro und übergibt die aktuelle URL.</p>
+
+      <div class="box">
+        <h3>Bookmarklet</h3>
+        <div class="code mono" id="codeOpenPro">
+javascript:(function(){try{var u=location.href;location.href='pro-app.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare Pro: konnte URL nicht lesen.');}})();
+        </div>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codeOpenPro">Code kopieren</button>
+        </div>
+      </div>
+
+      <div class="warn">
+        Wenn <span class="mono">pro-app.html</span> nicht öffentlich ist (nur nach Kauf), ist dieses Bookmarklet nur für Käufer sinnvoll.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>So richtest du es ein (Desktop)</h2>
+      <ol>
+        <li>Erstelle ein neues Lesezeichen</li>
+        <li>Name: z. B. „SafeShare“</li>
+        <li>URL: den Bookmarklet-Code einfügen (beginnt mit <span class="mono">javascript:</span>)</li>
+        <li>Beim Surfen klicken → SafeShare öffnet</li>
       </ol>
-      <div class="warn">
-        Manche Apps/Seiten blocken <span class="mono">location.href</span> in Bookmarklets. Dann nutze „nur öffnen“.
+    </section>
+
+    <section class="card">
+      <h2>iPad/iPhone: Empfehlung</h2>
+      <p>
+        Für iOS ist die zuverlässigste Praxis:
+      </p>
+      <ul>
+        <li>Link kopieren → in <a href="app.html"><b>App</b></a> einfügen → bereinigen → teilen</li>
+        <li>Wenn du später willst: iOS Shortcut („Share Sheet → Clean with SafeShare“)</li>
+      </ul>
+      <div class="note">
+        Wenn du ein Shortcut-Setup willst, sag Bescheid – dann bauen wir „SafeShare QR“/Shortcuts als Profi-Workflow.
       </div>
     </section>
 
@@ -376,11 +370,6 @@ javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/pro-app.html
         <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="help.html">Hilfe</a>
-        <a href="education.html">Schule</a>
-        <a href="press.html">Presse</a>
-        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
@@ -391,7 +380,6 @@ javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/pro-app.html
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Öffentlich</div>
-    <a href="index.html" data-page="index.html">Start</a>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="press.html" data-page="press.html">Presse</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
@@ -404,11 +392,17 @@ javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/pro-app.html
 
   <script>
     (function(){
+      // active tab
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
       // more sheet
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
-
       function openMenu(){
         overlay.hidden = false; menu.hidden = false;
         requestAnimationFrame(() => menu.classList.add('open'));
@@ -428,48 +422,31 @@ javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/pro-app.html
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
       // copy buttons
-      const msg = document.getElementById('copyMsg');
-      const codes = {
-        app: `javascript:(()=>{try{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/app.html#u='+encodeURIComponent(u);window.open(t,'_blank','noopener');}catch(e){window.open('https://j-ai-71.github.io/Supersystem/app.html','_blank','noopener');}})();`,
-        pro: `javascript:(()=>{try{const u=location.href;const t='https://j-ai-71.github.io/Supersystem/pro-app.html#u='+encodeURIComponent(u);window.open(t,'_blank','noopener');}catch(e){window.open('https://j-ai-71.github.io/Supersystem/pro-app.html','_blank','noopener');}})();`,
-        appOpen: `javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/app.html','_blank','noopener');})();`,
-        proOpen: `javascript:(()=>{window.open('https://j-ai-71.github.io/Supersystem/pro-app.html','_blank','noopener');})();`
-      };
-
-      function show(text){
-        msg.style.display = 'block';
-        msg.textContent = text;
-        setTimeout(()=>{ msg.style.display='none'; }, 2000);
-      }
-
-      async function copyToClipboard(text){
+      async function copyText(text){
         try{
           await navigator.clipboard.writeText(text);
           return true;
-        }catch{
+        }catch(e){
           // fallback
           const ta = document.createElement('textarea');
           ta.value = text;
-          ta.style.position='fixed';
-          ta.style.left='-9999px';
+          ta.style.position='fixed'; ta.style.left='-9999px';
           document.body.appendChild(ta);
-          ta.select();
-          try{
-            const ok = document.execCommand('copy');
-            document.body.removeChild(ta);
-            return ok;
-          }catch(e){
-            document.body.removeChild(ta);
-            return false;
-          }
+          ta.focus(); ta.select();
+          try{ document.execCommand('copy'); }catch(_){}
+          document.body.removeChild(ta);
+          return true;
         }
       }
-
-      document.querySelectorAll('button[data-copy]').forEach(b=>{
-        b.addEventListener('click', async ()=>{
-          const key = b.getAttribute('data-copy');
-          const ok = await copyToClipboard(codes[key] || '');
-          show(ok ? 'Kopiert. Jetzt als Lesezeichen-URL einfügen.' : 'Kopieren nicht möglich. Bitte manuell markieren & kopieren.');
+      document.querySelectorAll('[data-copy]').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const sel = btn.getAttribute('data-copy');
+          const el = document.querySelector(sel);
+          const txt = (el ? el.textContent : '').trim();
+          if (!txt) return;
+          await copyText(txt);
+          btn.textContent = 'Kopiert ✓';
+          setTimeout(()=>btn.textContent='Code kopieren', 1200);
         });
       });
     })();
