@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare Pro – Policies, Whitelist, Audit & Export</title>
-  <meta name="description" content="SafeShare Pro für Profis (Social, Publisher, Journalismus): Presets/Policies, Whitelist pro Domain (Affiliate-safe), Audit (removed/kept + Grund), Bulk & Export – local-first." />
+  <title>SafeShare Pro – Policies, Whitelist, Audit</title>
+  <meta name="description" content="SafeShare Pro für Profis: Presets/Policies, Whitelist pro Domain (Affiliate-safe), Audit (removed/kept + Grund) – local-first." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -13,8 +13,8 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <meta property="og:title" content="SafeShare Pro – Policies, Audit, Export" />
-  <meta property="og:description" content="Pro für Profis: Presets/Policies, Whitelist pro Domain, Audit (was wurde geändert – und warum?), Bulk & Export. Local-first." />
+  <meta property="og:title" content="SafeShare Pro – Policies, Audit" />
+  <meta property="og:description" content="Pro für Profis: Presets/Policies, Whitelist pro Domain, Audit (was wurde geändert – und warum?). Local-first." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/og/og-index.jpg" />
 
@@ -118,7 +118,6 @@
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .pill{
@@ -214,7 +213,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (stabil, kein Rumhüpfen) ===== */
+    /* ===== Mehr: Bottom-Sheet (nur öffentlich/system – keine Pro-Workflows) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -245,10 +244,7 @@
       opacity: 0;
       transition: transform .16s ease, opacity .16s ease;
     }
-    .moreMenu.open{
-      transform: translateY(0);
-      opacity: 1;
-    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
     @media (prefers-color-scheme: light){
       .moreOverlay{ background: rgba(17,24,39,.06); }
       .moreMenu{
@@ -257,7 +253,6 @@
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
     }
-
     .menuHint{
       font-size: 11px;
       color: var(--muted2);
@@ -269,7 +264,6 @@
       margin: 8px 6px;
       border-radius: 999px;
     }
-
     .moreMenu a{
       display:block;
       padding: 12px 12px;
@@ -281,10 +275,7 @@
       font-size: 13px;
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
-    .moreMenu a:hover{
-      color: var(--text);
-      background: rgba(255,255,255,.08);
-    }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
 
@@ -299,7 +290,7 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Pro · Policies, Audit, Export</div>
+          <div class="sub" id="pageSub">Pro · Policies, Whitelist, Audit</div>
         </div>
       </div>
       <div class="small" id="pageTag">für Profis</div>
@@ -320,18 +311,17 @@
 
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> Pro</div>
-      <h1>Professionelle Link-Hygiene für Profis.</h1>
+      <h1>Pro: Policies, Whitelist, Audit.</h1>
       <p>
         SafeShare Pro ist für Social Media, Publisher und Journalismus gebaut:
-        nicht nur „Parameter entfernen“, sondern <strong>regelbasiert</strong> arbeiten – mit
-        <strong>Policies</strong>, <strong>Whitelist pro Domain</strong>, <strong>Audit</strong> und <strong>Export</strong>.
+        <strong>regelbasiert</strong> arbeiten – mit <strong>Policies</strong>,
+        <strong>Whitelist pro Domain</strong> und <strong>Audit</strong>.
       </p>
 
       <div class="kpiRow">
         <div class="kpi">Policy / Presets</div>
         <div class="kpi">Whitelist pro Domain</div>
         <div class="kpi">Audit: removed/kept + Grund</div>
-        <div class="kpi">Bulk & Export</div>
         <div class="kpi">Local-first</div>
       </div>
 
@@ -342,7 +332,7 @@
       </div>
 
       <div class="okBox">
-        Pro ist bewusst für Profis: konsistente Regeln, nachvollziehbare Änderungen, Affiliate-safe Entscheidungen.
+        Flow (ohne 404): <strong>pro.html → pro-activate.html → pro-app.html</strong>
       </div>
     </section>
 
@@ -351,7 +341,7 @@
       <div class="grid">
         <div class="tile">
           <h3>1) Presets / Policies</h3>
-          <p>Wiederholbare Modi wie <code>Share-clean</code>, <code>Keep-UTM</code>, <code>Affiliate-safe</code> – teamfähig statt „Pi mal Daumen“.</p>
+          <p>Wiederholbare Modi wie <code>Share-clean</code>, <code>Keep-UTM</code>, <code>Affiliate-safe</code> – konsistent statt „Pi mal Daumen“.</p>
         </div>
         <div class="tile">
           <h3>2) Whitelist pro Domain</h3>
@@ -362,42 +352,16 @@
           <p>„Was wurde geändert – und warum?“ Pro listet <strong>removed</strong>/<strong>kept</strong> und den Grund (Policy/Whitelist/Rule).</p>
         </div>
         <div class="tile">
-          <h3>4) Bulk & Export</h3>
-          <p>Viele Links in einem Rutsch: Listen, Bulk-Clean, Export für Workflows und QA.</p>
+          <h3>So arbeitest du damit</h3>
+          <p>Preset wählen → Link(s) bereinigen → Audit prüfen → Ergebnis übernehmen.</p>
           <div class="row">
-            <a class="btn ghost" href="bulk-clean.html">Bulk Clean öffnen</a>
+            <a class="btn ghost" href="help.html">Hilfe</a>
           </div>
         </div>
       </div>
 
       <div class="warnBox">
-        Pro ist nicht „mehr Features um der Features willen“, sondern: weniger Fehler unter Zeitdruck.
-      </div>
-    </section>
-
-    <section class="card" id="praxis">
-      <h2>Praxisfälle (Pro-Realität)</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>Social / Publisher</h3>
-          <p>
-            Clean teilen, aber <strong>Affiliate-Attribution darf nicht kaputt gehen</strong>.
-            Lösung: Domain-Whitelist + Preset <code>Affiliate-safe</code>.
-          </p>
-          <div class="row">
-            <a class="btn ghost" href="partners.html">Partner/Affiliate Regeln</a>
-          </div>
-        </div>
-        <div class="tile">
-          <h3>Journalismus / Redaktion</h3>
-          <p>
-            Links sind sensibel. Pro bleibt local-first und liefert Audit für interne Qualitätssicherung.
-          </p>
-          <div class="row">
-            <a class="btn ghost" href="compliance.html">Compliance</a>
-            <a class="btn ghost" href="publisher.html">Publisher</a>
-          </div>
-        </div>
+        Pro ist auf Verlässlichkeit ausgelegt: weniger Fehler unter Zeitdruck, bessere Nachvollziehbarkeit.
       </div>
     </section>
 
@@ -428,32 +392,16 @@
       </div>
 
       <div class="okBox">
-        Flow (ohne 404): <strong>pro.html → pro-activate.html → pro-app.html</strong>
-      </div>
-    </section>
-
-    <section class="card" id="next">
-      <h2>Direkt loslegen</h2>
-      <div class="monoBox">Empfohlener Ablauf:
-1) Kaufen (Person/Team)
-2) pro-activate.html öffnen → Key aktivieren
-3) pro-app.html öffnen → Preset wählen → bereinigen → Audit prüfen → Export</div>
-      <div class="row">
-        <a class="btn primary" href="pro-activate.html">Aktivieren</a>
-        <a class="btn" href="pro-app.html">Pro App</a>
-        <a class="btn ghost" href="help.html">Hilfe</a>
+        Schon gekauft? → <a href="pro-activate.html"><strong>pro-activate.html</strong></a> öffnen und Key aktivieren.
       </div>
     </section>
 
     <footer>
       <div class="footLinks">
         <a href="pro-app.html">Pro App</a>
-        <a href="bulk-clean.html">Bulk (Pro)</a>
         <a href="team-setup.html">Team Setup</a>
         <a href="partners.html">Partner</a>
         <a href="compliance.html">Compliance</a>
-        <a href="publisher.html">Publisher</a>
-        <a href="redirect-entschachteln.html">Redirect Check</a>
         <a href="help.html">Hilfe</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
@@ -461,7 +409,7 @@
     </footer>
   </div>
 
-  <!-- Mehr (Bottom-Sheet) -->
+  <!-- Mehr (Bottom-Sheet) – keine Pro-Workflows, keine Impressum/Datenschutz -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
 
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
@@ -472,16 +420,6 @@
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-
-    <div class="divider"></div>
-    <div class="menuHint">Pro Workflows</div>
-    <a href="pro-app.html" data-page="pro-app.html">Pro App</a>
-    <a href="bulk-clean.html" data-page="bulk-clean.html">Bulk Clean (Pro)</a>
-    <a href="team-setup.html" data-page="team-setup.html">Team Setup</a>
-    <a href="publisher.html" data-page="publisher.html">Publisher</a>
-    <a href="partners.html" data-page="partners.html">Partner/Affiliate</a>
-    <a href="compliance.html" data-page="compliance.html">Compliance</a>
-    <a href="redirect-entschachteln.html" data-page="redirect-entschachteln.html">Redirect Check</a>
 
     <div class="divider"></div>
     <div class="menuHint">System</div>
@@ -502,16 +440,13 @@
       const map = {
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "pro.html": ["Pro · Policies, Audit, Export", "für Profis"],
+        "pro.html": ["Pro · Policies, Whitelist, Audit", "für Profis"],
         "pro-app.html": ["Pro App · Workflow", "Preset · Audit"],
         "help.html": ["Hilfe · App & Pro", "FAQ"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "bulk-clean.html": ["Bulk Clean (Pro)", "Workflow"],
         "team-setup.html": ["Team Setup", "Pro Team"],
         "partners.html": ["Partner/Affiliate", "Whitelist"],
         "compliance.html": ["Compliance", "local-first"],
-        "publisher.html": ["Publisher", "Pro use-cases"],
-        "redirect-entschachteln.html": ["Redirect Check", "Sicherheit"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
@@ -560,4 +495,4 @@
     })();
   </script>
 </body>
-  </html>
+</html>
