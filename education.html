@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare-Schule – Tracking-Parameter verstehen (ohne Panik)</title>
-  <meta name="description" content="SafeShare-Schule: Was sind Tracking-Parameter? Warum sie beim Teilen unnötig sein können. Verständlich erklärt – mit Beispielen und sicheren Regeln. App + Pro." />
+  <title>SafeShare-Schule – Links verstehen & sauber teilen</title>
+  <meta name="description" content="SafeShare-Schule: kurze Lektionen zu Tracking-Parametern, UTM, Click-IDs, Affiliate-Links. Ohne Panik, aber mit Kontrolle. Mit Beispielen und Übungen." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -27,6 +27,7 @@
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,95,95,.16);
       --ok: rgba(47,227,183,.16);
       --max: 1120px;
     }
@@ -40,6 +41,7 @@
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,95,95,.18);
         --ok: rgba(47,227,183,.18);
       }
     }
@@ -56,10 +58,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 14px; padding: 10px 2px 12px;
-    }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -139,9 +138,7 @@
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
-    code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-    }
+    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
@@ -175,36 +172,19 @@
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
     .okBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
     .warnBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
-
-    .monoBox{
-      margin-top:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
+    .badBox{
+      margin-top: 12px; border-left: 3px solid rgba(255,95,95,.55);
+      background: var(--bad); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
 
     .grid{
@@ -225,7 +205,25 @@
     .tile h3{ margin: 0 0 8px; }
     .tile p{ margin: 0 0 10px; }
 
-    footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
     .footLinks{
       display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
       border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
@@ -274,6 +272,8 @@
             <a href="education.html" data-page="education.html">Schule</a>
             <a href="press.html" data-page="press.html">Presse</a>
             <a href="status.html" data-page="status.html">Status</a>
+            <a href="impressum.html" data-page="impressum.html">Impressum</a>
+            <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           </div>
         </details>
       </div>
@@ -281,92 +281,97 @@
 
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> SafeShare-Schule</div>
-      <h1>Tracking-Parameter sind wie Etiketten am Link.</h1>
+      <h1>Links verstehen. Sauber teilen.</h1>
       <p>
-        Wenn du einen Link teilst, kann er Zusatzteile enthalten. Diese Zusatzteile sind oft nicht nötig –
-        aber sie “reisen mit” und können Informationen über Quelle/Kampagne/Plattform weitertragen.
+        Diese Seite ist die “Schule”: kurze Lektionen, Beispiele und Mini-Übungen.
+        Ziel: Bewusstsein + Kontrolle – ohne Panik, ohne Fachchinesisch.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="app.html">Jetzt ausprobieren</a>
-        <a class="btn" href="#regeln">3 Regeln</a>
-        <a class="btn ghost" href="#beispiele">Beispiele</a>
+        <a class="btn primary" href="app.html">Üben in der App</a>
+        <a class="btn" href="utm-parameter-entfernen.html">UTM-Lektion</a>
+        <a class="btn ghost" href="#lektionen">Lektionen</a>
       </div>
 
       <div class="okBox">
-        Keine Panik: Das ist kein “Virus”. Es ist eher “Ballast/Etiketten”, die beim Teilen unnötig sein können.
+        Merksatz: Tracking-Parameter sind wie <strong>Etiketten</strong> am Link. Du entscheidest, ob du sie weitergibst.
       </div>
     </section>
 
-    <section class="card" id="was">
-      <h2>Was genau passiert beim Teilen?</h2>
-      <p>
-        Ein Link hat oft zwei Teile:
-      </p>
-      <ul>
-        <li><strong>Basis</strong>: <code>https://example.com/artikel</code></li>
-        <li><strong>Zusätze</strong>: alles nach <code>?</code> (Parameter)</li>
-      </ul>
+    <section class="card" id="lektionen">
+      <h2>Lektionen</h2>
 
-      <div class="monoBox">
-https://example.com/artikel?utm_source=instagram&utm_medium=social&utm_campaign=dez
-                    ↑ Etiketten / Zusätze
+      <div class="grid">
+        <div class="tile">
+          <h3>1) Was hängt am Link?</h3>
+          <p>Kurzüberblick: Welche Zusatzteile sind häufig und wozu dienen sie.</p>
+          <div class="row">
+            <a class="btn" href="tracking-parameter.html">Tracking erklärt</a>
+          </div>
+        </div>
+
+        <div class="tile">
+          <h3>2) UTM verstehen</h3>
+          <p>Was sind <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code> – und wann lässt man sie drin?</p>
+          <div class="row">
+            <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
+          </div>
+        </div>
+
+        <div class="tile">
+          <h3>3) Click-IDs</h3>
+          <p><code>gclid</code>, <code>fbclid</code>, <code>msclkid</code>: Zuordnung für Werbenetzwerke. Beim Teilen meist unnötig.</p>
+        </div>
+
+        <div class="tile">
+          <h3>4) Affiliate/Partner</h3>
+          <p>Hier ist Vorsicht: Parameter können Provision/Attribution steuern. In Pro bewusst regeln.</p>
+          <div class="row">
+            <a class="btn" href="pro.html">Pro Regeln</a>
+          </div>
+        </div>
       </div>
-
-      <p>
-        Viele Parameter sind für Marketing/Plattform-Tracking gedacht. Beim Weiterteilen brauchst du sie meistens nicht.
-      </p>
-
-      <div class="row">
-        <a class="btn" href="tracking-parameter.html">Mehr Details</a>
-        <a class="btn ghost" href="utm-parameter-entfernen.html">UTM erklärt</a>
-      </div>
-    </section>
-
-    <section class="card" id="regeln">
-      <h2>3 einfache Regeln (alltagstauglich)</h2>
-      <ol>
-        <li><strong>Wenn du nur teilen willst:</strong> Parameter meistens entfernen.</li>
-        <li><strong>Wenn der Link nach dem Entfernen kaputt ist:</strong> war wahrscheinlich ein funktionaler Parameter drin → dann behalten.</li>
-        <li><strong>Wenn du beruflich misst (Kampagne/Publisher):</strong> Parameter bewusst steuern, nicht “zufällig” mitkopieren.</li>
-      </ol>
 
       <div class="warnBox">
-        Manche Parameter sind funktional (Token/Signaturen/Checkout). Pro hilft Profis dabei, das sauber zu unterscheiden (Audit/Whitelist).
+        Affiliate-Parameter nicht pauschal löschen. Wenn du bewusst unterstützt: Parameter behalten oder Pro-Whitelist nutzen.
+      </div>
+    </section>
+
+    <section class="card" id="uebungen">
+      <h2>Mini-Übungen (praxisnah)</h2>
+      <ol>
+        <li>Kopiere einen Link aus Social/Newsletter.</li>
+        <li>Markiere im Link alles nach <code>?</code> (Parameterteil).</li>
+        <li>Frage dich: „Brauche ich das fürs Teilen – oder ist es nur Messung?“</li>
+        <li>Teste dann in SafeShare App (oder Pro, wenn du Regeln nutzen willst).</li>
+      </ol>
+
+      <div class="monoBox">
+Beispiel-Link:
+https://example.com/blog?utm_source=twitter&utm_medium=social&utm_campaign=launch&fbclid=XYZ
+
+Aufgabe:
+- Welche Teile sind Kampagne (UTM)?
+- Welche Teile sind Click-ID?
       </div>
 
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn" href="pro.html">Pro für Profis</a>
+        <a class="btn" href="help.html">Hilfe/FAQ</a>
+        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
       </div>
     </section>
 
-    <section class="card" id="beispiele">
-      <h2>Beispiele (Copy/Paste)</h2>
-      <p>Zum Reinkopieren in die App:</p>
-      <div class="monoBox">
-https://example.com/blog?utm_source=twitter&utm_medium=social&utm_campaign=launch
-https://example.com/shop?gclid=AAA111&utm_source=ig&utm_campaign=winter
-https://example.com/page?fbclid=BBB222&utm_source=share
-      </div>
-
-      <div class="row">
-        <a class="btn primary" href="app.html">In der App testen</a>
-        <a class="btn" href="help.html">Hilfe</a>
-      </div>
-    </section>
-
-    <section class="card" id="warum-wichtig">
-      <h2>Warum sollte ein Nicht-Profi das überhaupt machen?</h2>
+    <section class="card" id="warum">
+      <h2>Warum das relevant ist</h2>
       <ul>
-        <li><strong>Respekt:</strong> Du teilst weniger unnötige Zusatzinfos mit.</li>
-        <li><strong>Ordnung:</strong> Saubere Links sind leichter zu lesen und zu prüfen.</li>
-        <li><strong>Verantwortung:</strong> Du entscheidest bewusster, was du weitergibst.</li>
+        <li><strong>Klarheit:</strong> Saubere Links sind vertrauenswürdiger.</li>
+        <li><strong>Datensparsamkeit:</strong> Weniger unnötige Zusatzinfos beim Weitergeben.</li>
+        <li><strong>Verantwortung:</strong> Du entscheidest, was du verbreitest.</li>
       </ul>
 
-      <div class="row">
-        <a class="btn" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a class="btn ghost" href="tracking-parameter.html">Tracking tiefer</a>
+      <div class="okBox">
+        Für Profis: Pro bietet Regeln/Audit. Für alle: App + Schule.
       </div>
     </section>
 
@@ -380,6 +385,7 @@ https://example.com/page?fbclid=BBB222&utm_source=share
         <a href="utm-parameter-entfernen.html">UTM</a>
         <a href="tracking-parameter.html">Tracking</a>
         <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="education.html">Schule</a>
         <a href="press.html">Presse</a>
         <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
@@ -396,10 +402,6 @@ https://example.com/page?fbclid=BBB222&utm_source=share
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      const moreSummary = document.querySelector('.more > summary');
-      const menuActive = document.querySelector('.menu a.active');
-      if (menuActive && moreSummary) moreSummary.classList.add('active');
-
       const navMore = document.getElementById('navMore');
       document.querySelectorAll('.menu a').forEach(a => {
         a.addEventListener('click', () => { if (navMore) navMore.open = false; });
@@ -411,14 +413,16 @@ https://example.com/page?fbclid=BBB222&utm_source=share
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
+        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
         "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
         "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
-        "press.html": ["Presse · Infos", "Material"]
+        "press.html": ["Presse · Media Kit", "Fakten & Assets"],
+        "impressum.html": ["Impressum", "§ 5 TMG"],
+        "datenschutz.html": ["Datenschutz", "DSGVO"]
       };
       if (sub && map[path]) sub.textContent = map[path][0];
       if (tag && map[path]) tag.textContent = map[path][1];
