@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>UTM Parameter entfernen – Links bereinigen (SafeShare)</title>
-  <meta name="description" content="UTM-Parameter entfernen: utm_source, utm_medium, utm_campaign & mehr. SafeShare bereinigt Links local-first im Browser – App für Alltag, Pro für Profis (Policy/Audit/Export)." />
+  <title>UTM-Parameter entfernen – Erklärung + Tool (SafeShare)</title>
+  <meta name="description" content="UTM-Parameter (utm_source, utm_medium, utm_campaign) erklären: wann entfernen, wann behalten. Mit Beispielen und direktem Start in der SafeShare App." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -181,22 +181,7 @@
       background: var(--warn); padding: 10px 12px; border-radius: 12px;
       color: var(--text); font-size: 13px; line-height: 1.45;
     }
-    .badBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,95,95,.55);
-      background: var(--bad); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
-    .monoBox{
-      margin-top:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+
     .grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -215,6 +200,18 @@
     .tile h3{ margin: 0 0 8px; }
     .tile p{ margin: 0 0 10px; }
 
+    .monoBox{
+      margin-top:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -223,16 +220,11 @@
       line-height: 1.55;
     }
     .footLinks{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 14px;
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
     }
     .footLinks a{
-      padding: 6px 10px;
-      border-radius: 999px;
+      padding: 6px 10px; border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -275,6 +267,8 @@
             <a href="education.html" data-page="education.html">Schule</a>
             <a href="press.html" data-page="press.html">Presse</a>
             <a href="status.html" data-page="status.html">Status</a>
+            <a href="impressum.html" data-page="impressum.html">Impressum</a>
+            <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           </div>
         </details>
       </div>
@@ -282,106 +276,72 @@
 
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> UTM-Parameter</div>
-      <h1>UTM Parameter entfernen: saubere Links statt Kampagnen-Anhänge</h1>
+      <h1>UTM-Parameter entfernen – wann sinnvoll, wann nicht?</h1>
       <p>
-        UTM-Parameter sind Marketing-Anhänge an URLs: <code>utm_source</code>, <code>utm_medium</code>,
-        <code>utm_campaign</code> & Co. Sie helfen beim Messen – aber beim normalen Teilen sind sie häufig unnötig.
+        UTM-Parameter sind standardisierte Marketing-Parameter (z. B. <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>).
+        Sie helfen, Klicks einer Kampagne zuzuordnen. Beim Weiterleiten/Teilen sind sie oft nicht nötig.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="app.html">UTM jetzt entfernen</a>
-        <a class="btn" href="pro.html">Pro (Policy/Audit)</a>
-        <a class="btn ghost" href="#beispiele">Beispiele</a>
+        <a class="btn primary" href="app.html">Jetzt bereinigen</a>
+        <a class="btn" href="pro.html">Pro: Regeln/Audit</a>
+        <a class="btn ghost" href="#behalten">Wann behalten?</a>
       </div>
 
       <div class="okBox">
-        SafeShare arbeitet local-first im Browser. Kein Proxy, keine Link-Weitergabe an einen Server.
-      </div>
-    </section>
-
-    <section class="card" id="was-ist-utm">
-      <h2>Was sind UTM-Parameter?</h2>
-      <p>
-        UTM steht für Urchin Tracking Module. Es sind Felder, die eine Quelle und Kampagne beschreiben.
-        Die häufigsten:
-      </p>
-      <ul>
-        <li><code>utm_source</code> (Quelle, z. B. newsletter, twitter)</li>
-        <li><code>utm_medium</code> (Medium, z. B. email, social)</li>
-        <li><code>utm_campaign</code> (Kampagne, z. B. launch)</li>
-        <li><code>utm_term</code> (Keyword/Term, optional)</li>
-        <li><code>utm_content</code> (Variante, optional)</li>
-      </ul>
-
-      <div class="warnBox">
-        UTM ist nicht “böse”. Es ist Messung. Die Frage ist: <strong>brauchst du es beim Weiterteilen?</strong>
-      </div>
-    </section>
-
-    <section class="card" id="wann-entfernen">
-      <h2>Wann sollte man UTM entfernen?</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>Beim normalen Teilen</h3>
-          <p>Du willst nur den Inhalt teilen. Dann sind Kampagnen-Anhänge meist Ballast.</p>
-        </div>
-        <div class="tile">
-          <h3>In Messengern</h3>
-          <p>Lange Links sind unübersichtlich und werden teilweise abgeschnitten.</p>
-        </div>
-        <div class="tile">
-          <h3>In Journalismus/Redaktion</h3>
-          <p>Saubere Zitate und klare Quellen – ohne unnötige Kampagnen-Parameter.</p>
-        </div>
-        <div class="tile">
-          <h3>Wenn du nicht „nebenbei“ messen willst</h3>
-          <p>UTM nur dann lassen, wenn du es bewusst nutzt (Attribution/Reporting).</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <a class="btn" href="tracking-parameter.html">Tracking-Kategorien</a>
-        <a class="btn ghost" href="education.html">Schule</a>
+        Für Nicht-Profis: UTMs sind wie Etiketten am Link. Wenn du nicht bewusst messen willst, kannst du sie meistens entfernen.
       </div>
     </section>
 
     <section class="card" id="beispiele">
-      <h2>Beispiele (Copy/Paste)</h2>
+      <h2>Beispiele</h2>
       <div class="monoBox">
-https://example.com/blog?utm_source=twitter&utm_medium=social&utm_campaign=launch
-https://example.com/artikel?utm_source=newsletter&utm_medium=email&utm_campaign=dez&utm_content=buttonA
-https://example.com/shop?utm_source=instagram&utm_medium=social&utm_campaign=winter&gclid=AAA111
-      </div>
+Mit UTM:
+https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch
 
-      <div class="row">
-        <a class="btn primary" href="app.html">In der App testen</a>
-        <a class="btn" href="pro.html">In Pro testen</a>
-      </div>
-
-      <div class="badBox">
-        Hinweis: Zusätzlich zu UTM tauchen oft Click-IDs (<code>gclid</code>, <code>fbclid</code>) auf – die sind meist ebenfalls entfernbar.
+Ohne UTM:
+https://example.com/artikel
       </div>
     </section>
 
-    <section class="card" id="profi">
-      <h2>UTM in der Profi-Praxis</h2>
-      <p>
-        Profis entfernen UTM nicht “immer”, sondern arbeiten mit Regeln:
-      </p>
+    <section class="card" id="entfernen">
+      <h2>Wann entfernen?</h2>
       <ul>
-        <li><strong>Hygiene</strong> fürs Teilen/Zitieren (UTM raus)</li>
-        <li><strong>Attribution</strong> für eigene Kampagnen (UTM bewusst drin)</li>
-        <li><strong>Policy</strong> pro Domain/Team</li>
+        <li>Du teilst einen Link privat oder öffentlich und brauchst keine Kampagnenmessung.</li>
+        <li>Du willst den Link kurz, klar und neutral halten.</li>
+        <li>Du willst vermeiden, dass Plattformen/Empfänger Zusatzinfos mitbekommen.</li>
+      </ul>
+    </section>
+
+    <section class="card" id="behalten">
+      <h2>Wann behalten?</h2>
+      <ul>
+        <li>Du bist selbst der Absender einer Kampagne und brauchst saubere Attribution.</li>
+        <li>Du misst bewusst Traffic in Analytics/Matomo/…</li>
+        <li>Du arbeitest im Team/Redaktion mit definierten Kampagnen-Taxonomien.</li>
       </ul>
 
-      <div class="okBox">
-        Genau dafür ist SafeShare Pro gedacht: Presets + Audit + Export.
+      <div class="warnBox">
+        Profi-Workflow: UTMs nicht „aus Versehen“ löschen – sondern per Preset/Whitelist bewusst steuern (Pro).
+      </div>
+    </section>
+
+    <section class="card" id="proworkflow">
+      <h2>Pro-Workflow (Kurz)</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Preset: Share-clean</h3>
+          <p>Fürs Teilen: UTMs/Click-IDs raus, URL bleibt stabil.</p>
+        </div>
+        <div class="tile">
+          <h3>Preset: Keep-UTM</h3>
+          <p>Für Kampagnen: UTMs bleiben drin, nur „Noise“ raus.</p>
+        </div>
       </div>
 
       <div class="row">
-        <a class="btn primary" href="pro.html">Pro ansehen</a>
-        <a class="btn" href="help.html#pro">Workflow</a>
-        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Vergleich</a>
+        <a class="btn primary" href="pro.html">Zu Pro</a>
+        <a class="btn ghost" href="tracking-parameter.html">Tracking-Parameter Übersicht</a>
       </div>
     </section>
 
@@ -412,10 +372,6 @@ https://example.com/shop?utm_source=instagram&utm_medium=social&utm_campaign=win
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      const moreSummary = document.querySelector('.more > summary');
-      const menuActive = document.querySelector('.menu a.active');
-      if (menuActive && moreSummary) moreSummary.classList.add('active');
-
       const navMore = document.getElementById('navMore');
       document.querySelectorAll('.menu a').forEach(a => {
         a.addEventListener('click', () => { if (navMore) navMore.open = false; });
@@ -434,7 +390,9 @@ https://example.com/shop?utm_source=instagram&utm_medium=social&utm_campaign=win
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
         "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
         "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
-        "press.html": ["Presse · Media Kit", "Fakten & Assets"]
+        "press.html": ["Presse · Media Kit", "Kontakt"],
+        "impressum.html": ["Impressum", "§ 5 TMG"],
+        "datenschutz.html": ["Datenschutz", "DSGVO"]
       };
       if (sub && map[path]) sub.textContent = map[path][0];
       if (tag && map[path]) tag.textContent = map[path][1];
