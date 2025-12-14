@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare-Schule</title>
-  <meta name="description" content="SafeShare-Schule: Tracking-Parameter verständlich erklärt (ohne Panik). Warum Link-Hygiene wichtig ist und wie SafeShare hilft." />
+  <title>SafeShare Schule – Links sauber teilen (ohne Panik)</title>
+  <meta name="description" content="SafeShare Schule: Tracking-Parameter verstehen (als Etiketten am Link), wann reinigen sinnvoll ist, wann nicht – und wie es in 10 Sekunden geht." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -28,6 +28,7 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -41,6 +42,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
       }
     }
     *{ box-sizing:border-box; }
@@ -108,17 +110,7 @@
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
-    }
-    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -141,7 +133,7 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn{
+    .note,.warn,.bad{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -152,7 +144,9 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
     .example{
       margin-top: 10px;
       padding: 12px 12px;
@@ -164,8 +158,32 @@
       line-height: 1.5;
       word-break: break-word;
     }
-    .example b{ color: var(--text); }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+      white-space: nowrap;
+    }
+    .pill b{ color: var(--text); font-weight: 850; }
 
     footer{
       margin-top: 18px;
@@ -220,6 +238,7 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
+      .box{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -249,7 +268,7 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">SafeShare-Schule</div>
+          <div class="sub">Schule</div>
         </div>
       </div>
       <div class="small">ohne Panik</div>
@@ -266,62 +285,88 @@
     </div>
 
     <section class="card">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Schule</div>
-      <h1>Tracking-Parameter sind wie Etiketten am Link.</h1>
+      <h1>Links sauber teilen</h1>
       <p>
-        Nicht „Virus“, nicht Panik – eher: <b>Zusatzaufkleber</b>, die beim Teilen mitwandern.
-        SafeShare entfernt diesen Ballast, ohne Unsichtbarkeit zu versprechen.
+        Viele Links tragen Zusatzinfos. Nicht als „Virus“, sondern wie <b>Etiketten/Aufkleber</b> am Paket:
+        Sie verraten, woher der Klick kommt oder über welche Kampagne der Link verbreitet wurde.
       </p>
       <div class="row">
-        <a class="btn primary" href="app.html">Link jetzt bereinigen</a>
-        <a class="btn" href="pro.html">Pro (für Profis)</a>
+        <a class="btn primary" href="app.html">Jetzt Link bereinigen</a>
+        <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
+        <a class="btn ghost" href="pro.html">Pro für Profis</a>
       </div>
-    </section>
-
-    <section class="card">
-      <h2>Was sind Tracking-Parameter?</h2>
-      <p>
-        Alles nach dem <b>?</b> in einer URL sind Parameter. Manche sind sinnvoll (z. B. Sprache, Inhalt),
-        viele dienen aber dem Tracking (Kampagne, Klick-ID, Plattform, …).
-      </p>
-
-      <div class="example mono">
-        <b>Mit Etiketten:</b><br>
-        https://example.com/artikel?utm_source=twitter&utm_campaign=launch&gclid=123
-      </div>
-
-      <div class="example mono">
-        <b>Ohne Ballast:</b><br>
-        https://example.com/artikel
-      </div>
-
       <div class="note">
-        Der Inhalt bleibt derselbe – nur die unnötigen Zusatzinfos werden reduziert.
+        SafeShare entfernt diese Etiketten beim Teilen – local-first im Browser. Keine Uploads deiner Links.
       </div>
     </section>
 
     <section class="card">
-      <h2>Warum sollte ein Nicht-Profi das überhaupt tun?</h2>
+      <h2>Wie sehen solche „Etiketten“ aus?</h2>
+
+      <div class="example mono">
+        https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch
+      </div>
+      <div class="example mono">
+        https://shop.example.com/product?gclid=ABC123&fbclid=XYZ987
+      </div>
+
+      <div class="grid2">
+        <div class="box">
+          <div class="pill"><b>utm_*</b> Kampagnen</div>
+          <p>Zeigt: Quelle/Medium/Kampagne. Für Auswertung nützlich – beim Teilen oft unnötig.</p>
+        </div>
+        <div class="box">
+          <div class="pill"><b>gclid / fbclid</b> Klick-IDs</div>
+          <p>Plattform-spezifische IDs zur Messung. Beim Teilen meist Ballast.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Warum sollte ein Nicht-Profi das überhaupt machen?</h2>
       <ul>
-        <li><b>Weniger unabsichtliche Weitergabe</b> von Kampagnen-/Klick-IDs.</li>
-        <li><b>Sauberere Links</b> (lesbarer, kürzer, weniger „Spam-Optik“).</li>
-        <li><b>Hygiene beim Teilen</b>: du kontrollierst, was du weitergibst.</li>
-        <li><b>Respekt</b>: du zwingst anderen keine Werbe-Etiketten auf.</li>
+        <li><b>Respekt:</b> Du verteilst weniger Zusatzinfos, die andere nicht gewählt haben.</li>
+        <li><b>Seriöser:</b> Links wirken sauberer und weniger „werblich“.</li>
+        <li><b>Weniger Bruch:</b> Manche Apps kürzen/umbauen lange URLs ungünstig.</li>
       </ul>
       <div class="warn">
-        SafeShare ersetzt keine Browser-Schutzmaßnahmen. Es ist Link-Hygiene, kein Unsichtbarkeits-Trick.
+        Wichtig: Das ist kein „Unsichtbar“-Versprechen. Es ist ein konkreter Hygiene-Schritt beim Teilen.
       </div>
     </section>
 
     <section class="card">
-      <h2>Warum ist Pro sinnvoll (für Profis)?</h2>
-      <p>
-        Profis brauchen wiederholbare Regeln und Nachvollziehbarkeit:
-        Policy/Presets, Domain-Whitelist (Affiliate-safe) und Audit (removed/kept).
-      </p>
+      <h2>Wann sollte man NICHT blind alles entfernen?</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Affiliate/Partner</h3>
+          <p>
+            Manche Parameter sind Zuordnung (z. B. <span class="mono">ref</span>, <span class="mono">tag</span>).
+            Entfernst du sie, kann Vergütung/Zuordnung kaputtgehen.
+          </p>
+          <p><b>Pro-Lösung:</b> Whitelist (allowlist) pro Domain/Policy.</p>
+        </div>
+        <div class="box">
+          <h3>Funktionale Parameter</h3>
+          <p>
+            Manche Keys sind nötig (Sprache, Produkt-ID, Session, Filter).
+            Gute Tools sind konservativ und entfernen nicht wahllos.
+          </p>
+          <p><b>App:</b> Standard-Tracking. <b>Pro:</b> Audit + Regeln.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>So machst du es in 10 Sekunden</h2>
+      <ol>
+        <li>Link kopieren</li>
+        <li>In SafeShare App einfügen</li>
+        <li>Bereinigen → kopieren → teilen</li>
+      </ol>
       <div class="row">
-        <a class="btn primary" href="pro.html">Pro ansehen</a>
-        <a class="btn" href="pro-app.html">Pro App</a>
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="bookmarklets.html">1-Klick Bookmarklets</a>
+        <a class="btn ghost" href="help.html">Troubleshooting</a>
       </div>
     </section>
 
