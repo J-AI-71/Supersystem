@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – URL Cleaner Tool Vergleich</title>
-  <meta name="description" content="Vergleich: Link-Reiniger/URL-Shortener/Redirect-Tools. Worauf kommt es an (Local-first, Audit, Whitelist, Export)? Wo SafeShare App/Pro sich abheben." />
+  <title>URL Cleaner Vergleich – SafeShare vs. typische Link-Reiniger</title>
+  <meta name="description" content="URL-Cleaner Vergleich: Was können typische Link-Reiniger (UTM entfernen) – und wo hebt sich SafeShare Pro ab (Policy, Audit-Log, Whitelist/Overrides, Batch, Export, local-first)?" />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -29,7 +29,6 @@
       --warn: rgba(255,197,84,.16);
       --bad: rgba(255,95,95,.16);
       --ok: rgba(47,227,183,.16);
-      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -44,7 +43,6 @@
         --warn: rgba(255,197,84,.22);
         --bad: rgba(255,95,95,.18);
         --ok: rgba(47,227,183,.18);
-        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -157,7 +155,7 @@
     }
     h1{
       margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 36px);
+      font-size: clamp(22px, 3.8vw, 40px);
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
@@ -165,6 +163,7 @@
     h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
+    ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     code{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
@@ -223,7 +222,6 @@
       font-size: 13px;
       line-height: 1.45;
     }
-    .sep{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
 
     .tableWrap{
       overflow:auto;
@@ -231,11 +229,7 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
     }
-    table{
-      width:100%;
-      border-collapse: collapse;
-      min-width: 760px;
-    }
+    table{ width:100%; border-collapse: collapse; min-width: 860px; }
     th, td{
       text-align:left;
       padding: 12px 12px;
@@ -246,9 +240,33 @@
       line-height: 1.4;
     }
     th{ color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-    .yes{ color: var(--text); }
-    .no{ color: var(--muted2); }
-    .note{ color: var(--muted2); font-size: 12px; }
+
+    .tag{
+      display:inline-flex; align-items:center;
+      padding: 4px 8px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+      margin-right: 6px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    .tile{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .tile h3{ margin: 0 0 8px; }
+    .tile p{ margin: 0 0 10px; }
 
     footer{
       margin-top: 18px;
@@ -287,7 +305,7 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Vergleich · Tools</div>
+          <div class="sub" id="pageSub">Tool-Vergleich · URL Cleaner</div>
         </div>
       </div>
       <div class="small" id="pageTag">Einordnung</div>
@@ -315,95 +333,127 @@
     </div>
 
     <section class="card" id="top">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Tool-Vergleich</div>
-      <h1>URL Cleaner / Link-Reiniger: Worauf es in der Praxis ankommt</h1>
+      <div class="pill"><span class="dot" aria-hidden="true"></span> Vergleich</div>
+      <h1>URL-Cleaner Vergleich: wo SafeShare Pro sich klar abhebt</h1>
       <p>
-        Viele Tools “kürzen” Links oder entfernen einzelne Parameter. Für professionelle Workflows zählt aber vor allem:
-        <strong>Nachvollziehbarkeit (Audit)</strong>, <strong>Regeln (Policy)</strong>, <strong>Exports</strong> und <strong>Local-first</strong>.
+        Viele Tools können “UTM entfernen”. Das ist gut – aber für professionelle Praxis reicht das oft nicht.
+        Entscheidend sind Regeln, Audit und Exporte.
       </p>
+
       <div class="row">
-        <a class="btn primary" href="app.html">App testen</a>
-        <a class="btn" href="pro.html">Pro: Policy & Audit</a>
-        <a class="btn ghost" href="#matrix">Vergleichsmatrix</a>
+        <a class="btn primary" href="app.html">Kostenlose App</a>
+        <a class="btn" href="pro.html">Pro ansehen</a>
+        <a class="btn ghost" href="#matrix">Matrix</a>
       </div>
+
       <div class="okBox">
-        SafeShare ist bewusst kein Server-Proxy: Links werden lokal im Browser bereinigt – datensparsam und transparent.
+        SafeShare: local-first (Browser), keine Link-Weitergabe an einen Server, keine Proxy-Kürzer.
+      </div>
+    </section>
+
+    <section class="card" id="was-tools-können">
+      <h2>Was typische Link-Reiniger gut können</h2>
+      <ul>
+        <li>UTM und bekannte Click-IDs entfernen (gclid, fbclid …)</li>
+        <li>Links kürzen/“schöner machen”</li>
+        <li>Browser-Extensions oder Online-Formulare</li>
+      </ul>
+
+      <div class="warnBox">
+        In der Praxis fehlt oft: Nachvollziehbarkeit (Audit), kontrollierte Ausnahmen (Whitelist) und Team-Standards (Policy).
+      </div>
+    </section>
+
+    <section class="card" id="warum-pro">
+      <h2>Was in der Praxis wirklich wichtig ist (Pro-Realität)</h2>
+
+      <div class="grid">
+        <div class="tile">
+          <h3>1) Nicht blind entfernen</h3>
+          <p>
+            Manche Parameter sind funktional (Token/Signatur/Checkout). Ohne Audit merkst du erst später, dass Links brechen.
+          </p>
+          <p><span class="tag">Pro</span> Audit + Domain-Overrides</p>
+        </div>
+        <div class="tile">
+          <h3>2) Standards</h3>
+          <p>
+            Teams brauchen klare Regeln: Welche Keys entfernen wir immer? Welche sind erlaubt? Pro macht das als Policy/Profile.
+          </p>
+          <p><span class="tag">Pro</span> Presets/Profiles</p>
+        </div>
+        <div class="tile">
+          <h3>3) Batch & QA</h3>
+          <p>
+            Profis bearbeiten viele Links am Stück (Planung, Redaktion, Kampagne). Batch + Vergleich spart Zeit.
+          </p>
+          <p><span class="tag">Pro</span> Batch-Workflow</p>
+        </div>
+        <div class="tile">
+          <h3>4) Export & Dokumentation</h3>
+          <p>
+            Professionelle Arbeit ist nachvollziehbar: du willst Ergebnisse exportieren (CSV/JSON) und später prüfen.
+          </p>
+          <p><span class="tag">Pro</span> CSV/JSON Export</p>
+        </div>
       </div>
     </section>
 
     <section class="card" id="matrix">
-      <h2>Vergleichsmatrix (Praxis-Kriterien)</h2>
-      <p class="note">
-        Das ist eine Kriterien-Matrix (keine Bewertung einzelner Anbieter). Sie zeigt, welche Features Profis wirklich brauchen.
-      </p>
+      <h2>Feature-Matrix (kompakt)</h2>
 
-      <div class="tableWrap" role="region" aria-label="Vergleichsmatrix" tabindex="0">
+      <div class="tableWrap" role="region" aria-label="Feature-Matrix" tabindex="0">
         <table>
           <thead>
             <tr>
-              <th>Kriterium</th>
-              <th>Warum es wichtig ist</th>
+              <th>Feature</th>
               <th>SafeShare App</th>
               <th>SafeShare Pro</th>
-              <th>Typische „URL Cleaner“</th>
+              <th>Typische Cleaner</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Local-first</strong></td>
-              <td>Keine Weitergabe deiner Links an einen fremden Server.</td>
-              <td class="yes">Ja</td>
-              <td class="yes">Ja</td>
-              <td class="no">Oft nein (Web-Tools serverseitig)</td>
+              <td><strong>Local-first</strong> (keine URL an Server)</td>
+              <td>Ja</td>
+              <td>Ja</td>
+              <td>Unterschiedlich</td>
             </tr>
             <tr>
-              <td><strong>Audit / Änderungslog</strong></td>
-              <td>Du siehst, was entfernt wurde (und kannst es begründen).</td>
-              <td class="no">Basis (Liste „Entfernt“)</td>
-              <td class="yes">Ja (voll, pro Link)</td>
-              <td class="no">Selten</td>
+              <td><strong>Audit</strong> (Entfernt/Behalten transparent)</td>
+              <td>Minimal</td>
+              <td>Voll</td>
+              <td>Selten</td>
             </tr>
             <tr>
-              <td><strong>Policy (Profile/Regeln)</strong></td>
-              <td>Standard-Regeln pro Domain/Team (z. B. Social vs Redaktion).</td>
-              <td class="no">Nein</td>
-              <td class="yes">Ja</td>
-              <td class="no">Selten</td>
+              <td><strong>Whitelist/Blacklist</strong> (Keys/Patterns)</td>
+              <td>Nein</td>
+              <td>Ja</td>
+              <td>Selten</td>
             </tr>
             <tr>
-              <td><strong>Whitelist/Blacklist</strong></td>
-              <td>Du entscheidest: Was MUSS bleiben, was MUSS weg.</td>
-              <td class="no">Nein</td>
-              <td class="yes">Ja</td>
-              <td class="no">Meist nur „remove list“</td>
+              <td><strong>Domain-Overrides</strong> (Ausnahmen pro Domain)</td>
+              <td>Nein</td>
+              <td>Ja</td>
+              <td>Sehr selten</td>
             </tr>
             <tr>
-              <td><strong>Export (CSV/JSON)</strong></td>
-              <td>Für QA, Doku, Team-Review, Tooling.</td>
-              <td class="no">Nein</td>
-              <td class="yes">Ja</td>
-              <td class="no">Selten</td>
+              <td><strong>Batch</strong> (Listen bearbeiten)</td>
+              <td>Optional separat</td>
+              <td>Ja</td>
+              <td>Unterschiedlich</td>
             </tr>
             <tr>
-              <td><strong>Batch/Listen</strong></td>
-              <td>Viele Links auf einmal (Publisher-Workflow).</td>
-              <td class="no">Optional separat</td>
-              <td class="yes">Ja</td>
-              <td class="no">Unterschiedlich</td>
+              <td><strong>Export</strong> (CSV/JSON)</td>
+              <td>Nein</td>
+              <td>Ja</td>
+              <td>Selten</td>
             </tr>
             <tr>
-              <td><strong>Redirect-Entschachteln</strong></td>
-              <td>Finale Ziel-URL finden (z. B. Tracking-Redirects).</td>
-              <td class="no">Nein</td>
-              <td class="yes">Optional/Workflow</td>
-              <td class="no">Selten</td>
-            </tr>
-            <tr>
-              <td><strong>Deterministisch</strong></td>
-              <td>Gleiche Eingabe → gleiche Ausgabe (wichtig für QA).</td>
-              <td class="yes">Ja</td>
-              <td class="yes">Ja</td>
-              <td class="no">Nicht immer</td>
+              <td><strong>Pro-Workflow</strong> (Preset → QA → Output)</td>
+              <td>Nein</td>
+              <td>Ja</td>
+              <td>Meist nein</td>
             </tr>
           </tbody>
         </table>
@@ -411,50 +461,35 @@
 
       <div class="row">
         <a class="btn primary" href="pro.html">Pro ansehen</a>
-        <a class="btn" href="help.html#pro">Pro Hilfe</a>
+        <a class="btn" href="help.html#pro">Wie Pro genutzt wird</a>
       </div>
     </section>
 
-    <section class="card" id="typisch">
-      <h2>Typische Tool-Klassen (und ihre Grenzen)</h2>
-
-      <h3>1) „URL Cleaner“-Webseiten</h3>
-      <ul>
-        <li><strong>Pro:</strong> schnell, keine Installation</li>
-        <li><strong>Contra:</strong> Links werden an einen fremden Server geschickt (Privacy/Compliance)</li>
-        <li><strong>Contra:</strong> selten Audit/Policy/Exports</li>
-      </ul>
-
-      <h3>2) Shortener / Redirector</h3>
-      <ul>
-        <li><strong>Pro:</strong> kurze Links</li>
-        <li><strong>Contra:</strong> zusätzlicher Tracking-Hop; oft „Black Box“</li>
-      </ul>
-
-      <h3>3) Browser-Erweiterungen</h3>
-      <ul>
-        <li><strong>Pro:</strong> bequem im Browser</li>
-        <li><strong>Contra:</strong> permissions, Wartung, oft Desktop-fokussiert</li>
-      </ul>
-
-      <div class="okBox">
-        SafeShare setzt auf: local-first + klare Regeln + nachvollziehbare Outputs (Pro).
-      </div>
-    </section>
-
-    <section class="card" id="safeshare">
-      <h2>Wo SafeShare sich abhebt (für Profis)</h2>
-      <ul>
-        <li><strong>Policy:</strong> Profile pro Plattform/Use-Case, Domain-Overrides</li>
-        <li><strong>Audit:</strong> pro Link: entfernt/behalten + Gründe/Regeln</li>
-        <li><strong>Exports:</strong> CSV/JSON für Team-Review & Doku</li>
-        <li><strong>Local-first:</strong> Links bleiben bei dir</li>
-      </ul>
-
-      <div class="row">
-        <a class="btn primary" href="app.html">App testen</a>
-        <a class="btn" href="pro.html">Pro ansehen</a>
-        <a class="btn ghost" href="tracking-parameter.html">Tracking erklärt</a>
+    <section class="card" id="entscheidung">
+      <h2>Wann reicht ein normaler Cleaner – wann brauchst du Pro?</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Normaler Cleaner reicht, wenn…</h3>
+          <ul>
+            <li>du selten Links teilst</li>
+            <li>du nur UTM/Click-IDs loswerden willst</li>
+            <li>du keine Team-Standards brauchst</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="app.html">Zur App</a>
+          </div>
+        </div>
+        <div class="tile">
+          <h3>Pro lohnt sich, wenn…</h3>
+          <ul>
+            <li>du beruflich Links nutzt (Social/Redaktion/Publisher)</li>
+            <li>du Links in Menge verarbeitest</li>
+            <li>du Audit/Whitelist/Exports brauchst</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="pro.html">Zu Pro</a>
+          </div>
+        </div>
       </div>
     </section>
 
