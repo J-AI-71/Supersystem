@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Presse – SafeShare (Media Kit, Kurzbeschreibung, Fakten)</title>
-  <meta name="description" content="Presse/Media Kit für SafeShare: Kurzbeschreibung, Key Facts, Zitate, Screenshots/Assets, Kontakt. SafeShare entfernt Tracking-Parameter local-first im Browser." />
+  <title>Presse – SafeShare (Media Kit, Fakten, Kontakt)</title>
+  <meta name="description" content="Presse/Media Kit für SafeShare: Kurzbeschreibung, Key Facts, Zitate, Logo-Downloads, Screenshots, Kontakt." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -12,6 +12,12 @@
   <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <meta property="og:title" content="SafeShare – Presse" />
+  <meta property="og:description" content="Media Kit: Kurzbeschreibung, Key Facts, Zitate, Logos, Kontakt." />
+  <meta property="og:type" content="website" />
+  <!-- Optional: wenn vorhanden -->
+  <meta property="og:image" content="assets/og/og-index.jpg" />
 
   <style>
     :root{
@@ -28,6 +34,7 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,95,95,.16);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -41,6 +48,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,95,95,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -100,7 +108,7 @@
     .more > summary::-webkit-details-marker{ display:none; }
     .menu{
       position:absolute; right:0; top: calc(100% + 8px);
-      min-width: 220px; padding: 8px; border-radius: 16px;
+      min-width: 240px; padding: 8px; border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(10,14,25,.92);
       box-shadow: 0 18px 45px rgba(0,0,0,.35);
@@ -131,8 +139,8 @@
       line-height: 1.12;
       letter-spacing: -0.2px;
     }
-    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
@@ -169,34 +177,15 @@
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
     .okBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
+    .warnBox{
+      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
-    @media(min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-    }
-    .tile{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 14px;
-    }
-    .tile h3{ margin: 0 0 8px; }
-    .tile p{ margin: 0 0 10px; }
-
     .monoBox{
       margin-top:10px;
       padding: 12px 12px;
@@ -208,6 +197,16 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
+
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+    @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
+    .tile{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .tile h3{ margin: 0 0 8px; }
 
     footer{
       margin-top: 18px;
@@ -273,81 +272,83 @@
 
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> Media Kit</div>
-      <h1>SafeShare – Presse & Media Kit</h1>
+      <h1>SafeShare – Presse</h1>
       <p>
-        SafeShare ist eine Web-App für Link-Hygiene: Tracking-Parameter entfernen, Links verständlicher machen,
-        local-first im Browser (ohne Proxy).
+        SafeShare entfernt unnötige Tracking-Parameter aus Links – local-first im Browser.
+        SafeShare Pro richtet sich an Profis (Social Media, Publisher, Journalismus): Policies, Whitelist, Audit und Export.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn primary" href="app.html">App testen</a>
         <a class="btn" href="pro.html">Pro ansehen</a>
-        <a class="btn ghost" href="#kontakt">Kontakt</a>
+        <a class="btn ghost" href="mailto:support.safeshare@proton.me">Kontakt</a>
       </div>
 
       <div class="okBox">
-        Kurzform: <strong>Saubere Links</strong> beim Teilen – weniger unnötige Zusatzinfos, mehr Kontrolle.
+        Kernprinzip: Datensparsamkeit beim Teilen – ohne „Unsichtbarkeit“ zu versprechen.
       </div>
     </section>
 
     <section class="card" id="facts">
-      <h2>Key Facts</h2>
-      <ul>
-        <li><strong>Produkt:</strong> SafeShare (Web-App)</li>
-        <li><strong>Fokus:</strong> Link-Hygiene (Tracking-Parameter entfernen/steuern)</li>
-        <li><strong>Prinzip:</strong> local-first im Browser (Kernfunktion ohne Server-Proxy)</li>
-        <li><strong>Zielgruppen:</strong> Social Media, Journalismus, Publisher/Redaktionen</li>
-        <li><strong>Pro:</strong> Regeln/Presets, Audit („was wurde geändert“), Export, Team-Setup</li>
-      </ul>
-    </section>
-
-    <section class="card" id="pitch">
-      <h2>Kurzbeschreibung (Copy/Paste)</h2>
-      <div class="monoBox">SafeShare ist eine Web-App für Link-Hygiene. Sie entfernt typische Tracking-Parameter aus URLs und macht Links leichter lesbar, bevor du sie teilst. Die Bereinigung erfolgt local-first im Browser (ohne Proxy). SafeShare Pro ergänzt professionelle Workflows: Regeln/Presets, Audit („was wurde entfernt oder behalten?“), Export und Team-Setups.</div>
-
-      <h3>Ein-Satz-Version</h3>
-      <div class="monoBox">SafeShare macht Links sauber: weniger Tracking-Ballast, mehr Kontrolle – local-first im Browser.</div>
-    </section>
-
-    <section class="card" id="quote">
-      <h2>Zitat (optional)</h2>
-      <div class="monoBox">„Tracking-Parameter sind wie Etiketten am Link. SafeShare hilft, unnötige Etiketten beim Teilen zu entfernen – ohne Panik, aber mit Verantwortung.“</div>
-      <p style="color:var(--muted2); font-size:12px;">Du kannst das Zitat jederzeit anpassen oder entfernen.</p>
-    </section>
-
-    <section class="card" id="assets">
-      <h2>Assets</h2>
-      <p>
-        Lege deine Assets im Repo z. B. unter <code>assets/press/</code> ab und verlinke sie hier:
-      </p>
-
+      <h2>Key Facts (kurz)</h2>
       <div class="grid">
         <div class="tile">
-          <h3>Logo</h3>
-          <p><code>logo.svg</code> / PNG Varianten</p>
-          <div class="row">
-            <a class="btn" href="logo.svg">logo.svg</a>
-          </div>
+          <h3>Was es ist</h3>
+          <p>URL Cleaner / Link-Hygiene Tool (Web-App, local-first).</p>
         </div>
         <div class="tile">
-          <h3>Screenshots</h3>
-          <p>App/Pro Screens in <code>assets/press/</code></p>
-          <div class="row">
-            <a class="btn ghost" href="assets/press/">Ordner</a>
-          </div>
+          <h3>Für wen</h3>
+          <p>App: alle. Pro: Social Media, Publisher, Journalist:innen, Teams.</p>
+        </div>
+        <div class="tile">
+          <h3>Warum</h3>
+          <p>Unnötige Parameter verbreiten Zusatzinfos. SafeShare reduziert Ballast beim Teilen.</p>
+        </div>
+        <div class="tile">
+          <h3>Was Pro anders macht</h3>
+          <p>Presets/Policies, Allowlist/Whitelist pro Domain, Audit, Bulk & Export.</p>
         </div>
       </div>
     </section>
 
-    <section class="card" id="kontakt">
+    <section class="card" id="quotes">
+      <h2>Zitate (zur freien Verwendung)</h2>
+      <div class="monoBox">„Ein sauberer Link ist ein Link, der den Inhalt öffnet – ohne unnötige Etiketten.“
+„Datensparsamkeit ist keine Panik, sondern eine Grenze beim Teilen.“
+„Pro-Workflows brauchen Policies und Audit, nicht nur ‘Remove UTM’.“</div>
+      <div class="warnBox">
+        Wenn du willst, kannst du die Zitate personalisieren (Name/Position) – aktuell bewusst neutral gehalten.
+      </div>
+    </section>
+
+    <section class="card" id="assets">
+      <h2>Assets</h2>
+      <p>Du kannst hier direkte Pfade zu deinen Dateien eintragen (wenn vorhanden):</p>
+      <div class="monoBox">Logo:
+- logo.svg
+- assets/icons/icon-512-kreis.png (App Icon)
+
+Open Graph:
+- assets/og/og-index.jpg
+
+QR:
+- assets/qr/app-qr.svg</div>
+
+      <div class="row">
+        <a class="btn" href="logo.svg">Logo (SVG)</a>
+        <a class="btn ghost" href="assets/icons/icon-512-kreis.png">Icon (512)</a>
+        <a class="btn ghost" href="assets/og/og-index.jpg">OG Image</a>
+      </div>
+    </section>
+
+    <section class="card" id="contact">
       <h2>Kontakt</h2>
       <div class="monoBox">Jana Jergus
 E-Mail: support.safeshare@proton.me
-Ort: 61250 Usingen, Germany</div>
-
+Ort: Usingen, Germany</div>
       <div class="row">
-        <a class="btn primary" href="mailto:support.safeshare@proton.me">E-Mail schreiben</a>
-        <a class="btn" href="impressum.html">Impressum</a>
+        <a class="btn primary" href="mailto:support.safeshare@proton.me">E-Mail</a>
+        <a class="btn ghost" href="impressum.html">Impressum</a>
         <a class="btn ghost" href="datenschutz.html">Datenschutz</a>
       </div>
     </section>
@@ -390,13 +391,13 @@ Ort: 61250 Usingen, Germany</div>
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
+        "help.html": ["Hilfe · App & Pro", "FAQ"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich · URL Cleaner", "Kriterien"],
+        "education.html": ["SafeShare-Schule", "ohne Panik"],
         "press.html": ["Presse · Media Kit", "Kontakt"],
         "impressum.html": ["Impressum", "§ 5 TMG"],
         "datenschutz.html": ["Datenschutz", "DSGVO"]
