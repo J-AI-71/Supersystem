@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Tracking-Parameter verstehen – und warum saubere Links wichtig sind</title>
-  <meta name="description" content="Was sind Tracking-Parameter? (UTM, fbclid, gclid …) Warum sie beim Teilen problematisch sind, was man bedenken sollte (funktionale Parameter), und wie SafeShare Links local-first bereinigt." />
+  <title>Tracking-Parameter entfernen – was am Link „mitreist“ (und was nicht)</title>
+  <meta name="description" content="Tracking-Parameter erklärt: Welche Link-Anhänge gibt es (UTM, Click-IDs, Ref, Affiliate, Session/Token)? Was sollte man entfernen, was besser behalten? SafeShare bereinigt local-first im Browser." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -58,10 +58,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 14px; padding: 10px 2px 12px;
-    }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -73,14 +70,8 @@
     .logoWrap img{ width:28px; height:28px; display:block; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
-    .brandText .title{
-      font-size: 16px; font-weight: 780; line-height:1.1;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .brandText .sub{
-      font-size: 12px; color: var(--muted2); margin-top:2px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -104,44 +95,27 @@
       white-space: nowrap; flex: 0 0 auto;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{
-      color: var(--text);
-      border-color: rgba(47,227,183,.35);
-      background: rgba(47,227,183,.12);
-    }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
     .more{ position:relative; }
     .more > summary{ list-style:none; }
     .more > summary::-webkit-details-marker{ display:none; }
     .menu{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      min-width: 220px;
-      padding: 8px;
-      border-radius: 16px;
+      position:absolute; right:0; top: calc(100% + 8px);
+      min-width: 220px; padding: 8px; border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(10,14,25,.92);
       box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-      z-index: 80;
+      display:flex; flex-direction:column; gap: 6px; z-index: 80;
     }
     @media (prefers-color-scheme: light){
-      .menu{
-        background: rgba(255,255,255,.98);
-        border: 1px solid rgba(17,24,39,.12);
-        box-shadow: 0 18px 45px rgba(17,24,39,.12);
-      }
+      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
     }
     .menu a{
-      padding: 10px 10px;
-      border-radius: 12px;
+      padding: 10px 10px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size: 13px;
+      color: var(--muted); font-size: 13px;
     }
     .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
@@ -164,9 +138,7 @@
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
-    code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-    }
+    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
@@ -194,43 +166,25 @@
       gap: 8px;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{
-      background: var(--mint2);
-      border-color: rgba(47,227,183,.35);
-    }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
     .btn.primary:hover{ background: var(--mint3); }
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
     .okBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
     .warnBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
     .badBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,95,95,.55);
-      background: var(--bad);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(255,95,95,.55);
+      background: var(--bad); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
 
     .monoBox{
@@ -262,6 +216,24 @@
     }
     .tile h3{ margin: 0 0 8px; }
     .tile p{ margin: 0 0 10px; }
+
+    .tableWrap{
+      overflow:auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+    table{ width:100%; border-collapse: collapse; min-width: 860px; }
+    th, td{
+      text-align:left;
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align: top;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    th{ color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
 
     footer{
       margin-top: 18px;
@@ -320,6 +292,7 @@
             <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
             <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
             <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+            <a href="education.html" data-page="education.html">Schule</a>
             <a href="press.html" data-page="press.html">Presse</a>
             <a href="status.html" data-page="status.html">Status</a>
           </div>
@@ -329,111 +302,126 @@
 
     <section class="card" id="top">
       <div class="pill"><span class="dot" aria-hidden="true"></span> Tracking-Parameter</div>
-      <h1>Was sind Tracking-Parameter – und warum sollte man sie beim Teilen entfernen?</h1>
+      <h1>Was am Link „mitreist“ – und warum man das manchmal entfernen sollte</h1>
       <p>
-        Tracking-Parameter sind Zusatzteile am Ende einer URL. Stell sie dir wie <strong>Aufkleber/Etiketten</strong> vor,
-        die beim Teilen „mitwandern“ und Zusatzinfos transportieren (Kampagne, Quelle, Klick-ID, Plattform).
+        Viele URLs enthalten Anhänge nach dem <code>?</code>. Ein Teil davon ist reine Messung/Attribution,
+        ein Teil ist Affiliate/Ref, und ein Teil ist funktional (Token/Signatur). Der wichtige Punkt ist:
+        <strong>nicht alles ist gleich.</strong>
       </p>
 
       <div class="row">
-        <a class="btn primary" href="app.html">Jetzt Link bereinigen</a>
-        <a class="btn" href="pro.html">Pro: Audit & Regeln</a>
-        <a class="btn ghost" href="#beispiele">Beispiele</a>
+        <a class="btn primary" href="app.html">Jetzt bereinigen</a>
+        <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
+        <a class="btn ghost" href="#matrix">Kategorien</a>
       </div>
 
       <div class="okBox">
-        Keine Panik: Links reinigen ist kein „Allheilmittel gegen Tracking“. Es ist Link-Hygiene – weniger unnötiger Ballast beim Teilen.
+        SafeShare ist Link-Hygiene: weniger unnötige Zusatzinfos beim Teilen, ohne Unsichtbarkeitsversprechen.
       </div>
     </section>
 
-    <section class="card" id="was">
-      <h2>Wie erkennt man Tracking-Parameter?</h2>
+    <section class="card" id="grundlagen">
+      <h2>Grundlagen</h2>
       <p>
-        Meist stehen sie nach einem <code>?</code> und werden mit <code>&</code> getrennt:
+        Alles nach <code>?</code> sind Query-Parameter. Beispiel:
       </p>
       <div class="monoBox">
-https://example.com/artikel?utm_source=newsletter&utm_medium=email&utm_campaign=dez
-https://example.com/shop?gclid=ABC123&fbclid=XYZ987
-      </div>
-
-      <h3>Typische Beispiele</h3>
-      <ul>
-        <li><code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_term</code>, <code>utm_content</code></li>
-        <li><code>fbclid</code> (Facebook/Meta Click ID)</li>
-        <li><code>gclid</code> (Google Ads Click ID), <code>msclkid</code> (Microsoft Ads)</li>
-        <li><code>igshid</code>, <code>mc_eid</code>, <code>ref</code> (je nach System/Partnerprogramm)</li>
-      </ul>
-    </section>
-
-    <section class="card" id="warum">
-      <h2>Was ist in der Praxis daran problematisch?</h2>
-
-      <div class="grid">
-        <div class="tile">
-          <h3>1) Du verteilst Zusatzinfos weiter</h3>
-          <p>
-            Wenn du einen Link kopierst, kopierst du oft unbemerkt auch Kampagnen- oder Klick-IDs mit.
-            Das kann unnötige Kontextdaten über dich (oder deine Quelle) verbreiten.
-          </p>
-        </div>
-        <div class="tile">
-          <h3>2) Links werden unnötig lang und unübersichtlich</h3>
-          <p>
-            Lange Links sind fehleranfälliger (Abschneiden, Umbrüche) und wirken unprofessionell – besonders in Redaktion/Social.
-          </p>
-        </div>
-        <div class="tile">
-          <h3>3) Du „trägst Tracking weiter“ in neue Räume</h3>
-          <p>
-            Ein Parameter, der für Plattform A gedacht war, landet plötzlich in Messenger/Newsletter/Blog – und bleibt dort dauerhaft.
-          </p>
-        </div>
-        <div class="tile">
-          <h3>4) Es ist eine Qualitäts- und Hygiene-Frage</h3>
-          <p>
-            Saubere Links sind wie saubere Zitate: weniger Rauschen, mehr Klarheit, weniger unbeabsichtigte Nebeninfos.
-          </p>
-        </div>
+https://example.com/artikel?utm_source=twitter&fbclid=XYZ&ref=abc
+                    └──────────── Parameter ─────────────┘
       </div>
 
       <div class="warnBox">
-        Wichtig: Auch ohne Parameter kann es Tracking geben (Cookies, Fingerprinting, Logfiles). Link-Hygiene ist trotzdem sinnvoll,
-        weil sie den „Extra-Ballast beim Teilen“ reduziert.
+        Parameter können <strong>Tracking</strong> sein (oft entfernbar) oder <strong>funktional</strong> sein (besser behalten).
       </div>
     </section>
 
-    <section class="card" id="wann">
-      <h2>Wann sollte man NICHT blind entfernen?</h2>
-      <p>
-        Manche Parameter sind nicht „Tracking“, sondern <strong>funktional</strong> (Login, Checkout, Session, Signatur).
-        Entfernst du sie, kann ein Link brechen.
-      </p>
+    <section class="card" id="matrix">
+      <h2>Kategorien: was ist was?</h2>
 
-      <h3>Typische funktionale Fälle</h3>
-      <ul>
-        <li>Signaturen/Hashes: <code>sig=</code>, <code>signature=</code>, <code>hmac=</code></li>
-        <li>Tokens/Sessions: <code>token=</code>, <code>session=</code>, <code>auth=</code></li>
-        <li>Checkout/Cart-IDs: <code>checkout=</code>, <code>cart=</code></li>
-      </ul>
-
-      <div class="okBox">
-        Genau dafür ist Pro gedacht: Audit („was wurde entfernt/was blieb“) + Whitelist/Overrides pro Domain.
+      <div class="tableWrap" role="region" aria-label="Kategorien von Parametern" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th>Kategorie</th>
+              <th>Typische Keys</th>
+              <th>Praxis</th>
+              <th>SafeShare-Entscheidung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>UTM (Marketing)</strong></td>
+              <td><code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_term</code>, <code>utm_content</code></td>
+              <td>Messung/Attribution</td>
+              <td>Beim Teilen meist entfernen; in Kampagnen bewusst steuern</td>
+            </tr>
+            <tr>
+              <td><strong>Click-IDs</strong></td>
+              <td><code>gclid</code>, <code>fbclid</code>, <code>msclkid</code></td>
+              <td>Plattform/Ad-Tracking</td>
+              <td>Meist entfernen</td>
+            </tr>
+            <tr>
+              <td><strong>Ref / Share</strong></td>
+              <td><code>ref</code>, <code>ref_src</code>, <code>source</code>, <code>share</code></td>
+              <td>Quelle/Share-Kontext</td>
+              <td>Oft entfernen (Hygiene) – je nach Domain</td>
+            </tr>
+            <tr>
+              <td><strong>Affiliate</strong></td>
+              <td><code>tag</code>, <code>aff_id</code>, <code>affiliate</code>, <code>partner</code></td>
+              <td>Vergütung/Partner</td>
+              <td>Entscheidungssache: Pro kann Whitelist/Policy</td>
+            </tr>
+            <tr>
+              <td><strong>Funktional</strong></td>
+              <td><code>token</code>, <code>session</code>, <code>sig</code>, <code>signature</code>, <code>hmac</code></td>
+              <td>Login/Signatur/Checkout</td>
+              <td>Eher behalten (sonst bricht Link)</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="row">
-        <a class="btn primary" href="pro.html">Pro ansehen</a>
+        <a class="btn primary" href="pro.html">Pro: Regeln & Audit</a>
         <a class="btn" href="help.html#pro">Pro-Workflow</a>
       </div>
     </section>
 
+    <section class="card" id="warum">
+      <h2>Warum das überhaupt relevant ist</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>1) Kontext-Leaks minimieren</h3>
+          <p>Parameter verraten oft Quelle/Kampagne/Plattform. Beim Weiterleiten ist das häufig unnötig.</p>
+        </div>
+        <div class="tile">
+          <h3>2) Weniger Fehler</h3>
+          <p>Lange URLs werden abgeschnitten, brechen in Messengern oder sind schwer zu prüfen.</p>
+        </div>
+        <div class="tile">
+          <h3>3) Professionalität</h3>
+          <p>In Redaktion/Social wirken saubere Links wie “QA” statt Zufall.</p>
+        </div>
+        <div class="tile">
+          <h3>4) Bewusste Attribution</h3>
+          <p>Wenn du messen willst, mach es bewusst – nicht als Nebenprodukt von Copy/Paste.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="card" id="beispiele">
-      <h2>Beispiele zum Testen</h2>
-      <p>Zum Reinkopieren in App/Pro:</p>
+      <h2>Beispiele zum Testen (Copy/Paste)</h2>
       <div class="monoBox">
-https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch
-https://example.com/shop?gclid=AAA111&utm_campaign=winter&utm_source=ig
-https://example.com/page?fbclid=BBB222&utm_source=share
-https://example.com/search?q=safeshare&utm_medium=referral&utm_source=newsletter
+https://example.com/blog?utm_source=twitter&utm_medium=social&utm_campaign=launch
+https://example.com/shop?gclid=AAA111&utm_source=ig&utm_campaign=winter
+https://example.com/page?fbclid=BBB222&utm_source=share&ref=timeline
+https://example.com/checkout?token=SECRET123&sig=ABCDEF&utm_source=newsletter
+      </div>
+
+      <div class="badBox">
+        Hinweis: Das letzte Beispiel enthält funktionale Parameter (<code>token</code>/<code>sig</code>) – die sollte man nicht blind entfernen.
       </div>
 
       <div class="row">
@@ -443,17 +431,17 @@ https://example.com/search?q=safeshare&utm_medium=referral&utm_source=newsletter
     </section>
 
     <section class="card" id="cta">
-      <h2>Was SafeShare macht (kurz)</h2>
+      <h2>Was du jetzt tun kannst</h2>
       <ol>
-        <li>Du fügst einen Link ein.</li>
-        <li>SafeShare entfernt typische Tracking-Anhänge.</li>
-        <li>Du teilst den sauberen Link.</li>
+        <li>Wenn du einfach teilen willst: App nutzen (Hygiene).</li>
+        <li>Wenn du beruflich arbeitest: Pro nutzen (Policy/Audit/Export).</li>
+        <li>Wenn du unsicher bist: Audit anschauen und langsam Regeln schärfen.</li>
       </ol>
 
       <div class="row">
-        <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn" href="utm-parameter-entfernen.html">UTM tiefer erklärt</a>
-        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a class="btn primary" href="app.html">App</a>
+        <a class="btn" href="pro.html">Pro</a>
+        <a class="btn ghost" href="education.html">Schule</a>
       </div>
     </section>
 
@@ -467,6 +455,7 @@ https://example.com/search?q=safeshare&utm_medium=referral&utm_source=newsletter
         <a href="utm-parameter-entfernen.html">UTM</a>
         <a href="tracking-parameter.html">Tracking</a>
         <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+        <a href="education.html">Schule</a>
         <a href="press.html">Presse</a>
         <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
@@ -495,16 +484,17 @@ https://example.com/search?q=safeshare&utm_medium=referral&utm_source=newsletter
       const sub = document.getElementById('pageSub');
       const tag = document.getElementById('pageTag');
       const map = {
-        "index.html": ["Start · Überblick", "Links teilen. Ohne Ballast."],
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz, praxisnah"],
+        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
         "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "press.html": ["Presse · Infos", "Material"]
+        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "press.html": ["Presse · Media Kit", "Fakten & Assets"]
       };
       if (sub && map[path]) sub.textContent = map[path][0];
       if (tag && map[path]) tag.textContent = map[path][1];
