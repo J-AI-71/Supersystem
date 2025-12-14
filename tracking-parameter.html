@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Tracking-Parameter – erklärt & entfernen mit SafeShare</title>
-  <meta name="description" content="Tracking-Parameter: Was das ist (ohne Panik), Beispiele (gclid, fbclid, msclkid, utm), und wie SafeShare Links local-first bereinigt." />
+  <title>Tracking-Parameter – was ist das? – SafeShare</title>
+  <meta name="description" content="Tracking-Parameter erklärt: Welche Parameter typischerweise Tracking sind, welche funktional sind, und wie SafeShare local-first Links bereinigt." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -28,6 +28,7 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -41,6 +42,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
       }
     }
     *{ box-sizing:border-box; }
@@ -143,6 +145,36 @@
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .chipRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px; }
+    .chip{
+      display:inline-flex; align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .chip b{ color: var(--text); font-weight: 850; }
+
     .example{
       margin-top: 10px;
       padding: 12px 12px;
@@ -154,19 +186,6 @@
       line-height: 1.5;
       word-break: break-word;
     }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
-      white-space: nowrap;
-    }
-    .chip b{ color: var(--text); font-weight: 800; }
 
     footer{
       margin-top: 18px;
@@ -221,6 +240,7 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
+      .box{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -253,7 +273,7 @@
           <div class="sub">Tracking-Parameter</div>
         </div>
       </div>
-      <div class="small">Guide</div>
+      <div class="small">Erklärung</div>
     </header>
 
     <div class="tabsBar">
@@ -261,64 +281,113 @@
         <a class="tab" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+        <a class="tab active" href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
     <section class="card">
-      <h1>Tracking-Parameter – was ist das?</h1>
+      <h1>Was sind Tracking-Parameter?</h1>
       <p>
-        Tracking-Parameter sind Zusatzwerte in der URL, die messen helfen, <b>woher ein Klick kommt</b>.
-        Sie sind eher <b>Etiketten</b> am Link als „Virus“. SafeShare entfernt diese Etiketten, wenn du es willst.
+        Tracking-Parameter sind Zusatzinfos am Link, die Herkunft/Kampagnen/Klick-IDs beschreiben.
+        Sie sind oft wie „Etiketten“: technisch nicht nötig für den Inhalt – aber nützlich für Messung/Attribution.
       </p>
       <div class="row">
         <a class="btn primary" href="app.html">Link bereinigen</a>
-        <a class="btn" href="education.html">Schule</a>
-        <a class="btn ghost" href="pro.html">Pro</a>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Beispiel</h2>
-      <div class="example mono">
-        https://shop.example.com/product?utm_source=insta&utm_campaign=launch&fbclid=XYZ&gclid=ABC
-      </div>
-      <div class="chips" aria-label="Beispiele für Tracking-Parameter">
-        <span class="chip"><b>utm_*</b> Kampagnen</span>
-        <span class="chip"><b>gclid</b> Google Ads Klick-ID</span>
-        <span class="chip"><b>msclkid</b> Microsoft Ads Klick-ID</span>
-        <span class="chip"><b>fbclid</b> Facebook Click ID</span>
-        <span class="chip"><b>igshid</b> Instagram</span>
+        <a class="btn" href="utm-parameter-entfernen.html">UTM</a>
+        <a class="btn ghost" href="pro.html">Pro (Audit/Whitelist)</a>
       </div>
       <div class="note">
-        In der App werden typische Tracking-Parameter entfernt. In Pro kannst du bewusst Parameter <b>behalten</b> (Whitelist) oder pro Domain regeln.
+        SafeShare entfernt Parameter local-first im Browser. Keine Link-Uploads.
       </div>
     </section>
 
     <section class="card">
-      <h2>Warum das praktisch relevant ist</h2>
-      <ul>
-        <li><b>Du teilst weniger Metadaten</b> (Kampagne/Plattform/Klick-ID).</li>
-        <li><b>Links wirken seriöser</b> (gerade bei Journalismus, NGO, Bildung).</li>
-        <li><b>Weniger Bruchstellen</b>: manche Apps kürzen/umbauen lange URLs.</li>
-        <li><b>Respekt</b>: du gibst anderen nicht ungefragt Tracking-Etiketten weiter.</li>
-      </ul>
+      <h2>Typische Tracking-Keys (Beispiele)</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Marketing-Kampagnen</h3>
+          <div class="chipRow">
+            <span class="chip"><b>utm_*</b></span>
+            <span class="chip">utm_source</span>
+            <span class="chip">utm_medium</span>
+            <span class="chip">utm_campaign</span>
+            <span class="chip">utm_content</span>
+          </div>
+          <p style="margin-top:10px">
+            Dienen der Auswertung: „Woher kam der Klick? Welche Kampagne?“
+          </p>
+        </div>
+        <div class="box">
+          <h3>Klick-IDs (plattform-spezifisch)</h3>
+          <div class="chipRow">
+            <span class="chip">gclid</span>
+            <span class="chip">fbclid</span>
+            <span class="chip">msclkid</span>
+            <span class="chip">igshid</span>
+          </div>
+          <p style="margin-top:10px">
+            IDs, die Plattformen zur Messung/Zuordnung nutzen. Beim Teilen meist Ballast.
+          </p>
+        </div>
+      </div>
+
+      <div class="example mono">
+        https://example.com/page?utm_source=twitter&utm_medium=social&fbclid=XYZ
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Wichtig: Nicht alles mit „?“ ist Tracking</h2>
+      <p>
+        Manche Parameter sind <b>funktional</b> (Sprache, Produktvariante, Filter, Suche, Pagination) und müssen bleiben,
+        sonst verändert sich die Seite oder sie funktioniert nicht.
+      </p>
+
+      <div class="grid2">
+        <div class="box">
+          <h3>Funktional (Beispiele)</h3>
+          <div class="chipRow">
+            <span class="chip">lang=de</span>
+            <span class="chip">q=search</span>
+            <span class="chip">page=2</span>
+            <span class="chip">sort=price</span>
+            <span class="chip">id=123</span>
+          </div>
+          <p style="margin-top:10px">
+            Diese Keys können echten Inhalt/Ansicht steuern. Blindes Entfernen ist riskant.
+          </p>
+        </div>
+
+        <div class="box">
+          <h3>Affiliate/Partner (Beispiele)</h3>
+          <div class="chipRow">
+            <span class="chip">ref</span>
+            <span class="chip">tag</span>
+            <span class="chip">affid</span>
+            <span class="chip">partner</span>
+          </div>
+          <p style="margin-top:10px">
+            Nicht „Tracking-Spielerei“, sondern Zuordnung. Entfernen kann Einnahmen/Attribution brechen.
+          </p>
+        </div>
+      </div>
+
       <div class="warn">
-        Wichtig: Das Entfernen von Parametern macht nicht „unsichtbar“. Es ist ein konkreter Hygiene-Schritt beim Teilen.
+        Profi-Ansatz: Regeln + Audit. In Pro solltest du klar sehen, was entfernt wurde (removed) und was bewusst bleibt (kept/whitelist).
       </div>
     </section>
 
     <section class="card">
-      <h2>Wann sollte man Parameter nicht entfernen?</h2>
-      <p>Wenn ein Parameter funktional ist (z. B. Sprache, ID, Session) oder wenn du bewusst Attribution brauchst.</p>
+      <h2>So nutzt du SafeShare sinnvoll</h2>
       <ul>
-        <li><b>Affiliate-Links:</b> „ref“, „tag“, „affid“ können Geld/Zuordnung sein.</li>
-        <li><b>Paywall/Login:</b> manche Parameter sind für Zugriff nötig.</li>
+        <li><b>App:</b> Entfernt typische Tracking-Parameter für Alltag/Sharing.</li>
+        <li><b>Pro:</b> Für Profis: Presets/Policies + Whitelist + Audit („Was wurde geändert“).</li>
       </ul>
       <div class="row">
-        <a class="btn primary" href="pro-app.html">Pro App (Whitelist/Audit)</a>
-        <a class="btn" href="help.html">FAQ</a>
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="pro.html">Pro ansehen</a>
+        <a class="btn ghost" href="help.html">Hilfe / Troubleshooting</a>
       </div>
     </section>
 
@@ -337,7 +406,6 @@
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Öffentlich</div>
-    <a href="index.html" data-page="index.html">Start</a>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="press.html" data-page="press.html">Presse</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
