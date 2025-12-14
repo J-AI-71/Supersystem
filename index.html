@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare – Links teilen. Ohne Ballast.</title>
-  <meta name="description" content="SafeShare entfernt Tracking-Parameter aus Links – local-first im Browser. App für schnelle Link-Hygiene, Pro für Profis: Presets, Policies, Audit, Export, Team-Workflows." />
+  <meta name="description" content="SafeShare entfernt unnötige Tracking-Parameter aus Links – local-first im Browser. App für schnelle Link-Hygiene. Pro für Profis: Presets, Whitelist, Audit, Export." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -12,6 +12,25 @@
   <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph (optional) -->
+  <meta property="og:title" content="SafeShare – Links teilen. Ohne Ballast." />
+  <meta property="og:description" content="Local-first URL Cleaner: unnötige Tracking-Parameter entfernen. App (schnell) + Pro (Policies, Audit, Export)." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/og/og-index.jpg" />
+
+  <!-- JSON-LD (leicht, stabil) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"SafeShare",
+    "applicationCategory":"UtilitiesApplication",
+    "operatingSystem":"Any",
+    "url":"https://j-ai-71.github.io/Supersystem/",
+    "description":"Local-first URL Cleaner: unnötige Tracking-Parameter entfernen. App (schnell) + Pro (Policies, Audit, Export)."
+  }
+  </script>
 
   <style>
     :root{
@@ -72,6 +91,7 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -97,28 +117,6 @@
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
-    .more{ position:relative; }
-    .more > summary{ list-style:none; }
-    .more > summary::-webkit-details-marker{ display:none; }
-    .menu{
-      position:absolute; right:0; top: calc(100% + 8px);
-      min-width: 240px; padding: 8px; border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.92);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex; flex-direction:column; gap: 6px; z-index: 80;
-    }
-    @media (prefers-color-scheme: light){
-      .menu{ background: rgba(255,255,255,.98); border: 1px solid rgba(17,24,39,.12); box-shadow: 0 18px 45px rgba(17,24,39,.12); }
-    }
-    .menu a{
-      padding: 10px 10px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted); font-size: 13px;
-    }
-    .menu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
-
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -129,12 +127,12 @@
     }
     h1{
       margin: 10px 0 8px;
-      font-size: clamp(24px, 4.4vw, 46px);
-      line-height: 1.08;
+      font-size: clamp(22px, 3.8vw, 44px);
+      line-height: 1.10;
       letter-spacing: -0.2px;
     }
-    h2{ margin: 0 0 8px; font-size: 20px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 16px; letter-spacing: -0.1px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.55; }
     code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
@@ -171,35 +169,18 @@
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
     .okBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
     .warnBox{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
+      background: var(--warn); padding: 10px 12px; border-radius: 12px;
+      color: var(--text); font-size: 13px; line-height: 1.45;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-    }
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+    @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
     .tile{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
@@ -208,18 +189,6 @@
     }
     .tile h3{ margin: 0 0 8px; }
     .tile p{ margin: 0 0 10px; }
-
-    .monoBox{
-      margin-top:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
 
     footer{
       margin-top: 18px;
@@ -239,6 +208,50 @@
       color: var(--muted);
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ========= Mehr Overlay (iOS-sicher) ========= */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.15);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      min-width: 240px;
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.92);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 9999;
+    }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .moreMenu a{
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .moreMenu a:hover{
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+    }
   </style>
 </head>
 
@@ -266,137 +279,89 @@
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
 
-        <details class="more" id="navMore">
-          <summary class="tab" data-page="more">Mehr ▾</summary>
-          <div class="menu" role="menu" aria-label="Mehr">
-            <a href="bulk-clean.html" data-page="bulk-clean.html">Bulk Clean</a>
-            <a href="redirect-entschachteln.html" data-page="redirect-entschachteln.html">Redirect-Entschachteln</a>
-            <a href="team-setup.html" data-page="team-setup.html">Team-Setup</a>
-            <a href="publisher.html" data-page="publisher.html">Publisher</a>
-
-            <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-            <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-            <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-            <a href="education.html" data-page="education.html">Schule</a>
-            <a href="press.html" data-page="press.html">Presse</a>
-
-            <a href="status.html" data-page="status.html">Status</a>
-            <a href="impressum.html" data-page="impressum.html">Impressum</a>
-            <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          </div>
-        </details>
+        <!-- Mehr (Overlay, iPad-sicher) -->
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
+          Mehr ▾
+        </button>
+        <div class="moreOverlay" id="moreOverlay" hidden></div>
+        <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+          <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+          <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="press.html" data-page="press.html">Presse</a>
+          <a href="status.html" data-page="status.html">Status</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+        </nav>
       </div>
     </div>
 
-    <section class="card" id="hero">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> SafeShare</div>
-      <h1>Links teilen. <br>Ohne Ballast.</h1>
+    <section class="card" id="top">
+      <div class="pill"><span class="dot" aria-hidden="true"></span> Start</div>
+      <h1>Links teilen. Ohne Ballast.</h1>
       <p>
-        SafeShare entfernt typische Tracking-Parameter aus URLs und macht Links klarer, kürzer und kontrollierbarer.
-        Die Bereinigung passiert <strong>local-first im Browser</strong> (Kernfunktion ohne Proxy).
+        SafeShare entfernt unnötige Tracking-Parameter aus Links – direkt im Browser (local-first).
+        Für schnelle Link-Hygiene gibt es die App. Für Profis gibt es Pro: Policies, Whitelist, Audit und Export.
       </p>
 
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
         <a class="btn" href="pro.html">Pro für Profis</a>
-        <a class="btn ghost" href="help.html">Hilfe</a>
+        <a class="btn ghost" href="education.html">Schule</a>
       </div>
 
       <div class="okBox">
-        Merksatz: Tracking-Parameter sind wie Etiketten am Link. SafeShare entfernt unnötige Etiketten – ohne Unsichtbarkeit zu versprechen.
+        Tracking-Parameter sind wie Etiketten am Link: manchmal nützlich, beim Teilen oft unnötig.
       </div>
     </section>
 
-    <section class="card" id="two">
-      <h2>2 Modi – je nach Anspruch</h2>
-
+    <section class="card">
+      <h2>Für wen ist was?</h2>
       <div class="grid">
         <div class="tile">
           <h3>SafeShare App</h3>
-          <p>Für schnelle Link-Hygiene: ein Link rein, sauberer Link raus.</p>
-          <ul>
-            <li>Entfernt typische UTM/Click-IDs/Noise</li>
-            <li>Einfach teilen, ohne Setup</li>
-            <li>Ideal für Alltag & schnelle Checks</li>
-          </ul>
+          <p>Schnell reinigen, kopieren, teilen. Ideal für Alltag und schnelle Checks.</p>
           <div class="row">
             <a class="btn primary" href="app.html">Zur App</a>
-            <a class="btn ghost" href="bookmarklets.html">Bookmarklets</a>
+            <a class="btn ghost" href="bookmarklets.html">1-Klick Bookmarklets</a>
           </div>
         </div>
 
         <div class="tile">
           <h3>SafeShare Pro</h3>
-          <p>Für Profis (Social, Journalismus, Publisher): Policies statt Bauchgefühl.</p>
-          <ul>
-            <li>Presets/Regeln/Whitelists (z. B. Affiliate-safe)</li>
-            <li>Audit: „was wurde entfernt / behalten – warum?“</li>
-            <li>Export & Team-Workflows</li>
-          </ul>
+          <p>
+            Für Social Media, Publisher, Journalismus und Teams: Presets/Policies, domainbasierte Whitelist,
+            Audit („was wurde geändert – und warum?“) und professionelle Workflows.
+          </p>
           <div class="row">
-            <a class="btn primary" href="pro.html">Zu Pro</a>
-            <a class="btn" href="team-setup.html">Team-Setup</a>
+            <a class="btn" href="pro.html">Zu Pro</a>
+            <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
           </div>
-
-          <div class="monoBox">Pro kaufen:
-Person: https://payhip.com/b/VDm3B
-Team:   https://payhip.com/b/Yxh5T</div>
         </div>
-      </div>
-
-      <div class="warnBox">
-        Profi-Ansatz: Nicht „alles löschen“, sondern: Policy + Ausnahmen + Nachweis (Audit).
       </div>
     </section>
 
-    <section class="card" id="praxis">
-      <h2>Was ist praktisch wichtig?</h2>
-      <ul>
-        <li><strong>Lesbarkeit:</strong> Links wirken seriöser, wenn sie nicht wie „Tracking-Salat“ aussehen.</li>
-        <li><strong>Minimierung:</strong> Beim Weitergeben nicht unnötig Kampagnen-/Click-IDs mitsenden.</li>
-        <li><strong>Kontext:</strong> Affiliate/Partner-Attribution kann gewollt sein → bewusst steuern (Pro).</li>
-        <li><strong>Nachvollziehbarkeit:</strong> Für Teams zählt, was genau geändert wurde (Audit/Export).</li>
-      </ul>
-
+    <section class="card">
+      <h2>Warum local-first?</h2>
+      <p>
+        Links können sensibel sein (Redaktion, Kund:innen, interne Recherchen). Local-first heißt:
+        Verarbeitung im Browser – ohne dass du URLs an einen Tool-Server schicken musst.
+      </p>
       <div class="row">
-        <a class="btn" href="tracking-parameter.html">Tracking erklärt</a>
-        <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
-        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-      </div>
-    </section>
-
-    <section class="card" id="tools">
-      <h2>Werkzeuge</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>Bulk Clean</h3>
-          <p>Viele Links auf einmal bereinigen (Listen, Newsletter, Redaktion).</p>
-          <div class="row"><a class="btn" href="bulk-clean.html">Öffnen</a></div>
-        </div>
-        <div class="tile">
-          <h3>Redirect-Entschachteln</h3>
-          <p>Weiterleitungen auflösen (wo geht der Link wirklich hin?).</p>
-          <div class="row"><a class="btn" href="redirect-entschachteln.html">Öffnen</a></div>
-        </div>
+        <a class="btn ghost" href="datenschutz.html">Datenschutz</a>
+        <a class="btn ghost" href="press.html">Presse</a>
       </div>
     </section>
 
     <footer>
       <div class="footLinks">
-        <a href="index.html">Startseite</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="help.html">Hilfe</a>
         <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="bulk-clean.html">Bulk</a>
-        <a href="redirect-entschachteln.html">Redirect</a>
-        <a href="team-setup.html">Team</a>
-        <a href="utm-parameter-entfernen.html">UTM</a>
-        <a href="tracking-parameter.html">Tracking</a>
-        <a href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
         <a href="education.html">Schule</a>
         <a href="press.html">Presse</a>
-        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
@@ -405,40 +370,101 @@ Team:   https://payhip.com/b/Yxh5T</div>
 
   <script>
     (function () {
-      const path = location.pathname.split('/').pop() || 'index.html';
+      // Active Tab (App/Pro/Hilfe/Bookmarklets)
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
 
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      const navMore = document.getElementById('navMore');
-      document.querySelectorAll('.menu a').forEach(a => {
-        a.addEventListener('click', () => { if (navMore) navMore.open = false; });
-      });
-
+      // Page labels (optional)
       const sub = document.getElementById('pageSub');
       const tag = document.getElementById('pageTag');
       const map = {
         "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
         "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
         "pro.html": ["Pro · für Social & Journalismus", "Policy · Audit · Export"],
-        "help.html": ["Hilfe · App & Pro", "Kurz & praxisnah"],
+        "help.html": ["Hilfe · App & Pro", "FAQ"],
         "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "bulk-clean.html": ["Bulk Clean · Listen", "Batch"],
-        "redirect-entschachteln.html": ["Redirect-Entschachteln", "Auflösen"],
-        "team-setup.html": ["Team-Setup", "Policies"],
-        "publisher.html": ["Publisher", "Workflows"],
         "status.html": ["Status · Service Worker", "Cache/Updates"],
         "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
         "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Vergleich · Tools", "Einordnung"],
-        "education.html": ["Schule · verständlich erklärt", "ohne Panik"],
+        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich · URL Cleaner", "Kriterien"],
+        "education.html": ["SafeShare-Schule", "ohne Panik"],
         "press.html": ["Presse · Media Kit", "Kontakt"],
         "impressum.html": ["Impressum", "§ 5 TMG"],
         "datenschutz.html": ["Datenschutz", "DSGVO"]
       };
       if (sub && map[path]) sub.textContent = map[path][0];
       if (tag && map[path]) tag.textContent = map[path][1];
+    })();
+  </script>
+
+  <script>
+    (function () {
+      // Mehr Overlay (iOS-sicher)
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+      if (!btn || !menu || !overlay) return;
+
+      function placeMenu(){
+        menu.hidden = false; // damit offsetWidth/Height stimmt
+        const r = btn.getBoundingClientRect();
+        const gap = 8;
+
+        const menuW = menu.offsetWidth;
+        const menuH = menu.offsetHeight;
+
+        const left = Math.min(
+          window.innerWidth - menuW - 12,
+          Math.max(12, r.right - menuW)
+        );
+        const top = Math.min(
+          window.innerHeight - menuH - 12,
+          r.bottom + gap
+        );
+
+        menu.style.left = left + 'px';
+        menu.style.top  = top  + 'px';
+      }
+
+      function openMenu(){
+        overlay.hidden = false;
+        placeMenu();
+        btn.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeMenu(){
+        overlay.hidden = true;
+        menu.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+      }
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        open ? closeMenu() : openMenu();
+      });
+
+      overlay.addEventListener('click', closeMenu);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => closeMenu());
+      });
+
+      window.addEventListener('resize', () => {
+        if (btn.getAttribute('aria-expanded') === 'true') placeMenu();
+      }, { passive:true });
+
+      window.addEventListener('scroll', () => {
+        if (btn.getAttribute('aria-expanded') === 'true') closeMenu();
+      }, { passive:true });
     })();
   </script>
 </body>
