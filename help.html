@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Hilfe</title>
-  <meta name="description" content="Hilfe zu SafeShare: Nutzung, Troubleshooting (Cache/Service Worker), Pro-Workflow, Affiliate-sicher teilen." />
+  <title>Hilfe – SafeShare</title>
+  <meta name="description" content="SafeShare Hilfe: App & Pro nutzen, Pro aktivieren, typische Probleme (Cache/Service Worker, iOS), Kontakt." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -110,8 +110,7 @@
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
-    ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -129,8 +128,8 @@
       gap: 8px;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
-    .btn.primary:hover{ background: var(--mint3); }
+    .btn.primary{ background: rgba(47,227,183,.18); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: rgba(47,227,183,.28); }
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
@@ -147,34 +146,6 @@
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
     .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
-    /* Accordion */
-    .acc{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      overflow:hidden;
-      margin-top: 10px;
-    }
-    details{ border-bottom: 1px solid rgba(255,255,255,.08); }
-    details:last-child{ border-bottom:0; }
-    summary{
-      list-style:none;
-      cursor:pointer;
-      padding: 12px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      color: var(--text);
-      font-weight: 800;
-      font-size: 14px;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    .smeta{ color: var(--muted2); font-weight: 650; font-size: 12px; }
-    .accBody{ padding: 0 12px 12px; }
-
     .grid2{
       display:grid;
       grid-template-columns: 1fr;
@@ -190,21 +161,16 @@
       border-radius: 16px;
       padding: 12px;
     }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
       white-space: nowrap;
-    }
-    .pill b{ color: var(--text); font-weight: 850; }
-
-    .line{
-      height:1px; background: rgba(255,255,255,.10);
-      margin: 12px 0; border-radius: 999px;
     }
 
     footer{
@@ -260,8 +226,7 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
-      details{ border-bottom-color: rgba(17,24,39,.08); }
-      .acc, .box{ border-color: rgba(17,24,39,.12); }
+      .box{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -294,7 +259,7 @@
           <div class="sub">Hilfe</div>
         </div>
       </div>
-      <div class="small">Support</div>
+      <div class="small">Support & Troubleshooting</div>
     </header>
 
     <div class="tabsBar">
@@ -302,7 +267,6 @@
         <a class="tab" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab active" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -310,158 +274,135 @@
     <section class="card">
       <h1>Hilfe</h1>
       <p>
-        Hier findest du kurze Workflows und Troubleshooting. SafeShare bereinigt Links <b>local-first</b> im Browser.
+        Hier findest du den schnellen Einstieg, Profi-Hinweise (Pro), und die häufigsten Ursachen, wenn etwas „nicht aktualisiert“ oder „komisch cached“.
       </p>
-
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn" href="pro-app.html">Pro App</a>
+        <a class="btn" href="pro.html">Pro ansehen</a>
         <a class="btn ghost" href="status.html">Status</a>
       </div>
-
       <div class="note">
-        Wenn du „alte Versionen“ siehst: Das ist fast immer der Service-Worker-Cache. Siehe Troubleshooting unten.
-      </div>
-
-      <div class="grid2">
-        <div class="box">
-          <div class="pill"><b>1 Minute</b> App</div>
-          <ol>
-            <li>Link einfügen</li>
-            <li>Bereinigen</li>
-            <li>Ergebnis kopieren/öffnen</li>
-          </ol>
-        </div>
-        <div class="box">
-          <div class="pill"><b>1 Minute</b> Pro</div>
-          <ol>
-            <li>Preset wählen (Policy)</li>
-            <li>Whitelist setzen (Affiliate/Function)</li>
-            <li>„Was wurde geändert“ prüfen (Audit)</li>
-          </ol>
-        </div>
+        SafeShare arbeitet local-first im Browser. Wenn etwas „alt“ wirkt, ist es fast immer Cache/Service Worker.
       </div>
     </section>
 
-    <section class="card">
-      <h2>FAQ & Praxis</h2>
-
-      <div class="acc">
-        <details>
-          <summary>
-            Was macht SafeShare – und was nicht?
-            <span class="smeta">Scope</span>
-          </summary>
-          <div class="accBody">
-            <p><b>SafeShare</b> entfernt (je nach Modus) Tracking-Parameter aus URLs.</p>
-            <p><b>SafeShare macht nicht</b>: dich „unsichtbar“, schützt nicht deinen gesamten Browser-Verkehr, ersetzt keine Privacy-Tools.</p>
-            <div class="warn">
-              Denk an „Etiketten am Link“: SafeShare entfernt Etiketten – nicht die Existenz von Tracking im Internet.
-            </div>
-          </div>
-        </details>
-
-        <details>
-          <summary>
-            Warum ist Affiliate/„ref“/„tag“ wichtig?
-            <span class="smeta">Einnahmen/Zuordnung</span>
-          </summary>
-          <div class="accBody">
-            <p>
-              Manche Parameter sind keine „Tracking-Spielerei“, sondern <b>Zuordnung</b> (Affiliate, Partner, interne Kampagnen).
-              Wenn du sie entfernst, kann Attribution/Einnahme-Zuordnung kaputtgehen.
-            </p>
-            <ul>
-              <li>Beispiele: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span></li>
-              <li>Lösung in Pro: <b>Whitelist</b> (allowlist) für diese Keys oder Domain-Policy</li>
-            </ul>
-          </div>
-        </details>
-
-        <details>
-          <summary>
-            Ich sehe nicht, was entfernt wurde – wo steht das?
-            <span class="smeta">Audit</span>
-          </summary>
-          <div class="accBody">
-            <p>
-              In Pro ist der Bereich <b>„Was wurde geändert“</b> als Audit gedacht:
-              <b>removed</b> (entfernt) und <b>kept</b> (bewusst behalten).
-            </p>
-            <p>
-              Typischer Fehler: Du hast <b>Whitelist</b> aktiv → Parameter bleibt (absichtlich) drin → erscheint unter <b>kept</b>.
-            </p>
-            <div class="note">
-              Wenn du willst, kann ich dir den Audit-Block so umbauen, dass er immer „Alle Parameter“ auflistet:
-              removed + kept + unchanged (funktionale Keys).
-            </div>
-          </div>
-        </details>
-
-        <details>
-          <summary>
-            Pro-App / Pro-Activate führt zu 404 – warum?
-            <span class="smeta">Pfad/Cache</span>
-          </summary>
-          <div class="accBody">
-            <p>Prüfe zuerst die Dateinamen im Repo (Groß/Kleinschreibung zählt):</p>
-            <ul>
-              <li><span class="mono">pro-app.html</span> existiert?</li>
-              <li><span class="mono">pro-activate.html</span> existiert?</li>
-              <li>Link-Ziele exakt so verlinkt (keine Ordner/alten Namen)?</li>
-            </ul>
-            <p>Dann: Service Worker aktualisieren (siehe Troubleshooting).</p>
-          </div>
-        </details>
+    <section class="card" id="start">
+      <h2>Schnellstart (App)</h2>
+      <ol>
+        <li>Link kopieren</li>
+        <li>In <a href="app.html"><b>app.html</b></a> einfügen</li>
+        <li>Bereinigen → Ergebnis kopieren/teilen</li>
+      </ol>
+      <div class="warn">
+        Für Nicht-Profis: Parameter sind oft wie „Etiketten“ am Link. SafeShare entfernt unnötigen Ballast – ohne Unsichtbarkeit zu versprechen.
       </div>
     </section>
 
-    <section class="card">
-      <h2>Troubleshooting</h2>
-
+    <section class="card" id="prostart">
+      <h2>Schnellstart (Pro)</h2>
       <div class="grid2">
         <div class="box">
-          <h3>Ich sehe alte Seiten / Änderungen greifen nicht</h3>
+          <h3>Pro aktivieren</h3>
           <ol>
-            <li>Öffne <a href="status.html">status.html</a></li>
-            <li>Aktualisiere (Reload)</li>
-            <li>Wenn es bleibt: Website-Daten löschen (Safari → Einstellungen → Website-Daten)</li>
+            <li>Nach Kauf: Key erhalten</li>
+            <li><a href="pro-activate.html"><b>pro-activate.html</b></a> öffnen</li>
+            <li>Key eingeben → Pro wird freigeschaltet</li>
           </ol>
-          <div class="warn">
-            Grund: Service Worker cached HTML/JS. Das ist gewollt (Offline/Speed), aber beim Entwickeln nervig.
-          </div>
           <div class="row">
-            <button class="btn" id="btnSwVersion" type="button">SW-Version anzeigen</button>
+            <a class="btn primary" href="pro-activate.html">Aktivieren</a>
+            <a class="btn ghost" href="pro.html#pricing">Kaufen</a>
           </div>
-          <div id="swInfo" class="note" style="display:none"></div>
         </div>
-
         <div class="box">
-          <h3>Warum bereinigt er nur den ersten Link?</h3>
-          <p>
-            Das passiert, wenn die App gerade im „Single“-Flow arbeitet.
-            Für Listen/Multi-Input muss der Parser explizit mehrere URLs aus Text ziehen (Zeilen/Leerzeichen).
-          </p>
-          <div class="note">
-            Wenn du willst: Ich kann in Pro den Input so umbauen, dass er automatisch alle URLs aus einem Textblock extrahiert
-            (egal ob Zeilen, Kommata, Text drumherum) – und dann alle verarbeitet.
+          <h3>Pro Workflow</h3>
+          <ol>
+            <li>Links einfügen (mehrere Zeilen möglich)</li>
+            <li>Preset wählen (konservativ/standard/aggressiv)</li>
+            <li>Whitelist setzen (z. B. <span class="mono">ref</span>, <span class="mono">tag</span>)</li>
+            <li>Audit prüfen → veröffentlichen</li>
+          </ol>
+          <div class="row">
+            <a class="btn primary" href="pro-app.html">Pro App</a>
+            <a class="btn" href="handbuch-pro.html">Handbuch</a>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="line"></div>
+    <section class="card" id="cache">
+      <h2>„Neue Version sehe ich nicht“ (Cache / Service Worker)</h2>
+      <p>
+        Wenn du aktualisiert hast und das iPad/der Browser zeigt weiter die alte Version, nutze zuerst die Status-Seite.
+      </p>
+      <ol>
+        <li><a href="status.html"><b>status.html</b></a> öffnen</li>
+        <li>Wenn dort eine wartende Version angezeigt wird: Update aktivieren</li>
+        <li>Notfalls: Caches löschen (nur wenn nötig)</li>
+      </ol>
+      <div class="warn">
+        iOS/Safari cached aggressiv. Deshalb gibt es <b>Status</b>. Nicht 20x „Reload“ und dann verzweifeln.
+      </div>
+    </section>
 
-      <div class="box">
-        <h3>Support</h3>
-        <p>
-          Wenn du ein Problem meldest, sende bitte kurz:
-          <b>betroffene URL</b> (gern anonymisiert), <b>was erwartest du</b>, <b>was passiert</b>,
-          Browser/Device, optional Screenshot.
-        </p>
-        <div class="kv" style="margin-top:10px">
-          <div class="k">E-Mail</div>
-          <div class="v"><a class="mono" href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a></div>
+    <section class="card" id="problems">
+      <h2>Häufige Probleme</h2>
+
+      <div class="grid2">
+        <div class="box">
+          <h3>Link ist nach Bereinigung „kaputt“</h3>
+          <ul>
+            <li>Preset auf <b>konservativ</b> stellen</li>
+            <li>Funktionale Keys in die Whitelist: <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">page</span>, <span class="mono">lang</span>, <span class="mono">variant</span> …</li>
+            <li>Audit ansehen: Was wurde entfernt?</li>
+          </ul>
         </div>
+
+        <div class="box">
+          <h3>Affiliate/Partner fehlt</h3>
+          <ul>
+            <li>Whitelist: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span> …</li>
+            <li>Danach erneut bereinigen und Audit prüfen</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>404 bei Pro App</h3>
+          <ul>
+            <li>Pfad prüfen: in deinem Repo heißt es genau <span class="mono">pro-app.html</span>?</li>
+            <li>Cache/Service Worker: Status öffnen und aktualisieren</li>
+            <li>Wenn du umbenannt hast: Links in <span class="mono">pro.html</span> und Footer prüfen</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Offline / lädt nicht</h3>
+          <ul>
+            <li>Netz prüfen</li>
+            <li><a href="offline.html"><b>offline.html</b></a> ist der Fallback</li>
+            <li>Wenn online, aber trotzdem offline wirkt: Status → Update</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="ios">
+      <h2>iPad / iPhone Hinweise</h2>
+      <ul>
+        <li>„Hard Reload“ wie am Desktop gibt es so nicht. Status-Seite ist dein Werkzeug.</li>
+        <li>Bookmarklets können auf iOS unzuverlässig sein → App + Copy/Paste ist stabil.</li>
+      </ul>
+      <div class="note">
+        Für Profis kann später ein iOS Shortcut (Share Sheet → Clean with SafeShare) der beste Workflow sein.
+      </div>
+    </section>
+
+    <section class="card" id="kontakt">
+      <h2>Kontakt</h2>
+      <p>
+        Wenn du einen reproduzierbaren Fehler hast: schick 1 Beispiel-URL + Preset + Whitelist + was du erwartest.
+      </p>
+      <div class="box">
+        <p style="margin:0"><b>E-Mail:</b> <span class="mono">support.safeshare@proton.me</span></p>
       </div>
     </section>
 
@@ -480,7 +421,6 @@
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Öffentlich</div>
-    <a href="index.html" data-page="index.html">Start</a>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="press.html" data-page="press.html">Presse</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
@@ -522,45 +462,6 @@
       });
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
-      // SW version (best-effort)
-      const out = document.getElementById('swInfo');
-      const btnVer = document.getElementById('btnSwVersion');
-
-      function show(msg){
-        out.style.display = 'block';
-        out.textContent = msg;
-        setTimeout(()=>{}, 0);
-      }
-
-      async function getSwVersion(){
-        if (!('serviceWorker' in navigator)) return 'Service Worker nicht verfügbar.';
-        try{
-          const reg = await navigator.serviceWorker.getRegistration();
-          if (!reg) return 'Kein Service Worker registriert.';
-          const ctrl = navigator.serviceWorker.controller;
-          if (!ctrl) return 'Service Worker vorhanden, aber diese Seite ist noch nicht „controlled“ (neu laden).';
-
-          // MessageChannel to get version
-          const mc = new MessageChannel();
-          const p = new Promise((resolve) => {
-            const t = setTimeout(()=>resolve(null), 1200);
-            mc.port1.onmessage = (e) => { clearTimeout(t); resolve(e.data); };
-          });
-          ctrl.postMessage({ type:'GET_VERSION' }, [mc.port2]);
-          const data = await p;
-          if (data && data.type === 'SW_VERSION') return 'SW-Version: ' + data.value;
-          return 'SW-Version nicht abrufbar (evtl. alter SW).';
-        }catch(e){
-          return 'Fehler beim Abrufen der SW-Version.';
-        }
-      }
-
-      btnVer.addEventListener('click', async ()=>{
-        show('Lade…');
-        const v = await getSwVersion();
-        show(v);
-      });
     })();
   </script>
 </body>
