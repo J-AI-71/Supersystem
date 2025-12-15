@@ -1,10 +1,11 @@
+<!-- /Supersystem/pro-app.html  |  SafeShare Pro App (local-first, mit Aktivierungs-Gate) -->
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare Pro App – Bulk Clean für Profis</title>
-  <meta name="description" content="SafeShare Pro: mehrere Links bereinigen, Whitelist/Blacklist, Presets und Audit. Local-first im Browser." />
+  <title>SafeShare Pro App – Policy & Audit</title>
+  <meta name="description" content="SafeShare Pro App: Bulk-Cleaning, Presets/Policies, Whitelist/Blacklist und Audit – local-first im Browser." />
   <meta name="robots" content="noindex,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -26,7 +27,11 @@
       --mint2:rgba(47,227,183,.18);
       --shadow:0 18px 45px rgba(0,0,0,.35);
       --radius:18px;
+      --warn:#ffd9a8;
+      --err:#ffb2b2;
+      --ok:#aef7df;
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -38,7 +43,10 @@
         linear-gradient(180deg,var(--bg0),var(--bg2));
       min-height:100vh;
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 40px}
+
+    .wrap{max-width:1120px;margin:0 auto;padding:22px 16px 40px}
+
+    /* NAV */
     .nav{
       display:flex; align-items:center; justify-content:space-between;
       gap:14px; padding:12px 14px;
@@ -53,24 +61,27 @@
     .brand img{width:28px;height:28px;border-radius:999px}
     .brand b{letter-spacing:.2px}
     .brand small{display:block;color:var(--muted);font-weight:500;margin-top:1px}
-    .navLinks{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+
+    .navLinks{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; align-items:center}
     .navLinks a{
       color:var(--muted);
       text-decoration:none;
       padding:8px 10px;
       border-radius:999px;
       border:1px solid transparent;
-      white-space:nowrap;
     }
     .navLinks a:hover{
       color:var(--text);
       border-color:var(--border);
       background:rgba(255,255,255,.04);
     }
+
+    /* HERO */
     .hero{padding:18px 4px 8px}
-    h1{margin:14px 0 10px; font-size: clamp(26px, 3.6vw, 40px); line-height:1.08}
-    .lead{color:var(--muted); font-size: clamp(15px, 1.7vw, 18px); line-height:1.5; margin:0 0 14px}
-    .chipRow{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 12px}
+    h1{margin:14px 0 10px; font-size: clamp(26px, 3.6vw, 42px); line-height:1.08}
+    .lead{color:var(--muted); font-size: clamp(14px, 1.6vw, 17px); line-height:1.5; margin:0 0 14px}
+
+    .chipRow{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 16px}
     .chip{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 12px;
@@ -80,12 +91,18 @@
       color:var(--muted);
     }
     .dot{width:10px;height:10px;border-radius:999px;background:var(--mint); box-shadow:0 0 0 6px var(--mint2)}
+    .chip b{color:var(--text); font-weight:700}
+
+    /* LAYOUT */
     .grid{
       display:grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1.15fr .85fr;
       gap:14px;
       margin-top:10px;
+      align-items:start;
     }
+    @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border:1px solid var(--border);
@@ -93,19 +110,13 @@
       box-shadow: var(--shadow);
       padding:18px;
     }
-    .twoCol{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-    }
-    @media (max-width:900px){ .twoCol{grid-template-columns:1fr} }
-
     .card h2{margin:0 0 8px; font-size:20px}
     .muted{color:var(--muted)}
     .muted2{color:var(--muted2)}
     .hr{height:1px;background:rgba(255,255,255,.10); margin:14px 0}
 
-    textarea, select, input{
+    label{display:block; color:var(--muted); font-size:14px; margin:12px 0 8px}
+    textarea, input, select{
       width:100%;
       padding:12px 12px;
       border-radius:14px;
@@ -115,8 +126,8 @@
       outline:none;
       font-size:15px;
     }
-    textarea{min-height:120px; resize:vertical; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
-    textarea:focus, select:focus, input:focus{
+    textarea{min-height:150px; resize:vertical; line-height:1.4}
+    textarea:focus, input:focus, select:focus{
       border-color:rgba(47,227,183,.6);
       box-shadow:0 0 0 6px rgba(47,227,183,.12)
     }
@@ -129,52 +140,72 @@
       border-radius:999px;
       padding:12px 14px;
       cursor:pointer;
-      font-weight:600;
+      font-weight:700;
       text-decoration:none;
       display:inline-flex; align-items:center; justify-content:center;
       gap:10px;
     }
-    .btn.primary{background: linear-gradient(180deg, rgba(47,227,183,.22), rgba(47,227,183,.10)); border-color: rgba(47,227,183,.40)}
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(47,227,183,.22), rgba(47,227,183,.10));
+      border-color: rgba(47,227,183,.40)
+    }
     .btn:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.08)}
     .btn.primary:hover{border-color:rgba(47,227,183,.58)}
     .btn:disabled{opacity:.5; cursor:not-allowed}
 
     .box{
       background: rgba(0,0,0,.22);
-      border:1px solid rgba(255,255,255,.14);
+      border:1px dashed rgba(255,255,255,.22);
       border-radius: 14px;
       padding:12px 12px;
       color:var(--muted);
     }
-    .ok{color:#aef7df}
-    .warn{color:#ffd9a8}
-    .err{color:#ffb2b2}
 
-    .auditList{margin:0; padding-left:18px}
-    .auditItem{margin:8px 0}
+    details{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      border-radius: 14px;
+      padding:10px 12px;
+      margin-top:10px;
+    }
+    summary{cursor:pointer; color:var(--text); font-weight:800}
+    .kpi{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .kpi .chip{background:rgba(0,0,0,.18)}
+
+    .ok{color:var(--ok)}
+    .warn{color:var(--warn)}
+    .err{color:var(--err)}
     code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
 
-    .overlay{
+    .tiny{font-size:12px; color:rgba(255,255,255,.55)}
+    .twoCol{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:980px){ .twoCol{grid-template-columns:1fr} }
+
+    /* Activation overlay */
+    .gate{
       position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(10px);
       display:none;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+      z-index:999;
       align-items:center;
       justify-content:center;
-      padding:18px;
-      z-index:999;
+      padding:20px;
     }
-    .overlay .modal{
-      max-width:740px;
+    .gateCard{
+      max-width:820px;
       width:100%;
-      border-radius:22px;
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
       border:1px solid rgba(255,255,255,.18);
-      box-shadow: 0 25px 70px rgba(0,0,0,.55);
+      border-radius:22px;
+      box-shadow: 0 26px 80px rgba(0,0,0,.55);
       padding:18px;
     }
-    .modal h2{margin:0 0 8px}
-    .modal p{margin:0 0 10px; color:var(--muted)}
+    .gateCard h2{margin:0 0 6px}
+    .gateCard p{margin:0 0 12px; color:var(--muted); line-height:1.5}
+    .gateRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .gateCard .box{margin-top:10px}
+    .gateSmall{color:rgba(255,255,255,.55); font-size:12px; margin-top:10px}
 
     footer{
       margin-top:22px;
@@ -188,7 +219,6 @@
     }
     footer a{color:var(--muted); text-decoration:none}
     footer a:hover{color:var(--text); text-decoration:underline}
-    .tiny{font-size:12px; color:rgba(255,255,255,.55)}
   </style>
 </head>
 
@@ -200,10 +230,11 @@
         <img src="assets/icons/icon-32-kreis.png" alt="SafeShare Logo" />
         <div>
           <b>SafeShare</b>
-          <small>Pro App · Bulk Clean</small>
+          <small>Pro App · Policy & Audit</small>
         </div>
       </a>
       <div class="navLinks">
+        <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
         <a href="help.html">Hilfe</a>
@@ -211,93 +242,158 @@
     </nav>
 
     <header class="hero">
-      <h1>Mehrere Links in einem Rutsch bereinigen</h1>
+      <h1>SafeShare Pro App</h1>
       <p class="lead">
-        Für Profis, die Links veröffentlichen: Presets/Policies, Whitelist/Blacklist und ein Audit, das nachvollziehbar zeigt,
-        was entfernt und was behalten wurde.
+        Für Profis: mehrere Links auf einmal bereinigen, Policy wählen, Whitelist/Blacklist definieren
+        und ein Audit pro Link sehen – local-first im Browser.
       </p>
 
       <div class="chipRow">
-        <span class="chip"><span class="dot"></span><span id="chipPlan">Plan: —</span></span>
-        <span class="chip">Aktivierung: <span id="chipActive">—</span></span>
-        <span class="chip">local-first im Browser</span>
+        <span class="chip"><span class="dot"></span><span id="chipActivation">Aktivierung: <b>prüfe…</b></span></span>
+        <span class="chip"><span id="chipPlan">Plan: <b>–</b></span></span>
+        <span class="chip">Audit: <b>Removed / Kept</b></span>
       </div>
     </header>
 
-    <main class="grid" id="appRoot">
-
-      <section class="card">
-        <h2>Input</h2>
-        <p class="muted">Je Zeile ein Link. Leerzeilen werden ignoriert.</p>
+    <section class="grid">
+      <!-- LEFT: Tool -->
+      <div class="card">
+        <h2>Bulk-Clean</h2>
+        <p class="muted">
+          Links einfügen (ein Link pro Zeile) → bereinigen → Ergebnis kopieren.
+          Unten siehst du ein vollständiges Audit (was entfernt / behalten wurde).
+        </p>
 
         <div class="twoCol">
           <div>
-            <label class="muted2" for="preset">Preset/Policy</label>
+            <label for="preset">Preset / Policy</label>
             <select id="preset">
-              <option value="conservative">Konservativ (stabil)</option>
-              <option value="standard" selected>Standard (Publishing)</option>
-              <option value="aggressive">Aggressiv (max clean – prüfen!)</option>
+              <option value="standard">Standard (Tracking entfernen)</option>
+              <option value="publisher">Publisher / Affiliate (ref, tag behalten)</option>
+              <option value="strict">Streng (maximales Entfernen)</option>
+              <option value="custom">Custom (nur deine Regeln)</option>
             </select>
-
-            <label class="muted2" for="inputLinks" style="margin-top:12px; display:block;">Eingabe – Links (1 pro Zeile)</label>
-            <textarea id="inputLinks" placeholder="https://example.com/?utm_source=newsletter
-https://www.beispiel.de/artikel?fbclid=ABC123&utm_medium=social"></textarea>
-
-            <div class="row">
-              <button class="btn primary" id="btnClean">Liste bereinigen</button>
-              <button class="btn" id="btnClearInput" type="button">Eingabe leeren</button>
-              <button class="btn" id="btnLoadExamples" type="button">Test-Beispiele laden</button>
+            <div class="box" id="presetHint" style="margin-top:10px">
+              Standard: entfernt typische Tracking-Parameter (UTM, Klick-IDs), lässt normale Parameter in Ruhe.
             </div>
           </div>
 
           <div>
-            <div class="box">
-              <b>Whitelist (Allowlist)</b>
-              <div class="muted" style="margin-top:6px">Parameter, die bleiben dürfen (1 pro Zeile), z. B. <code>tag</code>, <code>ref</code>, <code>affid</code>.</div>
-              <textarea id="whitelist" style="min-height:120px; margin-top:10px" placeholder="tag
-ref"></textarea>
+            <label for="domainMode">Domain-Regel</label>
+            <select id="domainMode">
+              <option value="global">Global (eine Policy für alle)</option>
+              <option value="perDomain">Pro Domain merken (localStorage)</option>
+            </select>
+            <div class="box" style="margin-top:10px">
+              <b>Pro Domain</b> ist für Profis praktisch (z. B. Amazon vs. Newsletter-Links).
             </div>
-
-            <div class="box" style="margin-top:12px">
-              <b>Blacklist (zusätzlich entfernen)</b>
-              <div class="muted" style="margin-top:6px">Eigene Tracking-Keys, die immer raus sollen (1 pro Zeile).</div>
-              <textarea id="blacklist" style="min-height:120px; margin-top:10px" placeholder="si
-fb_action_ids"></textarea>
-            </div>
-
-            <div class="row">
-              <button class="btn" id="btnSaveRules" type="button">Regeln speichern</button>
-              <button class="btn" id="btnResetRules" type="button">Regeln zurücksetzen</button>
-            </div>
-
-            <p class="tiny" style="margin-top:10px">
-              Regeln werden lokal im Browser gespeichert (localStorage).
-            </p>
           </div>
         </div>
-      </section>
 
-      <section class="card">
-        <h2>Output</h2>
-        <p class="muted">Bereinigte Links (je Zeile ein Link). Du kannst die Liste direkt kopieren.</p>
+        <label for="inputLinks">Eingabe – Links (1 pro Zeile)</label>
+        <textarea id="inputLinks" placeholder="https://example.com/?utm_source=newsletter
+https://www.beispiel.de/artikel?fbclid=ABC123&utm_medium=social"></textarea>
 
+        <div class="row">
+          <button class="btn primary" id="btnClean">Liste bereinigen</button>
+          <button class="btn" id="btnClearIn" type="button">Eingabe leeren</button>
+          <button class="btn" id="btnClearOut" type="button">Ergebnis leeren</button>
+        </div>
+
+        <label for="outputLinks">Ausgabe – bereinigte Links</label>
         <textarea id="outputLinks" readonly placeholder="Die bereinigte Liste erscheint hier – je Zeile ein Link."></textarea>
 
         <div class="row">
           <button class="btn primary" id="btnCopy">Bereinigte Liste kopieren</button>
-          <button class="btn" id="btnClearOutput" type="button">Ergebnis leeren</button>
+          <button class="btn" id="btnCopyAudit" type="button">Audit kopieren (Text)</button>
         </div>
 
         <div class="hr"></div>
 
-        <h2>Audit: Was wurde geändert?</h2>
-        <p class="muted">Hier wird jede Zeile aufgelistet – inkl. entfernte/behaltene Parameter.</p>
-        <div class="box" id="auditBox">
-          <span class="muted">Noch keine Auswertung.</span>
-        </div>
-      </section>
+        <h2 style="margin-top:0">Audit</h2>
+        <div class="box" id="auditSummary">Noch keine Analyse.</div>
+        <div class="kpi" id="auditKpis" style="display:none"></div>
+        <div id="auditList"></div>
 
-    </main>
+        <p class="tiny" style="margin-top:12px">
+          Hinweis: SafeShare Pro ist local-first. Das Audit wird lokal erzeugt; Links werden nicht an einen Server gesendet.
+        </p>
+      </div>
+
+      <!-- RIGHT: Rules -->
+      <aside class="card">
+        <h2>Eigene Regeln</h2>
+        <p class="muted">
+          Ergänze deine Policy. Standardmäßig entfernt Pro übliche Tracking-Parameter. Mit Whitelist/Blacklist steuerst du,
+          was sicher bleibt bzw. zusätzlich entfernt wird.
+        </p>
+
+        <div class="twoCol">
+          <div>
+            <label for="whitelist">Whitelist (behalten)</label>
+            <textarea id="whitelist" placeholder="ref
+tag
+utm_nooverride"></textarea>
+            <div class="tiny">Ein Name pro Zeile, ohne <code>?</code> oder <code>=</code>.</div>
+          </div>
+          <div>
+            <label for="blacklist">Blacklist (zusätzlich entfernen)</label>
+            <textarea id="blacklist" placeholder="gclid
+fbclid
+igshid"></textarea>
+            <div class="tiny">Ein Name pro Zeile, ohne <code>?</code> oder <code>=</code>.</div>
+          </div>
+        </div>
+
+        <details>
+          <summary>Was wird standardmäßig entfernt?</summary>
+          <div class="muted2" style="margin-top:8px; line-height:1.5">
+            <div><b>Typische Tracking-Parameter</b> (Beispiele):</div>
+            <div style="margin-top:6px">
+              <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_term</code>, <code>utm_content</code>, <code>utm_id</code>, <code>utm_name</code><br/>
+              <code>gclid</code>, <code>dclid</code>, <code>gbraid</code>, <code>wbraid</code><br/>
+              <code>fbclid</code>, <code>igshid</code>, <code>msclkid</code>, <code>twclid</code>, <code>ttclid</code><br/>
+              <code>mc_cid</code>, <code>mc_eid</code>, <code>mkt_tok</code><br/>
+              <code>yclid</code>, <code>_hsenc</code>, <code>_hsmi</code>
+            </div>
+            <div class="tiny" style="margin-top:10px">
+              Whitelist hat Vorrang: was auf der Whitelist steht, bleibt (auch wenn es wie Tracking aussieht).
+            </div>
+          </div>
+        </details>
+
+        <div class="hr"></div>
+
+        <h2 style="margin-top:0">Pro-Status</h2>
+        <div class="box" id="proBox">prüfe…</div>
+
+        <div class="row">
+          <a class="btn" href="pro-activate.html">Zur Aktivierung</a>
+          <a class="btn" href="status.html">Status / Update</a>
+        </div>
+
+        <details>
+          <summary>Key (maskiert)</summary>
+          <div class="box" style="margin-top:10px">
+            <div><b>Gespeicherter Key:</b> <span id="storedKeyMasked">–</span></div>
+            <div class="tiny" style="margin-top:6px">
+              Der Key wird lokal im Browser gespeichert. Standardmäßig wird er hier maskiert angezeigt.
+            </div>
+            <div class="row" style="margin-top:10px">
+              <button class="btn" id="btnToggleKey" type="button">Key anzeigen</button>
+              <button class="btn" id="btnForgetKey" type="button">Key löschen (lokal)</button>
+            </div>
+            <div class="tiny" id="keyRevealNote" style="margin-top:8px; display:none">
+              Key ist sichtbar. Bitte nicht in Screenshots teilen.
+            </div>
+          </div>
+        </details>
+
+        <p class="tiny" style="margin-top:14px">
+          Support: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
+        </p>
+      </aside>
+    </section>
 
     <footer>
       <div class="footLinks">
@@ -307,299 +403,389 @@ fb_action_ids"></textarea>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
-      <div class="tiny">SafeShare Pro – Policy statt Blackbox.</div>
+      <div class="tiny">SafeShare Pro – local-first. Policy · Whitelist · Audit.</div>
     </footer>
 
   </div>
 
-  <!-- Gating Overlay (wenn nicht aktiviert) -->
-  <div class="overlay" id="gate">
-    <div class="modal">
-      <h2>SafeShare Pro ist nicht aktiviert</h2>
+  <!-- Activation Gate -->
+  <div class="gate" id="gate">
+    <div class="gateCard">
+      <h2>Pro App ist nicht aktiviert</h2>
       <p>
-        Bitte aktiviere SafeShare Pro mit deinem Lizenz-Key (Payhip-Kaufbestätigung / Download-Seite).
-        Danach kannst du die Pro App nutzen.
+        Diese Seite ist für Käufer:innen von SafeShare Pro. Bitte aktiviere Pro in deinem Browser:
+        Lizenz-Key eingeben → freischalten → zurück zur Pro App.
       </p>
-      <div class="row">
-        <a class="btn primary" href="pro-activate.html">Zur Aktivierung</a>
+      <div class="gateRow">
+        <a class="btn primary" href="pro-activate.html">Jetzt aktivieren</a>
         <a class="btn" href="pro.html">Zur Pro-Seite</a>
-        <a class="btn" href="help.html">Hilfe</a>
+        <a class="btn" href="app.html">Zur normalen App</a>
       </div>
-      <p class="tiny" style="margin-top:12px">
-        Hinweis: Aktivierung wird lokal im Browser gespeichert. Wenn du den Browser wechselst, musst du erneut aktivieren.
-      </p>
+      <div class="box">
+        <b>Hinweis</b><br/>
+        SafeShare Pro ist local-first. Aktivierung wird in diesem Browser gespeichert.
+      </div>
+      <div class="gateSmall">Wenn du gerade gekauft hast: schau in Payhip in deine Library/Downloads und kopiere den Lizenz-Key.</div>
     </div>
   </div>
 
   <script>
     (function(){
-      // ----- shared keys (wie in pro-activate.html) -----
+      const $ = (id) => document.getElementById(id);
+
+      // Storage keys (müssen zu pro-activate.html passen)
       const KEY_STORAGE  = 'ss_pro_key';
       const PRO_STORAGE  = 'ss_pro_activated';
       const PLAN_STORAGE = 'ss_pro_plan';
       const TS_STORAGE   = 'ss_pro_activated_at';
+      const DOMAIN_POLICY_STORAGE = 'ss_pro_domain_policy_v1';
 
-      // ----- rule storage -----
-      const WL_STORAGE = 'ss_pro_whitelist';
-      const BL_STORAGE = 'ss_pro_blacklist';
-      const PRESET_STORAGE = 'ss_pro_preset';
+      // --- Defaults (Tracking param list) ---
+      const DEFAULT_REMOVE = new Set([
+        // UTM
+        'utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_name',
+        'utm_reader','utm_viz_id','utm_pubreferrer','utm_swu','utm_referrer','utm_social','utm_social-type',
+        // Ads click ids
+        'gclid','dclid','gbraid','wbraid','msclkid','yclid',
+        'twclid','ttclid','fbclid','igshid','li_fat_id','vero_id',
+        // Email/marketing
+        'mc_cid','mc_eid','mkt_tok',
+        // HubSpot
+        '_hsenc','_hsmi',
+        // Generic
+        'spm','sc_cid','si','ref_src','ref_url'
+      ]);
 
-      const $ = (id) => document.getElementById(id);
+      // Presets: minimal & übersichtlich
+      function presetConfig(name){
+        const cfg = {
+          remove: new Set(DEFAULT_REMOVE),
+          // whitelisted by default in standard: none (user can add)
+          whitelist: new Set(),
+          blacklist: new Set(),
+          strictDropAllNonEssential: false, // only in strict
+          allowlistEssential: new Set(['id','v','p','q','s','t','page','lang','locale','variant'])
+        };
 
-      // ----- gating -----
-      function isActivated(){
-        return localStorage.getItem(PRO_STORAGE) === '1' && !!(localStorage.getItem(KEY_STORAGE) || '').trim();
-      }
-
-      function planLabel(){
-        const p = (localStorage.getItem(PLAN_STORAGE) || '').toLowerCase().trim();
-        if (p === 'team') return 'Team';
-        if (p === 'personal') return 'Person';
-        return 'Auto';
-      }
-
-      function fmtTs(){
-        const iso = localStorage.getItem(TS_STORAGE);
-        if (!iso) return '—';
-        try{
-          const d = new Date(iso);
-          return d.toLocaleString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
-        }catch{ return '—'; }
-      }
-
-      function applyGate(){
-        if (!isActivated()){
-          $('gate').style.display = 'flex';
-          $('appRoot').style.filter = 'blur(8px)';
-          $('appRoot').style.pointerEvents = 'none';
-          $('chipActive').innerHTML = '<span class="err"><b>nicht aktiv</b></span>';
-        } else {
-          $('gate').style.display = 'none';
-          $('appRoot').style.filter = 'none';
-          $('appRoot').style.pointerEvents = 'auto';
-          $('chipActive').innerHTML = '<span class="ok"><b>aktiv</b></span> · ' + fmtTs();
+        if (name === 'publisher'){
+          // Keep affiliate-ish identifiers by default
+          cfg.whitelist = new Set(['ref','tag','aff','aff_id','affiliate','partner','coupon','code','referrer']);
         }
-        $('chipPlan').textContent = 'Plan: ' + planLabel();
+        if (name === 'strict'){
+          cfg.strictDropAllNonEssential = true;
+          // In strict: still keep affiliate if user whitelists; do not auto-whitelist
+          cfg.whitelist = new Set();
+        }
+        if (name === 'custom'){
+          // Custom means: only user-defined + DEFAULT_REMOVE? -> for pros, keep DEFAULT_REMOVE still (safer)
+          // We keep DEFAULT_REMOVE; user can override via whitelist.
+          cfg.whitelist = new Set();
+        }
+        return cfg;
       }
 
-      // ----- rules -----
-      function normalizeLines(txt){
-        return (txt || '')
-          .split(/\r?\n/g)
+      function parseLines(text){
+        return (text || '')
+          .split(/\r?\n/)
           .map(s => s.trim())
           .filter(Boolean);
       }
 
-      function loadRules(){
-        const wl = localStorage.getItem(WL_STORAGE);
-        const bl = localStorage.getItem(BL_STORAGE);
-        const pr = localStorage.getItem(PRESET_STORAGE);
-
-        if (wl !== null) $('whitelist').value = wl;
-        if (bl !== null) $('blacklist').value = bl;
-        if (pr) $('preset').value = pr;
+      function normParamName(s){
+        return (s || '').trim().replace(/^\?+/,'').replace(/=.*/,'').toLowerCase();
       }
 
-      function saveRules(){
-        localStorage.setItem(WL_STORAGE, $('whitelist').value || '');
-        localStorage.setItem(BL_STORAGE, $('blacklist').value || '');
-        localStorage.setItem(PRESET_STORAGE, $('preset').value || 'standard');
-        $('auditBox').innerHTML = '<span class="ok"><b>Regeln gespeichert.</b></span> <span class="muted">Sie gelten ab dem nächsten Clean.</span>';
+      function buildUserSets(){
+        const wl = new Set(parseLines($('whitelist').value).map(normParamName).filter(Boolean));
+        const bl = new Set(parseLines($('blacklist').value).map(normParamName).filter(Boolean));
+        return { wl, bl };
       }
 
-      function resetRules(){
-        localStorage.removeItem(WL_STORAGE);
-        localStorage.removeItem(BL_STORAGE);
-        localStorage.removeItem(PRESET_STORAGE);
-        $('whitelist').value = 'tag\nref';
-        $('blacklist').value = '';
-        $('preset').value = 'standard';
-        $('auditBox').innerHTML = '<span class="warn"><b>Regeln zurückgesetzt.</b></span> <span class="muted">Whitelist-Vorschlag: tag/ref.</span>';
+      function maskKey(k){
+        const key = (k || '').trim();
+        if (!key) return '–';
+        const parts = key.split('-').filter(Boolean);
+        if (parts.length >= 3){
+          return parts[0] + '-••••-••••-' + parts[parts.length - 1];
+        }
+        if (key.length <= 8) return '••••';
+        return key.slice(0,4) + '••••' + key.slice(-4);
       }
 
-      // ----- preset logic -----
-      const BASE_REMOVE = new Set([
-        // UTM
-        'utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_reader','utm_name',
-        // ad click ids
-        'gclid','dclid','wbraid','gbraid','msclkid','fbclid','twclid','igshid','ttclid','li_fat_id',
-        // email/campaign trackers
-        'mc_cid','mc_eid','mkt_tok','vero_id',
-        // hubspot-ish
-        '_hsenc','_hsmi','hsCtaTracking',
-        // misc
-        'ref_src','ref_url','spm','yclid','_ga','_gl','cmpid','campaignid','adid'
-      ]);
-
-      function presetRemoveSet(preset){
-        const s = new Set(BASE_REMOVE);
-
-        // standard: etwas mehr, aber keine Affiliate-Killer
-        if (preset === 'standard'){
-          [
-            'source','medium','campaign','cid','icid','ocid','scid','ncid','s_cid','trk','tracking','trkId','trkEmail',
-            'fb_action_ids','fb_action_types','fb_source','fb_ref'
-          ].forEach(x => s.add(x));
-        }
-
-        // aggressive: deutlich mehr, aber immer noch NICHT automatisch ref/tag entfernen
-        if (preset === 'aggressive'){
-          [
-            'share','shared','feature','features','si','smid','mibextid','app','app_name','from','is_from_webapp',
-            'guccounter','guce_referrer','guce_referrer_sig','r','sr','mbid','spm_id_from',
-            'cmp','cmp_id','cmpid','cmp_id','campaign','campaign_id','ad','ads','adset','creative',
-            'pcrid','placement','keyword','matchtype'
-          ].forEach(x => s.add(x));
-        }
-
-        return s;
+      // --- Activation check ---
+      function isActivated(){
+        const ok = localStorage.getItem(PRO_STORAGE) === '1';
+        const key = localStorage.getItem(KEY_STORAGE) || '';
+        return ok && key.length > 0;
       }
 
-      function isUtmLike(name){
-        return /^utm_/i.test(name);
+      function getPlan(){
+        const p = (localStorage.getItem(PLAN_STORAGE) || 'auto').toLowerCase();
+        return (p === 'team' || p === 'personal') ? p : 'auto';
       }
 
-      // ----- cleaning -----
-      function safeUrlParse(line){
-        const raw = (line || '').trim();
-        if (!raw) return { ok:false, reason:'leer', raw };
-        try {
-          // URL() braucht scheme – wenn fehlt, versuchen wir https://
-          if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(raw)) {
-            return { ok:true, url: new URL('https://' + raw), raw };
-          }
-          return { ok:true, url: new URL(raw), raw };
-        } catch {
-          return { ok:false, reason:'ungültige URL', raw };
-        }
+      function planLabel(plan){
+        return plan === 'team' ? 'Team' : (plan === 'personal' ? 'Person' : 'Auto');
       }
 
-      function cleanOne(inputLine, preset, wlSet, blSet){
-        const parsed = safeUrlParse(inputLine);
-        if (!parsed.ok){
-          return {
-            ok:false,
-            original: inputLine,
-            cleaned: '',
-            removed: [],
-            kept: [],
-            whitelisted: [],
-            warning: parsed.reason
-          };
-        }
+      function formatDT(iso){
+        try{
+          if(!iso) return '–';
+          const d = new Date(iso);
+          return d.toLocaleString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+        }catch(_){ return '–'; }
+      }
 
-        const url = parsed.url;
-        const removeSet = presetRemoveSet(preset);
+      function updateProUI(){
+        const activated = isActivated();
+        const plan = getPlan();
+        const ts = localStorage.getItem(TS_STORAGE) || '';
+        $('chipActivation').innerHTML = 'Aktivierung: <b>' + (activated ? 'aktiv' : 'nicht aktiv') + '</b>';
+        $('chipPlan').innerHTML = 'Plan: <b>' + planLabel(plan) + '</b>';
 
-        const removed = [];
-        const kept = [];
-        const whitelisted = [];
+        const key = localStorage.getItem(KEY_STORAGE) || '';
+        $('storedKeyMasked').textContent = maskKey(key);
 
-        // collect existing params
-        const params = Array.from(url.searchParams.entries()); // [name,value]
-        url.search = ''; // reset, rebuild
+        $('proBox').innerHTML = activated
+          ? ('<span class="ok"><b>Aktiviert</b></span><br><span class="muted2">Plan: ' + planLabel(plan) + ' · Aktiviert am: ' + formatDT(ts) + '</span>')
+          : ('<span class="err"><b>Nicht aktiviert</b></span><br><span class="muted2">Bitte über pro-activate.html aktivieren.</span>');
 
-        for (const [name, value] of params){
-          const n = (name || '').trim();
-          const nLower = n.toLowerCase();
+        $('gate').style.display = activated ? 'none' : 'flex';
+      }
 
-          const isWL = wlSet.has(n) || wlSet.has(nLower);
-          const isBL = blSet.has(n) || blSet.has(nLower);
+      // --- Domain policies ---
+      function loadDomainPolicies(){
+        try{
+          return JSON.parse(localStorage.getItem(DOMAIN_POLICY_STORAGE) || '{}') || {};
+        }catch(_){ return {}; }
+      }
+      function saveDomainPolicies(obj){
+        localStorage.setItem(DOMAIN_POLICY_STORAGE, JSON.stringify(obj || {}));
+      }
 
-          const shouldRemove =
-            isBL ||
-            isUtmLike(nLower) ||
-            removeSet.has(n) ||
-            removeSet.has(nLower);
+      function getDomain(url){
+        try{ return (new URL(url)).hostname.toLowerCase(); }catch(_){ return ''; }
+      }
 
-          if (isWL){
-            // Whitelist schlägt alles
-            url.searchParams.append(n, value);
-            kept.push(n);
-            whitelisted.push(n);
-            continue;
-          }
+      function currentPreset(){
+        return $('preset').value;
+      }
 
-          if (shouldRemove){
-            removed.push(n);
-            continue;
-          }
+      function updatePresetHint(){
+        const p = currentPreset();
+        const txt =
+          p === 'publisher' ? 'Publisher/Affiliate: entfernt Tracking, behält standardmäßig ref/tag/aff… (du kannst weiter whitelisten).' :
+          p === 'strict' ? 'Streng: entfernt Tracking + zusätzlich alles, was nicht „essentiell“ ist (Whitelist hat Vorrang).' :
+          p === 'custom' ? 'Custom: nutzt Standard-Tracking-Entfernung + deine Whitelist/Blacklist (für feinere Policies).' :
+          'Standard: entfernt typische Tracking-Parameter (UTM/Klick-IDs), lässt normale Parameter in Ruhe.';
+        $('presetHint').innerHTML = txt;
+      }
 
-          url.searchParams.append(n, value);
-          kept.push(n);
-        }
-
-        // normalize: sort params (optional, stabil)
-        const normalizedParams = Array.from(url.searchParams.entries())
-          .sort(([a],[b]) => a.localeCompare(b));
-
-        url.search = '';
-        for (const [a,b] of normalizedParams){
-          url.searchParams.append(a,b);
-        }
-
-        // wenn wir https:// davor gesetzt haben, aber der Nutzer eigentlich eine URL ohne scheme eingegeben hat:
-        // -> wir lassen es trotzdem, ist für Publishing ok (funktioniert überall).
-        return {
-          ok:true,
-          original: inputLine,
-          cleaned: url.toString(),
-          removed,
-          kept,
-          whitelisted,
-          warning: removed.length === 0 ? 'keine Änderungen' : ''
+      // --- Cleaning core ---
+      function cleanOne(rawUrl, config, userWL, userBL){
+        const audit = {
+          input: rawUrl,
+          output: rawUrl,
+          ok: false,
+          reason: '',
+          removed: [],
+          kept: [],
+          removedCount: 0
         };
+
+        let u;
+        try{
+          u = new URL(rawUrl);
+        }catch(_){
+          audit.ok = false;
+          audit.reason = 'Ungültige URL';
+          return audit;
+        }
+
+        const params = new URLSearchParams(u.search);
+        if ([...params.keys()].length === 0){
+          audit.ok = true;
+          audit.output = u.toString();
+          audit.reason = 'Keine Parameter';
+          return audit;
+        }
+
+        const removeSet = new Set([...config.remove].map(s=>String(s).toLowerCase()));
+        const wl = new Set([...config.whitelist, ...userWL].map(s=>String(s).toLowerCase()));
+        const bl = new Set([...config.blacklist, ...userBL].map(s=>String(s).toLowerCase()));
+
+        // Strict mode: remove everything not essential unless whitelisted
+        const strict = config.strictDropAllNonEssential;
+        const essentials = new Set([...config.allowlistEssential].map(s=>String(s).toLowerCase()));
+
+        const keptPairs = [];
+        const removedPairs = [];
+
+        // Iterate stable: collect keys first
+        const keys = [...params.keys()];
+        for (const key0 of keys){
+          const key = String(key0).toLowerCase();
+
+          // Whitelist always wins
+          if (wl.has(key)){
+            keptPairs.push([key0, params.getAll(key0)]);
+            continue;
+          }
+
+          // Blacklist explicit remove
+          if (bl.has(key)){
+            removedPairs.push([key0, params.getAll(key0), 'blacklist']);
+            params.delete(key0);
+            continue;
+          }
+
+          // Default remove list
+          if (removeSet.has(key)){
+            removedPairs.push([key0, params.getAll(key0), 'tracking']);
+            params.delete(key0);
+            continue;
+          }
+
+          // Strict: remove non-essential
+          if (strict && !essentials.has(key)){
+            removedPairs.push([key0, params.getAll(key0), 'strict']);
+            params.delete(key0);
+            continue;
+          }
+
+          // else keep
+          keptPairs.push([key0, params.getAll(key0)]);
+        }
+
+        // rebuild URL without empty search
+        u.search = params.toString();
+
+        audit.ok = true;
+        audit.output = u.toString();
+
+        // Fill audit lists
+        for (const [k, vals, why] of removedPairs){
+          const v = (vals && vals.length) ? vals.join(',') : '';
+          audit.removed.push(`${k}${v ? '=' + v : ''} (${why})`);
+        }
+        for (const [k, vals] of keptPairs){
+          const v = (vals && vals.length) ? vals.join(',') : '';
+          audit.kept.push(`${k}${v ? '=' + v : ''}`);
+        }
+
+        audit.removedCount = removedPairs.length;
+        audit.reason = removedPairs.length ? 'Parameter entfernt' : 'Nichts entfernt';
+
+        return audit;
       }
 
-      function renderAudit(results){
-        if (!results.length){
-          $('auditBox').innerHTML = '<span class="muted">Keine Links.</span>';
+      function cleanAll(){
+        const lines = parseLines($('inputLinks').value);
+        if (!lines.length){
+          $('auditSummary').innerHTML = '<span class="warn"><b>Keine Links.</b></span> Bitte mindestens einen Link einfügen.';
+          $('outputLinks').value = '';
+          $('auditList').innerHTML = '';
+          $('auditKpis').style.display = 'none';
           return;
         }
 
-        const parts = [];
-        parts.push('<ol class="auditList">');
+        const userSets = buildUserSets();
+        const domainMode = $('domainMode').value;
+        const policies = loadDomainPolicies();
 
-        for (const r of results){
-          if (!r.ok){
-            parts.push(
-              `<li class="auditItem"><span class="err"><b>Ungültig:</b></span> <code>${escapeHtml(r.original)}</code>
-               <div class="muted">Grund: ${escapeHtml(r.warning || '—')}</div></li>`
-            );
-            continue;
+        const output = [];
+        const audits = [];
+
+        for (const line of lines){
+          const domain = getDomain(line);
+          let presetName = currentPreset();
+
+          // Per-domain: remember preset by hostname if available
+          if (domainMode === 'perDomain' && domain){
+            if (!policies[domain]) policies[domain] = { preset: presetName };
+            presetName = policies[domain].preset || presetName;
           }
 
-          const removed = r.removed.length ? r.removed.map(x => `<code>${escapeHtml(x)}</code>`).join(', ') : '<span class="muted">—</span>';
-          const kept = r.kept.length ? r.kept.map(x => `<code>${escapeHtml(x)}</code>`).join(', ') : '<span class="muted">—</span>';
-          const wl = r.whitelisted.length ? r.whitelisted.map(x => `<code>${escapeHtml(x)}</code>`).join(', ') : '<span class="muted">—</span>';
+          const cfg = presetConfig(presetName);
+          const a = cleanOne(line, cfg, userSets.wl, userSets.bl);
+          audits.push({ ...a, domain, preset: presetName });
 
-          const status =
-            r.removed.length
-              ? `<span class="ok"><b>bereinigt</b></span>`
-              : `<span class="warn"><b>unverändert</b></span>`;
-
-          parts.push(`
-            <li class="auditItem">
-              ${status}<br/>
-              <div class="muted2">Original:</div>
-              <div><code>${escapeHtml(r.original)}</code></div>
-              <div class="muted2" style="margin-top:6px">Ergebnis:</div>
-              <div><code>${escapeHtml(r.cleaned)}</code></div>
-
-              <div class="muted2" style="margin-top:8px">Entfernt:</div>
-              <div>${removed}</div>
-
-              <div class="muted2" style="margin-top:8px">Behalten:</div>
-              <div>${kept}</div>
-
-              <div class="muted2" style="margin-top:8px">Whitelist-Treffer:</div>
-              <div>${wl}</div>
-            </li>
-          `);
+          output.push(a.ok ? a.output : line);
         }
 
-        parts.push('</ol>');
-        $('auditBox').innerHTML = parts.join('');
+        // Save per-domain mapping if needed (only preset selection)
+        if (domainMode === 'perDomain'){
+          // Update all involved domains to currently selected preset (simple & predictable)
+          for (const a of audits){
+            if (a.domain){
+              policies[a.domain] = policies[a.domain] || {};
+              policies[a.domain].preset = currentPreset();
+            }
+          }
+          saveDomainPolicies(policies);
+        }
+
+        $('outputLinks').value = output.join('\n');
+
+        // Build summary
+        const total = audits.length;
+        const invalid = audits.filter(a=>!a.ok).length;
+        const removedParams = audits.reduce((s,a)=>s + (a.removedCount||0), 0);
+        const changedLinks = audits.filter(a=>(a.removedCount||0) > 0).length;
+
+        $('auditSummary').innerHTML =
+          `<b>${total}</b> Links verarbeitet · <b>${changedLinks}</b> geändert · ` +
+          `<b>${removedParams}</b> Parameter entfernt` +
+          (invalid ? ` · <span class="err"><b>${invalid}</b> ungültig</span>` : '');
+
+        // KPIs
+        const kpis = [
+          ['Links', String(total)],
+          ['Geändert', String(changedLinks)],
+          ['Entfernt', String(removedParams)],
+          ['Ungültig', String(invalid)]
+        ];
+        const kpiEl = $('auditKpis');
+        kpiEl.innerHTML = '';
+        for (const [k,v] of kpis){
+          const span = document.createElement('span');
+          span.className = 'chip';
+          span.innerHTML = `<b>${k}:</b> ${v}`;
+          kpiEl.appendChild(span);
+        }
+        kpiEl.style.display = 'flex';
+
+        // Audit list (vollständig, pro Link)
+        const list = $('auditList');
+        list.innerHTML = '';
+        audits.forEach((a, idx) => {
+          const d = document.createElement('details');
+          const changed = (a.removedCount||0) > 0;
+          const title =
+            `${idx+1}) ${changed ? '✓' : '•'} ${a.domain || 'URL'} · ` +
+            `${changed ? (a.removedCount + ' entfernt') : 'unverändert'}` +
+            (a.ok ? '' : ' · ungültig');
+
+          const removedHtml = a.removed && a.removed.length
+            ? `<div class="muted2" style="margin-top:6px"><b>Entfernt</b></div><div class="box">${a.removed.map(x=>escapeHtml(x)).join('<br>')}</div>`
+            : `<div class="muted2" style="margin-top:6px"><b>Entfernt</b></div><div class="box">—</div>`;
+
+          const keptHtml = a.kept && a.kept.length
+            ? `<div class="muted2" style="margin-top:10px"><b>Behalten</b></div><div class="box">${a.kept.map(x=>escapeHtml(x)).join('<br>')}</div>`
+            : `<div class="muted2" style="margin-top:10px"><b>Behalten</b></div><div class="box">—</div>`;
+
+          d.innerHTML =
+            `<summary>${escapeHtml(title)}</summary>
+             <div class="tiny" style="margin-top:8px">Preset: <code>${escapeHtml(a.preset)}</code></div>
+             <div class="muted2" style="margin-top:10px"><b>Input</b></div>
+             <div class="box"><code>${escapeHtml(a.input)}</code></div>
+             <div class="muted2" style="margin-top:10px"><b>Output</b></div>
+             <div class="box"><code>${escapeHtml(a.output)}</code></div>
+             ${removedHtml}
+             ${keptHtml}
+            `;
+          list.appendChild(d);
+        });
       }
 
       function escapeHtml(s){
@@ -611,75 +797,107 @@ fb_action_ids"></textarea>
           .replaceAll("'","&#039;");
       }
 
-      function doClean(){
-        const preset = $('preset').value || 'standard';
-        const lines = normalizeLines($('inputLinks').value);
-
-        const wlSet = new Set(normalizeLines($('whitelist').value).flatMap(x => [x, x.toLowerCase()]));
-        const blSet = new Set(normalizeLines($('blacklist').value).flatMap(x => [x, x.toLowerCase()]));
-
-        const results = lines.map(line => cleanOne(line, preset, wlSet, blSet));
-
-        // output list: nur ok cleaned + original wenn ungültig
-        const out = results.map(r => r.ok ? r.cleaned : r.original).join('\n');
-        $('outputLinks').value = out;
-
-        renderAudit(results);
-      }
-
-      function loadExamples(){
-        $('inputLinks').value = [
-          'https://example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=launch',
-          'https://www.amazon.de/dp/B0XXXXXX?tag=partner123&utm_source=twitter&ref=abc',
-          'https://www.beispiel.de/artikel?fbclid=AAA111&utm_medium=social&utm_campaign=test',
-          'https://news.site.tld/story?id=123&gclid=BBB222&utm_source=google',
-          'https://youtu.be/XXXXXX?si=CCCC33&utm_source=share'
-        ].join('\n');
-
-        $('whitelist').value = 'tag\nref';
-        $('blacklist').value = 'si';
-        $('preset').value = 'standard';
-
-        $('auditBox').innerHTML = '<span class="muted">Beispiele geladen. Jetzt „Liste bereinigen“.</span>';
-      }
-
-      async function copyOut(){
-        const txt = $('outputLinks').value || '';
-        if (!txt.trim()){
-          $('auditBox').innerHTML = '<span class="warn"><b>Nichts zu kopieren.</b></span> <span class="muted">Erst bereinigen.</span>';
-          return;
-        }
+      // --- Copy helpers ---
+      async function copyText(text){
         try{
-          await navigator.clipboard.writeText(txt);
-          $('auditBox').innerHTML = '<span class="ok"><b>Kopiert.</b></span> <span class="muted">Bereinigte Liste ist in der Zwischenablage.</span>';
-        } catch {
-          // Fallback: markieren
-          $('outputLinks').focus();
-          $('outputLinks').select();
-          $('auditBox').innerHTML = '<span class="warn"><b>Zwischenablage blockiert.</b></span> <span class="muted">Text ist markiert – kopiere manuell.</span>';
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(_){
+          // fallback
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try{
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+          }catch(__){
+            document.body.removeChild(ta);
+            return false;
+          }
         }
       }
+
+      function buildAuditText(){
+        const summary = $('auditSummary').textContent || '';
+        const out = $('outputLinks').value || '';
+        const audit = $('auditList').innerText || '';
+        return `SafeShare Pro Audit\n\n${summary}\n\n--- Output ---\n${out}\n\n--- Details ---\n${audit}\n`;
+      }
+
+      // --- Key reveal controls (right side) ---
+      let keyRevealed = false;
+      function toggleKeyReveal(){
+        const key = localStorage.getItem(KEY_STORAGE) || '';
+        if (!key) return;
+
+        keyRevealed = !keyRevealed;
+        $('btnToggleKey').textContent = keyRevealed ? 'Key maskieren' : 'Key anzeigen';
+        $('storedKeyMasked').textContent = keyRevealed ? key : maskKey(key);
+        $('keyRevealNote').style.display = keyRevealed ? 'block' : 'none';
+      }
+
+      function forgetKey(){
+        localStorage.removeItem(KEY_STORAGE);
+        localStorage.removeItem(PRO_STORAGE);
+        localStorage.removeItem(PLAN_STORAGE);
+        localStorage.removeItem(TS_STORAGE);
+        keyRevealed = false;
+        updateProUI();
+      }
+
+      // --- Events ---
+      $('btnClean').addEventListener('click', cleanAll);
+      $('btnClearIn').addEventListener('click', () => { $('inputLinks').value=''; });
+      $('btnClearOut').addEventListener('click', () => {
+        $('outputLinks').value='';
+        $('auditSummary').textContent='Noch keine Analyse.';
+        $('auditList').innerHTML='';
+        $('auditKpis').style.display='none';
+      });
+
+      $('btnCopy').addEventListener('click', async () => {
+        const ok = await copyText($('outputLinks').value || '');
+        $('auditSummary').innerHTML = ok
+          ? `<span class="ok"><b>Kopiert.</b></span> ${$('auditSummary').textContent}`
+          : `<span class="err"><b>Kopieren fehlgeschlagen.</b></span> ${$('auditSummary').textContent}`;
+      });
+
+      $('btnCopyAudit').addEventListener('click', async () => {
+        const ok = await copyText(buildAuditText());
+        $('auditSummary').innerHTML = ok
+          ? `<span class="ok"><b>Audit kopiert.</b></span> ${$('auditSummary').textContent}`
+          : `<span class="err"><b>Kopieren fehlgeschlagen.</b></span> ${$('auditSummary').textContent}`;
+      });
+
+      $('preset').addEventListener('change', () => {
+        updatePresetHint();
+        // optional: auto-clean if output exists
+      });
+
+      $('btnToggleKey').addEventListener('click', toggleKeyReveal);
+      $('btnForgetKey').addEventListener('click', forgetKey);
 
       // init
-      applyGate();
-      loadRules();
+      updatePresetHint();
+      updateProUI();
 
-      // sensible defaults
-      if (!$('whitelist').value.trim()) $('whitelist').value = 'tag\nref';
-
-      // bind
-      $('btnClean').addEventListener('click', doClean);
-      $('btnClearInput').addEventListener('click', () => $('inputLinks').value = '');
-      $('btnClearOutput').addEventListener('click', () => $('outputLinks').value = '');
-      $('btnCopy').addEventListener('click', copyOut);
-      $('btnLoadExamples').addEventListener('click', loadExamples);
-
-      $('btnSaveRules').addEventListener('click', saveRules);
-      $('btnResetRules').addEventListener('click', resetRules);
-
-      // re-apply gate if storage changes (z.B. nach Aktivierung in anderem Tab)
-      window.addEventListener('focus', applyGate);
-      window.addEventListener('storage', applyGate);
+      // Optional: Test-Beispiele beim ersten Laden (nur wenn leer)
+      if (!localStorage.getItem('ss_pro_examples_seeded')){
+        const seed =
+`https://example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=winter&ref=partner
+https://www.beispiel.de/artikel?fbclid=ABC123&utm_medium=social
+https://shop.example.com/product?id=123&gclid=TEST123&tag=affiliate-21
+https://news.example.org/story?utm_source=twitter&ttclid=XYZ&lang=de`;
+        if (!$('inputLinks').value.trim()){
+          $('inputLinks').value = seed;
+        }
+        localStorage.setItem('ss_pro_examples_seeded','1');
+      }
 
     })();
   </script>
