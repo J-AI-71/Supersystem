@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare Pro – Aktivieren</title>
-  <meta name="description" content="SafeShare Pro aktivieren: Lizenz-/Zugangscode eingeben, local-first speichern und danach die Pro App öffnen." />
-  <meta name="robots" content="noindex,nofollow" />
+  <title>SafeShare Pro – Aktivierung</title>
+  <meta name="description" content="SafeShare Pro aktivieren: Lizenz-Key eingeben, Pro freischalten, Pro App öffnen. Local-first im Browser." />
+  <meta name="robots" content="noindex,follow" />
   <meta name="color-scheme" content="dark light" />
 
   <!-- Google Search Console -->
@@ -16,303 +16,258 @@
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
-      --card: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.10);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-      --muted2: rgba(255,255,255,.60);
-      --shadow: 0 18px 45px rgba(0,0,0,.35);
-      --radius: 18px;
-      --mint: #2fe3b7;
-      --mint2: rgba(47,227,183,.18);
-      --mint3: rgba(47,227,183,.28);
-      --warn: rgba(255,197,84,.16);
-      --ok: rgba(47,227,183,.16);
-      --bad: rgba(255,84,84,.14);
-      --max: 1120px;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.045);
+      --border:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.70);
+      --mint:#2fe3b7;
+      --mint2:rgba(47,227,183,.18);
+      --shadow:0 18px 45px rgba(0,0,0,.35);
+      --radius:18px;
     }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff;
-        --border: rgba(17,24,39,.12);
-        --text: rgba(17,24,39,.95);
-        --muted: rgba(17,24,39,.72);
-        --muted2: rgba(17,24,39,.62);
-        --shadow: 0 18px 45px rgba(17,24,39,.10);
-        --warn: rgba(255,197,84,.22);
-        --ok: rgba(47,227,183,.18);
-        --bad: rgba(255,84,84,.12);
-      }
-    }
-    *{ box-sizing:border-box; }
+
+    *{box-sizing:border-box}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
-        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+        radial-gradient(1200px 600px at 20% 0%, rgba(47,227,183,.10), transparent 60%),
+        radial-gradient(900px 600px at 70% 20%, rgba(100,180,255,.10), transparent 55%),
+        linear-gradient(180deg,var(--bg0),var(--bg2));
+      min-height:100vh;
     }
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
-    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .logoWrap{
-      width: 38px; height: 38px; border-radius: 999px;
+    .wrap{max-width:980px;margin:0 auto;padding:22px 16px 40px}
+
+    /* NAV */
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:12px 14px;
+      background:rgba(0,0,0,.25);
       border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      border-radius:999px;
+      backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
-      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+      position:sticky; top:10px; z-index:10;
     }
-    .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
-    .brandText{ min-width:0; }
-    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text)}
+    .brand img{width:28px;height:28px;border-radius:999px}
+    .brand b{letter-spacing:.2px}
+    .brand small{display:block;color:var(--muted);font-weight:500;margin-top:1px}
 
-    .tabsBar{
-      position: sticky; top:0; z-index: 50;
-      padding: 8px 0 14px;
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    .navLinks{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .navLinks a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
     }
-    .tabs{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      overflow-x:auto; scrollbar-width:none;
+    .navLinks a:hover{
+      color:var(--text);
+      border-color:var(--border);
+      background:rgba(255,255,255,.04);
     }
-    .tabs::-webkit-scrollbar{ display:none; }
-    .tab{
-      font-size: 13px; color: var(--muted);
-      padding: 8px 12px; border-radius: 999px;
-      border: 1px solid transparent;
-      white-space: nowrap; flex: 0 0 auto;
+
+    /* HERO */
+    .hero{padding:22px 4px 8px}
+    h1{margin:14px 0 10px; font-size: clamp(28px, 4vw, 44px); line-height:1.08}
+    .lead{color:var(--muted); font-size: clamp(15px, 1.8vw, 18px); line-height:1.5; margin:0 0 14px}
+
+    .chipRow{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 18px}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(0,0,0,.25);
+      border:1px solid var(--border);
+      color:var(--muted);
     }
-    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--mint); box-shadow:0 0 0 6px var(--mint2)}
+
+    /* CARDS */
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      margin-top:10px;
+    }
+    @media (max-width:860px){ .grid{grid-template-columns:1fr} }
 
     .card{
-      margin-top: 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
     }
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 38px);
-      line-height: 1.10;
-      letter-spacing: -0.2px;
-    }
-    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
+    .card h2{margin:0 0 8px; font-size:20px}
+    .muted{color:var(--muted)}
+    .hr{height:1px;background:rgba(255,255,255,.10); margin:14px 0}
 
-    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
-    .btn{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      cursor:pointer;
-      user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-    }
-    .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
-    .btn.primary:hover{ background: var(--mint3); }
-    .btn.ghost{ background: transparent; color: var(--muted); }
-    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
-
-    .note{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-    .warn{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-    .bad{
-      margin-top: 12px;
-      border-left: 3px solid rgba(255,84,84,.55);
-      background: var(--bad);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    label{ display:block; font-size: 12px; color: var(--muted2); margin: 12px 0 6px; }
-    .input{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
+    label{display:block; color:var(--muted); font-size:14px; margin:12px 0 8px}
+    input{
+      width:100%;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
       outline:none;
-      font-size: 14px;
+      font-size:16px;
     }
-    .input:focus{ border-color: rgba(47,227,183,.35); box-shadow: 0 0 0 4px rgba(47,227,183,.10); }
+    input:focus{border-color:rgba(47,227,183,.6); box-shadow:0 0 0 6px rgba(47,227,183,.12)}
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .btn{
+      appearance:none; border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:999px;
+      padding:12px 14px;
+      cursor:pointer;
+      font-weight:600;
+      text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+    }
+    .btn.primary{background: linear-gradient(180deg, rgba(47,227,183,.22), rgba(47,227,183,.10)); border-color: rgba(47,227,183,.40)}
+    .btn:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.08)}
+    .btn.primary:hover{border-color:rgba(47,227,183,.58)}
+    .btn:disabled{opacity:.5; cursor:not-allowed}
 
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      word-break: break-word;
+    .box{
+      background: rgba(0,0,0,.22);
+      border:1px dashed rgba(255,255,255,.22);
+      border-radius: 14px;
+      padding:12px 12px;
+      color:var(--muted);
     }
+
+    .ok{color:#aef7df}
+    .warn{color:#ffd9a8}
+    .err{color:#ffb2b2}
 
     footer{
-      margin-top: 18px;
-      padding: 18px 4px 10px;
-      color: var(--muted2);
-      font-size: 12px;
-      line-height: 1.55;
+      margin-top:22px;
+      padding:18px 10px;
+      color:var(--muted);
+      text-align:center;
     }
-    .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+    footer .footLinks{
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+      margin-bottom:10px;
     }
-    .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-    }
-    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
-
-    /* ===== Mehr: Bottom-Sheet (stabil) ===== */
-    .moreOverlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.25);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      z-index: 9998;
-    }
-    .moreBtn{ appearance:none; cursor:pointer; }
-    .moreMenu{
-      position: fixed;
-      left: 12px; right: 12px;
-      bottom: calc(12px + env(safe-area-inset-bottom));
-      top: auto;
-      max-height: min(70vh, 520px);
-      overflow: auto;
-      padding: 10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.96);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      z-index: 9999;
-      transform: translateY(16px);
-      opacity: 0;
-      transition: transform .16s ease, opacity .16s ease;
-    }
-    .moreMenu.open{ transform: translateY(0); opacity: 1; }
-    @media (prefers-color-scheme: light){
-      .moreOverlay{ background: rgba(17,24,39,.06); }
-      .moreMenu{
-        background: rgba(255,255,255,.98);
-        border: 1px solid rgba(17,24,39,.12);
-        box-shadow: 0 18px 45px rgba(17,24,39,.12);
-      }
-    }
-    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
-    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
-    .moreMenu a{
-      display:block;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    .moreMenu a:last-child{ margin-bottom: 0; }
-    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    footer a{color:var(--muted); text-decoration:none}
+    footer a:hover{color:var(--text); text-decoration:underline}
+    .tiny{font-size:12px; color:rgba(255,255,255,.55)}
+    code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logoWrap" aria-label="SafeShare Logo">
-          <img src="logo.svg" alt="SafeShare"
-               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-          <span id="logoFallback" class="logoFallback">8</span>
+
+    <nav class="nav" aria-label="SafeShare Navigation">
+      <a class="brand" href="index.html">
+        <img src="assets/icons/icon-32-kreis.png" alt="SafeShare Logo" />
+        <div>
+          <b>SafeShare</b>
+          <small>Pro – Aktivierung</small>
         </div>
-        <div class="brandText">
-          <div class="title">SafeShare</div>
-          <div class="sub">Pro aktivieren</div>
-        </div>
+      </a>
+      <div class="navLinks">
+        <a href="index.html">Start</a>
+        <a href="app.html">App</a>
+        <a href="pro.html">Pro</a>
+        <a href="help.html">Hilfe</a>
       </div>
-      <div class="small">local-first</div>
-    </header>
+    </nav>
 
-    <div class="tabsBar">
-      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="app.html" data-page="app.html">App</a>
-        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
-          Mehr ▾
-        </button>
-      </div>
-    </div>
-
-    <section class="card">
+    <header class="hero">
       <h1>SafeShare Pro aktivieren</h1>
-      <p>
-        Gib deinen Payhip-Lizenz-/Zugangscode ein. Er wird <strong>local-first</strong> in deinem Browser gespeichert
-        (localStorage). Danach kannst du die Pro App öffnen.
+      <p class="lead">
+        Lizenz-Key eingeben → lokal im Browser freischalten → Pro App öffnen.
+        (Ohne Konto, ohne Server-Login – local-first.)
       </p>
 
-      <label for="key">Lizenz-/Zugangscode</label>
-      <input id="key" class="input mono" placeholder="z. B. XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" />
+      <div class="chipRow">
+        <span class="chip"><span class="dot"></span><span id="planChip">Plan: automatisch</span></span>
+        <span class="chip">Key wird lokal gespeichert</span>
+        <span class="chip">Für Profis: Audit · Whitelist · Presets</span>
+      </div>
+    </header>
 
-      <div class="row">
-        <button class="btn primary" id="btnActivate" type="button">Aktivieren</button>
-        <button class="btn" id="btnOpen" type="button">Pro App öffnen</button>
-        <button class="btn ghost" id="btnReset" type="button">Zurücksetzen</button>
+    <section class="grid">
+      <div class="card">
+        <h2>1) Lizenz-Key eingeben</h2>
+        <p class="muted">
+          Dein Key kommt von Payhip (Kaufbestätigung / Download-Seite). Wenn du über den Payhip-Redirect hier gelandet bist, passt das trotzdem.
+        </p>
+
+        <label for="licenseKey">Lizenz-Key</label>
+        <input id="licenseKey" inputmode="text" autocomplete="off" spellcheck="false"
+               placeholder="z. B. aus Payhip: XXXX-XXXX-XXXX-XXXX" />
+
+        <div class="row">
+          <button class="btn primary" id="btnActivate">Freischalten</button>
+          <button class="btn" id="btnClear" type="button">Zurücksetzen</button>
+          <a class="btn" href="https://payhip.com/account/purchases" target="_blank" rel="noopener">Payhip Käufe öffnen</a>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="box" id="statusBox">
+          Status: <span class="muted">Noch nicht freigeschaltet.</span>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <a class="btn primary" id="btnOpenProApp" href="pro-app.html" style="display:none">Pro App öffnen</a>
+          <a class="btn" id="btnWhereHandbook" href="https://payhip.com/account/purchases" target="_blank" rel="noopener" style="display:none">
+            Handbuch (PDF) in Payhip öffnen
+          </a>
+        </div>
+
+        <p class="tiny" style="margin-top:12px">
+          Hinweis: Ohne Server kann SafeShare Pro nicht “hart” prüfen, ob ein Key bezahlt wurde. Der Key dient hier als
+          professioneller Aktivierungsschritt und als klarer Flow für Käufer.
+        </p>
       </div>
 
-      <div id="msg" class="note" style="display:none"></div>
+      <aside class="card">
+        <h2>2) Was du jetzt bekommst</h2>
+        <p class="muted" id="planText">
+          Standard: Pro Person (oder Team, wenn du das gewählt hast).
+        </p>
 
-      <div class="warn">
-        Wenn du Browser-Daten löschst (Website-Daten/Cache), kann der lokale Schlüssel entfernt werden.
-        Dann musst du erneut aktivieren.
-      </div>
+        <div class="hr"></div>
 
-      <div class="monoBox" style="margin-top:12px; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.03); color:var(--muted);">
-Flow (ohne 404):
-1) pro.html → Kaufen
-2) pro-activate.html → Key speichern
-3) pro-app.html → Arbeiten
-      </div>
+        <h3 style="margin:0 0 8px; font-size:16px">Downloads</h3>
+        <p class="muted" style="margin-top:0">
+          Das Pro-Handbuch liegt als PDF in deinem Payhip-Download. (Du kannst es beliebig oft öffnen, auch offline.)
+        </p>
+
+        <div class="box">
+          <div><b>Empfohlen</b></div>
+          <div class="muted">In Payhip: Datei <code>01_…Handbuch…pdf</code> herunterladen.</div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h3 style="margin:0 0 8px; font-size:16px">Wenn etwas “alt” wirkt</h3>
+        <p class="muted" style="margin-top:0">
+          Falls der Browser noch eine alte Version cached:
+        </p>
+        <div class="row">
+          <a class="btn" href="status.html">Status / Update</a>
+          <a class="btn" href="help.html">Hilfe</a>
+        </div>
+
+        <p class="tiny" style="margin-top:12px">
+          Support: <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
+        </p>
+      </aside>
     </section>
 
     <footer>
@@ -320,113 +275,121 @@ Flow (ohne 404):
         <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="help.html">Hilfe</a>
-        <a href="education.html">Schule</a>
-        <a href="press.html">Presse</a>
-        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
+      <div class="tiny">SafeShare Pro – local-first. Links teilen. Ohne Ballast.</div>
     </footer>
+
   </div>
 
-  <!-- Mehr (Bottom-Sheet) -->
-  <div class="moreOverlay" id="moreOverlay" hidden></div>
-
-  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
-    <a href="index.html" data-page="index.html">Start</a>
-    <a href="education.html" data-page="education.html">Schule</a>
-    <a href="press.html" data-page="press.html">Presse</a>
-    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <div class="divider"></div>
-    <div class="menuHint">System</div>
-    <a href="status.html" data-page="status.html">Status</a>
-  </nav>
-
   <script>
-    (function () {
-      // Active Tab highlight
-      const file = location.pathname.split('/').pop();
-      const path = (!file || file === '') ? 'index.html' : file;
-      document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === path) el.classList.add('active');
-      });
+    (function(){
+      const $ = (id) => document.getElementById(id);
 
-      const KEY_NAME = 'ss_pro_key';
-      const msg = document.getElementById('msg');
-      const keyInput = document.getElementById('key');
+      const KEY_STORAGE = 'ss_pro_key';
+      const PRO_STORAGE = 'ss_pro_activated';
+      const PLAN_STORAGE = 'ss_pro_plan';
+      const TS_STORAGE = 'ss_pro_activated_at';
 
-      function show(type, text){
-        msg.style.display = 'block';
-        msg.className = type;
-        msg.textContent = text;
+      function getPlanFromUrl(){
+        const p = new URLSearchParams(location.search);
+        const raw = (p.get('plan') || '').toLowerCase().trim();
+        if (raw === 'team' || raw === 'personal') return raw;
+        return 'auto';
       }
+
       function normalizeKey(k){
-        return (k || '').trim();
-      }
-      function hasKey(){
-        const k = localStorage.getItem(KEY_NAME);
-        return !!(k && k.trim().length >= 8);
+        return (k || '').trim().replace(/\s+/g,'');
       }
 
-      // Prefill if exists
-      if (hasKey()) {
-        keyInput.value = localStorage.getItem(KEY_NAME);
-        show('note', 'Pro ist bereits aktiviert (lokal gespeichert).');
+      // sehr milde Plausibilitätsprüfung (Payhip Keys können variieren)
+      function looksPlausible(k){
+        const key = normalizeKey(k);
+        if (key.length < 10) return false;
+        // erlaubt A-Z 0-9 und -
+        return /^[A-Za-z0-9-]+$/.test(key);
       }
 
-      document.getElementById('btnActivate').addEventListener('click', () => {
-        const k = normalizeKey(keyInput.value);
-        if (!k || k.length < 8) {
-          show('bad', 'Bitte einen gültigen Code eingeben (mind. 8 Zeichen).');
+      function setUIActivated(key, plan){
+        $('statusBox').innerHTML =
+          'Status: <span class="ok"><b>Freigeschaltet.</b></span> ' +
+          '<span class="muted">Key gespeichert (nur in diesem Browser).</span>';
+
+        $('btnOpenProApp').style.display = 'inline-flex';
+        $('btnWhereHandbook').style.display = 'inline-flex';
+
+        const planLabel = plan === 'team' ? 'Team' : (plan === 'personal' ? 'Person' : 'automatisch');
+        $('planChip').textContent = 'Plan: ' + planLabel;
+
+        $('planText').textContent =
+          plan === 'team'
+            ? 'Plan: Pro Team. (Für Teams/Agenturen/Redaktionen.)'
+            : (plan === 'personal'
+                ? 'Plan: Pro Person. (Einzel-Lizenz.)'
+                : 'Plan: automatisch. (Wenn du Team gekauft hast, ist das ok – der Key ist entscheidend.)');
+
+        // optional: Key im Feld maskiert anzeigen
+        $('licenseKey').value = key;
+      }
+
+      function setUINotActivated(plan){
+        $('statusBox').innerHTML =
+          'Status: <span class="muted">Noch nicht freigeschaltet.</span>';
+        $('btnOpenProApp').style.display = 'none';
+        $('btnWhereHandbook').style.display = 'none';
+
+        const planLabel = plan === 'team' ? 'Team' : (plan === 'personal' ? 'Person' : 'automatisch');
+        $('planChip').textContent = 'Plan: ' + planLabel;
+
+        $('planText').textContent =
+          plan === 'team'
+            ? 'Plan: Pro Team. (Für Teams/Agenturen/Redaktionen.)'
+            : (plan === 'personal'
+                ? 'Plan: Pro Person. (Einzel-Lizenz.)'
+                : 'Plan: automatisch. Du kannst einfach deinen Key eingeben.');
+      }
+
+      // init
+      const plan = getPlanFromUrl();
+      setUINotActivated(plan);
+
+      // restore existing activation
+      const wasActivated = localStorage.getItem(PRO_STORAGE) === '1';
+      const storedKey = localStorage.getItem(KEY_STORAGE) || '';
+      const storedPlan = localStorage.getItem(PLAN_STORAGE) || plan;
+
+      if (wasActivated && storedKey){
+        setUIActivated(storedKey, storedPlan);
+      }
+
+      $('btnActivate').addEventListener('click', () => {
+        const key = normalizeKey($('licenseKey').value);
+
+        if (!looksPlausible(key)){
+          $('statusBox').innerHTML =
+            'Status: <span class="err"><b>Key wirkt ungültig.</b></span> ' +
+            '<span class="muted">Bitte aus Payhip kopieren (mind. 10 Zeichen, nur Buchstaben/Zahlen/Minus).</span>';
           return;
         }
-        localStorage.setItem(KEY_NAME, k);
-        show('note', 'Aktiviert. Du kannst jetzt die Pro App öffnen.');
+
+        localStorage.setItem(KEY_STORAGE, key);
+        localStorage.setItem(PRO_STORAGE, '1');
+        localStorage.setItem(PLAN_STORAGE, plan === 'auto' ? 'auto' : plan);
+        localStorage.setItem(TS_STORAGE, new Date().toISOString());
+
+        setUIActivated(key, plan === 'auto' ? 'auto' : plan);
       });
 
-      document.getElementById('btnOpen').addEventListener('click', () => {
-        if (!hasKey()) {
-          show('warn', 'Noch nicht aktiviert. Bitte zuerst den Code speichern.');
-          return;
-        }
-        location.href = 'pro-app.html';
+      $('btnClear').addEventListener('click', () => {
+        localStorage.removeItem(KEY_STORAGE);
+        localStorage.removeItem(PRO_STORAGE);
+        localStorage.removeItem(PLAN_STORAGE);
+        localStorage.removeItem(TS_STORAGE);
+        $('licenseKey').value = '';
+        setUINotActivated(plan);
       });
 
-      document.getElementById('btnReset').addEventListener('click', () => {
-        localStorage.removeItem(KEY_NAME);
-        keyInput.value = '';
-        show('warn', 'Lokaler Pro-Key entfernt. Du kannst neu aktivieren.');
-      });
-
-      // More menu (bottom sheet)
-      const btn = document.getElementById('moreBtn');
-      const menu = document.getElementById('moreMenu');
-      const overlay = document.getElementById('moreOverlay');
-
-      function openMenu(){
-        overlay.hidden = false;
-        menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
-        btn.setAttribute('aria-expanded', 'true');
-      }
-      function closeMenu(){
-        menu.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-        setTimeout(() => { menu.hidden = true; overlay.hidden = true; }, 180);
-      }
-
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
-      });
-      overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
     })();
   </script>
 </body>
