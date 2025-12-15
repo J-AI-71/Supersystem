@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare Pro – Policies, Whitelist, Audit</title>
-  <meta name="description" content="SafeShare Pro für Profis: Presets/Policies, Whitelist pro Domain (Affiliate-safe), Audit (removed/kept + Grund) – local-first." />
+  <meta name="description" content="SafeShare Pro für Profis: Policies/Presets, Whitelist (Affiliate & funktionale Keys behalten), Audit (was wurde geändert). Local-first im Browser." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -12,11 +12,6 @@
   <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
-
-  <meta property="og:title" content="SafeShare Pro – Policies, Audit" />
-  <meta property="og:description" content="Pro für Profis: Presets/Policies, Whitelist pro Domain, Audit (was wurde geändert – und warum?). Local-first." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/og/og-index.jpg" />
 
   <style>
     :root{
@@ -109,26 +104,11 @@
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 44px);
-      line-height: 1.10;
-      letter-spacing: -0.2px;
-    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
-    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
-    }
-    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -151,48 +131,66 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .okBox{
-      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
+    .note,.warn{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
     }
-    .warnBox{
-      margin-top: 12px; border-left: 3px solid rgba(255,197,84,.55);
-      background: var(--warn); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
-    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
-    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
-    @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
-    .tile{
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    /* Pricing */
+    .pricingGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media(min-width: 980px){
+      .pricingGrid{ grid-template-columns: 1fr 1fr; }
+    }
+    .priceCard{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       border-radius: 16px;
       padding: 14px;
     }
-    .tile h3{ margin: 0 0 8px; }
-
-    .kpiRow{ display:flex; gap: 10px; flex-wrap:wrap; margin-top: 10px; }
-    .kpi{
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      font-size: 12px;
+    .priceHead{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
-
-    .monoBox{
-      margin-top:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+    .planName{ font-weight: 900; font-size: 16px; }
+    .planHint{ color: rgba(255,255,255,.65); font-size: 12px; margin-top: 2px; }
+    .price{ text-align:right; }
+    .priceNow{ font-weight: 950; font-size: 20px; }
+    .priceSub{ display:block; font-size: 12px; color: rgba(255,255,255,.70); margin-top: 2px; }
+    .planList{ margin: 12px 0 0 18px; color: rgba(255,255,255,.78); line-height: 1.55; }
+    .smallNote{ margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.60); }
 
     footer{
       margin-top: 18px;
@@ -213,7 +211,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (nur öffentlich/system – keine Pro-Workflows) ===== */
+    /* ===== Mehr: Bottom-Sheet ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -223,23 +221,18 @@
       z-index: 9998;
     }
     .moreBtn{ appearance:none; cursor:pointer; }
-
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
       bottom: calc(12px + env(safe-area-inset-bottom));
-      top: auto;
-
-      max-height: min(70vh, 560px);
+      max-height: min(70vh, 520px);
       overflow: auto;
-
       padding: 10px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(10,14,25,.96);
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      box-shadow: var(--shadow);
       z-index: 9999;
-
       transform: translateY(16px);
       opacity: 0;
       transition: transform .16s ease, opacity .16s ease;
@@ -252,18 +245,10 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
+      .box, .priceCard{ border-color: rgba(17,24,39,.12); }
     }
-    .menuHint{
-      font-size: 11px;
-      color: var(--muted2);
-      padding: 8px 10px 2px;
-    }
-    .divider{
-      height: 1px;
-      background: rgba(255,255,255,.10);
-      margin: 8px 6px;
-      border-radius: 999px;
-    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
     .moreMenu a{
       display:block;
       padding: 12px 12px;
@@ -290,204 +275,239 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Pro · Policies, Whitelist, Audit</div>
+          <div class="sub">Pro</div>
         </div>
       </div>
-      <div class="small" id="pageTag">für Profis</div>
+      <div class="small">Policies · Audit · Whitelist</div>
     </header>
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="app.html" data-page="app.html">App</a>
-        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab active" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
-          Mehr ▾
-        </button>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
-    <section class="card" id="top">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Pro</div>
-      <h1>Pro: Policies, Whitelist, Audit.</h1>
+    <!-- HERO -->
+    <section class="card">
+      <h1>SafeShare Pro</h1>
       <p>
-        SafeShare Pro ist für Social Media, Publisher und Journalismus gebaut:
-        <strong>regelbasiert</strong> arbeiten – mit <strong>Policies</strong>,
-        <strong>Whitelist pro Domain</strong> und <strong>Audit</strong>.
+        Pro ist für Profis, die Links veröffentlichen: Journalist:innen, Publisher, Social-Teams.
+        Nicht „noch ein Cleaner“, sondern ein <b>Policy-Werkzeug</b>: Regeln setzen, Änderungen sehen, bewusst behalten.
       </p>
 
-      <div class="kpiRow">
-        <div class="kpi">Policy / Presets</div>
-        <div class="kpi">Whitelist pro Domain</div>
-        <div class="kpi">Audit: removed/kept + Grund</div>
-        <div class="kpi">Local-first</div>
+      <div class="row">
+        <a class="btn primary" href="#pricing">Preise</a>
+        <a class="btn" href="pro-activate.html">Aktivieren</a>
+        <a class="btn ghost" href="app.html">Zur App</a>
       </div>
+
+      <div class="note">
+        Local-first: Bereinigung im Browser. Pro ergänzt Kontrolle: Whitelist + Audit + Policies.
+      </div>
+    </section>
+
+    <!-- WAS IST ANDERS -->
+    <section class="card">
+      <h2>Was ist in der Praxis wichtig?</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>1) Audit statt Blackbox</h3>
+          <p>
+            Du siehst <b>was entfernt</b> wurde und <b>was bleibt</b>.
+            Profis brauchen Nachvollziehbarkeit, nicht „vertrau mir“.
+          </p>
+        </div>
+        <div class="box">
+          <h3>2) Whitelist/Allowlist</h3>
+          <p>
+            Affiliate- und funktionale Keys müssen oft bleiben (z. B. <span class="mono">ref</span>, <span class="mono">tag</span> oder
+            <span class="mono">lang</span>, <span class="mono">id</span>). Pro schützt das gezielt.
+          </p>
+        </div>
+        <div class="box">
+          <h3>3) Policies statt 20 Modi</h3>
+          <p>
+            Pro ist auf wenige klare Presets gedacht: konservativ / standard / aggressiv + optional Team-Policy.
+          </p>
+        </div>
+        <div class="box">
+          <h3>4) Publishing-Fokus</h3>
+          <p>
+            Link-Hygiene für Veröffentlichung: sauber, nachvollziehbar, wiederholbar.
+          </p>
+        </div>
+      </div>
+
+      <div class="warn">
+        Pro entfernt nichts „magisch“. Es reduziert unnötige Parameter und macht das Ergebnis kontrollierbar – ohne Panik.
+      </div>
+    </section>
+
+    <!-- FEATURES KOMPAKT -->
+    <section class="card">
+      <h2>Pro-Funktionen</h2>
+      <ul>
+        <li><b>Audit</b>: Entfernt/Behalten/Whitelist-Treffer/Warnungen</li>
+        <li><b>Whitelist</b>: bewusst behalten (Affiliate/Function)</li>
+        <li><b>Policies</b>: konservativ/standard/aggressiv (Team-Standard möglich)</li>
+        <li><b>Local-first</b>: Verarbeitung im Browser</li>
+        <li><b>Handbuch Pro</b>: klare Regeln + Best Practices (für Publishing)</li>
+      </ul>
 
       <div class="row">
-        <a class="btn primary" href="#kaufen">Pro kaufen</a>
-        <a class="btn" href="pro-activate.html">Schon gekauft? Aktivieren</a>
-        <a class="btn ghost" href="pro-app.html">Pro App öffnen</a>
-      </div>
-
-      <div class="okBox">
-        Flow (ohne 404): <strong>pro.html → pro-activate.html → pro-app.html</strong>
+        <a class="btn primary" href="pro-activate.html">Freischalten</a>
+        <a class="btn" href="#pricing">Kaufen</a>
+        <a class="btn ghost" href="help.html">Hilfe</a>
       </div>
     </section>
 
-    <section class="card" id="was">
-      <h2>Was Pro konkret anders macht</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>1) Presets / Policies</h3>
-          <p>Wiederholbare Modi wie <code>Share-clean</code>, <code>Keep-UTM</code>, <code>Affiliate-safe</code> – konsistent statt „Pi mal Daumen“.</p>
-        </div>
-        <div class="tile">
-          <h3>2) Whitelist pro Domain</h3>
-          <p>Affiliate/Partner-Parameter bewusst behalten (z. B. <code>tag</code>/<code>ref</code>) – ohne alles andere mitzuschleppen.</p>
-        </div>
-        <div class="tile">
-          <h3>3) Audit (professionell)</h3>
-          <p>„Was wurde geändert – und warum?“ Pro listet <strong>removed</strong>/<strong>kept</strong> und den Grund (Policy/Whitelist/Rule).</p>
-        </div>
-        <div class="tile">
-          <h3>So arbeitest du damit</h3>
-          <p>Preset wählen → Link(s) bereinigen → Audit prüfen → Ergebnis übernehmen.</p>
-          <div class="row">
-            <a class="btn ghost" href="help.html">Hilfe</a>
+    <!-- PRICING -->
+    <section class="card" id="pricing">
+      <h2>Preise</h2>
+      <p style="margin-top:6px">
+        Launch-Preise jetzt. Später werden die Preise erhöht (wenn Pro stabil & ausgebaut ist).
+      </p>
+
+      <div class="pricingGrid">
+        <!-- Person -->
+        <div class="priceCard">
+          <div class="priceHead">
+            <div>
+              <div class="planName">Pro Person</div>
+              <div class="planHint">Einzelplatz</div>
+            </div>
+            <div class="price">
+              <span class="priceNow">39 €</span>
+              <span class="priceSub">Launch</span>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div class="warnBox">
-        Pro ist auf Verlässlichkeit ausgelegt: weniger Fehler unter Zeitdruck, bessere Nachvollziehbarkeit.
-      </div>
-    </section>
+          <ul class="planList">
+            <li><b>Pro App</b> (Policies/Presets)</li>
+            <li><b>Whitelist</b> (Affiliate & Funktion)</li>
+            <li><b>Audit</b> („was geändert“)</li>
+            <li><b>Handbuch Pro</b> (HTML) + optional PDF/ZIP (Payhip)</li>
+          </ul>
 
-    <section class="card" id="kaufen">
-      <h2>Kaufen</h2>
-      <p>Wähle Person oder Team. Danach aktivierst du Pro im Browser.</p>
-
-      <div class="grid">
-        <div class="tile">
-          <h3>Pro Person</h3>
-          <p>Für Einzelpersonen / Creator / Journalist:innen.</p>
-          <div class="row">
-            <a class="btn primary" href="https://payhip.com/b/VDm3B" rel="noopener">Kaufen (Person)</a>
+          <div class="row" style="margin-top:12px">
+            <a class="btn primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person kaufen</a>
             <a class="btn ghost" href="pro-activate.html">Aktivieren</a>
           </div>
-          <div class="monoBox">Payhip: https://payhip.com/b/VDm3B</div>
+
+          <div class="smallNote">Später: 59 €.</div>
         </div>
 
-        <div class="tile">
-          <h3>Pro Team</h3>
-          <p>Für Teams, gemeinsame Presets/Policies und konsistente Regeln.</p>
-          <div class="row">
-            <a class="btn primary" href="https://payhip.com/b/Yxh5T" rel="noopener">Kaufen (Team)</a>
-            <a class="btn ghost" href="team-setup.html">Team Setup</a>
+        <!-- Team -->
+        <div class="priceCard">
+          <div class="priceHead">
+            <div>
+              <div class="planName">Pro Team</div>
+              <div class="planHint">Team-Lizenz</div>
+            </div>
+            <div class="price">
+              <span class="priceNow">149 €</span>
+              <span class="priceSub">Launch</span>
+            </div>
           </div>
-          <div class="monoBox">Payhip: https://payhip.com/b/Yxh5T</div>
+
+          <ul class="planList">
+            <li>Alles aus <b>Pro Person</b></li>
+            <li><b>Interne Nutzung erlaubt</b> (Team-Workflow)</li>
+            <li><b>Preset-Pack</b> (Team-Standard-Policy)</li>
+          </ul>
+
+          <div class="row" style="margin-top:12px">
+            <a class="btn primary" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team kaufen</a>
+            <a class="btn ghost" href="pro-activate.html">Aktivieren</a>
+          </div>
+
+          <div class="smallNote">Später: 249 €.</div>
         </div>
       </div>
 
-      <div class="okBox">
-        Schon gekauft? → <a href="pro-activate.html"><strong>pro-activate.html</strong></a> öffnen und Key aktivieren.
+      <div class="note" style="margin-top:14px">
+        Nach dem Kauf: Du bekommst einen Key → <a href="pro-activate.html"><b>pro-activate.html</b></a> → Pro App + Handbuch.
       </div>
     </section>
 
-      <footer>
+    <!-- FAQ KURZ -->
+    <section class="card">
+      <h2>FAQ</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Ist Pro „mehr Schutz“?</h3>
+          <p>
+            Pro ist <b>mehr Kontrolle</b>: du reduzierst unnötige Parameter und dokumentierst Änderungen.
+            Es ist keine Unsichtbarkeit und kein Anti-Tracking-„Zauber“.
+          </p>
+        </div>
+        <div class="box">
+          <h3>Warum Whitelist?</h3>
+          <p>
+            Weil manche Parameter funktional oder zuordnungsrelevant sind (Affiliate/Partner, Sprache, Varianten).
+            Pro verhindert, dass du Dinge kaputt-optimierst.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
       <div class="footLinks">
         <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="help.html">Hilfe</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
     </footer>
+  </div>
 
-  <!-- Mehr (Bottom-Sheet) – keine Pro-Workflows, keine Impressum/Datenschutz -->
+  <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
-
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Öffentlich</div>
-    <a href="index.html" data-page="index.html">Start</a>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="press.html" data-page="press.html">Presse</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-
     <div class="divider"></div>
     <div class="menuHint">System</div>
     <a href="status.html" data-page="status.html">Status</a>
   </nav>
 
   <script>
-    (function () {
+    (function(){
+      // active tab
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
-
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      const sub = document.getElementById('pageSub');
-      const tag = document.getElementById('pageTag');
-      const map = {
-        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
-        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "pro.html": ["Pro · Policies, Whitelist, Audit", "für Profis"],
-        "pro-app.html": ["Pro App · Workflow", "Preset · Audit"],
-        "help.html": ["Hilfe · App & Pro", "FAQ"],
-        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "team-setup.html": ["Team Setup", "Pro Team"],
-        "partners.html": ["Partner/Affiliate", "Whitelist"],
-        "compliance.html": ["Compliance", "local-first"],
-        "status.html": ["Status · Service Worker", "Cache/Updates"],
-        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
-        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich · URL Cleaner", "Kriterien"],
-        "education.html": ["SafeShare-Schule", "ohne Panik"],
-        "press.html": ["Presse · Media Kit", "Kontakt"],
-        "impressum.html": ["Impressum", "§ 5 TMG"],
-        "datenschutz.html": ["Datenschutz", "DSGVO"]
-      };
-      if (sub && map[path]) sub.textContent = map[path][0];
-      if (tag && map[path]) tag.textContent = map[path][1];
-    })();
-  </script>
-
-  <script>
-    (function () {
+      // more sheet
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
-      if (!btn || !menu || !overlay) return;
 
       function openMenu(){
-        overlay.hidden = false;
-        menu.hidden = false;
+        overlay.hidden = false; menu.hidden = false;
         requestAnimationFrame(() => menu.classList.add('open'));
-        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-expanded','true');
       }
-
       function closeMenu(){
         menu.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-        setTimeout(() => {
-          menu.hidden = true;
-          overlay.hidden = true;
-        }, 180);
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
       }
-
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
         isOpen ? closeMenu() : openMenu();
       });
-
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
     })();
