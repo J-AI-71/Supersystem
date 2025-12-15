@@ -31,9 +31,6 @@ const CORE = [
   'pro-activate.html',
 
   // optional (only if they exist, otherwise ignored by robust add)
-  'bulk-clean.html',
-  'team-setup.html',
-  'redirect-entschachteln.html',
   'publisher.html',
   'partners.html',
   'compliance.html',
