@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare Pro App</title>
-  <meta name="description" content="SafeShare Pro App: Presets/Policies, Domain-Whitelist, Audit – local-first im Browser." />
-  <meta name="robots" content="noindex,nofollow" />
+  <title>SafeShare Pro App – Bulk Clean für Profis</title>
+  <meta name="description" content="SafeShare Pro: mehrere Links bereinigen, Whitelist/Blacklist, Presets und Audit. Local-first im Browser." />
+  <meta name="robots" content="noindex,follow" />
   <meta name="color-scheme" content="dark light" />
 
   <!-- Google Search Console -->
@@ -16,1050 +16,671 @@
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
-      --card: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.10);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-      --muted2: rgba(255,255,255,.60);
-      --shadow: 0 18px 45px rgba(0,0,0,.35);
-      --radius: 18px;
-      --mint: #2fe3b7;
-      --mint2: rgba(47,227,183,.18);
-      --mint3: rgba(47,227,183,.28);
-      --warn: rgba(255,197,84,.16);
-      --ok: rgba(47,227,183,.16);
-      --bad: rgba(255,84,84,.14);
-      --max: 1120px;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.045);
+      --border:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.70);
+      --muted2:rgba(255,255,255,.58);
+      --mint:#2fe3b7;
+      --mint2:rgba(47,227,183,.18);
+      --shadow:0 18px 45px rgba(0,0,0,.35);
+      --radius:18px;
     }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff;
-        --border: rgba(17,24,39,.12);
-        --text: rgba(17,24,39,.95);
-        --muted: rgba(17,24,39,.72);
-        --muted2: rgba(17,24,39,.62);
-        --shadow: 0 18px 45px rgba(17,24,39,.10);
-        --warn: rgba(255,197,84,.22);
-        --ok: rgba(47,227,183,.18);
-        --bad: rgba(255,84,84,.12);
-      }
-    }
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
-        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+        radial-gradient(1200px 600px at 20% 0%, rgba(47,227,183,.10), transparent 60%),
+        radial-gradient(900px 600px at 70% 20%, rgba(100,180,255,.10), transparent 55%),
+        linear-gradient(180deg,var(--bg0),var(--bg2));
+      min-height:100vh;
     }
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
-
-    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
-    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .logoWrap{
-      width: 38px; height: 38px; border-radius: 999px;
+    .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 40px}
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:12px 14px;
+      background:rgba(0,0,0,.25);
       border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      border-radius:999px;
+      backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
-      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+      position:sticky; top:10px; z-index:10;
     }
-    .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
-    .brandText{ min-width:0; }
-    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
-
-    .tabsBar{
-      position: sticky; top:0; z-index: 50;
-      padding: 8px 0 14px;
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text)}
+    .brand img{width:28px;height:28px;border-radius:999px}
+    .brand b{letter-spacing:.2px}
+    .brand small{display:block;color:var(--muted);font-weight:500;margin-top:1px}
+    .navLinks{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .navLinks a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      white-space:nowrap;
     }
-    .tabs{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      overflow-x:auto; scrollbar-width:none;
+    .navLinks a:hover{
+      color:var(--text);
+      border-color:var(--border);
+      background:rgba(255,255,255,.04);
     }
-    .tabs::-webkit-scrollbar{ display:none; }
-    .tab{
-      font-size: 13px; color: var(--muted);
-      padding: 8px 12px; border-radius: 999px;
-      border: 1px solid transparent;
-      white-space: nowrap; flex: 0 0 auto;
-    }
-    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
-
-    .card{
-      margin-top: 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
-    }
-
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 38px);
-      line-height: 1.10;
-      letter-spacing: -0.2px;
-    }
-    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
-    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-
-    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; }
-    .row.mt{ margin-top: 12px; }
-
-    .btn{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      cursor:pointer;
-      user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-    }
-    .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
-    .btn.primary:hover{ background: var(--mint3); }
-    .btn.ghost{ background: transparent; color: var(--muted); }
-    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
-    .btn.small{ padding: 8px 10px; font-size: 13px; }
-
-    .note,.warn,.bad{
-      margin-top: 12px;
-      border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.45;
-      color: var(--text);
-    }
-    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
-    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
-
-    label{ display:block; font-size: 12px; color: var(--muted2); margin: 10px 0 6px; }
-    .input, .select, .textarea{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      outline:none;
-      font-size: 14px;
-    }
-    .textarea{ min-height: 140px; resize: vertical; }
-    .input:focus, .select:focus, .textarea:focus{
-      border-color: rgba(47,227,183,.35);
-      box-shadow: 0 0 0 4px rgba(47,227,183,.10);
-    }
-
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .pill{
+    .hero{padding:18px 4px 8px}
+    h1{margin:14px 0 10px; font-size: clamp(26px, 3.6vw, 40px); line-height:1.08}
+    .lead{color:var(--muted); font-size: clamp(15px, 1.7vw, 18px); line-height:1.5; margin:0 0 14px}
+    .chipRow{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 12px}
+    .chip{
       display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(0,0,0,.25);
+      border:1px solid var(--border);
+      color:var(--muted);
     }
-    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
-
-    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
-    @media(min-width: 980px){ .grid{ grid-template-columns: 1.2fr .8fr; } }
-
-    details{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 10px 12px;
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--mint); box-shadow:0 0 0 6px var(--mint2)}
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+      margin-top:10px;
     }
-    details summary{
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .twoCol{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width:900px){ .twoCol{grid-template-columns:1fr} }
+
+    .card h2{margin:0 0 8px; font-size:20px}
+    .muted{color:var(--muted)}
+    .muted2{color:var(--muted2)}
+    .hr{height:1px;background:rgba(255,255,255,.10); margin:14px 0}
+
+    textarea, select, input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+      font-size:15px;
+    }
+    textarea{min-height:120px; resize:vertical; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
+    textarea:focus, select:focus, input:focus{
+      border-color:rgba(47,227,183,.6);
+      box-shadow:0 0 0 6px rgba(47,227,183,.12)
+    }
+
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .btn{
+      appearance:none; border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:999px;
+      padding:12px 14px;
       cursor:pointer;
-      color: var(--text);
-      font-weight: 700;
-      font-size: 13px;
-      list-style: none;
+      font-weight:600;
+      text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
     }
-    details summary::-webkit-details-marker{ display:none; }
-    .hint{ font-size: 12px; color: var(--muted2); margin-top: 6px; }
+    .btn.primary{background: linear-gradient(180deg, rgba(47,227,183,.22), rgba(47,227,183,.10)); border-color: rgba(47,227,183,.40)}
+    .btn:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.08)}
+    .btn.primary:hover{border-color:rgba(47,227,183,.58)}
+    .btn:disabled{opacity:.5; cursor:not-allowed}
 
-    .resultsTop{
-      display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;
-      margin-top: 10px;
+    .box{
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      padding:12px 12px;
+      color:var(--muted);
     }
-    .kpiRow{ display:flex; gap: 10px; flex-wrap:wrap; }
-    .kpi{
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .ok{color:#aef7df}
+    .warn{color:#ffd9a8}
+    .err{color:#ffb2b2}
 
-    .resultList{ margin-top: 10px; display:flex; flex-direction:column; gap: 10px; }
-    .resCard{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 12px;
+    .auditList{margin:0; padding-left:18px}
+    .auditItem{margin:8px 0}
+    code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:999;
     }
-    .resHead{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      margin-bottom: 8px;
+    .overlay .modal{
+      max-width:740px;
+      width:100%;
+      border-radius:22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 25px 70px rgba(0,0,0,.55);
+      padding:18px;
     }
-    .resTitle{ font-weight: 750; font-size: 13px; color: var(--text); }
-    .resMeta{ font-size: 12px; color: var(--muted2); }
-    .resUrl{
-      padding: 10px 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
-      color: var(--text);
-      word-break: break-word;
-      line-height: 1.45;
-    }
-    .auditBox{
-      margin-top: 10px;
-      padding: 10px 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-      word-break: break-word;
-    }
-    .auditLine b{ color: var(--text); }
+    .modal h2{margin:0 0 8px}
+    .modal p{margin:0 0 10px; color:var(--muted)}
 
     footer{
-      margin-top: 18px;
-      padding: 18px 4px 10px;
-      color: var(--muted2);
-      font-size: 12px;
-      line-height: 1.55;
+      margin-top:22px;
+      padding:18px 10px;
+      color:var(--muted);
+      text-align:center;
     }
-    .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+    footer .footLinks{
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+      margin-bottom:10px;
     }
-    .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-    }
-    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
-
-    /* ===== Mehr: Bottom-Sheet (stabil) ===== */
-    .moreOverlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.25);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      z-index: 9998;
-    }
-    .moreBtn{ appearance:none; cursor:pointer; }
-    .moreMenu{
-      position: fixed;
-      left: 12px; right: 12px;
-      bottom: calc(12px + env(safe-area-inset-bottom));
-      top: auto;
-
-      max-height: min(70vh, 520px);
-      overflow: auto;
-
-      padding: 10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.96);
-      box-shadow: var(--shadow);
-      z-index: 9999;
-
-      transform: translateY(16px);
-      opacity: 0;
-      transition: transform .16s ease, opacity .16s ease;
-    }
-    .moreMenu.open{ transform: translateY(0); opacity: 1; }
-    @media (prefers-color-scheme: light){
-      .moreOverlay{ background: rgba(17,24,39,.06); }
-      .moreMenu{
-        background: rgba(255,255,255,.98);
-        border: 1px solid rgba(17,24,39,.12);
-        box-shadow: 0 18px 45px rgba(17,24,39,.12);
-      }
-    }
-    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
-    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
-    .moreMenu a{
-      display:block;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    .moreMenu a:last-child{ margin-bottom: 0; }
-    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    footer a{color:var(--muted); text-decoration:none}
+    footer a:hover{color:var(--text); text-decoration:underline}
+    .tiny{font-size:12px; color:rgba(255,255,255,.55)}
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logoWrap" aria-label="SafeShare Logo">
-          <img src="logo.svg" alt="SafeShare"
-               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-          <span id="logoFallback" class="logoFallback">8</span>
+
+    <nav class="nav" aria-label="SafeShare Navigation">
+      <a class="brand" href="index.html">
+        <img src="assets/icons/icon-32-kreis.png" alt="SafeShare Logo" />
+        <div>
+          <b>SafeShare</b>
+          <small>Pro App · Bulk Clean</small>
         </div>
-        <div class="brandText">
-          <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Pro App · Policies, Whitelist, Audit</div>
-        </div>
+      </a>
+      <div class="navLinks">
+        <a href="app.html">App</a>
+        <a href="pro.html">Pro</a>
+        <a href="help.html">Hilfe</a>
       </div>
-      <div class="small" id="pageTag">Pro</div>
-    </header>
+    </nav>
 
-    <div class="tabsBar">
-      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="app.html" data-page="app.html">App</a>
-        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">
-          Mehr ▾
-        </button>
-      </div>
-    </div>
-
-    <!-- Gate -->
-    <section class="card" id="gateCard" style="display:none">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Zugriff</div>
-      <h1>Pro ist nicht aktiviert.</h1>
-      <p>Diese Seite ist für Pro-Nutzer:innen. Bitte aktiviere Pro (lokal im Browser) und öffne dann die Pro App erneut.</p>
-      <div class="row mt">
-        <a class="btn primary" href="pro-activate.html">Jetzt aktivieren</a>
-        <a class="btn" href="pro.html">Zur Pro Seite</a>
-      </div>
-      <div class="warn">
-        Hinweis: Pro-Status wird local-first gespeichert. Wenn du Website-Daten löschst, musst du ggf. neu aktivieren.
-      </div>
-    </section>
-
-    <!-- App -->
-    <section class="card" id="appCard" style="display:none">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Pro App</div>
-      <h1>Policies. Whitelist. Audit.</h1>
-      <p>
-        Für Profis: mehrere Links auf einmal, klare Modi, Domain-Whitelist und vollständiges Audit (removed/kept).
+    <header class="hero">
+      <h1>Mehrere Links in einem Rutsch bereinigen</h1>
+      <p class="lead">
+        Für Profis, die Links veröffentlichen: Presets/Policies, Whitelist/Blacklist und ein Audit, das nachvollziehbar zeigt,
+        was entfernt und was behalten wurde.
       </p>
 
-      <div class="grid">
-        <!-- Left: Input & results -->
-        <div>
-          <label for="inputUrls">Links (1 pro Zeile)</label>
-          <textarea id="inputUrls" class="textarea mono" placeholder="https://…"></textarea>
-
-          <div class="row mt">
-            <button class="btn primary" id="btnClean" type="button">Bereinigen</button>
-            <button class="btn" id="btnCopyAll" type="button">Alle Ergebnisse kopieren</button>
-            <button class="btn ghost" id="btnClear" type="button">Leeren</button>
-          </div>
-
-          <div id="msgBox" class="note" style="display:none"></div>
-
-          <div class="resultsTop">
-            <div class="kpiRow">
-              <div class="kpi" id="kpiTotal">Links: 0</div>
-              <div class="kpi" id="kpiCleaned">Bereinigt: 0</div>
-              <div class="kpi" id="kpiErrors">Fehler: 0</div>
-            </div>
-            <div class="row">
-              <button class="btn small" id="btnExportCsv" type="button">CSV Export</button>
-              <button class="btn small ghost" id="btnToggleValues" type="button">Audit-Werte: aus</button>
-            </div>
-          </div>
-
-          <div class="resultList" id="results"></div>
-        </div>
-
-        <!-- Right: Policy / Whitelist -->
-        <div>
-          <h2>Policy</h2>
-
-          <label for="preset">Preset</label>
-          <select id="preset" class="select">
-            <option value="share_safe">Share-clean (safe)</option>
-            <option value="affiliate_safe">Affiliate-safe</option>
-            <option value="privacy_max">Privacy-max (aggressiv)</option>
-          </select>
-
-          <div class="hint">
-            <b>Safe</b> entfernt nur bekannte Tracking-Parameter. <b>Aggressiv</b> entfernt alles außer Allowlist.
-          </div>
-
-          <details style="margin-top:12px" open>
-            <summary>Whitelist pro Domain</summary>
-            <div class="hint">Behalte Parameter gezielt (z. B. Affiliate). Gilt nur für die gewählte Domain.</div>
-
-            <label for="domain">Domain</label>
-            <input id="domain" class="input mono" placeholder="z. B. amazon.de" />
-
-            <label for="allowParams">Allowlist (Parameternamen, komma-getrennt)</label>
-            <input id="allowParams" class="input mono" placeholder="z. B. tag, ref" />
-
-            <div class="row mt">
-              <button class="btn" id="btnSaveDomain" type="button">Speichern</button>
-              <button class="btn ghost" id="btnLoadFromInput" type="button">Domain aus Input</button>
-              <button class="btn ghost" id="btnClearDomain" type="button">Löschen</button>
-            </div>
-
-            <div class="row mt">
-              <button class="btn small" id="btnQuickAmazon" type="button">Quick: Amazon (tag,ref)</button>
-              <button class="btn small" id="btnQuickYT" type="button">Quick: YouTube (v,t)</button>
-            </div>
-          </details>
-
-          <details style="margin-top:12px">
-            <summary>Advanced</summary>
-
-            <label class="hint" style="margin-top:10px">
-              <input type="checkbox" id="keepUtm" />
-              UTM behalten (utm_source, utm_campaign …)
-            </label>
-
-            <label class="hint" style="margin-top:8px">
-              <input type="checkbox" id="keepFragment" checked />
-              Fragment behalten (#…)
-            </label>
-
-            <label class="hint" style="margin-top:8px">
-              <input type="checkbox" id="dedupeParams" checked />
-              Duplicate Parameter deduplizieren (Name+Wert)
-            </label>
-
-            <div class="warn" style="margin-top:12px">
-              Wenn du <b>tag/ref</b> erwartest „entfernt“ zu sehen: Das passiert nur, wenn sie in der gewählten Policy entfernt werden.
-              In <b>Share-clean (safe)</b> bleiben unbekannte Parameter normalerweise erhalten. Nutze <b>Privacy-max</b> oder entferne sie explizit.
-            </div>
-          </details>
-
-          <details style="margin-top:12px">
-            <summary>Testbeispiele</summary>
-            <div class="hint">Tippe auf „Einfügen“, um Beispiele in das Eingabefeld zu übernehmen.</div>
-            <div class="row mt">
-              <button class="btn small" id="btnPasteTests" type="button">Einfügen</button>
-            </div>
-            <div class="hint mono" style="margin-top:10px">
-https://example.com/page?utm_source=twitter&utm_campaign=test&gclid=123&ref=abc
-https://www.amazon.de/dp/B0XXXXXXX?tag=partner-21&ref_=abc123&ascsubtag=foo&utm_source=newsletter
-https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s&si=XYZ&utm_source=share
-            </div>
-          </details>
-        </div>
+      <div class="chipRow">
+        <span class="chip"><span class="dot"></span><span id="chipPlan">Plan: —</span></span>
+        <span class="chip">Aktivierung: <span id="chipActive">—</span></span>
+        <span class="chip">local-first im Browser</span>
       </div>
-    </section>
+    </header>
+
+    <main class="grid" id="appRoot">
+
+      <section class="card">
+        <h2>Input</h2>
+        <p class="muted">Je Zeile ein Link. Leerzeilen werden ignoriert.</p>
+
+        <div class="twoCol">
+          <div>
+            <label class="muted2" for="preset">Preset/Policy</label>
+            <select id="preset">
+              <option value="conservative">Konservativ (stabil)</option>
+              <option value="standard" selected>Standard (Publishing)</option>
+              <option value="aggressive">Aggressiv (max clean – prüfen!)</option>
+            </select>
+
+            <label class="muted2" for="inputLinks" style="margin-top:12px; display:block;">Eingabe – Links (1 pro Zeile)</label>
+            <textarea id="inputLinks" placeholder="https://example.com/?utm_source=newsletter
+https://www.beispiel.de/artikel?fbclid=ABC123&utm_medium=social"></textarea>
+
+            <div class="row">
+              <button class="btn primary" id="btnClean">Liste bereinigen</button>
+              <button class="btn" id="btnClearInput" type="button">Eingabe leeren</button>
+              <button class="btn" id="btnLoadExamples" type="button">Test-Beispiele laden</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="box">
+              <b>Whitelist (Allowlist)</b>
+              <div class="muted" style="margin-top:6px">Parameter, die bleiben dürfen (1 pro Zeile), z. B. <code>tag</code>, <code>ref</code>, <code>affid</code>.</div>
+              <textarea id="whitelist" style="min-height:120px; margin-top:10px" placeholder="tag
+ref"></textarea>
+            </div>
+
+            <div class="box" style="margin-top:12px">
+              <b>Blacklist (zusätzlich entfernen)</b>
+              <div class="muted" style="margin-top:6px">Eigene Tracking-Keys, die immer raus sollen (1 pro Zeile).</div>
+              <textarea id="blacklist" style="min-height:120px; margin-top:10px" placeholder="si
+fb_action_ids"></textarea>
+            </div>
+
+            <div class="row">
+              <button class="btn" id="btnSaveRules" type="button">Regeln speichern</button>
+              <button class="btn" id="btnResetRules" type="button">Regeln zurücksetzen</button>
+            </div>
+
+            <p class="tiny" style="margin-top:10px">
+              Regeln werden lokal im Browser gespeichert (localStorage).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Output</h2>
+        <p class="muted">Bereinigte Links (je Zeile ein Link). Du kannst die Liste direkt kopieren.</p>
+
+        <textarea id="outputLinks" readonly placeholder="Die bereinigte Liste erscheint hier – je Zeile ein Link."></textarea>
+
+        <div class="row">
+          <button class="btn primary" id="btnCopy">Bereinigte Liste kopieren</button>
+          <button class="btn" id="btnClearOutput" type="button">Ergebnis leeren</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Audit: Was wurde geändert?</h2>
+        <p class="muted">Hier wird jede Zeile aufgelistet – inkl. entfernte/behaltene Parameter.</p>
+        <div class="box" id="auditBox">
+          <span class="muted">Noch keine Auswertung.</span>
+        </div>
+      </section>
+
+    </main>
 
     <footer>
       <div class="footLinks">
         <a href="index.html">Start</a>
         <a href="app.html">App</a>
         <a href="pro.html">Pro</a>
-        <a href="bookmarklets.html">Bookmarklets</a>
-        <a href="help.html">Hilfe</a>
-        <a href="education.html">Schule</a>
-        <a href="press.html">Presse</a>
-        <a href="status.html">Status</a>
         <a href="datenschutz.html">Datenschutz</a>
         <a href="impressum.html">Impressum</a>
       </div>
+      <div class="tiny">SafeShare Pro – Policy statt Blackbox.</div>
     </footer>
+
   </div>
 
-  <!-- Mehr (Bottom-Sheet) -->
-  <div class="moreOverlay" id="moreOverlay" hidden></div>
-  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
-    <a href="index.html" data-page="index.html">Start</a>
-    <a href="education.html" data-page="education.html">Schule</a>
-    <a href="press.html" data-page="press.html">Presse</a>
-    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <div class="divider"></div>
-    <div class="menuHint">System</div>
-    <a href="status.html" data-page="status.html">Status</a>
-  </nav>
+  <!-- Gating Overlay (wenn nicht aktiviert) -->
+  <div class="overlay" id="gate">
+    <div class="modal">
+      <h2>SafeShare Pro ist nicht aktiviert</h2>
+      <p>
+        Bitte aktiviere SafeShare Pro mit deinem Lizenz-Key (Payhip-Kaufbestätigung / Download-Seite).
+        Danach kannst du die Pro App nutzen.
+      </p>
+      <div class="row">
+        <a class="btn primary" href="pro-activate.html">Zur Aktivierung</a>
+        <a class="btn" href="pro.html">Zur Pro-Seite</a>
+        <a class="btn" href="help.html">Hilfe</a>
+      </div>
+      <p class="tiny" style="margin-top:12px">
+        Hinweis: Aktivierung wird lokal im Browser gespeichert. Wenn du den Browser wechselst, musst du erneut aktivieren.
+      </p>
+    </div>
+  </div>
 
   <script>
-    (function () {
-      // Active tab highlight
-      const file = location.pathname.split('/').pop();
-      const path = (!file || file === '') ? 'index.html' : file;
-      document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === path) el.classList.add('active');
-      });
+    (function(){
+      // ----- shared keys (wie in pro-activate.html) -----
+      const KEY_STORAGE  = 'ss_pro_key';
+      const PRO_STORAGE  = 'ss_pro_activated';
+      const PLAN_STORAGE = 'ss_pro_plan';
+      const TS_STORAGE   = 'ss_pro_activated_at';
 
-      // More menu
-      const btnMore = document.getElementById('moreBtn');
-      const menu = document.getElementById('moreMenu');
-      const overlay = document.getElementById('moreOverlay');
+      // ----- rule storage -----
+      const WL_STORAGE = 'ss_pro_whitelist';
+      const BL_STORAGE = 'ss_pro_blacklist';
+      const PRESET_STORAGE = 'ss_pro_preset';
 
-      function openMenu(){
-        overlay.hidden = false;
-        menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
-        btnMore.setAttribute('aria-expanded', 'true');
-      }
-      function closeMenu(){
-        menu.classList.remove('open');
-        btnMore.setAttribute('aria-expanded', 'false');
-        setTimeout(() => { menu.hidden = true; overlay.hidden = true; }, 180);
-      }
-      btnMore.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isOpen = btnMore.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
-      });
-      overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      const $ = (id) => document.getElementById(id);
 
-      // ===== Pro gate =====
-      const KEY_NAME = 'ss_pro_key';
-      const gateCard = document.getElementById('gateCard');
-      const appCard = document.getElementById('appCard');
-      const hasKey = () => {
-        const k = localStorage.getItem(KEY_NAME);
-        return !!(k && k.trim().length >= 8);
-      };
-      if (!hasKey()) {
-        gateCard.style.display = '';
-        appCard.style.display = 'none';
-        return;
-      } else {
-        gateCard.style.display = 'none';
-        appCard.style.display = '';
+      // ----- gating -----
+      function isActivated(){
+        return localStorage.getItem(PRO_STORAGE) === '1' && !!(localStorage.getItem(KEY_STORAGE) || '').trim();
       }
 
-      // ===== Storage keys =====
-      const LS_DOMAIN_ALLOW = 'ss_pro_domain_allow_v1'; // { "amazon.de":["tag","ref"], ... }
-      const LS_SETTINGS = 'ss_pro_settings_v1'; // preset/flags
-      const LS_LAST_INPUT = 'ss_pro_last_input_v1';
-
-      // ===== UI elements =====
-      const inputUrls = document.getElementById('inputUrls');
-      const preset = document.getElementById('preset');
-      const keepUtm = document.getElementById('keepUtm');
-      const keepFragment = document.getElementById('keepFragment');
-      const dedupeParams = document.getElementById('dedupeParams');
-
-      const domain = document.getElementById('domain');
-      const allowParams = document.getElementById('allowParams');
-
-      const msgBox = document.getElementById('msgBox');
-      const resultsEl = document.getElementById('results');
-
-      const kpiTotal = document.getElementById('kpiTotal');
-      const kpiCleaned = document.getElementById('kpiCleaned');
-      const kpiErrors = document.getElementById('kpiErrors');
-
-      const btnToggleValues = document.getElementById('btnToggleValues');
-
-      // ===== Helpers =====
-      const KNOWN_TRACKING = new Set([
-        'gclid','dclid','gbraid','wbraid',
-        'fbclid','msclkid','ttclid','twclid','igshid',
-        'yclid','_gl',
-        'mc_cid','mc_eid',
-        'spm','scm',
-        'ref_src','ref_url',
-        'si' // e.g. YouTube share param (often tracking-ish)
-      ]);
-
-      function isUtm(name){ return name.toLowerCase().startsWith('utm_'); }
-      function isHs(name){ return name.toLowerCase().startsWith('_hs'); } // hubspot
-      function isParsely(name){ return name.toLowerCase().startsWith('pq_') || name.toLowerCase()==='utm_reader'; }
-      function normalizeList(csv){
-        return (csv || '')
-          .split(',')
-          .map(s => s.trim())
-          .filter(Boolean)
-          .map(s => s.toLowerCase());
+      function planLabel(){
+        const p = (localStorage.getItem(PLAN_STORAGE) || '').toLowerCase().trim();
+        if (p === 'team') return 'Team';
+        if (p === 'personal') return 'Person';
+        return 'Auto';
       }
 
-      function getDomainAllowMap(){
-        try { return JSON.parse(localStorage.getItem(LS_DOMAIN_ALLOW) || '{}'); }
-        catch { return {}; }
-      }
-      function setDomainAllowMap(map){
-        localStorage.setItem(LS_DOMAIN_ALLOW, JSON.stringify(map || {}));
-      }
-
-      function show(type, text){
-        msgBox.style.display = 'block';
-        msgBox.className = type;
-        msgBox.textContent = text;
-      }
-      function hideMsg(){ msgBox.style.display = 'none'; }
-
-      // Audit values toggle
-      let auditShowValues = false;
-      function setAuditValuesBtn(){
-        btnToggleValues.textContent = 'Audit-Werte: ' + (auditShowValues ? 'an' : 'aus');
-      }
-      setAuditValuesBtn();
-
-      // ===== Settings load/save =====
-      function loadSettings(){
+      function fmtTs(){
+        const iso = localStorage.getItem(TS_STORAGE);
+        if (!iso) return '—';
         try{
-          const s = JSON.parse(localStorage.getItem(LS_SETTINGS) || '{}');
-          if (s.preset) preset.value = s.preset;
-          keepUtm.checked = !!s.keepUtm;
-          keepFragment.checked = (s.keepFragment !== undefined) ? !!s.keepFragment : true;
-          dedupeParams.checked = (s.dedupeParams !== undefined) ? !!s.dedupeParams : true;
-          auditShowValues = !!s.auditShowValues;
-          setAuditValuesBtn();
-        } catch {}
-        const last = localStorage.getItem(LS_LAST_INPUT);
-        if (last) inputUrls.value = last;
+          const d = new Date(iso);
+          return d.toLocaleString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+        }catch{ return '—'; }
       }
-      function saveSettings(){
-        const s = {
-          preset: preset.value,
-          keepUtm: keepUtm.checked,
-          keepFragment: keepFragment.checked,
-          dedupeParams: dedupeParams.checked,
-          auditShowValues
-        };
-        localStorage.setItem(LS_SETTINGS, JSON.stringify(s));
-        localStorage.setItem(LS_LAST_INPUT, inputUrls.value || '');
-      }
-      loadSettings();
 
-      // ===== Domain helpers =====
-      function extractFirstDomainFromInput(){
-        const lines = (inputUrls.value || '').split('\n').map(l => l.trim()).filter(Boolean);
-        for (const line of lines) {
-          try {
-            const u = new URL(line);
-            return u.hostname.toLowerCase();
-          } catch {}
+      function applyGate(){
+        if (!isActivated()){
+          $('gate').style.display = 'flex';
+          $('appRoot').style.filter = 'blur(8px)';
+          $('appRoot').style.pointerEvents = 'none';
+          $('chipActive').innerHTML = '<span class="err"><b>nicht aktiv</b></span>';
+        } else {
+          $('gate').style.display = 'none';
+          $('appRoot').style.filter = 'none';
+          $('appRoot').style.pointerEvents = 'auto';
+          $('chipActive').innerHTML = '<span class="ok"><b>aktiv</b></span> · ' + fmtTs();
         }
-        return '';
-      }
-      function loadDomainAllow(domainName){
-        const map = getDomainAllowMap();
-        const arr = map[(domainName || '').toLowerCase()] || [];
-        return Array.isArray(arr) ? arr : [];
-      }
-      function saveDomainAllow(domainName, arr){
-        const d = (domainName || '').toLowerCase();
-        if (!d) return;
-        const map = getDomainAllowMap();
-        map[d] = Array.from(new Set(arr.map(x => x.toLowerCase())));
-        setDomainAllowMap(map);
-      }
-      function deleteDomainAllow(domainName){
-        const d = (domainName || '').toLowerCase();
-        const map = getDomainAllowMap();
-        delete map[d];
-        setDomainAllowMap(map);
+        $('chipPlan').textContent = 'Plan: ' + planLabel();
       }
 
-      // ===== Preset logic =====
-      function presetAddAllow(host){
-        const h = (host || '').toLowerCase();
-        const p = preset.value;
-
-        if (p === 'affiliate_safe') {
-          // minimal, common affiliate keep rules (domain-specific)
-          if (h.includes('amazon.')) return ['tag','ref'];
-          if (h.includes('amzn.to')) return []; // shortener has no params usually
-          return ['tag','ref']; // generic suggestion; user can override per domain
-        }
-        if (p === 'privacy_max') {
-          // aggressive: default allowlist for functionality (can be extended)
-          // Keep common content IDs for major platforms
-          if (h.includes('youtube.com') || h.includes('youtu.be')) return ['v','t'];
-          return [];
-        }
-        // share_safe
-        return [];
-      }
-
-      function shouldRemoveParam(name, allowSet, modeAggressive){
-        const n = name.toLowerCase();
-        if (allowSet.has(n)) return false;
-
-        if (keepUtm.checked && isUtm(n)) return false;
-
-        if (modeAggressive) {
-          // remove everything except allowlist (and optional UTM kept above)
-          return true;
-        }
-
-        // safe mode: remove known tracking signals
-        if (isUtm(n)) return true;
-        if (KNOWN_TRACKING.has(n)) return true;
-        if (isHs(n)) return true;
-        if (isParsely(n)) return true;
-        if (n.startsWith('vero_')) return true;
-        if (n.startsWith('mkt_')) return true;
-        if (n === 'trk' || n === 'trkcampaign') return true;
-        if (n === 'cmpid' || n === 'campaignid') return true;
-        if (n === 's_cid') return true;
-
-        return false;
-      }
-
-      // ===== Cleaner =====
-      function cleanOne(urlStr){
-        const original = urlStr;
-        const u = new URL(urlStr);
-        const host = u.hostname.toLowerCase();
-
-        const modeAggressive = (preset.value === 'privacy_max');
-
-        // Allowlist = domain allow + preset allow (domain-based) + manual allow (current form)
-        const allowDomain = loadDomainAllow(host);
-        const allowManual = normalizeList(allowParams.value);
-        const allowPreset = presetAddAllow(host);
-
-        const allowSet = new Set([...allowDomain, ...allowManual, ...allowPreset].map(x => x.toLowerCase()));
-
-        // Build new params
-        const seen = new Set();
-        const kept = [];
-        const removed = [];
-
-        // iterate existing
-        for (const [k, v] of u.searchParams.entries()) {
-          const name = (k || '').toLowerCase();
-          const value = v ?? '';
-
-          // dedupe (name+value)
-          const sig = name + '=' + value;
-          if (dedupeParams.checked) {
-            if (seen.has(sig)) continue;
-            seen.add(sig);
-          }
-
-          if (shouldRemoveParam(name, allowSet, modeAggressive)) {
-            removed.push([k, value]);
-          } else {
-            kept.push([k, value]);
-          }
-        }
-
-        // reconstruct URL
-        const out = new URL(u.toString());
-        out.search = '';
-        for (const [k, v] of kept) out.searchParams.append(k, v);
-
-        if (!keepFragment.checked) out.hash = '';
-
-        // audit
-        const removedNames = Array.from(new Set(removed.map(x => (x[0] || '').toLowerCase())));
-        const keptNames = Array.from(new Set(kept.map(x => (x[0] || '').toLowerCase())));
-
-        return {
-          ok: true,
-          host,
-          original,
-          cleaned: out.toString(),
-          removed,
-          kept,
-          removedNames,
-          keptNames,
-          mode: modeAggressive ? 'aggressiv' : 'safe',
-          allow: Array.from(allowSet)
-        };
-      }
-
-      function renderResults(items){
-        resultsEl.innerHTML = '';
-        let cleanedCount = 0;
-        let errorCount = 0;
-
-        for (const it of items) {
-          if (!it.ok) errorCount++;
-          else cleanedCount++;
-
-          const card = document.createElement('div');
-          card.className = 'resCard';
-
-          const head = document.createElement('div');
-          head.className = 'resHead';
-
-          const left = document.createElement('div');
-          left.innerHTML = `<div class="resTitle">${it.ok ? it.host : 'Ungültige URL'}</div>
-                            <div class="resMeta">${it.ok ? `Policy: ${it.mode}` : (it.error || '')}</div>`;
-
-          const right = document.createElement('div');
-          right.className = 'row';
-          if (it.ok) {
-            const btnCopy = document.createElement('button');
-            btnCopy.className = 'btn small';
-            btnCopy.type = 'button';
-            btnCopy.textContent = 'Kopieren';
-            btnCopy.addEventListener('click', async () => {
-              try{
-                await navigator.clipboard.writeText(it.cleaned);
-                show('note', 'Kopiert.');
-                setTimeout(hideMsg, 900);
-              } catch {
-                show('warn', 'Kopieren nicht erlaubt. Markiere den Text manuell.');
-              }
-            });
-            right.appendChild(btnCopy);
-          }
-          head.appendChild(left);
-          head.appendChild(right);
-
-          card.appendChild(head);
-
-          if (it.ok) {
-            const urlBox = document.createElement('div');
-            urlBox.className = 'resUrl mono';
-            urlBox.textContent = it.cleaned;
-            card.appendChild(urlBox);
-
-            const audit = document.createElement('div');
-            audit.className = 'auditBox mono';
-
-            const removedStr = it.removed.length
-              ? (auditShowValues
-                ? it.removed.map(([k,v]) => `${k}=${v}`).join(', ')
-                : it.removedNames.join(', '))
-              : '—';
-
-            const keptStr = it.kept.length
-              ? (auditShowValues
-                ? it.kept.map(([k,v]) => `${k}=${v}`).join(', ')
-                : it.keptNames.join(', '))
-              : '—';
-
-            const allowStr = it.allow.length ? it.allow.join(', ') : '—';
-
-            audit.innerHTML =
-              `<div class="auditLine"><b>Removed</b>: ${removedStr}</div>
-               <div class="auditLine"><b>Kept</b>: ${keptStr}</div>
-               <div class="auditLine"><b>Allowlist</b>: ${allowStr}</div>`;
-
-            card.appendChild(audit);
-          } else {
-            const bad = document.createElement('div');
-            bad.className = 'bad';
-            bad.textContent = it.error || 'Ungültige Eingabe.';
-            card.appendChild(bad);
-          }
-
-          resultsEl.appendChild(card);
-        }
-
-        kpiTotal.textContent = `Links: ${items.length}`;
-        kpiCleaned.textContent = `Bereinigt: ${cleanedCount}`;
-        kpiErrors.textContent = `Fehler: ${errorCount}`;
-      }
-
-      function parseLines(){
-        return (inputUrls.value || '')
-          .split('\n')
-          .map(l => l.trim())
+      // ----- rules -----
+      function normalizeLines(txt){
+        return (txt || '')
+          .split(/\r?\n/g)
+          .map(s => s.trim())
           .filter(Boolean);
       }
 
-      // ===== Actions =====
-      document.getElementById('btnClean').addEventListener('click', () => {
-        saveSettings();
-        hideMsg();
+      function loadRules(){
+        const wl = localStorage.getItem(WL_STORAGE);
+        const bl = localStorage.getItem(BL_STORAGE);
+        const pr = localStorage.getItem(PRESET_STORAGE);
 
-        const lines = parseLines();
-        if (!lines.length) {
-          show('warn', 'Bitte mindestens einen Link einfügen.');
+        if (wl !== null) $('whitelist').value = wl;
+        if (bl !== null) $('blacklist').value = bl;
+        if (pr) $('preset').value = pr;
+      }
+
+      function saveRules(){
+        localStorage.setItem(WL_STORAGE, $('whitelist').value || '');
+        localStorage.setItem(BL_STORAGE, $('blacklist').value || '');
+        localStorage.setItem(PRESET_STORAGE, $('preset').value || 'standard');
+        $('auditBox').innerHTML = '<span class="ok"><b>Regeln gespeichert.</b></span> <span class="muted">Sie gelten ab dem nächsten Clean.</span>';
+      }
+
+      function resetRules(){
+        localStorage.removeItem(WL_STORAGE);
+        localStorage.removeItem(BL_STORAGE);
+        localStorage.removeItem(PRESET_STORAGE);
+        $('whitelist').value = 'tag\nref';
+        $('blacklist').value = '';
+        $('preset').value = 'standard';
+        $('auditBox').innerHTML = '<span class="warn"><b>Regeln zurückgesetzt.</b></span> <span class="muted">Whitelist-Vorschlag: tag/ref.</span>';
+      }
+
+      // ----- preset logic -----
+      const BASE_REMOVE = new Set([
+        // UTM
+        'utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_reader','utm_name',
+        // ad click ids
+        'gclid','dclid','wbraid','gbraid','msclkid','fbclid','twclid','igshid','ttclid','li_fat_id',
+        // email/campaign trackers
+        'mc_cid','mc_eid','mkt_tok','vero_id',
+        // hubspot-ish
+        '_hsenc','_hsmi','hsCtaTracking',
+        // misc
+        'ref_src','ref_url','spm','yclid','_ga','_gl','cmpid','campaignid','adid'
+      ]);
+
+      function presetRemoveSet(preset){
+        const s = new Set(BASE_REMOVE);
+
+        // standard: etwas mehr, aber keine Affiliate-Killer
+        if (preset === 'standard'){
+          [
+            'source','medium','campaign','cid','icid','ocid','scid','ncid','s_cid','trk','tracking','trkId','trkEmail',
+            'fb_action_ids','fb_action_types','fb_source','fb_ref'
+          ].forEach(x => s.add(x));
+        }
+
+        // aggressive: deutlich mehr, aber immer noch NICHT automatisch ref/tag entfernen
+        if (preset === 'aggressive'){
+          [
+            'share','shared','feature','features','si','smid','mibextid','app','app_name','from','is_from_webapp',
+            'guccounter','guce_referrer','guce_referrer_sig','r','sr','mbid','spm_id_from',
+            'cmp','cmp_id','cmpid','cmp_id','campaign','campaign_id','ad','ads','adset','creative',
+            'pcrid','placement','keyword','matchtype'
+          ].forEach(x => s.add(x));
+        }
+
+        return s;
+      }
+
+      function isUtmLike(name){
+        return /^utm_/i.test(name);
+      }
+
+      // ----- cleaning -----
+      function safeUrlParse(line){
+        const raw = (line || '').trim();
+        if (!raw) return { ok:false, reason:'leer', raw };
+        try {
+          // URL() braucht scheme – wenn fehlt, versuchen wir https://
+          if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(raw)) {
+            return { ok:true, url: new URL('https://' + raw), raw };
+          }
+          return { ok:true, url: new URL(raw), raw };
+        } catch {
+          return { ok:false, reason:'ungültige URL', raw };
+        }
+      }
+
+      function cleanOne(inputLine, preset, wlSet, blSet){
+        const parsed = safeUrlParse(inputLine);
+        if (!parsed.ok){
+          return {
+            ok:false,
+            original: inputLine,
+            cleaned: '',
+            removed: [],
+            kept: [],
+            whitelisted: [],
+            warning: parsed.reason
+          };
+        }
+
+        const url = parsed.url;
+        const removeSet = presetRemoveSet(preset);
+
+        const removed = [];
+        const kept = [];
+        const whitelisted = [];
+
+        // collect existing params
+        const params = Array.from(url.searchParams.entries()); // [name,value]
+        url.search = ''; // reset, rebuild
+
+        for (const [name, value] of params){
+          const n = (name || '').trim();
+          const nLower = n.toLowerCase();
+
+          const isWL = wlSet.has(n) || wlSet.has(nLower);
+          const isBL = blSet.has(n) || blSet.has(nLower);
+
+          const shouldRemove =
+            isBL ||
+            isUtmLike(nLower) ||
+            removeSet.has(n) ||
+            removeSet.has(nLower);
+
+          if (isWL){
+            // Whitelist schlägt alles
+            url.searchParams.append(n, value);
+            kept.push(n);
+            whitelisted.push(n);
+            continue;
+          }
+
+          if (shouldRemove){
+            removed.push(n);
+            continue;
+          }
+
+          url.searchParams.append(n, value);
+          kept.push(n);
+        }
+
+        // normalize: sort params (optional, stabil)
+        const normalizedParams = Array.from(url.searchParams.entries())
+          .sort(([a],[b]) => a.localeCompare(b));
+
+        url.search = '';
+        for (const [a,b] of normalizedParams){
+          url.searchParams.append(a,b);
+        }
+
+        // wenn wir https:// davor gesetzt haben, aber der Nutzer eigentlich eine URL ohne scheme eingegeben hat:
+        // -> wir lassen es trotzdem, ist für Publishing ok (funktioniert überall).
+        return {
+          ok:true,
+          original: inputLine,
+          cleaned: url.toString(),
+          removed,
+          kept,
+          whitelisted,
+          warning: removed.length === 0 ? 'keine Änderungen' : ''
+        };
+      }
+
+      function renderAudit(results){
+        if (!results.length){
+          $('auditBox').innerHTML = '<span class="muted">Keine Links.</span>';
           return;
         }
 
-        // If domain field is empty, auto-set from first valid URL
-        if (!domain.value.trim()) {
-          const d = extractFirstDomainFromInput();
-          if (d) {
-            domain.value = d;
-            allowParams.value = loadDomainAllow(d).join(', ');
+        const parts = [];
+        parts.push('<ol class="auditList">');
+
+        for (const r of results){
+          if (!r.ok){
+            parts.push(
+              `<li class="auditItem"><span class="err"><b>Ungültig:</b></span> <code>${escapeHtml(r.original)}</code>
+               <div class="muted">Grund: ${escapeHtml(r.warning || '—')}</div></li>`
+            );
+            continue;
           }
+
+          const removed = r.removed.length ? r.removed.map(x => `<code>${escapeHtml(x)}</code>`).join(', ') : '<span class="muted">—</span>';
+          const kept = r.kept.length ? r.kept.map(x => `<code>${escapeHtml(x)}</code>`).join(', ') : '<span class="muted">—</span>';
+          const wl = r.whitelisted.length ? r.whitelisted.map(x => `<code>${escapeHtml(x)}</code>`).join(', ') : '<span class="muted">—</span>';
+
+          const status =
+            r.removed.length
+              ? `<span class="ok"><b>bereinigt</b></span>`
+              : `<span class="warn"><b>unverändert</b></span>`;
+
+          parts.push(`
+            <li class="auditItem">
+              ${status}<br/>
+              <div class="muted2">Original:</div>
+              <div><code>${escapeHtml(r.original)}</code></div>
+              <div class="muted2" style="margin-top:6px">Ergebnis:</div>
+              <div><code>${escapeHtml(r.cleaned)}</code></div>
+
+              <div class="muted2" style="margin-top:8px">Entfernt:</div>
+              <div>${removed}</div>
+
+              <div class="muted2" style="margin-top:8px">Behalten:</div>
+              <div>${kept}</div>
+
+              <div class="muted2" style="margin-top:8px">Whitelist-Treffer:</div>
+              <div>${wl}</div>
+            </li>
+          `);
         }
 
-        const items = lines.map((line) => {
-          try{
-            return cleanOne(line);
-          } catch (e) {
-            return { ok:false, original: line, error: 'Ungültige URL (muss mit http/https starten).' };
-          }
-        });
+        parts.push('</ol>');
+        $('auditBox').innerHTML = parts.join('');
+      }
 
-        renderResults(items);
-        show('note', 'Fertig. Audit listet removed/kept vollständig pro Link.');
-        setTimeout(hideMsg, 1200);
-      });
+      function escapeHtml(s){
+        return String(s || '')
+          .replaceAll('&','&amp;')
+          .replaceAll('<','&lt;')
+          .replaceAll('>','&gt;')
+          .replaceAll('"','&quot;')
+          .replaceAll("'","&#039;");
+      }
 
-      document.getElementById('btnCopyAll').addEventListener('click', async () => {
-        const cards = resultsEl.querySelectorAll('.resUrl');
-        const all = Array.from(cards).map(x => x.textContent).filter(Boolean).join('\n');
-        if (!all) { show('warn', 'Keine Ergebnisse zum Kopieren.'); return; }
+      function doClean(){
+        const preset = $('preset').value || 'standard';
+        const lines = normalizeLines($('inputLinks').value);
+
+        const wlSet = new Set(normalizeLines($('whitelist').value).flatMap(x => [x, x.toLowerCase()]));
+        const blSet = new Set(normalizeLines($('blacklist').value).flatMap(x => [x, x.toLowerCase()]));
+
+        const results = lines.map(line => cleanOne(line, preset, wlSet, blSet));
+
+        // output list: nur ok cleaned + original wenn ungültig
+        const out = results.map(r => r.ok ? r.cleaned : r.original).join('\n');
+        $('outputLinks').value = out;
+
+        renderAudit(results);
+      }
+
+      function loadExamples(){
+        $('inputLinks').value = [
+          'https://example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=launch',
+          'https://www.amazon.de/dp/B0XXXXXX?tag=partner123&utm_source=twitter&ref=abc',
+          'https://www.beispiel.de/artikel?fbclid=AAA111&utm_medium=social&utm_campaign=test',
+          'https://news.site.tld/story?id=123&gclid=BBB222&utm_source=google',
+          'https://youtu.be/XXXXXX?si=CCCC33&utm_source=share'
+        ].join('\n');
+
+        $('whitelist').value = 'tag\nref';
+        $('blacklist').value = 'si';
+        $('preset').value = 'standard';
+
+        $('auditBox').innerHTML = '<span class="muted">Beispiele geladen. Jetzt „Liste bereinigen“.</span>';
+      }
+
+      async function copyOut(){
+        const txt = $('outputLinks').value || '';
+        if (!txt.trim()){
+          $('auditBox').innerHTML = '<span class="warn"><b>Nichts zu kopieren.</b></span> <span class="muted">Erst bereinigen.</span>';
+          return;
+        }
         try{
-          await navigator.clipboard.writeText(all);
-          show('note', 'Alle Ergebnisse kopiert.');
-          setTimeout(hideMsg, 900);
+          await navigator.clipboard.writeText(txt);
+          $('auditBox').innerHTML = '<span class="ok"><b>Kopiert.</b></span> <span class="muted">Bereinigte Liste ist in der Zwischenablage.</span>';
         } catch {
-          show('warn', 'Kopieren nicht erlaubt. Markiere den Text manuell.');
+          // Fallback: markieren
+          $('outputLinks').focus();
+          $('outputLinks').select();
+          $('auditBox').innerHTML = '<span class="warn"><b>Zwischenablage blockiert.</b></span> <span class="muted">Text ist markiert – kopiere manuell.</span>';
         }
-      });
+      }
 
-      document.getElementById('btnClear').addEventListener('click', () => {
-        inputUrls.value = '';
-        resultsEl.innerHTML = '';
-        kpiTotal.textContent = 'Links: 0';
-        kpiCleaned.textContent = 'Bereinigt: 0';
-        kpiErrors.textContent = 'Fehler: 0';
-        localStorage.removeItem(LS_LAST_INPUT);
-        hideMsg();
-      });
+      // init
+      applyGate();
+      loadRules();
 
-      document.getElementById('btnToggleValues').addEventListener('click', () => {
-        auditShowValues = !auditShowValues;
-        setAuditValuesBtn();
-        saveSettings();
-        // rerender stays as-is; user can press Clean again to refresh audit formatting
-        show('note', 'Einstellung gespeichert. (Neu bereinigen aktualisiert die Darstellung.)');
-        setTimeout(hideMsg, 1100);
-      });
+      // sensible defaults
+      if (!$('whitelist').value.trim()) $('whitelist').value = 'tag\nref';
 
-      // CSV export (original, cleaned, removedNames, keptNames, mode, host)
-      document.getElementById('btnExportCsv').addEventListener('click', () => {
-        const cards = resultsEl.querySelectorAll('.resCard');
-        if (!cards.length) { show('warn', 'Keine Ergebnisse zum Export.'); return; }
+      // bind
+      $('btnClean').addEventListener('click', doClean);
+      $('btnClearInput').addEventListener('click', () => $('inputLinks').value = '');
+      $('btnClearOutput').addEventListener('click', () => $('outputLinks').value = '');
+      $('btnCopy').addEventListener('click', copyOut);
+      $('btnLoadExamples').addEventListener('click', loadExamples);
 
-        // Recompute from current input (authoritative)
-        const lines = parseLines();
-        const items = lines.map((line) => {
-          try{ return cleanOne(line); }
-          catch { return { ok:false, original: line, cleaned:'', removedNames:[], keptNames:[], mode:'', host:'' }; }
-        });
+      $('btnSaveRules').addEventListener('click', saveRules);
+      $('btnResetRules').addEventListener('click', resetRules);
 
-        const esc = (s) => `"${String(s ?? '').replaceAll('"','""')}"`;
-        const rows = [
-          ['host','mode','original','cleaned','removed','kept'].map(esc).join(',')
-        ];
-        for (const it of items) {
-          rows.push([
-            it.host || '',
-            it.mode || '',
-            it.original || '',
-            it.cleaned || '',
-            (it.removedNames || []).join(' '),
-            (it.keptNames || []).join(' ')
-          ].map(esc).join(','));
-        }
-        const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'safeshare-pro-export.csv';
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => {
-          URL.revokeObjectURL(a.href);
-          a.remove();
-        }, 500);
-      });
+      // re-apply gate if storage changes (z.B. nach Aktivierung in anderem Tab)
+      window.addEventListener('focus', applyGate);
+      window.addEventListener('storage', applyGate);
 
-      // Settings persistence hooks
-      [preset, keepUtm, keepFragment, dedupeParams].forEach(el => el.addEventListener('change', saveSettings));
-      inputUrls.addEventListener('input', () => localStorage.setItem(LS_LAST_INPUT, inputUrls.value || ''));
-
-      // Domain whitelist actions
-      document.getElementById('btnLoadFromInput').addEventListener('click', () => {
-        const d = extractFirstDomainFromInput();
-        if (!d) { show('warn', 'Keine gültige URL gefunden, um eine Domain zu erkennen.'); return; }
-        domain.value = d;
-        allowParams.value = loadDomainAllow(d).join(', ');
-        show('note', 'Domain übernommen und gespeicherte Allowlist geladen (falls vorhanden).');
-        setTimeout(hideMsg, 1100);
-      });
-
-      document.getElementById('btnSaveDomain').addEventListener('click', () => {
-        const d = (domain.value || '').trim().toLowerCase();
-        if (!d) { show('warn', 'Bitte eine Domain angeben.'); return; }
-        const arr = normalizeList(allowParams.value);
-        saveDomainAllow(d, arr);
-        show('note', 'Domain-Allowlist gespeichert.');
-        setTimeout(hideMsg, 1100);
-      });
-
-      document.getElementById('btnClearDomain').addEventListener('click', () => {
-        const d = (domain.value || '').trim().toLowerCase();
-        if (!d) { show('warn', 'Bitte eine Domain angeben.'); return; }
-        deleteDomainAllow(d);
-        allowParams.value = '';
-        show('warn', 'Domain-Allowlist gelöscht.');
-        setTimeout(hideMsg, 1100);
-      });
-
-      document.getElementById('btnQuickAmazon').addEventListener('click', () => {
-        if (!domain.value.trim()) domain.value = 'amazon.de';
-        const list = new Set([...normalizeList(allowParams.value), 'tag', 'ref']);
-        allowParams.value = Array.from(list).join(', ');
-        show('note', 'Quick gesetzt: tag, ref');
-        setTimeout(hideMsg, 900);
-      });
-
-      document.getElementById('btnQuickYT').addEventListener('click', () => {
-        if (!domain.value.trim()) domain.value = 'youtube.com';
-        const list = new Set([...normalizeList(allowParams.value), 'v', 't']);
-        allowParams.value = Array.from(list).join(', ');
-        show('note', 'Quick gesetzt: v, t');
-        setTimeout(hideMsg, 900);
-      });
-
-      document.getElementById('btnPasteTests').addEventListener('click', () => {
-        inputUrls.value =
-`https://example.com/page?utm_source=twitter&utm_campaign=test&gclid=123&ref=abc
-https://www.amazon.de/dp/B0XXXXXXX?tag=partner-21&ref_=abc123&ascsubtag=foo&utm_source=newsletter
-https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s&si=XYZ&utm_source=share`;
-        localStorage.setItem(LS_LAST_INPUT, inputUrls.value);
-        show('note', 'Testbeispiele eingefügt.');
-        setTimeout(hideMsg, 900);
-      });
-
-      // When domain changes, load stored allowlist automatically
-      domain.addEventListener('input', () => {
-        const d = (domain.value || '').trim().toLowerCase();
-        if (!d) return;
-        const stored = loadDomainAllow(d);
-        if (stored.length) allowParams.value = stored.join(', ');
-      });
     })();
   </script>
 </body>
