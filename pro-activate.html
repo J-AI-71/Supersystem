@@ -149,6 +149,17 @@
     .warn{color:#ffd9a8}
     .err{color:#ffb2b2}
 
+    .toggleRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:14px;
+      user-select:none;
+    }
+    .toggleRow input{width:auto; padding:0; margin:0}
+
     footer{
       margin-top:22px;
       padding:18px 10px;
@@ -203,17 +214,22 @@
       <div class="card">
         <h2>1) Lizenz-Key eingeben</h2>
         <p class="muted">
-          Dein Key kommt von Payhip (Kaufbestätigung / Download-Seite). Wenn du über den Payhip-Redirect hier gelandet bist, passt das trotzdem.
+          Dein Key kommt von Payhip (Kaufbestätigung / Download-Seite). Wenn du über den Payhip-Redirect hier gelandet bist, ist das korrekt.
         </p>
 
         <label for="licenseKey">Lizenz-Key</label>
         <input id="licenseKey" inputmode="text" autocomplete="off" spellcheck="false"
                placeholder="z. B. aus Payhip: XXXX-XXXX-XXXX-XXXX" />
 
+        <div class="toggleRow">
+          <input id="toggleShowKey" type="checkbox" />
+          <label for="toggleShowKey" style="margin:0; cursor:pointer">Key anzeigen (sonst maskiert)</label>
+        </div>
+
         <div class="row">
           <button class="btn primary" id="btnActivate">Freischalten</button>
           <button class="btn" id="btnClear" type="button">Zurücksetzen</button>
-          <a class="btn" href="https://payhip.com/account/purchases" target="_blank" rel="noopener">Payhip Käufe öffnen</a>
+          <a class="btn" href="https://payhip.com/account" target="_blank" rel="noopener">Payhip Library öffnen</a>
         </div>
 
         <div class="hr"></div>
@@ -224,14 +240,14 @@
 
         <div class="row" style="margin-top:12px">
           <a class="btn primary" id="btnOpenProApp" href="pro-app.html" style="display:none">Pro App öffnen</a>
-          <a class="btn" id="btnWhereHandbook" href="https://payhip.com/account/purchases" target="_blank" rel="noopener" style="display:none">
+          <a class="btn" id="btnWhereHandbook" href="https://payhip.com/account" target="_blank" rel="noopener" style="display:none">
             Handbuch (PDF) in Payhip öffnen
           </a>
         </div>
 
         <p class="tiny" style="margin-top:12px">
           Hinweis: Ohne Server kann SafeShare Pro nicht “hart” prüfen, ob ein Key bezahlt wurde. Der Key dient hier als
-          professioneller Aktivierungsschritt und als klarer Flow für Käufer.
+          Aktivierungsschritt und als klarer Flow für Käufer.
         </p>
       </div>
 
@@ -287,10 +303,13 @@
     (function(){
       const $ = (id) => document.getElementById(id);
 
-      const KEY_STORAGE = 'ss_pro_key';
-      const PRO_STORAGE = 'ss_pro_activated';
+      const KEY_STORAGE  = 'ss_pro_key';
+      const PRO_STORAGE  = 'ss_pro_activated';
       const PLAN_STORAGE = 'ss_pro_plan';
-      const TS_STORAGE = 'ss_pro_activated_at';
+      const TS_STORAGE   = 'ss_pro_activated_at';
+
+      // Zustand (Key im Speicher, aber UI ggf. maskiert)
+      let realKey = '';
 
       function getPlanFromUrl(){
         const p = new URLSearchParams(location.search);
@@ -307,11 +326,45 @@
       function looksPlausible(k){
         const key = normalizeKey(k);
         if (key.length < 10) return false;
-        // erlaubt A-Z 0-9 und -
         return /^[A-Za-z0-9-]+$/.test(key);
       }
 
-      function setUIActivated(key, plan){
+      function planLabel(plan){
+        return plan === 'team' ? 'Team' : (plan === 'personal' ? 'Person' : 'automatisch');
+      }
+
+      function renderPlan(plan){
+        $('planChip').textContent = 'Plan: ' + planLabel(plan);
+
+        $('planText').textContent =
+          plan === 'team'
+            ? 'Plan: Pro Team. (Für Teams/Agenturen/Redaktionen.)'
+            : (plan === 'personal'
+                ? 'Plan: Pro Person. (Einzel-Lizenz.)'
+                : 'Plan: automatisch. Der Key ist entscheidend.');
+      }
+
+      function maskKey(k){
+        const key = normalizeKey(k);
+        if (!key) return '';
+        // Zeige nur erstes + letztes Segment, Rest maskiert
+        const parts = key.split('-').filter(Boolean);
+        if (parts.length >= 3){
+          const first = parts[0];
+          const last  = parts[parts.length - 1];
+          return first + '-••••-••••-' + last;
+        }
+        // Fallback: erste/letzte 4 Zeichen
+        if (key.length <= 8) return '••••';
+        return key.slice(0,4) + '••••' + key.slice(-4);
+      }
+
+      function renderKey(){
+        const show = $('toggleShowKey').checked;
+        $('licenseKey').value = show ? realKey : maskKey(realKey);
+      }
+
+      function setUIActivated(plan){
         $('statusBox').innerHTML =
           'Status: <span class="ok"><b>Freigeschaltet.</b></span> ' +
           '<span class="muted">Key gespeichert (nur in diesem Browser).</span>';
@@ -319,66 +372,78 @@
         $('btnOpenProApp').style.display = 'inline-flex';
         $('btnWhereHandbook').style.display = 'inline-flex';
 
-        const planLabel = plan === 'team' ? 'Team' : (plan === 'personal' ? 'Person' : 'automatisch');
-        $('planChip').textContent = 'Plan: ' + planLabel;
-
-        $('planText').textContent =
-          plan === 'team'
-            ? 'Plan: Pro Team. (Für Teams/Agenturen/Redaktionen.)'
-            : (plan === 'personal'
-                ? 'Plan: Pro Person. (Einzel-Lizenz.)'
-                : 'Plan: automatisch. (Wenn du Team gekauft hast, ist das ok – der Key ist entscheidend.)');
-
-        // optional: Key im Feld maskiert anzeigen
-        $('licenseKey').value = key;
+        renderPlan(plan);
+        renderKey();
       }
 
       function setUINotActivated(plan){
         $('statusBox').innerHTML =
           'Status: <span class="muted">Noch nicht freigeschaltet.</span>';
+
         $('btnOpenProApp').style.display = 'none';
         $('btnWhereHandbook').style.display = 'none';
 
-        const planLabel = plan === 'team' ? 'Team' : (plan === 'personal' ? 'Person' : 'automatisch');
-        $('planChip').textContent = 'Plan: ' + planLabel;
+        renderPlan(plan);
 
-        $('planText').textContent =
-          plan === 'team'
-            ? 'Plan: Pro Team. (Für Teams/Agenturen/Redaktionen.)'
-            : (plan === 'personal'
-                ? 'Plan: Pro Person. (Einzel-Lizenz.)'
-                : 'Plan: automatisch. Du kannst einfach deinen Key eingeben.');
+        // Input leer lassen (keine Maskierung nötig)
+        $('licenseKey').value = '';
       }
 
       // init
-      const plan = getPlanFromUrl();
-      setUINotActivated(plan);
+      const urlPlan = getPlanFromUrl();
+      renderPlan(urlPlan);
+      setUINotActivated(urlPlan);
 
-      // restore existing activation
+      // restore activation
       const wasActivated = localStorage.getItem(PRO_STORAGE) === '1';
       const storedKey = localStorage.getItem(KEY_STORAGE) || '';
-      const storedPlan = localStorage.getItem(PLAN_STORAGE) || plan;
+      const storedPlan = localStorage.getItem(PLAN_STORAGE) || urlPlan;
 
       if (wasActivated && storedKey){
-        setUIActivated(storedKey, storedPlan);
+        realKey = storedKey;
+        setUIActivated(storedPlan);
       }
 
-      $('btnActivate').addEventListener('click', () => {
-        const key = normalizeKey($('licenseKey').value);
+      // Toggle: nur UI, Key bleibt gespeichert
+      $('toggleShowKey').addEventListener('change', () => {
+        if (!realKey) return;
+        renderKey();
+      });
 
-        if (!looksPlausible(key)){
+      // Wenn User ins Feld tippt und es ist maskiert, leeren wir erstmal, damit er nicht “••••” überschreibt
+      $('licenseKey').addEventListener('focus', () => {
+        if (!realKey) return; // nicht aktiviert
+        if (!$('toggleShowKey').checked){
+          // beim Fokus in maskiertem Modus: Feld leeren, damit Copy/Paste leichter ist
+          $('licenseKey').value = '';
+        }
+      });
+
+      $('btnActivate').addEventListener('click', () => {
+        // Wenn maskiert, könnte der User im Feld gerade “••••” haben → wir nehmen den tatsächlichen Input
+        const entered = normalizeKey($('licenseKey').value);
+
+        if (!looksPlausible(entered)){
           $('statusBox').innerHTML =
             'Status: <span class="err"><b>Key wirkt ungültig.</b></span> ' +
             '<span class="muted">Bitte aus Payhip kopieren (mind. 10 Zeichen, nur Buchstaben/Zahlen/Minus).</span>';
           return;
         }
 
-        localStorage.setItem(KEY_STORAGE, key);
+        const plan = (localStorage.getItem(PLAN_STORAGE) || urlPlan || 'auto');
+        // Plan aus URL übernimmt, wenn er konkret ist
+        const finalPlan = (urlPlan === 'team' || urlPlan === 'personal') ? urlPlan : plan;
+
+        realKey = entered;
+
+        localStorage.setItem(KEY_STORAGE, realKey);
         localStorage.setItem(PRO_STORAGE, '1');
-        localStorage.setItem(PLAN_STORAGE, plan === 'auto' ? 'auto' : plan);
+        localStorage.setItem(PLAN_STORAGE, finalPlan);
         localStorage.setItem(TS_STORAGE, new Date().toISOString());
 
-        setUIActivated(key, plan === 'auto' ? 'auto' : plan);
+        // nach Aktivierung: standardmäßig maskiert lassen
+        $('toggleShowKey').checked = false;
+        setUIActivated(finalPlan);
       });
 
       $('btnClear').addEventListener('click', () => {
@@ -386,11 +451,13 @@
         localStorage.removeItem(PRO_STORAGE);
         localStorage.removeItem(PLAN_STORAGE);
         localStorage.removeItem(TS_STORAGE);
-        $('licenseKey').value = '';
-        setUINotActivated(plan);
-      });
 
+        realKey = '';
+        $('toggleShowKey').checked = false;
+        setUINotActivated(urlPlan);
+      });
     })();
   </script>
+
 </body>
 </html>
