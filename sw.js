@@ -7,7 +7,7 @@
 */
 'use strict';
 
-const SW_VERSION = '2025-12-16-02';
+const SW_VERSION = '2025-12-17-02';
 
 const PRECACHE = `ss-precache-${SW_VERSION}`;
 const RUNTIME  = `ss-runtime-${SW_VERSION}`;
