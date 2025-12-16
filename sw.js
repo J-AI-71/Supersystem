@@ -7,7 +7,7 @@
 */
 'use strict';
 
-const SW_VERSION = '2025-12-14-01';
+const SW_VERSION = '2025-12-16-02';
 
 const PRECACHE = `ss-precache-${SW_VERSION}`;
 const RUNTIME  = `ss-runtime-${SW_VERSION}`;
@@ -28,7 +28,6 @@ const CORE = [
 
   // pro public pages (landing/activation)
   'pro.html',
-  'pro-activate.html',
 
   // optional (only if they exist, otherwise ignored by robust add)
   'publisher.html',
@@ -42,7 +41,6 @@ const CORE = [
   'js/page-status.js',
   'js/bookmarklets.js',
   'js/page-404.js',
-  'js/page-pro-activate.js',
 
   // PWA / icons
   'manifest.webmanifest',
