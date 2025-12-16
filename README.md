@@ -18,7 +18,7 @@
 1. **App öffnen** → URL einfügen → **Säubern** → Ergebnis kopieren/öffnen.  
 2. **Bookmarklet**: Auf `bookmarklets.html` den `javascript:`-Code kopieren → im Browser als Lesezeichen-URL einfügen.  
 3. **PWA installieren**: „Zum Home-Bildschirm hinzufügen“ (iOS/Android) bzw. „Installieren“ (Desktop).  
-4. **Pro aktivieren**: Kauf → Redirect auf `pro-activate.html?pro=1` → Badge zeigt „aktiv“.
+4. **Pro nutzen**: Kauf über Payhip → Download öffnen → 01-START.html → offline nutzen.
 
 ## Datenschutz
 - Keine Accounts, kein Tracking.  
