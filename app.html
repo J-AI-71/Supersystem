@@ -105,6 +105,8 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor: pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{
@@ -156,14 +158,8 @@
       .grid{ grid-template-columns: 1.1fr .9fr; }
     }
 
-    .field{
-      display:flex; gap:10px; align-items:stretch; flex-wrap:wrap;
-    }
-    .inputWrap{
-      flex: 1 1 480px;
-      min-width: 280px;
-      position: relative;
-    }
+    .field{ display:flex; gap:10px; align-items:stretch; flex-wrap:wrap; }
+    .inputWrap{ flex: 1 1 480px; min-width: 280px; position: relative; }
     input[type="url"], input[type="text"]{
       width: 100%;
       padding: 14px 44px 14px 14px;
@@ -204,10 +200,7 @@
       gap: 8px;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{
-      background: var(--mint2);
-      border-color: rgba(47,227,183,.35);
-    }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
     .btn.primary:hover{ background: var(--mint3); }
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
@@ -304,12 +297,64 @@
       background: rgba(255,255,255,.03);
       color: var(--muted);
     }
-    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,./* Payhip-Hinweis + Supporter-Link */
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+      .kv, .monoBox, input[type="url"], input[type="text"]{ border-color: rgba(17,24,39,.12); }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
 
 <body>
   <div class="wrap">
+    <!-- HEAD (Brand) -->
     <header>
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
@@ -325,12 +370,13 @@
       <div class="small">läuft im Browser</div>
     </header>
 
+    <!-- HEAD (Tabs + Mehr) -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab active" href="app.html">App</a>
-        <a class="tab" href="pro.html">Pro</a>
-        <a class="tab" href="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html">Bookmarklets</a>
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
@@ -381,23 +427,24 @@
           <div id="msgWarn" class="warnBox" style="display:none;"></div>
           <div id="msgBad" class="badBox" style="display:none;"></div>
 
-         <div class="row" style="margin-top:14px;">
-  <a class="btn" href="pro.html">Mehr zu SafeShare Pro</a>
-  <a class="btn ghost" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person</a>
-  <a class="btn ghost" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team</a>
-</div>
+          <div class="row" style="margin-top:14px;">
+            <a class="btn" href="pro.html">Mehr zu SafeShare Pro</a>
+            <a class="btn ghost" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person</a>
+            <a class="btn ghost" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team</a>
+          </div>
 
-<div class="row" style="margin-top:10px;">
-  <a class="btn ghost" href="https://payhip.com/b/cFHy7" target="_blank" rel="noopener"
-     style="opacity:.85; font-size:13px; padding:8px 12px;">
-    Supporter (Handbuch + Selftest)
-  </a>
-</div>
+          <div class="row" style="margin-top:10px;">
+            <a class="btn ghost" href="https://payhip.com/b/cFHy7" target="_blank" rel="noopener"
+               style="opacity:.85; font-size:13px; padding:8px 12px;">
+              Supporter (Handbuch + Selftest)
+            </a>
+          </div>
 
-<p class="muted" style="margin-top:8px;">
-  Kauf über Payhip. Danach: Downloadseite öffnen → <strong>01-START.html</strong> → offline nutzen.
-</p>
-</div>
+          <p class="muted" style="margin-top:8px;">
+            Kauf über Payhip. Danach: Downloadseite öffnen → <strong>01-START.html</strong> → offline nutzen.
+          </p>
+        </div>
+
         <div class="card" style="margin-top:0;">
           <h2>Wie SafeShare arbeitet</h2>
           <p>
@@ -420,11 +467,11 @@
 
           <div class="warnBox">
             Wenn ein Link nach dem Bereinigen nicht mehr funktioniert, nutze SafeShare Pro:
-            Audit + Whitelist-Fix (Token/Signatur-Keys).
+            Audit + Whitelist (Token/Signatur-Keys).
           </div>
 
           <div class="row">
-            <a class="btn primary" href="hilfe.html#pro">Hilfe zu Pro</a>
+            <a class="btn primary" href="help.html#prostart">Hilfe zu Pro</a>
             <a class="btn" href="bookmarklets.html">Bookmarklets</a>
           </div>
         </div>
@@ -444,6 +491,7 @@
       <p>Weil funktionale Parameter bleiben. SafeShare entfernt primär Tracking-Ballast.</p>
     </section>
 
+    <!-- FOOTER -->
     <footer>
       <div class="footGrid">
         <div>
@@ -452,32 +500,78 @@
         </div>
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
-          <a href="app.html">App</a>
-          <a href="pro.html">Pro</a>
-          <a href="help.html">Hilfe</a>
-          <a href="bookmarklets.html">Bookmarklets</a>
-          <a href="datenschutz.html">Datenschutz</a>
-          <a href="impressum.html">Impressum</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
         </div>
       </div>
     </footer>
   </div>
 
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Öffentlich</div>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM entfernen</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking entfernen</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <div class="divider"></div>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+  </nav>
+
   <script>
-    // Conservative tracking list for the free App (Pro can do policies & audit).
+    // ===== NAV (active tab + more sheet) =====
+    (function(){
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+      }
+      btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    })();
+
+    // ===== CLEANER LOGIC =====
     const REMOVE_EXACT = new Set([
       "fbclid","gclid","dclid","msclkid","igshid","mc_cid","mc_eid",
       "ttclid","twclid","li_fat_id","yclid","_hsenc","_hsmi",
       "gbraid","wbraid","srsltid"
     ]);
 
-    // Common patterns (case-insensitive): utm_* and some marketing ids.
     function shouldRemoveKey(key) {
       const k = String(key || "").trim().toLowerCase();
       if (!k) return false;
       if (k.startsWith("utm_")) return true;
       if (REMOVE_EXACT.has(k)) return true;
-      // extra safe removals that are almost always tracking
       if (k === "vero_conv" || k === "vero_id") return true;
       return false;
     }
@@ -485,8 +579,6 @@
     function normalizeUrlInput(raw) {
       const s = String(raw || "").trim();
       if (!s) return "";
-      // accept pasted text with surrounding spaces/newlines
-      // allow protocol-less URLs by adding https://
       if (!/^https?:\/\//i.test(s) && /^[a-z0-9.-]+\.[a-z]{2,}/i.test(s)) {
         return "https://" + s;
       }
@@ -498,41 +590,28 @@
       if (!input) return { ok:false, error:"Bitte einen Link einfügen." };
 
       let url;
-      try {
-        url = new URL(input);
-      } catch {
-        return { ok:false, error:"Das sieht nicht nach einer gültigen URL aus." };
-      }
+      try { url = new URL(input); }
+      catch { return { ok:false, error:"Das sieht nicht nach einer gültigen URL aus." }; }
 
       const removed = [];
       const kept = [];
 
-      // query params
       const params = new URLSearchParams(url.search);
       const next = new URLSearchParams();
 
       for (const [k, v] of params.entries()) {
-        if (shouldRemoveKey(k)) {
-          removed.push(k);
-        } else {
-          next.append(k, v);
-          kept.push(k);
-        }
+        if (shouldRemoveKey(k)) removed.push(k);
+        else { next.append(k, v); kept.push(k); }
       }
 
       url.search = next.toString() ? ("?" + next.toString()) : "";
-
-      // common cleanup: remove trailing "?" left empty (handled), preserve hash
-      // optionally normalize: remove default ports
       url.port = (url.port === "80" && url.protocol === "http:") ? "" : url.port;
       url.port = (url.port === "443" && url.protocol === "https:") ? "" : url.port;
-
-      const cleaned = url.toString();
 
       return {
         ok: true,
         original: input,
-        cleaned,
+        cleaned: url.toString(),
         removed: Array.from(new Set(removed)).sort(),
         kept: Array.from(new Set(kept)).sort()
       };
@@ -543,7 +622,6 @@
         await navigator.clipboard.writeText(text);
         return true;
       } catch {
-        // fallback for older iOS/Safari
         const ta = document.createElement("textarea");
         ta.value = text;
         ta.setAttribute("readonly", "");
@@ -551,14 +629,8 @@
         ta.style.left = "-9999px";
         document.body.appendChild(ta);
         ta.select();
-        try {
-          document.execCommand("copy");
-          document.body.removeChild(ta);
-          return true;
-        } catch {
-          document.body.removeChild(ta);
-          return false;
-        }
+        try { document.execCommand("copy"); document.body.removeChild(ta); return true; }
+        catch { document.body.removeChild(ta); return false; }
       }
     }
 
@@ -609,20 +681,13 @@
       btnOpen.style.display = "inline-flex";
       btnOpen.href = res.cleaned;
 
-      const removedList = res.removed.length ? res.removed.join(", ") : "—";
-      const keptList = res.kept.length ? res.kept.join(", ") : "—";
-
-      outRemoved.textContent = removedList;
-      outKept.textContent = keptList;
+      outRemoved.textContent = res.removed.length ? res.removed.join(", ") : "—";
+      outKept.textContent = res.kept.length ? res.kept.join(", ") : "—";
       changeBox.style.display = "grid";
 
-      if (res.removed.length === 0) {
-        setMsg("Nichts zu entfernen – der Link wirkt bereits sauber.", "", "");
-      } else {
-        setMsg(`Bereinigt. Entfernt: ${res.removed.length} Parameter.`, "", "");
-      }
+      if (res.removed.length === 0) setMsg("Nichts zu entfernen – der Link wirkt bereits sauber.", "", "");
+      else setMsg(`Bereinigt. Entfernt: ${res.removed.length} Parameter.`, "", "");
 
-      // small caution if it still looks like token-y keys exist (informational only)
       const tokenLike = res.kept.filter(k => {
         const kk = k.toLowerCase();
         return kk.includes("token") || kk.includes("sig") || kk.includes("signature") || kk.includes("expires") || kk.includes("nonce") || kk.includes("state");
@@ -636,16 +701,10 @@
       }
     }
 
-    function doClean() {
-      const res = cleanOneUrl(elIn.value);
-      renderResult(res);
-    }
+    function doClean() { renderResult(cleanOneUrl(elIn.value)); }
 
     btnClean.addEventListener("click", doClean);
-
-    elIn.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") doClean();
-    });
+    elIn.addEventListener("keydown", (e) => { if (e.key === "Enter") doClean(); });
 
     btnCopy.addEventListener("click", async () => {
       const text = outUrl.textContent.trim();
@@ -661,15 +720,13 @@
       resetOutput();
     });
 
-    // initialize
     resetOutput();
 
-    // Optional: register service worker if you have one.
-    // If caching ever gets in the way, bump your sw.js cache version.
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("sw.js").catch(() => {});
     }
   </script>
+
   <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
 </body>
 </html>
