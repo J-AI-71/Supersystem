@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Hilfe – SafeShare</title>
-  <meta name="description" content="SafeShare Hilfe: Links bereinigen, teilen, häufige Fragen, iPad/iPhone Hinweise und Kontakt." />
+  <meta name="description" content="SafeShare Hilfe: Links bereinigen, typische Stolperfallen, iPad/iPhone Hinweise, Pro-Workflow und Kontakt." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -94,6 +94,8 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor: pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -162,7 +164,18 @@
       padding: 12px;
     }
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      white-space: nowrap;
+    }
 
+    /* Footer wie app.html */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -170,12 +183,25 @@
       font-size: 12px;
       line-height: 1.55;
     }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
     }
     .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -249,7 +275,7 @@
           <div class="sub">Hilfe</div>
         </div>
       </div>
-      <div class="small">Hilfe & Support</div>
+      <div class="small">Support & Troubleshooting</div>
     </header>
 
     <div class="tabsBar">
@@ -261,132 +287,171 @@
       </div>
     </div>
 
+    <!-- INTRO -->
     <section class="card">
       <h1>Hilfe</h1>
       <p>
-        Hier findest du den schnellen Einstieg, häufige Fragen und einfache Schritte, wenn etwas nicht so funktioniert wie erwartet.
+        Hier findest du den schnellen Einstieg, typische Stolperfallen und saubere Debug-Schritte – ohne Panik.
       </p>
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
         <a class="btn" href="pro.html">Pro ansehen</a>
+        <a class="btn ghost" href="#kontakt">Kontakt</a>
       </div>
       <div class="note">
-        SafeShare entfernt unnötige Tracking-Parameter aus Links. Das ist Link-Hygiene – keine “Unsichtbarkeit”.
+        SafeShare ist Link-Hygiene: Tracking-Anteile im Link reduzieren. Es macht dich nicht „unsichtbar“.
       </div>
     </section>
 
+    <!-- QUICKSTART -->
     <section class="card" id="start">
       <h2>Schnellstart (App)</h2>
       <ol>
         <li>Link kopieren</li>
         <li>In <a href="app.html"><b>app.html</b></a> einfügen</li>
-        <li>Bereinigen → Ergebnis kopieren/teilen</li>
+        <li><b>Bereinigen</b> → Ergebnis kopieren/teilen</li>
       </ol>
       <div class="warn">
-        Für Nicht-Profis: Parameter sind oft wie „Etiketten“ am Link. SafeShare entfernt unnötigen Ballast – ohne Unsichtbarkeit zu versprechen.
+        Wenn ein Link „komisch“ wirkt: erst testen, ob der <b>Original-Link</b> bei dir selbst zuverlässig funktioniert. Dann SafeShare testen.
       </div>
     </section>
 
+    <!-- PRO -->
     <section class="card" id="prostart">
       <h2>Pro (optional)</h2>
       <div class="grid2">
         <div class="box">
-          <h3>Wofür ist Pro?</h3>
-          <p>
-            Pro ist für fortgeschrittene Workflows (z. B. Presets, Whitelist, Audit/Übersicht, Bulk-Listen).
-            Wenn du einfach nur Links säubern willst, reicht die kostenlose App.
-          </p>
+          <h3>Wann lohnt sich Pro?</h3>
+          <ul>
+            <li>Du veröffentlichst Links (Journalismus, Social-Team, Publisher).</li>
+            <li>Du willst bewusst Attribution behalten (Affiliate/Partner).</li>
+            <li>Du brauchst Nachvollziehbarkeit: <b>Audit</b> + <b>Whitelist</b> + Presets.</li>
+          </ul>
           <div class="row">
             <a class="btn primary" href="pro.html">Mehr zu SafeShare Pro</a>
           </div>
+          <p class="muted" style="margin-top:10px;opacity:.85">
+            Wenn du nur gelegentlich UTM & Klick-IDs entfernen willst: Die kostenlose App reicht.
+          </p>
         </div>
 
         <div class="box">
-          <h3>Nach dem Kauf</h3>
+          <h3>Nach dem Kauf (Payhip)</h3>
           <ol>
             <li>Payhip-Download öffnen</li>
             <li><b>01-START.html</b> starten</li>
-            <li>Von dort die Pro-App öffnen (im Paket)</li>
+            <li>Von dort Pro-App + Handbuch öffnen</li>
           </ol>
           <div class="row">
-            <a class="btn primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person</a>
+            <a class="btn primary" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person</a>
             <a class="btn" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team</a>
           </div>
           <p class="muted" style="margin-top:10px;opacity:.85">
             Im Paket: <code>02-app-pro.html</code>, <code>03-handbuch-pro.pdf</code>
           </p>
+          <div class="note" style="margin-top:10px">
+            Pro ist nicht öffentlich auf GitHub. Wenn du eine 404 siehst, bist du auf der falschen URL – starte immer über <b>01-START.html</b>.
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- PROBLEMS -->
     <section class="card" id="problems">
-      <h2>Häufige Probleme</h2>
+      <h2>Typische Probleme – sauber lösen</h2>
 
       <div class="grid2">
         <div class="box">
-          <h3>Link ist nach der Bereinigung „kaputt“</h3>
+          <h3>Link ist nach Bereinigung „kaputt“</h3>
           <ul>
-            <li>Teste es mit einem anderen Link derselben Website (manche URLs sind empfindlicher).</li>
-            <li>Wenn du Pro nutzt: Preset auf <b>konservativ</b> stellen.</li>
-            <li>Wenn du Pro nutzt: funktionale Keys ggf. whitelisten (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">page</span>, <span class="mono">lang</span>).</li>
+            <li><b>Gegenprobe:</b> Öffnet der Original-Link stabil bei dir?</li>
+            <li><b>Dann:</b> SafeShare-Link öffnen. Wenn’s kaputt ist: Parameter sind vermutlich funktional.</li>
+            <li><b>Pro-Ansatz:</b> Preset <b>konservativ</b> + Audit prüfen + Schlüssel whitelisten (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">page</span>, <span class="mono">lang</span>).</li>
           </ul>
+          <div class="warn">
+            Häufige „funktionale“ Keys: <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">signature</span>, <span class="mono">expires</span>, <span class="mono">state</span>, <span class="mono">nonce</span>.
+          </div>
         </div>
 
         <div class="box">
           <h3>Affiliate/Partner-Attribution fehlt</h3>
           <ul>
-            <li>Wenn du Attribution bewusst behalten willst, nutze Pro + Whitelist (z. B. <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>).</li>
-            <li>Danach Link erneut bereinigen und prüfen.</li>
+            <li>Wenn du Attribution behalten willst: nutze Pro + Whitelist.</li>
+            <li>Typische Keys: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>, <span class="mono">utm_campaign</span> (Achtung: UTM ist oft „Marketing“, manchmal aber gewollt).</li>
+            <li>Danach Link neu bereinigen und Audit prüfen.</li>
           </ul>
+          <div class="note">
+            Wichtig: SafeShare entfernt in der App bewusst <span class="mono">utm_*</span>. Wenn du UTM behalten willst, ist das ein Pro-Case (Whitelist/Policy).
+          </div>
         </div>
 
         <div class="box">
           <h3>404 bei Pro-App</h3>
           <ul>
-            <li>Die Pro-App liegt nicht öffentlich. Öffne sie über den Payhip-Download: <span class="mono">01-START.html</span>.</li>
-            <li>Wenn du Dateien umbenannt hast: Links in <span class="mono">pro.html</span> und im Paket-Start prüfen.</li>
+            <li>Die Pro-App ist nicht öffentlich. Öffne sie über <span class="mono">01-START.html</span> im Payhip-Download.</li>
+            <li>Wenn du Dateien umbenannt hast: Links in <span class="mono">01-START.html</span> und im Paket prüfen.</li>
           </ul>
         </div>
 
         <div class="box">
           <h3>„Es passiert nichts“ / Ergebnis wirkt falsch</h3>
           <ul>
-            <li>Link nochmal komplett neu kopieren (nicht aus einem alten Zwischenspeicher).</li>
-            <li>Seite neu laden und erneut testen.</li>
-            <li>Alternativ: privater Tab oder anderer Browser.</li>
+            <li>Link neu kopieren (nicht aus Autovervollständigung).</li>
+            <li>Seite neu laden, dann erneut testen.</li>
+            <li>Wenn möglich: in einem privaten Tab testen.</li>
           </ul>
+          <div class="note">
+            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann kann man das Muster schnell erkennen.
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- iOS -->
     <section class="card" id="ios">
       <h2>iPad / iPhone Hinweise</h2>
       <ul>
-        <li>Am stabilsten ist: App öffnen → Link einfügen → Ergebnis kopieren → teilen.</li>
-        <li>Bookmarklets können auf iOS je nach Browser/Version unzuverlässig sein.</li>
+        <li>Stabiler Standard-Workflow: App öffnen → Link einfügen → Ergebnis kopieren → teilen.</li>
+        <li>Bookmarklets können auf iOS je nach Browser/Version unzuverlässig sein. Wenn’s hakt: Copy/Paste in der App ist stabil.</li>
       </ul>
       <div class="note">
         Optional später: iOS Shortcut (Share Sheet → Clean with SafeShare) als besonders schneller Workflow.
       </div>
     </section>
 
+    <!-- Kontakt -->
     <section class="card" id="kontakt">
       <h2>Kontakt</h2>
       <p>
-        Wenn du einen reproduzierbaren Fehler hast: schick 1 Beispiel-URL + was du erwartet hast + was tatsächlich passiert.
+        Wenn du einen reproduzierbaren Fehler hast, schick bitte:
       </p>
+      <ul>
+        <li>1 Beispiel-URL (gern „entschärft“/ohne private Tokens)</li>
+        <li>Was du erwartest</li>
+        <li>Was tatsächlich passiert</li>
+        <li>Optional: Screenshot des Audits (Pro)</li>
+      </ul>
       <div class="box">
         <p style="margin:0"><b>E-Mail:</b> <span class="mono">support.safeshare@proton.me</span></p>
       </div>
     </section>
 
+    <!-- FOOTER wie app.html -->
     <footer>
-      <div class="footLinks">
-        <a href="index.html">Start</a>
-        <a href="app.html">App</a>
-        <a href="pro.html">Pro</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="impressum.html">Impressum</a>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
       </div>
     </footer>
   </div>
@@ -400,11 +465,12 @@
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <div class="divider"></div>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
   </nav>
 
   <script>
     (function(){
-      // active tab
+      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
