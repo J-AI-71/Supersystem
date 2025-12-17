@@ -92,6 +92,8 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor: pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -192,6 +194,7 @@
     .planList{ margin: 12px 0 0 18px; color: rgba(255,255,255,.78); line-height: 1.55; }
     .smallNote{ margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.60); }
 
+    /* Footer (wie app.html: Grid + Links) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -199,12 +202,25 @@
       font-size: 12px;
       line-height: 1.55;
     }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
     }
     .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -261,6 +277,16 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+
+    /* FAQ: optional besser lesbar */
+    .faqItem{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .faqQ{ margin:0 0 6px; font-size: 15px; letter-spacing: -.1px; }
+    .faqA{ margin:0; color: var(--muted); line-height: 1.6; }
   </style>
 </head>
 
@@ -356,10 +382,10 @@
         <li><b>Handbuch Pro</b>: klare Regeln + Best Practices (für Publishing)</li>
       </ul>
 
-    <div class="row">
-      <a class="btn" href="#pricing">Kaufen</a>
-      <a class="btn ghost" href="help.html">Hilfe</a>
-    </div>
+      <div class="row">
+        <a class="btn" href="#pricing">Kaufen</a>
+        <a class="btn ghost" href="help.html">Hilfe</a>
+      </div>
     </section>
 
     <!-- PRICING -->
@@ -391,7 +417,7 @@
           </ul>
 
           <div class="row" style="margin-top:12px">
-            <a class="btn primary" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person kaufen</a>
+            <a class="btn primary" href="https://payhip.com/b/VDm3B" target="_blank" rel="noopener">Pro Person kaufen</a>
           </div>
 
           <div class="smallNote">Später: 79 €.</div>
@@ -425,38 +451,101 @@
       </div>
 
       <div class="note" style="margin-top:14px">
-        Nach dem Kauf: Payhip-Downloadseite öffnen → 01-START.html → Pro App + Handbuch.
+        Nach dem Kauf: Payhip-Downloadseite öffnen → <b>01-START.html</b> → Pro App + Handbuch.
       </div>
     </section>
 
-    <!-- FAQ KURZ -->
-    <section class="card">
-      <h2>FAQ</h2>
+    <!-- FAQ AUSGEBAUT -->
+    <section class="card" id="faq">
+      <h2>FAQ (Pro)</h2>
+
       <div class="grid2">
-        <div class="box">
-          <h3>Ist Pro „mehr Schutz“?</h3>
-          <p>
-            Pro ist <b>mehr Kontrolle</b>: du reduzierst unnötige Parameter und dokumentierst Änderungen.
-            Es ist keine Unsichtbarkeit und kein Anti-Tracking-„Zauber“.
+        <div class="faqItem">
+          <h3 class="faqQ">Was ist der Unterschied zwischen App und Pro?</h3>
+          <p class="faqA">
+            Die App ist für „schnell säubern“ (UTM, Klick-IDs, typische Tracker). Pro ist für Veröffentlichung:
+            <b>Regeln</b> (Presets/Policies), <b>bewusst behalten</b> (Whitelist) und <b>nachvollziehen</b> (Audit).
           </p>
         </div>
-        <div class="box">
-          <h3>Warum Whitelist?</h3>
-          <p>
-            Weil manche Parameter funktional oder zuordnungsrelevant sind (Affiliate/Partner, Sprache, Varianten).
-            Pro verhindert, dass du Dinge kaputt-optimierst.
+
+        <div class="faqItem">
+          <h3 class="faqQ">Wofür brauche ich ein Audit?</h3>
+          <p class="faqA">
+            Damit du nicht raten musst. Audit zeigt: „entfernt“, „behalten“, „Whitelist-Treffer“ und Hinweise.
+            Das ist wichtig bei sensiblen Links (Token/Signaturen), bei Redaktion/Compliance oder wenn mehrere Personen im Team arbeiten.
+          </p>
+        </div>
+
+        <div class="faqItem">
+          <h3 class="faqQ">Ist Pro „mehr Schutz“ oder „Anti-Tracking“?</h3>
+          <p class="faqA">
+            Pro ist <b>mehr Kontrolle</b> über Link-Hygiene. Es macht dich nicht unsichtbar und ersetzt keine Browser-Schutzmechanismen.
+            Es reduziert unnötige Tracking-Anteile im Link selbst – und macht das Ergebnis überprüfbar.
+          </p>
+        </div>
+
+        <div class="faqItem">
+          <h3 class="faqQ">Kann ich Affiliate-/Partner-Parameter behalten?</h3>
+          <p class="faqA">
+            Ja. In Pro kannst du Attribution gezielt erhalten (Whitelist z. B. <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>),
+            während Tracking-Parameter weiterhin entfernt werden.
+          </p>
+        </div>
+
+        <div class="faqItem">
+          <h3 class="faqQ">Warum brauche ich Whitelist/Allowlist?</h3>
+          <p class="faqA">
+            Manche Parameter sind funktional (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">lang</span>, <span class="mono">page</span>)
+            oder sicherheitsrelevant (Token/Signatur). Pro hilft, nicht „kaputt zu optimieren“.
+          </p>
+        </div>
+
+        <div class="faqItem">
+          <h3 class="faqQ">Was, wenn ein Link nach dem Säubern nicht mehr funktioniert?</h3>
+          <p class="faqA">
+            Dann war wahrscheinlich ein funktionaler Key nötig (Token/Signatur/State/Expires). Pro macht das sichtbar (Audit) und du kannst
+            gezielt whitelisten. Wenn du unsicher bist: Preset <b>konservativ</b>.
+          </p>
+        </div>
+
+        <div class="faqItem">
+          <h3 class="faqQ">Wie funktioniert die Lizenz bei Pro Person / Pro Team?</h3>
+          <p class="faqA">
+            <b>Pro Person</b> ist für eine Person (nicht übertragbar). <b>Pro Team</b> gilt für bis zu 5 Personen innerhalb eines Teams/Projekts.
+            Fair Use: Bitte nur im gekauften Umfang verwenden.
+          </p>
+        </div>
+
+        <div class="faqItem">
+          <h3 class="faqQ">Wie nutze ich Pro nach dem Kauf?</h3>
+          <p class="faqA">
+            Payhip-Download öffnen → <b>01-START.html</b> starten → von dort Pro App und Handbuch öffnen. (Offline nutzbar.)
           </p>
         </div>
       </div>
+
+      <div class="note" style="margin-top:12px">
+        Tipp: Wenn du Pro verkaufst, halte die „Pro App liegt nicht öffentlich“-Botschaft kurz. Details gehören in <a href="help.html">Hilfe</a>.
+      </div>
     </section>
 
+    <!-- FOOTER (wie app.html) -->
     <footer>
-      <div class="footLinks">
-        <a href="index.html">Start</a>
-        <a href="app.html">App</a>
-        <a href="pro.html">Pro</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="impressum.html">Impressum</a>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
       </div>
     </footer>
   </div>
@@ -470,11 +559,15 @@
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <div class="divider"></div>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
   </nav>
 
   <script>
     (function(){
-      // active tab
+      // active tab / active menu items
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
@@ -507,4 +600,3 @@
   </script>
 </body>
 </html>
-
