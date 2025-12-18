@@ -94,6 +94,7 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      appearance:none; background: transparent;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -278,7 +279,9 @@
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
@@ -289,15 +292,15 @@
       <h1>Was sind Tracking-Parameter?</h1>
       <p>
         Tracking-Parameter sind Zusatzinfos am Link, die Herkunft/Kampagnen/Klick-IDs beschreiben.
-        Sie sind oft wie „Etiketten“: technisch nicht nötig für den Inhalt – aber nützlich für Messung/Attribution.
+        Sie sind wie „Etiketten“: technisch nicht nötig für den Inhalt – aber nützlich für Messung/Attribution.
       </p>
       <div class="row">
         <a class="btn primary" href="app.html">Link bereinigen</a>
         <a class="btn" href="utm-parameter-entfernen.html">UTM</a>
-        <a class="btn ghost" href="pro.html">Pro (Audit/Whitelist)</a>
+        <a class="btn ghost" href="pro.html">Pro (Audit/Allowlist)</a>
       </div>
       <div class="note">
-        SafeShare entfernt Parameter local-first im Browser. Keine Link-Uploads.
+        SafeShare entfernt Parameter local-first im Browser. Links werden nicht hochgeladen.
       </div>
     </section>
 
@@ -373,7 +376,7 @@
       </div>
 
       <div class="warn">
-        Profi-Ansatz: Regeln + Audit. In Pro solltest du klar sehen, was entfernt wurde (removed) und was bewusst bleibt (kept/whitelist).
+        Profi-Ansatz: Regeln + Audit. In Pro solltest du klar sehen, was entfernt wurde (removed) und was bewusst bleibt (kept/allowlist).
       </div>
     </section>
 
@@ -381,7 +384,7 @@
       <h2>So nutzt du SafeShare sinnvoll</h2>
       <ul>
         <li><b>App:</b> Entfernt typische Tracking-Parameter für Alltag/Sharing.</li>
-        <li><b>Pro:</b> Für Profis: Presets/Policies + Whitelist + Audit („Was wurde geändert“).</li>
+        <li><b>Pro:</b> Für Profis: Presets/Policies + Allowlist (Whitelist) + Audit („Was wurde geändert“).</li>
       </ul>
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
@@ -394,9 +397,9 @@
       <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
           <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="education.html" data-page="education.html">Schule</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -414,6 +417,8 @@
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
     <div class="divider"></div>
+    <div class="menuHint">Support</div>
+    <a href="help.html" data-page="help.html">Hilfe</a>
   </nav>
 
   <script>
@@ -447,6 +452,7 @@
       });
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
     })();
   </script>
 </body>
