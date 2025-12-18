@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Bookmarklets – SafeShare</title>
-  <meta name="description" content="SafeShare Bookmarklets: 1-Klick SafeShare öffnen und die aktuelle URL übernehmen. Mit Setup-Anleitung, iOS-Hinweisen und Fehlersuche." />
+  <meta name="description" content="SafeShare Bookmarklets: 1-Klick Link bereinigen (aktuelle URL oder per Einfügen). Desktop-Anleitung, Troubleshooting und iOS-Hinweis." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -30,7 +30,6 @@
       --ok: rgba(47,227,183,.16);
       --bad: rgba(255,84,84,.14);
       --max: 1120px;
-      --focus: 0 0 0 3px rgba(47,227,183,.22);
     }
     @media (prefers-color-scheme: light){
       :root{
@@ -44,7 +43,6 @@
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
         --bad: rgba(255,84,84,.12);
-        --focus: 0 0 0 3px rgba(17,130,98,.18);
       }
     }
     *{ box-sizing:border-box; }
@@ -60,10 +58,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 14px; padding: 10px 2px 12px;
-    }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -75,14 +70,8 @@
     .logoWrap img{ width:28px; height:28px; display:block; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
-    .brandText .title{
-      font-size: 16px; font-weight: 780; line-height:1.1;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .brandText .sub{
-      font-size: 12px; color: var(--muted2); margin-top:2px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
@@ -105,8 +94,6 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
-      background: transparent;
-      cursor:pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -174,18 +161,8 @@
       border-radius: 16px;
       padding: 12px;
     }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      white-space: nowrap;
-    }
 
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
     .code{
       margin-top: 10px;
       padding: 12px 12px;
@@ -194,8 +171,9 @@
       background: rgba(255,255,255,.03);
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.55;
+      line-height: 1.5;
       word-break: break-word;
+      user-select: text;
       white-space: pre-wrap;
     }
     .copyRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
@@ -209,15 +187,6 @@
       cursor:pointer;
     }
     .copyBtn:hover{ background: rgba(255,255,255,.10); }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
-    }
-    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
 
     footer{
       margin-top: 18px;
@@ -226,25 +195,12 @@
       font-size: 12px;
       line-height: 1.55;
     }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 14px;
-    }
-    @media(min-width: 920px){
-      .footGrid{ grid-template-columns: 1.2fr .8fr; }
-    }
     .footLinks{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-start;
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
     }
     .footLinks a{
-      padding: 6px 10px;
-      border-radius: 999px;
+      padding: 6px 10px; border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -318,7 +274,7 @@
           <div class="sub">Bookmarklets</div>
         </div>
       </div>
-      <div class="small">1-Klick Workflows</div>
+      <div class="small">1-Klick (Desktop)</div>
     </header>
 
     <div class="tabsBar">
@@ -331,193 +287,130 @@
       </div>
     </div>
 
-    <!-- HERO -->
     <section class="card">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Bookmarklets</div>
-      <h1>SafeShare mit 1 Klick öffnen – und die aktuelle URL übernehmen</h1>
+      <h1>Bookmarklets</h1>
       <p>
-        Ein Bookmarklet ist ein normales Lesezeichen, das ein kleines Script im aktuellen Tab ausführt.
-        Damit kannst du die URL, die du gerade ansiehst, direkt an SafeShare übergeben – ohne Copy/Paste.
+        Bookmarklets sind Lesezeichen, die ein kleines Script ausführen. Damit kannst du SafeShare auf Desktop sehr schnell nutzen:
+        <b>aktuellen Link übernehmen</b> → SafeShare öffnen → optional direkt bereinigen.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="#bookmarklets">Bookmarklets</a>
-        <a class="btn" href="#setup">Einrichten</a>
-        <a class="btn ghost" href="#debug">Fehlersuche</a>
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="help.html">Hilfe</a>
+        <a class="btn ghost" href="pro.html#pricing">Pro ansehen</a>
       </div>
 
       <div class="warn">
-        iOS/Safari und „In-App-Browser“ (z. B. Instagram/TikTok) schränken Bookmarklets oft ein.
-        Wenn es hakt: SafeShare App öffnen → Link einfügen → bereinigen.
+        iOS/iPad: Bookmarklets sind je nach Safari-Version eingeschränkt. Für „echtes 1-Klick“ auf iOS ist ein Shortcut im Share-Sheet stabiler.
       </div>
     </section>
 
-    <!-- PRINZIP -->
-    <section class="card" id="prinzip">
-      <h2>Wie es technisch funktioniert (kurz)</h2>
-      <div class="grid2">
-        <div class="box">
-          <h3>Übergabe per <span class="mono">?u=</span></h3>
-          <p>
-            Das Bookmarklet liest <span class="mono">location.href</span> (die aktuelle URL) und öffnet danach SafeShare mit
-            <span class="mono">?u=…</span>. Dadurch kann SafeShare die URL automatisch ins Eingabefeld übernehmen.
-          </p>
-          <div class="note">
-            Damit es „1-Klick“ ist, sollte <span class="mono">app.html</span> den Parameter <span class="mono">u</span> beim Laden übernehmen.
-            (Wenn das bei dir noch fehlt: sag Bescheid – ich gebe dir den minimalen Patch für app.html.)
-          </div>
-        </div>
-        <div class="box">
-          <h3>Sicherheits-/Browser-Limits</h3>
-          <p>
-            Bookmarklets dürfen nur sehr begrenzt arbeiten: sie können i. d. R. nur die aktuelle URL lesen und umleiten.
-            Viele Browser blockieren Bookmarklets in eingebetteten Browsern oder aus Sicherheitsgründen komplett.
-          </p>
-          <div class="warn">
-            Wenn ein Browser Bookmarklets blockiert, ist das kein „Bug“ von SafeShare – sondern eine Plattform-Beschränkung.
-          </div>
-        </div>
-      </div>
-    </section>
+    <section class="card">
+      <h2>1) App öffnen &amp; URL nur ausfüllen</h2>
+      <p>Übernimmt die aktuelle Seite in SafeShare (Parameter <span class="mono">u</span>). Du klickst danach manuell auf „Bereinigen“.</p>
 
-    <!-- BOOKMARKLETS -->
-    <section class="card" id="bookmarklets">
-      <h2>Bookmarklets (fertig)</h2>
-      <p>
-        Empfehlung: Nutze die <b>absolute</b> Variante. Sie ist unabhängig von Pfaden und verhindert viele 404/Fehlleitungen.
-      </p>
-
-      <div class="grid2">
-        <div class="box" id="bm-app-abs">
-          <h3>1) SafeShare App öffnen (empfohlen, absolute URL)</h3>
-          <p class="muted">Öffnet SafeShare App und übergibt die aktuelle URL.</p>
-          <div class="code mono" id="codeOpenAppAbs">javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();</div>
-          <div class="copyRow">
-            <button class="copyBtn" type="button" data-copy="#codeOpenAppAbs">Code kopieren</button>
-            <a class="btn ghost" href="app.html?u=https%3A%2F%2Fexample.com" style="padding:8px 12px;font-size:13px;">Test: URL-Übernahme</a>
-          </div>
-          <div class="note">
-            Test-Link öffnet SafeShare mit <span class="mono">example.com</span>. Wenn das Eingabefeld leer bleibt, fehlt in app.html das Lesen von <span class="mono">?u=</span>.
-          </div>
+      <div class="box">
+        <h3>Bookmarklet</h3>
+        <div class="code mono" id="codeFillOnly">
+javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();
         </div>
-
-        <div class="box" id="bm-pro-landing">
-          <h3>2) Pro-Seite öffnen (nur Landing, optional)</h3>
-          <p class="muted">Öffnet die öffentliche Pro-Übersicht und übergibt die aktuelle URL (für Kontext/Copy-Transfer).</p>
-          <div class="code mono" id="codeOpenProLanding">javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/pro.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare Pro: konnte URL nicht lesen.');}})();</div>
-          <div class="copyRow">
-            <button class="copyBtn" type="button" data-copy="#codeOpenProLanding">Code kopieren</button>
-          </div>
-          <div class="warn">
-            Die <b>gekaufte Pro-App</b> liegt nicht öffentlich. Für Käufer ist der schnellste Einstieg:
-            Payhip-Download → <span class="mono">01-START.html</span> → dort Pro-App öffnen.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SETUP -->
-    <section class="card" id="setup">
-      <h2>Einrichten (Desktop)</h2>
-      <ol>
-        <li>Lege ein neues Lesezeichen an (z. B. „SafeShare Clean“).</li>
-        <li>Bearbeite das Lesezeichen.</li>
-        <li>Füge den Bookmarklet-Code in das URL-Feld ein (beginnt mit <span class="mono">javascript:</span>).</li>
-        <li>Beim Surfen: Lesezeichen anklicken → SafeShare öffnet mit der aktuellen URL.</li>
-      </ol>
-
-      <div class="warn">
-        Manche Browser entfernen <span class="mono">javascript:</span>, wenn du es „zu bequem“ einfügst.
-        Dann: erst speichern → danach nochmal bearbeiten → Code erneut in das URL-Feld.
-      </div>
-    </section>
-
-    <!-- iOS -->
-    <section class="card" id="ios">
-      <h2>iPad/iPhone: was realistisch funktioniert</h2>
-      <div class="grid2">
-        <div class="box">
-          <h3>Stabiler Standard-Workflow</h3>
-          <ul>
-            <li>Link kopieren</li>
-            <li><a href="app.html"><b>SafeShare App</b></a> öffnen</li>
-            <li>Einfügen → bereinigen → Ergebnis teilen</li>
-          </ul>
-          <div class="note">Das ist auf iOS oft schneller als „Bookmarklet-Troubleshooting“.</div>
-        </div>
-        <div class="box">
-          <h3>Warum Bookmarklets auf iOS oft zicken</h3>
-          <ul>
-            <li>Safari blockiert/limitiert JavaScript-Bookmarks je nach Version und Kontext.</li>
-            <li>In-App-Browser (Social Apps) sind häufig noch strenger.</li>
-            <li>Service Worker/Cache kann Updates „kleben“ lassen → siehe Hilfe.</li>
-          </ul>
-          <div class="warn">
-            Wenn du 1-Klick auf iOS willst, ist ein Shortcut im Share-Sheet meist die robustere Lösung als Bookmarklets.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DEBUG -->
-    <section class="card" id="debug">
-      <h2>Fehlersuche (Checkliste)</h2>
-      <div class="grid2">
-        <div class="box">
-          <h3>A) Klick macht „nichts“</h3>
-          <ul>
-            <li>Passiert es in einer App (In-App-Browser)? → dort sind Bookmarklets oft blockiert.</li>
-            <li>Teste im normalen Safari/Chrome Desktop auf einer Website.</li>
-            <li>Fallback: Copy/Paste in <a href="app.html"><b>app.html</b></a>.</li>
-          </ul>
-        </div>
-        <div class="box">
-          <h3>B) SafeShare öffnet, aber URL fehlt</h3>
-          <ul>
-            <li>Öffne den Test-Link oben („URL-Übernahme“).</li>
-            <li>Wenn das Eingabefeld leer bleibt: app.html übernimmt <span class="mono">?u=</span> noch nicht.</li>
-            <li>Dann ist es kein Bookmarklet-Problem, sondern ein kleiner App-Hook.</li>
-          </ul>
-        </div>
-        <div class="box">
-          <h3>C) Du landest auf einer falschen Seite / 404</h3>
-          <ul>
-            <li>Nutze die absolute Bookmarklet-Variante (empfohlen).</li>
-            <li>Relative Links können je nach Pfad falsch auflösen.</li>
-          </ul>
-        </div>
-        <div class="box">
-          <h3>D) Copy-Button funktioniert nicht</h3>
-          <ul>
-            <li>Clipboard kann blockiert sein (Kontext/Browser/iOS).</li>
-            <li>Dann: Code-Block markieren → manuell kopieren.</li>
-          </ul>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codeFillOnly">Code kopieren</button>
         </div>
       </div>
 
       <div class="note">
-        Wenn du mir zur Diagnose schreibst: <b>Gerät</b>, <b>Browser</b> und ob es in <b>Safari direkt</b> oder in einer <b>App</b> passiert,
-        ist die Ursache in der Regel sofort klar.
+        Technisch: Dieses Bookmarklet nutzt eine absolute URL, damit es auf jeder Website funktioniert (nicht nur innerhalb von SafeShare).
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2) App öffnen &amp; sofort bereinigen (1-Klick)</h2>
+      <p>Wie oben, aber mit <span class="mono">run=1</span>. SafeShare übernimmt die URL und startet direkt die Bereinigung.</p>
+
+      <div class="box">
+        <h3>Bookmarklet</h3>
+        <div class="code mono" id="codeAutoRun">
+javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();
+        </div>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codeAutoRun">Code kopieren</button>
+        </div>
+      </div>
+
+      <div class="note">
+        Voraussetzung: <span class="mono">app.html</span> muss <span class="mono">?u=</span> lesen und bei <span class="mono">run=1</span> automatisch bereinigen.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3) „Einfügen“-Bookmarklet (wenn du nicht auf der Zielseite bist)</h2>
+      <p>Fragt dich nach einer URL (einfügen) und öffnet SafeShare direkt mit Auto-Bereinigung.</p>
+
+      <div class="box">
+        <h3>Bookmarklet</h3>
+        <div class="code mono" id="codePasteRun">
+javascript:(function(){try{var u=prompt('SafeShare: URL einfügen');if(!u)return;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht übernehmen.');}})();
+        </div>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codePasteRun">Code kopieren</button>
+        </div>
+      </div>
+
+      <div class="warn">
+        Hinweis: Das ist kein Clipboard-Zugriff. Du fügst manuell ein (Browser-Sicherheit).
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Einrichten (Desktop)</h2>
+      <ol>
+        <li>Lesezeichen erstellen (Bookmark hinzufügen)</li>
+        <li>Name: z. B. <b>SafeShare</b> / <b>SafeShare 1-Klick</b></li>
+        <li>URL/Feld: den Bookmarklet-Code einfügen (muss mit <span class="mono">javascript:</span> beginnen)</li>
+        <li>Auf einer Website klicken → SafeShare öffnet</li>
+      </ol>
+
+      <div class="note">
+        Tipp: Viele Browser entfernen Leerzeichen/Zeilenumbrüche automatisch – trotzdem am besten den Code genau als eine Zeile einfügen.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Fehlersuche (wenn es „nicht geht“)</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Es passiert nichts</h3>
+          <ul>
+            <li>Prüfe: beginnt wirklich mit <span class="mono">javascript:</span>?</li>
+            <li>Wurde der Code vom Browser „bereinigt“/gekürzt? Dann neu einfügen.</li>
+            <li>In manchen Setups blockt der Browser Bookmarklets aus Sicherheitsgründen → Shortcut nutzen.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>SafeShare öffnet, aber Feld bleibt leer</h3>
+          <ul>
+            <li>Dann übernimmt <span class="mono">app.html</span> den Parameter <span class="mono">u</span> noch nicht.</li>
+            <li>Lösung: Patch in <span class="mono">app.html</span> (Übernahme von <span class="mono">?u=</span> + optional <span class="mono">run=1</span>).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="warn">
+        iOS/iPad: Wenn Bookmarklets zicken, nutze den Share-Sheet Shortcut (robust) statt Browser-Bookmarklet.
       </div>
     </section>
 
     <footer>
-      <div class="footGrid">
-        <div>
-          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
-        </div>
-        <div class="footLinks">
-          <a href="index.html" data-page="index.html">Start</a>
-          <a href="app.html" data-page="app.html">App</a>
-          <a href="pro.html" data-page="pro.html">Pro</a>
-          <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-          <a href="education.html" data-page="education.html">Schule</a>
-          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          <a href="impressum.html" data-page="impressum.html">Impressum</a>
-          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
-        </div>
+      <div class="footLinks">
+        <a href="index.html" data-page="index.html">Start</a>
+        <a href="app.html" data-page="app.html">App</a>
+        <a href="pro.html" data-page="pro.html">Pro</a>
+        <a href="help.html" data-page="help.html">Hilfe</a>
+        <a href="education.html" data-page="education.html">Schule</a>
+        <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+        <a href="impressum.html" data-page="impressum.html">Impressum</a>
+        <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
       </div>
     </footer>
   </div>
@@ -538,7 +431,7 @@
 
   <script>
     (function(){
-      // active links
+      // active tab
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
@@ -549,7 +442,6 @@
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
-
       function openMenu(){
         overlay.hidden = false; menu.hidden = false;
         requestAnimationFrame(() => menu.classList.add('open'));
@@ -576,9 +468,7 @@
         }catch(e){
           const ta = document.createElement('textarea');
           ta.value = text;
-          ta.setAttribute('readonly','');
-          ta.style.position='fixed';
-          ta.style.left='-9999px';
+          ta.style.position='fixed'; ta.style.left='-9999px';
           document.body.appendChild(ta);
           ta.focus(); ta.select();
           try{ document.execCommand('copy'); }catch(_){}
@@ -586,7 +476,6 @@
           return true;
         }
       }
-
       document.querySelectorAll('[data-copy]').forEach(b=>{
         b.addEventListener('click', async ()=>{
           const sel = b.getAttribute('data-copy');
@@ -594,8 +483,9 @@
           const txt = (el ? el.textContent : '').trim();
           if (!txt) return;
           await copyText(txt);
+          const old = b.textContent;
           b.textContent = 'Kopiert ✓';
-          setTimeout(()=>b.textContent='Code kopieren', 1200);
+          setTimeout(()=>b.textContent=old, 1200);
         });
       });
     })();
