@@ -208,6 +208,18 @@
     }
     .copyBtn:hover{ background: rgba(255,255,255,.10); }
 
+    .field{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      padding: 12px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    .field:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
+
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -322,7 +334,6 @@
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <!-- FIX: kein active auf Mehr -->
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -342,8 +353,22 @@
       </div>
 
       <div class="note">
-        iOS/iPad: Am stabilsten ist ein <b>Share-Sheet Shortcut</b> (beim Teilen → „Clean with SafeShare“).
+        iOS/iPad: Am stabilsten ist ein <b>Share-Sheet Shortcut</b>.
         Bookmarklets sind vor allem eine Desktop-Abkürzung.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Test (um App vs. Bookmarklet zu trennen)</h2>
+      <p>Wenn das hier klappt, ist <b>die App ok</b> – dann liegt es am Browser/Speichern des Bookmarklets.</p>
+      <input class="field" id="testUrl" placeholder="URL einfügen, z. B. https://example.com/?utm_source=test" />
+      <div class="row">
+        <button class="btn primary" type="button" id="btnTestRun">In SafeShare öffnen (run=1)</button>
+        <button class="btn" type="button" id="btnTestFill">In SafeShare öffnen (nur ausfüllen)</button>
+      </div>
+      <div class="warn">
+        Wenn SafeShare leer bleibt oder nicht startet: sehr wahrscheinlich <b>Cache/alte app.html</b>.
+        Dann Service-Worker Update erzwingen (Hard-Reload / Cache löschen / SW-Version bump).
       </div>
     </section>
 
@@ -352,15 +377,21 @@
       <p>Übernimmt die aktuelle Seite in SafeShare (Parameter <span class="mono">u</span>). Du klickst danach manuell auf „Bereinigen“.</p>
 
       <div class="box">
-        <h3>Bookmarklet</h3>
-        <div class="code mono" id="codeFillOnly">javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();</div>
+        <h3>Drag-to-Bookmarks (Desktop)</h3>
+        <p class="muted">Zieh den Button in deine Lesezeichenleiste (Chrome/Firefox/Edge). Das ist am zuverlässigsten.</p>
+        <div class="row">
+          <a class="btn primary" id="dragFillOnly" href="#">SafeShare (nur ausfüllen)</a>
+        </div>
+
+        <h3 style="margin-top:14px">Bookmarklet-Code</h3>
+        <div class="code mono" id="codeFillOnly"></div>
         <div class="copyRow">
           <button class="copyBtn" type="button" data-copy="#codeFillOnly">Code kopieren</button>
         </div>
       </div>
 
       <div class="note">
-        Dieses Bookmarklet nutzt eine absolute URL, damit es auf jeder Website funktioniert (nicht nur innerhalb von SafeShare).
+        Absolute URL (GitHub Pages) → funktioniert auf jeder Website (nicht nur innerhalb von SafeShare).
       </div>
     </section>
 
@@ -369,8 +400,13 @@
       <p>Wie oben, aber mit <span class="mono">run=1</span>. SafeShare übernimmt die URL und startet direkt die Bereinigung.</p>
 
       <div class="box">
-        <h3>Bookmarklet</h3>
-        <div class="code mono" id="codeAutoRun">javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();</div>
+        <h3>Drag-to-Bookmarks (Desktop)</h3>
+        <div class="row">
+          <a class="btn primary" id="dragAutoRun" href="#">SafeShare (1-Klick)</a>
+        </div>
+
+        <h3 style="margin-top:14px">Bookmarklet-Code</h3>
+        <div class="code mono" id="codeAutoRun"></div>
         <div class="copyRow">
           <button class="copyBtn" type="button" data-copy="#codeAutoRun">Code kopieren</button>
         </div>
@@ -382,19 +418,24 @@
     </section>
 
     <section class="card">
-      <h2>3) „Einfügen“-Bookmarklet (wenn du nicht auf der Zielseite bist)</h2>
+      <h2>3) „Einfügen“-Bookmarklet</h2>
       <p>Fragt dich nach einer URL (einfügen) und öffnet SafeShare direkt mit Auto-Bereinigung.</p>
 
       <div class="box">
-        <h3>Bookmarklet</h3>
-        <div class="code mono" id="codePasteRun">javascript:(function(){try{var u=prompt('SafeShare: URL einfügen');if(!u)return;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht übernehmen.');}})();</div>
+        <h3>Drag-to-Bookmarks (Desktop)</h3>
+        <div class="row">
+          <a class="btn primary" id="dragPasteRun" href="#">SafeShare (einfügen + 1-Klick)</a>
+        </div>
+
+        <h3 style="margin-top:14px">Bookmarklet-Code</h3>
+        <div class="code mono" id="codePasteRun"></div>
         <div class="copyRow">
           <button class="copyBtn" type="button" data-copy="#codePasteRun">Code kopieren</button>
         </div>
       </div>
 
       <div class="warn">
-        Das ist kein Clipboard-Zugriff. Du fügst manuell ein (Browser-Sicherheit).
+        Kein Clipboard-Zugriff: du fügst manuell ein (Browser-Sicherheit).
       </div>
     </section>
 
@@ -406,10 +447,7 @@
         <li>URL/Feld: den Bookmarklet-Code einfügen (muss mit <span class="mono">javascript:</span> beginnen)</li>
         <li>Auf einer Website klicken → SafeShare öffnet</li>
       </ol>
-
-      <div class="note">
-        Tipp: Als <b>eine Zeile</b> einfügen (ohne Umbrüche).
-      </div>
+      <div class="note">Tipp: Als <b>eine Zeile</b> einfügen (ohne Umbrüche). Drag-Buttons sind noch zuverlässiger.</div>
     </section>
 
     <section class="card">
@@ -418,16 +456,17 @@
         <div class="box">
           <h3>Es passiert nichts</h3>
           <ul>
-            <li>Prüfe: beginnt wirklich mit <span class="mono">javascript:</span>?</li>
-            <li>Wurde der Code vom Browser gekürzt? Dann neu einfügen.</li>
-            <li>Manche Browser blocken Bookmarklets je nach Sicherheitsmodus.</li>
+            <li>Prüfe: beginnt die Lesezeichen-URL wirklich mit <span class="mono">javascript:</span>?</li>
+            <li>Wurde der Code gekürzt/umgeschrieben? (passiert bei manchen Browsern)</li>
+            <li>Teste auf einer „normalen“ Website (nicht PDF-Viewer / nicht interne Browserseiten).</li>
           </ul>
         </div>
         <div class="box">
-          <h3>SafeShare öffnet, aber Feld bleibt leer</h3>
+          <h3>SafeShare öffnet, aber Feld bleibt leer / run=1 startet nicht</h3>
           <ul>
-            <li>Dann übernimmt <span class="mono">app.html</span> den Parameter <span class="mono">u</span> noch nicht.</li>
-            <li>Lösung: Patch in <span class="mono">app.html</span> (Übernahme von <span class="mono">?u=</span> + optional <span class="mono">run=1</span>).</li>
+            <li>Dann ist es fast immer <b>App-Version oder Cache</b>.</li>
+            <li>Direkt-Test (oben) ausführen.</li>
+            <li>Wenn Direkt-Test nicht geht: Service-Worker/Cache aktualisieren.</li>
           </ul>
         </div>
       </div>
@@ -457,19 +496,94 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
+    <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
     <div class="divider"></div>
-    <div class="menuHint">Support</div>
-    <a href="help.html#kontakt" data-page="help.html">Kontakt</a>
-    <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
     (function(){
+      const BASE = 'https://j-ai-71.github.io/Supersystem/app.html';
+
+      function buildUrl(u, run){
+        return BASE + '?u=' + encodeURIComponent(u) + (run ? '&run=1' : '');
+      }
+
+      function normInput(u){
+        u = (u || '').trim();
+        if(!u) return '';
+        // wenn jemand "example.com" einfügt, machen wir https:// daraus
+        if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+        return u;
+      }
+
+      function bookmarkletFillOnly(){
+        try{
+          var u = location.href;
+          location.assign(buildUrl(u, false));
+        }catch(e){
+          alert('SafeShare: konnte URL nicht lesen.');
+        }
+      }
+      function bookmarkletAutoRun(){
+        try{
+          var u = location.href;
+          location.assign(buildUrl(u, true));
+        }catch(e){
+          alert('SafeShare: konnte URL nicht lesen.');
+        }
+      }
+      function bookmarkletPasteRun(){
+        try{
+          var u = prompt('SafeShare: URL einfügen');
+          u = normInput(u);
+          if(!u) return;
+          location.assign(buildUrl(u, true));
+        }catch(e){
+          alert('SafeShare: konnte URL nicht übernehmen.');
+        }
+      }
+
+      // Codes (als echte Bookmarklet-URLs)
+      function toBm(fnBody){
+        return 'javascript:(' + fnBody + ')();';
+      }
+
+      // als Strings, exakt wie sie ins Lesezeichen gehören
+      const CODE_FILL =
+        "javascript:(function(){try{var BASE='" + BASE + "';var u=location.href;location.assign(BASE+'?u='+encodeURIComponent(u));}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();";
+
+      const CODE_RUN =
+        "javascript:(function(){try{var BASE='" + BASE + "';var u=location.href;location.assign(BASE+'?u='+encodeURIComponent(u)+'&run=1');}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();";
+
+      const CODE_PASTE =
+        "javascript:(function(){try{var BASE='" + BASE + "';var u=prompt('SafeShare: URL einfügen');if(!u)return;u=String(u).trim();if(!/^https?:\\/\\//i.test(u))u='https://'+u;location.assign(BASE+'?u='+encodeURIComponent(u)+'&run=1');}catch(e){alert('SafeShare: konnte URL nicht übernehmen.');}})();";
+
+      // fill code blocks
+      document.getElementById('codeFillOnly').textContent = CODE_FILL;
+      document.getElementById('codeAutoRun').textContent = CODE_RUN;
+      document.getElementById('codePasteRun').textContent = CODE_PASTE;
+
+      // drag links
+      document.getElementById('dragFillOnly').setAttribute('href', CODE_FILL);
+      document.getElementById('dragAutoRun').setAttribute('href', CODE_RUN);
+      document.getElementById('dragPasteRun').setAttribute('href', CODE_PASTE);
+
       // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
@@ -504,6 +618,18 @@
           b.textContent = 'Kopiert ✓';
           setTimeout(()=>b.textContent=old, 1200);
         });
+      });
+
+      // test buttons
+      document.getElementById('btnTestRun').addEventListener('click', ()=>{
+        const u = normInput(document.getElementById('testUrl').value);
+        if(!u){ alert('Bitte eine URL einfügen.'); return; }
+        location.assign(buildUrl(u, true));
+      });
+      document.getElementById('btnTestFill').addEventListener('click', ()=>{
+        const u = normInput(document.getElementById('testUrl').value);
+        if(!u){ alert('Bitte eine URL einfügen.'); return; }
+        location.assign(buildUrl(u, false));
       });
 
       // more sheet + ESC close + scroll lock + focus restore
