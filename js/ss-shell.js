@@ -1,11 +1,11 @@
-/* SafeShare Shell (Header + Tabs + Footer + Mehr-Menü)
-   Usage in page:
-   - <div id="ss-shell"></div> inside .wrap
+/* SafeShare Shell split: TOP (Header+Tabs) + BOTTOM (Footer+Mehr-Menü)
+   Page:
+   - <div id="ss-shell-top"></div> near top inside .wrap
+   - <div id="ss-shell-bottom"></div> near bottom inside .wrap
    - <body data-shell-sub="..." data-shell-tag="...">
-   - <script defer src="js/ss-shell.js?v=YYYY-MM-DD-01"></script>
 */
 (function () {
-  const SHELL_HTML = `
+  const TOP_HTML = `
     <header>
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
@@ -31,7 +31,9 @@
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
+  `;
 
+  const BOTTOM_HTML = `
     <footer>
       <div class="footGrid">
         <div>
@@ -79,20 +81,22 @@
     document.body.style.touchAction = lock ? 'none' : '';
   }
 
-  function mountShell() {
-    const mount = document.getElementById('ss-shell');
-    if (!mount) return;
+  function mount() {
+    const top = document.getElementById('ss-shell-top');
+    const bottom = document.getElementById('ss-shell-bottom');
 
-    // Inject shell
-    mount.innerHTML = SHELL_HTML;
+    // Backward-compat: if someone still has ss-shell, at least render TOP only (no footer)
+    const legacy = document.getElementById('ss-shell');
 
-    // Set sub/tag from body data attributes
+    if (top) top.innerHTML = TOP_HTML;
+    if (bottom) bottom.innerHTML = BOTTOM_HTML;
+    if (!top && !bottom && legacy) legacy.innerHTML = TOP_HTML;
+
     const sub = document.getElementById('ssSub');
     const tag = document.getElementById('ssTag');
     if (sub && document.body.dataset.shellSub) sub.textContent = document.body.dataset.shellSub;
     if (tag && document.body.dataset.shellTag) tag.textContent = document.body.dataset.shellTag;
 
-    // Active highlighting
     const file = location.pathname.split('/').pop();
     const path = (!file || file === '') ? 'index.html' : file;
 
@@ -100,14 +104,13 @@
       if (el.getAttribute('data-page') === path) el.classList.add('active');
     });
 
-    // If current page isn't in main tabs, highlight "Mehr"
-    const mainTabs = new Set(['index.html', 'app.html', 'education.html', 'pro.html', 'help.html']);
     const moreBtn = document.getElementById('moreBtn');
+    const mainTabs = new Set(['index.html', 'app.html', 'education.html', 'pro.html', 'help.html']);
     if (moreBtn && !mainTabs.has(path)) moreBtn.classList.add('active');
 
-    // More sheet
     const menu = document.getElementById('moreMenu');
     const overlay = document.getElementById('moreOverlay');
+    if (!moreBtn || !menu || !overlay) return;
 
     function openMenu() {
       overlay.hidden = false;
@@ -126,23 +129,21 @@
       }, 180);
     }
 
-    if (moreBtn && menu && overlay) {
-      moreBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isOpen = moreBtn.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
-      });
-      overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && moreBtn.getAttribute('aria-expanded') === 'true') closeMenu();
-      });
-    }
+    moreBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isOpen = moreBtn.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeMenu() : openMenu();
+    });
+    overlay.addEventListener('click', closeMenu);
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && moreBtn.getAttribute('aria-expanded') === 'true') closeMenu();
+    });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountShell);
+    document.addEventListener('DOMContentLoaded', mount);
   } else {
-    mountShell();
+    mount();
   }
 })();
