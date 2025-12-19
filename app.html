@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – App (Links bereinigen)</title>
-  <meta name="description" content="SafeShare App: Tracking-Parameter aus Links entfernen (utm_*, gclid, fbclid …) – local-first im Browser, ohne Upload." />
+  <title>App – SafeShare</title>
+  <meta name="description" content="SafeShare App: Tracking-Parameter aus Links entfernen (local-first im Browser). Link einfügen → bereinigen → kopieren/teilen." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -30,6 +30,7 @@
       --ok: rgba(47,227,183,.16);
       --bad: rgba(255,84,84,.14);
       --max: 1120px;
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
     }
     @media (prefers-color-scheme: light){
       :root{
@@ -43,9 +44,9 @@
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
         --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
-
     *{ box-sizing:border-box; }
     body{
       margin:0;
@@ -59,7 +60,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    header{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding: 10px 2px 12px; }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -113,6 +114,7 @@
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -130,11 +132,10 @@
       gap: 8px;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
-    .btn.primary{ background: rgba(47,227,183,.18); border-color: rgba(47,227,183,.35); }
-    .btn.primary:hover{ background: rgba(47,227,183,.28); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
-    .btn[disabled]{ opacity:.55; cursor:not-allowed; }
 
     .note,.warn,.bad{
       margin-top: 12px;
@@ -150,62 +151,41 @@
     .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid2{ grid-template-columns: 1fr 1fr; }
-    }
-    .box{
+    .field{
+      width:100%;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 12px;
-    }
-
-    textarea, input{
-      width: 100%;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
       color: var(--text);
-      padding: 12px;
+      border-radius: 16px;
+      padding: 12px 12px;
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.5;
       outline: none;
     }
-    textarea:focus, input:focus{ box-shadow: 0 0 0 3px rgba(47,227,183,.18); border-color: rgba(47,227,183,.35); }
-    textarea{ min-height: 92px; resize: vertical; }
-
-    .result{
+    textarea.field{ min-height: 110px; resize: vertical; }
+    .field:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
+    .resultBox{
       margin-top: 10px;
-      padding: 12px;
+      padding: 12px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      word-break: break-word;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.5;
+      word-break: break-word;
     }
-    .result a{ text-decoration: underline; text-underline-offset: 3px; }
-
-    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
+    .kv{
+      display:flex; gap:10px; flex-wrap:wrap;
+      font-size: 12px; color: var(--muted2);
+      margin-top: 10px;
+    }
+    .kv span{
       padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
+      background: rgba(255,255,255,.03);
     }
-    .chip b{ color: var(--text); font-weight: 850; }
 
     footer{
       margin-top: 18px;
@@ -239,7 +219,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet ===== */
+    /* ===== Mehr: Bottom-Sheet (wie auf deinen UTM/Tracking-Seiten) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -273,7 +253,6 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
-      .box{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -289,11 +268,6 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
-    .moreMenu a.active{
-      color: var(--text);
-      border-color: rgba(47,227,183,.35);
-      background: rgba(47,227,183,.12);
-    }
   </style>
 </head>
 
@@ -318,7 +292,7 @@
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
-        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab active" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
@@ -329,43 +303,65 @@
     <section class="card">
       <h1>Link bereinigen</h1>
       <p>
-        Füge eine URL ein. SafeShare entfernt typische Tracking-Parameter (<span class="mono">utm_*</span>, <span class="mono">gclid</span>, <span class="mono">fbclid</span> …) direkt im Browser.
+        Tracking-Parameter sind Zusatzinfos am Link – wie Etiketten. SafeShare entfernt typische Tracking-Keys
+        direkt im Browser. Nichts wird hochgeladen.
       </p>
-
       <div class="note">
-        Local-first: Links werden nicht hochgeladen. SafeShare macht dich nicht anonym – es ist Link-Hygiene beim Teilen.
+        Hinweis: Das ist kein „Unsichtbar“-Versprechen. Es ist Link-Hygiene beim Teilen.
       </div>
     </section>
 
-    <section class="card" id="tool">
+    <section class="card" id="cleaner">
       <h2>URL einfügen</h2>
-      <textarea id="inUrl" class="mono" placeholder="https://example.com/?utm_source=...&utm_medium=...&gclid=..."></textarea>
+      <p class="muted">
+        Link einfügen → Bereinigen → Ergebnis kopieren/teilen.
+      </p>
+
+      <textarea class="field mono" id="urlInput" placeholder="https://example.com/page?utm_source=...&fbclid=..."></textarea>
 
       <div class="row">
         <button class="btn primary" id="btnClean" type="button">Bereinigen</button>
-        <button class="btn" id="btnClear" type="button">Leeren</button>
-        <button class="btn ghost" id="btnFillDemo" type="button">Beispiel</button>
+        <button class="btn" id="btnPaste" type="button">Einfügen</button>
+        <button class="btn ghost" id="btnClear" type="button">Leeren</button>
       </div>
 
-      <div class="warn" style="margin-top:12px">
-        Wenn ein Link nach der Bereinigung nicht funktioniert, war ein Parameter vermutlich funktional (z. B. <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">expires</span>).
-        Dann: Original vs. bereinigt vergleichen → ggf. Pro (Audit/Allowlist) nutzen.
+      <div class="warn" id="msg" hidden></div>
+    </section>
+
+    <section class="card" id="resultCard" hidden>
+      <h2>Ergebnis</h2>
+
+      <div class="resultBox mono" id="outUrl"></div>
+
+      <div class="row">
+        <button class="btn primary" id="btnCopy" type="button">Kopieren</button>
+        <a class="btn" id="btnOpen" href="#" target="_blank" rel="noopener">Öffnen</a>
+        <button class="btn" id="btnShare" type="button">Teilen</button>
       </div>
 
-      <h2 style="margin-top:16px">Ergebnis</h2>
-      <div class="result mono" id="outBox">—</div>
-
-      <div class="chips" id="removedChips" aria-label="Entfernte Parameter" style="display:none"></div>
-
-      <div class="row" style="margin-top:12px">
-        <button class="btn primary" id="btnCopy" type="button" disabled>Kopieren</button>
-        <button class="btn" id="btnShare" type="button" disabled>Teilen</button>
-        <a class="btn ghost" id="btnOpen" href="#" target="_blank" rel="noopener" style="pointer-events:none;opacity:.55">Öffnen</a>
-      </div>
+      <div class="kv" id="auditRow" hidden></div>
 
       <div class="note" style="margin-top:12px">
-        Tipp: Desktop-1-Klick geht über <a href="bookmarklets.html"><b>Bookmarklets</b></a>.
-        Auf iOS ist Copy/Paste stabil (Shortcut kann später folgen).
+        Wenn ein Link nach der Bereinigung nicht funktioniert: Original öffnen → bereinigten Link öffnen.
+        Wenn nur der bereinigte Link scheitert, war ein Parameter vermutlich funktional → dann konservativer vorgehen oder Pro (Audit/Allowlist).
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Was wird entfernt?</h2>
+      <ul>
+        <li><b>utm_*</b> (Kampagnen-Parameter)</li>
+        <li><b>Klick-IDs</b> wie <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
+        <li>weitere typische Tracking-Keys (z. B. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>)</li>
+      </ul>
+      <div class="warn">
+        Nicht blind „alles weg“: Affiliate/Partner-Keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) können Zuordnung/Einnahmen steuern.
+        Dafür ist Pro gedacht: Allowlist + Audit + Policies.
+      </div>
+      <div class="row">
+        <a class="btn" href="tracking-parameter.html">Tracking erklärt</a>
+        <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
+        <a class="btn ghost" href="pro.html">Pro ansehen</a>
       </div>
     </section>
 
@@ -374,7 +370,7 @@
       <div class="footGrid">
         <div>
           <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell & einfach · Pro: Policies, Allowlist, Audit.</div>
+          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
@@ -398,7 +394,7 @@
 
     <div class="divider"></div>
 
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
@@ -407,6 +403,7 @@
 
     <div class="divider"></div>
 
+    <div class="menuHint">Rechtliches</div>
     <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
     <a href="impressum.html" data-page="impressum.html">Impressum</a>
     <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -414,224 +411,12 @@
 
   <script>
     (function(){
-      // ===== active links (tabs + footer + more) =====
+      // ===== Active links (tabs + footer + more) =====
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
-
-      // ===== tool elements =====
-      const inUrl = document.getElementById('inUrl');
-      const outBox = document.getElementById('outBox');
-      const removedChips = document.getElementById('removedChips');
-
-      const btnClean = document.getElementById('btnClean');
-      const btnClear = document.getElementById('btnClear');
-      const btnFillDemo = document.getElementById('btnFillDemo');
-
-      const btnCopy = document.getElementById('btnCopy');
-      const btnShare = document.getElementById('btnShare');
-      const btnOpen = document.getElementById('btnOpen');
-
-      let lastClean = '';
-
-      function uniq(arr){
-        return Array.from(new Set(arr));
-      }
-
-      // Minimal & robuste Tracking-Liste (App = Standard-Tracking)
-      function shouldRemoveParam(key){
-        const k = String(key || '').toLowerCase();
-
-        if (k.startsWith('utm_')) return true;
-        if (k.startsWith('hsa_')) return true; // HubSpot Ads
-        if (k === 'gclid') return true;
-        if (k === 'dclid') return true;
-        if (k === 'gclsrc') return true;
-        if (k === 'gbraid') return true;
-        if (k === 'wbraid') return true;
-
-        if (k === 'fbclid') return true;
-        if (k === 'igshid') return true;
-
-        if (k === 'msclkid') return true; // Microsoft Ads
-        if (k === 'yclid') return true;
-        if (k === 'twclid') return true;
-        if (k === 'ttclid') return true;
-        if (k === 'li_fat_id') return true;
-
-        if (k === 'mc_cid') return true;
-        if (k === 'mc_eid') return true;
-        if (k === 'mkt_tok') return true;
-
-        if (k === '_hsenc') return true;
-        if (k === '_hsmi') return true;
-        if (k === 'hsctatracking') return true;
-
-        return false;
-      }
-
-      function coerceToUrl(raw){
-        const s = String(raw || '').trim();
-        if (!s) return null;
-
-        // 1) try as-is
-        try{ return new URL(s); }catch(_){}
-
-        // 2) missing scheme -> assume https
-        try{
-          if (/^[a-z0-9.-]+\.[a-z]{2,}([\/?#]|$)/i.test(s)) {
-            return new URL('https://' + s);
-          }
-        }catch(_){}
-
-        return null;
-      }
-
-      function cleanUrl(raw){
-        const url = coerceToUrl(raw);
-        if (!url) return { ok:false, error:'Bitte eine gültige URL einfügen.' };
-
-        const removed = [];
-        const params = url.searchParams;
-
-        // iterate over a stable copy (because deleting while iterating can skip)
-        const keys = Array.from(params.keys());
-        for (const k of keys){
-          if (shouldRemoveParam(k)){
-            removed.push(k);
-            params.delete(k);
-          }
-        }
-
-        // commit query back (URL does it automatically, but keep explicit)
-        url.search = params.toString();
-
-        return {
-          ok: true,
-          clean: url.toString(),
-          removed: uniq(removed).sort()
-        };
-      }
-
-      async function copyText(text){
-        try{
-          await navigator.clipboard.writeText(text);
-          return true;
-        }catch(e){
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position='fixed'; ta.style.left='-9999px';
-          document.body.appendChild(ta);
-          ta.focus(); ta.select();
-          try{ document.execCommand('copy'); }catch(_){}
-          document.body.removeChild(ta);
-          return true;
-        }
-      }
-
-      function setResult(clean, removed){
-        lastClean = clean || '';
-
-        if (!lastClean){
-          outBox.textContent = '—';
-          removedChips.style.display = 'none';
-          removedChips.innerHTML = '';
-          btnCopy.disabled = true;
-          btnShare.disabled = true;
-          btnOpen.href = '#';
-          btnOpen.style.pointerEvents = 'none';
-          btnOpen.style.opacity = '.55';
-          return;
-        }
-
-        outBox.innerHTML = '<a href="'+ lastClean.replace(/"/g,'&quot;') +'" target="_blank" rel="noopener">' + lastClean + '</a>';
-
-        const list = Array.isArray(removed) ? removed : [];
-        if (list.length){
-          removedChips.style.display = 'flex';
-          removedChips.innerHTML =
-            '<span class="chip"><b>Entfernt</b></span>' +
-            list.map(k => '<span class="chip mono">'+ k +'</span>').join('');
-        }else{
-          removedChips.style.display = 'flex';
-          removedChips.innerHTML = '<span class="chip"><b>Hinweis</b></span><span class="chip">Keine typischen Tracking-Parameter gefunden</span>';
-        }
-
-        btnCopy.disabled = false;
-        btnShare.disabled = false;
-        btnOpen.href = lastClean;
-        btnOpen.style.pointerEvents = 'auto';
-        btnOpen.style.opacity = '1';
-      }
-
-      function doClean(){
-        const raw = inUrl.value;
-        const res = cleanUrl(raw);
-
-        if (!res.ok){
-          setResult('', []);
-          outBox.textContent = res.error;
-          return;
-        }
-        setResult(res.clean, res.removed);
-
-        // keep focus usable (esp. iOS): do not auto-copy, do not jump hard
-      }
-
-      btnClean.addEventListener('click', doClean);
-
-      btnClear.addEventListener('click', ()=>{
-        inUrl.value = '';
-        setResult('', []);
-        inUrl.focus();
-      });
-
-      btnFillDemo.addEventListener('click', ()=>{
-        inUrl.value = 'https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch&fbclid=XYZ&gclid=ABC';
-        inUrl.focus();
-      });
-
-      btnCopy.addEventListener('click', async ()=>{
-        if (!lastClean) return;
-        const ok = await copyText(lastClean);
-        const old = btnCopy.textContent;
-        btnCopy.textContent = ok ? 'Kopiert ✓' : 'Kopieren';
-        setTimeout(()=> btnCopy.textContent = old, 1200);
-      });
-
-      btnShare.addEventListener('click', async ()=>{
-        if (!lastClean) return;
-
-        // Prefer native share if available
-        if (navigator.share){
-          try{
-            await navigator.share({ title: 'SafeShare Link', url: lastClean });
-            return;
-          }catch(_){}
-        }
-
-        // Fallback: copy
-        await copyText(lastClean);
-        const old = btnShare.textContent;
-        btnShare.textContent = 'Kopiert ✓';
-        setTimeout(()=> btnShare.textContent = old, 1200);
-      });
-
-      // ===== PATCH: ?u= übernehmen + optional run=1 =====
-      (function applyQueryPrefill(){
-        const qs = new URLSearchParams(location.search);
-        const u = qs.get('u');
-        if (u){
-          inUrl.value = u;
-        }
-        const run = qs.get('run');
-        if (u && (run === '1' || run === 'true')){
-          // slight delay to ensure layout is ready
-          setTimeout(()=>{ doClean(); }, 60);
-        }
-      })();
 
       // ===== Mehr sheet + ESC close + scroll lock =====
       const btn = document.getElementById('moreBtn');
@@ -653,7 +438,6 @@
         btn.setAttribute('aria-expanded','false');
         setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
       }
-
       if(btn && menu && overlay){
         btn.addEventListener('click',(e)=>{
           e.preventDefault();
@@ -666,9 +450,209 @@
           if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
         });
       }
+
+      // ===== App logic =====
+      const $ = (s)=>document.querySelector(s);
+      const input = $('#urlInput');
+      const msg = $('#msg');
+      const resultCard = $('#resultCard');
+      const outUrl = $('#outUrl');
+      const auditRow = $('#auditRow');
+      const btnOpen = $('#btnOpen');
+
+      const TRACKING_KEYS = new Set([
+        // click ids / platform ids
+        'gclid','gbraid','wbraid','fbclid','msclkid','igshid','twclid','ttclid','li_fat_id',
+        // mail/newsletter
+        'mc_cid','mc_eid',
+        // analytics-ish
+        '_ga','_gl','_gac','_gid','_fbp','_fbc',
+        // misc common
+        'ref_src','s','spm','spm_id_from','mkt_tok',
+      ]);
+
+      function showMsg(type, text){
+        msg.hidden = !text;
+        msg.className = type ? type : 'warn';
+        msg.textContent = text || '';
+      }
+
+      function normalizeUrl(s){
+        s = (s || '').trim();
+        if (!s) return '';
+        // allow "example.com/..." → https://example.com/...
+        if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)) {
+          if (s.startsWith('//')) s = 'https:' + s;
+          else s = 'https://' + s;
+        }
+        return s;
+      }
+
+      function cleanUrl(raw){
+        const original = (raw || '').trim();
+        if (!original) throw new Error('Bitte eine URL einfügen.');
+        const normalized = normalizeUrl(original);
+
+        let url;
+        try{ url = new URL(normalized); }
+        catch(e){ throw new Error('Das sieht nicht wie eine gültige URL aus.'); }
+
+        const removed = [];
+        const kept = [];
+
+        // collect keys first (because we mutate)
+        const keys = [];
+        url.searchParams.forEach((_, k)=>keys.push(k));
+
+        keys.forEach((k)=>{
+          const low = (k || '').toLowerCase();
+          const isUtm = low.startsWith('utm_');
+          const isTracking = TRACKING_KEYS.has(low);
+
+          if (isUtm || isTracking){
+            url.searchParams.delete(k);
+            removed.push(k);
+          } else {
+            kept.push(k);
+          }
+        });
+
+        const cleaned = url.toString();
+        return { cleaned, removed, kept };
+      }
+
+      async function copyText(text){
+        try{
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(e){
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position='fixed'; ta.style.left='-9999px';
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+          try{ document.execCommand('copy'); }catch(_){}
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      function renderResult(res){
+        resultCard.hidden = false;
+        outUrl.textContent = res.cleaned;
+        btnOpen.href = res.cleaned;
+
+        // mini-audit (nur Info, kein Pro-Audit)
+        auditRow.innerHTML = '';
+        const r = Array.from(new Set(res.removed));
+        const k = Array.from(new Set(res.kept));
+        if (r.length || k.length){
+          auditRow.hidden = false;
+          if (r.length){
+            const el = document.createElement('span');
+            el.innerHTML = 'Entfernt: <span class="mono">' + r.join(', ') + '</span>';
+            auditRow.appendChild(el);
+          }
+          if (k.length){
+            const el2 = document.createElement('span');
+            el2.innerHTML = 'Behalten: <span class="mono">' + k.join(', ') + '</span>';
+            auditRow.appendChild(el2);
+          }
+        } else {
+          auditRow.hidden = true;
+        }
+      }
+
+      function doClean(){
+        showMsg('', '');
+        resultCard.hidden = true;
+
+        try{
+          const res = cleanUrl(input.value);
+          renderResult(res);
+          // scroll to result (hilft auf iOS)
+          setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
+        }catch(e){
+          showMsg('warn', e.message || 'Fehler beim Bereinigen.');
+        }
+      }
+
+      $('#btnClean').addEventListener('click', doClean);
+
+      $('#btnClear').addEventListener('click', ()=>{
+        input.value = '';
+        resultCard.hidden = true;
+        showMsg('', '');
+        input.focus();
+      });
+
+      $('#btnPaste').addEventListener('click', async ()=>{
+        showMsg('', '');
+        try{
+          if (navigator.clipboard && navigator.clipboard.readText){
+            const t = await navigator.clipboard.readText();
+            if (t && t.trim()){
+              input.value = t.trim();
+              input.focus();
+              return;
+            }
+          }
+          showMsg('note', 'Einfügen: Tippe ins Feld und nutze „Einfügen“ (iOS/Browser-Sicherheit).');
+          input.focus();
+        }catch(e){
+          showMsg('note', 'Einfügen: Tippe ins Feld und nutze „Einfügen“ (iOS/Browser-Sicherheit).');
+          input.focus();
+        }
+      });
+
+      $('#btnCopy').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+        await copyText(text);
+        const b = $('#btnCopy');
+        const old = b.textContent;
+        b.textContent = 'Kopiert ✓';
+        setTimeout(()=>b.textContent=old, 1200);
+      });
+
+      $('#btnShare').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+
+        if (navigator.share){
+          try{
+            await navigator.share({ title: 'SafeShare Link', text: 'Sauberer Link:', url: text });
+          }catch(e){}
+          return;
+        }
+        // fallback: copy
+        await copyText(text);
+        showMsg('note', 'Teilen ist in diesem Browser nicht verfügbar – Link wurde kopiert.');
+      });
+
+      // ===== Query params: ?u=... &run=1 =====
+      (function(){
+        const sp = new URLSearchParams(location.search);
+        const u = sp.get('u');
+        const run = sp.get('run');
+
+        if (u){
+          try{
+            input.value = decodeURIComponent(u);
+          }catch(e){
+            input.value = u;
+          }
+        }
+        if (u && run === '1'){
+          // klein delay, damit Layout/Fonts stehen
+          setTimeout(doClean, 120);
+        }
+      })();
+
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
+  <!-- optional: falls du SW nutzt -->
+  <script defer src="js/sw-register.js?v=2025-12-19-01"></script>
 </body>
 </html>
