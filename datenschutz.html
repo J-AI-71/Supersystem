@@ -4,9 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Datenschutzerklärung – SafeShare</title>
-  <meta name="description" content="Datenschutzerklärung zu SafeShare (local-first). Informationen zu Hosting (GitHub Pages), lokalen Browser-Speicherungen (Cache/LocalStorage/Service Worker), Kontakt und externen Links." />
+  <meta name="description" content="Datenschutzerklärung zu SafeShare (local-first). Informationen zur Verarbeitung personenbezogener Daten, Kontakt, Hosting und Cookies." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
+
+  <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/datenschutz.html" />
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
@@ -17,7 +19,6 @@
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.045);
       --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
@@ -29,14 +30,12 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
-      --bad: rgba(255,84,84,.14);
-      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff; --card2:#f5f7ff;
+        --card:#ffffff;
         --border: rgba(17,24,39,.12);
         --text: rgba(17,24,39,.95);
         --muted: rgba(17,24,39,.72);
@@ -44,8 +43,6 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
-        --bad: rgba(255,84,84,.12);
-        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -58,10 +55,8 @@
         radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
         linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
-    a{ color:inherit; text-decoration:none; }
+    a{ color:inherit; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
@@ -77,6 +72,7 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -98,12 +94,11 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
-      background: transparent;
-      cursor:pointer;
+      text-decoration:none;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
-    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreBtn{ appearance:none; cursor:pointer; background: transparent; }
 
     .card{
       margin-top: 14px;
@@ -127,6 +122,7 @@
     }
     .k{ font-size: 12px; color: var(--muted2); }
     .v{ font-weight: 780; margin-top: 4px; word-break: break-word; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .note,.warn{
       margin-top: 12px;
@@ -140,7 +136,7 @@
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
-    /* Footer wie master */
+    /* Footer (Grid + Links) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -170,6 +166,7 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
+      text-decoration:none;
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
@@ -219,6 +216,7 @@
       color: var(--muted);
       margin-bottom: 8px;
       font-size: 13px;
+      text-decoration:none;
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
@@ -237,7 +235,7 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Datenschutz</div>
+          <div class="sub">Datenschutzerklärung</div>
         </div>
       </div>
       <div class="small">DSGVO</div>
@@ -283,11 +281,11 @@
         Es werden keine bereinigten Links an einen SafeShare-Server übertragen.
       </div>
 
-      <h2>1. Hosting / Bereitstellung der Website (GitHub Pages)</h2>
+      <h2>1. Hosting / Bereitstellung der Website</h2>
       <p>
         Diese Website wird über GitHub Pages bereitgestellt (GitHub, Inc.). Beim Aufruf der Website werden durch den Hosting-Anbieter
-        technisch erforderliche Zugriffsdaten verarbeitet (z. B. IP-Adresse, Datum/Uhrzeit, angeforderte Seite, User-Agent),
-        um die Auslieferung der Website zu ermöglichen sowie Sicherheit und Fehleranalyse zu gewährleisten.
+        technisch erforderliche Zugriffsdaten verarbeitet (z. B. IP-Adresse, Datum/Uhrzeit, angeforderte Seite, Referrer, User-Agent),
+        um die Auslieferung der Website zu ermöglichen und die Sicherheit/Fehleranalyse zu gewährleisten.
       </p>
       <p>
         Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherer und stabiler Bereitstellung).
@@ -295,17 +293,15 @@
 
       <h2>2. SafeShare App: Verarbeitung im Browser (local-first)</h2>
       <p>
-        Die Link-Bereinigung (Entfernen von Tracking-Parametern) erfolgt clientseitig im Browser.
-        Von dir eingegebene oder eingefügte URLs werden nicht an mich übertragen.
+        Die Link-Bereinigung (z. B. Entfernen typischer Tracking-Parameter) erfolgt clientseitig im Browser.
+        Die von dir eingegebenen oder eingefügten URLs werden nicht an mich übertragen.
       </p>
 
-      <h2>3. Lokale Speicherungen im Browser (LocalStorage / Cache / Service Worker)</h2>
-      <p>
-        Zur Funktionalität und für Komfort kann SafeShare Daten lokal im Browser speichern, z. B.:
-      </p>
+      <h2>3. Speicherungen im Browser (LocalStorage / Cache / Service Worker)</h2>
+      <p>Zur Funktionalität und zum Komfort kann SafeShare Daten lokal im Browser speichern, z. B.:</p>
       <ul>
-        <li>Einstellungen/Optionen (z. B. Modus, „Behalten“-Ausnahmen)</li>
-        <li>Allowlist/Whitelist-Regeln (insb. in Pro)</li>
+        <li>Einstellungen/Presets (z. B. bevorzugte Bereinigungsmodi)</li>
+        <li>Allowlist-/Whitelist-Regeln (insb. für Pro)</li>
         <li>Service-Worker-Cache (Offline-Fähigkeit / schnellere Ladezeiten)</li>
       </ul>
       <p>
@@ -316,14 +312,10 @@
         Hinweis: Der Service Worker speichert Dateien (HTML/CSS/JS) für Offline/Speed. Das ist kein Tracking.
       </div>
 
-      <h2>4. Cookies / Tracking / Analytics</h2>
+      <h2>4. Cookies</h2>
       <p>
-        SafeShare setzt selbst keine Tracking-Cookies und nutzt kein eigenes Web-Analytics.
-        Technisch notwendige Speicherungen können durch Browser-Funktionen (Cache) bzw. den Service Worker erfolgen (siehe oben).
-      </p>
-      <p>
-        Beim reinen Besuch statischer GitHub-Pages-Seiten ist typischerweise kein Login nötig; dennoch können beim Aufruf über den Hosting-Anbieter
-        technische Mechanismen (z. B. zur Auslieferung/Abwehr) zum Einsatz kommen. Maßgeblich sind die Hinweise des jeweiligen Anbieters.
+        SafeShare setzt selbst keine Tracking-Cookies. Technisch notwendige Speicherungen können durch den Browser (Cache)
+        bzw. den Service Worker erfolgen (siehe oben).
       </p>
 
       <h2>5. Kontaktaufnahme</h2>
@@ -333,12 +325,12 @@
       </p>
       <p>
         Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche/vertragliche Kommunikation) bzw.
-        Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Bearbeitung von Anfragen).
+        Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bearbeitung von Anfragen).
       </p>
 
       <h2>6. Externe Links (z. B. Payhip)</h2>
       <p>
-        Diese Website kann Links zu externen Anbietern enthalten (z. B. Payhip für Kauf/Download).
+        Diese Website kann Links zu externen Anbietern enthalten (z. B. Payhip für den Kauf).
         Beim Anklicken gelten die Datenschutzbestimmungen des jeweiligen Anbieters.
       </p>
 
@@ -374,9 +366,12 @@
           <a href="index.html" data-page="index.html">Start</a>
           <a href="app.html" data-page="app.html">App</a>
           <a href="education.html" data-page="education.html">Schule</a>
+          <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+          <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+          <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -409,9 +404,8 @@
   </nav>
 
   <script>
-    // Datum + Active Links + Mehr-Menü (Escape close + Scroll-Lock + Focus restore)
     (function(){
-      // date
+      // "Stand"-Datum
       const d = new Date();
       const fmt = new Intl.DateTimeFormat('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
       const stand = document.getElementById('stand');
@@ -424,7 +418,7 @@
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet
+      // more sheet + ESC close + scroll lock + focus restore
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -442,7 +436,7 @@
         requestAnimationFrame(() => {
           menu.classList.add('open');
           const firstLink = menu.querySelector('a');
-          if (firstLink) firstLink.focus?.();
+          if(firstLink && firstLink.focus) firstLink.focus();
         });
         btn.setAttribute('aria-expanded','true');
         lockScroll(true);
@@ -451,7 +445,7 @@
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
         setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
-        if (lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
+        if(lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
 
       btn.addEventListener('click',(e)=>{
@@ -461,12 +455,13 @@
       });
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-      document.addEventListener('keydown', (e)=>{
+
+      document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
       });
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
+  <script defer src="js/sw-register.js?v=2025-12-19-01"></script>
 </body>
 </html>
