@@ -208,18 +208,6 @@
     }
     .copyBtn:hover{ background: rgba(255,255,255,.10); }
 
-    .field{
-      width:100%;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      padding: 12px 12px;
-      font-size: 14px;
-      outline: none;
-    }
-    .field:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
-
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -353,23 +341,12 @@
       </div>
 
       <div class="note">
-        iOS/iPad: Am stabilsten ist ein <b>Share-Sheet Shortcut</b>.
-        Bookmarklets sind vor allem eine Desktop-Abkürzung.
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Test (um App vs. Bookmarklet zu trennen)</h2>
-      <p>Wenn das hier klappt, ist <b>die App ok</b> – dann liegt es am Browser/Speichern des Bookmarklets.</p>
-      <input class="field" id="testUrl" placeholder="URL einfügen, z. B. https://example.com/?utm_source=test" />
-      <div class="row">
-        <button class="btn primary" type="button" id="btnTestRun">In SafeShare öffnen (run=1)</button>
-        <button class="btn" type="button" id="btnTestFill">In SafeShare öffnen (nur ausfüllen)</button>
-      </div>
-      <div class="warn">
-        Wenn SafeShare leer bleibt oder nicht startet: sehr wahrscheinlich <b>Cache/alte app.html</b>.
-        Dann Service-Worker Update erzwingen (Hard-Reload / Cache löschen / SW-Version bump).
-      </div>
+  <b>Desktop:</b> Bookmarklets sind eine Abkürzung für Chrome/Firefox/Edge.<br>
+  <b>iOS/iPad:</b> Am stabilsten ist ein <b>Share-Sheet Shortcut</b>.
+  <div class="row" style="margin-top:10px">
+    <a class="btn" href="help.html#shortcut">iOS Shortcut ansehen</a>
+  </div>
+</div>
     </section>
 
     <section class="card">
@@ -465,7 +442,6 @@
           <h3>SafeShare öffnet, aber Feld bleibt leer / run=1 startet nicht</h3>
           <ul>
             <li>Dann ist es fast immer <b>App-Version oder Cache</b>.</li>
-            <li>Direkt-Test (oben) ausführen.</li>
             <li>Wenn Direkt-Test nicht geht: Service-Worker/Cache aktualisieren.</li>
           </ul>
         </div>
@@ -527,44 +503,11 @@
       function normInput(u){
         u = (u || '').trim();
         if(!u) return '';
-        // wenn jemand "example.com" einfügt, machen wir https:// daraus
         if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
         return u;
       }
 
-      function bookmarkletFillOnly(){
-        try{
-          var u = location.href;
-          location.assign(buildUrl(u, false));
-        }catch(e){
-          alert('SafeShare: konnte URL nicht lesen.');
-        }
-      }
-      function bookmarkletAutoRun(){
-        try{
-          var u = location.href;
-          location.assign(buildUrl(u, true));
-        }catch(e){
-          alert('SafeShare: konnte URL nicht lesen.');
-        }
-      }
-      function bookmarkletPasteRun(){
-        try{
-          var u = prompt('SafeShare: URL einfügen');
-          u = normInput(u);
-          if(!u) return;
-          location.assign(buildUrl(u, true));
-        }catch(e){
-          alert('SafeShare: konnte URL nicht übernehmen.');
-        }
-      }
-
-      // Codes (als echte Bookmarklet-URLs)
-      function toBm(fnBody){
-        return 'javascript:(' + fnBody + ')();';
-      }
-
-      // als Strings, exakt wie sie ins Lesezeichen gehören
+      // Bookmarklet strings
       const CODE_FILL =
         "javascript:(function(){try{var BASE='" + BASE + "';var u=location.href;location.assign(BASE+'?u='+encodeURIComponent(u));}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();";
 
@@ -620,18 +563,6 @@
         });
       });
 
-      // test buttons
-      document.getElementById('btnTestRun').addEventListener('click', ()=>{
-        const u = normInput(document.getElementById('testUrl').value);
-        if(!u){ alert('Bitte eine URL einfügen.'); return; }
-        location.assign(buildUrl(u, true));
-      });
-      document.getElementById('btnTestFill').addEventListener('click', ()=>{
-        const u = normInput(document.getElementById('testUrl').value);
-        if(!u){ alert('Bitte eine URL einfügen.'); return; }
-        location.assign(buildUrl(u, false));
-      });
-
       // more sheet + ESC close + scroll lock + focus restore
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
@@ -672,6 +603,7 @@
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
+  <!-- cache-bust bump -->
+  <script defer src="js/sw-register.js?v=2025-12-19-01"></script>
 </body>
 </html>
