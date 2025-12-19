@@ -194,7 +194,17 @@
     .planList{ margin: 12px 0 0 18px; color: rgba(255,255,255,.78); line-height: 1.55; }
     .smallNote{ margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.60); }
 
-    /* Footer (wie app.html: Grid + Links) */
+    /* FAQ */
+    .faqItem{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .faqQ{ margin:0 0 6px; font-size: 15px; letter-spacing: -.1px; }
+    .faqA{ margin:0; color: var(--muted); line-height: 1.6; }
+
+    /* Footer (Master) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -227,7 +237,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet ===== */
+    /* ===== Mehr: Bottom-Sheet (Master) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -261,7 +271,7 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
-      .box, .priceCard{ border-color: rgba(17,24,39,.12); }
+      .box, .priceCard, .faqItem{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -277,16 +287,6 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
-
-    /* FAQ */
-    .faqItem{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 12px;
-    }
-    .faqQ{ margin:0 0 6px; font-size: 15px; letter-spacing: -.1px; }
-    .faqA{ margin:0; color: var(--muted); line-height: 1.6; }
   </style>
 </head>
 
@@ -301,12 +301,13 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Pro</div>
+          <div class="sub" id="pageSub">Pro · Policies, Audit, Export</div>
         </div>
       </div>
-      <div class="small">Policies · Audit · Whitelist</div>
+      <div class="small" id="pageTag">für Profis</div>
     </header>
 
+    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
@@ -522,7 +523,7 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (Master) -->
     <footer>
       <div class="footGrid">
         <div>
@@ -535,6 +536,7 @@
           <a href="education.html" data-page="education.html">Schule</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -546,39 +548,74 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
     <div class="menuHint">Öffentlich</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
     <div class="divider"></div>
-    <a href="help.html#kontakt">Support / Kontakt</a>
+
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
-    (function(){
+    (function () {
       // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
+
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet (+ ESC close)
+      // optional header text mapping
+      const sub = document.getElementById('pageSub');
+      const tag = document.getElementById('pageTag');
+      const map = {
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
+        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
+        "education.html": ["SafeShare-Schule", "ohne Panik"],
+        "pro.html": ["Pro · Policies, Audit, Export", "für Profis"],
+        "help.html": ["Hilfe · App & Pro", "Support"],
+        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
+        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
+        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
+        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich · URL Cleaner", "Kriterien"],
+        "impressum.html": ["Impressum", "§ 5 TMG"],
+        "datenschutz.html": ["Datenschutz", "DSGVO"],
+        "terms.html": ["Nutzungsbedingungen", "Legal"]
+      };
+      if (sub && map[path]) sub.textContent = map[path][0];
+      if (tag && map[path]) tag.textContent = map[path][1];
+
+      // more sheet (ESC close + scroll lock)
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
 
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
       function openMenu(){
         overlay.hidden = false; menu.hidden = false;
         requestAnimationFrame(() => menu.classList.add('open'));
         btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
       }
 
       if(btn && menu && overlay){
@@ -589,12 +626,13 @@
         });
         overlay.addEventListener('click', closeMenu);
         menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
         });
       }
     })();
   </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
 </body>
 </html>
