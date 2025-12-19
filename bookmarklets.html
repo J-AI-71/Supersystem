@@ -64,7 +64,6 @@
     .muted{ color: var(--muted); }
     .small{ font-size: 12px; color: var(--muted2); line-height: 1.45; white-space:nowrap; }
 
-    /* ===== Master Header ===== */
     header{
       display:flex; align-items:center; justify-content:space-between;
       gap: 14px; padding: 10px 2px 12px;
@@ -119,7 +118,6 @@
       background: rgba(47,227,183,.12);
     }
 
-    /* ===== Content ===== */
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -210,7 +208,6 @@
     }
     .copyBtn:hover{ background: rgba(255,255,255,.10); }
 
-    /* ===== Footer (Master) ===== */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -243,7 +240,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (Master + ESC Close) ===== */
+    /* ===== Mehr: Bottom-Sheet ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -293,6 +290,11 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    .moreMenu a.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
+    }
   </style>
 </head>
 
@@ -320,7 +322,8 @@
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <button class="tab moreBtn active" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
+        <!-- FIX: kein active auf Mehr -->
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
@@ -339,8 +342,8 @@
       </div>
 
       <div class="note">
-        iOS/iPad: Am komfortabelsten ist der <b>Share-Sheet Shortcut</b> – schnell, stabil, direkt beim Teilen.
-        Bookmarklets sind eher eine Desktop-Abkürzung. <span class="muted">(Shortcut folgt später inkl. kurzer Erklärung/Video.)</span>
+        iOS/iPad: Am stabilsten ist ein <b>Share-Sheet Shortcut</b> (beim Teilen → „Clean with SafeShare“).
+        Bookmarklets sind vor allem eine Desktop-Abkürzung.
       </div>
     </section>
 
@@ -357,7 +360,7 @@
       </div>
 
       <div class="note">
-        Technisch: Dieses Bookmarklet nutzt eine absolute URL, damit es auf jeder Website funktioniert (nicht nur innerhalb von SafeShare).
+        Dieses Bookmarklet nutzt eine absolute URL, damit es auf jeder Website funktioniert (nicht nur innerhalb von SafeShare).
       </div>
     </section>
 
@@ -391,7 +394,7 @@
       </div>
 
       <div class="warn">
-        Hinweis: Das ist kein Clipboard-Zugriff. Du fügst manuell ein (Browser-Sicherheit).
+        Das ist kein Clipboard-Zugriff. Du fügst manuell ein (Browser-Sicherheit).
       </div>
     </section>
 
@@ -405,7 +408,7 @@
       </ol>
 
       <div class="note">
-        Tipp: Am besten als <b>eine Zeile</b> einfügen (ohne Umbrüche).
+        Tipp: Als <b>eine Zeile</b> einfügen (ohne Umbrüche).
       </div>
     </section>
 
@@ -503,21 +506,33 @@
         });
       });
 
-      // more sheet (overlay + ESC close)
+      // more sheet + ESC close + scroll lock + focus restore
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
       if(!btn || !menu || !overlay) return;
 
+      let lastFocus = null;
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
       function openMenu(){
+        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const first = menu.querySelector('a');
+          if(first && first.focus) first.focus();
+        });
         btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+        if(lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
 
       btn.addEventListener('click',(e)=>{
@@ -527,7 +542,7 @@
       });
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu(); });
     })();
   </script>
 
