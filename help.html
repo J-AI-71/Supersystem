@@ -164,16 +164,6 @@
       padding: 12px;
     }
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      white-space: nowrap;
-    }
     .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
     .chip{
       display:inline-flex; align-items:center; gap:8px;
@@ -187,7 +177,6 @@
     }
     .chip b{ color: var(--text); font-weight: 850; }
 
-    /* Footer wie app.html */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -290,14 +279,14 @@
       <div class="small">Support &amp; Troubleshooting</div>
     </header>
 
-    <!-- MASTER NAV: Start / App / Schule / Pro / Hilfe / Mehr -->
+    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab active" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -305,9 +294,7 @@
     <!-- INTRO -->
     <section class="card">
       <h1>Hilfe</h1>
-      <p>
-        Kurzer Einstieg, typische Stolperfallen und saubere Debug-Schritte – ohne Panik.
-      </p>
+      <p>Kurzer Einstieg, typische Stolperfallen und saubere Debug-Schritte – ohne Panik.</p>
 
       <div class="chips" aria-label="Flow">
         <span class="chip"><b>1</b> Copy</span>
@@ -339,7 +326,7 @@
       <div class="warn">
         Wenn ein Link nach der Bereinigung nicht funktioniert:
         1) Original-Link öffnen (Gegencheck) · 2) bereinigten Link öffnen ·
-        3) wenn nur der bereinigte Link scheitert, war ein Parameter vermutlich funktional → Pro (Audit/Allowlist) oder konservativer bereinigen.
+        3) wenn nur der bereinigte Link scheitert, war ein Parameter vermutlich funktional → Pro (Audit/Whitelist) oder konservativer bereinigen.
       </div>
     </section>
 
@@ -352,7 +339,7 @@
           <ul>
             <li>Du veröffentlichst Links (Journalismus, Social-Team, Publisher).</li>
             <li>Du willst bewusst Attribution behalten (Affiliate/Partner).</li>
-            <li>Du brauchst Nachvollziehbarkeit: <b>Audit</b> + <b>Allowlist</b> + Presets.</li>
+            <li>Du brauchst Nachvollziehbarkeit: <b>Audit</b> + <b>Whitelist</b> + Presets.</li>
           </ul>
           <div class="row">
             <a class="btn primary" href="pro.html">Mehr zu SafeShare Pro</a>
@@ -396,7 +383,7 @@
           <ul>
             <li><b>Vergleich:</b> Original-Link öffnen → bereinigten Link öffnen.</li>
             <li>Wenn nur der bereinigte Link scheitert: ein Parameter war vermutlich <b>funktional</b>.</li>
-            <li><b>Pro-Ansatz:</b> Preset <b>konservativ</b> + Audit prüfen + Schlüssel erlauben (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">page</span>, <span class="mono">lang</span>).</li>
+            <li><b>Pro-Ansatz:</b> Preset <b>konservativ</b> + Audit prüfen + Schlüssel whitelisten (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">page</span>, <span class="mono">lang</span>).</li>
           </ul>
           <div class="warn">
             Häufig „funktional“/kritisch: <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">signature</span>, <span class="mono">expires</span>, <span class="mono">state</span>, <span class="mono">nonce</span>.
@@ -406,12 +393,12 @@
         <div class="box">
           <h3>Affiliate/Partner-Attribution fehlt</h3>
           <ul>
-            <li>Wenn du Attribution behalten willst: nutze Pro + Allowlist.</li>
+            <li>Wenn du Attribution behalten willst: nutze Pro + Whitelist.</li>
             <li>Typische Keys: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>.</li>
             <li>Dann Link neu bereinigen und Audit prüfen.</li>
           </ul>
           <div class="note">
-            Die App entfernt bewusst <span class="mono">utm_*</span>. Wenn du UTM bewusst behalten willst, ist das ein Pro-Case (Allowlist/Policy).
+            Die App entfernt bewusst <span class="mono">utm_*</span>. Wenn du UTM bewusst behalten willst, ist das ein Pro-Case (Whitelist/Policy).
           </div>
         </div>
 
@@ -431,7 +418,7 @@
             <li>Wenn möglich: in einem privaten Tab testen.</li>
           </ul>
           <div class="note">
-            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann kann man das Muster schnell erkennen.
+            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann erkennt man das Muster sehr schnell.
           </div>
         </div>
       </div>
@@ -452,9 +439,7 @@
     <!-- Kontakt -->
     <section class="card" id="kontakt">
       <h2>Support</h2>
-      <p>
-        Wenn du einen reproduzierbaren Fehler hast, schick bitte:
-      </p>
+      <p>Wenn du einen reproduzierbaren Fehler hast, schick bitte:</p>
       <ul>
         <li>1 Beispiel-URL (gern „entschärft“/ohne private Tokens)</li>
         <li>Was du erwartest</li>
@@ -471,7 +456,7 @@
       <div class="footGrid">
         <div>
           <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell &amp; einfach · Pro: Policies, Allowlist, Audit.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
@@ -547,7 +532,6 @@
         });
         overlay.addEventListener('click', closeMenu);
         menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
         });
