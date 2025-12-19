@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Hilfe – SafeShare</title>
-  <meta name="description" content="SafeShare Hilfe: Links bereinigen, typische Stolperfallen, iPad/iPhone Hinweise, Pro-Workflow und Kontakt." />
+  <meta name="description" content="SafeShare Hilfe: Links bereinigen, typische Stolperfallen, iPad/iPhone Hinweise, Pro-Workflow und Support." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -164,6 +164,28 @@
       padding: 12px;
     }
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .chip b{ color: var(--text); font-weight: 850; }
 
     /* Footer wie app.html */
     footer{
@@ -268,14 +290,14 @@
       <div class="small">Support & Troubleshooting</div>
     </header>
 
+    <!-- MASTER NAV: Start / App / Schule / Pro / Hilfe / Mehr -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -284,15 +306,25 @@
     <section class="card">
       <h1>Hilfe</h1>
       <p>
-        Hier findest du den schnellen Einstieg, typische Stolperfallen und saubere Debug-Schritte – ohne Panik.
+        Kurzer Einstieg, typische Stolperfallen und saubere Debug-Schritte – ohne Panik.
       </p>
+
+      <div class="chips" aria-label="Flow">
+        <span class="chip"><b>1</b> Copy</span>
+        <span class="chip"><b>2</b> Clean</span>
+        <span class="chip"><b>3</b> Share</span>
+      </div>
+
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
         <a class="btn" href="pro.html">Pro ansehen</a>
-        <a class="btn ghost" href="#kontakt">Kontakt</a>
+        <a class="btn ghost" href="#kontakt">Support</a>
       </div>
+
+      <!-- (1) Präzise statt schwammig -->
       <div class="note">
-        SafeShare ist Link-Hygiene: Tracking-Anteile im Link reduzieren. Es macht dich nicht „unsichtbar“.
+        SafeShare entfernt nur Tracking-Parameter <b>im Link selbst</b> (z. B. <span class="mono">utm_*</span>, <span class="mono">fbclid</span>, <span class="mono">gclid</span>).
+        Es ändert nichts an Browser/Account/IP – es macht dich nicht anonym.
       </div>
     </section>
 
@@ -304,8 +336,12 @@
         <li>In <a href="app.html"><b>app.html</b></a> einfügen</li>
         <li><b>Bereinigen</b> → Ergebnis kopieren/teilen</li>
       </ol>
+
+      <!-- (2) Klarer Debug-Flow statt missverständlich -->
       <div class="warn">
-        Wenn ein Link „komisch“ wirkt: erst testen, ob der <b>Original-Link</b> bei dir selbst zuverlässig funktioniert. Dann SafeShare testen.
+        Wenn ein Link nach der Bereinigung nicht funktioniert:
+        1) Original-Link öffnen (Gegencheck) · 2) bereinigten Link öffnen ·
+        3) wenn nur der bereinigte Link scheitert, war ein Parameter vermutlich funktional → Pro (Audit/Whitelist) oder konservativer bereinigen.
       </div>
     </section>
 
@@ -339,11 +375,15 @@
             <a class="btn primary" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person</a>
             <a class="btn" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team</a>
           </div>
+
           <p class="muted" style="margin-top:10px;opacity:.85">
             Im Paket: <code>02-app-pro.html</code>, <code>03-handbuch-pro.pdf</code>
           </p>
+
+          <!-- (3) Positiv formuliert -->
           <div class="note" style="margin-top:10px">
-            Pro ist nicht öffentlich. Wenn du eine 404 siehst, bist du auf der falschen URL – starte immer über <b>01-START.html</b>.
+            Pro ist ein <b>Offline-Download</b> (nicht als öffentliche Webseite).
+            Starte immer über <b>01-START.html</b> aus deinem Payhip-Download – so bleibt Pro privat und funktioniert auch ohne Internet.
           </div>
         </div>
       </div>
@@ -357,12 +397,12 @@
         <div class="box">
           <h3>Link ist nach Bereinigung „kaputt“</h3>
           <ul>
-            <li><b>Gegenprobe:</b> Öffnet der Original-Link stabil bei dir?</li>
-            <li><b>Dann:</b> SafeShare-Link öffnen. Wenn’s kaputt ist: Parameter sind vermutlich funktional.</li>
+            <li><b>Vergleich:</b> Original-Link öffnen → bereinigten Link öffnen.</li>
+            <li>Wenn nur der bereinigte Link scheitert: ein Parameter war vermutlich <b>funktional</b>.</li>
             <li><b>Pro-Ansatz:</b> Preset <b>konservativ</b> + Audit prüfen + Schlüssel whitelisten (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">page</span>, <span class="mono">lang</span>).</li>
           </ul>
           <div class="warn">
-            Häufige „funktionale“ Keys: <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">signature</span>, <span class="mono">expires</span>, <span class="mono">state</span>, <span class="mono">nonce</span>.
+            Häufig „funktional“/kritisch: <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">signature</span>, <span class="mono">expires</span>, <span class="mono">state</span>, <span class="mono">nonce</span>.
           </div>
         </div>
 
@@ -371,18 +411,18 @@
           <ul>
             <li>Wenn du Attribution behalten willst: nutze Pro + Whitelist.</li>
             <li>Typische Keys: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>.</li>
-            <li>Danach Link neu bereinigen und Audit prüfen.</li>
+            <li>Dann Link neu bereinigen und Audit prüfen.</li>
           </ul>
           <div class="note">
-            Hinweis: Die App entfernt bewusst <span class="mono">utm_*</span>. Wenn du UTM behalten willst, ist das ein Pro-Case (Whitelist/Policy).
+            Die App entfernt bewusst <span class="mono">utm_*</span>. Wenn du UTM bewusst behalten willst, ist das ein Pro-Case (Whitelist/Policy).
           </div>
         </div>
 
         <div class="box">
-          <h3>404 bei Pro-App</h3>
+          <h3>404 bei Pro</h3>
           <ul>
-            <li>Die Pro-App ist nicht öffentlich. Öffne sie über <span class="mono">01-START.html</span> im Payhip-Download.</li>
-            <li>Wenn du Dateien umbenannt hast: Links in <span class="mono">01-START.html</span> und im Paket prüfen.</li>
+            <li>Pro läuft als Offline-Paket. Öffne Pro über <span class="mono">01-START.html</span> im Payhip-Download.</li>
+            <li>Wenn du Dateien umbenannt hast: Links in <span class="mono">01-START.html</span> im Paket prüfen.</li>
           </ul>
         </div>
 
@@ -394,7 +434,7 @@
             <li>Wenn möglich: in einem privaten Tab testen.</li>
           </ul>
           <div class="note">
-            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann erkennt man das Muster schnell.
+            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann kann man das Muster schnell erkennen.
           </div>
         </div>
       </div>
@@ -414,8 +454,10 @@
 
     <!-- Kontakt -->
     <section class="card" id="kontakt">
-      <h2>Kontakt</h2>
-      <p>Wenn du einen reproduzierbaren Fehler hast, schick bitte:</p>
+      <h2>Support</h2>
+      <p>
+        Wenn du einen reproduzierbaren Fehler hast, schick bitte:
+      </p>
       <ul>
         <li>1 Beispiel-URL (gern „entschärft“/ohne private Tokens)</li>
         <li>Was du erwartest</li>
@@ -437,10 +479,9 @@
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
           <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-          <a href="education.html" data-page="education.html">Schule</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -452,22 +493,19 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Navigation</div>
-    <a href="index.html" data-page="index.html">Start</a>
-    <a href="app.html" data-page="app.html">App</a>
-    <a href="pro.html" data-page="pro.html">Pro</a>
-    <a href="help.html" data-page="help.html">Hilfe</a>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-    <a href="education.html" data-page="education.html">Schule</a>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
 
     <div class="divider"></div>
-    <div class="menuHint">Wissen</div>
+
+    <div class="menuHint">Öffentlich</div>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
 
     <div class="divider"></div>
-    <div class="menuHint">Rechtliches</div>
+
     <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
     <a href="impressum.html" data-page="impressum.html">Impressum</a>
     <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -482,42 +520,41 @@
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet (+ Escape + Fokus zurück)
+      // more sheet + ESC close
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
-      if(!btn || !menu || !overlay) return;
 
-      let lastFocus = null;
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
 
       function openMenu(){
-        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => {
-          menu.classList.add('open');
-          const firstLink = menu.querySelector('a');
-          if (firstLink) firstLink.focus?.();
-        });
+        requestAnimationFrame(() => menu.classList.add('open'));
         btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
-        if (lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
       }
 
-      btn.addEventListener('click',(e)=>{
-        e.preventDefault();
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
-      });
-      overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      if(btn && menu && overlay){
+        btn.addEventListener('click',(e)=>{
+          e.preventDefault();
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
-      document.addEventListener('keydown', (e)=>{
-        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
-      });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+      }
     })();
   </script>
 </body>
