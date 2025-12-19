@@ -17,6 +17,7 @@
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
       --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
@@ -27,24 +28,27 @@
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
-      --ok: rgba(47,227,183,.16);
       --bad: rgba(255,84,84,.14);
+      --ok: rgba(47,227,183,.16);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff;
+        --card:#ffffff; --card2:#f5f7ff;
         --border: rgba(17,24,39,.12);
         --text: rgba(17,24,39,.95);
         --muted: rgba(17,24,39,.72);
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
-        --ok: rgba(47,227,183,.18);
         --bad: rgba(255,84,84,.12);
+        --ok: rgba(47,227,183,.18);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
+
     *{ box-sizing:border-box; }
     body{
       margin:0;
@@ -57,8 +61,14 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+    .muted{ color: var(--muted); }
+    .small{ font-size: 12px; color: var(--muted2); line-height: 1.45; white-space:nowrap; }
 
-    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    /* ===== Master Header ===== */
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 14px; padding: 10px 2px 12px;
+    }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
       width: 38px; height: 38px; border-radius: 999px;
@@ -70,9 +80,14 @@
     .logoWrap img{ width:28px; height:28px; display:block; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
-    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+    .brandText .title{
+      font-size: 16px; font-weight: 780; line-height:1.1;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      font-size: 12px; color: var(--muted2); margin-top:2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -98,8 +113,13 @@
       cursor:pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
+    }
 
+    /* ===== Content ===== */
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -190,7 +210,7 @@
     }
     .copyBtn:hover{ background: rgba(255,255,255,.10); }
 
-    /* Footer (Master: footGrid + footLinks) */
+    /* ===== Footer (Master) ===== */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -223,7 +243,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (CSS bleibt gleich; Markup kommt aus Snippet) ===== */
+    /* ===== Mehr: Bottom-Sheet (Master + ESC Close) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -276,17 +296,39 @@
   </style>
 </head>
 
-<body data-shell-sub="Bookmarklets · 1-Klick" data-shell-tag="Desktop">
+<body>
   <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Bookmarklets · 1-Klick (Desktop)</div>
+        </div>
+      </div>
+      <div class="small">Desktop</div>
+    </header>
 
-    <!-- COMMON SHELL (Header + Tabs + Footer + Mehr) -->
-    <div id="ss-shell"></div>
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <button class="tab moreBtn active" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
+      </div>
+    </div>
 
-    <!-- PAGE CONTENT -->
     <section class="card">
       <h1>Bookmarklets</h1>
       <p>
-        Bookmarklets sind Lesezeichen, die ein kleines Script ausführen. Damit kannst du SafeShare auf Desktop sehr schnell nutzen:
+        Bookmarklets sind Lesezeichen, die ein kleines Script ausführen.
+        Damit kannst du SafeShare auf Desktop sehr schnell nutzen:
         <b>aktuelle URL übernehmen</b> → SafeShare öffnen → optional direkt bereinigen.
       </p>
 
@@ -296,8 +338,9 @@
         <a class="btn ghost" href="pro.html#pricing">Pro ansehen</a>
       </div>
 
-      <div class="warn">
-        iOS/iPad: Bookmarklets sind je nach Safari-Version eingeschränkt. Für „echtes 1-Klick“ auf iOS ist ein Shortcut im Share-Sheet stabiler.
+      <div class="note">
+        iOS/iPad: Am komfortabelsten ist der <b>Share-Sheet Shortcut</b> – schnell, stabil, direkt beim Teilen.
+        Bookmarklets sind eher eine Desktop-Abkürzung. <span class="muted">(Shortcut folgt später inkl. kurzer Erklärung/Video.)</span>
       </div>
     </section>
 
@@ -331,7 +374,7 @@
       </div>
 
       <div class="note">
-        Voraussetzung: <span class="mono">app.html</span> muss <span class="mono">?u=</span> lesen und bei <span class="mono">run=1</span> automatisch bereinigen.
+        Voraussetzung: <span class="mono">app.html</span> liest <span class="mono">?u=</span> und startet bei <span class="mono">run=1</span> automatisch.
       </div>
     </section>
 
@@ -355,26 +398,26 @@
     <section class="card">
       <h2>Einrichten (Desktop)</h2>
       <ol>
-        <li>Lesezeichen erstellen (Bookmark hinzufügen)</li>
+        <li>Lesezeichen erstellen</li>
         <li>Name: z. B. <b>SafeShare</b> / <b>SafeShare 1-Klick</b></li>
         <li>URL/Feld: den Bookmarklet-Code einfügen (muss mit <span class="mono">javascript:</span> beginnen)</li>
         <li>Auf einer Website klicken → SafeShare öffnet</li>
       </ol>
 
       <div class="note">
-        Tipp: Viele Browser entfernen Leerzeichen/Zeilenumbrüche automatisch – trotzdem am besten den Code genau als eine Zeile einfügen.
+        Tipp: Am besten als <b>eine Zeile</b> einfügen (ohne Umbrüche).
       </div>
     </section>
 
     <section class="card">
-      <h2>Fehlersuche (wenn es „nicht geht“)</h2>
+      <h2>Fehlersuche</h2>
       <div class="grid2">
         <div class="box">
           <h3>Es passiert nichts</h3>
           <ul>
             <li>Prüfe: beginnt wirklich mit <span class="mono">javascript:</span>?</li>
-            <li>Wurde der Code vom Browser „bereinigt“/gekürzt? Dann neu einfügen.</li>
-            <li>In manchen Setups blockt der Browser Bookmarklets aus Sicherheitsgründen → Shortcut nutzen.</li>
+            <li>Wurde der Code vom Browser gekürzt? Dann neu einfügen.</li>
+            <li>Manche Browser blocken Bookmarklets je nach Sicherheitsmodus.</li>
           </ul>
         </div>
         <div class="box">
@@ -385,20 +428,53 @@
           </ul>
         </div>
       </div>
-
-      <div class="warn">
-        iOS/iPad: Wenn Bookmarklets zicken, nutze den Share-Sheet Shortcut (robust) statt Browser-Bookmarklet.
-      </div>
     </section>
 
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
+      </div>
+    </footer>
   </div>
 
-  <!-- COMMON SHELL SCRIPT -->
-  <script defer src="js/ss-shell.js?v=2025-12-19-01"></script>
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Öffentlich</div>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <div class="divider"></div>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Kontakt</a>
+    <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
+  </nav>
 
-  <!-- Page: Copy buttons -->
   <script>
     (function(){
+      // active links (tabs + footer + more)
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      // copy buttons
       async function copyText(text){
         try{
           await navigator.clipboard.writeText(text);
@@ -426,6 +502,32 @@
           setTimeout(()=>b.textContent=old, 1200);
         });
       });
+
+      // more sheet (overlay + ESC close)
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
+
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+      }
+
+      btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
     })();
   </script>
 
