@@ -219,7 +219,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet ===== */
+    /* ===== Mehr: Bottom-Sheet (Master) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -289,7 +289,6 @@
       <div class="small">ohne Panik</div>
     </header>
 
-    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
@@ -326,7 +325,7 @@
         https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch
       </div>
       <div class="example mono">
-        https://shop.example.com/product?gclid=ABC123&amp;fbclid=XYZ987
+        https://shop.example.com/product?gclid=ABC123&fbclid=XYZ987
       </div>
 
       <div class="grid2">
@@ -389,7 +388,6 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
       <div class="footGrid">
         <div>
@@ -418,7 +416,7 @@
 
     <div class="divider"></div>
 
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
@@ -427,6 +425,7 @@
 
     <div class="divider"></div>
 
+    <div class="menuHint">Rechtliches</div>
     <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
     <a href="impressum.html" data-page="impressum.html">Impressum</a>
     <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -441,7 +440,7 @@
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet + ESC close + scroll lock
+      // more sheet (overlay + ESC close)
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -450,6 +449,7 @@
         document.body.style.overflow = lock ? 'hidden' : '';
         document.body.style.touchAction = lock ? 'none' : '';
       }
+
       function openMenu(){
         overlay.hidden = false; menu.hidden = false;
         requestAnimationFrame(() => menu.classList.add('open'));
@@ -470,13 +470,9 @@
         });
         overlay.addEventListener('click', closeMenu);
         menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
-        });
+        document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu(); });
       }
     })();
   </script>
-
-  <script defer src="js/sw-register.js?v=2025-12-19-02"></script>
 </body>
 </html>
