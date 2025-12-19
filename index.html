@@ -74,6 +74,7 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
+    /* ===== Master Header ===== */
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
@@ -84,7 +85,7 @@
       display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
     }
     .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .logoFallback{ font-weight:800; color: #2fe3b7; font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -116,6 +117,7 @@
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
+    /* ===== Content ===== */
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -200,7 +202,7 @@
       display: block;
     }
 
-    /* Footer wie help/app (Grid + Links) */
+    /* ===== Footer (Master) ===== */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -233,7 +235,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (Master) ===== */
+    /* ===== Mehr: Bottom-Sheet (Master + ESC Close) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -305,7 +307,7 @@
     <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab active" href="index.html" data-page="index.html">Start</a>
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
@@ -374,12 +376,12 @@
       </p>
     </section>
 
-    <!-- FOOTER wie help/app -->
+    <!-- FOOTER (Master) -->
     <footer>
       <div class="footGrid">
         <div>
           <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
@@ -401,6 +403,7 @@
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
     <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+    <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
 
     <div class="divider"></div>
 
@@ -410,12 +413,6 @@
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-
-    <div class="divider"></div>
-
-    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-    <a href="impressum.html" data-page="impressum.html">Impressum</a>
-    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
@@ -423,12 +420,11 @@
       // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
-
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // optional header text mapping (nur wenn IDs existieren)
+      // optional header text mapping
       const sub = document.getElementById('pageSub');
       const tag = document.getElementById('pageTag');
       const map = {
