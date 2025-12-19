@@ -176,7 +176,6 @@
       border-radius: 16px;
       padding: 12px;
     }
-
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding: 6px 10px;
@@ -188,7 +187,6 @@
     }
     .pill b{ color: var(--text); font-weight: 850; }
 
-    /* Footer (Master: Grid + Links) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -221,7 +219,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (Master) ===== */
+    /* ===== Mehr: Bottom-Sheet ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -285,10 +283,10 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Schule</div>
+          <div class="sub">Schule</div>
         </div>
       </div>
-      <div class="small" id="pageTag">ohne Panik</div>
+      <div class="small">ohne Panik</div>
     </header>
 
     <!-- MASTER NAV -->
@@ -328,7 +326,7 @@
         https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch
       </div>
       <div class="example mono">
-        https://shop.example.com/product?gclid=ABC123&fbclid=XYZ987
+        https://shop.example.com/product?gclid=ABC123&amp;fbclid=XYZ987
       </div>
 
       <div class="grid2">
@@ -364,7 +362,7 @@
             Manche Parameter sind Zuordnung (z. B. <span class="mono">ref</span>, <span class="mono">tag</span>).
             Entfernst du sie, kann Vergütung/Zuordnung kaputtgehen.
           </p>
-          <p><b>Pro-Lösung:</b> Whitelist (Allowlist) pro Domain/Policy.</p>
+          <p><b>Pro-Lösung:</b> Allowlist (Whitelist) pro Domain/Policy.</p>
         </div>
         <div class="box">
           <h3>Funktionale Parameter</h3>
@@ -391,12 +389,12 @@
       </div>
     </section>
 
-    <!-- FOOTER (Master) -->
+    <!-- FOOTER wie help/app -->
     <footer>
       <div class="footGrid">
         <div>
           <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
@@ -404,7 +402,6 @@
           <a href="education.html" data-page="education.html">Schule</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -413,7 +410,7 @@
     </footer>
   </div>
 
-  <!-- Mehr (Bottom-Sheet) – Master -->
+  <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
@@ -421,7 +418,7 @@
 
     <div class="divider"></div>
 
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
@@ -430,43 +427,22 @@
 
     <div class="divider"></div>
 
+    <div class="menuHint">Rechtliches</div>
     <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
     <a href="impressum.html" data-page="impressum.html">Impressum</a>
     <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
-  <!-- MASTER SCRIPT: active + header mapping + more sheet (ESC + scroll lock) -->
   <script>
-    (function () {
+    (function(){
+      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
-
-      // active state für Tabs + Footer + More
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // Header-Sub/Tag Mapping (nur wenn IDs existieren)
-      const sub = document.getElementById('pageSub');
-      const tag = document.getElementById('pageTag');
-      const map = {
-        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
-        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "education.html": ["Schule", "ohne Panik"],
-        "pro.html": ["Pro", "für Profis"],
-        "help.html": ["Hilfe", "Support"],
-        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
-        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich", "Kriterien"],
-        "impressum.html": ["Impressum", "§ 5 TMG"],
-        "datenschutz.html": ["Datenschutz", "DSGVO"],
-        "terms.html": ["Nutzungsbedingungen", "Legal"]
-      };
-      if (sub && map[path]) sub.textContent = map[path][0];
-      if (tag && map[path]) tag.textContent = map[path][1];
-
-      // More sheet (ESC close + scroll lock)
+      // more sheet + ESC close + scroll lock
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -502,6 +478,6 @@
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
+  <script defer src="js/sw-register.js?v=2025-12-19-02"></script>
 </body>
 </html>
