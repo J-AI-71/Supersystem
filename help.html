@@ -164,16 +164,6 @@
       padding: 12px;
     }
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      white-space: nowrap;
-    }
 
     /* Footer wie app.html */
     footer{
@@ -280,9 +270,12 @@
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab active" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -350,7 +343,7 @@
             Im Paket: <code>02-app-pro.html</code>, <code>03-handbuch-pro.pdf</code>
           </p>
           <div class="note" style="margin-top:10px">
-            Pro ist nicht öffentlich auf GitHub. Wenn du eine 404 siehst, bist du auf der falschen URL – starte immer über <b>01-START.html</b>.
+            Pro ist nicht öffentlich. Wenn du eine 404 siehst, bist du auf der falschen URL – starte immer über <b>01-START.html</b>.
           </div>
         </div>
       </div>
@@ -377,11 +370,11 @@
           <h3>Affiliate/Partner-Attribution fehlt</h3>
           <ul>
             <li>Wenn du Attribution behalten willst: nutze Pro + Whitelist.</li>
-            <li>Typische Keys: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>, <span class="mono">utm_campaign</span> (Achtung: UTM ist oft „Marketing“, manchmal aber gewollt).</li>
+            <li>Typische Keys: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>.</li>
             <li>Danach Link neu bereinigen und Audit prüfen.</li>
           </ul>
           <div class="note">
-            Wichtig: SafeShare entfernt in der App bewusst <span class="mono">utm_*</span>. Wenn du UTM behalten willst, ist das ein Pro-Case (Whitelist/Policy).
+            Hinweis: Die App entfernt bewusst <span class="mono">utm_*</span>. Wenn du UTM behalten willst, ist das ein Pro-Case (Whitelist/Policy).
           </div>
         </div>
 
@@ -401,7 +394,7 @@
             <li>Wenn möglich: in einem privaten Tab testen.</li>
           </ul>
           <div class="note">
-            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann kann man das Muster schnell erkennen.
+            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann erkennt man das Muster schnell.
           </div>
         </div>
       </div>
@@ -422,9 +415,7 @@
     <!-- Kontakt -->
     <section class="card" id="kontakt">
       <h2>Kontakt</h2>
-      <p>
-        Wenn du einen reproduzierbaren Fehler hast, schick bitte:
-      </p>
+      <p>Wenn du einen reproduzierbaren Fehler hast, schick bitte:</p>
       <ul>
         <li>1 Beispiel-URL (gern „entschärft“/ohne private Tokens)</li>
         <li>Was du erwartest</li>
@@ -436,7 +427,7 @@
       </div>
     </section>
 
-    <!-- FOOTER wie app.html -->
+    <!-- FOOTER -->
     <footer>
       <div class="footGrid">
         <div>
@@ -448,6 +439,8 @@
           <a href="app.html" data-page="app.html">App</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+          <a href="education.html" data-page="education.html">Schule</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -459,13 +452,25 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Navigation</div>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="app.html" data-page="app.html">App</a>
+    <a href="pro.html" data-page="pro.html">Pro</a>
+    <a href="help.html" data-page="help.html">Hilfe</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
     <a href="education.html" data-page="education.html">Schule</a>
+
+    <div class="divider"></div>
+    <div class="menuHint">Wissen</div>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+
     <div class="divider"></div>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
@@ -477,21 +482,31 @@
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet
+      // more sheet (+ Escape + Fokus zurück)
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
+
+      let lastFocus = null;
 
       function openMenu(){
+        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const firstLink = menu.querySelector('a');
+          if (firstLink) firstLink.focus?.();
+        });
         btn.setAttribute('aria-expanded','true');
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
         setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        if (lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
+
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
@@ -499,6 +514,10 @@
       });
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+      });
     })();
   </script>
 </body>
