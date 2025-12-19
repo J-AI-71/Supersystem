@@ -311,7 +311,7 @@
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-controls="moreMenu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
 
@@ -324,7 +324,7 @@
       </p>
       <div class="row">
         <a class="btn primary" href="app.html">App testen</a>
-        <a class="btn" href="pro.html">Pro: Audit & Allowlist</a>
+        <a class="btn" href="pro.html">Pro: Audit &amp; Allowlist</a>
         <a class="btn ghost" href="education.html">Schule</a>
       </div>
       <div class="note">
@@ -504,7 +504,7 @@
 
   <script>
     (function(){
-      // active links (tabs + footer + more)
+      // active links (Tabs + Footer + More)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
@@ -523,9 +523,13 @@
         document.body.style.overflow = lock ? 'hidden' : '';
         document.body.style.touchAction = lock ? 'none' : '';
       }
+      function isOpen(){
+        return btn.getAttribute('aria-expanded') === 'true';
+      }
       function openMenu(){
         lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
+        menu.scrollTop = 0;
         requestAnimationFrame(() => {
           menu.classList.add('open');
           const firstLink = menu.querySelector('a');
@@ -543,14 +547,17 @@
 
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
+        isOpen() ? closeMenu() : openMenu();
       });
+
       overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      menu.addEventListener('click', (e)=>{
+        const a = e.target.closest && e.target.closest('a');
+        if (a) closeMenu();
+      });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        if (e.key === 'Escape' && isOpen()) closeMenu();
       });
     })();
   </script>
