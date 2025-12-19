@@ -28,6 +28,8 @@
       --shadow: 0 18px 45px rgba(0,0,0,.35);
       --radius: 18px;
       --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
       --bad: rgba(255,84,84,.14);
@@ -98,6 +100,7 @@
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
       background: transparent;
+      text-decoration:none;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); text-decoration:none; }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -138,6 +141,7 @@
     }
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
+    /* Footer wie MASTER: Grid + Links */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -145,12 +149,25 @@
       font-size: 12px;
       line-height: 1.55;
     }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
     }
     .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -209,6 +226,7 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    .moreMenu a.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
   </style>
 </head>
 
@@ -229,9 +247,12 @@
       <div class="small">Terms</div>
     </header>
 
+    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
@@ -269,9 +290,7 @@
         SafeShare ist eine Web-Anwendung, mit der du Links vor dem Teilen bereinigen kannst – insbesondere durch das Entfernen typischer
         Tracking-Parameter und das Entpacken bestimmter Weiterleitungen.
       </p>
-      <p>
-        SafeShare stellt dir Werkzeuge zur Verfügung, ersetzt aber keine rechtliche oder technische Beratung.
-      </p>
+      <p>SafeShare stellt dir Werkzeuge zur Verfügung, ersetzt aber keine rechtliche oder technische Beratung.</p>
     </section>
 
     <section class="card" id="verantwortung">
@@ -281,9 +300,7 @@
         SafeShare übernimmt keine Verantwortung für die Inhalte der von dir eingegebenen oder verarbeiteten Links und keine Haftung
         für externe Seiten, auf die diese Links verweisen.
       </p>
-      <p>
-        Bitte prüfe insbesondere bei wichtigen oder sensiblen Inhalten selbst, ob die bereinigten Links wie gewünscht funktionieren.
-      </p>
+      <p>Bitte prüfe insbesondere bei wichtigen oder sensiblen Inhalten selbst, ob die bereinigten Links wie gewünscht funktionieren.</p>
     </section>
 
     <section class="card" id="verfuegbarkeit">
@@ -315,33 +332,28 @@
         Wesentliche Punkte:
       </p>
       <ul>
-        <li><strong>SafeShare Pro Person:</strong> Lizenz für eine natürliche Person, nicht übertragbar.</li>
-        <li><strong>SafeShare Pro Team (bis 5 Nutzer:innen):</strong> Lizenz für bis zu 5 Personen innerhalb desselben Unternehmens oder Projekts.</li>
+        <li><strong>Pro Person:</strong> Lizenz für eine natürliche Person, nicht übertragbar.</li>
+        <li><strong>Pro Team:</strong> Lizenz für bis zu 5 Personen innerhalb derselben Organisation/desselben Projekts.</li>
         <li>Eine Nutzung, die offensichtlich über den erworbenen Umfang hinausgeht, ist nicht gestattet.</li>
       </ul>
-      <p>
-        SafeShare setzt bewusst nicht auf aggressive technische Kontrollmechanismen. Gleichzeitig wird erwartet, dass Lizenzen fair genutzt werden.
-      </p>
+      <p>SafeShare setzt bewusst nicht auf aggressive technische Kontrollmechanismen. Gleichzeitig wird eine faire Nutzung erwartet.</p>
     </section>
 
     <section class="card" id="datenschutz">
       <h2>7. Datenschutz</h2>
       <p>
-        Die Verarbeitung personenbezogener Daten im Zusammenhang mit SafeShare richtet sich nach der geltenden
-        <a href="datenschutz.html">Datenschutzerklärung</a>. Bitte lies diese sorgfältig, bevor du SafeShare nutzt.
+        Informationen zur Verarbeitung personenbezogener Daten findest du in der
+        <a href="datenschutz.html">Datenschutzerklärung</a>.
       </p>
     </section>
 
     <section class="card" id="aenderungen">
       <h2>8. Änderungen der Nutzungsbedingungen</h2>
       <p>
-        Diese Nutzungsbedingungen können in Zukunft angepasst werden, z. B. wenn sich der Funktionsumfang von SafeShare ändert oder
+        Diese Nutzungsbedingungen können angepasst werden, z. B. wenn sich der Funktionsumfang von SafeShare ändert oder
         rechtliche Rahmenbedingungen angepasst werden müssen.
       </p>
-      <p>
-        Die jeweils aktuelle Fassung ist an dieser Stelle abrufbar. Eine weitere Nutzung von SafeShare nach einer Änderung der Bedingungen
-        kann als Zustimmung zur neuen Fassung gewertet werden.
-      </p>
+      <p>Die jeweils aktuelle Fassung ist auf dieser Seite abrufbar.</p>
     </section>
 
     <section class="card" id="recht">
@@ -351,16 +363,26 @@
       </p>
     </section>
 
+    <!-- FOOTER -->
     <footer>
-      <div class="footLinks">
-        <a href="index.html">Start</a>
-        <a href="app.html">App</a>
-        <a href="pro.html">Pro</a>
-        <a href="help.html">Hilfe</a>
-        <a href="education.html">Schule</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="terms.html">Nutzungsbedingungen</a>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+          <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
       </div>
     </footer>
   </div>
@@ -368,39 +390,64 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <div class="divider"></div>
     <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
     (function(){
-      // active tab (works for root "/" too)
+      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet
+      // more sheet + ESC close + scroll lock + focus restore
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
 
+      let lastFocus = null;
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
       function openMenu(){
+        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const first = menu.querySelector('a');
+          if(first && first.focus) first.focus();
+        });
         btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+        if(lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
+
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
@@ -408,7 +455,10 @@
       });
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu(); });
     })();
   </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-19-01"></script>
 </body>
 </html>
