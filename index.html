@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Links teilen. Ohne Ballast.</title>
-  <meta name="description" content="SafeShare entfernt unnötige Tracking-Parameter aus Links – local-first im Browser. App für schnelle Link-Hygiene. Pro für Profis: Policies, Whitelist, Audit und Export." />
+  <title>SafeShare – Links sauber teilen (local-first)</title>
+  <meta name="description" content="SafeShare entfernt Tracking-Parameter aus Links (utm_*, fbclid, gclid …) – local-first im Browser. Sauber teilen: Copy → Clean → Share. Ohne Panik, ohne Upload." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -13,28 +13,16 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <meta property="og:title" content="SafeShare – Links teilen. Ohne Ballast." />
-  <meta property="og:description" content="Local-first URL Cleaner: unnötige Tracking-Parameter entfernen. App (schnell) + Pro (Policies, Audit, Export)." />
+  <!-- Open Graph (optional, falls du OG-Images hast – sonst einfach lassen) -->
+  <meta property="og:title" content="SafeShare – Links sauber teilen" />
+  <meta property="og:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – local-first im Browser. Copy → Clean → Share." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/og/og-index.jpg" />
-
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebApplication",
-    "name":"SafeShare",
-    "applicationCategory":"UtilitiesApplication",
-    "operatingSystem":"Any",
-    "url":"https://j-ai-71.github.io/Supersystem/",
-    "description":"Local-first URL Cleaner: unnötige Tracking-Parameter entfernen. App (schnell) + Pro (Policies, Audit, Export)."
-  }
-  </script>
+  <!-- <meta property="og:image" content="assets/og/og-index.jpg" /> -->
 
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.045);
       --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
@@ -46,12 +34,14 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
       --max: 1120px;
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff; --card2:#f5f7ff;
+        --card:#ffffff;
         --border: rgba(17,24,39,.12);
         --text: rgba(17,24,39,.95);
         --muted: rgba(17,24,39,.72);
@@ -59,6 +49,8 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -74,7 +66,6 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    /* ===== Master Header ===== */
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
@@ -85,7 +76,7 @@
       display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
     }
     .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: #2fe3b7; font-size: 14px; line-height:1; display:none; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -117,7 +108,6 @@
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
-    /* ===== Content ===== */
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -126,26 +116,11 @@
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 3.8vw, 44px);
-      line-height: 1.10;
-      letter-spacing: -0.2px;
-    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 44px); line-height: 1.08; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
-    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size: 12px; color: var(--muted);
-      white-space: nowrap;
-    }
-    .dot{ width:10px; height:10px; border-radius: 999px; background: rgba(47,227,183,.85); box-shadow: 0 0 0 4px rgba(47,227,183,.12); }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -168,41 +143,49 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .okBox{
-      margin-top: 12px; border-left: 3px solid rgba(47,227,183,.55);
-      background: var(--ok); padding: 10px 12px; border-radius: 12px;
-      color: var(--text); font-size: 13px; line-height: 1.45;
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
     }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
-    @media(min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
-    .tile{
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       border-radius: 16px;
-      padding: 14px;
+      padding: 12px;
     }
-    .tile h3{ margin: 0 0 8px; }
 
-    /* HERO MEDIA */
-    .heroMedia{
-      margin: 14px 0 0;
-      border-radius: 16px;
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .example{
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      aspect-ratio: 3 / 2;
-      display:block;
-    }
-    .heroMedia img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      word-break: break-word;
     }
 
-    /* ===== Footer (Master) ===== */
+    /* Footer wie help/app (Grid + Links) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -235,7 +218,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (Master + ESC Close) ===== */
+    /* ===== Mehr: Bottom-Sheet (wie UTM/Tracking/Tool-Vergleich) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -269,6 +252,7 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
+      .box{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -298,16 +282,16 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub" id="pageSub">Links teilen. Ohne Ballast.</div>
+          <div class="sub">Links sauber teilen</div>
         </div>
       </div>
-      <div class="small" id="pageTag">local-first</div>
+      <div class="small">local-first</div>
     </header>
 
     <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="index.html" data-page="index.html">Start</a>
+        <a class="tab active" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
@@ -316,72 +300,152 @@
       </div>
     </div>
 
-    <section class="card" id="top">
-      <div class="pill"><span class="dot" aria-hidden="true"></span> Start</div>
-      <h1>Links teilen. Ohne Ballast.</h1>
+    <!-- HERO -->
+    <section class="card">
+      <h1>Tracking-Parameter raus.<br>Link sauber teilen.</h1>
       <p>
-        SafeShare entfernt unnötige Tracking-Parameter aus Links – direkt im Browser (local-first).
-        Für schnelle Link-Hygiene gibt es die App. Für Profis gibt es Pro: Policies, Whitelist, Audit und Export.
+        Viele Links enthalten Zusatzinfos – wie Etiketten/Aufkleber am Paket (<span class="mono">utm_*</span>, <span class="mono">fbclid</span>, <span class="mono">gclid</span> …).
+        Für Auswertung nützlich, beim Weiterleiten oft nur Ballast.
       </p>
 
       <div class="row">
+        <a class="btn primary" href="app.html">Jetzt bereinigen</a>
+        <a class="btn" href="education.html">SafeShare Schule</a>
+        <a class="btn ghost" href="pro.html">Pro für Profis</a>
+      </div>
+
+      <div class="note">
+        SafeShare arbeitet <b>local-first</b>: Bereinigung im Browser. Links werden nicht hochgeladen.
+      </div>
+      <div class="warn">
+        Wichtig: Das ist kein „Unsichtbar“-Versprechen. Es ist ein konkreter Hygiene-Schritt beim Teilen.
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <section class="card">
+      <h2>In 10 Sekunden</h2>
+      <ol>
+        <li>Link kopieren</li>
+        <li>In SafeShare App einfügen</li>
+        <li>Bereinigen → kopieren → teilen</li>
+      </ol>
+
+      <div class="grid2">
+        <div class="box">
+          <h3>Vorher</h3>
+          <div class="example mono">https://example.com/artikel?utm_source=twitter&utm_medium=social&utm_campaign=launch&fbclid=XYZ</div>
+        </div>
+        <div class="box">
+          <h3>Nachher</h3>
+          <div class="example mono">https://example.com/artikel</div>
+        </div>
+      </div>
+
+      <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn" href="pro.html">Pro für Profis</a>
-        <a class="btn ghost" href="education.html">Schule</a>
-      </div>
-
-      <figure class="heroMedia">
-        <img src="assets/img/hero-vorher-nachher.png?v=11"
-             alt="vor SafeShare / nach SafeShare: Tracking-Etiketten weg, nur das Wesentliche bleibt."
-             loading="eager" decoding="async"
-             onerror="this.closest('figure').style.display='none';">
-      </figure>
-
-      <div class="okBox">
-        Tracking-Parameter sind wie Etiketten am Link: manchmal nützlich, beim Teilen aber oft unnötiger Ballast.
+        <a class="btn" href="bookmarklets.html">Bookmarklets (Desktop)</a>
+        <a class="btn ghost" href="help.html">Hilfe / Troubleshooting</a>
       </div>
     </section>
 
+    <!-- WHY -->
     <section class="card">
-      <h2>Für wen ist was?</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>SafeShare App</h3>
-          <p>Schnell reinigen, kopieren, teilen. Ideal für Alltag und schnelle Checks.</p>
-          <div class="row">
-            <a class="btn primary" href="app.html">Zur App</a>
-            <a class="btn ghost" href="bookmarklets.html">1-Klick Bookmarklets</a>
-          </div>
+      <h2>Warum das sinnvoll ist (ohne Drama)</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Respekt</h3>
+          <p>Du verteilst weniger Zusatzinfos, die andere nicht gewählt haben.</p>
+          <h3>Seriöser</h3>
+          <p>Links wirken sauberer und weniger „werblich“.</p>
         </div>
+        <div class="box">
+          <h3>Weniger Bruch</h3>
+          <p>Manche Apps kürzen/umbauen lange URLs ungünstig.</p>
+          <h3>Local-first</h3>
+          <p>Kein Copy-Paste in irgendeinen Online-Cleaner nötig.</p>
+        </div>
+      </div>
+    </section>
 
-        <div class="tile">
-          <h3>SafeShare Pro</h3>
+    <!-- DO NOT BLINDLY REMOVE -->
+    <section class="card">
+      <h2>Nicht blind alles entfernen</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Affiliate/Partner</h3>
           <p>
-            Für Social Media, Publisher, Journalismus und Teams:
-            Presets/Policies, domainbasierte Whitelist, Audit („was wurde geändert – und warum?“) und Export.
+            Manche Parameter sind Zuordnung (z. B. <span class="mono">ref</span>, <span class="mono">tag</span>).
+            Entfernst du sie, kann Vergütung/Attribution kaputtgehen.
           </p>
-          <div class="row">
-            <a class="btn" href="pro.html">Zu Pro</a>
-            <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-          </div>
+          <p><b>Pro:</b> Allowlist/Policies pro Domain.</p>
         </div>
+        <div class="box">
+          <h3>Funktionale Parameter</h3>
+          <p>
+            Manche Keys steuern Inhalt (Sprache, Filter, Produkt-ID, Suche).
+            Gute Tools sind konservativ und entfernen nicht wahllos.
+          </p>
+          <p><b>App:</b> Standard-Tracking. <b>Pro:</b> Audit + Regeln.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <a class="btn" href="tracking-parameter.html">Tracking-Parameter erklärt</a>
+        <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
+        <a class="btn ghost" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
       </div>
     </section>
 
+    <!-- PRO TEASER -->
     <section class="card">
-      <h2>Warum local-first?</h2>
+      <h2>SafeShare Pro (für Profis)</h2>
       <p>
-        Links können sensibel sein (Redaktion, Kund:innen, interne Recherchen).
-        Local-first heißt: Verarbeitung im Browser – ohne dass du URLs an einen Tool-Server schicken musst.
+        Für Publisher/Teams/Profis: bewusst <b>behalten</b> (Allowlist), bewusst <b>entfernen</b> (Policies) und nachvollziehen, was passiert ist (Audit).
       </p>
+
+      <div class="grid2">
+        <div class="box">
+          <h3>Pro Person</h3>
+          <ul>
+            <li>Presets/Policies</li>
+            <li>Allowlist</li>
+            <li>Audit („Was wurde geändert?“)</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person öffnen</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Pro Team</h3>
+          <ul>
+            <li>Team-Workflow</li>
+            <li>Policies konsistent</li>
+            <li>Audit/Regeln für Publishing</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team öffnen</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        Pro ist ein <b>Offline-Download</b> (nicht als öffentliche Webseite). Start immer über <b>01-START.html</b> im Paket.
+      </div>
+
+      <div class="row">
+        <a class="btn" href="pro.html">Pro-Seite</a>
+        <a class="btn ghost" href="help.html#prostart">Pro-Hilfe</a>
+      </div>
     </section>
 
-    <!-- FOOTER (Master) -->
+    <!-- FOOTER -->
     <footer>
       <div class="footGrid">
         <div>
           <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
@@ -389,7 +453,6 @@
           <a href="education.html" data-page="education.html">Schule</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -403,20 +466,26 @@
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
     <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
-    <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
 
     <div class="divider"></div>
 
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
-    (function () {
+    (function(){
       // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
@@ -424,27 +493,7 @@
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // optional header text mapping
-      const sub = document.getElementById('pageSub');
-      const tag = document.getElementById('pageTag');
-      const map = {
-        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
-        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
-        "education.html": ["SafeShare-Schule", "ohne Panik"],
-        "pro.html": ["Pro · Policies, Audit, Export", "für Profis"],
-        "help.html": ["Hilfe · App & Pro", "Support"],
-        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
-        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
-        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
-        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich · URL Cleaner", "Kriterien"],
-        "impressum.html": ["Impressum", "§ 5 TMG"],
-        "datenschutz.html": ["Datenschutz", "DSGVO"],
-        "terms.html": ["Nutzungsbedingungen", "Legal"]
-      };
-      if (sub && map[path]) sub.textContent = map[path][0];
-      if (tag && map[path]) tag.textContent = map[path][1];
-
-      // more sheet (ESC close + scroll lock)
+      // more sheet + ESC close + scroll lock
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -480,6 +529,6 @@
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
+  <script defer src="js/sw-register.js?v=2025-12-19-01"></script>
 </body>
 </html>
