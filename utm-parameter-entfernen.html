@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>UTM-Parameter entfernen – SafeShare</title>
-  <meta name="description" content="UTM-Parameter entfernen: Was ist utm_source/utm_medium/utm_campaign? Wann entfernen sinnvoll ist – und wie du Links mit SafeShare local-first bereinigst." />
+  <meta name="description" content="UTM-Parameter entfernen: Was ist utm_source/utm_medium/utm_campaign? Wann Entfernen sinnvoll ist – und wie du Links mit SafeShare local-first bereinigst." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -17,6 +17,7 @@
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
       --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
@@ -29,12 +30,13 @@
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
       --bad: rgba(255,84,84,.14);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff;
+        --card:#ffffff; --card2:#f5f7ff;
         --border: rgba(17,24,39,.12);
         --text: rgba(17,24,39,.95);
         --muted: rgba(17,24,39,.72);
@@ -43,6 +45,7 @@
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
         --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -57,6 +60,8 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
@@ -72,7 +77,6 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -94,9 +98,12 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor:pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
 
     .card{
       margin-top: 14px;
@@ -133,7 +140,7 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn{
+    .note,.warn,.bad{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -144,8 +151,7 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
-
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
     .example{
       margin-top: 10px;
@@ -158,7 +164,6 @@
       line-height: 1.5;
       word-break: break-word;
     }
-
     .grid2{
       display:grid;
       grid-template-columns: 1fr;
@@ -175,6 +180,7 @@
       padding: 12px;
     }
 
+    /* Footer wie app/help/education */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -182,12 +188,25 @@
       font-size: 12px;
       line-height: 1.55;
     }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
     }
     .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -203,7 +222,6 @@
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
-    .moreBtn{ appearance:none; cursor:pointer; }
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
@@ -258,15 +276,18 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">UTM-Parameter entfernen</div>
+          <div class="sub">Wissen · UTM</div>
         </div>
       </div>
       <div class="small">utm_*</div>
     </header>
 
+    <!-- MASTER NAV: Start / App / Schule / Pro / Hilfe / Mehr -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
@@ -275,15 +296,17 @@
 
     <section class="card">
       <h1>UTM-Parameter entfernen</h1>
-    <p>
-  UTM-Parameter (<span class="mono">utm_source</span>, <span class="mono">utm_medium</span>, <span class="mono">utm_campaign</span> …)
-  sind zusätzliche Infos am Link – wie Etiketten. Für Auswertung nützlich, beim Teilen oft nur Ballast.
-</p>
+      <p>
+        UTM-Parameter (<span class="mono">utm_source</span>, <span class="mono">utm_medium</span>, <span class="mono">utm_campaign</span> …)
+        sind zusätzliche Infos am Link – wie Etiketten. Für Auswertung nützlich, beim Teilen oft nur Ballast.
+      </p>
+
       <div class="row">
         <a class="btn primary" href="app.html">Jetzt bereinigen</a>
         <a class="btn" href="education.html">Schule</a>
         <a class="btn ghost" href="pro.html">Pro (Regeln/Audit)</a>
       </div>
+
       <div class="note">
         SafeShare arbeitet local-first: Links werden im Browser bereinigt, nicht hochgeladen.
       </div>
@@ -317,14 +340,14 @@
       <h2>Wann ist Entfernen sinnvoll?</h2>
       <ul>
         <li>Du teilst Links privat oder öffentlich und willst weniger „Etiketten“ weitergeben.</li>
-        <li>Du willst, dass Links sauber aussehen (z. B. im Journalismus/Publishing).</li>
-        <li>Du willst vermeiden, dass Plattform-spezifische IDs (z. B. gclid/fbclid) mitwandern.</li>
+        <li>Du willst, dass Links sauber aussehen (z. B. Publishing, Redaktion, Schule).</li>
+        <li>Du willst vermeiden, dass weitere Klick-IDs (z. B. <span class="mono">gclid</span>/<span class="mono">fbclid</span>) mitwandern.</li>
       </ul>
 
       <h2>Wann nicht blind entfernen?</h2>
       <div class="warn">
         Affiliate-/Partner-Parameter (z. B. <span class="mono">ref</span>, <span class="mono">tag</span>) können Zuordnung/Einnahmen steuern.
-        Wenn du dafür verantwortlich bist: nutze in Pro eine Whitelist (allowlist).
+        Wenn du dafür verantwortlich bist: nutze Pro (Whitelist/Allowlist + Audit).
       </div>
     </section>
 
@@ -340,18 +363,28 @@
         <a class="btn" href="bookmarklets.html">1-Klick Bookmarklets</a>
         <a class="btn ghost" href="help.html">Troubleshooting</a>
       </div>
+      <div class="note">
+        Wenn du UTM bewusst behalten willst (z. B. Kampagnen-Links im Team): Pro ist der richtige Ort für Policies/Whitelist.
+      </div>
     </section>
 
     <footer>
-      <div class="footLinks">
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
           <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
       </div>
     </footer>
   </div>
@@ -359,47 +392,83 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
     <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
+    // nav active (Tabs + Footer + More)
     (function(){
-      // active tab
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
+    })();
 
-      // more sheet
+    // more sheet (inkl. Escape close + Fokus zurück + Scroll-Lock)
+    (function(){
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
+
+      let lastFocus = null;
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
 
       function openMenu(){
+        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const firstLink = menu.querySelector('a');
+          if (firstLink) firstLink.focus?.();
+        });
         btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+        if (lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
+
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
         isOpen ? closeMenu() : openMenu();
       });
+
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+      });
     })();
   </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
 </body>
 </html>
