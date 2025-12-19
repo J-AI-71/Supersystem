@@ -360,10 +360,12 @@
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab active" href="app.html" data-page="app.html">App</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -432,16 +434,16 @@
           <h2>Wie SafeShare arbeitet</h2>
           <p>
             SafeShare entfernt typische Tracking-Parameter und Klick-IDs (z. B. UTM, <code>fbclid</code>, <code>gclid</code>).
-            Funktionale Parameter (Suche/Filter/IDs) bleiben bewusst eher erhalten.
+            Funktionale/Affiliate-Parameter bleiben in der App eher erhalten (konservativ).
           </p>
 
           <div class="okBox">
-            Hinweis: SafeShare macht dich nicht „unsichtbar“. Es reduziert nur unnötige Tracking-Anteile im Link selbst.
+            <b>3 Schritte:</b> Copy → Clean → Share.
           </div>
 
           <div class="sep"></div>
 
-          <h3>Typische Parameter</h3>
+          <h3>Typische Tracking-Keys</h3>
           <ul>
             <li><code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code></li>
             <li><code>fbclid</code>, <code>gclid</code>, <code>msclkid</code></li>
@@ -449,12 +451,18 @@
           </ul>
 
           <div class="warnBox">
-            Wenn ein Link nach dem Bereinigen nicht mehr funktioniert: Pro (Audit + Whitelist) ist dafür da.
+            Wenn du auch „Spezialfälle“ (z. B. Amazon/Publisher/Affiliate) sauber steuern willst:
+            Pro ist dafür da (Audit + Whitelist/Policies).
           </div>
 
           <div class="row">
             <a class="btn primary" href="help.html#prostart">Hilfe zu Pro</a>
             <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+            <a class="btn ghost" href="education.html">Schule</a>
+          </div>
+
+          <div class="okBox" style="margin-top:12px;">
+            Hinweis: SafeShare macht dich nicht „unsichtbar“. Es reduziert nur Tracking-Anteile, die direkt im Link stecken.
           </div>
         </div>
       </div>
@@ -470,7 +478,10 @@
       </p>
 
       <h3>Warum ist der Link manchmal trotzdem lang?</h3>
-      <p>Weil funktionale Parameter bleiben. SafeShare entfernt primär Tracking-Ballast.</p>
+      <p>
+        Weil nicht jedes „?“ automatisch Tracking ist: manche Parameter sind funktional oder Affiliate/Zuordnung.
+        Die App entfernt bewusst nur typische Tracking-Keys. Pro kann Regeln/Audit/Whitelist.
+      </p>
     </section>
 
     <footer>
@@ -485,6 +496,7 @@
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
           <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+          <a href="education.html" data-page="education.html">Schule</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -496,12 +508,22 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Navigation</div>
+    <a href="index.html" data-page="index.html">Start</a>
+    <a href="app.html" data-page="app.html">App</a>
+    <a href="pro.html" data-page="pro.html">Pro</a>
+    <a href="help.html" data-page="help.html">Hilfe</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
     <a href="education.html" data-page="education.html">Schule</a>
+
+    <div class="divider"></div>
+    <div class="menuHint">Wissen</div>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+
     <div class="divider"></div>
+    <div class="menuHint">Rechtliches</div>
     <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
     <a href="impressum.html" data-page="impressum.html">Impressum</a>
     <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -642,8 +664,16 @@
       outKept.textContent = res.kept.length ? res.kept.join(", ") : "—";
       changeBox.style.display = "grid";
 
-      if (res.removed.length === 0) setMsg("Nichts zu entfernen – der Link wirkt bereits sauber.", "", "");
-      else setMsg(`Bereinigt. Entfernt: ${res.removed.length} Parameter.`, "", "");
+      // neutraler Text statt "wirkt sauber"
+      if (res.removed.length === 0) {
+        setMsg(
+          "Nichts entfernt – keine bekannten Tracking-Keys (UTM/fbclid/gclid …) gefunden. Für Spezialfälle: Pro (Policies/Audit).",
+          "",
+          ""
+        );
+      } else {
+        setMsg(`Bereinigt. Entfernt: ${res.removed.length} Parameter.`, "", "");
+      }
 
       const tokenLike = res.kept.filter(k => {
         const kk = k.toLowerCase();
@@ -701,11 +731,9 @@
         if (shouldRun) {
           doClean();
         } else {
-          // optional: kleine Info, dass übernommen wurde (ohne Auto-Clean)
           setMsg("Link übernommen. Tippe auf „Bereinigen“.", "", "");
         }
 
-        // optional: URL aufräumen (aktivieren wenn du willst)
         // history.replaceState({}, document.title, location.pathname);
       } catch(e) {}
     })();
@@ -713,7 +741,7 @@
     // init
     resetOutput();
 
-    // nav active
+    // nav active (Tabs + Footer + More)
     (function(){
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
@@ -722,30 +750,44 @@
       });
     })();
 
-    // more sheet
+    // more sheet (inkl. Escape close + Fokus zurück)
     (function(){
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
       if(!btn || !menu || !overlay) return;
 
+      let lastFocus = null;
+
       function openMenu(){
+        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const firstLink = menu.querySelector('a');
+          if (firstLink) firstLink.focus?.();
+        });
         btn.setAttribute('aria-expanded','true');
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
         setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        if (lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
+
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
         isOpen ? closeMenu() : openMenu();
       });
+
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+      });
     })();
   </script>
 
