@@ -311,10 +311,9 @@
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
-        <a class="tab active" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
         <a class="tab" href="education.html" data-page="education.html">Schule</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -386,16 +385,18 @@
       </ul>
 
       <div class="row">
-        <a class="btn" href="#pricing">Kaufen</a>
-        <a class="btn ghost" href="help.html">Hilfe</a>
+        <a class="btn primary" href="#pricing">Kaufen</a>
+        <a class="btn ghost" href="help.html#prostart">Hilfe zu Pro</a>
       </div>
     </section>
 
     <!-- PRICING -->
     <section class="card" id="pricing">
       <h2>Preise</h2>
+
       <p style="margin-top:6px">
-        Launch-Preise jetzt. Später werden die Preise erhöht (wenn Pro stabil & ausgebaut ist).
+        <b>Launch-Preis:</b> Pro deckt den Kern-Workflow (Policies/Whitelist/Audit) bereits ab.
+        Verbesserungen & Ausbau folgen – später wird es teurer.
       </p>
 
       <div class="pricingGrid">
@@ -454,7 +455,8 @@
       </div>
 
       <div class="note" style="margin-top:14px">
-        Nach dem Kauf: Payhip-Downloadseite öffnen → <b>01-START.html</b> → Pro App + Handbuch.
+        <b>Wichtig:</b> Pro ist ein <b>Offline-Download</b>. Nach dem Kauf: Payhip-Download öffnen → <b>01-START.html</b> starten.
+        <a href="help.html#prostart" style="text-decoration:underline">Details in der Hilfe</a>.
       </div>
     </section>
 
@@ -475,7 +477,7 @@
           <h3 class="faqQ">Wofür brauche ich ein Audit?</h3>
           <p class="faqA">
             Damit du nicht raten musst. Audit zeigt: „entfernt“, „behalten“, „Whitelist-Treffer“ und Hinweise.
-            Das ist wichtig bei sensiblen Links (Token/Signaturen), bei Redaktion/Compliance oder wenn mehrere Personen im Team arbeiten.
+            Das ist wichtig bei sensiblen Links (Token/Signaturen), bei Redaktion/Compliance oder im Team.
           </p>
         </div>
 
@@ -496,14 +498,6 @@
         </div>
 
         <div class="faqItem">
-          <h3 class="faqQ">Warum brauche ich Whitelist/Allowlist?</h3>
-          <p class="faqA">
-            Manche Parameter sind funktional (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">lang</span>, <span class="mono">page</span>)
-            oder sicherheitsrelevant (Token/Signatur). Pro hilft, nicht „kaputt zu optimieren“.
-          </p>
-        </div>
-
-        <div class="faqItem">
           <h3 class="faqQ">Was, wenn ein Link nach dem Säubern nicht mehr funktioniert?</h3>
           <p class="faqA">
             Dann war wahrscheinlich ein funktionaler Key nötig (Token/Signatur/State/Expires). Pro macht das sichtbar (Audit) und du kannst
@@ -514,7 +508,7 @@
         <div class="faqItem">
           <h3 class="faqQ">Wie funktioniert die Lizenz bei Pro Person / Pro Team?</h3>
           <p class="faqA">
-            <b>Pro Person</b> ist für eine Person (nicht übertragbar). <b>Pro Team</b> gilt für bis zu 5 Personen innerhalb eines Teams/Projekts.
+            <b>Pro Person</b> ist für eine Person. <b>Pro Team</b> gilt für bis zu 5 Personen innerhalb eines Teams/Projekts.
             Fair Use: Bitte nur im gekauften Umfang verwenden.
           </p>
         </div>
@@ -525,10 +519,6 @@
             Payhip-Download öffnen → <b>01-START.html</b> starten → von dort Pro App und Handbuch öffnen. (Offline nutzbar.)
           </p>
         </div>
-      </div>
-
-      <div class="note" style="margin-top:12px">
-        Tipp: Wenn du Pro verkaufst, halte die „Pro App liegt nicht öffentlich“-Botschaft kurz. Details gehören in <a href="help.html">Hilfe</a>.
       </div>
     </section>
 
@@ -542,9 +532,9 @@
         <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
           <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="education.html" data-page="education.html">Schule</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
@@ -556,72 +546,54 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Navigation</div>
-    <a href="index.html" data-page="index.html">Start</a>
-    <a href="app.html" data-page="app.html">App</a>
-    <a href="pro.html" data-page="pro.html">Pro</a>
-    <a href="help.html" data-page="help.html">Hilfe</a>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <div class="menuHint">Öffentlich</div>
     <a href="education.html" data-page="education.html">Schule</a>
-
-    <div class="divider"></div>
-    <div class="menuHint">Wissen</div>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
     <div class="divider"></div>
-    <div class="menuHint">Rechtliches</div>
-    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-    <a href="impressum.html" data-page="impressum.html">Impressum</a>
-    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+    <a href="help.html#kontakt">Support / Kontakt</a>
   </nav>
 
   <script>
     (function(){
-      // active tab / active menu items
+      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet (+ Escape + Fokus zurück)
+      // more sheet (+ ESC close)
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
-      if(!btn || !menu || !overlay) return;
-
-      let lastFocus = null;
 
       function openMenu(){
-        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => {
-          menu.classList.add('open');
-          const firstLink = menu.querySelector('a');
-          if (firstLink) firstLink.focus?.();
-        });
+        requestAnimationFrame(() => menu.classList.add('open'));
         btn.setAttribute('aria-expanded','true');
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
         setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
-        if (lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
 
-      btn.addEventListener('click',(e)=>{
-        e.preventDefault();
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
-      });
-      overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      if(btn && menu && overlay){
+        btn.addEventListener('click',(e)=>{
+          e.preventDefault();
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
-      document.addEventListener('keydown', (e)=>{
-        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
-      });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+      }
     })();
   </script>
 </body>
