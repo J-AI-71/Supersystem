@@ -389,4 +389,425 @@
           <p class="small">Füge einen Link ein. SafeShare gibt dir eine bereinigte Version zurück.</p>
 
           <div class="field">
-            <
+            <div class="inputWrap">
+              <input id="inUrl" type="text" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false"
+                     placeholder="https://…?utm_source=…&fbclid=…" />
+              <button class="clearBtn" id="btnClear" aria-label="Eingabe leeren" title="Eingabe leeren">×</button>
+            </div>
+          </div>
+
+          <div class="row">
+            <button class="btn primary" id="btnClean" type="button">Bereinigen</button>
+            <button class="btn" id="btnCopy" type="button" disabled>Bereinigten Link kopieren</button>
+            <a class="btn ghost" id="btnOpen" href="#" target="_blank" rel="noopener" style="display:none;">Bereinigten Link öffnen</a>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="small">Ausgabe</div>
+          <div class="monoBox mono" id="outUrl">—</div>
+
+          <div id="changeBox" class="kvs" style="display:none;">
+            <div class="kv">
+              <div class="k">Entfernt</div>
+              <div class="v mono" id="outRemoved">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Behalten</div>
+              <div class="v mono" id="outKept">—</div>
+            </div>
+          </div>
+
+          <div id="msgOk" class="okBox" style="display:none;"></div>
+          <div id="msgWarn" class="warnBox" style="display:none;"></div>
+          <div id="msgBad" class="badBox" style="display:none;"></div>
+
+          <div class="row" style="margin-top:14px;">
+            <a class="btn" href="pro.html">Mehr zu SafeShare Pro</a>
+            <a class="btn ghost" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person</a>
+            <a class="btn ghost" href="https://payhip.com/b/Yxh5T" target="_blank" rel="noopener">Pro Team</a>
+          </div>
+
+          <p class="muted" style="margin-top:8px;">
+            Pro ist für Policies/Whitelist/Audit (Publishing-Workflows). Die App hier bleibt bewusst einfach.
+          </p>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="card" style="margin-top:0;">
+          <h2>Wie SafeShare arbeitet</h2>
+          <p>
+            SafeShare entfernt typische Tracking-Parameter und Klick-IDs aus der URL (z. B. UTM, <code>fbclid</code>, <code>gclid</code>).
+            Funktionale/Affiliate-Parameter bleiben in der App eher erhalten (konservativ).
+          </p>
+
+          <div class="okBox">
+            <b>3 Schritte:</b> Copy → Clean → Share.
+          </div>
+
+          <div class="sep"></div>
+
+          <h3>Typische Tracking-Keys</h3>
+          <ul>
+            <li><code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code></li>
+            <li><code>fbclid</code>, <code>gclid</code>, <code>msclkid</code></li>
+            <li><code>wbraid</code>, <code>gbraid</code>, <code>dclid</code></li>
+          </ul>
+
+          <div class="warnBox">
+            Für Spezialfälle (Publisher/Affiliate/Teams): Pro kann Regeln pro Domain (Whitelist/Policies) + Audit („was wurde geändert – und warum?“).
+          </div>
+
+          <div class="row">
+            <a class="btn primary" href="help.html#prostart">Hilfe zu Pro</a>
+            <a class="btn" href="bookmarklets.html">Bookmarklets</a>
+            <a class="btn ghost" href="education.html">Schule</a>
+          </div>
+
+          <div class="okBox" style="margin-top:12px;">
+            Klarer Hinweis: SafeShare entfernt nur Tracking-Anteile <b>im Link</b>. Andere Tracking-Methoden (Cookies, App-Tracking, Konten) sind davon unabhängig.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="faq">
+      <h2>FAQ (kurz)</h2>
+
+      <h3>Warum sollte ich das tun?</h3>
+      <p>
+        Viele Links enthalten Zusatzinfos („Etiketten“), die verraten, woher ein Klick kommt (Kampagne, Plattform, Anzeigenklick).
+        Wenn du Links teilst, verteilst du diese Zusatzinfos mit. SafeShare entfernt diesen Link-Ballast.
+      </p>
+
+      <h3>Warum ist der Link manchmal trotzdem lang?</h3>
+      <p>
+        Nicht jeder Parameter ist Tracking: manche sind funktional oder Affiliate/Zuordnung.
+        Die App entfernt bewusst nur typische Tracking-Keys. Pro kann feinere Regeln + Audit.
+      </p>
+    </section>
+
+    <!-- FOOTER (Master) -->
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Öffentlich</div>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+    <div class="divider"></div>
+
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+  </nav>
+
+  <script>
+    // Conservative tracking list for the free App (Pro can do policies & audit).
+    const REMOVE_EXACT = new Set([
+      "fbclid","gclid","dclid","msclkid","igshid","mc_cid","mc_eid",
+      "ttclid","twclid","li_fat_id","yclid","_hsenc","_hsmi",
+      "gbraid","wbraid","srsltid"
+    ]);
+
+    function shouldRemoveKey(key) {
+      const k = String(key || "").trim().toLowerCase();
+      if (!k) return false;
+      if (k.startsWith("utm_")) return true;
+      if (REMOVE_EXACT.has(k)) return true;
+      if (k === "vero_conv" || k === "vero_id") return true;
+      return false;
+    }
+
+    function normalizeUrlInput(raw) {
+      const s = String(raw || "").trim();
+      if (!s) return "";
+      if (!/^https?:\/\//i.test(s) && /^[a-z0-9.-]+\.[a-z]{2,}/i.test(s)) {
+        return "https://" + s;
+      }
+      return s;
+    }
+
+    function cleanOneUrl(raw) {
+      const input = normalizeUrlInput(raw);
+      if (!input) return { ok:false, error:"Bitte einen Link einfügen." };
+
+      let url;
+      try { url = new URL(input); }
+      catch { return { ok:false, error:"Das sieht nicht nach einer gültigen URL aus." }; }
+
+      const removed = [];
+      const kept = [];
+
+      const params = new URLSearchParams(url.search);
+      const next = new URLSearchParams();
+
+      for (const [k, v] of params.entries()) {
+        if (shouldRemoveKey(k)) removed.push(k);
+        else { next.append(k, v); kept.push(k); }
+      }
+
+      url.search = next.toString() ? ("?" + next.toString()) : "";
+
+      url.port = (url.port === "80" && url.protocol === "http:") ? "" : url.port;
+      url.port = (url.port === "443" && url.protocol === "https:") ? "" : url.port;
+
+      const cleaned = url.toString();
+
+      return {
+        ok: true,
+        original: input,
+        cleaned,
+        removed: Array.from(new Set(removed)).sort(),
+        kept: Array.from(new Set(kept)).sort()
+      };
+    }
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "absolute";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          return true;
+        } catch {
+          document.body.removeChild(ta);
+          return false;
+        }
+      }
+    }
+
+    const elIn = document.getElementById("inUrl");
+    const btnClean = document.getElementById("btnClean");
+    const btnCopy = document.getElementById("btnCopy");
+    const btnOpen = document.getElementById("btnOpen");
+    const btnClear = document.getElementById("btnClear");
+
+    const outUrl = document.getElementById("outUrl");
+    const changeBox = document.getElementById("changeBox");
+    const outRemoved = document.getElementById("outRemoved");
+    const outKept = document.getElementById("outKept");
+
+    const msgOk = document.getElementById("msgOk");
+    const msgWarn = document.getElementById("msgWarn");
+    const msgBad = document.getElementById("msgBad");
+
+    function setMsg(okText, warnText, badText) {
+      msgOk.style.display = okText ? "block" : "none";
+      msgWarn.style.display = warnText ? "block" : "none";
+      msgBad.style.display = badText ? "block" : "none";
+      if (okText) msgOk.textContent = okText;
+      if (warnText) msgWarn.textContent = warnText;
+      if (badText) msgBad.textContent = badText;
+    }
+
+    function resetOutput() {
+      outUrl.textContent = "—";
+      btnCopy.disabled = true;
+      btnOpen.style.display = "none";
+      btnOpen.href = "#";
+      changeBox.style.display = "none";
+      outRemoved.textContent = "—";
+      outKept.textContent = "—";
+      setMsg("", "", "");
+    }
+
+    function renderResult(res) {
+      if (!res.ok) {
+        resetOutput();
+        setMsg("", "", res.error || "Fehler.");
+        return;
+      }
+
+      outUrl.textContent = res.cleaned;
+      btnCopy.disabled = false;
+      btnOpen.style.display = "inline-flex";
+      btnOpen.href = res.cleaned;
+
+      outRemoved.textContent = res.removed.length ? res.removed.join(", ") : "—";
+      outKept.textContent = res.kept.length ? res.kept.join(", ") : "—";
+      changeBox.style.display = "grid";
+
+      if (res.removed.length === 0) {
+        setMsg(
+          "Nichts entfernt – keine bekannten Tracking-Keys (UTM/fbclid/gclid …) gefunden. Für Spezialfälle: Pro (Policies/Audit).",
+          "",
+          ""
+        );
+      } else {
+        setMsg(`Bereinigt. Entfernt: ${res.removed.length} Parameter.`, "", "");
+      }
+
+      const tokenLike = res.kept.filter(k => {
+        const kk = k.toLowerCase();
+        return kk.includes("token") || kk.includes("sig") || kk.includes("signature") || kk.includes("expires") || kk.includes("nonce") || kk.includes("state");
+      });
+      if (tokenLike.length) {
+        setMsg(
+          msgOk.textContent || "",
+          "Hinweis: Dieser Link enthält token-/signaturähnliche Parameter. Wenn der Link nach Änderungen nicht mehr funktioniert: Pro (Audit + Whitelist).",
+          ""
+        );
+      }
+    }
+
+    function doClean() {
+      const res = cleanOneUrl(elIn.value);
+      renderResult(res);
+    }
+
+    btnClean.addEventListener("click", doClean);
+
+    elIn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") doClean();
+    });
+
+    btnCopy.addEventListener("click", async () => {
+      const text = outUrl.textContent.trim();
+      if (!text || text === "—") return;
+      const ok = await copyToClipboard(text);
+      if (ok) setMsg("Kopiert.", msgWarn.textContent || "", "");
+      else setMsg("", msgWarn.textContent || "", "Kopieren nicht möglich – bitte manuell markieren und kopieren.");
+    });
+
+    btnClear.addEventListener("click", () => {
+      elIn.value = "";
+      elIn.focus();
+      resetOutput();
+    });
+
+    // --- PATCH: Auto-Übernahme aus ?u= (und optional &run=1) ---
+    (function(){
+      try{
+        const qs = new URLSearchParams(location.search);
+        const u = qs.get("u");
+        if(!u) return;
+
+        const decoded = decodeURIComponent(u).trim();
+        if(!decoded) return;
+
+        elIn.value = decoded;
+
+        const run = (qs.get("run") || "").toLowerCase();
+        const shouldRun = (run === "1" || run === "true" || run === "yes");
+
+        if (shouldRun) {
+          doClean();
+        } else {
+          setMsg("Link übernommen. Tippe auf „Bereinigen“.", "", "");
+        }
+
+        // optional: URL aufräumen
+        // history.replaceState({}, document.title, location.pathname);
+      } catch(e) {}
+    })();
+
+    // init
+    resetOutput();
+
+    // active links (tabs + footer + more)
+    (function () {
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      // optional header mapping (nur wenn IDs existieren)
+      const sub = document.getElementById('pageSub');
+      const tag = document.getElementById('pageTag');
+      const map = {
+        "index.html": ["Links teilen. Ohne Ballast.", "local-first"],
+        "app.html": ["App · Links teilen. Ohne Ballast.", "läuft im Browser"],
+        "education.html": ["SafeShare-Schule", "ohne Panik"],
+        "pro.html": ["Pro · Policies, Audit, Export", "für Profis"],
+        "help.html": ["Hilfe · App & Pro", "Support"],
+        "bookmarklets.html": ["Bookmarklets · 1-Klick", "schnell teilen"],
+        "utm-parameter-entfernen.html": ["UTM · Erklärung", "SEO/Marketing"],
+        "tracking-parameter.html": ["Tracking · Erklärung", "Bewusstsein"],
+        "url-cleaner-tool-vergleich.html": ["Tool-Vergleich · URL Cleaner", "Kriterien"],
+        "impressum.html": ["Impressum", "§ 5 TMG"],
+        "datenschutz.html": ["Datenschutz", "DSGVO"],
+        "terms.html": ["Nutzungsbedingungen", "Legal"]
+      };
+      if (sub && map[path]) sub.textContent = map[path][0];
+      if (tag && map[path]) tag.textContent = map[path][1];
+    })();
+
+    // more sheet (ESC close + scroll lock)
+    (function(){
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+      }
+
+      btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+      });
+    })();
+  </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
+</body>
+</html>
