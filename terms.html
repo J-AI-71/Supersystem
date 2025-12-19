@@ -33,6 +33,7 @@
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
       --bad: rgba(255,84,84,.14);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -47,6 +48,7 @@
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
         --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -100,10 +102,12 @@
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
       background: transparent;
+      cursor:pointer;
       text-decoration:none;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); text-decoration:none; }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
 
     .card{
       margin-top: 14px;
@@ -139,9 +143,7 @@
       padding: 12px;
       margin-top: 10px;
     }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
-    /* Footer wie MASTER: Grid + Links */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -171,7 +173,6 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
-      text-decoration:none;
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
@@ -184,7 +185,6 @@
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
-    .moreBtn{ appearance:none; cursor:pointer; }
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
@@ -222,11 +222,14 @@
       color: var(--muted);
       margin-bottom: 8px;
       font-size: 13px;
-      text-decoration:none;
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
-    .moreMenu a.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreMenu a.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
+    }
   </style>
 </head>
 
@@ -247,7 +250,6 @@
       <div class="small">Terms</div>
     </header>
 
-    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
@@ -363,7 +365,6 @@
       </p>
     </section>
 
-    <!-- FOOTER -->
     <footer>
       <div class="footGrid">
         <div>
@@ -374,8 +375,6 @@
           <a href="index.html" data-page="index.html">Start</a>
           <a href="app.html" data-page="app.html">App</a>
           <a href="education.html" data-page="education.html">Schule</a>
-          <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-          <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
           <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
@@ -390,24 +389,26 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Support</div>
-    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">Wissen</div>
-    <a href="education.html" data-page="education.html">Schule</a>
+    <div class="menuHint">Öffentlich</div>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
 
     <div class="divider"></div>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Kontakt</a>
+    <a href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a>
 
+    <div class="divider"></div>
     <div class="menuHint">Rechtliches</div>
     <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
     <a href="impressum.html" data-page="impressum.html">Impressum</a>
     <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+
+    <div class="divider"></div>
+    <div class="menuHint">System</div>
+    <a href="status.html" data-page="status.html">Status</a>
   </nav>
 
   <script>
@@ -415,9 +416,14 @@
       // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
+
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
+
+      // FIX: Mehr-Button nie als active markieren
+      const moreBtn = document.getElementById('moreBtn');
+      if(moreBtn) moreBtn.classList.remove('active');
 
       // more sheet + ESC close + scroll lock + focus restore
       const btn = document.getElementById('moreBtn');
