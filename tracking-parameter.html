@@ -17,6 +17,7 @@
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
       --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
@@ -29,12 +30,13 @@
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
       --bad: rgba(255,84,84,.14);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff;
+        --card:#ffffff; --card2:#f5f7ff;
         --border: rgba(17,24,39,.12);
         --text: rgba(17,24,39,.95);
         --muted: rgba(17,24,39,.72);
@@ -43,6 +45,7 @@
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
         --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -57,7 +60,10 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
+    /* ===== Header ===== */
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
@@ -72,8 +78,8 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
+    /* ===== Tabs ===== */
     .tabsBar{
       position: sticky; top:0; z-index: 50;
       padding: 8px 0 14px;
@@ -94,12 +100,15 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
-      appearance:none; background: transparent;
-      cursor: pointer;
+      background: transparent;
+      cursor:pointer;
+      appearance:none;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
 
+    /* ===== Content ===== */
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -148,8 +157,6 @@
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
     .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
     .grid2{
       display:grid;
       grid-template-columns: 1fr;
@@ -165,6 +172,7 @@
       border-radius: 16px;
       padding: 12px;
     }
+
     .chipRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px; }
     .chip{
       display:inline-flex; align-items:center;
@@ -190,7 +198,7 @@
       word-break: break-word;
     }
 
-    /* Footer wie app/help/education: Grid + Links */
+    /* ===== Footer (Master) ===== */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -223,7 +231,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet ===== */
+    /* ===== Mehr: Bottom-Sheet (Master) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -232,7 +240,6 @@
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
-    .moreBtn{ appearance:none; cursor:pointer; }
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
@@ -288,7 +295,7 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Tracking-Parameter</div>
+          <div class="sub">Wissen · Tracking</div>
         </div>
       </div>
       <div class="small">Erklärung</div>
@@ -500,15 +507,17 @@
   </nav>
 
   <script>
+    // active links (tabs + footer + more)
     (function(){
-      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
+    })();
 
-      // more sheet + ESC close + scroll lock + focus restore
+    // more sheet (inkl. Escape close + Fokus zurück + Scroll-Lock)
+    (function(){
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -520,6 +529,7 @@
         document.body.style.overflow = lock ? 'hidden' : '';
         document.body.style.touchAction = lock ? 'none' : '';
       }
+
       function openMenu(){
         lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
@@ -543,6 +553,7 @@
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
         isOpen ? closeMenu() : openMenu();
       });
+
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
