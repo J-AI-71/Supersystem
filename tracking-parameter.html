@@ -95,6 +95,7 @@
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
       appearance:none; background: transparent;
+      cursor: pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -111,7 +112,7 @@
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -134,7 +135,7 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn{
+    .note,.warn,.bad{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -145,6 +146,7 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
@@ -188,6 +190,7 @@
       word-break: break-word;
     }
 
+    /* Footer wie app/help/education: Grid + Links */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -195,12 +198,25 @@
       font-size: 12px;
       line-height: 1.55;
     }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
     }
     .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
@@ -257,6 +273,7 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    .moreMenu a.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
   </style>
 </head>
 
@@ -277,6 +294,7 @@
       <div class="small">Erklärung</div>
     </header>
 
+    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" href="index.html" data-page="index.html">Start</a>
@@ -315,6 +333,7 @@
             <span class="chip">utm_medium</span>
             <span class="chip">utm_campaign</span>
             <span class="chip">utm_content</span>
+            <span class="chip">utm_term</span>
           </div>
           <p style="margin-top:10px">
             Dienen der Auswertung: „Woher kam der Klick? Welche Kampagne?“
@@ -327,15 +346,21 @@
             <span class="chip">fbclid</span>
             <span class="chip">msclkid</span>
             <span class="chip">igshid</span>
+            <span class="chip">mc_cid</span>
+            <span class="chip">mc_eid</span>
           </div>
           <p style="margin-top:10px">
-            IDs, die Plattformen zur Messung/Zuordnung nutzen. Beim Teilen meist Ballast.
+            IDs, die Plattformen/Tools zur Messung und Zuordnung nutzen. Beim Weiterleiten meist Ballast.
           </p>
         </div>
       </div>
 
       <div class="example mono">
         https://example.com/page?utm_source=twitter&utm_medium=social&fbclid=XYZ
+      </div>
+
+      <div class="note">
+        Faustregel: <b>utm_*</b> und viele <b>*clid</b>-Keys sind klassische „Etiketten“. SafeShare entfernt diese typischerweise.
       </div>
     </section>
 
@@ -348,35 +373,69 @@
 
       <div class="grid2">
         <div class="box">
-          <h3>Funktional (Beispiele)</h3>
+          <h3>Funktional (häufig)</h3>
           <div class="chipRow">
             <span class="chip">lang=de</span>
             <span class="chip">q=search</span>
             <span class="chip">page=2</span>
             <span class="chip">sort=price</span>
             <span class="chip">id=123</span>
+            <span class="chip">category=…</span>
           </div>
           <p style="margin-top:10px">
-            Diese Keys können echten Inhalt/Ansicht steuern. Blindes Entfernen ist riskant.
+            Diese Keys steuern Inhalt/Ansicht. Blindes Entfernen ist riskant.
           </p>
         </div>
 
         <div class="box">
-          <h3>Affiliate/Partner (Beispiele)</h3>
+          <h3>Kritisch (oft „nicht anfassen“)</h3>
           <div class="chipRow">
-            <span class="chip">ref</span>
-            <span class="chip">tag</span>
-            <span class="chip">affid</span>
-            <span class="chip">partner</span>
+            <span class="chip">token</span>
+            <span class="chip">sig</span>
+            <span class="chip">signature</span>
+            <span class="chip">expires</span>
+            <span class="chip">state</span>
+            <span class="chip">nonce</span>
           </div>
           <p style="margin-top:10px">
-            Nicht „Tracking-Spielerei“, sondern Zuordnung. Entfernen kann Einnahmen/Attribution brechen.
+            Diese Keys hängen oft an Sicherheit/Signaturen/Session-Flow. Wenn so ein Link kaputtgeht: konservativ bleiben + prüfen.
           </p>
         </div>
       </div>
 
       <div class="warn">
-        Profi-Ansatz: Regeln + Audit. In Pro solltest du klar sehen, was entfernt wurde (removed) und was bewusst bleibt (kept/allowlist).
+        Wenn ein Link nach der Bereinigung nicht funktioniert: erst Original öffnen → dann bereinigt öffnen.
+        Wenn nur „bereinigt“ scheitert, war vermutlich ein Parameter funktional. Pro hilft hier mit <b>Audit</b> + <b>Allowlist</b>.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Affiliate/Partner: nicht automatisch „böse“</h2>
+      <p>
+        Manche Parameter sind Zuordnung (Attribution) – und sollen bewusst bleiben, wenn du dafür verantwortlich bist.
+      </p>
+      <div class="grid2">
+        <div class="box">
+          <h3>Typische Partner-Keys</h3>
+          <div class="chipRow">
+            <span class="chip">ref</span>
+            <span class="chip">tag</span>
+            <span class="chip">affid</span>
+            <span class="chip">partner</span>
+            <span class="chip">utm_source</span>
+          </div>
+          <p style="margin-top:10px">
+            Entfernen kann Vergütung/Zuordnung brechen. Pro: Allowlist pro Domain/Policy.
+          </p>
+        </div>
+        <div class="box">
+          <h3>Publishing-Workflow</h3>
+          <ul>
+            <li>Default: Tracking-Etiketten entfernen</li>
+            <li>Attribution nur dort behalten, wo sie gewollt ist</li>
+            <li>Bei Unsicherheit: konservativ + testen</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -389,20 +448,30 @@
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
         <a class="btn" href="pro.html">Pro ansehen</a>
-        <a class="btn ghost" href="help.html">Hilfe / Troubleshooting</a>
+        <a class="btn ghost" href="help.html#problems">Hilfe / Troubleshooting</a>
       </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
-      <div class="footLinks">
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
           <a href="index.html" data-page="index.html">Start</a>
           <a href="app.html" data-page="app.html">App</a>
           <a href="education.html" data-page="education.html">Schule</a>
+          <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+          <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
           <a href="pro.html" data-page="pro.html">Pro</a>
           <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
           <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
           <a href="impressum.html" data-page="impressum.html">Impressum</a>
           <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
       </div>
     </footer>
   </div>
@@ -410,41 +479,65 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
     <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
     <div class="divider"></div>
-    <div class="menuHint">Support</div>
-    <a href="help.html" data-page="help.html">Hilfe</a>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
     (function(){
-      // active tab
+      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet
+      // more sheet + ESC close + scroll lock + focus restore
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
 
+      let lastFocus = null;
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
       function openMenu(){
+        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const firstLink = menu.querySelector('a');
+          if(firstLink && firstLink.focus) firstLink.focus();
+        });
         btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+        if(lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
+
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
@@ -452,8 +545,13 @@
       });
       overlay.addEventListener('click', closeMenu);
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+      });
     })();
   </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
 </body>
 </html>
