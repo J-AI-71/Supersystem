@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Datenschutzerklärung – SafeShare</title>
-  <meta name="description" content="Datenschutzerklärung zu SafeShare (local-first). Informationen zur Verarbeitung personenbezogener Daten, Kontakt, Hosting und Cookies." />
+  <meta name="description" content="Datenschutzerklärung zu SafeShare (local-first). Informationen zu Hosting (GitHub Pages), lokalen Browser-Speicherungen (Cache/LocalStorage/Service Worker), Kontakt und externen Links." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
@@ -17,6 +17,7 @@
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
       --border: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
@@ -28,12 +29,14 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
       :root{
         --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
-        --card:#ffffff;
+        --card:#ffffff; --card2:#f5f7ff;
         --border: rgba(17,24,39,.12);
         --text: rgba(17,24,39,.95);
         --muted: rgba(17,24,39,.72);
@@ -41,6 +44,8 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
     *{ box-sizing:border-box; }
@@ -53,8 +58,10 @@
         radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
         linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
-    a{ color:inherit; }
+    a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
@@ -70,7 +77,6 @@
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -92,16 +98,18 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
-      text-decoration:none;
+      background: transparent;
+      cursor:pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
 
     .card{
       margin-top: 14px;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 16px;
     }
@@ -119,7 +127,6 @@
     }
     .k{ font-size: 12px; color: var(--muted2); }
     .v{ font-weight: 780; margin-top: 4px; word-break: break-word; }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
     .note,.warn{
       margin-top: 12px;
@@ -133,6 +140,7 @@
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
+    /* Footer wie master */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -140,16 +148,28 @@
       font-size: 12px;
       line-height: 1.55;
     }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
     }
     .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
-      text-decoration:none;
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
@@ -162,7 +182,6 @@
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
-    .moreBtn{ appearance:none; cursor:pointer; }
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
@@ -187,6 +206,7 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
+      .kv{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -199,10 +219,10 @@
       color: var(--muted);
       margin-bottom: 8px;
       font-size: 13px;
-      text-decoration:none;
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    .moreMenu a.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
   </style>
 </head>
 
@@ -217,18 +237,20 @@
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
-          <div class="sub">Datenschutzerklärung</div>
+          <div class="sub">Datenschutz</div>
         </div>
       </div>
       <div class="small">DSGVO</div>
     </header>
 
+    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
         <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
         <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
         <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -261,11 +283,11 @@
         Es werden keine bereinigten Links an einen SafeShare-Server übertragen.
       </div>
 
-      <h2>1. Hosting / Bereitstellung der Website</h2>
+      <h2>1. Hosting / Bereitstellung der Website (GitHub Pages)</h2>
       <p>
         Diese Website wird über GitHub Pages bereitgestellt (GitHub, Inc.). Beim Aufruf der Website werden durch den Hosting-Anbieter
         technisch erforderliche Zugriffsdaten verarbeitet (z. B. IP-Adresse, Datum/Uhrzeit, angeforderte Seite, User-Agent),
-        um die Auslieferung der Website zu ermöglichen und die Sicherheit/Fehleranalyse zu gewährleisten.
+        um die Auslieferung der Website zu ermöglichen sowie Sicherheit und Fehleranalyse zu gewährleisten.
       </p>
       <p>
         Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherer und stabiler Bereitstellung).
@@ -274,16 +296,16 @@
       <h2>2. SafeShare App: Verarbeitung im Browser (local-first)</h2>
       <p>
         Die Link-Bereinigung (Entfernen von Tracking-Parametern) erfolgt clientseitig im Browser.
-        Die von dir eingegebenen oder eingefügten URLs werden nicht an mich übertragen.
+        Von dir eingegebene oder eingefügte URLs werden nicht an mich übertragen.
       </p>
 
-      <h2>3. Speicherungen im Browser (LocalStorage / Cache / Service Worker)</h2>
+      <h2>3. Lokale Speicherungen im Browser (LocalStorage / Cache / Service Worker)</h2>
       <p>
-        Zur Funktionalität und Komfort kann SafeShare Daten lokal im Browser speichern, z. B.:
+        Zur Funktionalität und für Komfort kann SafeShare Daten lokal im Browser speichern, z. B.:
       </p>
       <ul>
-        <li>Einstellungen/Presets (z. B. bevorzugte Bereinigungsmodi)</li>
-        <li>Whitelist/Allowlist-Regeln (insb. für Pro)</li>
+        <li>Einstellungen/Optionen (z. B. Modus, „Behalten“-Ausnahmen)</li>
+        <li>Allowlist/Whitelist-Regeln (insb. in Pro)</li>
         <li>Service-Worker-Cache (Offline-Fähigkeit / schnellere Ladezeiten)</li>
       </ul>
       <p>
@@ -294,10 +316,14 @@
         Hinweis: Der Service Worker speichert Dateien (HTML/CSS/JS) für Offline/Speed. Das ist kein Tracking.
       </div>
 
-      <h2>4. Cookies</h2>
+      <h2>4. Cookies / Tracking / Analytics</h2>
       <p>
-        SafeShare setzt selbst keine Tracking-Cookies. Technisch notwendige Speicherungen können durch den Browser (Cache)
-        bzw. den Service Worker erfolgen (siehe oben).
+        SafeShare setzt selbst keine Tracking-Cookies und nutzt kein eigenes Web-Analytics.
+        Technisch notwendige Speicherungen können durch Browser-Funktionen (Cache) bzw. den Service Worker erfolgen (siehe oben).
+      </p>
+      <p>
+        Beim reinen Besuch statischer GitHub-Pages-Seiten ist typischerweise kein Login nötig; dennoch können beim Aufruf über den Hosting-Anbieter
+        technische Mechanismen (z. B. zur Auslieferung/Abwehr) zum Einsatz kommen. Maßgeblich sind die Hinweise des jeweiligen Anbieters.
       </p>
 
       <h2>5. Kontaktaufnahme</h2>
@@ -312,7 +338,7 @@
 
       <h2>6. Externe Links (z. B. Payhip)</h2>
       <p>
-        Diese Website kann Links zu externen Anbietern enthalten (z. B. Payhip für den Kauf).
+        Diese Website kann Links zu externen Anbietern enthalten (z. B. Payhip für Kauf/Download).
         Beim Anklicken gelten die Datenschutzbestimmungen des jeweiligen Anbieters.
       </p>
 
@@ -339,12 +365,22 @@
     </section>
 
     <footer>
-      <div class="footLinks">
-        <a href="index.html">Start</a>
-        <a href="app.html">App</a>
-        <a href="pro.html">Pro</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="impressum.html">Impressum</a>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
       </div>
     </footer>
   </div>
@@ -352,26 +388,36 @@
   <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
-    <a href="index.html" data-page="index.html">Start</a>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
     <a href="education.html" data-page="education.html">Schule</a>
-    <a href="press.html" data-page="press.html">Presse</a>
     <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
     <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
     <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
     <div class="divider"></div>
-    <div class="menuHint">System</div>
-    <a href="status.html" data-page="status.html">Status</a>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
   </nav>
 
   <script>
+    // Datum + Active Links + Mehr-Menü (Escape close + Scroll-Lock + Focus restore)
     (function(){
       // date
       const d = new Date();
       const fmt = new Intl.DateTimeFormat('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
-      document.getElementById('stand').textContent = fmt.format(d);
+      const stand = document.getElementById('stand');
+      if (stand) stand.textContent = fmt.format(d);
 
-      // active tab
+      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
@@ -382,21 +428,45 @@
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
 
+      let lastFocus = null;
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
       function openMenu(){
+        lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const firstLink = menu.querySelector('a');
+          if (firstLink) firstLink.focus?.();
+        });
         btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
       }
       function closeMenu(){
         menu.classList.remove('open');
         btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+        if (lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
+
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
         isOpen ? closeMenu() : openMenu();
       });
       overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+      });
+    })();
+  </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
+</body>
+</html>
