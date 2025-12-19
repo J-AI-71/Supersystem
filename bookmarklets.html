@@ -94,6 +94,8 @@
       padding: 8px 12px; border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor:pointer;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -188,6 +190,7 @@
     }
     .copyBtn:hover{ background: rgba(255,255,255,.10); }
 
+    /* Footer (Master: footGrid + footLinks) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -195,19 +198,32 @@
       font-size: 12px;
       line-height: 1.55;
     }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
     }
     .footLinks a{
-      padding: 6px 10px; border-radius: 999px;
+      padding: 6px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet ===== */
+    /* ===== Mehr: Bottom-Sheet (CSS bleibt gleich; Markup kommt aus Snippet) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -260,38 +276,18 @@
   </style>
 </head>
 
-<body>
+<body data-shell-sub="Bookmarklets · 1-Klick" data-shell-tag="Desktop">
   <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logoWrap" aria-label="SafeShare Logo">
-          <img src="logo.svg" alt="SafeShare"
-               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-          <span id="logoFallback" class="logoFallback">8</span>
-        </div>
-        <div class="brandText">
-          <div class="title">SafeShare</div>
-          <div class="sub">Bookmarklets</div>
-        </div>
-      </div>
-      <div class="small">1-Klick (Desktop)</div>
-    </header>
 
-    <div class="tabsBar">
-      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="app.html" data-page="app.html">App</a>
-        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
-        <a class="tab active" href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
-      </div>
-    </div>
+    <!-- COMMON SHELL (Header + Tabs + Footer + Mehr) -->
+    <div id="ss-shell"></div>
 
+    <!-- PAGE CONTENT -->
     <section class="card">
       <h1>Bookmarklets</h1>
       <p>
         Bookmarklets sind Lesezeichen, die ein kleines Script ausführen. Damit kannst du SafeShare auf Desktop sehr schnell nutzen:
-        <b>aktuellen Link übernehmen</b> → SafeShare öffnen → optional direkt bereinigen.
+        <b>aktuelle URL übernehmen</b> → SafeShare öffnen → optional direkt bereinigen.
       </p>
 
       <div class="row">
@@ -311,9 +307,7 @@
 
       <div class="box">
         <h3>Bookmarklet</h3>
-        <div class="code mono" id="codeFillOnly">
-javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();
-        </div>
+        <div class="code mono" id="codeFillOnly">javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u);}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();</div>
         <div class="copyRow">
           <button class="copyBtn" type="button" data-copy="#codeFillOnly">Code kopieren</button>
         </div>
@@ -330,9 +324,7 @@ javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.gi
 
       <div class="box">
         <h3>Bookmarklet</h3>
-        <div class="code mono" id="codeAutoRun">
-javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();
-        </div>
+        <div class="code mono" id="codeAutoRun">javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();</div>
         <div class="copyRow">
           <button class="copyBtn" type="button" data-copy="#codeAutoRun">Code kopieren</button>
         </div>
@@ -349,9 +341,7 @@ javascript:(function(){try{var u=location.href;location.href='https://j-ai-71.gi
 
       <div class="box">
         <h3>Bookmarklet</h3>
-        <div class="code mono" id="codePasteRun">
-javascript:(function(){try{var u=prompt('SafeShare: URL einfügen');if(!u)return;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht übernehmen.');}})();
-        </div>
+        <div class="code mono" id="codePasteRun">javascript:(function(){try{var u=prompt('SafeShare: URL einfügen');if(!u)return;location.href='https://j-ai-71.github.io/Supersystem/app.html?u='+encodeURIComponent(u)+'&run=1';}catch(e){alert('SafeShare: konnte URL nicht übernehmen.');}})();</div>
         <div class="copyRow">
           <button class="copyBtn" type="button" data-copy="#codePasteRun">Code kopieren</button>
         </div>
@@ -401,66 +391,14 @@ javascript:(function(){try{var u=prompt('SafeShare: URL einfügen');if(!u)return
       </div>
     </section>
 
-    <footer>
-      <div class="footLinks">
-        <a href="index.html" data-page="index.html">Start</a>
-        <a href="app.html" data-page="app.html">App</a>
-        <a href="pro.html" data-page="pro.html">Pro</a>
-        <a href="help.html" data-page="help.html">Hilfe</a>
-        <a href="education.html" data-page="education.html">Schule</a>
-        <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-        <a href="impressum.html" data-page="impressum.html">Impressum</a>
-        <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
-      </div>
-    </footer>
   </div>
 
-  <!-- Mehr (Bottom-Sheet) -->
-  <div class="moreOverlay" id="moreOverlay" hidden></div>
-  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Öffentlich</div>
-    <a href="education.html" data-page="education.html">Schule</a>
-    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <div class="divider"></div>
-    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-    <a href="impressum.html" data-page="impressum.html">Impressum</a>
-    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
-  </nav>
+  <!-- COMMON SHELL SCRIPT -->
+  <script defer src="js/ss-shell.js?v=2025-12-19-01"></script>
 
+  <!-- Page: Copy buttons -->
   <script>
     (function(){
-      // active tab
-      const file = location.pathname.split('/').pop();
-      const path = (!file || file === '') ? 'index.html' : file;
-      document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === path) el.classList.add('active');
-      });
-
-      // more sheet
-      const btn = document.getElementById('moreBtn');
-      const menu = document.getElementById('moreMenu');
-      const overlay = document.getElementById('moreOverlay');
-      function openMenu(){
-        overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
-        btn.setAttribute('aria-expanded','true');
-      }
-      function closeMenu(){
-        menu.classList.remove('open');
-        btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; },180);
-      }
-      btn.addEventListener('click',(e)=>{
-        e.preventDefault();
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        isOpen ? closeMenu() : openMenu();
-      });
-      overlay.addEventListener('click', closeMenu);
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
-      // copy buttons
       async function copyText(text){
         try{
           await navigator.clipboard.writeText(text);
@@ -490,5 +428,7 @@ javascript:(function(){try{var u=prompt('SafeShare: URL einfügen');if(!u)return
       });
     })();
   </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-17-02"></script>
 </body>
 </html>
