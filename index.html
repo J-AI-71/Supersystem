@@ -165,17 +165,6 @@
     @media(min-width: 980px){
       .grid2{ grid-template-columns: 1fr 1fr; }
     }
-
-    .grid3{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid3{ grid-template-columns: 1fr 1fr 1fr; }
-    }
-
     .box{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
@@ -196,39 +185,38 @@
       word-break: break-word;
     }
 
+    /* Hero Bild (Vorher/Nachher) */
+    .heroImg img{
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      margin-top: 12px;
+    }
+    @media (prefers-color-scheme: light){
+      .heroImg img{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.02); }
+    }
+
+    /* Preiszeile */
     .price{
-      font-size: 28px;
-      font-weight: 850;
+      font-size: 34px;
+      font-weight: 900;
       letter-spacing: -.2px;
-      margin: 2px 0 10px;
+      margin: 6px 0 10px;
       color: var(--text);
     }
     .price small{
       font-size: 12px;
-      color: var(--muted2);
       font-weight: 700;
-      margin-left: 8px;
-    }
-
-    figure.heroFig{
-      margin: 12px 0 0;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    figure.heroFig img{
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    figure.heroFig figcaption{
-      padding: 10px 12px;
-      font-size: 12px;
       color: var(--muted2);
-      line-height: 1.4;
+      margin-left: 8px;
+      letter-spacing: 0;
+      white-space: nowrap;
     }
 
+    /* Footer wie help/app (Grid + Links) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -261,6 +249,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
+    /* ===== Mehr: Bottom-Sheet ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -295,7 +284,6 @@
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
       .box{ border-color: rgba(17,24,39,.12); }
-      figure.heroFig{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -351,6 +339,18 @@
         Für Auswertung nützlich, beim Weiterleiten oft nur Ballast.
       </p>
 
+      <!-- Vorher/Nachher Bild (WebP + PNG Fallback) -->
+      <!-- Passe die Dateinamen an, falls deine Assets anders heißen -->
+      <picture class="heroImg">
+        <source srcset="assets/hero-vorher-nachher.webp" type="image/webp">
+        <img
+          src="assets/hero-vorher-nachher.png"
+          alt="Vor SafeShare: Link mit Tracking-Ballast. Nach SafeShare: sauberer Link."
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+
       <div class="row">
         <a class="btn primary" href="app.html">Jetzt bereinigen</a>
         <a class="btn" href="education.html">SafeShare Schule</a>
@@ -384,19 +384,6 @@
           <div class="example mono">https://example.com/artikel</div>
         </div>
       </div>
-
-      <!-- Bild Vorher/Nachher -->
-      <figure class="heroFig">
-        <img
-          src="assets/img/hero-vorher-nachher.png"
-          alt="Vorher: Link mit vielen Tracking-Parametern. Nachher: sauberer Link ohne Ballast."
-          loading="lazy"
-          decoding="async"
-          width="1193"
-          height="764"
-        />
-        <figcaption>Visuell: „vor SafeShare“ vs. „nach SafeShare“. (Nur Link-Hygiene – kein Unsichtbarkeitsversprechen.)</figcaption>
-      </figure>
 
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
@@ -455,18 +442,17 @@
 
     <!-- PRO TEASER -->
     <section class="card">
-      <h2>Pro & Support</h2>
+      <h2>SafeShare Pro (für Profis)</h2>
       <p>
-        Pro ist für Publisher/Teams/Profis: bewusst <b>behalten</b> (Allowlist), bewusst <b>entfernen</b> (Policies) und nachvollziehen, was passiert ist (Audit).
-        Wenn du erst verstehen willst, was rausfliegt und warum: Supporter.
+        Für Publisher/Teams/Profis: bewusst <b>behalten</b> (Allowlist), bewusst <b>entfernen</b> (Policies) und nachvollziehen, was passiert ist (Audit).
       </p>
 
-      <div class="grid3">
+      <div class="grid2">
         <div class="box">
-          <h3>Supporter</h3>
+          <h3>Supporter (ohne Pro-App)</h3>
           <div class="price">9 € <small>einmalig</small></div>
           <ul>
-            <li>Handbuch (PDF) + Diagnose-Check</li>
+            <li>Handbuch (PDF) + Diagnose-Check (Selftest)</li>
             <li>Offline nutzbar</li>
             <li>Ideal zum Einstieg / Support</li>
           </ul>
@@ -480,8 +466,8 @@
           <div class="price">49 € <small>einmalig</small></div>
           <ul>
             <li>Offline Pro App</li>
-            <li>Presets/Policies</li>
-            <li>Allowlist + Audit</li>
+            <li>Policies / Allowlist</li>
+            <li>Audit („Was wurde geändert?“)</li>
           </ul>
           <div class="row">
             <a class="btn primary" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person öffnen</a>
@@ -493,8 +479,8 @@
           <div class="price">249 € <small>einmalig</small></div>
           <ul>
             <li>Offline Pro App</li>
-            <li>Policy & Audit im Team</li>
-            <li>Regeln konsistent</li>
+            <li>Team-Workflow / konsistente Policies</li>
+            <li>Audit + Regeln fürs Publishing</li>
           </ul>
           <div class="row">
             <a class="btn primary" href="https://payhip.com/b/oXFsk" target="_blank" rel="noopener">Pro Team öffnen</a>
@@ -558,12 +544,14 @@
 
   <script>
     (function(){
+      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
+      // more sheet + ESC close + scroll lock
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
