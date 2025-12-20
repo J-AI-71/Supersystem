@@ -165,28 +165,22 @@
     @media(min-width: 980px){
       .grid2{ grid-template-columns: 1fr 1fr; }
     }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid3{ grid-template-columns: 1fr 1fr 1fr; }
+    }
+
     .box{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       border-radius: 16px;
       padding: 12px;
-    }
-
-    /* Preise (für Supporter/Pro Person/Pro Team) */
-    .price{
-      font-size: 26px;
-      font-weight: 850;
-      margin: 6px 0 8px;
-      color: var(--text);
-      letter-spacing: -.2px;
-    }
-    .price small{
-      font-size: 12px;
-      color: var(--muted2);
-      font-weight: 650;
-      margin-left: 8px;
-      letter-spacing: 0;
-      white-space: nowrap;
     }
 
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
@@ -202,7 +196,39 @@
       word-break: break-word;
     }
 
-    /* Footer wie help/app (Grid + Links) */
+    .price{
+      font-size: 28px;
+      font-weight: 850;
+      letter-spacing: -.2px;
+      margin: 2px 0 10px;
+      color: var(--text);
+    }
+    .price small{
+      font-size: 12px;
+      color: var(--muted2);
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    figure.heroFig{
+      margin: 12px 0 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+    figure.heroFig img{
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    figure.heroFig figcaption{
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--muted2);
+      line-height: 1.4;
+    }
+
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -235,7 +261,6 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (wie UTM/Tracking/Tool-Vergleich) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -270,6 +295,7 @@
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
       .box{ border-color: rgba(17,24,39,.12); }
+      figure.heroFig{ border-color: rgba(17,24,39,.12); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -359,6 +385,19 @@
         </div>
       </div>
 
+      <!-- Bild Vorher/Nachher -->
+      <figure class="heroFig">
+        <img
+          src="assets/img/hero-vorher-nachher.png"
+          alt="Vorher: Link mit vielen Tracking-Parametern. Nachher: sauberer Link ohne Ballast."
+          loading="lazy"
+          decoding="async"
+          width="1193"
+          height="764"
+        />
+        <figcaption>Visuell: „vor SafeShare“ vs. „nach SafeShare“. (Nur Link-Hygiene – kein Unsichtbarkeitsversprechen.)</figcaption>
+      </figure>
+
       <div class="row">
         <a class="btn primary" href="app.html">App öffnen</a>
         <a class="btn" href="bookmarklets.html">Bookmarklets (Desktop)</a>
@@ -395,7 +434,7 @@
             Manche Parameter sind Zuordnung (z. B. <span class="mono">ref</span>, <span class="mono">tag</span>).
             Entfernst du sie, kann Vergütung/Attribution kaputtgehen.
           </p>
-          <p><b>Pro:</b> Policies + Allowlist pro Domain.</p>
+          <p><b>Pro:</b> Allowlist/Policies pro Domain.</p>
         </div>
         <div class="box">
           <h3>Funktionale Parameter</h3>
@@ -416,17 +455,18 @@
 
     <!-- PRO TEASER -->
     <section class="card">
-      <h2>SafeShare Pro (für Profis)</h2>
+      <h2>Pro & Support</h2>
       <p>
-        Für Publisher/Teams/Profis: bewusst <b>behalten</b> (Allowlist), bewusst <b>entfernen</b> (Policies) und nachvollziehen, was passiert ist (Audit).
+        Pro ist für Publisher/Teams/Profis: bewusst <b>behalten</b> (Allowlist), bewusst <b>entfernen</b> (Policies) und nachvollziehen, was passiert ist (Audit).
+        Wenn du erst verstehen willst, was rausfliegt und warum: Supporter.
       </p>
 
-      <div class="grid2">
+      <div class="grid3">
         <div class="box">
-          <h3>Supporter <span class="small">(ohne Pro-App)</span></h3>
+          <h3>Supporter</h3>
           <div class="price">9 € <small>einmalig</small></div>
           <ul>
-            <li>Handbuch (PDF) + Diagnose-Check (HTML)</li>
+            <li>Handbuch (PDF) + Diagnose-Check</li>
             <li>Offline nutzbar</li>
             <li>Ideal zum Einstieg / Support</li>
           </ul>
@@ -439,9 +479,9 @@
           <h3>Pro Person</h3>
           <div class="price">49 € <small>einmalig</small></div>
           <ul>
+            <li>Offline Pro App</li>
             <li>Presets/Policies</li>
-            <li>Allowlist</li>
-            <li>Audit („Was wurde geändert?“)</li>
+            <li>Allowlist + Audit</li>
           </ul>
           <div class="row">
             <a class="btn primary" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person öffnen</a>
@@ -449,12 +489,12 @@
         </div>
 
         <div class="box">
-          <h3>Pro Team <span class="small">(bis 5 Seats)</span></h3>
+          <h3>Pro Team (bis 5 Seats)</h3>
           <div class="price">249 € <small>einmalig</small></div>
           <ul>
-            <li>Team-Workflow</li>
-            <li>Policies konsistent</li>
-            <li>Audit/Regeln fürs Publishing</li>
+            <li>Offline Pro App</li>
+            <li>Policy & Audit im Team</li>
+            <li>Regeln konsistent</li>
           </ul>
           <div class="row">
             <a class="btn primary" href="https://payhip.com/b/oXFsk" target="_blank" rel="noopener">Pro Team öffnen</a>
@@ -518,14 +558,12 @@
 
   <script>
     (function(){
-      // active links (tabs + footer + more)
       const file = location.pathname.split('/').pop();
       const path = (!file || file === '') ? 'index.html' : file;
       document.querySelectorAll('[data-page]').forEach(el => {
         if (el.getAttribute('data-page') === path) el.classList.add('active');
       });
 
-      // more sheet + ESC close + scroll lock
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
