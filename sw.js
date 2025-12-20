@@ -3,11 +3,12 @@
    - GET_VERSION + SKIP_WAITING
    - Network-first for navigations (HTML)
    - Stale-While-Revalidate for same-origin assets
+   - Icons/Favicons/Manifest: network-first (no-store) + do NOT SWR-cache (fixes sticky favicon behavior)
    - Precache CORE (robust)
 */
 'use strict';
 
-const SW_VERSION = '2025-12-19-01';
+const SW_VERSION = '2025-12-20-01';
 
 const PRECACHE = `ss-precache-${SW_VERSION}`;
 const RUNTIME  = `ss-runtime-${SW_VERSION}`;
@@ -20,9 +21,8 @@ const CORE = [
   'app.html',
   'bookmarklets.html',
   'education.html',
-  'press.html',
-  'help.html',
   'status.html',
+  'help.html',
   '404.html',
   OFFLINE_URL,
 
@@ -42,12 +42,19 @@ const CORE = [
   'js/bookmarklets.js',
   'js/page-404.js',
 
-  // PWA / icons
+  // PWA
   'manifest.webmanifest',
-  'assets/icons/icon-16-kreis.png',
-  'assets/icons/icon-32-kreis.png',
+
+  // Favicons (bei dir vorhanden: assets/fav/*)
+  'assets/fav/favicon.svg',
+  'assets/fav/favicon-16.png',
+  'assets/fav/favicon-32.png',
+  'assets/fav/apple-touch-icon.png',
+
+  // PWA / iOS Icons (optional – nur wenn existieren)
   'assets/icons/icon-192-kreis.png',
   'assets/icons/icon-512-kreis.png',
+  'assets/icons/icon-maskable-512-kreis.png',
   'assets/icons/apple-touch-icon-180.png',
 
   // media (optional)
@@ -118,7 +125,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const sameOrigin = url.origin === self.location.origin;
 
-  // HTML navigations: network-first (fixes "new page loads only after reload" behavior)
+  // HTML navigations: network-first
   if (req.mode === 'navigate') {
     event.respondWith((async () => {
       try {
@@ -134,7 +141,7 @@ self.addEventListener('fetch', (event) => {
         }
         return net;
       } catch (_) {
-        // fall back to cached page (ignoreSearch so ?v=... still matches)
+        // fall back to cached page (ignoreSearch so /page?v=... still matches)
         const cached = await caches.match(req, { ignoreSearch: true });
         if (cached) return cached;
 
@@ -148,9 +155,31 @@ self.addEventListener('fetch', (event) => {
   // Only cache same-origin assets
   if (!sameOrigin) return;
 
-  // Assets: stale-while-revalidate
+  // Icons/Favicons/Manifest: always try network fresh; do NOT SWR-cache these
+  const isIconOrManifest =
+    url.pathname.endsWith('/manifest.webmanifest') ||
+    url.pathname.includes('/assets/icons/') ||
+    url.pathname.includes('/assets/fav/') ||
+    url.pathname.endsWith('/favicon.ico') ||
+    url.pathname.includes('apple-touch-icon');
+
+  if (isIconOrManifest) {
+    event.respondWith((async () => {
+      try {
+        return await fetch(req, { cache: 'no-store' });
+      } catch (_) {
+        // offline fallback: allow cached icon/manifest if available
+        return (await caches.match(req)) ||
+               (await caches.match(req, { ignoreSearch: true })) ||
+               new Response('', { status: 504, statusText: 'Icon fetch failed' });
+      }
+    })());
+    return;
+  }
+
+  // Assets: stale-while-revalidate (IMPORTANT: do NOT ignoreSearch; so ?v=... works)
   event.respondWith((async () => {
-    const cached = await caches.match(req, { ignoreSearch: true });
+    const cached = await caches.match(req);
 
     const fetchPromise = fetch(req).then(async (res) => {
       if (res && res.status === 200 && res.type === 'basic') {
