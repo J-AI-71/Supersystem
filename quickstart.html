@@ -1,24 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Weiterleitung – SafeShare QuickStart</title>
 
-  <!-- Suchmaschinen: nicht mehr indexieren, aber Links folgen -->
+  <!-- Suchmaschinen: nicht indexieren, aber Links folgen -->
   <meta name="robots" content="noindex,follow" />
 
-  <!-- Sofortige Weiterleitung auf die neue Seite -->
-  <meta http-equiv="refresh" content="0; url=help.html" />
+  <!-- Sofortige Weiterleitung (stabiler mit root-relativem Pfad) -->
+  <meta http-equiv="refresh" content="0; url=/Supersystem/help.html" />
 
-  <!-- Canonical auf die Zielseite zeigen -->
+  <!-- Canonical auf die Zielseite -->
   <link rel="canonical" href="https://j-ai-71.github.io/Supersystem/help.html" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       color-scheme: dark;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
       background: #050814;
       color: #f5f7ff;
     }
@@ -42,43 +41,23 @@
         linear-gradient(145deg, #050814, #080d1a);
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
     }
-    h1 {
-      margin: 0 0 8px;
-      font-size: 20px;
-    }
-    p {
-      margin: 0 0 10px;
-      font-size: 14px;
-      color: #a8b2d6;
-    }
-    a {
-      color: #3fe0b5;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
+    h1 { margin: 0 0 8px; font-size: 20px; }
+    p  { margin: 0 0 10px; font-size: 14px; color: #a8b2d6; }
+    a  { color: #3fe0b5; text-decoration: none; }
+    a:hover { text-decoration: underline; }
   </style>
 
   <script>
-    // Fallback-Weiterleitung per JS (falls meta refresh blockiert wird)
-    window.addEventListener("DOMContentLoaded", function () {
-      var target = "help.html";
-      if (location.pathname.toLowerCase().includes("/supersystem/")) {
-        // relativ innerhalb des GitHub-Pages-Verzeichnisses
-        window.location.replace("help.html");
-      } else {
-        window.location.replace("https://j-ai-71.github.io/Supersystem/help.html");
-      }
-    });
+    // Fallback, falls meta refresh blockiert wird
+    window.location.replace("/Supersystem/help.html");
   </script>
 </head>
 <body>
   <div class="card">
     <h1>SafeShare QuickStart ist umgezogen</h1>
     <p>
-      Du wirst zur neuen Hilfe-Seite weitergeleitet:
-      <a href="help.html">SafeShare Hilfe &amp; Hintergrund</a>.
+      Du wirst zur Hilfe-Seite weitergeleitet:
+      <a href="/Supersystem/help.html">SafeShare Hilfe &amp; Hintergrund</a>.
     </p>
     <p>Sollte nichts passieren, klicke bitte auf den Link.</p>
   </div>
