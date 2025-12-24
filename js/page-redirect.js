@@ -1,37 +1,39 @@
-/* page-redirect.js – Redirect entschachteln UI (ohne Inline-Handler) */
-document.addEventListener('DOMContentLoaded', () => {
-  const $ = s => document.querySelector(s);
-  const QS = { in: $('#inUrl'), out: $('#outUrl'), steps: $('#steps'), changes: $('#changes'), opt: $('#optClean') };
+/* Clean-URL Helper ohne Redirect-Loops
+   - Wenn *.html geladen wurde: URL "sauber" machen per history.replaceState (kein Reload).
+   - Wenn "clean" URL geladen wurde: NICHT weiterleiten (Cloudflare Pages liefert per _redirects 200 die Datei aus).
+   - Nur auf GitHub Pages (github.io) darf clean -> .html per location.replace passieren.
+*/
+(() => {
+  'use strict';
 
-  const bUnwrap = document.querySelector('[onclick*="UI.unwrap"]') || $('#btnUnwrap');
-  const bCopy   = document.querySelector('[onclick*="UI.copy"]')   || $('#btnCopy');
-  const bOpen   = document.querySelector('[onclick*="UI.open"]')   || $('#btnOpen');
+  const host = location.hostname.toLowerCase();
+  const path = location.pathname;
 
-  if (QS.in) QS.in.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doUnwrap(); } });
-  if (bUnwrap) bUnwrap.addEventListener('click', doUnwrap);
-  if (bCopy)   bCopy.addEventListener('click', () => copy(QS.out?.value||''));
-  if (bOpen)   bOpen.addEventListener('click', () => openUrl(QS.out?.value||''));
+  // Verifizierungsdateien/Assets nie anfassen
+  if (/^\/google[a-z0-9]+\.html$/i.test(path)) return;
+  if (/\.(css|js|png|jpg|jpeg|webp|svg|ico|webmanifest|json|txt|xml|pdf|zip)$/i.test(path)) return;
 
-  function doUnwrap(){
-    const src = (QS.in?.value||'').trim();
-    if (!src) return;
-    const res = Cleaner.cleanUrl(src, {doStrip: !!(QS.opt && QS.opt.checked)});
-    if (QS.out) QS.out.value = res.url;
+  const isGithubPages = host.endsWith('github.io');
 
-    // Schritte/Änderungen
-    QS.steps && (QS.steps.innerHTML = res.unwrapped
-      ? `<ol><li>${Cleaner.escapeHtml(res.unwrapped.via)} → <code>${Cleaner.escapeHtml(res.unwrapped.to)}</code></li></ol>`
-      : '<p>Keine eingebettete Ziel-URL gefunden.</p>');
+  // 1) Wenn .html geladen wurde → nur URL umschreiben (kein Redirect)
+  if (path.endsWith('.html')) {
+    const clean = path
+      .replace(/index\.html$/i, '')
+      .replace(/\.html$/i, '');
 
-    const removed = res.removed.length ? res.removed.map(k=>`<span class="pill">${Cleaner.escapeHtml(k)}</span>`).join(' ') : '–';
-    const kept    = res.kept.length    ? res.kept.map(k=>`<span class="pill">${Cleaner.escapeHtml(k)}</span>`).join(' ')    : '–';
-    QS.changes && (QS.changes.innerHTML = `
-      <div>Entfernte Parameter: ${removed}</div>
-      <div>Behalten (Whitelist): ${kept}</div>
-      <div>Normalisierung: ${Cleaner.escapeHtml(res.normalized || '–')}</div>
-    `);
+    const newPath = clean === '' ? '/' : clean;
+    const newUrl = newPath + location.search + location.hash;
+
+    const currentUrl = location.pathname + location.search + location.hash;
+    if (newUrl !== currentUrl) history.replaceState(null, '', newUrl);
+    return;
   }
 
-  async function copy(text){ try{ await navigator.clipboard.writeText(text); }catch{} }
-  function openUrl(u){ if (!u) return; try{ window.open(u,'_blank','noopener,noreferrer'); }catch{ location.href = u; } }
-});
+  // 2) Nur GitHub Pages: clean -> .html (weil GH keine _redirects-Rewrites macht)
+  if (isGithubPages) {
+    if (path === '/' || path.endsWith('/')) return;
+    location.replace(path + '.html' + location.search + location.hash);
+  }
+
+  // 3) Auf Custom Domains / Cloudflare Pages: KEIN Redirect (sonst Loops)
+})();
