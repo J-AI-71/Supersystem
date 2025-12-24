@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Bookmarklets – SafeShare</title>
+  <meta name="description" content="SafeShare Bookmarklets: 1-Klick Link bereinigen (aktuelle URL oder per Einfügen). Desktop-Anleitung, Troubleshooting und iOS-Hinweis." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://safesharepro.com/bookmarklets.html" />
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+    <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="SafeShare Bookmarklets – 1-Klick Links bereinigen" />
+  <meta property="og:description" content="Bookmarklets für SafeShare: Link bereinigen mit einem Klick – lokal im Browser. Ideal für schnelles Copy → Clean → Share." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/bookmarklets.html" />
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta property="og:image:alt" content="SafeShare – Bookmarklets (Vorschau)" />
+
+  <!-- Twitter (wird auch von anderen genutzt) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare Bookmarklets – 1-Klick" />
+  <meta name="twitter:description" content="Bookmarklets: Links lokal bereinigen – schnell, ohne Upload." />
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+
+  <!-- Favicons + PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg?v=2025-12-20-02">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/fav/favicon-32.png?v=2025-12-20-02">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/fav/favicon-16.png?v=2025-12-20-02">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=2025-12-20-02">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-12-20-02">
+  <meta name="theme-color" content="#111111">
+  
+  <style>
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,84,84,.14);
+      --ok: rgba(47,227,183,.16);
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+      --max: 1120px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff; --card2:#f5f7ff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,84,84,.12);
+        --ok: rgba(47,227,183,.18);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
+      }
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+    .muted{ color: var(--muted); }
+    .small{ font-size: 12px; color: var(--muted2); line-height: 1.45; white-space:nowrap; }
+
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 14px; padding: 10px 2px 12px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{
+      font-size: 16px; font-weight: 780; line-height:1.1;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      font-size: 12px; color: var(--muted2); margin-top:2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor:pointer;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
+    }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ol, ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .code{
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      word-break: break-word;
+      user-select: text;
+      white-space: pre-wrap;
+    }
+    .copyRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+    .copyBtn{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor:pointer;
+    }
+    .copyBtn:hover{ background: rgba(255,255,255,.10); }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+      .box{ border-color: rgba(17,24,39,.12); }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    .moreMenu a.active{
+      color: var(--text);
+      border-color: rgba(47,227,183,.35);
+      background: rgba(47,227,183,.12);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Bookmarklets · 1-Klick (Desktop)</div>
+        </div>
+      </div>
+      <div class="small">Desktop</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1>Bookmarklets</h1>
+      <p>
+        Bookmarklets sind Lesezeichen, die ein kleines Script ausführen.
+        Damit kannst du SafeShare auf Desktop sehr schnell nutzen:
+        <b>aktuelle URL übernehmen</b> → SafeShare öffnen → optional direkt bereinigen.
+      </p>
+
+      <div class="row">
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="help.html">Hilfe</a>
+        <a class="btn ghost" href="pro.html#pricing">Pro ansehen</a>
+      </div>
+
+      <div class="note">
+  <b>Desktop:</b> Bookmarklets sind eine Abkürzung für Chrome/Firefox/Edge.<br>
+  <b>iOS/iPad:</b> Am stabilsten ist ein <b>Share-Sheet Shortcut</b>.
+  <div class="row" style="margin-top:10px">
+    <a class="btn" href="help.html#shortcut">iOS Shortcut ansehen</a>
+  </div>
+</div>
+    </section>
+
+    <section class="card">
+      <h2>1) App öffnen &amp; URL nur ausfüllen</h2>
+      <p>Übernimmt die aktuelle Seite in SafeShare (Parameter <span class="mono">u</span>). Du klickst danach manuell auf „Bereinigen“.</p>
+
+      <div class="box">
+        <h3>Drag-to-Bookmarks (Desktop)</h3>
+        <p class="muted">Zieh den Button in deine Lesezeichenleiste (Chrome/Firefox/Edge). Das ist am zuverlässigsten.</p>
+        <div class="row">
+          <a class="btn primary" id="dragFillOnly" href="#">SafeShare (nur ausfüllen)</a>
+        </div>
+
+        <h3 style="margin-top:14px">Bookmarklet-Code</h3>
+        <div class="code mono" id="codeFillOnly"></div>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codeFillOnly">Code kopieren</button>
+        </div>
+      </div>
+
+      <div class="note">
+        Absolute URL (GitHub Pages) → funktioniert auf jeder Website (nicht nur innerhalb von SafeShare).
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2) App öffnen &amp; sofort bereinigen (1-Klick)</h2>
+      <p>Wie oben, aber mit <span class="mono">run=1</span>. SafeShare übernimmt die URL und startet direkt die Bereinigung.</p>
+
+      <div class="box">
+        <h3>Drag-to-Bookmarks (Desktop)</h3>
+        <div class="row">
+          <a class="btn primary" id="dragAutoRun" href="#">SafeShare (1-Klick)</a>
+        </div>
+
+        <h3 style="margin-top:14px">Bookmarklet-Code</h3>
+        <div class="code mono" id="codeAutoRun"></div>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codeAutoRun">Code kopieren</button>
+        </div>
+      </div>
+
+      <div class="note">
+        Voraussetzung: <span class="mono">app.html</span> liest <span class="mono">?u=</span> und startet bei <span class="mono">run=1</span> automatisch.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3) „Einfügen“-Bookmarklet</h2>
+      <p>Fragt dich nach einer URL (einfügen) und öffnet SafeShare direkt mit Auto-Bereinigung.</p>
+
+      <div class="box">
+        <h3>Drag-to-Bookmarks (Desktop)</h3>
+        <div class="row">
+          <a class="btn primary" id="dragPasteRun" href="#">SafeShare (einfügen + 1-Klick)</a>
+        </div>
+
+        <h3 style="margin-top:14px">Bookmarklet-Code</h3>
+        <div class="code mono" id="codePasteRun"></div>
+        <div class="copyRow">
+          <button class="copyBtn" type="button" data-copy="#codePasteRun">Code kopieren</button>
+        </div>
+      </div>
+
+      <div class="warn">
+        Kein Clipboard-Zugriff: du fügst manuell ein (Browser-Sicherheit).
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Einrichten (Desktop)</h2>
+      <ol>
+        <li>Lesezeichen erstellen</li>
+        <li>Name: z. B. <b>SafeShare</b> / <b>SafeShare 1-Klick</b></li>
+        <li>URL/Feld: den Bookmarklet-Code einfügen (muss mit <span class="mono">javascript:</span> beginnen)</li>
+        <li>Auf einer Website klicken → SafeShare öffnet</li>
+      </ol>
+      <div class="note">Tipp: Als <b>eine Zeile</b> einfügen (ohne Umbrüche). Drag-Buttons sind noch zuverlässiger.</div>
+    </section>
+
+    <section class="card">
+      <h2>Fehlersuche</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Es passiert nichts</h3>
+          <ul>
+            <li>Prüfe: beginnt die Lesezeichen-URL wirklich mit <span class="mono">javascript:</span>?</li>
+            <li>Wurde der Code gekürzt/umgeschrieben? (passiert bei manchen Browsern)</li>
+            <li>Teste auf einer „normalen“ Website (nicht PDF-Viewer / nicht interne Browserseiten).</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>SafeShare öffnet, aber Feld bleibt leer / run=1 startet nicht</h3>
+          <ul>
+            <li>Dann ist es fast immer <b>App-Version oder Cache</b>.</li>
+            <li>Wenn Direkt-Test nicht geht: Service-Worker/Cache aktualisieren.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+  </nav>
+
+  <script>
+    (function(){
+      const BASE = 'https://j-ai-71.github.io/Supersystem/app.html';
+
+      function buildUrl(u, run){
+        return BASE + '?u=' + encodeURIComponent(u) + (run ? '&run=1' : '');
+      }
+
+      function normInput(u){
+        u = (u || '').trim();
+        if(!u) return '';
+        if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+        return u;
+      }
+
+      // Bookmarklet strings
+      const CODE_FILL =
+        "javascript:(function(){try{var BASE='" + BASE + "';var u=location.href;location.assign(BASE+'?u='+encodeURIComponent(u));}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();";
+
+      const CODE_RUN =
+        "javascript:(function(){try{var BASE='" + BASE + "';var u=location.href;location.assign(BASE+'?u='+encodeURIComponent(u)+'&run=1');}catch(e){alert('SafeShare: konnte URL nicht lesen.');}})();";
+
+      const CODE_PASTE =
+        "javascript:(function(){try{var BASE='" + BASE + "';var u=prompt('SafeShare: URL einfügen');if(!u)return;u=String(u).trim();if(!/^https?:\\/\\//i.test(u))u='https://'+u;location.assign(BASE+'?u='+encodeURIComponent(u)+'&run=1');}catch(e){alert('SafeShare: konnte URL nicht übernehmen.');}})();";
+
+      // fill code blocks
+      document.getElementById('codeFillOnly').textContent = CODE_FILL;
+      document.getElementById('codeAutoRun').textContent = CODE_RUN;
+      document.getElementById('codePasteRun').textContent = CODE_PASTE;
+
+      // drag links
+      document.getElementById('dragFillOnly').setAttribute('href', CODE_FILL);
+      document.getElementById('dragAutoRun').setAttribute('href', CODE_RUN);
+      document.getElementById('dragPasteRun').setAttribute('href', CODE_PASTE);
+
+      // active links (tabs + footer + more)
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      // copy buttons
+      async function copyText(text){
+        try{
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(e){
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position='fixed'; ta.style.left='-9999px';
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+          try{ document.execCommand('copy'); }catch(_){}
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+      document.querySelectorAll('[data-copy]').forEach(b=>{
+        b.addEventListener('click', async ()=>{
+          const sel = b.getAttribute('data-copy');
+          const el = document.querySelector(sel);
+          const txt = (el ? el.textContent : '').trim();
+          if (!txt) return;
+          await copyText(txt);
+          const old = b.textContent;
+          b.textContent = 'Kopiert ✓';
+          setTimeout(()=>b.textContent=old, 1200);
+        });
+      });
+
+      // more sheet + ESC close + scroll lock + focus restore
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+      if(!btn || !menu || !overlay) return;
+
+      let lastFocus = null;
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
+      function openMenu(){
+        lastFocus = document.activeElement;
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          const first = menu.querySelector('a');
+          if(first && first.focus) first.focus();
+        });
+        btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+        if(lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
+      }
+
+      btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        isOpen ? closeMenu() : openMenu();
+      });
+      overlay.addEventListener('click', closeMenu);
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu(); });
+    })();
+  </script>
+
+  <!-- cache-bust bump -->
+  <script defer src="js/sw-register.js?v=2025-12-20-02"></script>
+</body>
+</html>
