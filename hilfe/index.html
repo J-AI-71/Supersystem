@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Hilfe – SafeShare</title>
+  <meta name="description" content="SafeShare Hilfe: Links bereinigen, typische Stolperfallen, iPad/iPhone Hinweise, Pro-Workflow und Support." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://safesharepro.com/help.html" />
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="SafeShare Hilfe – FAQ & Tipps" />
+  <meta property="og:description" content="Antworten auf die wichtigsten Fragen zu SafeShare: Was wird entfernt, was bleibt, wie nutzt du es schnell (Copy → Clean → Share) – local-first, ohne Upload." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/help.html" />
+  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta property="og:image:alt" content="SafeShare Hilfe – Vorschau" />
+
+  <!-- Twitter (wird auch von anderen genutzt) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare Hilfe – FAQ & Tipps" />
+  <meta name="twitter:description" content="FAQ & Tipps zu SafeShare: Tracking-Parameter entfernen, Link-Hygiene, local-first – ohne Upload." />
+  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  
+  <!-- Favicons + PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg?v=2025-12-20-02">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/fav/favicon-32.png?v=2025-12-20-02">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/fav/favicon-16.png?v=2025-12-20-02">
+
+  <!-- iOS Home Screen -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=2025-12-20-02">
+
+  <!-- PWA / Install -->
+  <link rel="manifest" href="manifest.webmanifest?v=2025-12-20-02">
+  <meta name="theme-color" content="#111111">
+  
+  <style>
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor: pointer;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: rgba(47,227,183,.18); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: rgba(47,227,183,.28); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .chip b{ color: var(--text); font-weight: 850; }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+      .box{ border-color: rgba(17,24,39,.12); }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img src="logo.svg" alt="SafeShare"
+               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">8</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Hilfe</div>
+        </div>
+      </div>
+      <div class="small">Support & Troubleshooting</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" href="index.html" data-page="index.html">Start</a>
+        <a class="tab" href="app.html" data-page="app.html">App</a>
+        <a class="tab" href="education.html" data-page="education.html">Schule</a>
+        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
+        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1>Hilfe</h1>
+      <p>Kurzer Einstieg, typische Stolperfallen und saubere Debug-Schritte – ohne Panik.</p>
+
+      <div class="chips" aria-label="Flow">
+        <span class="chip"><b>1</b> Copy</span>
+        <span class="chip"><b>2</b> Clean</span>
+        <span class="chip"><b>3</b> Share</span>
+      </div>
+
+      <div class="row">
+        <a class="btn primary" href="app.html">App öffnen</a>
+        <a class="btn" href="pro.html">Pro ansehen</a>
+        <a class="btn ghost" href="#kontakt">Support</a>
+      </div>
+
+      <div class="note">
+        SafeShare entfernt nur Tracking-Parameter <b>im Link selbst</b> (z. B. <span class="mono">utm_*</span>, <span class="mono">fbclid</span>, <span class="mono">gclid</span>).
+        Es ändert nichts an Browser/Account/IP – es macht dich nicht anonym.
+      </div>
+    </section>
+
+<section class="card">
+  <h2>App (QuickStart)</h2>
+  <p class="muted">
+    Sofort starten: Demo-Link wird eingefügt und direkt bereinigt. (local-first, ohne Upload)
+  </p>
+
+  <div class="row">
+    <a class="btn primary" href="app.html">Zur App</a>
+
+    <!-- Demo: Wikipedia URL-Seite + künstliche Tracking-Parameter -->
+    <a class="btn" href="app.html?u=https%3A%2F%2Fde.wikipedia.org%2Fwiki%2FUniform_Resource_Locator%3Futm_source%3Dsafeshare-demo%26utm_medium%3Dhelp%26utm_campaign%3Dquickstart%26gclid%3DTEST123%26fbclid%3DTEST456&run=1">
+      Demo starten
+    </a>
+
+    <a class="btn ghost" href="app.html#cleaner">Direkt zur Eingabe</a>
+  </div>
+
+  <div class="note" style="margin-top:12px">
+    Format für Demo-Links:
+    <span class="mono">app.html?u=ENCODED_URL&amp;run=1</span>
+    (u = URL-encoded Link, run=1 = sofort bereinigen).
+  </div>
+</section>
+    
+    <section class="card" id="start">
+      <h2>Schnellstart (App)</h2>
+      <ol>
+        <li>Link kopieren</li>
+        <li>In <a href="app.html"><b>app.html</b></a> einfügen</li>
+        <li><b>Bereinigen</b> → Ergebnis kopieren/teilen</li>
+      </ol>
+
+      <div class="warn">
+        Wenn ein Link nach der Bereinigung nicht funktioniert:
+        1) Original-Link öffnen (Gegencheck) · 2) bereinigten Link öffnen ·
+        3) wenn nur der bereinigte Link scheitert, war ein Parameter vermutlich funktional → Pro (Audit/Whitelist) oder konservativer bereinigen.
+      </div>
+    </section>
+
+    <section class="card" id="prostart">
+      <h2>Pro (optional)</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Wann lohnt sich Pro?</h3>
+          <ul>
+            <li>Du veröffentlichst Links (Journalismus, Social-Team, Publisher).</li>
+            <li>Du willst bewusst Attribution behalten (Affiliate/Partner).</li>
+            <li>Du brauchst Nachvollziehbarkeit: <b>Audit</b> + <b>Whitelist</b> + Presets.</li>
+          </ul>
+          <div class="row">
+            <a class="btn primary" href="pro.html">Mehr zu SafeShare Pro</a>
+          </div>
+          <p class="muted" style="margin-top:10px;opacity:.85">
+            Wenn du nur gelegentlich UTM & Klick-IDs entfernen willst: Die kostenlose App reicht.
+          </p>
+        </div>
+
+        <div class="box">
+          <h3>Nach dem Kauf (Payhip)</h3>
+          <ol>
+            <li>Payhip-Download öffnen</li>
+            <li><b>01-START.html</b> starten</li>
+            <li>Von dort Pro-App + Handbuch öffnen</li>
+          </ol>
+          <div class="row">
+            <a class="btn primary" href="https://payhip.com/b/djqDz" target="_blank" rel="noopener">Pro Person</a>
+            <a class="btn" href="https://payhip.com/b/oXFsk" target="_blank" rel="noopener">Pro Team</a>
+          </div>
+
+          <p class="muted" style="margin-top:10px;opacity:.85">
+            Im Paket: <code>02-app-pro.html</code>, <code>03-handbuch-pro.pdf</code>
+          </p>
+
+          <div class="note" style="margin-top:10px">
+            Pro ist ein <b>Offline-Download</b> (nicht als öffentliche Webseite).
+            Starte immer über <b>01-START.html</b> aus deinem Payhip-Download – so bleibt Pro privat und funktioniert auch ohne Internet.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="problems">
+      <h2>Typische Probleme – sauber lösen</h2>
+
+      <div class="grid2">
+        <div class="box">
+          <h3>Link ist nach Bereinigung „kaputt“</h3>
+          <ul>
+            <li><b>Vergleich:</b> Original-Link öffnen → bereinigten Link öffnen.</li>
+            <li>Wenn nur der bereinigte Link scheitert: ein Parameter war vermutlich <b>funktional</b>.</li>
+            <li><b>Pro-Ansatz:</b> Preset <b>konservativ</b> + Audit prüfen + Schlüssel whitelisten (z. B. <span class="mono">id</span>, <span class="mono">q</span>, <span class="mono">page</span>, <span class="mono">lang</span>).</li>
+          </ul>
+          <div class="warn">
+            Häufig „funktional“/kritisch: <span class="mono">token</span>, <span class="mono">sig</span>, <span class="mono">signature</span>, <span class="mono">expires</span>, <span class="mono">state</span>, <span class="mono">nonce</span>.
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Affiliate/Partner-Attribution fehlt</h3>
+          <ul>
+            <li>Wenn du Attribution behalten willst: nutze Pro + Whitelist.</li>
+            <li>Typische Keys: <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">affid</span>, <span class="mono">partner</span>.</li>
+            <li>Dann Link neu bereinigen und Audit prüfen.</li>
+          </ul>
+          <div class="note">
+            Die App entfernt bewusst <span class="mono">utm_*</span>. Wenn du UTM bewusst behalten willst, ist das ein Pro-Case (Whitelist/Policy).
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>404 bei Pro</h3>
+          <ul>
+            <li>Pro läuft als Offline-Paket. Öffne Pro über <span class="mono">01-START.html</span> im Payhip-Download.</li>
+            <li>Wenn du Dateien umbenannt hast: Links in <span class="mono">01-START.html</span> im Paket prüfen.</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>„Es passiert nichts“ / Ergebnis wirkt falsch</h3>
+          <ul>
+            <li>Link neu kopieren (nicht aus Autovervollständigung).</li>
+            <li>Seite neu laden, dann erneut testen.</li>
+            <li>Wenn möglich: in einem privaten Tab testen.</li>
+          </ul>
+          <div class="note">
+            Wenn du magst: schick eine Beispiel-URL (ohne private Daten) + was du erwartest. Dann kann man das Muster schnell erkennen.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="ios">
+      <h2>iPad / iPhone Hinweise</h2>
+      <ul>
+        <li>Stabiler Standard-Workflow: App öffnen → Link einfügen → Ergebnis kopieren → teilen.</li>
+        <li>Bookmarklets können auf iOS je nach Browser/Version unzuverlässig sein. Wenn’s hakt: Copy/Paste in der App ist stabil.</li>
+      </ul>
+      <div class="note">
+        Optional später: iOS Shortcut (Share Sheet → Clean with SafeShare) als besonders schneller Workflow.
+      </div>
+    </section>
+
+    <section class="card" id="kontakt">
+      <h2>Support</h2>
+      <p>Wenn du einen reproduzierbaren Fehler hast, schick bitte:</p>
+      <ul>
+        <li>1 Beispiel-URL (gern „entschärft“/ohne private Tokens)</li>
+        <li>Was du erwartest</li>
+        <li>Was tatsächlich passiert</li>
+        <li>Optional: Screenshot des Audits (Pro)</li>
+      </ul>
+      <div class="box">
+        <p style="margin:0"><b>E-Mail:</b> <span class="mono">support.safeshare@proton.me</span></p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a href="index.html" data-page="index.html">Start</a>
+          <a href="app.html" data-page="app.html">App</a>
+          <a href="education.html" data-page="education.html">Schule</a>
+          <a href="pro.html" data-page="pro.html">Pro</a>
+          <a href="help.html" data-page="help.html">Hilfe</a>
+          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+          <a href="impressum.html" data-page="impressum.html">Impressum</a>
+          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Support</div>
+    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
+    <a href="education.html" data-page="education.html">Schule</a>
+    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
+    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
+    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
+    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html" data-page="impressum.html">Impressum</a>
+    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+  </nav>
+
+  <script>
+    (function(){
+      const file = location.pathname.split('/').pop();
+      const path = (!file || file === '') ? 'index.html' : file;
+      document.querySelectorAll('[data-page]').forEach(el => {
+        if (el.getAttribute('data-page') === path) el.classList.add('active');
+      });
+
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+      }
+
+      if(btn && menu && overlay){
+        btn.addEventListener('click',(e)=>{
+          e.preventDefault();
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+      }
+    })();
+  </script>
+
+  <script defer src="js/sw-register.js?v=2025-12-21-02"></script>
+</body>
+</html>
