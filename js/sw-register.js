@@ -5,26 +5,6 @@
 /* /Supersystem/js/sw-register.js ... */
 
 (() => {
-  const PRIMARY = "safesharepro.com";
-  if (location.protocol !== "http:" && location.protocol !== "https:") return;
-
-  const h = location.hostname;
-  if (h === "localhost" || h === "127.0.0.1") return;
-
-  if (h !== PRIMARY) {
-    const should =
-      h.endsWith(".pages.dev") ||
-      h === "www." + PRIMARY ||
-      h.endsWith(".github.io") ||
-      h.endsWith(".netlify.app");
-
-    if (should) {
-      location.replace("https://" + PRIMARY + location.pathname + location.search + location.hash);
-    }
-  }
-})();
-
-(() => {
   'use strict';
   // ... dein bestehender Code
 })();
