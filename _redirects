@@ -1,26 +1,35 @@
-/app        /app.html        301
-/app/       /app.html        301
+# ===== Canonical: .html -> clean =====
+/app.html              /app                 301
+/pro.html              /pro                 301
+/education.html        /schule              301
+/bookmarklets.html     /lesezeichen         301
+/quickstart.html       /quickstart          301
+/help.html             /hilfe               301
+/datenschutz.html      /datenschutz         301
+/impressum.html        /impressum           301
+/terms.html            /nutzungsbedingungen 301
 
-/pro        /pro.html        301
-/pro/       /pro.html        301
+# ===== Normalize trailing slash (optional, aber sauber) =====
+/app/                  /app                 301
+/pro/                  /pro                 301
+/schule/               /schule              301
+/lesezeichen/          /lesezeichen         301
+/quickstart/           /quickstart          301
+/hilfe/                /hilfe               301
+/datenschutz/          /datenschutz         301
+/impressum/            /impressum           301
+/nutzungsbedingungen/  /nutzungsbedingungen 301
 
-/schule     /education.html  301
-/schule/    /education.html  301
+# ===== Clean paths serve the HTML (Rewrite) =====
+/app                   /app.html            200
+/pro                   /pro.html            200
+/schule                /education.html       200
+/lesezeichen            /bookmarklets.html   200
+/quickstart             /quickstart.html    200
+/hilfe                 /help.html           200
+/datenschutz           /datenschutz.html     200
+/impressum             /impressum.html      200
+/nutzungsbedingungen   /terms.html          200
 
-/lesezeichen   /bookmarklets.html  301
-/lesezeichen/  /bookmarklets.html  301
-
-/quickstart  /quickstart.html  301
-/quickstart/ /quickstart.html  301
-
-/hilfe     /help.html        301
-/hilfe/    /help.html        301
-
-/datenschutz   /datenschutz.html   301
-/datenschutz/  /datenschutz.html   301
-
-/impressum   /impressum.html   301
-/impressum/  /impressum.html   301
-
-/nutzungsbedingungen  /terms.html  301
-/nutzungsbedingungen/ /terms.html  301
+# (Optional aliases)
+# /help                /hilfe               301
