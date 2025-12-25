@@ -6,8 +6,10 @@
   <title>URL Cleaner Vergleich – SafeShare vs. andere Tools</title>
   <meta name="description" content="Vergleich von URL-Cleanern: SafeShare (local-first, Audit/Allowlist in Pro) vs. typische Link-Reiniger, Browser-Extensions und Online-Cleaner." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://safesharepro.com/url-cleaner-tool-vergleich.html" />
   <meta name="color-scheme" content="dark light" />
+
+  <!-- Canonical (clean URL als primär) -->
+  <link rel="canonical" href="https://safesharepro.com/tool-vergleich" />
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
@@ -19,24 +21,24 @@
   <meta property="og:description" content="Vergleich: URL-Cleaner Tools und Methoden, um Tracking-Parameter aus Links zu entfernen. Fokus: local-first, ohne Upload – SafeShare." />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/url-cleaner-tool-vergleich.html" />
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta property="og:url" content="https://safesharepro.com/tool-vergleich" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
   <meta property="og:image:alt" content="SafeShare – URL-Cleaner Vergleich (Vorschau)" />
 
-  <!-- Twitter (wird auch von anderen genutzt) -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="URL-Cleaner Vergleich – SafeShare" />
   <meta name="twitter:description" content="URL-Cleaner Tools vergleichen: Tracking-Parameter entfernen – local-first, ohne Upload." />
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
 
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg?v=2025-12-20-02">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/fav/favicon-32.png?v=2025-12-20-02">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/fav/favicon-16.png?v=2025-12-20-02">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=2025-12-20-02">
-  <link rel="manifest" href="manifest.webmanifest?v=2025-12-20-02">
+  <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="manifest.webmanifest?v=2025-12-25-01">
   <meta name="theme-color" content="#111111">
-  
+
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
@@ -120,9 +122,13 @@
       white-space: nowrap; flex: 0 0 auto;
       appearance:none; background: transparent;
       cursor: pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
 
     .card{
       margin-top: 14px;
@@ -188,7 +194,6 @@
       padding: 12px;
     }
 
-    /* Comparison table wrapper */
     .tableWrap{
       margin-top: 10px;
       overflow:auto;
@@ -222,7 +227,6 @@
     .no{ color: var(--muted2); }
     .maybe{ color: var(--text); opacity: .86; }
 
-    /* Footer (Grid + Links) */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -264,7 +268,6 @@
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
-    .moreBtn{ appearance:none; cursor:pointer; }
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
@@ -528,14 +531,38 @@
 
   <script>
     (function(){
-      // active links (Tabs + Footer + More)
-      const file = location.pathname.split('/').pop();
-      const path = (!file || file === '') ? 'index.html' : file;
+      // Map clean routes -> actual file names (damit "active" überall passt)
+      const map = {
+        "": "index.html",
+        "index": "index.html",
+
+        "app": "app.html",
+        "pro": "pro.html",
+        "schule": "education.html",
+        "hilfe": "help.html",
+        "lesezeichen": "bookmarklets.html",
+        "quickstart": "quickstart.html",
+        "datenschutz": "datenschutz.html",
+        "impressum": "impressum.html",
+        "nutzungsbedingungen": "terms.html",
+
+        "tool-vergleich": "url-cleaner-tool-vergleich.html"
+      };
+
+      function currentKey(){
+        const p = location.pathname.replace(/\/+$/,''); // trim trailing slash
+        const last = p.split('/').pop() || "";
+        return last;
+      }
+
+      const last = currentKey();
+      const activeFile = (last.endsWith('.html') ? last : (map[last] || (last ? last + ".html" : "index.html")));
+
       document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === path) el.classList.add('active');
+        if (el.getAttribute('data-page') === activeFile) el.classList.add('active');
       });
 
-      // more sheet + ESC close + scroll lock + focus restore
+      // More sheet
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -547,9 +574,8 @@
         document.body.style.overflow = lock ? 'hidden' : '';
         document.body.style.touchAction = lock ? 'none' : '';
       }
-      function isOpen(){
-        return btn.getAttribute('aria-expanded') === 'true';
-      }
+      function isOpen(){ return btn.getAttribute('aria-expanded') === 'true'; }
+
       function openMenu(){
         lastFocus = document.activeElement;
         overlay.hidden = false; menu.hidden = false;
@@ -569,23 +595,13 @@
         if(lastFocus && lastFocus.focus) setTimeout(()=> lastFocus.focus(), 200);
       }
 
-      btn.addEventListener('click',(e)=>{
-        e.preventDefault();
-        isOpen() ? closeMenu() : openMenu();
-      });
-
+      btn.addEventListener('click',(e)=>{ e.preventDefault(); isOpen() ? closeMenu() : openMenu(); });
       overlay.addEventListener('click', closeMenu);
-      menu.addEventListener('click', (e)=>{
-        const a = e.target.closest && e.target.closest('a');
-        if (a) closeMenu();
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isOpen()) closeMenu();
-      });
+      menu.addEventListener('click', (e)=>{ const a = e.target.closest && e.target.closest('a'); if (a) closeMenu(); });
+      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && isOpen()) closeMenu(); });
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-20-02"></script>
+  <script defer src="js/sw-register.js?v=2025-12-25-01"></script>
 </body>
 </html>
