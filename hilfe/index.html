@@ -6,8 +6,12 @@
   <title>Hilfe – SafeShare</title>
   <meta name="description" content="SafeShare Hilfe: Links bereinigen, typische Stolperfallen, iPad/iPhone Hinweise, Pro-Workflow und Support." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://safesharepro.com/help.html" />
   <meta name="color-scheme" content="dark light" />
+
+  <!-- Canonical: Ordner-URL -->
+  <link rel="canonical" href="https://safesharepro.com/hilfe/" />
+  <meta property="og:url" content="https://safesharepro.com/hilfe/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
@@ -19,28 +23,27 @@
   <meta property="og:description" content="Antworten auf die wichtigsten Fragen zu SafeShare: Was wird entfernt, was bleibt, wie nutzt du es schnell (Copy → Clean → Share) – local-first, ohne Upload." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/help.html" />
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta property="og:url" content="https://safesharepro.com/hilfe/" />
+  <!-- nimm die Datei, die bei dir wirklich existiert:
+       Option A: /assets/og/og-index.jpg
+       Option B: /assets/og.png -->
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
   <meta property="og:image:alt" content="SafeShare Hilfe – Vorschau" />
 
-  <!-- Twitter (wird auch von anderen genutzt) -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SafeShare Hilfe – FAQ & Tipps" />
   <meta name="twitter:description" content="FAQ & Tipps zu SafeShare: Tracking-Parameter entfernen, Link-Hygiene, local-first – ohne Upload." />
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
-  
-  <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg?v=2025-12-20-02">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/fav/favicon-32.png?v=2025-12-20-02">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/fav/favicon-16.png?v=2025-12-20-02">
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
 
-  <!-- iOS Home Screen -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=2025-12-20-02">
-
-  <!-- PWA / Install -->
-  <link rel="manifest" href="manifest.webmanifest?v=2025-12-20-02">
+  <!-- Favicons + PWA (ABSOLUTE Pfade!) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
   <meta name="theme-color" content="#111111">
-  
+
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
@@ -176,15 +179,8 @@
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
     .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid2{ grid-template-columns: 1fr 1fr; }
-    }
+    .grid2{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+    @media(min-width: 980px){ .grid2{ grid-template-columns: 1fr 1fr; } }
     .box{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
@@ -192,16 +188,6 @@
       padding: 12px;
     }
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      white-space: nowrap;
-    }
     .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
     .chip{
       display:inline-flex; align-items:center; gap:8px;
@@ -215,29 +201,14 @@
     }
     .chip b{ color: var(--text); font-weight: 850; }
 
-    footer{
-      margin-top: 18px;
-      padding: 18px 4px 10px;
-      color: var(--muted2);
-      font-size: 12px;
-      line-height: 1.55;
-    }
+    footer{ margin-top: 18px; padding: 18px 4px 10px; color: var(--muted2); font-size: 12px; line-height: 1.55; }
     .footGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
+      display:grid; grid-template-columns: 1fr; gap: 10px;
       border-top: 1px solid rgba(255,255,255,.08);
       padding-top: 14px;
     }
-    @media(min-width: 920px){
-      .footGrid{ grid-template-columns: 1.2fr .8fr; }
-    }
-    .footLinks{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-start;
-    }
+    @media(min-width: 920px){ .footGrid{ grid-template-columns: 1.2fr .8fr; } }
+    .footLinks{ display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start; }
     .footLinks a{
       padding: 6px 10px;
       border-radius: 999px;
@@ -249,8 +220,7 @@
 
     /* ===== Mehr: Bottom-Sheet ===== */
     .moreOverlay{
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,.25);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
@@ -305,7 +275,7 @@
     <header>
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
-          <img src="logo.svg" alt="SafeShare"
+          <img src="/logo.svg" alt="SafeShare"
                onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
           <span id="logoFallback" class="logoFallback">8</span>
         </div>
@@ -319,11 +289,11 @@
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="index.html" data-page="index.html">Start</a>
-        <a class="tab" href="app.html" data-page="app.html">App</a>
-        <a class="tab" href="education.html" data-page="education.html">Schule</a>
-        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" href="/" data-page="/">Start</a>
+        <a class="tab" href="/app/" data-page="/app/">App</a>
+        <a class="tab" href="/schule/" data-page="/schule/">Schule</a>
+        <a class="tab" href="/pro/" data-page="/pro/">Pro</a>
+        <a class="tab" href="/hilfe/" data-page="/hilfe/">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -339,8 +309,8 @@
       </div>
 
       <div class="row">
-        <a class="btn primary" href="app.html">App öffnen</a>
-        <a class="btn" href="pro.html">Pro ansehen</a>
+        <a class="btn primary" href="/app/">App öffnen</a>
+        <a class="btn" href="/pro/">Pro ansehen</a>
         <a class="btn ghost" href="#kontakt">Support</a>
       </div>
 
@@ -350,35 +320,34 @@
       </div>
     </section>
 
-<section class="card">
-  <h2>App (QuickStart)</h2>
-  <p class="muted">
-    Sofort starten: Demo-Link wird eingefügt und direkt bereinigt. (local-first, ohne Upload)
-  </p>
+    <section class="card">
+      <h2>App (QuickStart)</h2>
+      <p class="muted">
+        Sofort starten: Demo-Link wird eingefügt und direkt bereinigt. (local-first, ohne Upload)
+      </p>
 
-  <div class="row">
-    <a class="btn primary" href="app.html">Zur App</a>
+      <div class="row">
+        <a class="btn primary" href="/app/">Zur App</a>
 
-    <!-- Demo: Wikipedia URL-Seite + künstliche Tracking-Parameter -->
-    <a class="btn" href="app.html?u=https%3A%2F%2Fde.wikipedia.org%2Fwiki%2FUniform_Resource_Locator%3Futm_source%3Dsafeshare-demo%26utm_medium%3Dhelp%26utm_campaign%3Dquickstart%26gclid%3DTEST123%26fbclid%3DTEST456&run=1">
-      Demo starten
-    </a>
+        <a class="btn" href="/app/?u=https%3A%2F%2Fde.wikipedia.org%2Fwiki%2FUniform_Resource_Locator%3Futm_source%3Dsafeshare-demo%26utm_medium%3Dhelp%26utm_campaign%3Dquickstart%26gclid%3DTEST123%26fbclid%3DTEST456&run=1">
+          Demo starten
+        </a>
 
-    <a class="btn ghost" href="app.html#cleaner">Direkt zur Eingabe</a>
-  </div>
+        <a class="btn ghost" href="/app/#cleaner">Direkt zur Eingabe</a>
+      </div>
 
-  <div class="note" style="margin-top:12px">
-    Format für Demo-Links:
-    <span class="mono">app.html?u=ENCODED_URL&amp;run=1</span>
-    (u = URL-encoded Link, run=1 = sofort bereinigen).
-  </div>
-</section>
-    
+      <div class="note" style="margin-top:12px">
+        Format für Demo-Links:
+        <span class="mono">/app/?u=ENCODED_URL&amp;run=1</span>
+        (u = URL-encoded Link, run=1 = sofort bereinigen).
+      </div>
+    </section>
+
     <section class="card" id="start">
       <h2>Schnellstart (App)</h2>
       <ol>
         <li>Link kopieren</li>
-        <li>In <a href="app.html"><b>app.html</b></a> einfügen</li>
+        <li>In <a href="/app/"><b>/app/</b></a> einfügen</li>
         <li><b>Bereinigen</b> → Ergebnis kopieren/teilen</li>
       </ol>
 
@@ -400,7 +369,7 @@
             <li>Du brauchst Nachvollziehbarkeit: <b>Audit</b> + <b>Whitelist</b> + Presets.</li>
           </ul>
           <div class="row">
-            <a class="btn primary" href="pro.html">Mehr zu SafeShare Pro</a>
+            <a class="btn primary" href="/pro/">Mehr zu SafeShare Pro</a>
           </div>
           <p class="muted" style="margin-top:10px;opacity:.85">
             Wenn du nur gelegentlich UTM & Klick-IDs entfernen willst: Die kostenlose App reicht.
@@ -513,14 +482,14 @@
           <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
-          <a href="index.html" data-page="index.html">Start</a>
-          <a href="app.html" data-page="app.html">App</a>
-          <a href="education.html" data-page="education.html">Schule</a>
-          <a href="pro.html" data-page="pro.html">Pro</a>
-          <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          <a href="impressum.html" data-page="impressum.html">Impressum</a>
-          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+          <a href="/" data-page="/">Start</a>
+          <a href="/app/" data-page="/app/">App</a>
+          <a href="/schule/" data-page="/schule/">Schule</a>
+          <a href="/pro/" data-page="/pro/">Pro</a>
+          <a href="/hilfe/" data-page="/hilfe/">Hilfe</a>
+          <a href="/datenschutz/" data-page="/datenschutz/">Datenschutz</a>
+          <a href="/impressum/" data-page="/impressum/">Impressum</a>
+          <a href="/nutzungsbedingungen/" data-page="/nutzungsbedingungen/">Nutzungsbedingungen</a>
         </div>
       </div>
     </footer>
@@ -529,33 +498,39 @@
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
-    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+    <a href="/hilfe/#kontakt" data-page="/hilfe/">Support / Kontakt</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Wissen</div>
-    <a href="education.html" data-page="education.html">Schule</a>
-    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <a href="/schule/" data-page="/schule/">Schule</a>
+    <a href="/utm-parameter-entfernen/" data-page="/utm-parameter-entfernen/">UTM</a>
+    <a href="/tracking-parameter/" data-page="/tracking-parameter/">Tracking</a>
+    <a href="/url-cleaner-tool-vergleich/" data-page="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
+    <a href="/lesezeichen/" data-page="/lesezeichen/">Bookmarklets</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Rechtliches</div>
-    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-    <a href="impressum.html" data-page="impressum.html">Impressum</a>
-    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+    <a href="/datenschutz/" data-page="/datenschutz/">Datenschutz</a>
+    <a href="/impressum/" data-page="/impressum/">Impressum</a>
+    <a href="/nutzungsbedingungen/" data-page="/nutzungsbedingungen/">Nutzungsbedingungen</a>
   </nav>
 
   <script>
     (function(){
-      const file = location.pathname.split('/').pop();
-      const path = (!file || file === '') ? 'index.html' : file;
+      // Active state: Ordnerpfad normalisieren
+      let p = location.pathname || '/';
+      p = p.replace(/index\.html$/,'');
+      if (!p.endsWith('/')) p += '/';
+      if (p === '//') p = '/';
+
       document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === path) el.classList.add('active');
+        const key = el.getAttribute('data-page');
+        if (key === p) el.classList.add('active');
       });
 
+      // Mehr sheet + ESC close + scroll lock
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -591,6 +566,6 @@
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-21-02"></script>
+  <script defer src="/js/sw-register.js?v=2025-12-25-01"></script>
 </body>
 </html>
