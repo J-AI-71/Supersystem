@@ -1,3 +1,4 @@
+<!-- Datei: /pro/index.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -6,40 +7,38 @@
   <title>SafeShare Pro – Policies, Allowlist, Audit</title>
   <meta name="description" content="SafeShare Pro: Für Profis, Publisher & Teams. Policies/Presets, Allowlist (Whitelist) und Audit: nachvollziehbar entfernen & bewusst behalten – local-first." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://safesharepro.com/pro" />
   <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111">
+
+  <link rel="canonical" href="https://safesharepro.com/pro/" />
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
-  
+
   <!-- Open Graph / Social Preview -->
-  <meta property="og:title" content="SafeShare Pro – Offline, Policy & Audit" />
-  <meta property="og:description" content="SafeShare Pro: Bulk-Clean, Presets/Policies, Whitelist/Blacklist und Audit pro Link – vollständig lokal. Kein Upload." />
+  <meta property="og:title" content="SafeShare Pro – Policies, Allowlist, Audit" />
+  <meta property="og:description" content="SafeShare Pro: Bulk-Clean, Presets/Policies, Allowlist/Blocklist und Audit pro Link – vollständig lokal. Kein Upload." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/pro.html" />
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta property="og:url" content="https://safesharepro.com/pro/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
   <meta property="og:image:alt" content="SafeShare Pro – Vorschau" />
 
-  <!-- Twitter (wird auch von anderen genutzt) -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SafeShare Pro – Offline, Policy & Audit" />
-  <meta name="twitter:description" content="Bulk-Clean, Policies, Whitelist/Blacklist und Audit pro Link – vollständig lokal. Kein Upload." />
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
-  
-  <!-- Favicons (Browser-Tab) -->
-  <link rel="icon" href="assets/fav/favicon.svg?v=2025-12-20-01" type="image/svg+xml">
-  <link rel="icon" href="assets/fav/favicon.svg?v=2025-12-20-01" sizes="any">
+  <meta name="twitter:title" content="SafeShare Pro – Policies, Allowlist, Audit" />
+  <meta name="twitter:description" content="Bulk-Clean, Policies, Allowlist/Blocklist und Audit pro Link – vollständig lokal. Kein Upload." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
 
-  <!-- iOS Home Screen -->
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png?v=2025-12-20-01">
+  <!-- Favicons + PWA (bei Slugs immer absolut) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
-  <!-- PWA / Install -->
-  <link rel="manifest" href="manifest.webmanifest?v=2025-12-20-01">
-  <meta name="theme-color" content="#111111">
-  
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
@@ -123,9 +122,13 @@
       white-space: nowrap; flex: 0 0 auto;
       background: transparent;
       cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
 
     .card{
       margin-top: 14px;
@@ -155,6 +158,7 @@
       display:inline-flex;
       align-items:center;
       gap: 8px;
+      text-decoration:none;
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
     .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
@@ -214,7 +218,6 @@
       word-break: break-word;
     }
 
-    /* Preis */
     .price{
       font-size: 22px;
       font-weight: 850;
@@ -258,6 +261,7 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       color: var(--muted);
+      text-decoration:none;
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
@@ -270,7 +274,6 @@
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
-    .moreBtn{ appearance:none; cursor:pointer; }
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
@@ -308,9 +311,11 @@
       color: var(--muted);
       margin-bottom: 8px;
       font-size: 13px;
+      text-decoration:none;
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+    .moreMenu a.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
   </style>
 </head>
 
@@ -319,9 +324,12 @@
     <header>
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
-          <img src="logo.svg" alt="SafeShare"
-               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-          <span id="logoFallback" class="logoFallback">8</span>
+          <img
+            src="/logo.svg"
+            width="28" height="28"
+            alt="SafeShare"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">S</span>
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
@@ -334,11 +342,11 @@
     <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="index.html" data-page="index.html">Start</a>
-        <a class="tab" href="app.html" data-page="app.html">App</a>
-        <a class="tab" href="education.html" data-page="education.html">Schule</a>
-        <a class="tab active" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" data-page="start" href="/">Start</a>
+        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="schule" href="/schule/">Schule</a>
+        <a class="tab" data-page="pro" href="/pro/">Pro</a>
+        <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -353,8 +361,8 @@
 
       <div class="row">
         <a class="btn primary" href="#pricing">Pro kaufen</a>
-        <a class="btn" href="app.html">App (gratis) testen</a>
-        <a class="btn ghost" href="help.html#prostart">Pro-Workflow</a>
+        <a class="btn" href="/app/">App (gratis) testen</a>
+        <a class="btn ghost" href="/hilfe/#prostart">Pro-Workflow</a>
       </div>
 
       <div class="note">
@@ -443,8 +451,8 @@
         damit Links/Dateien stimmen und Pro nicht versehentlich „öffentlich“ rumliegt.
       </div>
       <div class="row">
-        <a class="btn" href="help.html#prostart">Details in Hilfe</a>
-        <a class="btn ghost" href="help.html#ios">iPad/iPhone Hinweise</a>
+        <a class="btn" href="/hilfe/#prostart">Details in Hilfe</a>
+        <a class="btn ghost" href="/hilfe/#ios">iPad/iPhone Hinweise</a>
       </div>
     </section>
 
@@ -539,9 +547,9 @@
       </div>
 
       <div class="row">
-        <a class="btn" href="tracking-parameter.html">Tracking erklärt</a>
-        <a class="btn" href="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-        <a class="btn ghost" href="help.html#kontakt">Support</a>
+        <a class="btn" href="/tracking-parameter/">Tracking erklärt</a>
+        <a class="btn" href="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
+        <a class="btn ghost" href="/hilfe/#kontakt">Support</a>
       </div>
     </section>
 
@@ -554,14 +562,15 @@
           <div>Support: <a class="mono" href="mailto:support.safeshare@proton.me">support.safeshare@proton.me</a></div>
         </div>
         <div class="footLinks">
-          <a href="index.html" data-page="index.html">Start</a>
-          <a href="app.html" data-page="app.html">App</a>
-          <a href="education.html" data-page="education.html">Schule</a>
-          <a href="pro.html" data-page="pro.html">Pro</a>
-          <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          <a href="impressum.html" data-page="impressum.html">Impressum</a>
-          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+          <a data-page="start" href="/">Start</a>
+          <a data-page="app" href="/app/">App</a>
+          <a data-page="schule" href="/schule/">Schule</a>
+          <a data-page="pro" href="/pro/">Pro</a>
+          <a data-page="hilfe" href="/hilfe/">Hilfe</a>
+          <a data-page="lesezeichen" href="/lesezeichen/">Lesezeichen</a>
+          <a data-page="datenschutz" href="/datenschutz/">Datenschutz</a>
+          <a data-page="impressum" href="/impressum/">Impressum</a>
+          <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
         </div>
       </div>
     </footer>
@@ -571,35 +580,53 @@
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
-    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+    <a data-page="hilfe" href="/hilfe/#kontakt">Support / Kontakt</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Wissen</div>
-    <a href="education.html" data-page="education.html">Schule</a>
-    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <a data-page="schule" href="/schule/">Schule</a>
+    <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
+    <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
+    <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
+    <a data-page="lesezeichen" href="/lesezeichen/">Lesezeichen</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Rechtliches</div>
-    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-    <a href="impressum.html" data-page="impressum.html">Impressum</a>
-    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+    <a data-page="datenschutz" href="/datenschutz/">Datenschutz</a>
+    <a data-page="impressum" href="/impressum/">Impressum</a>
+    <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
   </nav>
 
   <script>
     (function(){
-      // active links (tabs + footer + more)
-      const file = location.pathname.split('/').pop();
-      const path = (!file || file === '') ? 'index.html' : file;
-      document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === path) el.classList.add('active');
-      });
+      // ===== Active nav (tabs + footer + more) =====
+      function currentKey(){
+        const p = (location.pathname || '/').toLowerCase();
+        if (p === '/' || p === '/index.html') return 'start';
+        if (p.startsWith('/app')) return 'app';
+        if (p.startsWith('/schule')) return 'schule';
+        if (p.startsWith('/pro')) return 'pro';
+        if (p.startsWith('/hilfe')) return 'hilfe';
+        if (p.startsWith('/lesezeichen') || p.startsWith('/bookmarklets')) return 'lesezeichen';
+        if (p.startsWith('/datenschutz')) return 'datenschutz';
+        if (p.startsWith('/impressum')) return 'impressum';
+        if (p.startsWith('/nutzungsbedingungen') || p.startsWith('/terms')) return 'terms';
+        if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
+        if (p.startsWith('/tracking-parameter')) return 'tracking';
+        if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
+        if (p.startsWith('/quickstart')) return 'quickstart';
+        return '';
+      }
+      const key = currentKey();
+      if (key){
+        document.querySelectorAll('[data-page]').forEach(el=>{
+          if (el.getAttribute('data-page') === key) el.classList.add('active');
+        });
+      }
 
-      // more sheet + ESC close + scroll lock
+      // ===== More sheet (overlay + ESC close + scroll lock) =====
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -635,6 +662,6 @@
     })();
   </script>
 
-  <script defer src="js/sw-register.js?v=2025-12-20-02"></script>
+  <script defer src="/js/sw-register.js?v=2025-12-25-01"></script>
 </body>
 </html>
