@@ -30,14 +30,12 @@
   <meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Link einfügen → bereinigen → kopieren/teilen." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
 
-  <!-- Favicons + PWA -->
-<link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon.png?v=2025-12-25-01">
-
-<link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
-<meta name="theme-color" content="#111111">
+  <!-- Favicons + PWA (IMMER absolut bei Slugs) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
   <style>
     :root{
@@ -305,11 +303,10 @@
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
           <img
-  src="/assets/fav/favicon-32.png?v=2025-12-25-02"
-  srcset="/assets/fav/favicon-32.png?v=2025-12-25-02 1x, /assets/icons/icon-192.png?v=2025-12-25-02 2x"
-  width="28" height="28"
-  alt="SafeShare"
-  onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+            src="/logo.svg"
+            width="28" height="28"
+            alt="SafeShare"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
           <span id="logoFallback" class="logoFallback">S</span>
         </div>
         <div class="brandText">
@@ -320,11 +317,10 @@
       <div class="small">local-first</div>
     </header>
 
-    <!-- MASTER NAV (Slug-Ordner) -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" data-page="start" href="/">Start</a>
-        <a class="tab active" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="app" href="/app/">App</a>
         <a class="tab" data-page="schule" href="/schule/">Schule</a>
         <a class="tab" data-page="pro" href="/pro/">Pro</a>
         <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
@@ -345,7 +341,7 @@
 
     <section class="card" id="cleaner">
       <h2>URL einfügen</h2>
-      <p class="muted">Link einfügen → Bereinigen → Ergebnis kopieren/teilen.</p>
+      <p>Link einfügen → Bereinigen → Ergebnis kopieren/teilen.</p>
 
       <textarea class="field mono" id="urlInput" placeholder="https://example.com/page?utm_source=...&fbclid=..."></textarea>
 
@@ -415,7 +411,6 @@
     </footer>
   </div>
 
-  <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
@@ -440,7 +435,6 @@
 
   <script>
     (function(){
-      // ===== Active Links (funktioniert für /app/, /schule/, /pro/, etc.) =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/' || p === '/index.html') return 'start';
@@ -464,7 +458,6 @@
         });
       }
 
-      // ===== Mehr sheet + ESC close + scroll lock =====
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -497,7 +490,6 @@
         });
       }
 
-      // ===== App Logic =====
       const $ = (s)=>document.querySelector(s);
       const input = $('#urlInput');
       const msg = $('#msg');
@@ -666,7 +658,6 @@
         showMsg('note', 'Teilen ist in diesem Browser nicht verfügbar – Link wurde kopiert.');
       });
 
-      // ===== Query params: ?u=... &run=1 =====
       (function(){
         const sp = new URLSearchParams(location.search);
         const u = sp.get('u');
@@ -680,11 +671,9 @@
           setTimeout(doClean, 120);
         }
       })();
-
     })();
   </script>
 
-  <!-- SW: absolut, weil diese Seite unter /app/ liegt -->
   <script defer src="/js/sw-register.js?v=2025-12-25-01"></script>
 </body>
 </html>
