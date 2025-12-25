@@ -7,35 +7,36 @@
   <meta name="description" content="SafeShare App: Tracking-Parameter aus Links entfernen (local-first im Browser). Link einfügen → bereinigen → kopieren/teilen." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://safesharepro.com/app/" />
+  <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111">
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
   <!-- Open Graph / Social Preview -->
   <meta property="og:title" content="SafeShare App – Links bereinigen (local-first)" />
   <meta property="og:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Link einfügen → bereinigen → kopieren/teilen." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:url" content="https://j-ai-71.github.io/Supersystem/app.html" />
-  <meta property="og:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta property="og:url" content="https://safesharepro.com/app/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
   <meta property="og:image:alt" content="SafeShare – Links sauber teilen (Vorschau)" />
 
-  <!-- Twitter (wird auch von anderen genutzt) -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SafeShare App – Links bereinigen" />
   <meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Link einfügen → bereinigen → kopieren/teilen." />
-  <meta name="twitter:image" content="https://j-ai-71.github.io/Supersystem/assets/og/og-index.jpg" />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
 
-  <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg?v=2025-12-20-02">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/fav/favicon-32.png?v=2025-12-20-02">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/fav/favicon-16.png?v=2025-12-20-02">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png?v=2025-12-20-02">
-  <link rel="manifest" href="manifest.webmanifest?v=2025-12-20-02">
-  <meta name="theme-color" content="#111111">
-  
+  <!-- Favicons + PWA (WICHTIG: absolut, weil diese Seite unter /app/ liegt) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
@@ -121,6 +122,9 @@
       white-space: nowrap; flex: 0 0 auto;
       background: transparent;
       cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -242,7 +246,6 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet (wie auf deinen UTM/Tracking-Seiten) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -299,9 +302,9 @@
     <header>
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
-          <img src="logo.svg" alt="SafeShare"
+          <img src="/assets/fav/favicon.svg" alt="SafeShare"
                onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-          <span id="logoFallback" class="logoFallback">8</span>
+          <span id="logoFallback" class="logoFallback">S</span>
         </div>
         <div class="brandText">
           <div class="title">SafeShare</div>
@@ -311,14 +314,14 @@
       <div class="small">local-first</div>
     </header>
 
-    <!-- MASTER NAV -->
+    <!-- MASTER NAV (Slug-Ordner) -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="index.html" data-page="index.html">Start</a>
-        <a class="tab active" href="app.html" data-page="app.html">App</a>
-        <a class="tab" href="education.html" data-page="education.html">Schule</a>
-        <a class="tab" href="pro.html" data-page="pro.html">Pro</a>
-        <a class="tab" href="help.html" data-page="help.html">Hilfe</a>
+        <a class="tab" data-page="start" href="/">Start</a>
+        <a class="tab active" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="schule" href="/schule/">Schule</a>
+        <a class="tab" data-page="pro" href="/pro/">Pro</a>
+        <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
     </div>
@@ -336,9 +339,7 @@
 
     <section class="card" id="cleaner">
       <h2>URL einfügen</h2>
-      <p class="muted">
-        Link einfügen → Bereinigen → Ergebnis kopieren/teilen.
-      </p>
+      <p class="muted">Link einfügen → Bereinigen → Ergebnis kopieren/teilen.</p>
 
       <textarea class="field mono" id="urlInput" placeholder="https://example.com/page?utm_source=...&fbclid=..."></textarea>
 
@@ -382,28 +383,27 @@
         Dafür ist Pro gedacht: Allowlist + Audit + Policies.
       </div>
       <div class="row">
-        <a class="btn" href="tracking-parameter.html">Tracking erklärt</a>
-        <a class="btn" href="utm-parameter-entfernen.html">UTM erklärt</a>
-        <a class="btn ghost" href="pro.html">Pro ansehen</a>
+        <a class="btn" href="/tracking-parameter/">Tracking erklärt</a>
+        <a class="btn" href="/utm-parameter-entfernen/">UTM erklärt</a>
+        <a class="btn ghost" href="/pro/">Pro ansehen</a>
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
       <div class="footGrid">
         <div>
           <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
-          <a href="index.html" data-page="index.html">Start</a>
-          <a href="app.html" data-page="app.html">App</a>
-          <a href="education.html" data-page="education.html">Schule</a>
-          <a href="pro.html" data-page="pro.html">Pro</a>
-          <a href="help.html" data-page="help.html">Hilfe</a>
-          <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-          <a href="impressum.html" data-page="impressum.html">Impressum</a>
-          <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+          <a data-page="start" href="/">Start</a>
+          <a data-page="app" href="/app/">App</a>
+          <a data-page="schule" href="/schule/">Schule</a>
+          <a data-page="pro" href="/pro/">Pro</a>
+          <a data-page="hilfe" href="/hilfe/">Hilfe</a>
+          <a data-page="datenschutz" href="/datenschutz/">Datenschutz</a>
+          <a data-page="impressum" href="/impressum/">Impressum</a>
+          <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
         </div>
       </div>
     </footer>
@@ -413,33 +413,50 @@
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
-    <a href="help.html#kontakt" data-page="help.html">Support / Kontakt</a>
+    <a data-page="hilfe" href="/hilfe/#kontakt">Support / Kontakt</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Wissen</div>
-    <a href="education.html" data-page="education.html">Schule</a>
-    <a href="utm-parameter-entfernen.html" data-page="utm-parameter-entfernen.html">UTM</a>
-    <a href="tracking-parameter.html" data-page="tracking-parameter.html">Tracking</a>
-    <a href="url-cleaner-tool-vergleich.html" data-page="url-cleaner-tool-vergleich.html">Tool-Vergleich</a>
-    <a href="bookmarklets.html" data-page="bookmarklets.html">Bookmarklets</a>
+    <a data-page="schule" href="/schule/">Schule</a>
+    <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
+    <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
+    <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
+    <a data-page="lesezeichen" href="/lesezeichen/">Lesezeichen</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Rechtliches</div>
-    <a href="datenschutz.html" data-page="datenschutz.html">Datenschutz</a>
-    <a href="impressum.html" data-page="impressum.html">Impressum</a>
-    <a href="terms.html" data-page="terms.html">Nutzungsbedingungen</a>
+    <a data-page="datenschutz" href="/datenschutz/">Datenschutz</a>
+    <a data-page="impressum" href="/impressum/">Impressum</a>
+    <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
   </nav>
 
   <script>
     (function(){
-      // ===== Active links (tabs + footer + more) =====
-      const file = location.pathname.split('/').pop();
-      const path = (!file || file === '') ? 'index.html' : file;
-      document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === path) el.classList.add('active');
-      });
+      // ===== Active Links (funktioniert für /app/, /schule/, /pro/, etc.) =====
+      function currentKey(){
+        const p = (location.pathname || '/').toLowerCase();
+        if (p === '/' || p === '/index.html') return 'start';
+        if (p.startsWith('/app')) return 'app';
+        if (p.startsWith('/schule')) return 'schule';
+        if (p.startsWith('/pro')) return 'pro';
+        if (p.startsWith('/hilfe')) return 'hilfe';
+        if (p.startsWith('/datenschutz')) return 'datenschutz';
+        if (p.startsWith('/impressum')) return 'impressum';
+        if (p.startsWith('/nutzungsbedingungen')) return 'terms';
+        if (p.startsWith('/lesezeichen')) return 'lesezeichen';
+        if (p.startsWith('/tracking-parameter')) return 'tracking';
+        if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
+        if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
+        return '';
+      }
+      const key = currentKey();
+      if (key){
+        document.querySelectorAll('[data-page]').forEach(el=>{
+          if (el.getAttribute('data-page') === key) el.classList.add('active');
+        });
+      }
 
       // ===== Mehr sheet + ESC close + scroll lock =====
       const btn = document.getElementById('moreBtn');
@@ -474,7 +491,7 @@
         });
       }
 
-      // ===== App logic =====
+      // ===== App Logic =====
       const $ = (s)=>document.querySelector(s);
       const input = $('#urlInput');
       const msg = $('#msg');
@@ -484,13 +501,9 @@
       const btnOpen = $('#btnOpen');
 
       const TRACKING_KEYS = new Set([
-        // click ids / platform ids
         'gclid','gbraid','wbraid','fbclid','msclkid','igshid','twclid','ttclid','li_fat_id',
-        // mail/newsletter
         'mc_cid','mc_eid',
-        // analytics-ish
         '_ga','_gl','_gac','_gid','_fbp','_fbc',
-        // misc common
         'ref_src','s','spm','spm_id_from','mkt_tok',
       ]);
 
@@ -503,7 +516,6 @@
       function normalizeUrl(s){
         s = (s || '').trim();
         if (!s) return '';
-        // allow "example.com/..." → https://example.com/...
         if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)) {
           if (s.startsWith('//')) s = 'https:' + s;
           else s = 'https://' + s;
@@ -523,7 +535,6 @@
         const removed = [];
         const kept = [];
 
-        // collect keys first (because we mutate)
         const keys = [];
         url.searchParams.forEach((_, k)=>keys.push(k));
 
@@ -540,8 +551,7 @@
           }
         });
 
-        const cleaned = url.toString();
-        return { cleaned, removed, kept };
+        return { cleaned: url.toString(), removed, kept };
       }
 
       async function copyText(text){
@@ -565,7 +575,6 @@
         outUrl.textContent = res.cleaned;
         btnOpen.href = res.cleaned;
 
-        // mini-audit (nur Info, kein Pro-Audit)
         auditRow.innerHTML = '';
         const r = Array.from(new Set(res.removed));
         const k = Array.from(new Set(res.kept));
@@ -593,7 +602,6 @@
         try{
           const res = cleanUrl(input.value);
           renderResult(res);
-          // scroll to result (hilft auf iOS)
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
           showMsg('warn', e.message || 'Fehler beim Bereinigen.');
@@ -648,7 +656,6 @@
           }catch(e){}
           return;
         }
-        // fallback: copy
         await copyText(text);
         showMsg('note', 'Teilen ist in diesem Browser nicht verfügbar – Link wurde kopiert.');
       });
@@ -660,14 +667,10 @@
         const run = sp.get('run');
 
         if (u){
-          try{
-            input.value = decodeURIComponent(u);
-          }catch(e){
-            input.value = u;
-          }
+          try{ input.value = decodeURIComponent(u); }
+          catch(e){ input.value = u; }
         }
         if (u && run === '1'){
-          // klein delay, damit Layout/Fonts stehen
           setTimeout(doClean, 120);
         }
       })();
@@ -675,7 +678,7 @@
     })();
   </script>
 
-  <!-- optional: falls du SW nutzt -->
-  <script defer src="js/sw-register.js?v=2025-12-21-02"></script>
+  <!-- SW: absolut, weil diese Seite unter /app/ liegt -->
+  <script defer src="/js/sw-register.js?v=2025-12-25-01"></script>
 </body>
 </html>
