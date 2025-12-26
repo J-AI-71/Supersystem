@@ -1,1 +1,529 @@
+<!-- Datei: /quickstart/index.html -->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>QuickStart – SafeShare</title>
+  <meta name="description" content="QuickStart: Tracking-Parameter (utm_*, fbclid, gclid …) entfernen – local-first im Browser, ohne Upload. In 60 Sekunden startklar." />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111">
 
+  <!-- Canonical -->
+  <link rel="canonical" href="https://safesharepro.com/quickstart/" />
+
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="SafeShare QuickStart – in 60 Sekunden startklar" />
+  <meta property="og:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Öffnen → Link einfügen → bereinigen → kopieren/teilen." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://safesharepro.com/quickstart/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
+  <meta property="og:image:alt" content="SafeShare – Links sauber teilen (Vorschau)" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare QuickStart" />
+  <meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. In 60 Sekunden startklar." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
+
+  <!-- Favicons + PWA (bei Slugs immer absolut) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+
+  <!-- FAQPage Schema (CTR-Hebel) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"Was ist QuickStart?",
+        "acceptedAnswer":{"@type":"Answer","text":"QuickStart ist die 60-Sekunden-Anleitung, um SafeShare direkt zu nutzen: App öffnen, Link einfügen, bereinigen, kopieren/teilen."}
+      },
+      {
+        "@type":"Question",
+        "name":"Was entfernt SafeShare?",
+        "acceptedAnswer":{"@type":"Answer","text":"SafeShare entfernt typische Tracking-Parameter wie utm_*, fbclid, gclid, msclkid, igshid – local-first im Browser, ohne Upload."}
+      },
+      {
+        "@type":"Question",
+        "name":"Ist das ein Unsichtbar-/Anonym-Modus?",
+        "acceptedAnswer":{"@type":"Answer","text":"Nein. SafeShare ist Link-Hygiene: Es entfernt Tracking-Ballast am Link, verspricht aber keine Unsichtbarkeit."}
+      },
+      {
+        "@type":"Question",
+        "name":"Warum nicht alle Parameter löschen?",
+        "acceptedAnswer":{"@type":"Answer","text":"Einige Parameter können funktional sein (z. B. Login/Produktvarianten) oder Affiliate-Zuordnung steuern (ref/tag). Dafür gibt es Pro mit Policies/Audit/Allowlist."}
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width: 38px; height: 38px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      text-decoration:none;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); text-decoration:none; }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      text-decoration:none;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); text-decoration:none; }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    code.mono{
+      padding: 2px 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media(min-width: 920px){
+      .grid{ grid-template-columns: 1.15fr .85fr; }
+    }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      text-decoration:none;
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); text-decoration:none; }
+
+    /* ===== Mehr: Bottom-Sheet ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+      text-decoration:none;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); text-decoration:none; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img
+            src="/logo.svg"
+            width="28" height="28"
+            alt="SafeShare"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <span id="logoFallback" class="logoFallback">S</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">QuickStart</div>
+        </div>
+      </div>
+      <div class="small">local-first</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" data-page="start" href="/">Start</a>
+        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="schule" href="/schule/">Schule</a>
+        <a class="tab" data-page="pro" href="/pro/">Pro</a>
+        <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1>In 60 Sekunden startklar</h1>
+      <p>
+        Tracking-Parameter sind Zusatzinfos am Link – wie Etiketten. SafeShare entfernt typische Tracking-Keys
+        direkt im Browser. Nichts wird hochgeladen.
+      </p>
+      <div class="note">
+        Hinweis: Das ist kein „Unsichtbar“-Versprechen. Es ist Link-Hygiene beim Teilen.
+      </div>
+
+      <div class="row" style="margin-top:14px">
+        <a class="btn primary" href="/app/">Zur App</a>
+        <a class="btn" href="/hilfe/">Details in Hilfe</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>So benutzt du SafeShare</h2>
+      <div class="grid">
+        <div>
+          <ol>
+            <li><b>App öffnen</b> → <a class="mono" href="/app/">/app/</a></li>
+            <li><b>Link einfügen</b> (z. B. mit <span class="mono">utm_*</span>, <span class="mono">fbclid</span>, <span class="mono">gclid</span>)</li>
+            <li><b>Bereinigen</b> → <b>Kopieren</b> oder <b>Teilen</b></li>
+          </ol>
+          <div class="warn">
+            Wenn ein Link nach der Bereinigung nicht funktioniert: Original öffnen → bereinigten Link öffnen.
+            Wenn nur der bereinigte Link scheitert, war ein Parameter vermutlich funktional → konservativer vorgehen oder Pro (Audit/Allowlist).
+          </div>
+
+          <div class="row">
+            <a class="btn primary" href="/app/?u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dnewsletter%26gclid%3D123&run=1">Demo starten</a>
+            <a class="btn ghost" href="/app/#cleaner">Direkt zum Eingabefeld</a>
+          </div>
+          <p class="small" style="margin-top:10px">
+            Tipp: Der Demo-Link nutzt <span class="mono">?u=…&amp;run=1</span>.
+          </p>
+        </div>
+
+        <div>
+          <h3>Was wird entfernt?</h3>
+          <ul>
+            <li><b>utm_*</b> (Kampagnen-Parameter)</li>
+            <li><b>Klick-IDs</b>: <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
+            <li>weitere typische Tracking-Keys (z. B. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>)</li>
+          </ul>
+
+          <div class="warn">
+            Nicht blind „alles weg“: Affiliate/Partner-Keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) können Zuordnung/Einnahmen steuern.
+            Dafür ist Pro gedacht: Allowlist + Audit + Policies.
+          </div>
+
+          <div class="row">
+            <a class="btn" href="/tracking-parameter/">Tracking erklärt</a>
+            <a class="btn" href="/utm-parameter-entfernen/">UTM erklärt</a>
+            <a class="btn ghost" href="/pro/">Pro ansehen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Mini-FAQ</h2>
+      <h3>Muss ich etwas installieren?</h3>
+      <p>Nein. SafeShare läuft im Browser. Du öffnest die App-Seite und kannst sofort bereinigen.</p>
+
+      <h3>Warum sehe ich manchmal keine Änderung?</h3>
+      <p>Manche Links haben keine Tracking-Parameter – dann bleibt der Link gleich.</p>
+
+      <h3>Warum bleiben manche Parameter?</h3>
+      <p>SafeShare entfernt vor allem Tracking-Keys. Funktionale Parameter bleiben meist erhalten (sonst können Links brechen).</p>
+    </section>
+
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a data-page="start" href="/">Start</a>
+          <a data-page="app" href="/app/">App</a>
+          <a data-page="schule" href="/schule/">Schule</a>
+          <a data-page="pro" href="/pro/">Pro</a>
+          <a data-page="hilfe" href="/hilfe/">Hilfe</a>
+          <a data-page="datenschutz" href="/datenschutz/">Datenschutz</a>
+          <a data-page="impressum" href="/impressum/">Impressum</a>
+          <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Support</div>
+    <a data-page="hilfe" href="/hilfe/#kontakt">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
+    <a data-page="schule" href="/schule/">Schule</a>
+    <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
+    <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
+    <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
+    <a data-page="lesezeichen" href="/bookmarklets/">Bookmarklets</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a data-page="datenschutz" href="/datenschutz/">Datenschutz</a>
+    <a data-page="impressum" href="/impressum/">Impressum</a>
+    <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+  </nav>
+
+  <script>
+    (function(){
+      function currentKey(){
+        const p = (location.pathname || '/').toLowerCase();
+        if (p === '/' || p === '/index.html') return 'start';
+        if (p.startsWith('/app')) return 'app';
+        if (p.startsWith('/schule')) return 'schule';
+        if (p.startsWith('/pro')) return 'pro';
+        if (p.startsWith('/hilfe')) return 'hilfe';
+        if (p.startsWith('/datenschutz')) return 'datenschutz';
+        if (p.startsWith('/impressum')) return 'impressum';
+        if (p.startsWith('/nutzungsbedingungen')) return 'terms';
+        if (p.startsWith('/bookmarklets')) return 'lesezeichen';
+        if (p.startsWith('/tracking-parameter')) return 'tracking';
+        if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
+        if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
+        if (p.startsWith('/quickstart')) return 'quickstart';
+        return '';
+      }
+
+      const key = currentKey();
+      if (key){
+        document.querySelectorAll('[data-page]').forEach(el=>{
+          if (el.getAttribute('data-page') === key) el.classList.add('active');
+        });
+      }
+
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+      }
+      if(btn && menu && overlay){
+        btn.addEventListener('click',(e)=>{
+          e.preventDefault();
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+      }
+    })();
+  </script>
+
+  <script defer src="/js/sw-register.js?v=2025-12-25-01"></script>
+</body>
+</html>
