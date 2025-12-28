@@ -13,6 +13,13 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
+  <!-- Favicons (absolute, damit 404 überall richtig lädt) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-09">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-09">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-09">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-09">
+  <meta name="theme-color" content="#111111">
+
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
@@ -61,15 +68,34 @@
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+
+    /* Logo badge (1 Ring, clean) */
     .logoWrap{
-      width: 38px; height: 38px; border-radius: 999px;
-      border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
-      box-shadow: 0 18px 45px rgba(0,0,0,.25);
-      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+      width:38px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(47,227,183,.22);
+      background:rgba(47,227,183,.08);
+      box-shadow:0 10px 26px rgba(0,0,0,.28);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
     }
-    .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .logoWrap .logoImg{
+      width:28px;
+      height:28px;
+      display:block;
+      object-fit:contain;
+    }
+    .logoFallback{
+      font-weight:800;
+      color: var(--mint);
+      font-size:14px;
+      line-height:1;
+      display:none;
+    }
+
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -145,49 +171,63 @@
     <header>
       <div class="brand">
         <div class="logoWrap" aria-label="SafeShare Logo">
-          <img src="logo.svg" alt="SafeShare"
-               onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-          <span id="logoFallback" class="logoFallback">8</span>
+          <img
+            class="logoImg"
+            src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+            alt="SafeShare"
+            width="28"
+            height="28"
+            decoding="async"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+          >
+          <span id="logoFallback" class="logoFallback">SS</span>
         </div>
+
         <div class="brandText">
           <div class="title">SafeShare</div>
           <div class="sub">404</div>
         </div>
       </div>
+
       <div class="small">Seite fehlt</div>
     </header>
 
     <section class="card">
       <h1>404 – Seite nicht gefunden</h1>
-      <p>
-        Der Link zeigt auf eine Seite, die es hier nicht gibt (oder nicht mehr).
-      </p>
+      <p>Der Link zeigt auf eine Seite, die es hier nicht gibt (oder nicht mehr).</p>
 
+      <!-- Wichtig: absolute Folder-Routes -->
       <div class="row">
-        <a class="btn primary" href="index.html">Zur Startseite</a>
-        <a class="btn" href="app.html">App öffnen</a>
-        <a class="btn ghost" href="pro.html">Pro</a>
-        <a class="btn ghost" href="help.html">Hilfe</a>
+        <a class="btn primary" href="/">Zur Startseite</a>
+        <a class="btn" href="/app/">App öffnen</a>
+        <a class="btn ghost" href="/pro/">Pro</a>
+        <a class="btn ghost" href="/hilfe/">Hilfe</a>
       </div>
 
       <p class="mono" style="margin-top:12px; color: var(--muted2); font-size:12px;">
         Pfad: <span id="path">–</span>
       </p>
+
+      <div class="note">
+        Tipp: Wenn du gerade viele 404 siehst, ist es fast immer ein <b>relativer Link</b> (z. B. <span class="mono">app.html</span>)
+        statt <span class="mono">/app/</span>.
+      </div>
     </section>
 
     <footer>
       <div class="footLinks">
-        <a href="index.html">Start</a>
-        <a href="app.html">App</a>
-        <a href="pro.html">Pro</a>
-        <a href="datenschutz.html">Datenschutz</a>
-        <a href="impressum.html">Impressum</a>
+        <a href="/">Start</a>
+        <a href="/app/">App</a>
+        <a href="/pro/">Pro</a>
+        <a href="/datenschutz/">Datenschutz</a>
+        <a href="/impressum/">Impressum</a>
       </div>
     </footer>
   </div>
 
   <script>
-    document.getElementById('path').textContent = location.pathname + location.search + location.hash;
+    document.getElementById('path').textContent =
+      location.pathname + location.search + location.hash;
   </script>
 </body>
 </html>
