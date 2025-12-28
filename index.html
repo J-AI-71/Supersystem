@@ -318,13 +318,34 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+
+/* Override: Logo randlos (kein Kreis/Badge) */
+.logoWrap{
+  width:auto !important;
+  height:auto !important;
+  border-radius:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+  display:flex !important;
+  place-items:unset !important;
+}
+
+.logoWrap .logoImg{
+  width:32px;
+  height:32px;
+  display:block;
+  object-fit:contain;
+}
   </style>
 </head>
 
 <body>
   <div class="logoWrap" aria-label="SafeShare Logo">
   <img
-    src="/assets/fav/favicon-32.png?v=2025-12-26-01"
+    class="logoImg"
+    src="/assets/brand/logo-mark-mint-depp-256.png?v=2025-12-26-04"
     alt="SafeShare"
     width="32"
     height="32"
