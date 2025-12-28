@@ -319,7 +319,8 @@
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
-/* Override: Logo randlos (kein Kreis/Badge) */
+<style>
+/* === OVERRIDE: Logo randlos, kein Kreis/Badge === */
 .logoWrap{
   width:auto !important;
   height:auto !important;
@@ -329,38 +330,51 @@
   box-shadow:none !important;
   overflow:visible !important;
   display:flex !important;
-  place-items:unset !important;
+  align-items:center !important;
+  flex:0 0 auto !important;
+  padding:0 !important;
 }
 
-.logoWrap .logoImg{
+/* Bild selbst */
+.logoImg{
+  display:block;
   width:32px;
   height:32px;
-  display:block;
   object-fit:contain;
 }
-  </style>
-</head>
 
-<body>
-  <div class="logoWrap" aria-label="SafeShare Logo">
-  <img
-    class="logoImg"
-    src="/assets/brand/logo-mark-mint-depp-256.png?v=2025-12-26-04"
-    alt="SafeShare"
-    width="32"
-    height="32"
-    decoding="async"
-    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
-  >
-  <span id="logoFallback" class="logoFallback" style="display:none">Safe</span>
-</div>
-        <div class="brandText">
-          <div class="title">SafeShare</div>
-          <div class="sub">Links sauber teilen</div>
-        </div>
-      </div>
-      <div class="small">local-first</div>
-    </header>
+/* Fallback nur anzeigen, wenn Bild wirklich nicht lädt */
+.logoFallback{
+  font-weight:800;
+  color: var(--mint);
+  font-size: 14px;
+  line-height:1;
+  display:none;
+}
+</style>
+<header>
+  <div class="brand">
+    <div class="logoWrap" aria-label="SafeShare Logo">
+      <img
+        class="logoImg"
+        src="/assets/brand/logo-mark-mint-deep-256.png?v=2025-12-26-07"
+        alt="SafeShare"
+        width="32"
+        height="32"
+        decoding="async"
+        onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+      >
+      <span id="logoFallback" class="logoFallback">Safe</span>
+    </div>
+
+    <div class="brandText">
+      <div class="title">SafeShare</div>
+      <div class="sub">Links sauber teilen</div>
+    </div>
+  </div>
+
+  <div class="small">local-first</div>
+</header>
 
     <!-- MASTER NAV -->
     <div class="tabsBar">
