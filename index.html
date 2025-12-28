@@ -335,7 +335,7 @@
   padding:0 !important;
 }
 
-/* Bild selbst */
+/* Logo im Badge */
 .logoWrap .logoImg{
   width:28px;
   height:28px;
@@ -343,45 +343,46 @@
   object-fit:contain;
 }
 
-/* Fallback nur anzeigen, wenn Bild wirklich nicht lädt */
+/* Fallback nur anzeigen, wenn Bild nicht lädt */
 .logoFallback{
   font-weight:800;
   color: var(--mint);
-  font-size: 14px;
+  font-size:14px;
   line-height:1;
   display:none;
 }
 
+/* Badge: 1 Ring, clean */
 .logoWrap{
-  border-color: rgba(47,227,183,.22);
-  background: rgba(47,227,183,.10);
-  box-shadow: 0 10px 26px rgba(0,0,0,.28);
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  border:1px solid rgba(47,227,183,.22);
+  background:rgba(47,227,183,.08);
+  box-shadow:0 10px 26px rgba(0,0,0,.28);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  flex:0 0 auto;
 }
 
-  /* optional: nur 1 Ring, cleaner */
-.logoWrap{
-  border: 1px solid rgba(47,227,183,.22);
-  background: rgba(47,227,183,.08);
-  box-shadow: 0 10px 26px rgba(0,0,0,.28);
-}
-
-.logoWrap::before{ content:none !important; }  
+.logoWrap::before{ content:none !important; }
     
 </style>
 <header>
   <div class="brand">
-    <div class="logoWrap" aria-label="SafeShare Logo">
-     <img
-  class="logoImg"
-  src="/assets/brand/logo-glyph-mint-deep-512.png?v=2025-12-26-08"
-  alt="SafeShare"
-  width="28"
-  height="28"
-  decoding="async"
-  onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
-/>
-      <span id="logoFallback" class="logoFallback">Safe</span>
-    </div>
+<div class="logoWrap" aria-label="SafeShare Logo">
+  <img
+    class="logoImg"
+    src="/assets/brand/logo-glyph-mint-deep-512.png?v=2025-12-26-09"
+    alt="SafeShare"
+    width="28"
+    height="28"
+    decoding="async"
+    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+  >
+  <span id="logoFallback" class="logoFallback">SS</span>
+</div>
 
     <div class="brandText">
       <div class="title">SafeShare</div>
