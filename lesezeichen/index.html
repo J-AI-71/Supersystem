@@ -18,26 +18,26 @@
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="SafeShare Bookmarklets – 1-Klick Links bereinigen" />
-  <meta property="og:description" content="Bookmarklets für SafeShare: Link bereinigen mit einem Klick – lokal im Browser. Ideal für schnelles Copy → Clean → Share." />
+  <meta property="og:title" content="SafeShare Lesezeichen/Bookmarklets – 1-Klick Links bereinigen" />
+  <meta property="og:description" content="Bookmarklets für SafeShare: Link bereinigen mit einem Klick – local-first im Browser." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/lesezeichen/" />
   <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
-  <meta property="og:image:alt" content="SafeShare – Bookmarklets (Vorschau)" />
+  <meta property="og:image:alt" content="SafeShare – Lesezeichen/Bookmarklets (Vorschau)" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SafeShare Bookmarklets – 1-Klick" />
+  <meta name="twitter:title" content="SafeShare Lesezeichen/Bookmarklets – 1-Klick" />
   <meta name="twitter:description" content="Bookmarklets: Links lokal bereinigen – schnell, ohne Upload." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
 
   <!-- Favicons + PWA (bei Slugs immer absolut) -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-09">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-09">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-09">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-09">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-09">
 
   <style>
     :root{
@@ -91,18 +91,36 @@
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .logoWrap{
-      width: 38px; height: 38px; border-radius: 999px;
-      border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
-      box-shadow: var(--shadow);
-      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
-    }
-    .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    /* Logo badge (1 Ring, clean) */
+    .logoWrap{
+      width:38px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(47,227,183,.22);
+      background:rgba(47,227,183,.08);
+      box-shadow:0 10px 26px rgba(0,0,0,.28);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .logoWrap .logoImg{
+      width:28px;
+      height:28px;
+      display:block;
+      object-fit:contain;
+    }
+    .logoFallback{
+      font-weight:800;
+      color: var(--mint);
+      font-size:14px;
+      line-height:1;
+      display:none;
+    }
 
     .tabsBar{
       position: sticky; top:0; z-index: 50;
@@ -129,9 +147,11 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      text-decoration:none;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    .moreBtn{ appearance:none; cursor:pointer; }
 
     .card{
       margin-top: 14px;
@@ -266,7 +286,6 @@
       -webkit-backdrop-filter: blur(2px);
       z-index: 9998;
     }
-    .moreBtn{ appearance:none; cursor:pointer; }
     .moreMenu{
       position: fixed;
       left: 12px; right: 12px;
@@ -309,71 +328,36 @@
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
     .moreMenu a.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
-    
-<style>
-/* === OVERRIDE: Logo randlos, kein Kreis/Badge === */
-.logoWrap{
-  width:auto !important;
-  height:auto !important;
-  border-radius:0 !important;
-  border:0 !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  overflow:visible !important;
-  display:flex !important;
-  align-items:center !important;
-  flex:0 0 auto !important;
-  padding:0 !important;
-}
+  </style>
+</head>
 
-/* Logo im Badge */
-.logoWrap .logoImg{
-  width:28px;
-  height:28px;
-  display:block;
-  object-fit:contain;
-}
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img
+            class="logoImg"
+            src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+            alt="SafeShare"
+            width="28"
+            height="28"
+            decoding="async"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+          >
+          <span id="logoFallback" class="logoFallback">SS</span>
+        </div>
 
-/* Fallback nur anzeigen, wenn Bild nicht lädt */
-.logoFallback{
-  font-weight:800;
-  color: var(--mint);
-  font-size:14px;
-  line-height:1;
-  display:none;
-}
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Links sauber teilen</div>
+        </div>
+      </div>
 
-/* Badge: 1 Ring, clean */
-.logoWrap{
-  width:38px;
-  height:38px;
-  border-radius:999px;
-  border:1px solid rgba(47,227,183,.22);
-  background:rgba(47,227,183,.08);
-  box-shadow:0 10px 26px rgba(0,0,0,.28);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  flex:0 0 auto;
-}
+      <div class="small">local-first</div>
+    </header>
 
-.logoWrap::before{ content:none !important; }
-    
-</style>
-<header>
-  <div class="brand">
-<div class="logoWrap" aria-label="SafeShare Logo">
-  <img
-    class="logoImg"
-    src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
-    alt="SafeShare"
-    width="28"
-    height="28"
-    decoding="async"
-    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
-  >
-  <span id="logoFallback" class="logoFallback">SS</span>
-</div>
+    <!-- MASTER NAV -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" data-page="start" href="/">Start</a>
@@ -386,7 +370,7 @@
     </div>
 
     <section class="card">
-      <h1>Bookmarklets</h1>
+      <h1>Lesezeichen / Bookmarklets</h1>
       <p>
         Bookmarklets sind Lesezeichen, die ein kleines Script ausführen.
         Damit kannst du SafeShare auf Desktop sehr schnell nutzen:
@@ -449,7 +433,7 @@
       </div>
 
       <div class="note">
-        Voraussetzung: Die App liest <span class="mono">?u=</span> und startet bei <span class="mono">run=1</span> automatisch (hast du bereits drin).
+        Voraussetzung: Die App liest <span class="mono">?u=</span> und startet bei <span class="mono">run=1</span> automatisch.
       </div>
     </section>
 
@@ -500,7 +484,7 @@
         <div class="box">
           <h3>SafeShare öffnet, aber Feld bleibt leer / run=1 startet nicht</h3>
           <ul>
-            <li>Dann ist es fast immer <b>Cache/Service-Worker</b>.</li>
+            <li>Dann ist es fast immer <b>Cache</b> (altes Script/App geladen).</li>
             <li>Teste die App direkt: <span class="mono">/app/?u=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dx&run=1</span></li>
           </ul>
         </div>
@@ -511,7 +495,7 @@
       <div class="footGrid">
         <div>
           <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
-          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Allowlist, Audit.</div>
         </div>
         <div class="footLinks">
           <a data-page="start" href="/">Start</a>
@@ -528,6 +512,7 @@
     </footer>
   </div>
 
+  <!-- Mehr (Bottom-Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Support</div>
@@ -552,7 +537,7 @@
 
   <script>
     (function(){
-      // IMPORTANT: Wir zeigen /app/ (Domain) – nicht GitHub Pages.
+      // Bookmarklets sollen IMMER die Domain-App öffnen (nie relative Pfade)
       const APP = 'https://safesharepro.com/app/';
 
       const CODE_FILL =
@@ -564,7 +549,7 @@
       const CODE_PASTE =
         "javascript:(function(){try{var APP='" + APP + "';var u=prompt('SafeShare: URL einfügen');if(!u)return;u=String(u).trim();if(!/^https?:\\/\\//i.test(u))u='https://'+u;location.assign(APP+'?u='+encodeURIComponent(u)+'&run=1');}catch(e){alert('SafeShare: konnte URL nicht übernehmen.');}})();";
 
-      // fill code blocks
+      // code blocks
       document.getElementById('codeFillOnly').textContent = CODE_FILL;
       document.getElementById('codeAutoRun').textContent = CODE_RUN;
       document.getElementById('codePasteRun').textContent = CODE_PASTE;
@@ -574,7 +559,7 @@
       document.getElementById('dragAutoRun').setAttribute('href', CODE_RUN);
       document.getElementById('dragPasteRun').setAttribute('href', CODE_PASTE);
 
-      // active nav (tabs + footer + more)
+      // active nav
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/' || p === '/index.html') return 'start';
@@ -585,8 +570,7 @@
         if (p.startsWith('/datenschutz')) return 'datenschutz';
         if (p.startsWith('/impressum')) return 'impressum';
         if (p.startsWith('/nutzungsbedingungen')) return 'terms';
-        if (p.startsWith('/lesezeichen')) return 'lesezeichen';
-        if (p.startsWith('/bookmarklets')) return 'lesezeichen';
+        if (p.startsWith('/lesezeichen') || p.startsWith('/bookmarklets')) return 'lesezeichen';
         if (p.startsWith('/tracking-parameter')) return 'tracking';
         if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
         if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
@@ -650,6 +634,7 @@
         btn.setAttribute('aria-expanded','false');
         setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
       }
+
       btn.addEventListener('click',(e)=>{
         e.preventDefault();
         const isOpen = btn.getAttribute('aria-expanded') === 'true';
@@ -660,6 +645,5 @@
       document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu(); });
     })();
   </script>
-
 </body>
 </html>
