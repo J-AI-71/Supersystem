@@ -1,6 +1,57 @@
 <!doctype html>
 <html lang="de">
 <head>
+
+<script>
+(function () {
+  // Nur alte GitHub-URLs umleiten – nicht safesharepro.com
+  if (location.hostname !== "j-ai-71.github.io") return;
+
+  // /Supersystem/... -> /...
+  var p = location.pathname.replace(/^\/Supersystem/, "") || "/";
+  var qs = location.search || "";
+  var h  = location.hash || "";
+
+  // Normalisieren
+  if (p === "/index.html") p = "/";
+
+  // .html -> neue Slugs (inkl. Umbenennungen)
+  var map = {
+    "/": "/",
+    "/app.html": "/app/",
+    "/pro.html": "/pro/",
+    "/education.html": "/schule/",
+    "/help.html": "/hilfe/",
+    "/hilfe.html": "/hilfe/",
+    "/bookmarklets.html": "/lesezeichen/",
+    "/terms.html": "/nutzungsbedingungen/",
+    "/datenschutz.html": "/datenschutz/",
+    "/impressum.html": "/impressum/",
+    "/quickstart.html": "/quickstart/",
+    "/tracking-parameter.html": "/tracking-parameter/",
+    "/utm-parameter-entfernen.html": "/utm-parameter-entfernen/",
+    "/url-cleaner-tool-vergleich.html": "/url-cleaner-tool-vergleich/",
+
+    // alte/seltene Namen aus GSC -> sinnvolle Ziele
+    "/tracking-parameter-entfernen.html": "/tracking-parameter/",
+    "/redirect-entpacken.html": "/tracking-parameter/",
+    "/redirect-entschachteln.html": "/tracking-parameter/",
+    "/publisher.html": "/pro/",
+    "/bulk-clean.html": "/pro/",
+    "/press.html": "/hilfe/"
+  };
+
+  // Generisch: /foo.html -> /foo/ (falls du es doch so strukturiert hast)
+  if (!map[p] && p.endsWith(".html")) {
+    var name = p.slice(1, -5); // "foo"
+    map[p] = "/" + name + "/";
+  }
+
+  var targetPath = map[p] || "/"; // Fallback
+  location.replace("https://safesharepro.com" + targetPath + qs + h);
+})();
+</script>
+  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>404 – Seite nicht gefunden – SafeShare</title>
