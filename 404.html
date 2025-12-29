@@ -1,63 +1,75 @@
 <!doctype html>
 <html lang="de">
 <head>
-
-<script>
-(function () {
-  // Nur alte GitHub-URLs umleiten – nicht safesharepro.com
-  if (location.hostname !== "j-ai-71.github.io") return;
-
-  // /Supersystem/... -> /...
-  var p = location.pathname.replace(/^\/Supersystem/, "") || "/";
-  var qs = location.search || "";
-  var h  = location.hash || "";
-
-  // Normalisieren
-  if (p === "/index.html") p = "/";
-
-  // .html -> neue Slugs (inkl. Umbenennungen)
-  var map = {
-    "/": "/",
-    "/app.html": "/app/",
-    "/pro.html": "/pro/",
-    "/education.html": "/schule/",
-    "/help.html": "/hilfe/",
-    "/hilfe.html": "/hilfe/",
-    "/bookmarklets.html": "/lesezeichen/",
-    "/terms.html": "/nutzungsbedingungen/",
-    "/datenschutz.html": "/datenschutz/",
-    "/impressum.html": "/impressum/",
-    "/quickstart.html": "/quickstart/",
-    "/tracking-parameter.html": "/tracking-parameter/",
-    "/utm-parameter-entfernen.html": "/utm-parameter-entfernen/",
-    "/url-cleaner-tool-vergleich.html": "/url-cleaner-tool-vergleich/",
-
-    // alte/seltene Namen aus GSC -> sinnvolle Ziele
-    "/tracking-parameter-entfernen.html": "/tracking-parameter/",
-    "/redirect-entpacken.html": "/tracking-parameter/",
-    "/redirect-entschachteln.html": "/tracking-parameter/",
-    "/publisher.html": "/pro/",
-    "/bulk-clean.html": "/pro/",
-    "/press.html": "/hilfe/"
-  };
-
-  // Generisch: /foo.html -> /foo/ (falls du es doch so strukturiert hast)
-  if (!map[p] && p.endsWith(".html")) {
-    var name = p.slice(1, -5); // "foo"
-    map[p] = "/" + name + "/";
-  }
-
-  var targetPath = map[p] || "/"; // Fallback
-  location.replace("https://safesharepro.com" + targetPath + qs + h);
-})();
-</script>
-  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+
+  <!-- Flag: damit der Redirect wirklich nur auf der 404-Seite läuft -->
+  <meta name="ss-404" content="1">
+
+  <script>
+  (function () {
+    // Nur alte GitHub-URLs umleiten – nicht safesharepro.com
+    if (location.hostname !== "j-ai-71.github.io") return;
+
+    // Nur umleiten, wenn diese Seite wirklich die 404-Seite ist
+    var is404 = document.querySelector('meta[name="ss-404"][content="1"]');
+    if (!is404) return;
+
+    // /Supersystem/... -> /...
+    var p = (location.pathname || "/").replace(/^\/Supersystem/, "") || "/";
+    var qs = location.search || "";
+    var h  = location.hash || "";
+
+    // Optional: technische Dateien auf GitHub NICHT umleiten (falls du sie dort noch nutzt)
+    // Wenn du ALLES umleiten willst, diese Zeilen löschen.
+    if (p === "/sitemap.xml" || p === "/robots.txt") return;
+
+    // Normalisieren
+    if (p === "/index.html") p = "/";
+
+    // .html -> neue Slugs (inkl. Umbenennungen)
+    var map = {
+      "/": "/",
+      "/app.html": "/app/",
+      "/pro.html": "/pro/",
+      "/education.html": "/schule/",
+      "/help.html": "/hilfe/",
+      "/hilfe.html": "/hilfe/",
+      "/bookmarklets.html": "/lesezeichen/",
+      "/terms.html": "/nutzungsbedingungen/",
+      "/datenschutz.html": "/datenschutz/",
+      "/impressum.html": "/impressum/",
+      "/quickstart.html": "/quickstart/",
+      "/tracking-parameter.html": "/tracking-parameter/",
+      "/utm-parameter-entfernen.html": "/utm-parameter-entfernen/",
+      "/url-cleaner-tool-vergleich.html": "/url-cleaner-tool-vergleich/",
+
+      // alte/seltene Namen aus GSC -> sinnvolle Ziele
+      "/tracking-parameter-entfernen.html": "/tracking-parameter/",
+      "/redirect-entpacken.html": "/tracking-parameter/",
+      "/redirect-entschachteln.html": "/tracking-parameter/",
+      "/publisher.html": "/pro/",
+      "/bulk-clean.html": "/pro/",
+      "/press.html": "/hilfe/"
+    };
+
+    // Generisch: /foo.html -> /foo/ (falls du es doch so strukturiert hast)
+    if (!map[p] && p.endsWith(".html")) {
+      var name = p.slice(1, -5); // "foo"
+      map[p] = "/" + name + "/";
+    }
+
+    var targetPath = map[p] || "/"; // Fallback
+    location.replace("https://safesharepro.com" + targetPath + qs + h);
+  })();
+  </script>
+
   <title>404 – Seite nicht gefunden – SafeShare</title>
   <meta name="description" content="404: Seite nicht gefunden. Zurück zu Start, App oder Pro." />
   <meta name="robots" content="noindex,follow" />
   <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111">
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="3-mi6zLHRdFC14-RdTIF6GY90jKWfyLNLsFBhGLqQB0" />
@@ -69,7 +81,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-09">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-09">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-09">
-  <meta name="theme-color" content="#111111">
 
   <style>
     :root{
@@ -80,13 +91,10 @@
       --muted: rgba(255,255,255,.72);
       --muted2: rgba(255,255,255,.60);
       --shadow: 0 18px 45px rgba(0,0,0,.35);
-      --radius: 18px;
       --mint: #2fe3b7;
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
-      --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
-      --bad: rgba(255,84,84,.14);
       --max: 1120px;
     }
     @media (prefers-color-scheme: light){
@@ -98,9 +106,7 @@
         --muted: rgba(17,24,39,.72);
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
-        --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
-        --bad: rgba(255,84,84,.12);
       }
     }
     *{ box-sizing:border-box; }
@@ -120,7 +126,6 @@
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
 
-    /* Logo badge (1 Ring, clean) */
     .logoWrap{
       width:38px;
       height:38px;
