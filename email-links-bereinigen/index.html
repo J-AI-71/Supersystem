@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 
   <title>E-Mail-Links bereinigen – SafeShare</title>
-  <meta name="description" content="Saubere Links in E-Mails: Tracking-Parameter entfernen, bevor du weiterleitest oder versendest. Verständlich, local-first, ohne Upload." />
+  <meta name="description" content="E-Mail-Links sauber teilen: Tracking-Parameter entfernen, bevor sie in Postfächern, Archiven und Tickets landen. Local-first im Browser, ohne Upload." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://safesharepro.com/email-links-bereinigen/" />
 
@@ -20,7 +20,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="E-Mail-Links bereinigen – SafeShare" />
-  <meta property="og:description" content="Tracking-IDs entfernen, bevor du Links per E-Mail teilst oder weiterleitest. Local-first, kein Upload." />
+  <meta property="og:description" content="Tracking-IDs entfernen, bevor Links in Postfächern, Archiven und Tickets landen. Local-first, kein Upload." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/email-links-bereinigen/" />
@@ -32,7 +32,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="E-Mail-Links bereinigen – SafeShare" />
-  <meta name="twitter:description" content="Saubere Links in E-Mails: Tracking-Parameter entfernen, bevor du versendest." />
+  <meta name="twitter:description" content="Saubere Links per E-Mail: Tracking-Parameter entfernen, bevor du sendest." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
   <meta name="twitter:image:alt" content="SafeShare – E-Mail Links bereinigen" />
 
@@ -88,8 +88,20 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
+    .skip{
+      position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    .skip:focus{
+      left:12px; top:12px; width:auto; height:auto;
+      padding:10px 12px; border-radius:12px;
+      border:1px solid var(--border); background:var(--card);
+      box-shadow: var(--shadow);
+      z-index: 99999;
+    }
+
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+
     .logoWrap{
       width:38px; height:38px;
       border-radius:999px;
@@ -101,6 +113,7 @@
     }
     .logoWrap .logoImg{ width:28px; height:28px; display:block; object-fit:contain; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -143,9 +156,10 @@
     }
     h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
     ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    .muted{ color: var(--muted); }
+    .muted2{ color: var(--muted2); }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -163,10 +177,26 @@
     .btn:hover{ background: rgba(255,255,255,.10); }
     .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
     .btn.primary:hover{ background: var(--mint3); }
-    .btn.ghost{ background: transparent; color: var(--muted); }
-    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn,.bad{
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+      white-space: nowrap;
+    }
+    .pill code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .note,.warn{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -177,9 +207,15 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
-    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+    summary{ cursor:pointer; font-weight: 800; color: var(--text); }
     code{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       font-size: .95em;
@@ -189,14 +225,22 @@
       background: rgba(255,255,255,.03);
       color: var(--text);
     }
-    details{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 14px;
-      padding: 10px 12px;
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
       margin-top: 10px;
     }
-    summary{ cursor:pointer; font-weight: 800; color: var(--text); }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
 
     footer{
       margin-top: 18px;
@@ -206,11 +250,9 @@
       line-height: 1.55;
     }
     .footLinks{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-start;
-      margin-top: 10px;
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
     }
     .footLinks a{
       padding: 6px 10px;
@@ -221,7 +263,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet ===== */
+    /* ===== Mehr: Bottom-Sheet (Master) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -248,6 +290,20 @@
       transition: transform .16s ease, opacity .16s ease;
     }
     .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+      details, code{ border-color: rgba(17,24,39,.12); }
+      details{ background: rgba(17,24,39,.03); }
+      code{ background: rgba(17,24,39,.04); }
+      .box{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
+      .footLinks{ border-top-color: rgba(17,24,39,.10); }
+      .footLinks a{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
+    }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
     .moreMenu a{
@@ -266,6 +322,8 @@
 </head>
 
 <body>
+  <a class="skip" href="#content">Zum Inhalt springen</a>
+
   <div class="wrap">
     <header>
       <div class="brand">
@@ -286,7 +344,7 @@
           <div class="sub">Kanal: E-Mail</div>
         </div>
       </div>
-      <div class="small">clean before share</div>
+      <div class="small">clean before send</div>
     </header>
 
     <div class="tabsBar">
@@ -300,96 +358,123 @@
       </div>
     </div>
 
-    <section class="card">
-      <h1>Links in E-Mails bereinigen (Gmail, Outlook, Apple Mail)</h1>
-      <p>
-        E-Mails werden weitergeleitet, gespeichert, durchsucht und oft in Tickets/Wikis kopiert.
-        Wenn Tracking-IDs im Link stecken (<code>utm_*</code>, Klick-IDs), werden sie Teil dieser Spur.
-      </p>
+    <main id="content">
+      <section class="grid2" aria-label="E-Mail Links bereinigen">
+        <section class="card">
+          <h1>Links in E-Mails bereinigen (Newsletter, Support, Business)</h1>
+          <p>
+            E-Mails sind Archiv: Links landen in Postfächern, Weiterleitungen, CRM, Tickets und Backups.
+            Wenn Tracking-IDs mitlaufen (<code>utm_*</code>, Klick-IDs), werden sie Teil dieser Spur – oft ohne Absicht.
+          </p>
 
-      <div class="row">
-        <span class="btn" style="cursor:default">utm_*</span>
-        <span class="btn" style="cursor:default">gclid</span>
-        <span class="btn" style="cursor:default">fbclid</span>
-        <span class="btn" style="cursor:default">msclkid</span>
-      </div>
+          <div class="row">
+            <span class="pill"><b><code>utm_*</code></b></span>
+            <span class="pill"><b><code>gclid</code></b></span>
+            <span class="pill"><b><code>fbclid</code></b></span>
+            <span class="pill"><b><code>msclkid</code></b></span>
+            <span class="pill"><b><code>mc_eid</code></b></span>
+          </div>
 
-      <div class="row">
-        <a class="btn primary" href="/app/">App öffnen</a>
-        <a class="btn" href="/pro/">Pro: Bulk + Audit</a>
-      </div>
+          <div class="row">
+            <a class="btn primary" href="/app/">Link bereinigen</a>
+            <a class="btn" href="/pro/">Pro: Bulk &amp; Audit</a>
+          </div>
 
-      <div class="note">Local-first im Browser. Kein Upload. Kein Profiling.</div>
-    </section>
+          <div class="note">Local-first im Browser. Kein Upload. Sauber senden statt unnötige IDs mitzugeben.</div>
+        </section>
 
-    <section class="card">
-      <h2>Schnell-Workflows</h2>
+        <aside class="card" aria-label="E-Mail Workflows">
+          <h2>Schnell-Workflows</h2>
 
-      <h3>Desktop (Copy → Clean → Paste)</h3>
-      <ol>
-        <li>Link in der Mail markieren → kopieren.</li>
-        <li>SafeShare App öffnen → einfügen → bereinigen.</li>
-        <li>Sauberen Link in die Mail einfügen → senden.</li>
-      </ol>
+          <details open>
+            <summary>Copy → Clean → Paste (ein Link)</summary>
+            <ol class="muted2">
+              <li>Link aus Website/Tool kopieren.</li>
+              <li>SafeShare öffnen → einfügen → bereinigen.</li>
+              <li>Sauberen Link in die E-Mail einfügen.</li>
+            </ol>
+          </details>
 
-      <h3>iPhone/iPad (Teilen → bereinigen → teilen)</h3>
-      <ol>
-        <li>Link in der Mail lange drücken → „Teilen“ / „Kopieren“.</li>
-        <li>SafeShare öffnen → Link einfügen → bereinigen.</li>
-        <li>Sauberen Link zurück in die Mail einfügen.</li>
-      </ol>
+          <details>
+            <summary>Mehrere Links in einer Mail (Pro)</summary>
+            <p class="muted2" style="margin-top:8px">
+              Wenn du mehrere Links (z. B. FAQ + Docs + Shop) in einer Mail hast:
+              Pro kann Bulk-Clean + Audit pro Link. Ideal für Support/Team-Kommunikation.
+            </p>
+          </details>
 
-      <details>
-        <summary>Warum E-Mail besonders „klebrig“ ist</summary>
-        <p style="margin-top:8px">
-          E-Mails werden oft archiviert, weitergeleitet und in Systeme kopiert (CRM, Tickets, Dokus).
-          Ein Tracking-Link wird dadurch schnell zur dauerhaften Kennung im Verlauf.
+          <details>
+            <summary>Wichtige Grenze (ehrlich)</summary>
+            <p class="muted2" style="margin-top:8px">
+              SafeShare entfernt IDs im Link, nicht Tracking-Techniken der Zielseite (Cookies/Fingerprinting) oder Server-Logs.
+              Für „öffnen ohne Spuren“ brauchst du andere Schichten (Browser-Schutz, ggf. Isolated Open – Roadmap).
+            </p>
+          </details>
+        </aside>
+      </section>
+
+      <section class="card" aria-label="Warum das Datensammlung reduziert">
+        <h2>Warum das Datensammlung reduziert</h2>
+        <p>
+          E-Mail ist ein Dauer-Medium: Inhalte werden weitergeleitet, durchsucht, exportiert und oft automatisch verarbeitet.
+          Wenn Kennungen im Link stehen, wandern sie mit – und können später wieder auftauchen.
         </p>
-      </details>
-    </section>
+        <ul class="muted2">
+          <li>Weniger Kennungen in Postfächern, Tickets, CRMs.</li>
+          <li>Weniger „Join-Keys“ für spätere Verknüpfung über Systeme.</li>
+          <li>Mehr Klarheit: Link wirkt sauber und nachvollziehbar.</li>
+        </ul>
 
-    <section class="card">
-      <h2>Warum das Datensammlung reduziert</h2>
-      <ul>
-        <li><b>Weniger Kennungen</b> in Mails, Weiterleitungen, Archiven.</li>
-        <li><b>Weniger triviale Verknüpfung</b> über Systeme („Join-Keys“ im Link).</li>
-        <li><b>Mehr Vertrauen</b>: saubere Links wirken klarer, weniger marketing-lastig.</li>
-      </ul>
+        <div class="warn">
+          Tipp: Wenn du bewusst Attribution brauchst (Publisher/Affiliate), nutze eine Policy/Whitelist (Pro), statt pauschal zu löschen.
+        </div>
+      </section>
 
-      <div class="warn">
-        Ehrliche Grenze: SafeShare entfernt IDs <b>im Link</b>, nicht Tracking auf der Zielseite (Cookies/Fingerprinting) oder Server-Logs.
-      </div>
-    </section>
+      <section class="card" id="faq" aria-label="FAQ">
+        <h2>FAQ</h2>
 
-    <section class="card">
-      <h2>FAQ</h2>
+        <details class="card">
+          <summary>Warum ist E-Mail besonders relevant?</summary>
+          <p class="muted">
+            Weil E-Mails archiviert werden: Postfach → Weiterleitung → Ticket/CRM → Backup.
+            Tracking-IDs im Link werden Teil dieser Kette. SafeShare minimiert das.
+          </p>
+        </details>
 
-      <details>
-        <summary>Entfernt SafeShare auch „normale“ Parameter?</summary>
-        <p style="margin-top:8px">
-          Standard ist konservativ: normale Parameter bleiben. In Pro kannst du über Policies gezielt mehr entfernen oder behalten.
-        </p>
-      </details>
+        <details class="card">
+          <summary>Schadet das meinem Newsletter-Tracking?</summary>
+          <p class="muted">
+            Wenn du UTM bewusst für Analyse nutzt, ist das okay – dann solltest du sie bewusst setzen.
+            SafeShare ist für „sauber weiterleiten/teilen“ gedacht. Für Teams/Publisher: Policy/Whitelist nutzen.
+          </p>
+        </details>
 
-      <details>
-        <summary>Was ist mit Links, die über Redirects wieder IDs anhängen?</summary>
-        <p style="margin-top:8px">
-          Das passiert. Dann brauchst du die nächste Ebene (Redirect-Resolver / Clean-on-Navigation). Das ist Roadmap-Thema.
-        </p>
-      </details>
-    </section>
+        <details class="card">
+          <summary>Warum nicht einfach „Weiterleiten wie es ist“?</summary>
+          <p class="muted">
+            Weil du damit oft unabsichtlich Infos mitverteilst („woher kommt der Klick“, Klick-ID).
+            Saubere Links sind ein kleiner Aufwand mit großem Effekt.
+          </p>
+        </details>
 
-    <footer>
-      <div class="footLinks">
-        <a href="/email-links-bereinigen/">E-Mail</a>
-        <a href="/messenger-links-bereinigen/">Messenger</a>
-        <a href="/social-links-bereinigen/">Social</a>
-        <a href="/hilfe/">Hilfe</a>
-      </div>
-      <p style="margin-top:10px">
-        SafeShare: Clean before share. Local-first. Transparent per Audit (Pro).
-      </p>
-    </footer>
+        <details class="card">
+          <summary>Was ist mit Redirects, die wieder IDs anhängen?</summary>
+          <p class="muted">
+            Das passiert. Nächster sinnvoller Schritt ist Redirect-Resolver + Clean-on-Navigation (Extension-Ebene).
+          </p>
+        </details>
+      </section>
+
+      <footer>
+        <div class="footLinks">
+          <a href="/email-links-bereinigen/">E-Mail</a>
+          <a href="/messenger-links-bereinigen/">Messenger</a>
+          <a href="/social-links-bereinigen/">Social</a>
+          <a href="/hilfe/">Hilfe</a>
+        </div>
+        <p style="margin-top:10px">SafeShare: Links bereinigen vor dem Senden/Teilen. Local-first. Kein Upload.</p>
+      </footer>
+    </main>
   </div>
 
   <!-- Mehr (Bottom-Sheet) -->
@@ -402,6 +487,7 @@
 
     <div class="menuHint">Wissen</div>
     <a data-page="schule" href="/schule/">Schule</a>
+    <a href="/datenschutz-ehrlich-erklaert/">Datenschutz ehrlich erklärt</a>
     <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
     <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
     <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
@@ -431,13 +517,13 @@
         if (p.startsWith('/schule')) return 'schule';
         if (p.startsWith('/pro')) return 'pro';
         if (p.startsWith('/hilfe')) return 'hilfe';
-        // Kanal-Seiten lassen wir als Schule/Wissen aktiv wirken:
+
         if (p.startsWith('/email-links-bereinigen')) return 'schule';
         if (p.startsWith('/messenger-links-bereinigen')) return 'schule';
         if (p.startsWith('/social-links-bereinigen')) return 'schule';
+
         return '';
       }
-
       const key = currentKey();
       if (key){
         document.querySelectorAll('[data-page]').forEach(el=>{
@@ -478,6 +564,19 @@
         });
       }
     })();
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Warum ist E-Mail besonders relevant?","acceptedAnswer":{"@type":"Answer","text":"Weil E-Mails archiviert werden: Postfach → Weiterleitung → Ticket/CRM → Backup. Tracking-IDs im Link werden Teil dieser Kette. SafeShare minimiert das."}},
+      {"@type":"Question","name":"Schadet das meinem Newsletter-Tracking?","acceptedAnswer":{"@type":"Answer","text":"Wenn du UTM bewusst für Analyse nutzt, ist das okay – dann solltest du sie bewusst setzen. SafeShare ist für sauberes Weiterleiten/Teilen gedacht. Für Teams/Publisher: Policy/Whitelist nutzen."}},
+      {"@type":"Question","name":"Warum nicht einfach Weiterleiten wie es ist?","acceptedAnswer":{"@type":"Answer","text":"Weil du damit oft unabsichtlich Infos mitverteilst (woher kommt der Klick, Klick-ID). Saubere Links sind ein kleiner Aufwand mit großem Effekt."}},
+      {"@type":"Question","name":"Was ist mit Redirects, die wieder IDs anhängen?","acceptedAnswer":{"@type":"Answer","text":"Das passiert. Nächster sinnvoller Schritt ist Redirect-Resolver + Clean-on-Navigation (Extension-Ebene)."}}
+    ]
+  }
   </script>
 </body>
 </html>
