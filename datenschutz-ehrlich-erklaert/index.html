@@ -1,133 +1,390 @@
+<!-- Datei: /datenschutz-ehrlich-erklaert/index.html -->
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Datenschutz – ehrlich erklärt (ohne Panik)</title>
+
+  <title>Datenschutz ehrlich erklärt (ohne Panik) – SafeShare Schule</title>
   <meta name="description" content="Was im Hintergrund passiert, was realistisch möglich ist, wie du dich maximal schützt – verständlich, ehrlich und ohne Panik." />
   <meta name="robots" content="index,follow" />
-  <meta name="color-scheme" content="light dark" />
+  <link rel="canonical" href="https://safesharepro.com/datenschutz-ehrlich-erklaert/" />
+
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111" />
+
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="Datenschutz ehrlich erklärt (ohne Panik)" />
+  <meta property="og:description" content="Was im Hintergrund passiert, was möglich ist, wie du dich maximal schützt – und womit du leben musst." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://safesharepro.com/datenschutz-ehrlich-erklaert/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
+  <meta property="og:image:alt" content="Datenschutz ehrlich erklärt – SafeShare" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Datenschutz ehrlich erklärt (ohne Panik)" />
+  <meta name="twitter:description" content="Was möglich ist, was nicht – und was du konkret tun kannst." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
+  <meta name="twitter:image:alt" content="Datenschutz ehrlich erklärt – SafeShare" />
+
+  <!-- Favicons + PWA (absolut) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+
   <style>
     :root{
-      --bg: Canvas;
-      --fg: CanvasText;
-      --muted: color-mix(in oklab, var(--fg) 65%, transparent);
-      --card: color-mix(in oklab, var(--fg) 6%, var(--bg));
-      --line: color-mix(in oklab, var(--fg) 14%, transparent);
-      --accent: color-mix(in oklab, #2fe3b7 55%, var(--fg));
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(0,0,0,.08);
-      --max: 900px;
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
     }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+      }
+    }
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      background:var(--bg);
-      color:var(--fg);
-      font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
     }
-    header{
-      padding: 28px 18px 10px;
-      border-bottom: 1px solid var(--line);
-    }
-    main{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 18px;
-    }
-    h1{font-size: 1.6rem; line-height:1.2; margin: 0 0 8px;}
-    .lead{color:var(--muted); margin: 0 0 8px;}
-    .badge{
-      display:inline-block;
-      font-size:.85rem;
-      padding:.25rem .55rem;
-      border:1px solid var(--line);
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+
+    /* Logo-Badge (einheitlich) */
+    .logoWrap{
+      width:38px; height:38px;
       border-radius:999px;
-      margin:.25rem .35rem .1rem 0;
-      background: color-mix(in oklab, var(--card) 80%, transparent);
+      border:1px solid rgba(47,227,183,.22);
+      background:rgba(47,227,183,.08);
+      box-shadow:0 10px 26px rgba(0,0,0,.28);
+      display:grid; place-items:center;
+      overflow:hidden; flex:0 0 auto;
     }
-    section{margin: 16px 0;}
-    .card{
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 16px;
+    .logoWrap .logoImg{ width:28px; height:28px; display:block; object-fit:contain; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
       box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
     }
-    h2{font-size:1.15rem; margin: 0 0 10px;}
-    h3{font-size:1rem; margin: 14px 0 6px;}
-    p{margin: 10px 0;}
-    ul{margin: 8px 0 0 18px;}
-    li{margin: 6px 0;}
-    .callout{
-      border-left: 4px solid var(--accent);
-      padding: 12px 12px 12px 14px;
-      background: color-mix(in oklab, var(--accent) 10%, var(--card));
-      border-radius: 12px;
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor:pointer;
+      display:inline-flex; align-items:center; justify-content:center;
     }
-    .grid{
-      display:grid;
-      gap: 12px;
-      grid-template-columns: 1fr;
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
     }
-    @media (min-width: 820px){
-      .grid{grid-template-columns: 1fr 1fr;}
-    }
-    details{
-      border: 1px solid var(--line);
-      border-radius: 12px;
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       padding: 10px 12px;
-      background: color-mix(in oklab, var(--card) 90%, transparent);
-      margin: 10px 0;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
     }
-    summary{cursor:pointer; font-weight: 650;}
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+    summary{ cursor:pointer; font-weight: 800; color: var(--text); }
     code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       font-size: .95em;
       padding: .1em .35em;
       border-radius: 8px;
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--fg) 5%, var(--bg));
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
     }
-    .checklist li{list-style: "✓  "; padding-left: 6px;}
-    .muted{color:var(--muted);}
+    @media (prefers-color-scheme: light){
+      details{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
+      code{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.04); }
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    @media (prefers-color-scheme: light){
+      .box{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+      white-space: nowrap;
+    }
+    .pill b{ color: var(--text); font-weight: 850; }
+
     footer{
-      margin-top: 22px;
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
       padding-top: 14px;
-      border-top: 1px solid var(--line);
-      font-size: .95rem;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
       color: var(--muted);
     }
-    .mini{
-      font-size:.95rem;
-      color:var(--muted);
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet (Master) ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
     }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
+
 <body>
-  <header>
-    <main>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img
+            class="logoImg"
+            src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+            alt="SafeShare"
+            width="28"
+            height="28"
+            decoding="async"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+          >
+          <span id="logoFallback" class="logoFallback">SS</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Schule · Aufklärung</div>
+        </div>
+      </div>
+      <div class="small">ohne Panik</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" data-page="start" href="/">Start</a>
+        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="schule" href="/schule/">Schule</a>
+        <a class="tab" data-page="pro" href="/pro/">Pro</a>
+        <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
+      </div>
+    </div>
+
+    <!-- ===== Inhalt (dein Text, nur optisch angepasst) ===== -->
+
+    <section class="card">
       <h1>Datenschutz – ehrlich erklärt (ohne Panik)</h1>
-      <p class="lead">
+      <p>
         Datenschutz heißt nicht „unsichtbar sein“. Datenschutz heißt: <b>weniger preisgeben</b>, <b>weniger Spuren hinterlassen</b> und
         <b>bewusst entscheiden</b>, welche Daten entstehen – und welche nicht.
       </p>
-      <div>
-        <span class="badge">verständlich</span>
-        <span class="badge">realistisch</span>
-        <span class="badge">ohne Panik</span>
-        <span class="badge">mit klaren Grenzen</span>
+      <div class="row">
+        <span class="pill"><b>verständlich</b></span>
+        <span class="pill"><b>realistisch</b></span>
+        <span class="pill"><b>ohne Panik</b></span>
+        <span class="pill"><b>klare Grenzen</b></span>
       </div>
-    </main>
-  </header>
 
-  <main>
+      <div class="row" style="margin-top:14px">
+        <a class="btn primary" href="/app/">Jetzt Link bereinigen</a>
+        <a class="btn" href="/schule/">Zur Schule</a>
+        <a class="btn ghost" href="/hilfe/">Hilfe</a>
+      </div>
+
+      <div class="note">
+        SafeShare ist Link-Hygiene: Tracking-Etiketten am Link entfernen – local-first im Browser. Kein Upload.
+      </div>
+    </section>
+
     <section class="card">
       <h2>Ein Beispiel aus dem echten Leben</h2>
-      <div class="callout">
-        <p style="margin:0">
-          Stell dir Datenschutz vor wie <b>Alltagsschutz in einer Stadt</b>.
-          Du willst nicht „unsichtbar“ werden – du willst <b>nicht mehr über dich preisgeben als nötig</b>.
-        </p>
+      <div class="note">
+        Stell dir Datenschutz vor wie <b>Alltagsschutz in einer Stadt</b>.
+        Du willst nicht „unsichtbar“ werden – du willst <b>nicht mehr über dich preisgeben als nötig</b>.
       </div>
 
       <h3>Du als Mensch musst dich schützen und dafür sorgen, dass …</h3>
@@ -138,7 +395,7 @@
         <li>du <b>deine Gewohnheiten trennst</b>: Arbeit ist Arbeit, privat ist privat – nicht alles in einem Tagebuch.</li>
       </ul>
 
-      <p class="muted">
+      <p>
         Im Internet ist es ähnlich: Es geht nicht um Panik, sondern um <b>gute Gewohnheiten</b> und <b>Datenminimierung</b>.
       </p>
 
@@ -153,32 +410,19 @@
       </details>
     </section>
 
-    <section class="grid">
+    <section class="grid2">
       <div class="card">
         <h2>Was passiert im Hintergrund, wenn du eine Website öffnest?</h2>
         <ol>
-          <li>
-            <b>Verbindung</b>: Dein Gerät verbindet sich mit der Zielseite.
-            Technisch nötig sind z. B. <b>IP-Adresse</b> (oder VPN-IP), <b>Zeit</b>, <b>aufgerufene Seite</b>.
-          </li>
-          <li>
-            <b>Server-Logs</b>: Viele Anbieter protokollieren Zugriffe (Betrieb, Sicherheit, Fehleranalyse).
-          </li>
-          <li>
-            <b>Speicher im Browser</b>: Cookies/Website-Speicher können „Wiedererkennen“ ermöglichen.
-          </li>
-          <li>
-            <b>Drittanbieter</b>: Viele Seiten laden Inhalte von anderen Firmen nach (Schriften, Videos, Analyse, Werbung).
-          </li>
-          <li>
-            <b>Fingerprinting</b>: Manche versuchen dich über Geräte-/Browsermerkmale wiederzuerkennen.
-          </li>
-          <li>
-            <b>Login macht es eindeutig</b>: Wenn du eingeloggt bist, kann das Verhalten dem Konto zugeordnet werden.
-          </li>
+          <li><b>Verbindung</b>: IP-Adresse (oder VPN-IP), Zeit, aufgerufene Seite.</li>
+          <li><b>Server-Logs</b>: Betrieb, Sicherheit, Fehleranalyse.</li>
+          <li><b>Speicher im Browser</b>: Cookies/Website-Speicher können Wiedererkennen ermöglichen.</li>
+          <li><b>Drittanbieter</b>: Inhalte/Tools von anderen Firmen (Analyse, Ads, Widgets).</li>
+          <li><b>Fingerprinting</b>: Wiedererkennen über Geräte-/Browsermerkmale (teilweise).</li>
+          <li><b>Login</b>: Eingeloggt = oft eindeutige Zuordnung zum Konto.</li>
         </ol>
-        <p class="mini">
-          Wichtig: Das ist nicht automatisch „böse“ – es ist die technische Realität. Datenschutz heißt: <b>reduzieren</b>, was nicht nötig ist.
+        <p class="muted2">
+          Wichtig: nicht automatisch „böse“ – technische Realität. Datenschutz heißt: <b>reduzieren</b>, was nicht nötig ist.
         </p>
       </div>
 
@@ -186,19 +430,16 @@
         <h2>Was ist bei Links das häufigste Missverständnis?</h2>
         <p>
           Viele Links tragen „Etiketten“ wie <code>utm_*</code>, <code>gclid</code>, <code>fbclid</code>.
-          Diese Anhänge verraten z. B., ob du aus einem Newsletter, einer Anzeige oder einem bestimmten Kanal kommst.
+          Diese Anhänge verraten z. B., ob du aus einem Newsletter, einer Anzeige oder einem Kanal kommst.
         </p>
-        <div class="callout">
-          <p style="margin:0">
-            Wenn du so einen Link weiterleitest, verteilst du oft <b>unnötige Zusatzinfos</b> mit –
-            an Empfänger:innen, an Messenger-Vorschauen, an Plattformen.
-          </p>
+        <div class="warn">
+          Wenn du so einen Link weiterleitest, verteilst du oft <b>unnötige Zusatzinfos</b> mit – an Menschen und Systeme.
         </div>
         <details>
           <summary>Konkretes Mini-Beispiel</summary>
-          <p class="muted" style="margin-top:8px">
-            Du teilst einen Shop-Link in einer Gruppe. Mit Tracking-Anhang steht da:
-            „Dieser Klick kam aus Newsletter X, Kampagne Y, Anzeige Z.“
+          <p style="margin-top:8px">
+            Du teilst einen Shop-Link in einer Gruppe. Mit Tracking-Anhang steht da sinngemäß:
+            „Dieser Klick kam aus Newsletter X, Kampagne Y.“
             Ohne Anhänge ist es einfach nur: „Hier ist der Artikel.“
           </p>
         </details>
@@ -207,59 +448,54 @@
 
     <section class="card">
       <h2>Was ist möglich, um sich maximal zu schützen?</h2>
-      <p class="muted">
-        Datenschutz funktioniert am besten in <b>Schichten</b>. Je mehr Schichten, desto mehr Schutz – aber manchmal auch weniger Komfort.
-      </p>
+      <p>Datenschutz funktioniert am besten in <b>Schichten</b> – je mehr Schichten, desto mehr Schutz (manchmal weniger Komfort).</p>
 
       <h3>Stufe A – alltagstauglich (großer Effekt)</h3>
-      <ul class="checklist">
-        <li>Browser-Tracking-Schutz auf „Streng“ / „erweitert“ stellen</li>
+      <ul>
+        <li>Browser-Tracking-Schutz „streng“ aktivieren</li>
         <li>Drittanbieter-Cookies blockieren</li>
-        <li>Website-Daten regelmäßig löschen oder automatisch beim Beenden</li>
-        <li>App-Berechtigungen minimal halten (Standort/Kontakte/Mikrofon nur wenn nötig)</li>
-        <li>Updates installieren (Browser + System)</li>
+        <li>Website-Daten regelmäßig löschen oder beim Beenden</li>
+        <li>App-Berechtigungen minimal halten</li>
+        <li>Updates installieren</li>
       </ul>
 
       <h3>Stufe B – deutlich stärker</h3>
-      <ul class="checklist">
-        <li>Tracker-/Werbeblocker im Browser nutzen</li>
-        <li>DNS mit Tracking-Schutz verwenden (blockt vieles vorab)</li>
-        <li>Getrennte Browser-Profile: <b>„eingeloggt“</b> vs. <b>„Recherche“</b></li>
+      <ul>
+        <li>Tracker-/Werbeblocker nutzen</li>
+        <li>DNS mit Tracking-Schutz</li>
+        <li>Getrennte Profile: „eingeloggt“ vs. „Recherche“</li>
         <li>So wenig wie möglich dauerhaft eingeloggt bleiben</li>
       </ul>
 
-      <h3>Stufe C – maximal (mehr Aufwand, manchmal Einschränkungen)</h3>
-      <ul class="checklist">
-        <li>VPN nutzen (Zielseiten sehen dann die VPN-IP statt deiner)</li>
-        <li>Tor Browser nutzen (sehr stark gegen Tracking/Fingerprinting, aber langsamer)</li>
-        <li>Für sehr sensible Nutzung: getrennte Geräte/Accounts</li>
+      <h3>Stufe C – maximal (mehr Aufwand)</h3>
+      <ul>
+        <li>VPN (Zielseiten sehen VPN-IP statt deiner)</li>
+        <li>Tor Browser (sehr stark, aber langsamer / manche Seiten zicken)</li>
+        <li>Für sehr sensibel: getrennte Geräte/Accounts</li>
       </ul>
     </section>
 
     <section class="card">
       <h2>Womit musst du leben? (ehrliche Grenzen)</h2>
       <ul>
-        <li><b>Die Zielseite muss dich technisch „sehen“</b>, sonst kann sie dir keine Inhalte liefern (mindestens Verbindung/IP/Request-Daten).</li>
-        <li><b>Login ist die stärkste Zuordnung</b>: Wenn du eingeloggt bist, wird vieles automatisch eindeutig.</li>
-        <li><b>„Inkognito“ macht dich nicht unsichtbar</b>: Es schützt vor allem davor, dass <i>dein Gerät</i> Verlauf/Cookies dauerhaft speichert.</li>
-        <li><b>Tracking komplett verhindern</b> klappt nicht zuverlässig auf jeder Seite – du kannst es aber stark reduzieren.</li>
+        <li><b>Die Zielseite muss dich technisch „sehen“</b>, sonst kann sie keine Inhalte liefern.</li>
+        <li><b>Login ist die stärkste Zuordnung</b>: Konto → Aktivität.</li>
+        <li><b>Inkognito ist keine Unsichtbarkeit</b>: schützt vor allem lokal auf deinem Gerät.</li>
+        <li><b>Tracking komplett verhindern</b> klappt nicht überall – aber stark reduzieren ist realistisch.</li>
       </ul>
-
-      <div class="callout">
-        <p style="margin:0">
-          Realistisches Ziel: <b>deutlich weniger Daten</b> entstehen lassen – und <b>unabsichtliche Weitergabe</b> vermeiden.
-        </p>
+      <div class="note">
+        Realistisches Ziel: <b>deutlich weniger Daten</b> entstehen lassen – und <b>unabsichtliche Weitergabe</b> vermeiden.
       </div>
     </section>
 
     <section class="card">
       <h2>Die 60-Sekunden-Checkliste</h2>
-      <ul class="checklist">
-        <li>Bin ich dafür wirklich eingeloggt? Wenn nein: ausloggen / anderes Profil nutzen.</li>
-        <li>Muss ich das in einer App öffnen? Wenn nein: lieber im Browser.</li>
-        <li>Muss ich den „ganzen Link“ teilen? Meistens nein: Tracking-Anhänge entfernen.</li>
-        <li>Blocker/DNS aktiv? (reduziert Drittanbieter spürbar)</li>
-        <li>Wichtige Berechtigungen checken (Standort, Kontakte, Mikrofon)</li>
+      <ul>
+        <li>Bin ich dafür wirklich eingeloggt? Wenn nein: anderes Profil / ausloggen.</li>
+        <li>Muss ich das in einer App öffnen? Wenn nein: lieber Browser.</li>
+        <li>Muss ich den ganzen Link teilen? Meistens nein: Tracking-Anhänge entfernen.</li>
+        <li>Blocker/DNS aktiv?</li>
+        <li>Berechtigungen checken (Standort, Kontakte, Mikrofon).</li>
       </ul>
     </section>
 
@@ -268,51 +504,150 @@
 
       <details>
         <summary>Bin ich mit VPN unsichtbar?</summary>
-        <p class="muted">
-          Nein. Ein VPN verschiebt vor allem, <b>welche IP-Adresse</b> die Zielseite sieht (VPN-IP statt deiner).
-          Tracking über Cookies, Logins oder Fingerprinting kann trotzdem stattfinden – oft reduziert, aber nicht weg.
+        <p style="margin-top:8px">
+          Nein. VPN verschiebt vor allem die IP (VPN-IP statt deiner). Tracking über Cookies/Logins/Fingerprinting kann trotzdem passieren.
         </p>
       </details>
 
       <details>
         <summary>Was bringt Inkognito/Privatmodus wirklich?</summary>
-        <p class="muted">
-          Er speichert weniger dauerhaft auf <b>deinem Gerät</b> (Verlauf, Cookies nach dem Schließen).
-          Er verhindert nicht automatisch Server-Logs, Tracker oder Konto-Verknüpfung.
+        <p style="margin-top:8px">
+          Er speichert weniger dauerhaft auf deinem Gerät. Er verhindert nicht automatisch Server-Logs, Tracker oder Konto-Verknüpfung.
         </p>
       </details>
 
       <details>
         <summary>Warum sind Tracking-Parameter am Link problematisch?</summary>
-        <p class="muted">
-          Sie sind wie Etiketten: Sie verraten „woher du kommst“ (Kampagne, Kanal, Klick-ID).
-          Beim Weiterteilen gibst du diese Infos oft unabsichtlich mit – an Menschen und Systeme.
+        <p style="margin-top:8px">
+          Sie sind Etiketten: Quelle/Kampagne/Klick-IDs. Beim Weiterteilen gibst du diese Infos oft unabsichtlich mit.
         </p>
       </details>
 
       <details>
         <summary>Kann ich mich zu 100% schützen?</summary>
-        <p class="muted">
-          100% im Sinne von „keiner sieht irgendwas“ ist im normalen Web nicht realistisch.
-          Sehr hoher Schutz ist möglich, aber oft mit Komfortverlust (Tor, harte Trennung, weniger Logins).
+        <p style="margin-top:8px">
+          100% „keiner sieht irgendwas“ ist im normalen Web nicht realistisch. Sehr hoher Schutz geht, kostet aber Komfort.
         </p>
       </details>
 
       <details>
         <summary>Was ist der wichtigste, einfachste Schritt?</summary>
-        <p class="muted">
-          Daten minimieren: so wenig wie möglich eingeloggt, Tracker blocken, Berechtigungen reduzieren –
-          und Links ohne Tracking-Anhänge teilen.
+        <p style="margin-top:8px">
+          Daten minimieren: weniger eingeloggt, Tracker blocken, Berechtigungen reduzieren – und Links ohne Tracking-Anhänge teilen.
         </p>
       </details>
     </section>
 
     <footer>
-      <p>
-        Hinweis: Dieser Text ist eine verständliche Einordnung, keine Rechtsberatung.
-        Ziel ist Klarheit: <b>was real ist</b>, <b>was du beeinflussen kannst</b> und <b>wo die Grenzen liegen</b>.
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – Links teilen. Ohne Ballast.</div>
+          <div>App: schnell &amp; einfach · Pro: Policies, Whitelist, Audit.</div>
+        </div>
+        <div class="footLinks">
+          <a data-page="start" href="/">Start</a>
+          <a data-page="app" href="/app/">App</a>
+          <a data-page="schule" href="/schule/">Schule</a>
+          <a data-page="pro" href="/pro/">Pro</a>
+          <a data-page="hilfe" href="/hilfe/">Hilfe</a>
+          <a data-page="datenschutz" href="/datenschutz/">Datenschutzerklärung</a>
+          <a data-page="impressum" href="/impressum/">Impressum</a>
+          <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+        </div>
+      </div>
+      <p style="margin-top:10px">
+        Hinweis: Aufklärungstext, keine Rechtsberatung. Für Rechtliches siehe <a href="/datenschutz/">Datenschutzerklärung</a>.
       </p>
     </footer>
-  </main>
+  </div>
+
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Support</div>
+    <a data-page="hilfe" href="/hilfe/#kontakt">Support / Kontakt</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
+    <a data-page="schule" href="/schule/">Schule</a>
+    <a data-page="datenschutz-ehrlich" href="/datenschutz-ehrlich-erklaert/">Datenschutz ehrlich erklärt</a>
+    <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
+    <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
+    <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
+    <a data-page="lesezeichen" href="/lesezeichen/">Lesezeichen</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a data-page="datenschutz" href="/datenschutz/">Datenschutzerklärung</a>
+    <a data-page="impressum" href="/impressum/">Impressum</a>
+    <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+  </nav>
+
+  <script>
+    (function(){
+      function currentKey(){
+        const p = (location.pathname || '/').toLowerCase();
+        if (p === '/' || p === '/index.html') return 'start';
+        if (p.startsWith('/app')) return 'app';
+        if (p.startsWith('/schule')) return 'schule';
+        if (p.startsWith('/pro')) return 'pro';
+        if (p.startsWith('/hilfe')) return 'hilfe';
+
+        // Aufklärung zählt zu Schule/Wissen:
+        if (p.startsWith('/datenschutz-ehrlich-erklaert')) return 'schule';
+
+        if (p.startsWith('/datenschutz')) return 'datenschutz';
+        if (p.startsWith('/impressum')) return 'impressum';
+        if (p.startsWith('/nutzungsbedingungen')) return 'terms';
+        if (p.startsWith('/lesezeichen') || p.startsWith('/bookmarklets')) return 'lesezeichen';
+        if (p.startsWith('/tracking-parameter')) return 'tracking';
+        if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
+        if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
+        return '';
+      }
+
+      const key = currentKey();
+      if (key){
+        document.querySelectorAll('[data-page]').forEach(el=>{
+          if (el.getAttribute('data-page') === key) el.classList.add('active');
+        });
+      }
+
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+      }
+
+      if(btn && menu && overlay){
+        btn.addEventListener('click',(e)=>{
+          e.preventDefault();
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
