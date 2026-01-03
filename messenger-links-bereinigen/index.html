@@ -1,238 +1,584 @@
+<!-- Datei: /messenger-links-bereinigen/index.html -->
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="format-detection" content="telephone=no,date=no,address=no" />
-  <title>Links in Messenger bereinigen – SafeShare</title>
-  <meta name="description" content="WhatsApp/Signal/Telegram/Slack/Teams: Links ohne Tracking teilen. SafeShare entfernt UTM & Klick-IDs local-first im Browser." />
-  <meta name="robots" content="index,follow" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#070a12" />
-  <link rel="canonical" href="https://safesharepro.com/messenger-links-bereinigen.html" />
 
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon.png">
+  <title>Messenger-Links bereinigen – SafeShare</title>
+  <meta name="description" content="Links in WhatsApp, Signal, Slack, Teams sauber teilen: Tracking-Parameter entfernen, bevor sie sich in Chats, Tickets und Dokus verbreiten. Local-first, ohne Upload." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://safesharepro.com/messenger-links-bereinigen/" />
+
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111">
+
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Messenger-Links bereinigen – SafeShare" />
+  <meta property="og:description" content="Tracking-IDs entfernen, bevor Links sich in Chats, Tickets und Dokus verbreiten. Local-first, kein Upload." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://safesharepro.com/messenger-links-bereinigen/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
+  <meta property="og:image:alt" content="SafeShare – Messenger Links bereinigen" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Messenger-Links bereinigen – SafeShare" />
+  <meta name="twitter:description" content="Saubere Links im Messenger: Tracking-Parameter entfernen, bevor du teilst." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
+  <meta name="twitter:image:alt" content="SafeShare – Messenger Links bereinigen" />
+
+  <!-- Favicons + PWA (absolut) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
   <style>
     :root{
-      --bg:#070a12;
-      --card: color-mix(in oklab, Canvas 92%, #070a12 8%);
-      --text: CanvasText;
-      --muted: color-mix(in oklab, CanvasText 70%, transparent);
-      --muted2: color-mix(in oklab, CanvasText 58%, transparent);
-      --line: color-mix(in oklab, CanvasText 18%, transparent);
-      --accent:#2fe3b7; --accent2:#57f2d4;
-      --shadow: 0 16px 40px rgba(0,0,0,.35);
-      --radius: 18px; --max: 980px;
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
     }
-    *{ box-sizing:border-box }
-    body{ margin:0; font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background: var(--bg); color: var(--text); }
-    a{ color:inherit; text-decoration:none }
-    a.under{ text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--accent) 55%, transparent); text-underline-offset: 3px; }
-    code{ font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size:.95em }
-    .wrap{ max-width: var(--max); margin:0 auto; padding: 18px 16px 70px }
-    .skip{ position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden }
-    .skip:focus{ left:16px; top:10px; width:auto; height:auto; padding:10px 12px; background:var(--card); border:1px solid var(--line); border-radius:12px; z-index:9999 }
-    header{ position: sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: rgba(7,10,18,.75); border-bottom:1px solid var(--line); }
-    .topbar{ max-width: var(--max); margin:0 auto; padding:12px 16px; display:flex; align-items:center; gap:14px; }
-    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; }
-    .dot{ width:12px; height:12px; border-radius:50%; background: radial-gradient(circle at 30% 30%, var(--accent2), var(--accent)); box-shadow: 0 0 0 6px rgba(47,227,183,.12); }
-    nav{ margin-left:auto; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .nav a, .nav button{ padding:9px 12px; border-radius:12px; border:1px solid transparent; background:transparent; color:inherit; cursor:pointer; font:inherit; }
-    .nav a:hover, .nav button:hover{ border-color: var(--line); background: rgba(255,255,255,.06); }
-    .cta{ border-color: color-mix(in oklab, var(--accent) 60%, transparent) !important; background: color-mix(in oklab, var(--accent) 20%, transparent) !important; }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
-    .grid{ display:grid; grid-template-columns: 1.05fr .95fr; gap:16px; }
-    @media (max-width:860px){ .grid{ grid-template-columns:1fr } }
+    /* Skip link (a11y) */
+    .skip{
+      position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    .skip:focus{
+      left:12px; top:12px; width:auto; height:auto;
+      padding:10px 12px; border-radius:12px;
+      border:1px solid var(--border); background:var(--card);
+      box-shadow: var(--shadow);
+      z-index: 99999;
+    }
 
-    .card{ background: rgba(255,255,255,.06); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; }
-    h1{ margin:0 0 10px; font-size:28px; line-height:1.15 }
-    h2{ margin: 0 0 10px; font-size:18px }
-    p{ margin: 10px 0 }
-    .muted{ color: var(--muted) } .muted2{ color: var(--muted2) }
-    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px }
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:11px 14px; border-radius:14px; border:1px solid var(--line); background: rgba(255,255,255,.06); cursor:pointer; font-weight:650; }
-    .btn.primary{ border-color: color-mix(in oklab, var(--accent) 60%, transparent); background: color-mix(in oklab, var(--accent) 22%, transparent); }
-    .steps{ margin:0; padding-left:18px } .steps li{ margin: 8px 0; color: var(--muted2) }
-    .pillrow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
-    .pill{ border:1px solid var(--line); border-radius:999px; padding:6px 10px; background: rgba(255,255,255,.05); }
-    details{ border:1px solid var(--line); border-radius:14px; padding:10px 12px; background: rgba(255,255,255,.05); }
-    details + details{ margin-top:10px }
-    summary{ cursor:pointer }
-    footer{ margin-top:18px; padding-top:18px; border-top:1px solid var(--line); color: var(--muted) }
-    .small{ font-size:13px }
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
 
-    dialog{ border:1px solid var(--line); border-radius:16px; background: rgba(20,24,35,.98); color: var(--text); box-shadow: var(--shadow); width:min(520px, calc(100% - 24px)); padding:0; }
-    dialog::backdrop{ background: rgba(0,0,0,.45) }
-    .dlg{ padding:14px } .dlg h3{ margin:0 0 8px; font-size:16px }
-    .dlg a{ display:block; padding:10px 10px; border-radius:12px; border:1px solid transparent }
-    .dlg a:hover{ border-color: var(--line); background: rgba(255,255,255,.06) }
-    .dlg .row{ display:flex; justify-content: space-between; align-items:center; gap:10px; margin-top:10px }
-    .x{ margin-left:auto; border:1px solid var(--line); background:transparent; color:inherit; border-radius:12px; padding:8px 10px; cursor:pointer }
+    .logoWrap{
+      width:38px; height:38px;
+      border-radius:999px;
+      border:1px solid rgba(47,227,183,.22);
+      background:rgba(47,227,183,.08);
+      box-shadow:0 10px 26px rgba(0,0,0,.28);
+      display:grid; place-items:center;
+      overflow:hidden; flex:0 0 auto;
+    }
+    .logoWrap .logoImg{ width:28px; height:28px; display:block; object-fit:contain; }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor:pointer;
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    .muted{ color: var(--muted); }
+    .muted2{ color: var(--muted2); }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex; align-items:center; gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-size: 12px; color: var(--muted);
+      white-space: nowrap;
+    }
+    .pill code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+    summary{ cursor:pointer; font-weight: 800; color: var(--text); }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: .95em;
+      padding: .1em .35em;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media(min-width: 980px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footLinks{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-start;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* ===== Mehr: Bottom-Sheet (Master) ===== */
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+      details, code{ border-color: rgba(17,24,39,.12); }
+      details{ background: rgba(17,24,39,.03); }
+      code{ background: rgba(17,24,39,.04); }
+      .footLinks{ border-top-color: rgba(17,24,39,.10); }
+      .footLinks a{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
 
 <body>
-<a class="skip" href="#content">Zum Inhalt springen</a>
+  <a class="skip" href="#content">Zum Inhalt springen</a>
 
-<header>
-  <div class="topbar">
-    <a class="brand" href="/"><span class="dot" aria-hidden="true"></span><span>SafeShare</span></a>
-    <nav class="nav" aria-label="Hauptnavigation">
-      <a href="/app.html">App</a>
-      <a href="/pro.html">Pro</a>
-      <a href="/schule.html">Schule</a>
-      <a href="/hilfe.html">Hilfe</a>
-      <button id="moreBtn" type="button" aria-haspopup="dialog" aria-controls="moreDlg">Mehr</button>
-      <a class="cta" href="/app.html">Jetzt bereinigen</a>
-    </nav>
-  </div>
-</header>
-
-<main id="content" class="wrap">
-  <section class="grid" aria-label="Messenger Links bereinigen">
-    <div class="card">
-      <h1>Links in Messenger bereinigen (WhatsApp, Signal, Slack, Teams)</h1>
-      <p class="muted">
-        In Gruppen-Chats verbreiten sich Links schnell. Wenn dort Tracking-IDs mitlaufen (<code>utm_*</code>, Klick-IDs),
-        landen sie nicht nur bei Empfänger:innen, sondern oft auch in Tools, Screenshots, Ticket-Systemen und Logs.
-      </p>
-
-      <div class="pillrow">
-        <span class="pill"><code>utm_*</code></span>
-        <span class="pill"><code>fbclid</code></span>
-        <span class="pill"><code>gclid</code></span>
-        <span class="pill"><code>msclkid</code></span>
-        <span class="pill"><code>igshid</code></span>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img
+            class="logoImg"
+            src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+            alt="SafeShare"
+            width="28"
+            height="28"
+            decoding="async"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+          >
+          <span id="logoFallback" class="logoFallback">SS</span>
+        </div>
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Kanal: Messenger</div>
+        </div>
       </div>
+      <div class="small">clean before share</div>
+    </header>
 
-      <div class="actions">
-        <a class="btn primary" href="/app.html">App öffnen</a>
-        <a class="btn" href="/pro.html">Pro: Bulk + Audit</a>
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" data-page="start" href="/">Start</a>
+        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="schule" href="/schule/">Schule</a>
+        <a class="tab" data-page="pro" href="/pro/">Pro</a>
+        <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
       </div>
-
-      <p class="muted small">Local-first im Browser. Kein Upload. Kein Profiling.</p>
     </div>
 
-    <aside class="card" aria-label="Schnelle Workflows">
-      <h2>Schnell-Workflows</h2>
+    <main id="content">
+      <section class="grid2" aria-label="Messenger Links bereinigen">
+        <section class="card">
+          <h1>Links in Messenger bereinigen (WhatsApp, Signal, Slack, Teams)</h1>
+          <p>
+            In Gruppen-Chats verbreiten sich Links schnell. Wenn Tracking-IDs mitlaufen (<code>utm_*</code>, Klick-IDs),
+            landen sie nicht nur bei Empfänger:innen, sondern oft auch in Tools, Screenshots, Ticket-Systemen und Logs.
+          </p>
 
-      <details open>
-        <summary><b>iPhone/iPad: Teilen → bereinigen → teilen</b></summary>
-        <ol class="steps">
-          <li>Im Messenger: Link antippen/markieren → <b>Teilen</b>.</li>
-          <li>SafeShare öffnen, Link einfügen → bereinigen → kopieren/teilen.</li>
-          <li>Sauberen Link in den Chat senden.</li>
-        </ol>
-        <p class="muted">Wenn du es 1-Klick willst: Shortcut im Share-Sheet ist der nächste Schritt (Roadmap).</p>
-      </details>
+          <div class="row">
+            <span class="pill"><b><code>utm_*</code></b></span>
+            <span class="pill"><b><code>fbclid</code></b></span>
+            <span class="pill"><b><code>gclid</code></b></span>
+            <span class="pill"><b><code>msclkid</code></b></span>
+            <span class="pill"><b><code>igshid</code></b></span>
+          </div>
 
-      <details>
-        <summary><b>Desktop: Copy → Clean → Paste</b></summary>
-        <ol class="steps">
-          <li>Link kopieren.</li>
-          <li>SafeShare App öffnen → einfügen → bereinigen.</li>
-          <li>In Slack/Teams/Telegram einfügen.</li>
-        </ol>
-        <p class="muted">Später: Browser-Extension „Bereinigen & kopieren“ (Roadmap).</p>
-      </details>
+          <div class="row">
+            <a class="btn primary" href="/app/">App öffnen</a>
+            <a class="btn" href="/pro/">Pro: Bulk + Audit</a>
+          </div>
 
-      <details>
-        <summary><b>Pro: Mehrere Links aus dem Chat auf einmal</b></summary>
-        <p class="muted">
-          Viele Links aus einem Thread? Pro kann bulk-clean + Audit pro Link. Ideal, wenn du Links aus Gruppen-Chats in Dokus/Tickets übernimmst.
+          <div class="note">Local-first im Browser. Kein Upload. Kein Profiling.</div>
+        </section>
+
+        <aside class="card" aria-label="Schnelle Workflows">
+          <h2>Schnell-Workflows</h2>
+
+          <details open>
+            <summary>iPhone/iPad: Teilen → bereinigen → teilen</summary>
+            <ol>
+              <li>Im Messenger: Link antippen/markieren → <b>Teilen</b>.</li>
+              <li>SafeShare öffnen, Link einfügen → bereinigen → kopieren/teilen.</li>
+              <li>Sauberen Link in den Chat senden.</li>
+            </ol>
+            <p class="muted2">Wenn du es 1-Klick willst: Shortcut im Share-Sheet ist der nächste Schritt (Roadmap).</p>
+          </details>
+
+          <details>
+            <summary>Desktop: Copy → Clean → Paste</summary>
+            <ol>
+              <li>Link kopieren.</li>
+              <li>SafeShare App öffnen → einfügen → bereinigen.</li>
+              <li>In Slack/Teams/Telegram einfügen.</li>
+            </ol>
+            <p class="muted2">Später: Browser-Extension „Bereinigen &amp; kopieren“ (Roadmap).</p>
+          </details>
+
+          <details>
+            <summary>Pro: Mehrere Links aus dem Chat auf einmal</summary>
+            <p class="muted2">
+              Viele Links aus einem Thread? Pro kann Bulk-Clean + Audit pro Link.
+              Ideal, wenn du Links aus Gruppen-Chats in Dokus/Tickets übernimmst.
+            </p>
+          </details>
+        </aside>
+      </section>
+
+      <section class="card" aria-label="Warum das Datensammlung reduziert">
+        <h2>Warum das Datensammlung reduziert</h2>
+        <p>
+          Messenger sind „Verteiler“. Ein Link kann in Sekunden an viele Orte kopiert werden.
+          Wenn URL-IDs mitlaufen, werden sie Teil der Kommunikationsspur. SafeShare entfernt diese IDs vor dem Teilen.
         </p>
-      </details>
-    </aside>
-  </section>
+        <ul class="muted2">
+          <li>Weniger Kennungen in Chats, Tickets, Notizen.</li>
+          <li>Weniger triviale Verknüpfung über Systeme („Join-Keys“).</li>
+          <li>Mehr Vertrauen: saubere Links wirken nachvollziehbarer.</li>
+        </ul>
 
-  <section class="card" aria-label="Warum das Datensammlung reduziert">
-    <h2>Warum das Datensammlung reduziert</h2>
-    <p class="muted">
-      Messenger sind „Verteiler“. Ein Link kann in Sekunden an viele Orte kopiert werden.
-      Wenn URL-IDs mitlaufen, werden sie Teil der Kommunikationsspur. SafeShare entfernt diese IDs vor dem Teilen.
-    </p>
-    <ul class="muted2">
-      <li>Weniger Kennungen in Chats, Tickets, Notizen.</li>
-      <li>Weniger triviale Verknüpfung über Systeme („Join-Keys“).</li>
-      <li>Mehr Vertrauen: saubere Links wirken nachvollziehbarer.</li>
-    </ul>
-  </section>
+        <div class="warn">
+          Ehrliche Grenze: SafeShare entfernt IDs <b>im Link</b>, nicht Tracking auf der Zielseite (Cookies/Fingerprinting) oder Server-Logs.
+        </div>
+      </section>
 
-  <section class="card" id="faq" aria-label="FAQ">
-    <h2>FAQ</h2>
+      <section class="card" id="faq" aria-label="FAQ">
+        <h2>FAQ</h2>
 
-    <details class="card">
-      <summary><b>Warum ist Messenger besonders kritisch?</b></summary>
-      <p class="muted">Weil Links häufig weiterkopiert werden: Chat → Ticket → Wiki → Mail. Jede Station kann Logs/Backups erzeugen. SafeShare minimiert, was im Link selbst an IDs steckt.</p>
-    </details>
+        <details class="card">
+          <summary>Warum ist Messenger besonders kritisch?</summary>
+          <p class="muted">
+            Weil Links häufig weiterkopiert werden: Chat → Ticket → Wiki → Mail. Jede Station kann Logs/Backups erzeugen.
+            SafeShare minimiert, was im Link selbst an IDs steckt.
+          </p>
+        </details>
 
-    <details class="card">
-      <summary><b>Entfernt SafeShare auch „normale“ Parameter?</b></summary>
-      <p class="muted">Standard lässt normale Parameter in Ruhe. Streng/Custom kann mehr entfernen – je nach Policy.</p>
-    </details>
+        <details class="card">
+          <summary>Entfernt SafeShare auch „normale“ Parameter?</summary>
+          <p class="muted">Standard lässt normale Parameter in Ruhe. Streng/Custom kann mehr entfernen – je nach Policy.</p>
+        </details>
 
-    <details class="card">
-      <summary><b>Was ist mit Cookies/Fingerprinting auf der Zielseite?</b></summary>
-      <p class="muted">SafeShare reduziert URL-IDs, aber nicht Tracking-Techniken der Zielseite. Dafür wäre eine separate „Isolated Open“/Extension-Ebene nötig (Roadmap).</p>
-    </details>
-  </section>
+        <details class="card">
+          <summary>Was ist mit Cookies/Fingerprinting auf der Zielseite?</summary>
+          <p class="muted">
+            SafeShare reduziert URL-IDs, aber nicht Tracking-Techniken der Zielseite.
+            Dafür wäre eine separate „Isolated Open“/Extension-Ebene nötig (Roadmap).
+          </p>
+        </details>
+      </section>
 
-  <footer>
-    <div class="small">
-      <a class="under" href="/email-links-bereinigen.html">E-Mail</a> ·
-      <a class="under" href="/social-links-bereinigen.html">Social</a> ·
-      <a class="under" href="/hilfe.html">Hilfe</a>
-    </div>
-    <p class="small muted">SafeShare: Clean before share. Local-first. Transparent per Audit (Pro).</p>
-  </footer>
-</main>
-
-<dialog id="moreDlg" aria-label="Mehr Menü">
-  <div class="dlg">
-    <div class="row">
-      <h3>Mehr</h3>
-      <button class="x" type="button" id="closeDlg">Schließen</button>
-    </div>
-    <a href="/status.html">Status</a>
-    <a href="/datenschutz.html">Datenschutz</a>
-    <a href="/impressum.html">Impressum</a>
-    <a href="/terms.html">Nutzungsbedingungen</a>
-    <a href="/support.html">Support</a>
+      <footer>
+        <div class="footLinks">
+          <a href="/email-links-bereinigen/">E-Mail</a>
+          <a href="/messenger-links-bereinigen/">Messenger</a>
+          <a href="/social-links-bereinigen/">Social</a>
+          <a href="/hilfe/">Hilfe</a>
+        </div>
+        <p style="margin-top:10px">
+          SafeShare: Clean before share. Local-first. Transparent per Audit (Pro).
+        </p>
+      </footer>
+    </main>
   </div>
-</dialog>
 
-<script>
-  (function(){
-    const dlg = document.getElementById('moreDlg');
-    const openBtn = document.getElementById('moreBtn');
-    const closeBtn = document.getElementById('closeDlg');
-    const open = ()=>{ if(!dlg.open) dlg.showModal(); };
-    const close = ()=>{ if(dlg.open) dlg.close(); };
-    openBtn?.addEventListener('click', open);
-    closeBtn?.addEventListener('click', close);
-    dlg?.addEventListener('click', (e)=>{
-      const r = dlg.getBoundingClientRect();
-      const inBox = (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom);
-      if(!inBox) close();
-    });
-    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') close(); });
-  })();
-</script>
+  <!-- Mehr (Bottom-Sheet) -->
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
+    <div class="menuHint">Support</div>
+    <a data-page="hilfe" href="/hilfe/#kontakt">Support / Kontakt</a>
 
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"Warum ist Messenger besonders kritisch?","acceptedAnswer":{"@type":"Answer","text":"Weil Links häufig weiterkopiert werden: Chat → Ticket → Wiki → Mail. Jede Station kann Logs/Backups erzeugen. SafeShare minimiert, was im Link selbst an IDs steckt."}},
-    {"@type":"Question","name":"Entfernt SafeShare auch „normale“ Parameter?","acceptedAnswer":{"@type":"Answer","text":"Standard lässt normale Parameter in Ruhe. Streng/Custom kann mehr entfernen – je nach Policy."}},
-    {"@type":"Question","name":"Was ist mit Cookies/Fingerprinting auf der Zielseite?","acceptedAnswer":{"@type":"Answer","text":"SafeShare reduziert URL-IDs, aber nicht Tracking-Techniken der Zielseite. Dafür wäre eine separate Isolated-Open/Extension-Ebene nötig."}}
-  ]
-}
-</script>
+    <div class="divider"></div>
+
+    <div class="menuHint">Wissen</div>
+    <a data-page="schule" href="/schule/">Schule</a>
+    <a href="/datenschutz-ehrlich-erklaert/">Datenschutz ehrlich erklärt</a>
+    <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
+    <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
+    <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
+    <a data-page="lesezeichen" href="/lesezeichen/">Lesezeichen</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Kanäle</div>
+    <a href="/email-links-bereinigen/">E-Mail</a>
+    <a href="/messenger-links-bereinigen/">Messenger</a>
+    <a href="/social-links-bereinigen/">Social</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Rechtliches</div>
+    <a data-page="datenschutz" href="/datenschutz/">Datenschutzerklärung</a>
+    <a data-page="impressum" href="/impressum/">Impressum</a>
+    <a data-page="terms" href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+  </nav>
+
+  <script>
+    (function(){
+      function currentKey(){
+        const p = (location.pathname || '/').toLowerCase();
+        if (p === '/' || p === '/index.html') return 'start';
+        if (p.startsWith('/app')) return 'app';
+        if (p.startsWith('/schule')) return 'schule';
+        if (p.startsWith('/pro')) return 'pro';
+        if (p.startsWith('/hilfe')) return 'hilfe';
+
+        // Kanal-Seiten als "Schule/Wissen" markieren:
+        if (p.startsWith('/email-links-bereinigen')) return 'schule';
+        if (p.startsWith('/messenger-links-bereinigen')) return 'schule';
+        if (p.startsWith('/social-links-bereinigen')) return 'schule';
+
+        if (p.startsWith('/datenschutz')) return 'datenschutz';
+        if (p.startsWith('/impressum')) return 'impressum';
+        if (p.startsWith('/nutzungsbedingungen')) return 'terms';
+        if (p.startsWith('/lesezeichen') || p.startsWith('/bookmarklets')) return 'lesezeichen';
+        if (p.startsWith('/tracking-parameter')) return 'tracking';
+        if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
+        if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
+        return '';
+      }
+
+      const key = currentKey();
+      if (key){
+        document.querySelectorAll('[data-page]').forEach(el=>{
+          if (el.getAttribute('data-page') === key) el.classList.add('active');
+        });
+      }
+
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+      }
+
+      if(btn && menu && overlay){
+        btn.addEventListener('click',(e)=>{
+          e.preventDefault();
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+      }
+    })();
+  </script>
+
+  <!-- FAQ Schema (aus deiner Seite, nur URL-Form bleibt gleich) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Warum ist Messenger besonders kritisch?","acceptedAnswer":{"@type":"Answer","text":"Weil Links häufig weiterkopiert werden: Chat → Ticket → Wiki → Mail. Jede Station kann Logs/Backups erzeugen. SafeShare minimiert, was im Link selbst an IDs steckt."}},
+      {"@type":"Question","name":"Entfernt SafeShare auch „normale“ Parameter?","acceptedAnswer":{"@type":"Answer","text":"Standard lässt normale Parameter in Ruhe. Streng/Custom kann mehr entfernen – je nach Policy."}},
+      {"@type":"Question","name":"Was ist mit Cookies/Fingerprinting auf der Zielseite?","acceptedAnswer":{"@type":"Answer","text":"SafeShare reduziert URL-IDs, aber nicht Tracking-Techniken der Zielseite. Dafür wäre eine separate Isolated-Open/Extension-Ebene nötig."}}
+    ]
+  }
+  </script>
 </body>
 </html>
