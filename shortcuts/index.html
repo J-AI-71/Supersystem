@@ -1,0 +1,295 @@
+<!-- Datei: /shortcuts/index.html  (Ordner + index.html = Pretty-URL /shortcuts/) -->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no,date=no,address=no" />
+  <title>iOS Share-Sheet Shortcuts – SafeShare</title>
+  <meta name="description" content="1-Tap Links bereinigen und teilen: iOS/iPadOS Share-Sheet Shortcuts für SafeShare (Standard + Modus). Local-first, ohne Upload." />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#070a12" />
+  <link rel="canonical" href="https://safesharepro.com/shortcuts/" />
+
+  <!-- Favicons (falls bei dir vorhanden; sonst entfernen) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon.png">
+
+  <style>
+    :root{
+      --bg:#070a12;
+      --card: rgba(255,255,255,.06);
+      --text: CanvasText;
+      --muted: color-mix(in oklab, CanvasText 70%, transparent);
+      --muted2: color-mix(in oklab, CanvasText 58%, transparent);
+      --line: color-mix(in oklab, CanvasText 18%, transparent);
+      --accent:#2fe3b7; --accent2:#57f2d4;
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+      --radius: 18px; --max: 980px;
+    }
+    *{ box-sizing:border-box }
+    body{ margin:0; font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background: var(--bg); color: var(--text); }
+    a{ color:inherit; text-decoration:none }
+    a.under{ text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--accent) 55%, transparent); text-underline-offset: 3px; }
+    code{ font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size:.95em }
+    .wrap{ max-width: var(--max); margin:0 auto; padding: 18px 16px 70px }
+    header{ position:sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: rgba(7,10,18,.75); border-bottom:1px solid var(--line); }
+    .topbar{ max-width: var(--max); margin:0 auto; padding:12px 16px; display:flex; align-items:center; gap:14px; }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; }
+    .dot{ width:12px; height:12px; border-radius:50%; background: radial-gradient(circle at 30% 30%, var(--accent2), var(--accent)); box-shadow: 0 0 0 6px rgba(47,227,183,.12); }
+    nav{ margin-left:auto; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .nav a, .nav button{ padding:9px 12px; border-radius:12px; border:1px solid transparent; background:transparent; color:inherit; cursor:pointer; font:inherit; }
+    .nav a:hover, .nav button:hover{ border-color: var(--line); background: rgba(255,255,255,.06); }
+    .cta{ border-color: color-mix(in oklab, var(--accent) 60%, transparent) !important; background: color-mix(in oklab, var(--accent) 20%, transparent) !important; }
+
+    .grid{ display:grid; grid-template-columns: 1.08fr .92fr; gap:16px; }
+    @media (max-width: 860px){ .grid{ grid-template-columns:1fr } }
+
+    .card{ background: var(--card); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; }
+    h1{ margin:0 0 10px; font-size:28px; line-height:1.15 }
+    h2{ margin: 0 0 10px; font-size:18px }
+    h3{ margin: 14px 0 8px; font-size: 15px }
+    p{ margin:10px 0 }
+    .muted{ color: var(--muted) } .muted2{ color: var(--muted2) }
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:11px 14px; border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      cursor:pointer; font-weight:650;
+    }
+    .btn.primary{ border-color: color-mix(in oklab, var(--accent) 60%, transparent); background: color-mix(in oklab, var(--accent) 22%, transparent); }
+    .btn:active{ transform: translateY(1px) }
+    .pillrow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
+    .pill{ border:1px solid var(--line); border-radius:999px; padding:6px 10px; background: rgba(255,255,255,.05); }
+    .steps{ margin:0; padding-left:18px }
+    .steps li{ margin: 8px 0; color: var(--muted2) }
+    details{ border:1px solid var(--line); border-radius:14px; padding:10px 12px; background: rgba(255,255,255,.05); }
+    details + details{ margin-top:10px }
+    summary{ cursor:pointer }
+    footer{ margin-top:18px; padding-top:18px; border-top:1px solid var(--line); color: var(--muted) }
+    .small{ font-size:13px }
+    .warn{ border-color: color-mix(in oklab, #ffcc66 55%, var(--line)); background: color-mix(in oklab, #ffcc66 10%, rgba(255,255,255,.05)); }
+    .mono{ font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size: 13px; color: color-mix(in oklab, CanvasText 78%, transparent); }
+
+    dialog{ border:1px solid var(--line); border-radius:16px; background: rgba(20,24,35,.98); color: var(--text); box-shadow: var(--shadow); width:min(520px, calc(100% - 24px)); padding:0; }
+    dialog::backdrop{ background: rgba(0,0,0,.45) }
+    .dlg{ padding:14px } .dlg h3{ margin:0 0 8px; font-size:16px }
+    .dlg a{ display:block; padding:10px 10px; border-radius:12px; border:1px solid transparent }
+    .dlg a:hover{ border-color: var(--line); background: rgba(255,255,255,.06) }
+    .dlg .row{ display:flex; justify-content: space-between; align-items:center; gap:10px; margin-top:10px }
+    .x{ margin-left:auto; border:1px solid var(--line); background:transparent; color:inherit; border-radius:12px; padding:8px 10px; cursor:pointer }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="topbar">
+    <a class="brand" href="/"><span class="dot" aria-hidden="true"></span><span>SafeShare</span></a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="/app.html">App</a>
+      <a href="/pro.html">Pro</a>
+      <a href="/schule.html">Schule</a>
+      <a href="/hilfe.html">Hilfe</a>
+      <button id="moreBtn" type="button" aria-haspopup="dialog" aria-controls="moreDlg">Mehr</button>
+      <a class="cta" href="/app.html">Jetzt bereinigen</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="content">
+  <section class="grid" aria-label="iOS Shortcuts für SafeShare">
+    <div class="card">
+      <h1>iOS / iPadOS Share-Sheet Shortcuts</h1>
+      <p class="muted">
+        1-Tap Workflow: Link teilen → Shortcut bereinigt lokal → du teilst den sauberen Link weiter.
+        Ideal für Messenger, E-Mail und Social.
+      </p>
+
+      <div class="pillrow" aria-label="Was entfernt wird">
+        <span class="pill"><code>utm_*</code></span>
+        <span class="pill"><code>gclid</code></span>
+        <span class="pill"><code>fbclid</code></span>
+        <span class="pill"><code>msclkid</code></span>
+        <span class="pill"><code>mc_eid</code></span>
+      </div>
+
+      <div class="actions" aria-label="Install Buttons">
+        <!-- TODO: Ersetze die Platzhalter-URLs durch deine iCloud-Shortcut-Links -->
+        <a class="btn primary" id="btnStandard" href="REPLACE_WITH_ICLOUD_SHORTCUT_LINK_STANDARD">Shortcut installieren: Standard</a>
+        <a class="btn" id="btnMode" href="REPLACE_WITH_ICLOUD_SHORTCUT_LINK_MODE">Shortcut installieren: Modus wählen</a>
+      </div>
+
+      <p class="muted small">
+        Local-first: Der Shortcut arbeitet auf deinem Gerät. SafeShare bekommt dadurch keine Daten.
+      </p>
+
+      <details class="warn">
+        <summary><b>Wichtig (ehrlich): Was der Shortcut nicht kann</b></summary>
+        <p class="muted">
+          Der Shortcut entfernt <b>URL-Parameter</b>. Er verhindert nicht automatisch Server-Logs, Cookies/Fingerprinting
+          oder Tracking innerhalb eingeloggter Accounts. Er reduziert eine konkrete Datenquelle: <b>IDs im Link</b>.
+        </p>
+      </details>
+    </div>
+
+    <aside class="card" aria-label="Setup Anleitung">
+      <h2>Setup in 60 Sekunden</h2>
+      <ol class="steps">
+        <li>Installiere <b>Shortcut: Standard</b>.</li>
+        <li>Beim Hinzufügen ggf. „Unvertrauenswürdige Kurzbefehle“ bestätigen (iOS-Standard).</li>
+        <li>In Safari/Mail/Messenger: <b>Teilen</b> → Shortcut auswählen.</li>
+        <li>Der saubere Link ist in der Zwischenablage und im Share-Sheet.</li>
+      </ol>
+
+      <h3>Welche zwei Shortcuts?</h3>
+      <ul class="steps">
+        <li><b>Standard</b> (1 Tap): Für 95% der Fälle.</li>
+        <li><b>Modus</b>: Standard / Streng / Publisher/Affiliate (für Sonderfälle).</li>
+      </ul>
+
+      <p class="muted">
+        Wenn du lieber in der Web-App arbeitest: <a class="under" href="/app.html">SafeShare App öffnen</a>.
+      </p>
+    </aside>
+  </section>
+
+  <section class="card" aria-label="So nutzt du es in E-Mail, Messenger, Social">
+    <h2>Clean before share: E-Mail · Messenger · Social</h2>
+    <div class="grid" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="card" style="box-shadow:none">
+        <h3>E-Mail</h3>
+        <ol class="steps">
+          <li>Link kopieren oder teilen</li>
+          <li>Shortcut → sauberer Link</li>
+          <li>Weiterleiten/Antworten</li>
+        </ol>
+        <p class="muted small"><a class="under" href="/email-links-bereinigen/">Mehr dazu</a></p>
+      </div>
+      <div class="card" style="box-shadow:none">
+        <h3>Messenger</h3>
+        <ol class="steps">
+          <li>Teilen aus Chat</li>
+          <li>Shortcut → clean</li>
+          <li>In Chat posten</li>
+        </ol>
+        <p class="muted small"><a class="under" href="/messenger-links-bereinigen/">Mehr dazu</a></p>
+      </div>
+      <div class="card" style="box-shadow:none">
+        <h3>Social</h3>
+        <ol class="steps">
+          <li>Quelle → Link kopieren</li>
+          <li>Shortcut → clean</li>
+          <li>Posten</li>
+        </ol>
+        <p class="muted small"><a class="under" href="/social-links-bereinigen/">Mehr dazu</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="faq" aria-label="FAQ">
+    <h2>FAQ</h2>
+
+    <details class="card">
+      <summary><b>Speichert der Shortcut Links oder Nutzungsdaten?</b></summary>
+      <p class="muted">Nein. Der Shortcut läuft lokal auf deinem Gerät. SafeShare erhält dadurch keine Link-Inhalte.</p>
+    </details>
+
+    <details class="card">
+      <summary><b>Warum gibt es zwei Shortcuts?</b></summary>
+      <p class="muted">Damit „Standard“ wirklich 1-Tap bleibt. „Modus“ ist für Sonderfälle (Streng / Publisher).</p>
+    </details>
+
+    <details class="card">
+      <summary><b>Was macht „Streng“?</b></summary>
+      <p class="muted">Streng entfernt zusätzlich weitere typische Tracking-/Referrer-Parameter. Wenn dabei einmal etwas „zu viel“ entfernt wird, ist Standard die sichere Wahl.</p>
+    </details>
+
+    <details class="card">
+      <summary><b>Warum nicht einfach einen URL-Shortener?</b></summary>
+      <p class="muted">Shortener verstecken die URL. SafeShare entfernt Tracking-Ballast aus der URL selbst (transparent & nachvollziehbar).</p>
+    </details>
+
+    <details class="card">
+      <summary><b>Ich sehe beim Hinzufügen eine Sicherheitswarnung – normal?</b></summary>
+      <p class="muted">Ja. iOS schützt hier vor fremden Automationen. Du kannst den Shortcut ansehen, bevor du ihn hinzufügst.</p>
+    </details>
+
+    <details class="card">
+      <summary><b>Ich will Audit/Policies/Bulk – reicht der Shortcut?</b></summary>
+      <p class="muted">Für schnelle Shares: Shortcut. Für Transparenz (Removed/Kept), Policies, Bulk-Clean und Domain-Regeln: <a class="under" href="/pro.html">SafeShare Pro</a>.</p>
+    </details>
+  </section>
+
+  <section class="card" aria-label="Für dich als Betreiberin: Links ersetzen">
+    <h2>Für dich: iCloud-Links einsetzen</h2>
+    <p class="muted">Ersetze in dieser Datei diese beiden Platzhalter:</p>
+    <p class="mono">REPLACE_WITH_ICLOUD_SHORTCUT_LINK_STANDARD<br/>REPLACE_WITH_ICLOUD_SHORTCUT_LINK_MODE</p>
+    <p class="muted small">
+      Tipp: Wenn du Versionen updatest, erstelle neue iCloud-Links und tausche sie hier aus.
+    </p>
+  </section>
+
+  <footer>
+    <div class="small">
+      <a class="under" href="/app.html">App</a> ·
+      <a class="under" href="/pro.html">Pro</a> ·
+      <a class="under" href="/hilfe.html">Hilfe</a> ·
+      <a class="under" href="/schule.html">Schule</a>
+    </div>
+    <p class="small muted">SafeShare: Links bereinigen vor dem Teilen. Local-first. Kein Upload.</p>
+  </footer>
+</main>
+
+<dialog id="moreDlg" aria-label="Mehr Menü">
+  <div class="dlg">
+    <div class="row">
+      <h3>Mehr</h3>
+      <button class="x" type="button" id="closeDlg">Schließen</button>
+    </div>
+    <a href="/status.html">Status</a>
+    <a href="/datenschutz.html">Datenschutz</a>
+    <a href="/impressum.html">Impressum</a>
+    <a href="/terms.html">Nutzungsbedingungen</a>
+    <a href="/support.html">Support</a>
+  </div>
+</dialog>
+
+<script>
+  (function(){
+    const dlg = document.getElementById('moreDlg');
+    const openBtn = document.getElementById('moreBtn');
+    const closeBtn = document.getElementById('closeDlg');
+    const open = ()=>{ if(!dlg.open) dlg.showModal(); };
+    const close = ()=>{ if(dlg.open) dlg.close(); };
+
+    openBtn?.addEventListener('click', open);
+    closeBtn?.addEventListener('click', close);
+
+    dlg?.addEventListener('click', (e)=>{
+      const r = dlg.getBoundingClientRect();
+      const inBox = (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom);
+      if(!inBox) close();
+    });
+
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') close(); });
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"SafeShare",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Web",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},
+  "description":"Local-first URL-Cleaner: Entfernt Tracking-Parameter aus Links, bevor du sie teilst."
+}
+</script>
+</body>
+</html>
