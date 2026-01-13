@@ -26,12 +26,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="SafeShare App – Links bereinigen" />
-<meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Link einfügen → bereinigen → kopieren/teilen." />
-<meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
-<meta name="twitter:image:alt" content="SafeShare App – Links bereinigen (Vorschau)" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare App – Links bereinigen" />
+  <meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Link einfügen → bereinigen → kopieren/teilen." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
+  <meta name="twitter:image:alt" content="SafeShare App – Links bereinigen (Vorschau)" />
 
   <!-- Favicons + PWA (IMMER absolut bei Slugs) -->
   <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
@@ -90,13 +90,23 @@
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
-      width: 38px; height: 38px; border-radius: 999px;
-      border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
-      box-shadow: var(--shadow);
-      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
+      width:38px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(47,227,183,.22);
+      background:rgba(47,227,183,.08);
+      box-shadow:0 10px 26px rgba(0,0,0,.28);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
     }
-    .logoWrap img{ width:28px; height:28px; display:block; }
+    .logoWrap .logoImg{
+      width:28px;
+      height:28px;
+      display:block;
+      object-fit:contain;
+    }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -298,79 +308,60 @@
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
 
-  <style>
-/* === OVERRIDE: Logo randlos, kein Kreis/Badge === */
-.logoWrap{
-  width:auto !important;
-  height:auto !important;
-  border-radius:0 !important;
-  border:0 !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  overflow:visible !important;
-  display:flex !important;
-  align-items:center !important;
-  flex:0 0 auto !important;
-  padding:0 !important;
-}
+    /* Impact */
+    .ssImpactGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: .75rem;
+      margin: .75rem 0;
+    }
+    .ssImpactItem{
+      padding:.75rem;
+      border:1px solid var(--border);
+      border-radius: .9rem;
+      background: rgba(255,255,255,.03);
+    }
+    @media (prefers-color-scheme: light){
+      .ssImpactItem{ background: rgba(17,24,39,.03); }
+    }
+    .ssImpactNum{
+      font-size: 1.6rem;
+      font-weight: 780;
+      letter-spacing: -0.02em;
+    }
+    .ssImpactLabel{
+      font-size: .9rem;
+      color: var(--muted2);
+    }
+  </style>
+</head>
 
-/* Logo im Badge */
-.logoWrap .logoImg{
-  width:28px;
-  height:28px;
-  display:block;
-  object-fit:contain;
-}
+<body>
+  <div class="wrap">
 
-/* Fallback nur anzeigen, wenn Bild nicht lädt */
-.logoFallback{
-  font-weight:800;
-  color: var(--mint);
-  font-size:14px;
-  line-height:1;
-  display:none;
-}
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img
+            class="logoImg"
+            src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+            alt="SafeShare"
+            width="28"
+            height="28"
+            decoding="async"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+          >
+          <span id="logoFallback" class="logoFallback">SS</span>
+        </div>
 
-/* Badge: 1 Ring, clean */
-.logoWrap{
-  width:38px;
-  height:38px;
-  border-radius:999px;
-  border:1px solid rgba(47,227,183,.22);
-  background:rgba(47,227,183,.08);
-  box-shadow:0 10px 26px rgba(0,0,0,.28);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  flex:0 0 auto;
-}
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Links sauber teilen</div>
+        </div>
+      </div>
 
-.logoWrap::before{ content:none !important; }
-    
-</style>
-<header>
-  <div class="brand">
-<div class="logoWrap" aria-label="SafeShare Logo">
-  <img
-    class="logoImg"
-    src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
-    alt="SafeShare"
-    width="28"
-    height="28"
-    decoding="async"
-    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
-  >
-  <span id="logoFallback" class="logoFallback">SS</span>
-</div>
-
-    <div class="brandText">
-      <div class="title">SafeShare</div>
-      <div class="sub">Links sauber teilen</div>
-    </div>
-  </div>
-
-<div class="small">App · local-first</div>
-</header>
+      <div class="small">App · local-first</div>
+    </header>
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
@@ -428,16 +419,53 @@
       </div>
     </section>
 
+    <!-- Impact (Ballast-Zähler) -->
+    <section class="card" id="ssImpactCard" hidden>
+      <h2>Impact (local-first)</h2>
+
+      <p class="muted" id="ssImpactLastLineWrap" hidden>
+        <span id="ssImpactLastLine"></span>
+      </p>
+
+      <div class="ssImpactGrid">
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactLinks">0</div>
+          <div class="ssImpactLabel">Links bereinigt</div>
+        </div>
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactParams">0</div>
+          <div class="ssImpactLabel">Parameter entfernt</div>
+        </div>
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactAdIds">0</div>
+          <div class="ssImpactLabel">Ad-IDs entfernt</div>
+        </div>
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactUTM">0</div>
+          <div class="ssImpactLabel">UTM entfernt</div>
+        </div>
+      </div>
+
+      <p class="muted2">
+        Gespeichert werden nur Summen im Browser (keine URLs, keine Domains).
+      </p>
+
+      <div class="row">
+        <button class="btn ghost" type="button" id="ssImpactReset">Statistik zurücksetzen</button>
+        <span class="muted2">Zuletzt: <span id="ssImpactUpdated">—</span></span>
+      </div>
+    </section>
+
     <section class="card">
       <h2>Was wird entfernt?</h2>
       <ul>
         <li><b>utm_*</b> (Kampagnen-Parameter)</li>
         <li><b>Klick-IDs</b> wie <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
-        <li>weitere typische Tracking-Keys (z. B. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>)</li>
+        <li>weitere typische Tracking-Keys (z. B. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>, <span class="mono">srsltid</span>)</li>
       </ul>
       <div class="warn">
         Nicht blind „alles weg“: Affiliate/Partner-Keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) können Zuordnung/Einnahmen steuern.
-        Dafür ist Pro gedacht: Allowlist + Audit + Policies.
+        Aggressiv ist Pro (Policies + Audit + Allowlist).
       </div>
       <div class="row">
         <a class="btn" href="/tracking-parameter/">Tracking erklärt</a>
@@ -464,6 +492,7 @@
         </div>
       </div>
     </footer>
+
   </div>
 
   <div class="moreOverlay" id="moreOverlay" hidden></div>
@@ -553,12 +582,124 @@
       const auditRow = $('#auditRow');
       const btnOpen = $('#btnOpen');
 
+      // ===== Standard (praxistauglich) =====
+      // Aggressiv ist Pro (nicht hier): _gl, s, spm, spm_id_from, ref_src, usw.
       const TRACKING_KEYS = new Set([
-        'gclid','gbraid','wbraid','fbclid','msclkid','igshid','twclid','ttclid','li_fat_id',
-        'mc_cid','mc_eid',
-        '_ga','_gl','_gac','_gid','_fbp','_fbc',
-        'ref_src','s','spm','spm_id_from','mkt_tok',
+        // Ad/Click IDs
+        'gclid','dclid','gbraid','wbraid',
+        'fbclid','msclkid','igshid',
+        'twclid','ttclid','li_fat_id',
+        'yclid',
+        // Newsletter/CRM
+        'mc_cid','mc_eid','mkt_tok',
+        '_hsenc','_hsmi',
+        // Google Search
+        'srsltid',
+        // Analytics IDs (meist safe)
+        '_ga','_gid','_gac',
+        '_fbp','_fbc',
+        // optional häufig
+        'obclid','tblci'
       ]);
+
+      // ===== Impact (local-first) =====
+      const IMPACT_LS_KEY = "ss_impact_v1";
+      const AD_ID_KEYS = new Set([
+        "gclid","dclid","gbraid","wbraid",
+        "fbclid","msclkid","ttclid","twclid","li_fat_id",
+        "igshid","yclid",
+        "mc_cid","mc_eid","mkt_tok",
+        "srsltid"
+      ]);
+
+      function impactLoad(){
+        try{
+          const raw = localStorage.getItem(IMPACT_LS_KEY);
+          const d = raw ? JSON.parse(raw) : null;
+          return Object.assign({
+            linksCleaned: 0,
+            paramsRemoved: 0,
+            utmRemoved: 0,
+            adIdsRemoved: 0,
+            lastUpdatedISO: ""
+          }, d || {});
+        }catch(e){
+          return { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
+        }
+      }
+      function impactSave(state){
+        try{ localStorage.setItem(IMPACT_LS_KEY, JSON.stringify(state)); }catch(e){}
+      }
+      function impactFormat(n){
+        try{ return new Intl.NumberFormat("de-DE").format(n); }catch(e){ return String(n); }
+      }
+      function impactSetText(id, text){
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+      function impactSetVisible(id, visible){
+        const el = document.getElementById(id);
+        if (el) el.hidden = !visible;
+      }
+      function impactUpdateUI(state, removedKeys){
+        impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
+        impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
+        impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
+        impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
+        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("de-DE") : "—");
+
+        if (Array.isArray(removedKeys) && removedKeys.length){
+          const removedCount = removedKeys.length;
+          const utm = removedKeys.filter(k => String(k).toLowerCase().startsWith("utm_")).length;
+          const ad = removedKeys.filter(k => AD_ID_KEYS.has(String(k).toLowerCase())).length;
+
+          const line =
+            `Entfernt: ${removedCount} Parameter` +
+            (ad ? ` (${ad} Ad-IDs)` : "") +
+            (utm ? `, davon ${utm} UTM` : "");
+
+          impactSetText("ssImpactLastLine", line);
+          impactSetVisible("ssImpactLastLineWrap", true);
+        } else {
+          impactSetVisible("ssImpactLastLineWrap", false);
+        }
+      }
+      function impactAdd(removedKeys){
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
+        const state = impactLoad();
+
+        state.linksCleaned += 1;
+        state.paramsRemoved += keys.length;
+        state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        state.lastUpdatedISO = new Date().toISOString();
+
+        impactSave(state);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = false;
+
+        impactUpdateUI(state, keys);
+      }
+      function impactReset(){
+        const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
+        impactSave(state);
+        impactUpdateUI(state, []);
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = true;
+      }
+      function impactInit(){
+        const state = impactLoad();
+        impactUpdateUI(state, []);
+        const btn = document.getElementById("ssImpactReset");
+        if (btn) btn.addEventListener("click", impactReset);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card){
+          const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
+          card.hidden = !hasAny;
+        }
+      }
 
       function showMsg(type, text){
         msg.hidden = !text;
@@ -655,6 +796,10 @@
         try{
           const res = cleanUrl(input.value);
           renderResult(res);
+
+          // Impact zählen (nur Summen, local-first)
+          impactAdd(res.removed);
+
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
           showMsg('warn', e.message || 'Fehler beim Bereinigen.');
@@ -726,6 +871,9 @@
           setTimeout(doClean, 120);
         }
       })();
+
+      // Init
+      impactInit();
     })();
   </script>
 
