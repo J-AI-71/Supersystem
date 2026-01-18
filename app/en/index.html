@@ -1,1 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>App – SafeShare</title>
+  <meta name="description" content="SafeShare App: remove tracking parameters from links (local-first in your browser). Paste a link → clean → copy/share." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://safesharepro.com/app/en/" />
+  <link rel="alternate" hreflang="de" href="https://safesharepro.com/app/" />
+  <link rel="alternate" hreflang="en" href="https://safesharepro.com/app/en/" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111">
 
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="SafeShare App – Clean links (local-first)" />
+  <meta property="og:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) – locally in your browser. Paste → clean → copy/share." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://safesharepro.com/app/en/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
+  <meta property="og:image:alt" content="SafeShare App – Clean links (preview)" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare App – Clean links" />
+  <meta name="twitter:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) – locally in your browser. Paste → clean → copy/share." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
+  <meta name="twitter:image:alt" content="SafeShare App – Clean links (preview)" />
+
+  <!-- Favicons + PWA (IMMER absolut bei Slugs) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+
+  <style>
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mint: #2fe3b7;
+      --mint2: rgba(47,227,183,.18);
+      --mint3: rgba(47,227,183,.28);
+      --warn: rgba(255,197,84,.16);
+      --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --warn: rgba(255,197,84,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .logoWrap{
+      width:38px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(47,227,183,.22);
+      background:rgba(47,227,183,.08);
+      box-shadow:0 10px 26px rgba(0,0,0,.28);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .logoWrap .logoImg{
+      width:28px;
+      height:28px;
+      display:block;
+      object-fit:contain;
+    }
+    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
+    .brandText{ min-width:0; }
+    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
+
+    .tabsBar{
+      position: sticky; top:0; z-index: 50;
+      padding: 8px 0 14px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
+    }
+    .tabs{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      font-size: 13px; color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap; flex: 0 0 auto;
+      background: transparent;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
+    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
+    .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .field{
+      width:100%;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      outline: none;
+    }
+    textarea.field{ min-height: 110px; resize: vertical; }
+    .field:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
+    .resultBox{
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    .kv{
+      display:flex; gap:10px; flex-wrap:wrap;
+      font-size: 12px; color: var(--muted2);
+      margin-top: 10px;
+    }
+    .kv span{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+    }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    .moreOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9998;
+    }
+    .moreBtn{ appearance:none; cursor:pointer; }
+    .moreMenu{
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      max-height: min(70vh, 520px);
+      overflow: auto;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,25,.96);
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+    .moreMenu.open{ transform: translateY(0); opacity: 1; }
+    @media (prefers-color-scheme: light){
+      .moreOverlay{ background: rgba(17,24,39,.06); }
+      .moreMenu{
+        background: rgba(255,255,255,.98);
+        border: 1px solid rgba(17,24,39,.12);
+        box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      }
+    }
+    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
+    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
+    .moreMenu a{
+      display:block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .moreMenu a:last-child{ margin-bottom: 0; }
+    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+
+    /* Impact */
+    .ssImpactGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: .75rem;
+      margin: .75rem 0;
+    }
+    .ssImpactItem{
+      padding:.75rem;
+      border:1px solid var(--border);
+      border-radius: .9rem;
+      background: rgba(255,255,255,.03);
+    }
+    @media (prefers-color-scheme: light){
+      .ssImpactItem{ background: rgba(17,24,39,.03); }
+    }
+    .ssImpactNum{
+      font-size: 1.6rem;
+      font-weight: 780;
+      letter-spacing: -0.02em;
+    }
+    .ssImpactLabel{
+      font-size: .9rem;
+      color: var(--muted2);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="brand">
+        <div class="logoWrap" aria-label="SafeShare Logo">
+          <img
+            class="logoImg"
+            src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+            alt="SafeShare"
+            width="28"
+            height="28"
+            decoding="async"
+            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
+          >
+          <span id="logoFallback" class="logoFallback">SS</span>
+        </div>
+
+        <div class="brandText">
+          <div class="title">SafeShare</div>
+          <div class="sub">Share clean links</div>
+        </div>
+      </div>
+
+      <div class="small">App · local-first</div>
+    </header>
+
+    <div class="tabsBar">
+      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
+        <a class="tab" data-page="start" href="/">Home</a>
+        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="schule" href="/schule/">School</a>
+        <a class="tab" data-page="pro" href="/pro/">Pro</a>
+        <a class="tab" data-page="hilfe" href="/hilfe/">Help</a>
+        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">More ▾</button>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1>Clean a link</h1>
+      <p>
+        Tracking parameters are extra “stickers” on a link. SafeShare removes common tracking keys locally in your
+        browser. Nothing is uploaded.
+      </p>
+      <div class="note">
+        Note: this is not an “invisibility” promise. It’s link hygiene before sharing.
+      </div>
+    </section>
+
+    <section class="card" id="cleaner">
+      <h2>Paste a URL</h2>
+      <p>Paste → clean → copy/share.</p>
+
+      <textarea class="field mono" id="urlInput" placeholder="https://example.com/page?utm_source=...&fbclid=..."></textarea>
+
+      <div class="row">
+        <button class="btn primary" id="btnClean" type="button">Clean</button>
+        <button class="btn" id="btnPaste" type="button">Paste</button>
+        <button class="btn ghost" id="btnClear" type="button">Clear</button>
+      </div>
+
+      <div class="warn" id="msg" hidden></div>
+    </section>
+
+    <section class="card" id="resultCard" hidden>
+      <h2>Result</h2>
+
+      <div class="resultBox mono" id="outUrl"></div>
+
+      <div class="row">
+        <button class="btn primary" id="btnCopy" type="button">Copy</button>
+        <a class="btn" id="btnOpen" href="#" target="_blank" rel="noopener">Open</a>
+        <button class="btn" id="btnShare" type="button">Share</button>
+      </div>
+
+      <div class="kv" id="auditRow" hidden></div>
+
+      <div class="note" style="margin-top:12px">
+        If a cleaned link doesn’t work: open the original first → then try the cleaned link.
+        If only the cleaned link fails, a parameter was likely functional → use a more conservative approach or Pro (audit/allowlist).
+      </div>
+    </section>
+
+    <!-- Impact (Ballast counter) -->
+    <section class="card" id="ssImpactCard" hidden>
+      <h2>Impact (local-first)</h2>
+
+      <p class="muted" id="ssImpactLastLineWrap" hidden>
+        <span id="ssImpactLastLine"></span>
+      </p>
+
+      <div class="ssImpactGrid">
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactLinks">0</div>
+          <div class="ssImpactLabel">Links cleaned</div>
+        </div>
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactParams">0</div>
+          <div class="ssImpactLabel">Parameters removed</div>
+        </div>
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactAdIds">0</div>
+          <div class="ssImpactLabel">Ad IDs removed</div>
+        </div>
+        <div class="ssImpactItem">
+          <div class="ssImpactNum" id="ssImpactUTM">0</div>
+          <div class="ssImpactLabel">UTM removed</div>
+        </div>
+      </div>
+
+      <p class="muted2">
+        Only totals are stored locally in your browser (no URLs, no domains).
+      </p>
+
+      <div class="row">
+        <button class="btn ghost" type="button" id="ssImpactReset">Reset stats</button>
+        <span class="muted2">Last: <span id="ssImpactUpdated">—</span></span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>What gets removed?</h2>
+      <ul>
+        <li><b>utm_*</b> (campaign parameters)</li>
+        <li><b>Click IDs</b> like <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
+        <li>other common tracking keys (e.g. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>, <span class="mono">srsltid</span>)</li>
+      </ul>
+      <div class="warn">
+        Don’t remove everything blindly: affiliate/partner keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) can control attribution/revenue.
+        Pro is the advanced mode (policies + audit + allowlist).
+      </div>
+      <div class="row">
+        <a class="btn" href="/tracking-parameter/">Tracking explained</a>
+        <a class="btn" href="/utm-parameter-entfernen/">UTM explained</a>
+        <a class="btn ghost" href="/pro/">See Pro</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – share links without extra baggage.</div>
+          <div>App: fast &amp; simple · Pro: policies, allowlist, audit.</div>
+        </div>
+        <div class="footLinks">
+          <a data-page="start" href="/">Home</a>
+          <a data-page="app" href="/app/">App</a>
+          <a data-page="schule" href="/schule/">School</a>
+          <a data-page="pro" href="/pro/">Pro</a>
+          <a data-page="hilfe" href="/hilfe/">Help</a>
+          <a data-page="datenschutz" href="/datenschutz/">Privacy</a>
+          <a data-page="impressum" href="/impressum/">Imprint</a>
+          <a data-page="terms" href="/nutzungsbedingungen/">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <div class="moreOverlay" id="moreOverlay" hidden></div>
+  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="More" hidden>
+    <div class="menuHint">Support</div>
+    <a data-page="hilfe" href="/hilfe/#kontakt">Support / Contact</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Learn</div>
+    <a data-page="schule" href="/schule/">School</a>
+    <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
+    <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
+    <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool comparison</a>
+    <a data-page="lesezeichen" href="/lesezeichen/">Bookmarks</a>
+
+    <div class="divider"></div>
+
+    <div class="menuHint">Legal</div>
+    <a data-page="datenschutz" href="/datenschutz/">Privacy</a>
+    <a data-page="impressum" href="/impressum/">Imprint</a>
+    <a data-page="terms" href="/nutzungsbedingungen/">Terms</a>
+  </nav>
+
+  <script>
+    (function(){
+      function currentKey(){
+        const p = (location.pathname || '/').toLowerCase();
+        if (p === '/' || p === '/index.html') return 'start';
+        if (p.startsWith('/app')) return 'app';
+        if (p.startsWith('/schule')) return 'schule';
+        if (p.startsWith('/pro')) return 'pro';
+        if (p.startsWith('/hilfe')) return 'hilfe';
+        if (p.startsWith('/datenschutz')) return 'datenschutz';
+        if (p.startsWith('/impressum')) return 'impressum';
+        if (p.startsWith('/nutzungsbedingungen')) return 'terms';
+        if (p.startsWith('/lesezeichen')) return 'lesezeichen';
+        if (p.startsWith('/tracking-parameter')) return 'tracking';
+        if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
+        if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
+        return '';
+      }
+      const key = currentKey();
+      if (key){
+        document.querySelectorAll('[data-page]').forEach(el=>{
+          if (el.getAttribute('data-page') === key) el.classList.add('active');
+        });
+      }
+
+      const btn = document.getElementById('moreBtn');
+      const menu = document.getElementById('moreMenu');
+      const overlay = document.getElementById('moreOverlay');
+
+      function lockScroll(lock){
+        document.body.style.overflow = lock ? 'hidden' : '';
+        document.body.style.touchAction = lock ? 'none' : '';
+      }
+      function openMenu(){
+        overlay.hidden = false; menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('open'));
+        btn.setAttribute('aria-expanded','true');
+        lockScroll(true);
+      }
+      function closeMenu(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
+      }
+      if(btn && menu && overlay){
+        btn.addEventListener('click',(e)=>{
+          e.preventDefault();
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+      }
+
+      const $ = (s)=>document.querySelector(s);
+      const input = $('#urlInput');
+      const msg = $('#msg');
+      const resultCard = $('#resultCard');
+      const outUrl = $('#outUrl');
+      const auditRow = $('#auditRow');
+      const btnOpen = $('#btnOpen');
+
+      // ===== Standard (practical) =====
+      // Aggressive is Pro (not here): _gl, s, spm, spm_id_from, ref_src, etc.
+      const TRACKING_KEYS = new Set([
+        // Ad/Click IDs
+        'gclid','dclid','gbraid','wbraid',
+        'fbclid','msclkid','igshid',
+        'twclid','ttclid','li_fat_id',
+        'yclid',
+        // Newsletter/CRM
+        'mc_cid','mc_eid','mkt_tok',
+        '_hsenc','_hsmi',
+        // Google Search
+        'srsltid',
+        // Analytics IDs (often safe)
+        '_ga','_gid','_gac',
+        '_fbp','_fbc',
+        // common optional
+        'obclid','tblci'
+      ]);
+
+      // ===== Impact (local-first) =====
+      const IMPACT_LS_KEY = "ss_impact_v1";
+      const AD_ID_KEYS = new Set([
+        "gclid","dclid","gbraid","wbraid",
+        "fbclid","msclkid","ttclid","twclid","li_fat_id",
+        "igshid","yclid",
+        "mc_cid","mc_eid","mkt_tok",
+        "srsltid"
+      ]);
+
+      function impactLoad(){
+        try{
+          const raw = localStorage.getItem(IMPACT_LS_KEY);
+          const d = raw ? JSON.parse(raw) : null;
+          return Object.assign({
+            linksCleaned: 0,
+            paramsRemoved: 0,
+            utmRemoved: 0,
+            adIdsRemoved: 0,
+            lastUpdatedISO: ""
+          }, d || {});
+        }catch(e){
+          return { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
+        }
+      }
+      function impactSave(state){
+        try{ localStorage.setItem(IMPACT_LS_KEY, JSON.stringify(state)); }catch(e){}
+      }
+      function impactFormat(n){
+        try{ return new Intl.NumberFormat("en-US").format(n); }catch(e){ return String(n); }
+      }
+      function impactSetText(id, text){
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+      function impactSetVisible(id, visible){
+        const el = document.getElementById(id);
+        if (el) el.hidden = !visible;
+      }
+      function impactUpdateUI(state, removedKeys){
+        impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
+        impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
+        impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
+        impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
+        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("en-US") : "—");
+
+        if (Array.isArray(removedKeys) && removedKeys.length){
+          const removedCount = removedKeys.length;
+          const utm = removedKeys.filter(k => String(k).toLowerCase().startsWith("utm_")).length;
+          const ad = removedKeys.filter(k => AD_ID_KEYS.has(String(k).toLowerCase())).length;
+
+          const line =
+            `Removed: ${removedCount} parameters` +
+            (ad ? ` (${ad} ad IDs)` : "") +
+            (utm ? `, including ${utm} UTM` : "");
+
+          impactSetText("ssImpactLastLine", line);
+          impactSetVisible("ssImpactLastLineWrap", true);
+        } else {
+          impactSetVisible("ssImpactLastLineWrap", false);
+        }
+      }
+      function impactAdd(removedKeys){
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
+        const state = impactLoad();
+
+        state.linksCleaned += 1;
+        state.paramsRemoved += keys.length;
+        state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        state.lastUpdatedISO = new Date().toISOString();
+
+        impactSave(state);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = false;
+
+        impactUpdateUI(state, keys);
+      }
+      function impactReset(){
+        const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
+        impactSave(state);
+        impactUpdateUI(state, []);
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = true;
+      }
+      function impactInit(){
+        const state = impactLoad();
+        impactUpdateUI(state, []);
+        const btn = document.getElementById("ssImpactReset");
+        if (btn) btn.addEventListener("click", impactReset);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card){
+          const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
+          card.hidden = !hasAny;
+        }
+      }
+
+      function showMsg(type, text){
+        msg.hidden = !text;
+        msg.className = type ? type : 'warn';
+        msg.textContent = text || '';
+      }
+
+      function normalizeUrl(s){
+        s = (s || '').trim();
+        if (!s) return '';
+        if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)) {
+          if (s.startsWith('//')) s = 'https:' + s;
+          else s = 'https://' + s;
+        }
+        return s;
+      }
+
+      function cleanUrl(raw){
+        const original = (raw || '').trim();
+        if (!original) throw new Error('Please paste a URL.');
+        const normalized = normalizeUrl(original);
+
+        let url;
+        try{ url = new URL(normalized); }
+        catch(e){ throw new Error('This does not look like a valid URL.'); }
+
+        const removed = [];
+        const kept = [];
+
+        const keys = [];
+        url.searchParams.forEach((_, k)=>keys.push(k));
+
+        keys.forEach((k)=>{
+          const low = (k || '').toLowerCase();
+          const isUtm = low.startsWith('utm_');
+          const isTracking = TRACKING_KEYS.has(low);
+
+          if (isUtm || isTracking){
+            url.searchParams.delete(k);
+            removed.push(k);
+          } else {
+            kept.push(k);
+          }
+        });
+
+        return { cleaned: url.toString(), removed, kept };
+      }
+
+      async function copyText(text){
+        try{
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(e){
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position='fixed'; ta.style.left='-9999px';
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+          try{ document.execCommand('copy'); }catch(_){}
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      function renderResult(res){
+        resultCard.hidden = false;
+        outUrl.textContent = res.cleaned;
+        btnOpen.href = res.cleaned;
+
+        auditRow.innerHTML = '';
+        const r = Array.from(new Set(res.removed));
+        const k = Array.from(new Set(res.kept));
+        if (r.length || k.length){
+          auditRow.hidden = false;
+          if (r.length){
+            const el = document.createElement('span');
+            el.innerHTML = 'Removed: <span class="mono">' + r.join(', ') + '</span>';
+            auditRow.appendChild(el);
+          }
+          if (k.length){
+            const el2 = document.createElement('span');
+            el2.innerHTML = 'Kept: <span class="mono">' + k.join(', ') + '</span>';
+            auditRow.appendChild(el2);
+          }
+        } else {
+          auditRow.hidden = true;
+        }
+      }
+
+      function doClean(){
+        showMsg('', '');
+        resultCard.hidden = true;
+
+        try{
+          const res = cleanUrl(input.value);
+          renderResult(res);
+
+          // Count impact (totals only, local-first)
+          impactAdd(res.removed);
+
+          setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
+        }catch(e){
+          showMsg('warn', e.message || 'Error while cleaning.');
+        }
+      }
+
+      $('#btnClean').addEventListener('click', doClean);
+
+      $('#btnClear').addEventListener('click', ()=>{
+        input.value = '';
+        resultCard.hidden = true;
+        showMsg('', '');
+        input.focus();
+      });
+
+      $('#btnPaste').addEventListener('click', async ()=>{
+        showMsg('', '');
+        try{
+          if (navigator.clipboard && navigator.clipboard.readText){
+            const t = await navigator.clipboard.readText();
+            if (t && t.trim()){
+              input.value = t.trim();
+              input.focus();
+              return;
+            }
+          }
+          showMsg('note', 'Paste: tap into the field and use “Paste” (iOS/browser security).');
+          input.focus();
+        }catch(e){
+          showMsg('note', 'Paste: tap into the field and use “Paste” (iOS/browser security).');
+          input.focus();
+        }
+      });
+
+      $('#btnCopy').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+        await copyText(text);
+        const b = $('#btnCopy');
+        const old = b.textContent;
+        b.textContent = 'Copied ✓';
+        setTimeout(()=>b.textContent=old, 1200);
+      });
+
+      $('#btnShare').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+
+        if (navigator.share){
+          try{
+            await navigator.share({ title: 'SafeShare link', text: 'Clean link:', url: text });
+          }catch(e){}
+          return;
+        }
+        await copyText(text);
+        showMsg('note', 'Sharing is not available in this browser — the link was copied.');
+      });
+
+      (function(){
+        const sp = new URLSearchParams(location.search);
+        const u = sp.get('u');
+        const run = sp.get('run');
+
+        if (u){
+          try{ input.value = decodeURIComponent(u); }
+          catch(e){ input.value = u; }
+        }
+        if (u && run === '1'){
+          setTimeout(doClean, 120);
+        }
+      })();
+
+      // Init
+      impactInit();
+    })();
+  </script>
+
+</body>
+</html>
