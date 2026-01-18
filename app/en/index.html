@@ -22,6 +22,7 @@
   <meta property="og:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) – locally in your browser. Paste → clean → copy/share." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:url" content="https://safesharepro.com/app/en/" />
   <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
   <meta property="og:image:alt" content="SafeShare App – Clean links (preview)" />
@@ -35,7 +36,7 @@
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
   <meta name="twitter:image:alt" content="SafeShare App – Clean links (preview)" />
 
-  <!-- Favicons + PWA (IMMER absolut bei Slugs) -->
+  <!-- Favicons + PWA -->
   <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
@@ -365,13 +366,14 @@
       <div class="small">App · local-first</div>
     </header>
 
+    <!-- IMPORTANT: EN NAV LINKS -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" data-page="start" href="/">Home</a>
-        <a class="tab" data-page="app" href="/app/">App</a>
-        <a class="tab" data-page="schule" href="/schule/">School</a>
-        <a class="tab" data-page="pro" href="/pro/">Pro</a>
-        <a class="tab" data-page="hilfe" href="/hilfe/">Help</a>
+        <a class="tab" data-page="home" href="/en/">Home</a>
+        <a class="tab" data-page="app" href="/app/en/">App</a>
+        <a class="tab" data-page="school" href="/school/en/">School</a>
+        <a class="tab" data-page="pro" href="/pro/en/">Pro</a>
+        <a class="tab" data-page="help" href="/help/en/">Help</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">More ▾</button>
       </div>
     </div>
@@ -470,9 +472,12 @@
         Pro is the advanced mode (policies + audit + allowlist).
       </div>
       <div class="row">
-        <a class="btn" href="/tracking-parameter/">Tracking explained</a>
-        <a class="btn" href="/utm-parameter-entfernen/">UTM explained</a>
-        <a class="btn ghost" href="/pro/">See Pro</a>
+        <a class="btn" href="/tracking/en/">Tracking explained</a>
+        <a class="btn" href="/utm/en/">UTM explained</a>
+        <a class="btn ghost" href="/pro/en/">See Pro</a>
+      </div>
+      <div class="note">
+        These pages are the planned English knowledge base. If they are not live yet, create them next or temporarily hide these buttons.
       </div>
     </section>
 
@@ -483,14 +488,14 @@
           <div>App: fast &amp; simple · Pro: policies, allowlist, audit.</div>
         </div>
         <div class="footLinks">
-          <a data-page="start" href="/">Home</a>
-          <a data-page="app" href="/app/">App</a>
-          <a data-page="schule" href="/schule/">School</a>
-          <a data-page="pro" href="/pro/">Pro</a>
-          <a data-page="hilfe" href="/hilfe/">Help</a>
-          <a data-page="datenschutz" href="/datenschutz/">Privacy</a>
-          <a data-page="impressum" href="/impressum/">Imprint</a>
-          <a data-page="terms" href="/nutzungsbedingungen/">Terms</a>
+          <a data-page="home" href="/en/">Home</a>
+          <a data-page="app" href="/app/en/">App</a>
+          <a data-page="school" href="/school/en/">School</a>
+          <a data-page="pro" href="/pro/en/">Pro</a>
+          <a data-page="help" href="/help/en/">Help</a>
+          <a data-page="privacy" href="/privacy/en/">Privacy</a>
+          <a data-page="imprint" href="/imprint/en/">Imprint</a>
+          <a data-page="terms" href="/terms/en/">Terms</a>
         </div>
       </div>
     </footer>
@@ -500,41 +505,48 @@
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="More" hidden>
     <div class="menuHint">Support</div>
-    <a data-page="hilfe" href="/hilfe/#kontakt">Support / Contact</a>
+    <a data-page="help" href="/help/en/#contact">Support / Contact</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Learn</div>
-    <a data-page="schule" href="/schule/">School</a>
-    <a data-page="utm" href="/utm-parameter-entfernen/">UTM</a>
-    <a data-page="tracking" href="/tracking-parameter/">Tracking</a>
-    <a data-page="vergleich" href="/url-cleaner-tool-vergleich/">Tool comparison</a>
-    <a data-page="lesezeichen" href="/lesezeichen/">Bookmarks</a>
+    <a data-page="school" href="/school/en/">School</a>
+    <a data-page="utm" href="/utm/en/">UTM</a>
+    <a data-page="tracking" href="/tracking/en/">Tracking</a>
+    <a data-page="compare" href="/compare/en/">Tool comparison</a>
+    <a data-page="bookmarks" href="/bookmarks/en/">Bookmarks</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Legal</div>
-    <a data-page="datenschutz" href="/datenschutz/">Privacy</a>
-    <a data-page="impressum" href="/impressum/">Imprint</a>
-    <a data-page="terms" href="/nutzungsbedingungen/">Terms</a>
+    <a data-page="privacy" href="/privacy/en/">Privacy</a>
+    <a data-page="imprint" href="/imprint/en/">Imprint</a>
+    <a data-page="terms" href="/terms/en/">Terms</a>
   </nav>
 
   <script>
     (function(){
+      // ===== Active tab by EN routes =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
-        if (p === '/' || p === '/index.html') return 'start';
-        if (p.startsWith('/app')) return 'app';
-        if (p.startsWith('/schule')) return 'schule';
-        if (p.startsWith('/pro')) return 'pro';
-        if (p.startsWith('/hilfe')) return 'hilfe';
-        if (p.startsWith('/datenschutz')) return 'datenschutz';
-        if (p.startsWith('/impressum')) return 'impressum';
-        if (p.startsWith('/nutzungsbedingungen')) return 'terms';
-        if (p.startsWith('/lesezeichen')) return 'lesezeichen';
-        if (p.startsWith('/tracking-parameter')) return 'tracking';
-        if (p.startsWith('/utm-parameter-entfernen')) return 'utm';
-        if (p.startsWith('/url-cleaner-tool-vergleich')) return 'vergleich';
+        // normalize trailing slash
+        const s = p.replace(/\/+$/,'/') ;
+
+        if (s === '/en/' || s === '/en/index.html') return 'home';
+        if (s.startsWith('/app/en')) return 'app';
+        if (s.startsWith('/school/en')) return 'school';
+        if (s.startsWith('/pro/en')) return 'pro';
+        if (s.startsWith('/help/en')) return 'help';
+        if (s.startsWith('/privacy/en')) return 'privacy';
+        if (s.startsWith('/imprint/en')) return 'imprint';
+        if (s.startsWith('/terms/en')) return 'terms';
+        if (s.startsWith('/bookmarks/en')) return 'bookmarks';
+        if (s.startsWith('/tracking/en')) return 'tracking';
+        if (s.startsWith('/utm/en')) return 'utm';
+        if (s.startsWith('/compare/en')) return 'compare';
+
+        // fallback for this page
+        if (s.startsWith('/app/')) return 'app';
         return '';
       }
       const key = currentKey();
@@ -544,6 +556,7 @@
         });
       }
 
+      // ===== More sheet + ESC close + scroll lock =====
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
