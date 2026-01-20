@@ -25,6 +25,7 @@
   <meta property="og:description" content="Remove tracking parameters locally in your browser. Paste → Clean → Copy/Share." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:url" content="https://safesharepro.com/app/en/" />
   <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-20-01" />
   <meta property="og:image:alt" content="SafeShare App – preview" />
@@ -46,6 +47,7 @@
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
   <style>
+    /* identical CSS as DE */
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
       --card: rgba(255,255,255,.06);
@@ -407,6 +409,7 @@
       </div>
     </section>
 
+    <!-- Impact (local-first) -->
     <section class="card" id="ssImpactCard" hidden>
       <h2>Impact (local-first)</h2>
 
@@ -434,8 +437,7 @@
       </div>
 
       <p class="muted2">
-        Only totals are stored locally in your browser (no URLs, no domains).
-        <span class="muted2">(This page resets Impact on reload.)</span>
+        Only totals are stored locally in your browser (no URLs, no domains). (This page resets Impact on reload.)
       </p>
 
       <div class="row">
@@ -480,6 +482,7 @@
 
   </div>
 
+  <!-- More (bottom sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="More" hidden>
     <div class="menuHint">Pages</div>
@@ -497,12 +500,24 @@
     <a href="/hilfe/">Hilfe (DE)</a>
   </nav>
 
-  <!-- Core logic: shared between DE/EN -->
-  <script src="/assets/js/app-core.js?v=2026-01-20-02"></script>
-
   <script>
     (function(){
-      // ===== Active tab (EN) =====
+      const isDE = document.documentElement.lang.toLowerCase().startsWith("de");
+      const locale = isDE ? "de-DE" : "en-US";
+
+      const TXT = {
+        removedLabel: "Removed:",
+        keptLabel: "Kept:",
+        msgPasteHint: "iPad/Safari: tap the field and use “Paste”. The browser may block clipboard access sometimes.",
+        msgCopied: "Copied ✓",
+        msgShareFallback: "Sharing is not available (or was canceled) — the link was copied.",
+        errPasteLink: "Please paste a link.",
+        errNoUrl: "No valid URL found (text only).",
+        errBadUrl: "That does not look like a valid URL.",
+        errClean: "Error while cleaning."
+      };
+
+      // ===== Active tab =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/en' || p === '/en/' || p === '/en/index.html') return 'home';
@@ -550,7 +565,266 @@
           if (e.key === 'Escape' && moreBtn.getAttribute('aria-expanded') === 'true') closeMenu();
         });
       }
-    })();
-  </script>
-</body>
-</html>
+
+      // ===== App logic (iPad Safari hardened) =====
+      const $ = (s)=>document.querySelector(s);
+      const input = $('#urlInput');
+      const msg = $('#msg');
+      const resultCard = $('#resultCard');
+      const outUrl = $('#outUrl');
+      const auditRow = $('#auditRow');
+      const btnOpen = $('#btnOpen');
+
+      const TRACKING_KEYS = new Set([
+        'gclid','dclid','gbraid','wbraid',
+        'fbclid','msclkid','igshid',
+        'twclid','ttclid','li_fat_id',
+        'yclid',
+        'mc_cid','mc_eid','mkt_tok',
+        '_hsenc','_hsmi',
+        'srsltid',
+        '_ga','_gid','_gac',
+        '_fbp','_fbc',
+        'obclid','tblci'
+      ]);
+
+      function showMsg(type, text){
+        msg.hidden = !text;
+        msg.className = type ? type : 'warn';
+        msg.textContent = text || '';
+      }
+
+      function normalizeUrl(s){
+        s = (s || '').trim();
+        if (!s) return '';
+        if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)) {
+          if (s.startsWith('//')) s = 'https:' + s;
+          else s = 'https://' + s;
+        }
+        return s;
+      }
+
+      // Extract first URL from "text + url"
+      function extractFirstUrl(text){
+        const s = String(text || "").trim();
+        if (!s) return "";
+
+        try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
+
+        const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
+        if (!m) return "";
+
+        let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
+        try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
+      }
+
+      function cleanUrl(raw){
+        const original = (raw || '').trim();
+        if (!original) throw new Error(TXT.errPasteLink);
+
+        const extracted = extractFirstUrl(original);
+        if (!extracted) throw new Error(TXT.errNoUrl);
+
+        let url;
+        try{ url = new URL(extracted); }
+        catch(e){ throw new Error(TXT.errBadUrl); }
+
+        const removed = [];
+        const kept = [];
+
+        const keys = [];
+        url.searchParams.forEach((_, k)=>keys.push(k));
+
+        keys.forEach((k)=>{
+          const low = (k || '').toLowerCase();
+          const isUtm = low.startsWith('utm_');
+          const isTracking = TRACKING_KEYS.has(low);
+
+          if (isUtm || isTracking){
+            url.searchParams.delete(k);
+            removed.push(k);
+          } else {
+            kept.push(k);
+          }
+        });
+
+        return { cleaned: url.toString(), removed, kept, extracted };
+      }
+
+      async function copyText(text){
+        try{
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(e){
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly','');
+          ta.style.position='fixed';
+          ta.style.left='-9999px';
+          ta.style.top='0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try{ document.execCommand('copy'); }catch(_){}
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      function renderResult(res){
+        resultCard.hidden = false;
+        outUrl.textContent = res.cleaned;
+        btnOpen.href = res.cleaned;
+
+        auditRow.innerHTML = '';
+        const r = Array.from(new Set(res.removed));
+        const k = Array.from(new Set(res.kept));
+
+        if (r.length || k.length){
+          auditRow.hidden = false;
+          if (r.length){
+            const el = document.createElement('span');
+            el.innerHTML = TXT.removedLabel + ' <span class="mono">' + r.join(', ') + '</span>';
+            auditRow.appendChild(el);
+          }
+          if (k.length){
+            const el2 = document.createElement('span');
+            el2.innerHTML = TXT.keptLabel + ' <span class="mono">' + k.join(', ') + '</span>';
+            auditRow.appendChild(el2);
+          }
+        } else {
+          auditRow.hidden = true;
+        }
+      }
+
+      // ===== Impact (local-first) — IN-MEMORY ONLY (resets on reload) =====
+      const impact = {
+        linksCleaned: 0,
+        paramsRemoved: 0,
+        utmRemoved: 0,
+        adIdsRemoved: 0,
+        lastUpdatedISO: "",
+        seen: new Set(),
+      };
+
+      const AD_ID_KEYS = new Set([
+        "gclid","dclid","gbraid","wbraid",
+        "fbclid","msclkid","ttclid","twclid","li_fat_id",
+        "igshid","yclid",
+        "mc_cid","mc_eid","mkt_tok",
+        "srsltid"
+      ]);
+
+      function fmt(n){
+        try { return new Intl.NumberFormat(locale).format(n); }
+        catch(e){ return String(n); }
+      }
+      function setText(id, txt){
+        const el = document.getElementById(id);
+        if (el) el.textContent = txt;
+      }
+      function setHidden(id, hidden){
+        const el = document.getElementById(id);
+        if (el) el.hidden = !!hidden;
+      }
+
+      function impactHideAll(){
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = true;
+        setHidden("ssImpactLastLineWrap", true);
+        setText("ssImpactLastLine", "");
+      }
+
+      function impactRender(){
+        setText("ssImpactLinks", fmt(impact.linksCleaned));
+        setText("ssImpactParams", fmt(impact.paramsRemoved));
+        setText("ssImpactUTM", fmt(impact.utmRemoved));
+        setText("ssImpactAdIds", fmt(impact.adIdsRemoved));
+        setText("ssImpactUpdated", impact.lastUpdatedISO ? new Date(impact.lastUpdatedISO).toLocaleString(locale) : "—");
+
+        const card = document.getElementById("ssImpactCard");
+        if (card){
+          const hasAny = impact.linksCleaned || impact.paramsRemoved || impact.adIdsRemoved || impact.utmRemoved;
+          card.hidden = !hasAny;
+        }
+      }
+
+      function impactSetLastLine(removedKeys){
+        const keys = (removedKeys || []).map(k => String(k||"").trim()).filter(Boolean);
+        if (!keys.length){
+          setHidden("ssImpactLastLineWrap", true);
+          setText("ssImpactLastLine", "");
+          return;
+        }
+
+        const removedCount = keys.length;
+        const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        const ad  = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+
+        const line =
+          `Removed: ${removedCount} parameters` +
+          (ad ? ` (${ad} ad IDs)` : "") +
+          (utm ? `, including ${utm} UTM` : "");
+
+        setText("ssImpactLastLine", line);
+        setHidden("ssImpactLastLineWrap", false);
+      }
+
+      function fingerprintForCount(extractedUrl){
+        try{
+          const u = new URL(extractedUrl);
+          const entries = [];
+          u.searchParams.forEach((v, k) => entries.push([String(k), String(v)]));
+          entries.sort((a,b)=> (a[0]===b[0] ? a[1].localeCompare(b[1]) : a[0].localeCompare(b[0])));
+          const q = entries.map(([k,v]) => `${k}=${v}`).join("&");
+          return (u.host + u.pathname + (q ? "?" + q : "") + (u.hash || "")).toLowerCase();
+        }catch(e){
+          return String(extractedUrl || "").trim().toLowerCase();
+        }
+      }
+
+      function impactAdd(extractedUrl, removedKeys){
+        const keys = (removedKeys || []).map(k => String(k||"").trim()).filter(Boolean);
+        if (!keys.length){
+          impactHideAll();
+          return false;
+        }
+
+        const fp = fingerprintForCount(extractedUrl);
+        if (impact.seen.has(fp)) {
+          impactRender();
+          impactSetLastLine(keys);
+          return false;
+        }
+        impact.seen.add(fp);
+
+        impact.linksCleaned += 1;
+        impact.paramsRemoved += keys.length;
+        impact.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        impact.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        impact.lastUpdatedISO = new Date().toISOString();
+
+        impactRender();
+        impactSetLastLine(keys);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = false;
+
+        return true;
+      }
+
+      function impactReset(){
+        impact.linksCleaned = 0;
+        impact.paramsRemoved = 0;
+        impact.utmRemoved = 0;
+        impact.adIdsRemoved = 0;
+        impact.lastUpdatedISO = "";
+        impact.seen.clear();
+        impactRender();
+        impactHideAll();
+      }
+
+      function impactInit(){
+        impactReset();
+
+        const btn = document.getElementById("ssImpactReset");
