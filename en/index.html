@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Share clean links (local-first)</title>
-  <meta name="description" content="SafeShare removes tracking parameters from links (utm_*, fbclid, gclid …) locally in your browser. No accounts. No uploads. Copy → Clean → Share." />
+  <title>SafeShare App – Clean links (local-first)</title>
+  <meta name="description" content="Remove tracking parameters from links (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
   <meta name="robots" content="index,follow" />
 
-  <link rel="canonical" href="https://safesharepro.com/en/" />
-  <link rel="alternate" hreflang="de" href="https://safesharepro.com/" />
-  <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/" />
-  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
+  <link rel="canonical" href="https://safesharepro.com/app/en/" />
+  <link rel="alternate" hreflang="de" href="https://safesharepro.com/app/" />
+  <link rel="alternate" hreflang="en" href="https://safesharepro.com/app/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/app/en/" />
 
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111">
@@ -20,30 +20,30 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="SafeShare – Share clean links (local-first)" />
-  <meta property="og:description" content="Remove tracking parameters locally in your browser. No accounts. No uploads. Copy → Clean → Share." />
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="SafeShare App – Clean links (local-first)" />
+  <meta property="og:description" content="Remove tracking parameters locally in your browser. Paste → Clean → Copy/Share." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:url" content="https://safesharepro.com/en/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-  <meta property="og:image:alt" content="SafeShare – preview" />
+  <meta property="og:url" content="https://safesharepro.com/app/en/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
+  <meta property="og:image:alt" content="SafeShare App – preview" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SafeShare – Share clean links" />
-  <meta name="twitter:description" content="Remove tracking parameters locally in your browser. No accounts. No uploads. Copy → Clean → Share." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-  <meta name="twitter:image:alt" content="SafeShare – preview" />
+  <meta name="twitter:title" content="SafeShare App – Clean links" />
+  <meta name="twitter:description" content="Remove tracking parameters locally in your browser. Paste → Clean → Copy/Share." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-05-02" />
+  <meta name="twitter:image:alt" content="SafeShare App – preview" />
 
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
   <style>
     :root{
@@ -95,13 +95,13 @@
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .logoWrap{
-      width: 38px; height: 38px; border-radius: 999px;
+      width:38px; height:38px; border-radius:999px;
       border:1px solid rgba(47,227,183,.22);
       background:rgba(47,227,183,.08);
       box-shadow:0 10px 26px rgba(0,0,0,.28);
       display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
     }
-    .logoWrap img{ width:28px; height:28px; display:block; object-fit:contain; }
+    .logoWrap .logoImg{ width:28px; height:28px; display:block; object-fit:contain; }
     .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
     .brandText{ min-width:0; }
     .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -130,9 +130,7 @@
       white-space: nowrap; flex: 0 0 auto;
       background: transparent;
       cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+      display:inline-flex; align-items:center; justify-content:center;
     }
     .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
     .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
@@ -145,11 +143,10 @@
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{ margin: 10px 0 8px; font-size: clamp(24px, 3.8vw, 46px); line-height: 1.07; letter-spacing:-.2px; }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -172,7 +169,7 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn,.bad{
+    .note,.warn{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -183,29 +180,22 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
-    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media(min-width: 980px){
-      .grid2{ grid-template-columns: 1fr 1fr; }
-    }
-    .box{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 12px;
-    }
-    @media (prefers-color-scheme: light){
-      .box{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
-    }
 
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .example{
+    .field{
+      width:100%;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      outline: none;
+    }
+    textarea.field{ min-height: 110px; resize: vertical; }
+    .field:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
+    .resultBox{
       margin-top: 10px;
       padding: 12px 12px;
       border-radius: 14px;
@@ -216,18 +206,16 @@
       line-height: 1.5;
       word-break: break-word;
     }
-
-    .heroImg img{
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
-      margin-top: 12px;
+    .kv{
+      display:flex; gap:10px; flex-wrap:wrap;
+      font-size: 12px; color: var(--muted2);
+      margin-top: 10px;
     }
-    @media (prefers-color-scheme: light){
-      .heroImg img{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.02); }
+    .kv span{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
     }
 
     footer{
@@ -248,10 +236,7 @@
       .footGrid{ grid-template-columns: 1.2fr .8fr; }
     }
     .footLinks{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-start;
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
     }
     .footLinks a{
       padding: 6px 10px;
@@ -337,158 +322,82 @@
         </div>
       </div>
 
-      <div class="small">local-first</div>
+      <div class="small">App · local-first</div>
     </header>
 
-    <!-- MASTER NAV (EN) -->
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab active" href="/en/" data-page="home">Home</a>
-        <a class="tab" href="/app/en/" data-page="app">App</a>
-        <a class="tab" href="/school/en/" data-page="learn">Learn</a>
-        <a class="tab" href="/pro/en/" data-page="pro">Pro</a>
-        <a class="tab" href="/help/en/" data-page="help">Help</a>
+        <a class="tab" data-page="home" href="/en/">Home</a>
+        <a class="tab" data-page="app" href="/app/en/">App</a>
+        <a class="tab" data-page="privacy" href="/privacy/en/">Privacy</a>
+        <a class="tab" data-page="help" href="/help/en/">Help</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">More ▾</button>
       </div>
     </div>
 
-    <!-- HERO -->
     <section class="card">
-      <h1>Remove tracking parameters.<br>Share a clean link.</h1>
+      <h1>Clean a link</h1>
       <p>
-        Many links contain extra “stickers” (<span class="mono">utm_*</span>, <span class="mono">fbclid</span>, <span class="mono">gclid</span> …).
-        Useful for analytics — but often unnecessary baggage when you share.
+        Tracking parameters are extra “stickers” attached to URLs. SafeShare removes common tracking keys
+        locally in your browser. Nothing is uploaded.
       </p>
-
-      <div class="heroImg">
-        <img
-          src="/assets/hero-vorher-nachher.png?v=2025-12-25-01"
-          alt="Before SafeShare: a link with tracking baggage. After SafeShare: a clean link."
-          loading="lazy"
-          decoding="async"
-          width="1200"
-          height="675"
-        />
+      <div class="note">
+        Note: this is not an “invisibility” promise. It’s link hygiene before sharing.
       </div>
+    </section>
+
+    <section class="card" id="cleaner">
+      <h2>Paste a URL</h2>
+      <p>Paste → Clean → Copy/Share.</p>
+
+      <textarea class="field mono" id="urlInput" placeholder="https://example.com/page?utm_source=...&fbclid=..."></textarea>
 
       <div class="row">
-        <a class="btn primary" href="/app/en/">Try the App</a>
-        <a class="btn" href="/privacy/en/">Privacy</a>
-        <a class="btn ghost" href="/help/en/">Help</a>
+        <button class="btn primary" id="btnClean" type="button">Clean</button>
+        <button class="btn" id="btnPaste" type="button">Paste</button>
+        <button class="btn ghost" id="btnClear" type="button">Clear</button>
       </div>
 
-      <div class="note">
-        SafeShare is <b>local-first</b>: cleaning happens in your browser. No accounts. No uploads. No logs by SafeShare.
+      <div class="warn" id="msg" hidden></div>
+    </section>
+
+    <section class="card" id="resultCard" hidden>
+      <h2>Result</h2>
+
+      <div class="resultBox mono" id="outUrl"></div>
+
+      <div class="row">
+        <button class="btn primary" id="btnCopy" type="button">Copy</button>
+        <a class="btn" id="btnOpen" href="#" target="_blank" rel="noopener">Open</a>
+        <button class="btn" id="btnShare" type="button">Share</button>
       </div>
+
+      <div class="kv" id="auditRow" hidden></div>
+
+      <div class="note" style="margin-top:12px">
+        If the cleaned link breaks: open the original → compare. If only the cleaned link fails, a removed parameter was likely functional.
+        Then clean more conservatively (or use Pro for audit/allowlists).
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>What gets removed?</h2>
+      <ul>
+        <li><b>utm_*</b> (campaign parameters)</li>
+        <li><b>click IDs</b> like <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
+        <li>other common tracking keys (e.g. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>, <span class="mono">srsltid</span>)</li>
+      </ul>
       <div class="warn">
-        Important: this is not an “invisibility” promise. It’s a practical hygiene step before sharing.
+        Don’t remove everything blindly: affiliate/partner keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) can be intentional.
+        Pro is for policies + audit + allowlists.
       </div>
-    </section>
-
-    <!-- HOW -->
-    <section class="card">
-      <h2>Works in 10 seconds</h2>
-      <ol>
-        <li>Copy a link</li>
-        <li>Open SafeShare App → paste</li>
-        <li>Clean → copy/share</li>
-      </ol>
-
-      <div class="grid2">
-        <div class="box">
-          <h3>Before</h3>
-          <div class="example mono">https://example.com/article?utm_source=twitter&utm_medium=social&utm_campaign=launch&fbclid=XYZ</div>
-        </div>
-        <div class="box">
-          <h3>After</h3>
-          <div class="example mono">https://example.com/article</div>
-        </div>
-      </div>
-
       <div class="row">
-        <a class="btn primary" href="/app/en/">Open the App</a>
-        <a class="btn" href="/bookmarks/en/">Bookmarks (Desktop)</a>
-        <a class="btn ghost" href="/help/en/">Troubleshooting</a>
+        <a class="btn" href="/help/en/">Help</a>
+        <a class="btn" href="/privacy/en/">Privacy</a>
+        <a class="btn ghost" href="/app/">Deutsch</a>
       </div>
     </section>
 
-    <!-- WHY -->
-    <section class="card">
-      <h2>Why it’s worth it (no drama)</h2>
-      <div class="grid2">
-        <div class="box">
-          <h3>Respect</h3>
-          <p>You share less extra data that others didn’t choose.</p>
-          <h3>Cleaner communication</h3>
-          <p>Links look more trustworthy and less “marketing-ish”.</p>
-        </div>
-        <div class="box">
-          <h3>Fewer breakages</h3>
-          <p>Some apps shorten or wrap long URLs in unhelpful ways.</p>
-          <h3>Local-first</h3>
-          <p>No need to paste your link into an online cleaner service.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- DO NOT BLINDLY REMOVE -->
-    <section class="card">
-      <h2>Don’t remove everything blindly</h2>
-      <div class="grid2">
-        <div class="box">
-          <h3>Affiliate / partner parameters</h3>
-          <p>
-            Some parameters are attribution (e.g. <span class="mono">ref</span>, <span class="mono">tag</span>).
-            Removing them can break revenue attribution.
-          </p>
-          <p><b>Pro:</b> per-domain allowlists and policies.</p>
-        </div>
-        <div class="box">
-          <h3>Functional parameters</h3>
-          <p>
-            Some keys control content (language, filters, product IDs, search).
-            Good tools are conservative and don’t delete everything.
-          </p>
-          <p><b>App:</b> common tracking only. <b>Pro:</b> audit + rules.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <a class="btn" href="/tracking/en/">Tracking parameters explained</a>
-        <a class="btn" href="/utm/en/">UTM explained</a>
-        <a class="btn ghost" href="/compare/en/">Tool comparison</a>
-      </div>
-    </section>
-
-    <!-- PRO TEASER (short, no prices) -->
-    <section class="card">
-      <h2>SafeShare Pro (advanced)</h2>
-      <p>
-        For publishers and power users: keep what’s intentional (allowlist), remove what’s unnecessary (policies),
-        and see exactly what changed (audit).
-      </p>
-      <div class="row">
-        <a class="btn" href="/pro/en/">See Pro</a>
-        <a class="btn ghost" href="/help/en/#contact">Contact</a>
-      </div>
-      <div class="note">
-        Pro is provided as an offline bundle (download). The free app runs in your browser.
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="card" id="contact">
-      <h2>Contact</h2>
-      <p>
-        Support, listings, or privacy questions:
-        <b class="mono">listings@safesharepro.com</b>
-      </p>
-      <div class="note">
-        Please avoid sending sensitive links. If needed, share a redacted example.
-      </div>
-    </section>
-
-    <!-- FOOTER -->
     <footer>
       <div class="footGrid">
         <div>
@@ -496,65 +405,43 @@
           <div>Local-first: cleaning happens in your browser.</div>
         </div>
         <div class="footLinks">
-          <a href="/en/" data-page="home">Home</a>
-          <a href="/app/en/" data-page="app">App</a>
-          <a href="/privacy/en/" data-page="privacy">Privacy</a>
-          <a href="/help/en/" data-page="help">Help</a>
-          <a href="/imprint/en/" data-page="imprint">Imprint</a>
-          <a href="/terms/en/" data-page="terms">Terms</a>
-          <a href="/" title="Deutsch">DE</a>
+          <a data-page="home" href="/en/">Home</a>
+          <a data-page="app" href="/app/en/">App</a>
+          <a data-page="privacy" href="/privacy/en/">Privacy</a>
+          <a data-page="help" href="/help/en/">Help</a>
+          <a href="/app/" title="Deutsch">DE</a>
         </div>
       </div>
     </footer>
 
   </div>
 
-  <!-- More (bottom sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="More" hidden>
-    <div class="menuHint">Product</div>
+    <div class="menuHint">Pages</div>
     <a data-page="home" href="/en/">Home</a>
     <a data-page="app" href="/app/en/">App</a>
-    <a data-page="pro" href="/pro/en/">Pro</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">Learn</div>
-    <a data-page="tracking" href="/tracking/en/">Tracking</a>
-    <a data-page="utm" href="/utm/en/">UTM</a>
-    <a data-page="compare" href="/compare/en/">Tool comparison</a>
-    <a data-page="bookmarks" href="/bookmarks/en/">Bookmarks</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">Legal</div>
     <a data-page="privacy" href="/privacy/en/">Privacy</a>
-    <a data-page="imprint" href="/imprint/en/">Imprint</a>
-    <a data-page="terms" href="/terms/en/">Terms</a>
+    <a data-page="help" href="/help/en/">Help</a>
 
     <div class="divider"></div>
 
     <div class="menuHint">Deutsch</div>
     <a href="/">Start (DE)</a>
     <a href="/app/">App (DE)</a>
+    <a href="/datenschutz/">Datenschutz (DE)</a>
+    <a href="/hilfe/">Hilfe (DE)</a>
   </nav>
 
   <script>
     (function(){
+      // Active tab
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/en' || p === '/en/' || p === '/en/index.html') return 'home';
         if (p.startsWith('/app/en')) return 'app';
-        if (p.startsWith('/school/en')) return 'learn';
-        if (p.startsWith('/pro/en')) return 'pro';
-        if (p.startsWith('/help/en')) return 'help';
         if (p.startsWith('/privacy/en')) return 'privacy';
-        if (p.startsWith('/terms/en')) return 'terms';
-        if (p.startsWith('/imprint/en')) return 'imprint';
-        if (p.startsWith('/tracking/en')) return 'tracking';
-        if (p.startsWith('/utm/en')) return 'utm';
-        if (p.startsWith('/compare/en')) return 'compare';
-        if (p.startsWith('/bookmarks/en')) return 'bookmarks';
+        if (p.startsWith('/help/en')) return 'help';
         return '';
       }
       const key = currentKey();
@@ -564,6 +451,7 @@
         });
       }
 
+      // More menu
       const btn = document.getElementById('moreBtn');
       const menu = document.getElementById('moreMenu');
       const overlay = document.getElementById('moreOverlay');
@@ -595,7 +483,224 @@
           if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
         });
       }
+
+      // App logic (iPad Safari hardened)
+      const $ = (s)=>document.querySelector(s);
+      const input = $('#urlInput');
+      const msg = $('#msg');
+      const resultCard = $('#resultCard');
+      const outUrl = $('#outUrl');
+      const auditRow = $('#auditRow');
+      const btnOpen = $('#btnOpen');
+
+      const TRACKING_KEYS = new Set([
+        'gclid','dclid','gbraid','wbraid',
+        'fbclid','msclkid','igshid',
+        'twclid','ttclid','li_fat_id',
+        'yclid',
+        'mc_cid','mc_eid','mkt_tok',
+        '_hsenc','_hsmi',
+        'srsltid',
+        '_ga','_gid','_gac',
+        '_fbp','_fbc',
+        'obclid','tblci'
+      ]);
+
+      function showMsg(type, text){
+        msg.hidden = !text;
+        msg.className = type ? type : 'warn';
+        msg.textContent = text || '';
+      }
+
+      function normalizeUrl(s){
+        s = (s || '').trim();
+        if (!s) return '';
+        if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)) {
+          if (s.startsWith('//')) s = 'https:' + s;
+          else s = 'https://' + s;
+        }
+        return s;
+      }
+
+      function extractFirstUrl(text){
+        const s = String(text || "").trim();
+        if (!s) return "";
+
+        try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
+
+        const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
+        if (!m) return "";
+
+        const candidate = m[0];
+        try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
+      }
+
+      function cleanUrl(raw){
+        const original = (raw || '').trim();
+        if (!original) throw new Error('Please paste a link.');
+
+        const extracted = extractFirstUrl(original);
+        if (!extracted) throw new Error('No valid link found (only text detected).');
+
+        let url;
+        try{ url = new URL(extracted); }
+        catch(e){ throw new Error('That does not look like a valid URL.'); }
+
+        const removed = [];
+        const kept = [];
+
+        const keys = [];
+        url.searchParams.forEach((_, k)=>keys.push(k));
+
+        keys.forEach((k)=>{
+          const low = (k || '').toLowerCase();
+          const isUtm = low.startsWith('utm_');
+          const isTracking = TRACKING_KEYS.has(low);
+
+          if (isUtm || isTracking){
+            url.searchParams.delete(k);
+            removed.push(k);
+          } else {
+            kept.push(k);
+          }
+        });
+
+        return { cleaned: url.toString(), removed, kept };
+      }
+
+      async function copyText(text){
+        try{
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(e){
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly','');
+          ta.style.position='fixed';
+          ta.style.left='-9999px';
+          ta.style.top='0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try{ document.execCommand('copy'); }catch(_){}
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      function renderResult(res){
+        resultCard.hidden = false;
+        outUrl.textContent = res.cleaned;
+        btnOpen.href = res.cleaned;
+
+        auditRow.innerHTML = '';
+        const r = Array.from(new Set(res.removed));
+        const k = Array.from(new Set(res.kept));
+
+        if (r.length || k.length){
+          auditRow.hidden = false;
+          if (r.length){
+            const el = document.createElement('span');
+            el.innerHTML = 'Removed: <span class="mono">' + r.join(', ') + '</span>';
+            auditRow.appendChild(el);
+          }
+          if (k.length){
+            const el2 = document.createElement('span');
+            el2.innerHTML = 'Kept: <span class="mono">' + k.join(', ') + '</span>';
+            auditRow.appendChild(el2);
+          }
+        } else {
+          auditRow.hidden = true;
+        }
+      }
+
+      function doClean(){
+        showMsg('', '');
+        resultCard.hidden = true;
+
+        try{
+          const res = cleanUrl(input.value);
+          renderResult(res);
+          setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
+        }catch(e){
+          showMsg('warn', e.message || 'Error while cleaning.');
+        }
+      }
+
+      input.addEventListener('input', ()=>{
+        resultCard.hidden = true;
+        showMsg('', '');
+      });
+
+      $('#btnClean').addEventListener('click', doClean);
+
+      $('#btnClear').addEventListener('click', ()=>{
+        input.value = '';
+        resultCard.hidden = true;
+        showMsg('', '');
+        input.focus();
+      });
+
+      $('#btnPaste').addEventListener('click', async ()=>{
+        showMsg('', '');
+        try{
+          if (navigator.clipboard && navigator.clipboard.readText){
+            const t = await navigator.clipboard.readText();
+            if (t && t.trim()){
+              input.value = t.trim();
+              input.focus();
+              doClean();
+              return;
+            }
+          }
+          showMsg('note', 'iPad/Safari: tap the field → “Paste”. The browser may block clipboard access sometimes.');
+          input.focus();
+        }catch(e){
+          showMsg('note', 'iPad/Safari: tap the field → “Paste”. The browser may block clipboard access sometimes.');
+          input.focus();
+        }
+      });
+
+      $('#btnCopy').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+        await copyText(text);
+        const b = $('#btnCopy');
+        const old = b.textContent;
+        b.textContent = 'Copied ✓';
+        setTimeout(()=>b.textContent=old, 1200);
+      });
+
+      $('#btnShare').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+
+        if (navigator.share){
+          try{
+            await navigator.share({ url: text });
+            return;
+          }catch(e){}
+        }
+        await copyText(text);
+        showMsg('note', 'Sharing is not available (or was canceled) — the link was copied.');
+      });
+
+      // Optional: Prefill via ?u=...&run=1
+      (function(){
+        const sp = new URLSearchParams(location.search);
+        const u = sp.get('u');
+        const run = sp.get('run');
+        if (u){
+          try{ input.value = decodeURIComponent(u); }
+          catch(e){ input.value = u; }
+        }
+        if (u && run === '1'){
+          setTimeout(doClean, 120);
+        }
+      })();
+
     })();
   </script>
+
 </body>
 </html>
