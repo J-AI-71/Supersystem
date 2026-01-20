@@ -436,7 +436,7 @@
       </div>
 
       <p class="muted2">
-        Gespeichert werden nur Summen pro Tab/Session (keine URLs, keine Domains).
+        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains).
       </p>
 
       <div class="row">
@@ -507,7 +507,7 @@
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/' || p === '/index.html') return 'start';
-        if (p === '/app' || p === '/app/' || p.startsWith('/app/')) return 'app';
+        if (p === '/app' || p === '/app/' || p === '/app/index.html') return 'app';
         if (p.startsWith('/schule')) return 'schule';
         if (p.startsWith('/pro')) return 'pro';
         if (p.startsWith('/hilfe')) return 'hilfe';
@@ -563,23 +563,16 @@
       const btnOpen = $('#btnOpen');
 
       const TRACKING_KEYS = new Set([
-        // Ad/Click IDs
         'gclid','dclid','gbraid','wbraid',
         'fbclid','msclkid','igshid',
         'twclid','ttclid','li_fat_id',
         'yclid',
-        // Newsletter/CRM
         'mc_cid','mc_eid','mkt_tok',
         '_hsenc','_hsmi',
-        // Google Search
         'srsltid',
-        // Analytics-IDs (meist safe)
         '_ga','_gid','_gac',
         '_fbp','_fbc',
-        // optional häufig
-        'obclid','tblci',
-        // Google UI ballast (optional)
-        'pli'
+        'obclid','tblci'
       ]);
 
       function showMsg(type, text){
@@ -602,12 +595,9 @@
       function extractFirstUrl(text){
         const s = String(text || "").trim();
         if (!s) return "";
-
         try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
-
         const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
         if (!m) return "";
-
         let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
         try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
       }
@@ -691,10 +681,7 @@
         }
       }
 
-      // ===== Impact (Tab/Session, dedupe by cleaned URL) =====
-      const IMPACT_KEY = "ss_impact_session_v1";
-      const LAST_SIG_KEY = "ss_impact_last_sig_v1";
-
+      // ===== Impact (in-memory: kein Storage, weg nach Reload) =====
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
         "fbclid","msclkid","ttclid","twclid","li_fat_id",
@@ -703,23 +690,18 @@
         "srsltid"
       ]);
 
-      function impactLoad(){
-        try{
-          const raw = sessionStorage.getItem(IMPACT_KEY);
-          const d = raw ? JSON.parse(raw) : null;
-          return Object.assign({
-            linksCleaned: 0,
-            paramsRemoved: 0,
-            utmRemoved: 0,
-            adIdsRemoved: 0,
-            lastUpdatedISO: ""
-          }, d || {});
-        }catch(e){
-          return { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        }
-      }
-      function impactSave(state){
-        try{ sessionStorage.setItem(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
+      let impactState = {
+        linksCleaned: 0,
+        paramsRemoved: 0,
+        utmRemoved: 0,
+        adIdsRemoved: 0,
+        lastUpdatedISO: ""
+      };
+
+      const seenSigs = new Set(); // Signature-Set pro Session/Tab
+
+      function impactFormat(n, locale){
+        try{ return new Intl.NumberFormat(locale).format(n); }catch(e){ return String(n); }
       }
       function impactSetText(id, text){
         const el = document.getElementById(id);
@@ -729,88 +711,81 @@
         const el = document.getElementById(id);
         if (el) el.hidden = !visible;
       }
-      function impactFormat(n){
-        try{ return new Intl.NumberFormat("de-DE").format(n); }catch(e){ return String(n); }
-      }
-
       function impactClearLastLine(){
         impactSetText("ssImpactLastLine", "");
         impactSetVisible("ssImpactLastLineWrap", false);
       }
-
-      function impactUpdateUI(state){
-        impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
-        impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
-        impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
-        impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
-        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("de-DE") : "—");
+      function impactUpdateUI(locale){
+        impactSetText("ssImpactLinks", impactFormat(impactState.linksCleaned, locale));
+        impactSetText("ssImpactParams", impactFormat(impactState.paramsRemoved, locale));
+        impactSetText("ssImpactUTM", impactFormat(impactState.utmRemoved, locale));
+        impactSetText("ssImpactAdIds", impactFormat(impactState.adIdsRemoved, locale));
+        impactSetText(
+          "ssImpactUpdated",
+          impactState.lastUpdatedISO ? new Date(impactState.lastUpdatedISO).toLocaleString(locale) : "—"
+        );
       }
-
-      function impactShowIfNeeded(state){
+      function impactShowIfNeeded(){
         const card = document.getElementById("ssImpactCard");
         if (!card) return;
-        const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
+        const hasAny = (impactState.linksCleaned || impactState.paramsRemoved || impactState.adIdsRemoved || impactState.utmRemoved);
         card.hidden = !hasAny;
       }
-
-      function impactReset(){
-        const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        try{ sessionStorage.removeItem(IMPACT_KEY); }catch(e){}
-        try{ sessionStorage.removeItem(LAST_SIG_KEY); }catch(e){}
-        impactUpdateUI(state);
+      function impactReset(locale){
+        impactState = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
+        seenSigs.clear();
+        impactUpdateUI(locale);
         impactClearLastLine();
         const card = document.getElementById("ssImpactCard");
         if (card) card.hidden = true;
       }
 
-      function impactInit(){
-        const state = impactLoad();
-        impactUpdateUI(state);
-        impactClearLastLine(); // on open: no stale "Removed ..." line
-        impactShowIfNeeded(state);
+      function impactInit(locale){
+        impactUpdateUI(locale);
+        impactClearLastLine();   // wichtig: keine Zeile beim Öffnen
+        impactShowIfNeeded();    // bei 0 verstecken
 
         const btn = document.getElementById("ssImpactReset");
-        if (btn) btn.addEventListener("click", impactReset);
+        if (btn) btn.addEventListener("click", ()=>impactReset(locale));
       }
 
-      function impactMaybeAdd(res){
-        const removedKeys = Array.isArray(res.removed) ? res.removed.map(k => String(k||"").trim()).filter(Boolean) : [];
-        if (!removedKeys.length) return; // no change -> no impact
+      function impactMaybeAdd(res, locale){
+        const removedKeys = Array.isArray(res.removed)
+          ? res.removed.map(k => String(k||"").trim()).filter(Boolean)
+          : [];
 
-        // Dedup rule B: same cleaned URL + same removed keys => do not count again
-        const sigObj = {
-          cleaned: String(res.cleaned || ""),
-          removed: removedKeys.map(k => k.toLowerCase()).sort()
-        };
-        const sig = JSON.stringify(sigObj);
-
-        let lastSig = "";
-        try{ lastSig = sessionStorage.getItem(LAST_SIG_KEY) || ""; }catch(e){}
-
-        if (sig === lastSig){
-          // still show the card, but do NOT update totals; and clear last line (no misleading "Removed")
-          const state = impactLoad();
-          impactShowIfNeeded(state);
+        // wenn nichts entfernt -> keine "Entfernt ..." Zeile stehen lassen
+        if (!removedKeys.length){
           impactClearLastLine();
+          impactShowIfNeeded();
           return;
         }
 
-        try{ sessionStorage.setItem(LAST_SIG_KEY, sig); }catch(e){}
+        const sig = JSON.stringify({
+          cleaned: String(res.cleaned || ""),
+          removed: removedKeys.map(k => k.toLowerCase()).sort()
+        });
 
-        const state = impactLoad();
-        state.linksCleaned += 1;
-        state.paramsRemoved += removedKeys.length;
-        state.utmRemoved += removedKeys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        state.adIdsRemoved += removedKeys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-        state.lastUpdatedISO = new Date().toISOString();
+        // Kein Hochzählen bei gleichem Ergebnis (auch nicht nach Zwischenläufen)
+        if (seenSigs.has(sig)){
+          impactClearLastLine();
+          impactShowIfNeeded();
+          return;
+        }
+        seenSigs.add(sig);
 
-        impactSave(state);
-        impactUpdateUI(state);
-        impactShowIfNeeded(state);
+        impactState.linksCleaned += 1;
+        impactState.paramsRemoved += removedKeys.length;
+        impactState.utmRemoved += removedKeys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        impactState.adIdsRemoved += removedKeys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        impactState.lastUpdatedISO = new Date().toISOString();
+
+        impactUpdateUI(locale);
+        impactShowIfNeeded();
 
         const removedCount = removedKeys.length;
         const utm = removedKeys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        const ad = removedKeys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        const ad  = removedKeys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
 
         const line =
           `Entfernt: ${removedCount} Parameter` +
@@ -821,54 +796,38 @@
         impactSetVisible("ssImpactLastLineWrap", true);
       }
 
-      function clearUiOnEmptyInput(){
-        const v = (input.value || "").trim();
-        if (v) return;
-
-        resultCard.hidden = true;
-        outUrl.textContent = "";
-        btnOpen.href = "#";
-        auditRow.innerHTML = "";
-        auditRow.hidden = true;
-
-        showMsg('', '');
-
-        // Clear stale "Removed ..." line when input becomes empty
-        impactClearLastLine();
-      }
-
       function doClean(){
         showMsg('', '');
         resultCard.hidden = true;
+        impactClearLastLine(); // <- keine stale Zeile
 
         try{
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          // Impact (Tab/Session) + Dedup (B)
-          impactMaybeAdd(res);
+          // Impact (in-memory, dedupe)
+          impactMaybeAdd(res, "de-DE");
 
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
           showMsg('warn', e.message || 'Fehler beim Bereinigen.');
+          impactClearLastLine();
         }
       }
 
       input.addEventListener('input', ()=>{
         resultCard.hidden = true;
         showMsg('', '');
-        if (!input.value.trim()){
-          clearUiOnEmptyInput();
-        } else {
-          impactClearLastLine(); // avoid showing a stale "Removed..." while editing
-        }
+        impactClearLastLine(); // <- beim Tippen/Leeren immer löschen
       });
 
       document.getElementById('btnClean').addEventListener('click', doClean);
 
       document.getElementById('btnClear').addEventListener('click', ()=>{
         input.value = '';
-        clearUiOnEmptyInput();
+        resultCard.hidden = true;
+        showMsg('', '');
+        impactClearLastLine(); // <- wichtig
         input.focus();
       });
 
@@ -908,7 +867,7 @@
 
         if (navigator.share){
           try{
-            await navigator.share({ url: text });
+            await navigator.share({ url: text }); // url-only ist am stabilsten
             return;
           }catch(e){}
         }
@@ -927,13 +886,11 @@
         }
         if (u && run === '1'){
           setTimeout(doClean, 120);
-        } else if (!input.value.trim()) {
-          clearUiOnEmptyInput();
         }
       })();
 
       // Init
-      impactInit();
+      impactInit("de-DE");
     })();
   </script>
 </body>
