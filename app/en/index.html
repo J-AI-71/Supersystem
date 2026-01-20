@@ -1,11 +1,10 @@
-<!-- /app/en/  (EN)  SafeShare App – complete (Impact: no double counting + reset on reload + session-only) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare App – Clean links (local-first)</title>
-  <meta name="description" content="SafeShare removes tracking parameters from links (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
+  <meta name="description" content="Remove tracking parameters from links (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
   <meta name="robots" content="index,follow" />
 
   <link rel="canonical" href="https://safesharepro.com/app/en/" />
@@ -260,6 +259,9 @@
       border-top: 1px solid rgba(255,255,255,.08);
       padding-top: 14px;
     }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
     .footLinks{
       display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
     }
@@ -405,7 +407,6 @@
       </div>
     </section>
 
-    <!-- Impact (session-only) -->
     <section class="card" id="ssImpactCard" hidden>
       <h2>Impact (local-first)</h2>
 
@@ -433,7 +434,8 @@
       </div>
 
       <p class="muted2">
-        Only totals are stored locally in your browser (no URLs, no domains). (This page resets Impact on reload.)
+        Only totals are stored locally in your browser (no URLs, no domains).
+        <span class="muted2">(This page resets Impact on reload.)</span>
       </p>
 
       <div class="row">
@@ -467,10 +469,10 @@
           <div>Local-first: cleaning happens in your browser.</div>
         </div>
         <div class="footLinks">
-          <a href="/en/">Home</a>
-          <a href="/app/en/">App</a>
-          <a href="/privacy/en/">Privacy</a>
-          <a href="/help/en/">Help</a>
+          <a data-page="home" href="/en/">Home</a>
+          <a data-page="app" href="/app/en/">App</a>
+          <a data-page="privacy" href="/privacy/en/">Privacy</a>
+          <a data-page="help" href="/help/en/">Help</a>
           <a href="/app/" title="Deutsch">DE</a>
         </div>
       </div>
@@ -478,26 +480,29 @@
 
   </div>
 
-  <!-- More (Bottom Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="More" hidden>
     <div class="menuHint">Pages</div>
-    <a href="/en/">Home</a>
-    <a href="/app/en/">App</a>
-    <a href="/privacy/en/">Privacy</a>
-    <a href="/help/en/">Help</a>
+    <a data-page="home" href="/en/">Home</a>
+    <a data-page="app" href="/app/en/">App</a>
+    <a data-page="privacy" href="/privacy/en/">Privacy</a>
+    <a data-page="help" href="/help/en/">Help</a>
+
     <div class="divider"></div>
+
     <div class="menuHint">Deutsch</div>
     <a href="/">Start (DE)</a>
     <a href="/app/">App (DE)</a>
+    <a href="/datenschutz/">Datenschutz (DE)</a>
     <a href="/hilfe/">Hilfe (DE)</a>
   </nav>
 
+  <!-- Core logic: shared between DE/EN -->
+  <script src="/assets/js/app-core.js?v=2026-01-20-02"></script>
+
   <script>
     (function(){
-      const LOCALE = "en-US";
-
-      // ===== Active tab =====
+      // ===== Active tab (EN) =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/en' || p === '/en/' || p === '/en/index.html') return 'home';
@@ -545,383 +550,6 @@
           if (e.key === 'Escape' && moreBtn.getAttribute('aria-expanded') === 'true') closeMenu();
         });
       }
-
-      // ===== App logic (iPad Safari hardened) =====
-      const $ = (s)=>document.querySelector(s);
-      const input = $('#urlInput');
-      const msg = $('#msg');
-      const resultCard = $('#resultCard');
-      const outUrl = $('#outUrl');
-      const auditRow = $('#auditRow');
-      const btnOpen = $('#btnOpen');
-
-      const TRACKING_KEYS = new Set([
-        'gclid','dclid','gbraid','wbraid',
-        'fbclid','msclkid','igshid',
-        'twclid','ttclid','li_fat_id',
-        'yclid',
-        'mc_cid','mc_eid','mkt_tok',
-        '_hsenc','_hsmi',
-        'srsltid',
-        '_ga','_gid','_gac',
-        '_fbp','_fbc',
-        'obclid','tblci'
-      ]);
-
-      function showMsg(type, text){
-        msg.hidden = !text;
-        msg.className = type ? type : 'warn';
-        msg.textContent = text || '';
-      }
-
-      function normalizeUrl(s){
-        s = (s || '').trim();
-        if (!s) return '';
-        if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)) {
-          if (s.startsWith('//')) s = 'https:' + s;
-          else s = 'https://' + s;
-        }
-        return s;
-      }
-
-      // Extract URL from "text + url"
-      function extractFirstUrl(text){
-        const s = String(text || "").trim();
-        if (!s) return "";
-        try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
-        const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
-        if (!m) return "";
-        let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
-        try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
-      }
-
-      function cleanUrl(raw){
-        const original = (raw || '').trim();
-        if (!original) throw new Error('Please paste a link.');
-
-        const extracted = extractFirstUrl(original);
-        if (!extracted) throw new Error('No valid link found (only text detected).');
-
-        let url;
-        try{ url = new URL(extracted); }
-        catch(e){ throw new Error('That does not look like a valid URL.'); }
-
-        const removed = [];
-        const kept = [];
-        const keys = [];
-        url.searchParams.forEach((_, k)=>keys.push(k));
-
-        keys.forEach((k)=>{
-          const low = (k || '').toLowerCase();
-          const isUtm = low.startsWith('utm_');
-          const isTracking = TRACKING_KEYS.has(low);
-          if (isUtm || isTracking){
-            url.searchParams.delete(k);
-            removed.push(k);
-          } else {
-            kept.push(k);
-          }
-        });
-
-        return { cleaned: url.toString(), removed, kept };
-      }
-
-      async function copyText(text){
-        try{
-          await navigator.clipboard.writeText(text);
-          return true;
-        }catch(e){
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.setAttribute('readonly','');
-          ta.style.position='fixed';
-          ta.style.left='-9999px';
-          ta.style.top='0';
-          document.body.appendChild(ta);
-          ta.focus();
-          ta.select();
-          try{ document.execCommand('copy'); }catch(_){}
-          document.body.removeChild(ta);
-          return true;
-        }
-      }
-
-      function renderResult(res){
-        resultCard.hidden = false;
-        outUrl.textContent = res.cleaned;
-        btnOpen.href = res.cleaned;
-
-        auditRow.innerHTML = '';
-        const r = Array.from(new Set(res.removed));
-        const k = Array.from(new Set(res.kept));
-
-        if (r.length || k.length){
-          auditRow.hidden = false;
-          if (r.length){
-            const el = document.createElement('span');
-            el.innerHTML = 'Removed: <span class="mono">' + r.join(', ') + '</span>';
-            auditRow.appendChild(el);
-          }
-          if (k.length){
-            const el2 = document.createElement('span');
-            el2.innerHTML = 'Kept: <span class="mono">' + k.join(', ') + '</span>';
-            auditRow.appendChild(el2);
-          }
-        } else {
-          auditRow.hidden = true;
-        }
-      }
-
-      // ===== Impact (SESSION-ONLY + reset on reload + no double counting) =====
-      const IMPACT_STORE = sessionStorage;
-      const IMPACT_LS_KEY = "ss_impact_v1";
-      const IMPACT_SEEN_KEY = "ss_impact_seen_v1"; // hashes only
-      const IMPACT_LOAD_MARK = "ss_impact_loadmark_v1";
-
-      const AD_ID_KEYS = new Set([
-        "gclid","dclid","gbraid","wbraid",
-        "fbclid","msclkid","ttclid","twclid","li_fat_id",
-        "igshid","yclid",
-        "mc_cid","mc_eid","mkt_tok",
-        "srsltid"
-      ]);
-
-      function impactBoot(){
-        try{
-          if (IMPACT_STORE.getItem(IMPACT_LOAD_MARK) === "1"){
-            IMPACT_STORE.removeItem(IMPACT_LS_KEY);
-            IMPACT_STORE.removeItem(IMPACT_SEEN_KEY);
-          }
-          IMPACT_STORE.setItem(IMPACT_LOAD_MARK, "1");
-        }catch(e){}
-      }
-
-      function impactLoad(){
-        try{
-          const raw = IMPACT_STORE.getItem(IMPACT_LS_KEY);
-          const d = raw ? JSON.parse(raw) : null;
-          return Object.assign({
-            linksCleaned: 0,
-            paramsRemoved: 0,
-            utmRemoved: 0,
-            adIdsRemoved: 0,
-            lastUpdatedISO: ""
-          }, d || {});
-        }catch(e){
-          return { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        }
-      }
-      function impactSave(state){
-        try{ IMPACT_STORE.setItem(IMPACT_LS_KEY, JSON.stringify(state)); }catch(e){}
-      }
-      function seenLoad(){
-        try{
-          const raw = IMPACT_STORE.getItem(IMPACT_SEEN_KEY);
-          const d = raw ? JSON.parse(raw) : null;
-          return (d && Array.isArray(d.hashes)) ? d : { hashes: [] };
-        }catch(e){
-          return { hashes: [] };
-        }
-      }
-      function seenSave(s){
-        try{ IMPACT_STORE.setItem(IMPACT_SEEN_KEY, JSON.stringify(s)); }catch(e){}
-      }
-
-      function impactFormat(n){
-        try{ return new Intl.NumberFormat(LOCALE).format(n); }catch(e){ return String(n); }
-      }
-      function impactSetText(id, text){
-        const el = document.getElementById(id);
-        if (el) el.textContent = text;
-      }
-      function impactSetVisible(id, visible){
-        const el = document.getElementById(id);
-        if (el) el.hidden = !visible;
-      }
-
-      function impactUpdateUI(state, removedKeys){
-        impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
-        impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
-        impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
-        impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
-        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString(LOCALE) : "—");
-
-        if (Array.isArray(removedKeys) && removedKeys.length){
-          const keys = removedKeys.map(k => String(k || "").trim()).filter(Boolean);
-          const removedCount = keys.length;
-          const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-          const ad = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-
-          const line =
-            `Removed: ${removedCount} parameters (${ad} ad IDs), including ${utm} UTM`;
-
-          impactSetText("ssImpactLastLine", line);
-          impactSetVisible("ssImpactLastLineWrap", true);
-        } else {
-          impactSetVisible("ssImpactLastLineWrap", false);
-        }
-      }
-
-      function fnv1aHex(str){
-        let h = 0x811c9dc5;
-        for (let i=0;i<str.length;i++){
-          h ^= str.charCodeAt(i);
-          h = (h + ((h<<1) + (h<<4) + (h<<7) + (h<<8) + (h<<24))) >>> 0;
-        }
-        return ("00000000" + h.toString(16)).slice(-8);
-      }
-
-      async function hashForDedupe(s){
-        const text = String(s || "");
-        try{
-          if (crypto && crypto.subtle && crypto.subtle.digest){
-            const data = new TextEncoder().encode(text);
-            const buf = await crypto.subtle.digest("SHA-256", data);
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
-          }
-        }catch(e){}
-        return fnv1aHex(text);
-      }
-
-      async function impactMaybeAdd(cleanedUrl, removedKeys){
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k||"").trim()).filter(Boolean) : [];
-        if (keys.length === 0) return;
-
-        const h = await hashForDedupe(String(cleanedUrl || ""));
-        const seen = seenLoad();
-        if (seen.hashes.includes(h)) return;
-
-        seen.hashes.push(h);
-        if (seen.hashes.length > 200) seen.hashes = seen.hashes.slice(-200);
-        seenSave(seen);
-
-        const state = impactLoad();
-        state.linksCleaned += 1;
-        state.paramsRemoved += keys.length;
-        state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-        state.lastUpdatedISO = new Date().toISOString();
-        impactSave(state);
-
-        const card = document.getElementById("ssImpactCard");
-        if (card) card.hidden = false;
-
-        impactUpdateUI(state, keys);
-      }
-
-      function impactReset(){
-        try{ IMPACT_STORE.removeItem(IMPACT_LS_KEY); }catch(e){}
-        try{ IMPACT_STORE.removeItem(IMPACT_SEEN_KEY); }catch(e){}
-        const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        impactUpdateUI(state, []);
-        const card = document.getElementById("ssImpactCard");
-        if (card) card.hidden = true;
-      }
-
-      function impactInit(){
-        const state = impactLoad();
-        impactUpdateUI(state, []);
-        const btn = document.getElementById("ssImpactReset");
-        if (btn) btn.addEventListener("click", impactReset);
-
-        const card = document.getElementById("ssImpactCard");
-        if (card){
-          const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
-          card.hidden = !hasAny;
-        }
-      }
-
-      async function doClean(){
-        showMsg('', '');
-        resultCard.hidden = true;
-
-        try{
-          const res = cleanUrl(input.value);
-          renderResult(res);
-
-          await impactMaybeAdd(res.cleaned, res.removed);
-
-          setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
-        }catch(e){
-          showMsg('warn', e.message || 'Error while cleaning.');
-        }
-      }
-
-      input.addEventListener('input', ()=>{
-        resultCard.hidden = true;
-        showMsg('', '');
-      });
-
-      document.getElementById('btnClean').addEventListener('click', ()=>{ doClean(); });
-
-      document.getElementById('btnClear').addEventListener('click', ()=>{
-        input.value = '';
-        resultCard.hidden = true;
-        showMsg('', '');
-        input.focus();
-      });
-
-      document.getElementById('btnPaste').addEventListener('click', async ()=>{
-        showMsg('', '');
-        try{
-          if (navigator.clipboard && navigator.clipboard.readText){
-            const t = await navigator.clipboard.readText();
-            if (t && t.trim()){
-              input.value = t.trim();
-              input.focus();
-              doClean();
-              return;
-            }
-          }
-          showMsg('note', 'iPad/Safari: tap the field and use “Paste”. The browser may block clipboard access sometimes.');
-          input.focus();
-        }catch(e){
-          showMsg('note', 'iPad/Safari: tap the field and use “Paste”. The browser may block clipboard access sometimes.');
-          input.focus();
-        }
-      });
-
-      document.getElementById('btnCopy').addEventListener('click', async ()=>{
-        const text = (outUrl.textContent || '').trim();
-        if(!text) return;
-        await copyText(text);
-        const b = document.getElementById('btnCopy');
-        const old = b.textContent;
-        b.textContent = 'Copied ✓';
-        setTimeout(()=>b.textContent=old, 1200);
-      });
-
-      document.getElementById('btnShare').addEventListener('click', async ()=>{
-        const text = (outUrl.textContent || '').trim();
-        if(!text) return;
-
-        if (navigator.share){
-          try{
-            await navigator.share({ url: text });
-            return;
-          }catch(e){}
-        }
-        await copyText(text);
-        showMsg('note', 'Sharing is not available (or was canceled) — the link was copied.');
-      });
-
-      // Optional: Prefill via ?u=...&run=1
-      (function(){
-        const sp = new URLSearchParams(location.search);
-        const u = sp.get('u');
-        const run = sp.get('run');
-        if (u){
-          try{ input.value = decodeURIComponent(u); }
-          catch(e){ input.value = u; }
-        }
-        if (u && run === '1'){
-          setTimeout(()=>doClean(), 120);
-        }
-      })();
-
-      // Init
-      impactBoot();
-      impactInit();
     })();
   </script>
 </body>
