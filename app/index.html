@@ -152,9 +152,8 @@
     }
     h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul, ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -177,7 +176,7 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn,.bad{
+    .note,.warn{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -188,7 +187,6 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
-    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
     .field{
@@ -240,9 +238,6 @@
       gap: 10px;
       border-top: 1px solid rgba(255,255,255,.08);
       padding-top: 14px;
-    }
-    @media(min-width: 920px){
-      .footGrid{ grid-template-columns: 1.2fr .8fr; }
     }
     .footLinks{
       display:flex;
@@ -307,32 +302,6 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
-
-    /* Impact */
-    .ssImpactGrid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: .75rem;
-      margin: .75rem 0;
-    }
-    .ssImpactItem{
-      padding:.75rem;
-      border:1px solid var(--border);
-      border-radius: .9rem;
-      background: rgba(255,255,255,.03);
-    }
-    @media (prefers-color-scheme: light){
-      .ssImpactItem{ background: rgba(17,24,39,.03); }
-    }
-    .ssImpactNum{
-      font-size: 1.6rem;
-      font-weight: 780;
-      letter-spacing: -0.02em;
-    }
-    .ssImpactLabel{
-      font-size: .9rem;
-      color: var(--muted2);
-    }
   </style>
 </head>
 
@@ -366,7 +335,7 @@
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" data-page="start" href="/">Start</a>
-        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab active" data-page="app" href="/app/">App</a>
         <a class="tab" data-page="schule" href="/schule/">Schule</a>
         <a class="tab" data-page="pro" href="/pro/">Pro</a>
         <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
@@ -416,43 +385,6 @@
       <div class="note" style="margin-top:12px">
         Wenn ein Link nach der Bereinigung nicht funktioniert: Original öffnen → bereinigten Link öffnen.
         Wenn nur der bereinigte Link scheitert, war ein Parameter vermutlich funktional → dann konservativer vorgehen oder Pro (Audit/Allowlist).
-      </div>
-    </section>
-
-    <!-- Impact (Ballast-Zähler) -->
-    <section class="card" id="ssImpactCard" hidden>
-      <h2>Impact (local-first)</h2>
-
-      <p class="muted" id="ssImpactLastLineWrap" hidden>
-        <span id="ssImpactLastLine"></span>
-      </p>
-
-      <div class="ssImpactGrid">
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactLinks">0</div>
-          <div class="ssImpactLabel">Links bereinigt</div>
-        </div>
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactParams">0</div>
-          <div class="ssImpactLabel">Parameter entfernt</div>
-        </div>
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactAdIds">0</div>
-          <div class="ssImpactLabel">Ad-IDs entfernt</div>
-        </div>
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactUTM">0</div>
-          <div class="ssImpactLabel">UTM entfernt</div>
-        </div>
-      </div>
-
-      <p class="muted2">
-        Gespeichert werden nur Summen im Browser (keine URLs, keine Domains).
-      </p>
-
-      <div class="row">
-        <button class="btn ghost" type="button" id="ssImpactReset">Statistik zurücksetzen</button>
-        <span class="muted2">Zuletzt: <span id="ssImpactUpdated">—</span></span>
       </div>
     </section>
 
@@ -519,6 +451,7 @@
 
   <script>
     (function(){
+      // ===== Nav active + Mehr-Menü (mit ESC) =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/' || p === '/index.html') return 'start';
@@ -574,6 +507,7 @@
         });
       }
 
+      // ===== App Logic =====
       const $ = (s)=>document.querySelector(s);
       const input = $('#urlInput');
       const msg = $('#msg');
@@ -582,124 +516,19 @@
       const auditRow = $('#auditRow');
       const btnOpen = $('#btnOpen');
 
-      // ===== Standard (praxistauglich) =====
-      // Aggressiv ist Pro (nicht hier): _gl, s, spm, spm_id_from, ref_src, usw.
+      // Standard (praxistauglich)
       const TRACKING_KEYS = new Set([
-        // Ad/Click IDs
         'gclid','dclid','gbraid','wbraid',
         'fbclid','msclkid','igshid',
         'twclid','ttclid','li_fat_id',
         'yclid',
-        // Newsletter/CRM
         'mc_cid','mc_eid','mkt_tok',
         '_hsenc','_hsmi',
-        // Google Search
         'srsltid',
-        // Analytics IDs (meist safe)
         '_ga','_gid','_gac',
         '_fbp','_fbc',
-        // optional häufig
         'obclid','tblci'
       ]);
-
-      // ===== Impact (local-first) =====
-      const IMPACT_LS_KEY = "ss_impact_v1";
-      const AD_ID_KEYS = new Set([
-        "gclid","dclid","gbraid","wbraid",
-        "fbclid","msclkid","ttclid","twclid","li_fat_id",
-        "igshid","yclid",
-        "mc_cid","mc_eid","mkt_tok",
-        "srsltid"
-      ]);
-
-      function impactLoad(){
-        try{
-          const raw = localStorage.getItem(IMPACT_LS_KEY);
-          const d = raw ? JSON.parse(raw) : null;
-          return Object.assign({
-            linksCleaned: 0,
-            paramsRemoved: 0,
-            utmRemoved: 0,
-            adIdsRemoved: 0,
-            lastUpdatedISO: ""
-          }, d || {});
-        }catch(e){
-          return { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        }
-      }
-      function impactSave(state){
-        try{ localStorage.setItem(IMPACT_LS_KEY, JSON.stringify(state)); }catch(e){}
-      }
-      function impactFormat(n){
-        try{ return new Intl.NumberFormat("de-DE").format(n); }catch(e){ return String(n); }
-      }
-      function impactSetText(id, text){
-        const el = document.getElementById(id);
-        if (el) el.textContent = text;
-      }
-      function impactSetVisible(id, visible){
-        const el = document.getElementById(id);
-        if (el) el.hidden = !visible;
-      }
-      function impactUpdateUI(state, removedKeys){
-        impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
-        impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
-        impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
-        impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
-        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("de-DE") : "—");
-
-        if (Array.isArray(removedKeys) && removedKeys.length){
-          const removedCount = removedKeys.length;
-          const utm = removedKeys.filter(k => String(k).toLowerCase().startsWith("utm_")).length;
-          const ad = removedKeys.filter(k => AD_ID_KEYS.has(String(k).toLowerCase())).length;
-
-          const line =
-            `Entfernt: ${removedCount} Parameter` +
-            (ad ? ` (${ad} Ad-IDs)` : "") +
-            (utm ? `, davon ${utm} UTM` : "");
-
-          impactSetText("ssImpactLastLine", line);
-          impactSetVisible("ssImpactLastLineWrap", true);
-        } else {
-          impactSetVisible("ssImpactLastLineWrap", false);
-        }
-      }
-      function impactAdd(removedKeys){
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
-        const state = impactLoad();
-
-        state.linksCleaned += 1;
-        state.paramsRemoved += keys.length;
-        state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-        state.lastUpdatedISO = new Date().toISOString();
-
-        impactSave(state);
-
-        const card = document.getElementById("ssImpactCard");
-        if (card) card.hidden = false;
-
-        impactUpdateUI(state, keys);
-      }
-      function impactReset(){
-        const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        impactSave(state);
-        impactUpdateUI(state, []);
-        const card = document.getElementById("ssImpactCard");
-        if (card) card.hidden = true;
-      }
-      function impactInit(){
-        const state = impactLoad();
-        impactUpdateUI(state, []);
-        const btn = document.getElementById("ssImpactReset");
-        if (btn) btn.addEventListener("click", impactReset);
-
-        const card = document.getElementById("ssImpactCard");
-        if (card){
-          const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
-          card.hidden = !hasAny;
-        }
-      }
 
       function showMsg(type, text){
         msg.hidden = !text;
@@ -717,13 +546,31 @@
         return s;
       }
 
+      // iPad/Safari: User kopiert oft "Text + URL" oder Zeilen
+      function extractFirstUrl(text){
+        const s = String(text || "").trim();
+        if (!s) return "";
+
+        // 1) wenn es direkt wie URL funktioniert
+        try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
+
+        // 2) erste URL im Text
+        const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
+        if (!m) return "";
+
+        const candidate = m[0];
+        try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
+      }
+
       function cleanUrl(raw){
         const original = (raw || '').trim();
         if (!original) throw new Error('Bitte eine URL einfügen.');
-        const normalized = normalizeUrl(original);
+
+        const extracted = extractFirstUrl(original);
+        if (!extracted) throw new Error('Kein gültiger Link gefunden (nur Text erkannt).');
 
         let url;
-        try{ url = new URL(normalized); }
+        try{ url = new URL(extracted); }
         catch(e){ throw new Error('Das sieht nicht wie eine gültige URL aus.'); }
 
         const removed = [];
@@ -749,15 +596,20 @@
       }
 
       async function copyText(text){
+        // iPad Safari: Clipboard-API kann blocken -> fallback
         try{
           await navigator.clipboard.writeText(text);
           return true;
         }catch(e){
           const ta = document.createElement('textarea');
           ta.value = text;
-          ta.style.position='fixed'; ta.style.left='-9999px';
+          ta.setAttribute('readonly','');
+          ta.style.position='fixed';
+          ta.style.left='-9999px';
+          ta.style.top='0';
           document.body.appendChild(ta);
-          ta.focus(); ta.select();
+          ta.focus();
+          ta.select();
           try{ document.execCommand('copy'); }catch(_){}
           document.body.removeChild(ta);
           return true;
@@ -772,6 +624,7 @@
         auditRow.innerHTML = '';
         const r = Array.from(new Set(res.removed));
         const k = Array.from(new Set(res.kept));
+
         if (r.length || k.length){
           auditRow.hidden = false;
           if (r.length){
@@ -796,15 +649,17 @@
         try{
           const res = cleanUrl(input.value);
           renderResult(res);
-
-          // Impact zählen (nur Summen, local-first)
-          impactAdd(res.removed);
-
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
           showMsg('warn', e.message || 'Fehler beim Bereinigen.');
         }
       }
+
+      // Hide old result while typing
+      input.addEventListener('input', ()=>{
+        resultCard.hidden = true;
+        showMsg('', '');
+      });
 
       $('#btnClean').addEventListener('click', doClean);
 
@@ -815,6 +670,7 @@
         input.focus();
       });
 
+      // Paste: iPad Safari kann readText blocken -> klare UX Message
       $('#btnPaste').addEventListener('click', async ()=>{
         showMsg('', '');
         try{
@@ -823,13 +679,15 @@
             if (t && t.trim()){
               input.value = t.trim();
               input.focus();
+              // optional: sofort reinigen
+              doClean();
               return;
             }
           }
-          showMsg('note', 'Einfügen: Tippe ins Feld und nutze „Einfügen“ (iOS/Browser-Sicherheit).');
+          showMsg('note', 'iPad/Safari: Tippe ins Feld → „Einfügen“. Der Browser blockiert Clipboard-Zugriff manchmal.');
           input.focus();
         }catch(e){
-          showMsg('note', 'Einfügen: Tippe ins Feld und nutze „Einfügen“ (iOS/Browser-Sicherheit).');
+          showMsg('note', 'iPad/Safari: Tippe ins Feld → „Einfügen“. Der Browser blockiert Clipboard-Zugriff manchmal.');
           input.focus();
         }
       });
@@ -844,25 +702,28 @@
         setTimeout(()=>b.textContent=old, 1200);
       });
 
+      // Share: iOS am stabilsten: nur url übergeben
       $('#btnShare').addEventListener('click', async ()=>{
         const text = (outUrl.textContent || '').trim();
         if(!text) return;
 
         if (navigator.share){
           try{
-            await navigator.share({ title: 'SafeShare Link', text: 'Sauberer Link:', url: text });
-          }catch(e){}
-          return;
+            await navigator.share({ url: text });
+            return;
+          }catch(e){
+            // User abgebrochen oder Fehler -> fallback copy
+          }
         }
         await copyText(text);
-        showMsg('note', 'Teilen ist in diesem Browser nicht verfügbar – Link wurde kopiert.');
+        showMsg('note', 'Teilen ist hier nicht verfügbar (oder abgebrochen) – Link wurde kopiert.');
       });
 
+      // Optional: Prefill via ?u=...&run=1
       (function(){
         const sp = new URLSearchParams(location.search);
         const u = sp.get('u');
         const run = sp.get('run');
-
         if (u){
           try{ input.value = decodeURIComponent(u); }
           catch(e){ input.value = u; }
@@ -872,8 +733,6 @@
         }
       })();
 
-      // Init
-      impactInit();
     })();
   </script>
 
