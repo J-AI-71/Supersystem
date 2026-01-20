@@ -1,10 +1,3 @@
-<!-- =========================
-SAFE SHARE APP (DE) — /app/index.html
-Impact:
-- kein Hochzählen bei gleichem Link (Fingerprint-Dedupe)
-- nur in-memory (reset bei Reload/Tab schließen)
-- Reset auch bei "Leeren" + iOS bfcache (pageshow persisted)
-========================= -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -32,6 +25,7 @@ Impact:
   <meta property="og:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Einfügen → Bereinigen → Kopieren/Teilen." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:locale" content="de_DE" />
   <meta property="og:url" content="https://safesharepro.com/app/" />
   <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-20-01" />
   <meta property="og:image:alt" content="SafeShare App – Vorschau" />
@@ -510,6 +504,21 @@ Impact:
 
   <script>
     (function(){
+      const isDE = document.documentElement.lang.toLowerCase().startsWith("de");
+      const locale = isDE ? "de-DE" : "en-US";
+
+      const TXT = {
+        removedLabel: "Entfernt:",
+        keptLabel: "Behalten:",
+        msgPasteHint: "iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert Zwischenablage manchmal.",
+        msgCopied: "Kopiert ✓",
+        msgShareFallback: "Teilen ist nicht verfügbar (oder abgebrochen) — Link wurde kopiert.",
+        errPasteLink: "Bitte einen Link einfügen.",
+        errNoUrl: "Kein gültiger Link gefunden (nur Text erkannt).",
+        errBadUrl: "Das sieht nicht wie eine gültige URL aus.",
+        errClean: "Fehler beim Bereinigen."
+      };
+
       // ===== Active tab =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
@@ -561,9 +570,6 @@ Impact:
       }
 
       // ===== App logic (iPad Safari hardened) =====
-      const isDE = document.documentElement.lang.toLowerCase().startsWith("de");
-      const locale = isDE ? "de-DE" : "en-US";
-
       const $ = (s)=>document.querySelector(s);
       const input = $('#urlInput');
       const msg = $('#msg');
@@ -601,26 +607,30 @@ Impact:
         return s;
       }
 
+      // URL aus "Text + URL" extrahieren
       function extractFirstUrl(text){
         const s = String(text || "").trim();
         if (!s) return "";
+
         try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
+
         const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
         if (!m) return "";
+
         let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
         try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
       }
 
       function cleanUrl(raw){
         const original = (raw || '').trim();
-        if (!original) throw new Error(isDE ? 'Bitte einen Link einfügen.' : 'Please paste a link.');
+        if (!original) throw new Error(TXT.errPasteLink);
 
         const extracted = extractFirstUrl(original);
-        if (!extracted) throw new Error(isDE ? 'Kein gültiger Link gefunden (nur Text erkannt).' : 'No valid URL found (text only).');
+        if (!extracted) throw new Error(TXT.errNoUrl);
 
         let url;
         try{ url = new URL(extracted); }
-        catch(e){ throw new Error(isDE ? 'Das sieht nicht wie eine gültige URL aus.' : 'That does not look like a valid URL.'); }
+        catch(e){ throw new Error(TXT.errBadUrl); }
 
         const removed = [];
         const kept = [];
@@ -677,12 +687,12 @@ Impact:
           auditRow.hidden = false;
           if (r.length){
             const el = document.createElement('span');
-            el.innerHTML = (isDE ? 'Entfernt: ' : 'Removed: ') + '<span class="mono">' + r.join(', ') + '</span>';
+            el.innerHTML = TXT.removedLabel + ' <span class="mono">' + r.join(', ') + '</span>';
             auditRow.appendChild(el);
           }
           if (k.length){
             const el2 = document.createElement('span');
-            el2.innerHTML = (isDE ? 'Behalten: ' : 'Kept: ') + '<span class="mono">' + k.join(', ') + '</span>';
+            el2.innerHTML = TXT.keptLabel + ' <span class="mono">' + k.join(', ') + '</span>';
             auditRow.appendChild(el2);
           }
         } else {
@@ -733,11 +743,7 @@ Impact:
         setText("ssImpactParams", fmt(impact.paramsRemoved));
         setText("ssImpactUTM", fmt(impact.utmRemoved));
         setText("ssImpactAdIds", fmt(impact.adIdsRemoved));
-
-        const last = impact.lastUpdatedISO
-          ? new Date(impact.lastUpdatedISO).toLocaleString(locale)
-          : "—";
-        setText("ssImpactUpdated", last);
+        setText("ssImpactUpdated", impact.lastUpdatedISO ? new Date(impact.lastUpdatedISO).toLocaleString(locale) : "—");
 
         const card = document.getElementById("ssImpactCard");
         if (card){
@@ -749,7 +755,8 @@ Impact:
       function impactSetLastLine(removedKeys){
         const keys = (removedKeys || []).map(k => String(k||"").trim()).filter(Boolean);
         if (!keys.length){
-          impactHideAll();
+          setHidden("ssImpactLastLineWrap", true);
+          setText("ssImpactLastLine", "");
           return;
         }
 
@@ -757,40 +764,44 @@ Impact:
         const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
         const ad  = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
 
-        const line = isDE
-          ? (`Entfernt: ${removedCount} Parameter` +
-             (ad ? ` (${ad} Ad-IDs)` : "") +
-             (utm ? `, davon ${utm} UTM` : ""))
-          : (`Removed: ${removedCount} parameters` +
-             (ad ? ` (${ad} ad IDs)` : "") +
-             (utm ? `, including ${utm} UTM` : ""));
+        const line =
+          `Entfernt: ${removedCount} Parameter` +
+          (ad ? ` (${ad} Ad-IDs)` : "") +
+          (utm ? `, davon ${utm} UTM` : "");
 
         setText("ssImpactLastLine", line);
         setHidden("ssImpactLastLineWrap", false);
-
-        const card = document.getElementById("ssImpactCard");
-        if (card) card.hidden = false;
       }
 
       function fingerprintForCount(extractedUrl){
         try{
           const u = new URL(extractedUrl);
-          return (u.host + u.pathname + "?" + u.searchParams.toString() + (u.hash || "")).toLowerCase();
+          const entries = [];
+          u.searchParams.forEach((v, k) => entries.push([String(k), String(v)]));
+          entries.sort((a,b)=> (a[0]===b[0] ? a[1].localeCompare(b[1]) : a[0].localeCompare(b[0])));
+          const q = entries.map(([k,v]) => `${k}=${v}`).join("&");
+          return (u.host + u.pathname + (q ? "?" + q : "") + (u.hash || "")).toLowerCase();
         }catch(e){
           return String(extractedUrl || "").trim().toLowerCase();
         }
       }
 
       function impactAdd(extractedUrl, removedKeys){
+        const keys = (removedKeys || []).map(k => String(k||"").trim()).filter(Boolean);
+        if (!keys.length){
+          // nichts entfernt => kein Impact
+          impactHideAll();
+          return false;
+        }
+
         const fp = fingerprintForCount(extractedUrl);
         if (impact.seen.has(fp)) {
+          // gleicher Link nochmal -> NICHT zählen
           impactRender();
-          impactSetLastLine(removedKeys);
+          impactSetLastLine(keys);
           return false;
         }
         impact.seen.add(fp);
-
-        const keys = (removedKeys || []).map(k => String(k||"").trim()).filter(Boolean);
 
         impact.linksCleaned += 1;
         impact.paramsRemoved += keys.length;
@@ -800,6 +811,10 @@ Impact:
 
         impactRender();
         impactSetLastLine(keys);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = false;
+
         return true;
       }
 
@@ -816,9 +831,11 @@ Impact:
 
       function impactInit(){
         impactReset();
+
         const btn = document.getElementById("ssImpactReset");
         if (btn) btn.addEventListener("click", impactReset);
 
+        // iOS Safari bfcache restore => reset
         window.addEventListener("pageshow", (e) => {
           if (e && e.persisted) impactReset();
         });
@@ -832,16 +849,12 @@ Impact:
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          if (res.removed && res.removed.length){
-            impactAdd(res.extracted, res.removed);
-          } else {
-            // kein Tracking entfernt -> Impact ausblenden
-            impactReset();
-          }
+          // Impact (in-memory, dedupe, reset on reload/clear)
+          impactAdd(res.extracted, res.removed);
 
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
-          showMsg('warn', e.message || (isDE ? 'Fehler beim Bereinigen.' : 'Error while cleaning.'));
+          showMsg('warn', e.message || TXT.errClean);
         }
       }
 
@@ -856,7 +869,7 @@ Impact:
         input.value = '';
         resultCard.hidden = true;
         showMsg('', '');
-        impactReset();
+        impactReset(); // <-- wichtig: Impact beim Leeren komplett zurücksetzen/ausblenden
         input.focus();
       });
 
@@ -872,14 +885,10 @@ Impact:
               return;
             }
           }
-          showMsg('note', isDE
-            ? 'iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert die Zwischenablage manchmal.'
-            : 'iPad/Safari: tap the field and use “Paste”. The browser may block clipboard access sometimes.');
+          showMsg('note', TXT.msgPasteHint);
           input.focus();
         }catch(e){
-          showMsg('note', isDE
-            ? 'iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert die Zwischenablage manchmal.'
-            : 'iPad/Safari: tap the field and use “Paste”. The browser may block clipboard access sometimes.');
+          showMsg('note', TXT.msgPasteHint);
           input.focus();
         }
       });
@@ -890,7 +899,7 @@ Impact:
         await copyText(text);
         const b = document.getElementById('btnCopy');
         const old = b.textContent;
-        b.textContent = isDE ? 'Kopiert ✓' : 'Copied ✓';
+        b.textContent = TXT.msgCopied;
         setTimeout(()=>b.textContent=old, 1200);
       });
 
@@ -905,9 +914,7 @@ Impact:
           }catch(e){}
         }
         await copyText(text);
-        showMsg('note', isDE
-          ? 'Teilen ist nicht verfügbar (oder abgebrochen) — Link wurde kopiert.'
-          : 'Sharing is not available (or was canceled) — the link was copied.');
+        showMsg('note', TXT.msgShareFallback);
       });
 
       // Optional: Prefill via ?u=...&run=1
