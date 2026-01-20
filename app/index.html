@@ -1,3 +1,4 @@
+<!-- /app/  (DE)  SafeShare App – komplett (Impact: kein Doppelzaehlen + reset bei Reload + session-only) -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -408,7 +409,7 @@
       </div>
     </section>
 
-    <!-- Impact (local-first) -->
+    <!-- Impact (session-only) -->
     <section class="card" id="ssImpactCard" hidden>
       <h2>Impact (local-first)</h2>
 
@@ -436,7 +437,7 @@
       </div>
 
       <p class="muted2">
-        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains).
+        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains). (Diese Seite setzt Impact bei Reload zurück.)
       </p>
 
       <div class="row">
@@ -503,6 +504,8 @@
 
   <script>
     (function(){
+      const LOCALE = "de-DE";
+
       // ===== Active tab =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
@@ -595,12 +598,9 @@
       function extractFirstUrl(text){
         const s = String(text || "").trim();
         if (!s) return "";
-
         try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
-
         const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
         if (!m) return "";
-
         let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
         try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
       }
@@ -618,7 +618,6 @@
 
         const removed = [];
         const kept = [];
-
         const keys = [];
         url.searchParams.forEach((_, k)=>keys.push(k));
 
@@ -626,7 +625,6 @@
           const low = (k || '').toLowerCase();
           const isUtm = low.startsWith('utm_');
           const isTracking = TRACKING_KEYS.has(low);
-
           if (isUtm || isTracking){
             url.searchParams.delete(k);
             removed.push(k);
@@ -684,8 +682,12 @@
         }
       }
 
-      // ===== Impact (local-first) =====
+      // ===== Impact (SESSION-ONLY + reset bei Reload + kein Doppelzaehlen) =====
+      const IMPACT_STORE = sessionStorage;
       const IMPACT_LS_KEY = "ss_impact_v1";
+      const IMPACT_SEEN_KEY = "ss_impact_seen_v1"; // hashes only
+      const IMPACT_LOAD_MARK = "ss_impact_loadmark_v1";
+
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
         "fbclid","msclkid","ttclid","twclid","li_fat_id",
@@ -694,9 +696,20 @@
         "srsltid"
       ]);
 
+      // Reset on reload (dein Wunsch): sobald Seite erneut geladen wird, geht Impact wieder auf 0.
+      function impactBoot(){
+        try{
+          if (IMPACT_STORE.getItem(IMPACT_LOAD_MARK) === "1"){
+            IMPACT_STORE.removeItem(IMPACT_LS_KEY);
+            IMPACT_STORE.removeItem(IMPACT_SEEN_KEY);
+          }
+          IMPACT_STORE.setItem(IMPACT_LOAD_MARK, "1");
+        }catch(e){}
+      }
+
       function impactLoad(){
         try{
-          const raw = localStorage.getItem(IMPACT_LS_KEY);
+          const raw = IMPACT_STORE.getItem(IMPACT_LS_KEY);
           const d = raw ? JSON.parse(raw) : null;
           return Object.assign({
             linksCleaned: 0,
@@ -710,10 +723,23 @@
         }
       }
       function impactSave(state){
-        try{ localStorage.setItem(IMPACT_LS_KEY, JSON.stringify(state)); }catch(e){}
+        try{ IMPACT_STORE.setItem(IMPACT_LS_KEY, JSON.stringify(state)); }catch(e){}
       }
+      function seenLoad(){
+        try{
+          const raw = IMPACT_STORE.getItem(IMPACT_SEEN_KEY);
+          const d = raw ? JSON.parse(raw) : null;
+          return (d && Array.isArray(d.hashes)) ? d : { hashes: [] };
+        }catch(e){
+          return { hashes: [] };
+        }
+      }
+      function seenSave(s){
+        try{ IMPACT_STORE.setItem(IMPACT_SEEN_KEY, JSON.stringify(s)); }catch(e){}
+      }
+
       function impactFormat(n){
-        try{ return new Intl.NumberFormat("de-DE").format(n); }catch(e){ return String(n); }
+        try{ return new Intl.NumberFormat(LOCALE).format(n); }catch(e){ return String(n); }
       }
       function impactSetText(id, text){
         const el = document.getElementById(id);
@@ -723,12 +749,13 @@
         const el = document.getElementById(id);
         if (el) el.hidden = !visible;
       }
+
       function impactUpdateUI(state, removedKeys){
         impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
         impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
         impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
         impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
-        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("de-DE") : "—");
+        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString(LOCALE) : "—");
 
         if (Array.isArray(removedKeys) && removedKeys.length){
           const keys = removedKeys.map(k => String(k || "").trim()).filter(Boolean);
@@ -738,8 +765,7 @@
 
           const line =
             `Entfernt: ${removedCount} Parameter` +
-            (ad ? ` (${ad} Ad-IDs)` : "") +
-            (utm ? `, davon ${utm} UTM` : "");
+            ` (${ad} Ad-IDs), davon ${utm} UTM`;
 
           impactSetText("ssImpactLastLine", line);
           impactSetVisible("ssImpactLastLineWrap", true);
@@ -747,16 +773,46 @@
           impactSetVisible("ssImpactLastLineWrap", false);
         }
       }
-      function impactAdd(removedKeys){
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
-        const state = impactLoad();
 
+      function fnv1aHex(str){
+        let h = 0x811c9dc5;
+        for (let i=0;i<str.length;i++){
+          h ^= str.charCodeAt(i);
+          h = (h + ((h<<1) + (h<<4) + (h<<7) + (h<<8) + (h<<24))) >>> 0;
+        }
+        return ("00000000" + h.toString(16)).slice(-8);
+      }
+
+      async function hashForDedupe(s){
+        const text = String(s || "");
+        try{
+          if (crypto && crypto.subtle && crypto.subtle.digest){
+            const data = new TextEncoder().encode(text);
+            const buf = await crypto.subtle.digest("SHA-256", data);
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+          }
+        }catch(e){}
+        return fnv1aHex(text);
+      }
+
+      async function impactMaybeAdd(cleanedUrl, removedKeys){
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k||"").trim()).filter(Boolean) : [];
+        if (keys.length === 0) return;
+
+        const h = await hashForDedupe(String(cleanedUrl || ""));
+        const seen = seenLoad();
+        if (seen.hashes.includes(h)) return;
+
+        seen.hashes.push(h);
+        if (seen.hashes.length > 200) seen.hashes = seen.hashes.slice(-200);
+        seenSave(seen);
+
+        const state = impactLoad();
         state.linksCleaned += 1;
         state.paramsRemoved += keys.length;
         state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
         state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
         state.lastUpdatedISO = new Date().toISOString();
-
         impactSave(state);
 
         const card = document.getElementById("ssImpactCard");
@@ -764,13 +820,16 @@
 
         impactUpdateUI(state, keys);
       }
+
       function impactReset(){
+        try{ IMPACT_STORE.removeItem(IMPACT_LS_KEY); }catch(e){}
+        try{ IMPACT_STORE.removeItem(IMPACT_SEEN_KEY); }catch(e){}
         const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        impactSave(state);
         impactUpdateUI(state, []);
         const card = document.getElementById("ssImpactCard");
         if (card) card.hidden = true;
       }
+
       function impactInit(){
         const state = impactLoad();
         impactUpdateUI(state, []);
@@ -784,7 +843,7 @@
         }
       }
 
-      function doClean(){
+      async function doClean(){
         showMsg('', '');
         resultCard.hidden = true;
 
@@ -792,8 +851,7 @@
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          // Impact Summen (local-first)
-          impactAdd(res.removed);
+          await impactMaybeAdd(res.cleaned, res.removed);
 
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
@@ -806,7 +864,7 @@
         showMsg('', '');
       });
 
-      document.getElementById('btnClean').addEventListener('click', doClean);
+      document.getElementById('btnClean').addEventListener('click', ()=>{ doClean(); });
 
       document.getElementById('btnClear').addEventListener('click', ()=>{
         input.value = '';
@@ -851,7 +909,7 @@
 
         if (navigator.share){
           try{
-            await navigator.share({ url: text }); // url-only ist am stabilsten
+            await navigator.share({ url: text });
             return;
           }catch(e){}
         }
@@ -869,11 +927,12 @@
           catch(e){ input.value = u; }
         }
         if (u && run === '1'){
-          setTimeout(doClean, 120);
+          setTimeout(()=>doClean(), 120);
         }
       })();
 
       // Init
+      impactBoot();
       impactInit();
     })();
   </script>
