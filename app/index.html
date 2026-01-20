@@ -1,3 +1,10 @@
+<!-- =========================
+SAFE SHARE APP (DE) — /app/index.html
+Impact:
+- kein Hochzählen bei gleichem Link (Fingerprint-Dedupe)
+- nur in-memory (reset bei Reload/Tab schließen)
+- Reset auch bei "Leeren" + iOS bfcache (pageshow persisted)
+========================= -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -344,7 +351,7 @@
         </div>
 
         <div class="brandText">
-          <div class "title">SafeShare</div>
+          <div class="title">SafeShare</div>
           <div class="sub">Links sauber teilen</div>
         </div>
       </div>
@@ -408,6 +415,7 @@
       </div>
     </section>
 
+    <!-- Impact (local-first) -->
     <section class="card" id="ssImpactCard" hidden>
       <h2>Impact (local-first)</h2>
 
@@ -435,8 +443,7 @@
       </div>
 
       <p class="muted2">
-        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains).
-        <span class="muted2">(Diese Seite setzt Impact bei Reload zurück.)</span>
+        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains). (Diese Seite setzt Impact bei Reload zurück.)
       </p>
 
       <div class="row">
@@ -482,6 +489,7 @@
 
   </div>
 
+  <!-- Mehr (Bottom Sheet) -->
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
     <div class="menuHint">Seiten</div>
@@ -500,12 +508,9 @@
     <a href="/help/en/">Help (EN)</a>
   </nav>
 
-  <!-- Core logic: shared between DE/EN -->
-  <script src="/assets/js/app-core.js?v=2026-01-20-02"></script>
-
   <script>
     (function(){
-      // ===== Active tab (DE) =====
+      // ===== Active tab =====
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/' || p === '/index.html') return 'start';
@@ -554,6 +559,373 @@
           if (e.key === 'Escape' && moreBtn.getAttribute('aria-expanded') === 'true') closeMenu();
         });
       }
+
+      // ===== App logic (iPad Safari hardened) =====
+      const isDE = document.documentElement.lang.toLowerCase().startsWith("de");
+      const locale = isDE ? "de-DE" : "en-US";
+
+      const $ = (s)=>document.querySelector(s);
+      const input = $('#urlInput');
+      const msg = $('#msg');
+      const resultCard = $('#resultCard');
+      const outUrl = $('#outUrl');
+      const auditRow = $('#auditRow');
+      const btnOpen = $('#btnOpen');
+
+      const TRACKING_KEYS = new Set([
+        'gclid','dclid','gbraid','wbraid',
+        'fbclid','msclkid','igshid',
+        'twclid','ttclid','li_fat_id',
+        'yclid',
+        'mc_cid','mc_eid','mkt_tok',
+        '_hsenc','_hsmi',
+        'srsltid',
+        '_ga','_gid','_gac',
+        '_fbp','_fbc',
+        'obclid','tblci'
+      ]);
+
+      function showMsg(type, text){
+        msg.hidden = !text;
+        msg.className = type ? type : 'warn';
+        msg.textContent = text || '';
+      }
+
+      function normalizeUrl(s){
+        s = (s || '').trim();
+        if (!s) return '';
+        if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(s)) {
+          if (s.startsWith('//')) s = 'https:' + s;
+          else s = 'https://' + s;
+        }
+        return s;
+      }
+
+      function extractFirstUrl(text){
+        const s = String(text || "").trim();
+        if (!s) return "";
+        try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
+        const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
+        if (!m) return "";
+        let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
+        try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
+      }
+
+      function cleanUrl(raw){
+        const original = (raw || '').trim();
+        if (!original) throw new Error(isDE ? 'Bitte einen Link einfügen.' : 'Please paste a link.');
+
+        const extracted = extractFirstUrl(original);
+        if (!extracted) throw new Error(isDE ? 'Kein gültiger Link gefunden (nur Text erkannt).' : 'No valid URL found (text only).');
+
+        let url;
+        try{ url = new URL(extracted); }
+        catch(e){ throw new Error(isDE ? 'Das sieht nicht wie eine gültige URL aus.' : 'That does not look like a valid URL.'); }
+
+        const removed = [];
+        const kept = [];
+
+        const keys = [];
+        url.searchParams.forEach((_, k)=>keys.push(k));
+
+        keys.forEach((k)=>{
+          const low = (k || '').toLowerCase();
+          const isUtm = low.startsWith('utm_');
+          const isTracking = TRACKING_KEYS.has(low);
+
+          if (isUtm || isTracking){
+            url.searchParams.delete(k);
+            removed.push(k);
+          } else {
+            kept.push(k);
+          }
+        });
+
+        return { cleaned: url.toString(), removed, kept, extracted };
+      }
+
+      async function copyText(text){
+        try{
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(e){
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly','');
+          ta.style.position='fixed';
+          ta.style.left='-9999px';
+          ta.style.top='0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try{ document.execCommand('copy'); }catch(_){}
+          document.body.removeChild(ta);
+          return true;
+        }
+      }
+
+      function renderResult(res){
+        resultCard.hidden = false;
+        outUrl.textContent = res.cleaned;
+        btnOpen.href = res.cleaned;
+
+        auditRow.innerHTML = '';
+        const r = Array.from(new Set(res.removed));
+        const k = Array.from(new Set(res.kept));
+
+        if (r.length || k.length){
+          auditRow.hidden = false;
+          if (r.length){
+            const el = document.createElement('span');
+            el.innerHTML = (isDE ? 'Entfernt: ' : 'Removed: ') + '<span class="mono">' + r.join(', ') + '</span>';
+            auditRow.appendChild(el);
+          }
+          if (k.length){
+            const el2 = document.createElement('span');
+            el2.innerHTML = (isDE ? 'Behalten: ' : 'Kept: ') + '<span class="mono">' + k.join(', ') + '</span>';
+            auditRow.appendChild(el2);
+          }
+        } else {
+          auditRow.hidden = true;
+        }
+      }
+
+      // ===== Impact (local-first) — IN-MEMORY ONLY (resets on reload) =====
+      const impact = {
+        linksCleaned: 0,
+        paramsRemoved: 0,
+        utmRemoved: 0,
+        adIdsRemoved: 0,
+        lastUpdatedISO: "",
+        seen: new Set(),
+      };
+
+      const AD_ID_KEYS = new Set([
+        "gclid","dclid","gbraid","wbraid",
+        "fbclid","msclkid","ttclid","twclid","li_fat_id",
+        "igshid","yclid",
+        "mc_cid","mc_eid","mkt_tok",
+        "srsltid"
+      ]);
+
+      function fmt(n){
+        try { return new Intl.NumberFormat(locale).format(n); }
+        catch(e){ return String(n); }
+      }
+      function setText(id, txt){
+        const el = document.getElementById(id);
+        if (el) el.textContent = txt;
+      }
+      function setHidden(id, hidden){
+        const el = document.getElementById(id);
+        if (el) el.hidden = !!hidden;
+      }
+
+      function impactHideAll(){
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = true;
+        setHidden("ssImpactLastLineWrap", true);
+        setText("ssImpactLastLine", "");
+      }
+
+      function impactRender(){
+        setText("ssImpactLinks", fmt(impact.linksCleaned));
+        setText("ssImpactParams", fmt(impact.paramsRemoved));
+        setText("ssImpactUTM", fmt(impact.utmRemoved));
+        setText("ssImpactAdIds", fmt(impact.adIdsRemoved));
+
+        const last = impact.lastUpdatedISO
+          ? new Date(impact.lastUpdatedISO).toLocaleString(locale)
+          : "—";
+        setText("ssImpactUpdated", last);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card){
+          const hasAny = impact.linksCleaned || impact.paramsRemoved || impact.adIdsRemoved || impact.utmRemoved;
+          card.hidden = !hasAny;
+        }
+      }
+
+      function impactSetLastLine(removedKeys){
+        const keys = (removedKeys || []).map(k => String(k||"").trim()).filter(Boolean);
+        if (!keys.length){
+          impactHideAll();
+          return;
+        }
+
+        const removedCount = keys.length;
+        const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        const ad  = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+
+        const line = isDE
+          ? (`Entfernt: ${removedCount} Parameter` +
+             (ad ? ` (${ad} Ad-IDs)` : "") +
+             (utm ? `, davon ${utm} UTM` : ""))
+          : (`Removed: ${removedCount} parameters` +
+             (ad ? ` (${ad} ad IDs)` : "") +
+             (utm ? `, including ${utm} UTM` : ""));
+
+        setText("ssImpactLastLine", line);
+        setHidden("ssImpactLastLineWrap", false);
+
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = false;
+      }
+
+      function fingerprintForCount(extractedUrl){
+        try{
+          const u = new URL(extractedUrl);
+          return (u.host + u.pathname + "?" + u.searchParams.toString() + (u.hash || "")).toLowerCase();
+        }catch(e){
+          return String(extractedUrl || "").trim().toLowerCase();
+        }
+      }
+
+      function impactAdd(extractedUrl, removedKeys){
+        const fp = fingerprintForCount(extractedUrl);
+        if (impact.seen.has(fp)) {
+          impactRender();
+          impactSetLastLine(removedKeys);
+          return false;
+        }
+        impact.seen.add(fp);
+
+        const keys = (removedKeys || []).map(k => String(k||"").trim()).filter(Boolean);
+
+        impact.linksCleaned += 1;
+        impact.paramsRemoved += keys.length;
+        impact.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        impact.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        impact.lastUpdatedISO = new Date().toISOString();
+
+        impactRender();
+        impactSetLastLine(keys);
+        return true;
+      }
+
+      function impactReset(){
+        impact.linksCleaned = 0;
+        impact.paramsRemoved = 0;
+        impact.utmRemoved = 0;
+        impact.adIdsRemoved = 0;
+        impact.lastUpdatedISO = "";
+        impact.seen.clear();
+        impactRender();
+        impactHideAll();
+      }
+
+      function impactInit(){
+        impactReset();
+        const btn = document.getElementById("ssImpactReset");
+        if (btn) btn.addEventListener("click", impactReset);
+
+        window.addEventListener("pageshow", (e) => {
+          if (e && e.persisted) impactReset();
+        });
+      }
+
+      function doClean(){
+        showMsg('', '');
+        resultCard.hidden = true;
+
+        try{
+          const res = cleanUrl(input.value);
+          renderResult(res);
+
+          if (res.removed && res.removed.length){
+            impactAdd(res.extracted, res.removed);
+          } else {
+            // kein Tracking entfernt -> Impact ausblenden
+            impactReset();
+          }
+
+          setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
+        }catch(e){
+          showMsg('warn', e.message || (isDE ? 'Fehler beim Bereinigen.' : 'Error while cleaning.'));
+        }
+      }
+
+      input.addEventListener('input', ()=>{
+        resultCard.hidden = true;
+        showMsg('', '');
+      });
+
+      document.getElementById('btnClean').addEventListener('click', doClean);
+
+      document.getElementById('btnClear').addEventListener('click', ()=>{
+        input.value = '';
+        resultCard.hidden = true;
+        showMsg('', '');
+        impactReset();
+        input.focus();
+      });
+
+      document.getElementById('btnPaste').addEventListener('click', async ()=>{
+        showMsg('', '');
+        try{
+          if (navigator.clipboard && navigator.clipboard.readText){
+            const t = await navigator.clipboard.readText();
+            if (t && t.trim()){
+              input.value = t.trim();
+              input.focus();
+              doClean();
+              return;
+            }
+          }
+          showMsg('note', isDE
+            ? 'iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert die Zwischenablage manchmal.'
+            : 'iPad/Safari: tap the field and use “Paste”. The browser may block clipboard access sometimes.');
+          input.focus();
+        }catch(e){
+          showMsg('note', isDE
+            ? 'iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert die Zwischenablage manchmal.'
+            : 'iPad/Safari: tap the field and use “Paste”. The browser may block clipboard access sometimes.');
+          input.focus();
+        }
+      });
+
+      document.getElementById('btnCopy').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+        await copyText(text);
+        const b = document.getElementById('btnCopy');
+        const old = b.textContent;
+        b.textContent = isDE ? 'Kopiert ✓' : 'Copied ✓';
+        setTimeout(()=>b.textContent=old, 1200);
+      });
+
+      document.getElementById('btnShare').addEventListener('click', async ()=>{
+        const text = (outUrl.textContent || '').trim();
+        if(!text) return;
+
+        if (navigator.share){
+          try{
+            await navigator.share({ url: text });
+            return;
+          }catch(e){}
+        }
+        await copyText(text);
+        showMsg('note', isDE
+          ? 'Teilen ist nicht verfügbar (oder abgebrochen) — Link wurde kopiert.'
+          : 'Sharing is not available (or was canceled) — the link was copied.');
+      });
+
+      // Optional: Prefill via ?u=...&run=1
+      (function(){
+        const sp = new URLSearchParams(location.search);
+        const u = sp.get('u');
+        const run = sp.get('run');
+        if (u){
+          try{ input.value = decodeURIComponent(u); }
+          catch(e){ input.value = u; }
+        }
+        if (u && run === '1'){
+          setTimeout(doClean, 120);
+        }
+      })();
+
+      // Init
+      impactInit();
     })();
   </script>
 </body>
