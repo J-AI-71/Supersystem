@@ -1,3 +1,4 @@
+<!-- app/index.html (DE) – KOMPLETT -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -355,7 +356,7 @@
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" data-page="start" href="/">Start</a>
-        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab active" data-page="app" href="/app/">App</a>
         <a class="tab" data-page="schule" href="/schule/">Schule</a>
         <a class="tab" data-page="pro" href="/pro/">Pro</a>
         <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
@@ -408,9 +409,9 @@
       </div>
     </section>
 
-    <!-- Impact (local-first) -->
+    <!-- Impact (Session, erscheint erst nach erstem echten Clean, blendet bei Leeren aus) -->
     <section class="card" id="ssImpactCard" hidden>
-      <h2>Impact (local-first)</h2>
+      <h2>Impact (Session)</h2>
 
       <p class="muted" id="ssImpactLastLineWrap" hidden>
         <span id="ssImpactLastLine"></span>
@@ -436,7 +437,7 @@
       </div>
 
       <p class="muted2">
-        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains).
+        Nichts wird gespeichert – nur für diese Session im offenen Tab.
       </p>
 
       <div class="row">
@@ -507,7 +508,7 @@
       function currentKey(){
         const p = (location.pathname || '/').toLowerCase();
         if (p === '/' || p === '/index.html') return 'start';
-        if (p === '/app' || p === '/app/' || p === '/app/index.html') return 'app';
+        if (p.startsWith('/app')) return 'app';
         if (p.startsWith('/schule')) return 'schule';
         if (p.startsWith('/pro')) return 'pro';
         if (p.startsWith('/hilfe')) return 'hilfe';
@@ -681,7 +682,7 @@
         }
       }
 
-      // ===== Impact (in-memory: kein Storage, weg nach Reload) =====
+      // ===== Impact (Session, in-memory) =====
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
         "fbclid","msclkid","ttclid","twclid","li_fat_id",
@@ -690,18 +691,17 @@
         "srsltid"
       ]);
 
-      let impactState = {
+      const impactState = {
         linksCleaned: 0,
         paramsRemoved: 0,
         utmRemoved: 0,
         adIdsRemoved: 0,
-        lastUpdatedISO: ""
+        lastUpdatedISO: "",
+        lastSig: ""
       };
 
-      const seenSigs = new Set(); // Signature-Set pro Session/Tab
-
-      function impactFormat(n, locale){
-        try{ return new Intl.NumberFormat(locale).format(n); }catch(e){ return String(n); }
+      function impactFormat(n){
+        try{ return new Intl.NumberFormat("de-DE").format(n); }catch(e){ return String(n); }
       }
       function impactSetText(id, text){
         const el = document.getElementById(id);
@@ -711,114 +711,127 @@
         const el = document.getElementById(id);
         if (el) el.hidden = !visible;
       }
-      function impactClearLastLine(){
-        impactSetText("ssImpactLastLine", "");
-        impactSetVisible("ssImpactLastLineWrap", false);
-      }
-      function impactUpdateUI(locale){
-        impactSetText("ssImpactLinks", impactFormat(impactState.linksCleaned, locale));
-        impactSetText("ssImpactParams", impactFormat(impactState.paramsRemoved, locale));
-        impactSetText("ssImpactUTM", impactFormat(impactState.utmRemoved, locale));
-        impactSetText("ssImpactAdIds", impactFormat(impactState.adIdsRemoved, locale));
-        impactSetText(
-          "ssImpactUpdated",
-          impactState.lastUpdatedISO ? new Date(impactState.lastUpdatedISO).toLocaleString(locale) : "—"
-        );
-      }
-      function impactShowIfNeeded(){
-        const card = document.getElementById("ssImpactCard");
-        if (!card) return;
-        const hasAny = (impactState.linksCleaned || impactState.paramsRemoved || impactState.adIdsRemoved || impactState.utmRemoved);
-        card.hidden = !hasAny;
-      }
-      function impactReset(locale){
-        impactState = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        seenSigs.clear();
-        impactUpdateUI(locale);
-        impactClearLastLine();
+      function impactHideCard(){
         const card = document.getElementById("ssImpactCard");
         if (card) card.hidden = true;
       }
+      function impactShowCard(){
+        const card = document.getElementById("ssImpactCard");
+        if (card) card.hidden = false;
+      }
+      function impactClearHintLine(){
+        impactSetText("ssImpactLastLine", "");
+        impactSetVisible("ssImpactLastLineWrap", false);
+      }
+      function impactUpdateUI(removedKeysForLine){
+        impactSetText("ssImpactLinks", impactFormat(impactState.linksCleaned));
+        impactSetText("ssImpactParams", impactFormat(impactState.paramsRemoved));
+        impactSetText("ssImpactUTM", impactFormat(impactState.utmRemoved));
+        impactSetText("ssImpactAdIds", impactFormat(impactState.adIdsRemoved));
+        impactSetText("ssImpactUpdated", impactState.lastUpdatedISO ? new Date(impactState.lastUpdatedISO).toLocaleString("de-DE") : "—");
 
-      function impactInit(locale){
-        impactUpdateUI(locale);
-        impactClearLastLine();   // wichtig: keine Zeile beim Öffnen
-        impactShowIfNeeded();    // bei 0 verstecken
+        if (Array.isArray(removedKeysForLine) && removedKeysForLine.length){
+          const keys = removedKeysForLine.map(k => String(k || "").trim()).filter(Boolean);
+          const removedCount = keys.length;
+          const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+          const ad = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
 
-        const btn = document.getElementById("ssImpactReset");
-        if (btn) btn.addEventListener("click", ()=>impactReset(locale));
+          const line =
+            `Entfernt: ${removedCount} Parameter` +
+            (ad ? ` (${ad} Ad-IDs)` : "") +
+            (utm ? `, davon ${utm} UTM` : "");
+
+          impactSetText("ssImpactLastLine", line);
+          impactSetVisible("ssImpactLastLineWrap", true);
+        } else {
+          impactClearHintLine();
+        }
       }
 
-      function impactMaybeAdd(res, locale){
-        const removedKeys = Array.isArray(res.removed)
-          ? res.removed.map(k => String(k||"").trim()).filter(Boolean)
-          : [];
+      function makeSig(cleanedUrl, removedKeys){
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k||"").toLowerCase()).sort() : [];
+        return String(cleanedUrl||"") + "||" + keys.join(",");
+      }
 
-        // wenn nichts entfernt -> keine "Entfernt ..." Zeile stehen lassen
-        if (!removedKeys.length){
-          impactClearLastLine();
-          impactShowIfNeeded();
+      function impactAddOnce(cleanedUrl, removedKeys){
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
+        const sig = makeSig(cleanedUrl, keys);
+        if (sig && sig === impactState.lastSig) {
+          // gleiche Eingabe/gleiches Ergebnis: UI updaten, aber NICHT zählen
+          impactUpdateUI(keys);
           return;
         }
-
-        const sig = JSON.stringify({
-          cleaned: String(res.cleaned || ""),
-          removed: removedKeys.map(k => k.toLowerCase()).sort()
-        });
-
-        // Kein Hochzählen bei gleichem Ergebnis (auch nicht nach Zwischenläufen)
-        if (seenSigs.has(sig)){
-          impactClearLastLine();
-          impactShowIfNeeded();
-          return;
-        }
-        seenSigs.add(sig);
+        impactState.lastSig = sig;
 
         impactState.linksCleaned += 1;
-        impactState.paramsRemoved += removedKeys.length;
-        impactState.utmRemoved += removedKeys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        impactState.adIdsRemoved += removedKeys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        impactState.paramsRemoved += keys.length;
+        impactState.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        impactState.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
         impactState.lastUpdatedISO = new Date().toISOString();
 
-        impactUpdateUI(locale);
-        impactShowIfNeeded();
+        impactShowCard();
+        impactUpdateUI(keys);
+      }
 
-        const removedCount = removedKeys.length;
-        const utm = removedKeys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        const ad  = removedKeys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+      function impactReset(){
+        impactState.linksCleaned = 0;
+        impactState.paramsRemoved = 0;
+        impactState.utmRemoved = 0;
+        impactState.adIdsRemoved = 0;
+        impactState.lastUpdatedISO = "";
+        impactState.lastSig = "";
+        impactUpdateUI([]);
+        impactHideCard();
+      }
 
-        const line =
-          `Entfernt: ${removedCount} Parameter` +
-          (ad ? ` (${ad} Ad-IDs)` : "") +
-          (utm ? `, davon ${utm} UTM` : "");
+      function impactInit(){
+        // Start: ausgeblendet (keine Persistenz)
+        impactHideCard();
+        impactClearHintLine();
+        const btn = document.getElementById("ssImpactReset");
+        if (btn) btn.addEventListener("click", impactReset);
+      }
 
-        impactSetText("ssImpactLastLine", line);
-        impactSetVisible("ssImpactLastLineWrap", true);
+      function hideImpactWhenNoActiveResult(){
+        // Wenn kein Ergebnis sichtbar ist (z.B. Field cleared/edited), Impact verstecken + Hinweiszeile löschen
+        impactClearHintLine();
+        impactHideCard();
       }
 
       function doClean(){
         showMsg('', '');
         resultCard.hidden = true;
-        impactClearLastLine(); // <- keine stale Zeile
 
         try{
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          // Impact (in-memory, dedupe)
-          impactMaybeAdd(res, "de-DE");
+          // Impact: nur wenn wirklich etwas entfernt wurde (sonst kein "Impact")
+          if (res.removed && res.removed.length){
+            impactAddOnce(res.cleaned, res.removed);
+          } else {
+            // nichts entfernt -> Impact nicht anzeigen, Hint löschen
+            hideImpactWhenNoActiveResult();
+          }
 
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
           showMsg('warn', e.message || 'Fehler beim Bereinigen.');
-          impactClearLastLine();
         }
       }
 
       input.addEventListener('input', ()=>{
         resultCard.hidden = true;
         showMsg('', '');
-        impactClearLastLine(); // <- beim Tippen/Leeren immer löschen
+
+        // sobald man das Feld verändert: keine "Removed..." Zeile stehen lassen und Impact ausblenden
+        if (!input.value.trim()){
+          hideImpactWhenNoActiveResult();
+          impactState.lastSig = ""; // damit erneutes Reinigen des gleichen Links nach Leeren wieder zählt
+        } else {
+          // beim Tippen ebenfalls UI "entkoppeln" (kein altes Removed anzeigen)
+          hideImpactWhenNoActiveResult();
+        }
       });
 
       document.getElementById('btnClean').addEventListener('click', doClean);
@@ -827,7 +840,8 @@
         input.value = '';
         resultCard.hidden = true;
         showMsg('', '');
-        impactClearLastLine(); // <- wichtig
+        hideImpactWhenNoActiveResult();
+        impactState.lastSig = "";
         input.focus();
       });
 
@@ -867,7 +881,7 @@
 
         if (navigator.share){
           try{
-            await navigator.share({ url: text }); // url-only ist am stabilsten
+            await navigator.share({ url: text });
             return;
           }catch(e){}
         }
@@ -890,7 +904,7 @@
       })();
 
       // Init
-      impactInit("de-DE");
+      impactInit();
     })();
   </script>
 </body>
