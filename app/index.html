@@ -1,7 +1,3 @@
-<!-- =========================
-     app/index.html (DE) – komplett
-     Impact: sessionStorage + kein Doppeltzählen + Hinweiszeile sauber löschen
-     ========================= -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -24,7 +20,7 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Open Graph / Social Preview -->
+  <!-- Open Graph -->
   <meta property="og:title" content="SafeShare App – Links bereinigen (local-first)" />
   <meta property="og:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Einfügen → Bereinigen → Kopieren/Teilen." />
   <meta property="og:type" content="website" />
@@ -152,7 +148,6 @@
     }
     h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
@@ -360,7 +355,7 @@
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" data-page="start" href="/">Start</a>
-        <a class="tab active" data-page="app" href="/app/">App</a>
+        <a class="tab" data-page="app" href="/app/">App</a>
         <a class="tab" data-page="schule" href="/schule/">Schule</a>
         <a class="tab" data-page="pro" href="/pro/">Pro</a>
         <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
@@ -413,9 +408,9 @@
       </div>
     </section>
 
-    <!-- Impact (Session) -->
+    <!-- Impact (local-first) -->
     <section class="card" id="ssImpactCard" hidden>
-      <h2>Impact (Session)</h2>
+      <h2>Impact (local-first)</h2>
 
       <p class="muted" id="ssImpactLastLineWrap" hidden>
         <span id="ssImpactLastLine"></span>
@@ -441,34 +436,30 @@
       </div>
 
       <p class="muted2">
-        Gespeichert werden nur Summen in dieser Session (keine URLs, keine Domains). Nach Reload/Tab schließen ist es weg.
+        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains). (Session: Tab bleibt, Tab schließen = weg)
       </p>
 
       <div class="row">
-        <button class="btn ghost" type="button" id="ssImpactReset">Session-Statistik zurücksetzen</button>
+        <button class="btn ghost" type="button" id="ssImpactReset">Statistik zurücksetzen</button>
         <span class="muted2">Zuletzt: <span id="ssImpactUpdated">—</span></span>
       </div>
     </section>
 
-    <!-- Transparenz (aus Code generiert) -->
-    <section class="card" id="transparency">
-      <h2 id="tTitle">Transparenz: Was wird entfernt?</h2>
-
-      <p class="muted" id="tIntro">
-        SafeShare entfernt nur <b>utm_*</b> plus eine feste Liste häufiger Tracking-Keys.
-        Diese Liste ist direkt aus dem laufenden Code generiert.
-      </p>
-
-      <div class="note" id="tUtmLine">
-        <b>Immer entfernt:</b> alle Parameter, die mit <span class="mono">utm_</span> beginnen.
+    <section class="card">
+      <h2>Was wird entfernt?</h2>
+      <ul>
+        <li><b>utm_*</b> (Kampagnen-Parameter)</li>
+        <li><b>Klick-IDs</b> wie <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
+        <li>weitere typische Tracking-Keys (z. B. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>, <span class="mono">srsltid</span>)</li>
+      </ul>
+      <div class="warn">
+        Nicht blind „alles weg“: Affiliate/Partner-Keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) können bewusst gesetzt sein.
+        Pro ist für Policies + Audit + Allowlists.
       </div>
-
-      <h3 style="margin-top:14px" id="tListTitle">Feste Tracking-Keys (exakt)</h3>
-      <div class="resultBox mono" id="tKeyList" style="white-space:pre-wrap;"></div>
-
-      <div class="warn" style="margin-top:12px" id="tWarn">
-        Hinweis: Parameter wie <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">sku</span>, <span class="mono">id</span>
-        sind oft funktional/gewollt und werden hier bewusst <b>nicht</b> entfernt.
+      <div class="row">
+        <a class="btn" href="/tracking-parameter/">Tracking erklärt</a>
+        <a class="btn" href="/utm-parameter-entfernen/">UTM erklärt</a>
+        <a class="btn ghost" href="/app/en/">English</a>
       </div>
     </section>
 
@@ -600,7 +591,6 @@
         return s;
       }
 
-      // URL aus "Text + URL" extrahieren
       function extractFirstUrl(text){
         const s = String(text || "").trim();
         if (!s) return "";
@@ -693,9 +683,10 @@
         }
       }
 
-      // ===== Impact (SESSION + Dedup + Hint clear) =====
-      const IMPACT_SS_KEY = "ss_impact_session_v1";      // session totals
-      const IMPACT_SIG_KEY = "ss_impact_sig_v1";         // last signature (dedup)
+      // ===== Impact (SESSION: sessionStorage) =====
+      const IMPACT_KEY = "ss_impact_v1";
+      const LASTSIG_KEY = "ss_impact_last_sig_v1";
+
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
         "fbclid","msclkid","ttclid","twclid","li_fat_id",
@@ -706,7 +697,7 @@
 
       function impactLoad(){
         try{
-          const raw = sessionStorage.getItem(IMPACT_SS_KEY);
+          const raw = sessionStorage.getItem(IMPACT_KEY);
           const d = raw ? JSON.parse(raw) : null;
           return Object.assign({
             linksCleaned: 0,
@@ -720,13 +711,16 @@
         }
       }
       function impactSave(state){
-        try{ sessionStorage.setItem(IMPACT_SS_KEY, JSON.stringify(state)); }catch(e){}
+        try{ sessionStorage.setItem(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
       }
-      function impactSigGet(){
-        try{ return sessionStorage.getItem(IMPACT_SIG_KEY) || ""; }catch(e){ return ""; }
+      function impactGetLastSig(){
+        try{ return sessionStorage.getItem(LASTSIG_KEY) || ""; }catch(e){ return ""; }
       }
-      function impactSigSet(sig){
-        try{ sessionStorage.setItem(IMPACT_SIG_KEY, sig || ""); }catch(e){}
+      function impactSetLastSig(sig){
+        try{ sessionStorage.setItem(LASTSIG_KEY, sig || ""); }catch(e){}
+      }
+      function impactClearLastSig(){
+        try{ sessionStorage.removeItem(LASTSIG_KEY); }catch(e){}
       }
       function impactFormat(n){
         try{ return new Intl.NumberFormat("de-DE").format(n); }catch(e){ return String(n); }
@@ -756,11 +750,6 @@
         const hasAny = !!(state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
         card.hidden = !hasAny;
       }
-      function buildSignature(res){
-        const cleaned = String(res.cleaned || "");
-        const removed = Array.from(new Set((res.removed || []).map(k => String(k||"").toLowerCase().trim()).filter(Boolean))).sort();
-        return cleaned + "||" + removed.join(",");
-      }
       function impactApplyHintLine(removedKeys){
         const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
         if (!keys.length){
@@ -779,17 +768,21 @@
         impactSetText("ssImpactLastLine", line);
         impactSetVisible("ssImpactLastLineWrap", true);
       }
+      function buildSignature(res){
+        const cleaned = String(res.cleaned || "");
+        const removed = Array.from(new Set((res.removed || []).map(k => String(k||"").toLowerCase().trim()).filter(Boolean))).sort();
+        return cleaned + "||" + removed.join(",");
+      }
       function impactAddIfNew(res){
         const sig = buildSignature(res);
-        const last = impactSigGet();
+        const lastSig = impactGetLastSig();
 
-        // Wenn Ergebnis identisch wie letzter Lauf: NICHT zählen, aber Hint-Line aktualisieren
-        if (sig && last && sig === last){
+        // gleiches Ergebnis: NICHT hochzählen, aber Hint-Line aktualisieren
+        if (sig && lastSig && sig === lastSig){
           impactApplyHintLine(res.removed);
           return;
         }
-
-        impactSigSet(sig);
+        impactSetLastSig(sig);
 
         const keys = Array.isArray(res.removed) ? res.removed.map(k => String(k || "").trim()).filter(Boolean) : [];
         const state = impactLoad();
@@ -807,10 +800,8 @@
       }
       function impactReset(){
         const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        try{
-          sessionStorage.removeItem(IMPACT_SS_KEY);
-          sessionStorage.removeItem(IMPACT_SIG_KEY);
-        }catch(e){}
+        try{ sessionStorage.removeItem(IMPACT_KEY); }catch(e){}
+        impactClearLastSig();
         impactUpdateUI(state);
         impactClearHintLine();
         impactShowCardIfAny(state);
@@ -818,34 +809,19 @@
       function impactInit(){
         const state = impactLoad();
         impactUpdateUI(state);
-        impactClearHintLine();          // beim Laden niemals "Removed ..." stehen lassen
         impactShowCardIfAny(state);
+        // wichtig: beim Laden niemals alte "Removed …"-Zeile zeigen
+        impactClearHintLine();
 
         const btn = document.getElementById("ssImpactReset");
         if (btn) btn.addEventListener("click", impactReset);
       }
 
-      // ===== Transparenz: Keys aus TRACKING_KEYS rendern =====
-      function renderTransparency(){
-        const box = document.getElementById('tKeyList');
-        if (!box) return;
-        const keys = Array.from(TRACKING_KEYS).map(k => String(k).trim()).filter(Boolean).sort((a,b)=>a.localeCompare(b));
-        box.textContent = keys.join(', ');
-      }
-
-      function clearAllUiOnEmpty(){
-        const v = (input.value || "").trim();
-        if (v) return;
-
-        // Ergebnis/Message weg
+      function clearUiForEmpty(){
+        // wenn Feld leer ist: Result + Msg weg, Impact-Hint-Zeile weg (Totals bleiben)
         resultCard.hidden = true;
         showMsg('', '');
-
-        // Impact-Hinweiszeile weg (Totals bleiben als Session-Stats)
         impactClearHintLine();
-
-        // Dedup-Signature zurücksetzen, damit „neuer“ Link nach Leerfeld sauber zählt
-        impactSigSet("");
       }
 
       function doClean(){
@@ -856,7 +832,7 @@
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          // Impact (session + dedup)
+          // Impact (Session) + Dedup
           impactAddIfNew(res);
 
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
@@ -866,20 +842,20 @@
       }
 
       input.addEventListener('input', ()=>{
-        // wenn Nutzer löscht/leer macht: Hint-Line sofort entfernen
-        clearAllUiOnEmpty();
-
-        // wenn nicht leer: Standard-Verhalten (nur UI zurücksetzen)
+        const v = (input.value || "").trim();
+        if (!v) { clearUiForEmpty(); return; }
         resultCard.hidden = true;
         showMsg('', '');
+        // Hint-Line nicht stehen lassen, wenn Nutzer neu tippt
+        impactClearHintLine();
       });
 
       document.getElementById('btnClean').addEventListener('click', doClean);
 
       document.getElementById('btnClear').addEventListener('click', ()=>{
         input.value = '';
+        clearUiForEmpty();
         input.focus();
-        clearAllUiOnEmpty();
       });
 
       document.getElementById('btnPaste').addEventListener('click', async ()=>{
@@ -890,7 +866,7 @@
             if (t && t.trim()){
               input.value = t.trim();
               input.focus();
-              doClean(); // praxisnaher Default
+              doClean();
               return;
             }
           }
@@ -918,7 +894,7 @@
 
         if (navigator.share){
           try{
-            await navigator.share({ url: text }); // url-only ist am stabilsten
+            await navigator.share({ url: text });
             return;
           }catch(e){}
         }
@@ -942,7 +918,6 @@
 
       // Init
       impactInit();
-      renderTransparency();
     })();
   </script>
 </body>
