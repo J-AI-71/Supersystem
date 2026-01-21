@@ -1,4 +1,3 @@
-<!-- /app/index.html (DE) -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -27,7 +26,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/app/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-20-01" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-21-01" />
   <meta property="og:image:alt" content="SafeShare App – Vorschau" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -36,7 +35,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SafeShare App – Links bereinigen" />
   <meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – lokal im Browser. Einfügen → Bereinigen → Kopieren/Teilen." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-20-01" />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-21-01" />
   <meta name="twitter:image:alt" content="SafeShare App – Vorschau" />
 
   <!-- Favicons + PWA -->
@@ -277,7 +276,7 @@
       margin-right: 6px;
     }
     @media (prefers-color-scheme: light){
-      .ssImpactSessionLabel{ background: rgba(17,24,39,.03); }
+      .ssImpactSessionLabel{ background: rgba(17,24,39,.03); border-color: rgba(17,24,39,.12); }
       .ssImpactLast{ background: rgba(17,24,39,.03); border-color: rgba(17,24,39,.14); }
     }
 
@@ -343,6 +342,8 @@
         border: 1px solid rgba(17,24,39,.12);
         box-shadow: 0 18px 45px rgba(17,24,39,.12);
       }
+      .divider{ background: rgba(17,24,39,.12); }
+      .moreMenu a{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
     }
     .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
     .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
@@ -391,7 +392,7 @@
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
         <a class="tab" data-page="start" href="/">Start</a>
-        <a class="tab" data-page="app" href="/app/">App</a>
+        <a class="tab active" data-page="app" href="/app/">App</a>
         <a class="tab" data-page="schule" href="/schule/">Schule</a>
         <a class="tab" data-page="pro" href="/pro/">Pro</a>
         <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
@@ -447,7 +448,7 @@
     <!-- Impact (local-first) -->
     <section class="card" id="ssImpactCard" hidden>
       <div class="ssImpactHeaderRow">
-        <h2 style="margin:0">Impact (local-first)</h2>
+        <h2 style="margin:0">Impact</h2>
         <span class="ssImpactSessionLabel">Session (dieser Tab)</span>
       </div>
 
@@ -471,7 +472,7 @@
       </div>
 
       <p class="muted2">
-        Gespeichert werden nur Summen lokal im Browser (keine URLs, keine Domains). (Diese Seite setzt Impact bei Reload zurück.)
+        Gespeichert werden nur Summen lokal in diesem Tab (keine URLs, keine Domains). (Nach Reload weg.)
       </p>
 
       <div class="row">
@@ -631,16 +632,12 @@
         return s;
       }
 
-      // URL aus "Text + URL" extrahieren
       function extractFirstUrl(text){
         const s = String(text || "").trim();
         if (!s) return "";
-
         try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
-
         const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
         if (!m) return "";
-
         let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
         try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
       }
@@ -724,9 +721,9 @@
         }
       }
 
-      // ===== Impact (session + de-dupe) =====
-      const IMPACT_KEY = "ss_impact_v2_session";
-      const LAST_SIG_KEY = "ss_impact_v2_lastSig";
+      // ===== Impact (session + no double count) =====
+      const IMPACT_KEY = "ss_impact_v2";
+      const SEEN_KEY   = "ss_seen_v2";
 
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
@@ -736,9 +733,19 @@
         "srsltid"
       ]);
 
+      function ssStorageGet(k){
+        try{ return sessionStorage.getItem(k); }catch(e){ return null; }
+      }
+      function ssStorageSet(k,v){
+        try{ sessionStorage.setItem(k,v); }catch(e){}
+      }
+      function ssStorageDel(k){
+        try{ sessionStorage.removeItem(k); }catch(e){}
+      }
+
       function impactLoad(){
         try{
-          const raw = sessionStorage.getItem(IMPACT_KEY);
+          const raw = ssStorageGet(IMPACT_KEY);
           const d = raw ? JSON.parse(raw) : null;
           return Object.assign({
             linksCleaned: 0,
@@ -752,7 +759,7 @@
         }
       }
       function impactSave(state){
-        try{ sessionStorage.setItem(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
+        try{ ssStorageSet(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
       }
       function impactFormat(n){
         try{ return new Intl.NumberFormat("de-DE").format(n); }catch(e){ return String(n); }
@@ -761,13 +768,37 @@
         const el = document.getElementById(id);
         if (el) el.textContent = text;
       }
-      function impactSetVisible(id, visible){
-        const el = document.getElementById(id);
-        if (el) el.hidden = !visible;
+      function impactShowCardIfAny(state){
+        const card = document.getElementById("ssImpactCard");
+        if (!card) return;
+        const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
+        card.hidden = !hasAny;
       }
       function impactClearLastLine(){
-        impactSetText("ssImpactLastLine", "");
-        impactSetVisible("ssImpactLastLineWrap", false);
+        const wrap = document.getElementById("ssImpactLastLineWrap");
+        const line = document.getElementById("ssImpactLastLine");
+        if (line) line.textContent = "";
+        if (wrap) wrap.hidden = true;
+      }
+      function impactWriteLastLine(removedKeys){
+        const wrap = document.getElementById("ssImpactLastLineWrap");
+        const lineEl = document.getElementById("ssImpactLastLine");
+        if (!wrap || !lineEl) return;
+
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
+        if (!keys.length){ impactClearLastLine(); return; }
+
+        const removedCount = keys.length;
+        const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        const ad  = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+
+        const text =
+          `Entfernt: ${removedCount} Parameter` +
+          (ad ? ` (${ad} Ad-IDs)` : "") +
+          (utm ? `, davon ${utm} UTM` : "");
+
+        lineEl.textContent = text;
+        wrap.hidden = false;
       }
       function impactUpdateUI(state){
         impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
@@ -775,75 +806,63 @@
         impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
         impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
         impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("de-DE") : "—");
+        impactShowCardIfAny(state);
+      }
 
-        const card = document.getElementById("ssImpactCard");
-        if (card){
-          const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
-          card.hidden = !hasAny;
+      function seenLoad(){
+        try{
+          const raw = ssStorageGet(SEEN_KEY);
+          const d = raw ? JSON.parse(raw) : null;
+          return Object.assign({ map:{} }, d || {});
+        }catch(e){
+          return { map:{} };
         }
       }
-      function makeSignature(cleanedUrl, removedKeys){
-        const r = Array.isArray(removedKeys) ? removedKeys.map(k => String(k||"").toLowerCase().trim()).filter(Boolean) : [];
+      function seenSave(seen){
+        try{ ssStorageSet(SEEN_KEY, JSON.stringify(seen)); }catch(e){}
+      }
+      function signature(cleanedUrl, removedKeys){
+        const r = Array.isArray(removedKeys) ? removedKeys.map(k=>String(k||"").trim().toLowerCase()).filter(Boolean) : [];
         r.sort();
-        return String(cleanedUrl || "").trim() + "||" + r.join(",");
+        return String(cleanedUrl || "") + "||" + r.join(",");
       }
+
       function impactAddIfNew(cleanedUrl, removedKeys){
+        const sig = signature(cleanedUrl, removedKeys);
+        const seen = seenLoad();
+        if (seen.map[sig]) return false; // already counted in this tab
+        seen.map[sig] = 1;
+        seenSave(seen);
+
         const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
-        const sig = makeSignature(cleanedUrl, keys);
-
-        let lastSig = "";
-        try{ lastSig = sessionStorage.getItem(LAST_SIG_KEY) || ""; }catch(e){}
-
-        // Same result again => do NOT count again. But update "Last link" line.
-        if (sig && lastSig && sig === lastSig){
-          impactWriteLastLine(keys);
-          return false;
-        }
-
         const state = impactLoad();
+
         state.linksCleaned += 1;
         state.paramsRemoved += keys.length;
         state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
         state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
         state.lastUpdatedISO = new Date().toISOString();
+
         impactSave(state);
-
-        try{ sessionStorage.setItem(LAST_SIG_KEY, sig); }catch(e){}
-
         impactUpdateUI(state);
         impactWriteLastLine(keys);
         return true;
       }
-      function impactWriteLastLine(removedKeys){
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
-        if (!keys.length){
-          impactClearLastLine();
-          return;
-        }
-        const removedCount = keys.length;
-        const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        const ad = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
 
-        const line =
-          `Entfernt: ${removedCount} Parameter` +
-          (ad ? ` (${ad} Ad-IDs)` : "") +
-          (utm ? `, davon ${utm} UTM` : "");
-
-        impactSetText("ssImpactLastLine", line);
-        impactSetVisible("ssImpactLastLineWrap", true);
-      }
       function impactReset(){
+        ssStorageDel(IMPACT_KEY);
+        ssStorageDel(SEEN_KEY);
+
         const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
         impactSave(state);
-        try{ sessionStorage.removeItem(LAST_SIG_KEY); }catch(e){}
         impactUpdateUI(state);
         impactClearLastLine();
       }
+
       function impactInit(){
         const state = impactLoad();
         impactUpdateUI(state);
-        impactClearLastLine(); // do not show "Removed..." on load
-
+        impactClearLastLine(); // important: no stale "Last link" on load
         const btn = document.getElementById("ssImpactReset");
         if (btn) btn.addEventListener("click", impactReset);
       }
@@ -856,9 +875,10 @@
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          // Impact: per tab session + no double count for same result
+          // only count if new in this tab
           impactAddIfNew(res.cleaned, res.removed);
 
+          // show impact card if any (already handled in update)
           const card = document.getElementById("ssImpactCard");
           if (card) card.hidden = false;
 
@@ -869,12 +889,12 @@
       }
 
       input.addEventListener('input', ()=>{
-        if (!input.value.trim()){
-          // If field empty: hide result + clear "Last link" line (no stale hint)
+        const v = (input.value || "").trim();
+        if (!v){
           resultCard.hidden = true;
-          impactClearLastLine();
+          showMsg('', '');
+          impactClearLastLine(); // requirement: clear last line when field emptied
         }
-        showMsg('', '');
       });
 
       document.getElementById('btnClean').addEventListener('click', doClean);
@@ -883,7 +903,7 @@
         input.value = '';
         resultCard.hidden = true;
         showMsg('', '');
-        impactClearLastLine();
+        impactClearLastLine(); // requirement: clear last line when cleared
         input.focus();
       });
 
@@ -945,7 +965,6 @@
         }
       })();
 
-      // Init
       impactInit();
     })();
   </script>
