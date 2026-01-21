@@ -244,8 +244,6 @@
       font-size: .9rem;
       color: var(--muted2);
     }
-
-    /* Impact: clearer hierarchy */
     .ssImpactHeaderRow{
       display:flex;
       align-items:baseline;
@@ -654,7 +652,6 @@
 
       const I18N = {
         de: {
-          // headings / copy
           h1: "Link bereinigen",
           introP: "Tracking-Parameter sind Zusatzinfos am Link – wie Etiketten. SafeShare entfernt typische Tracking-Keys lokal im Browser. Nichts wird hochgeladen.",
           note: "Hinweis: Das ist kein „Unsichtbar“-Versprechen. Es ist Link-Hygiene beim Teilen.",
@@ -662,7 +659,6 @@
           cleanerP: "Einfügen → Bereinigen → Ergebnis kopieren/teilen.",
           resultH2: "Ergebnis",
 
-          // buttons
           btnClean: "Bereinigen",
           btnPaste: "Einfügen",
           btnClear: "Leeren",
@@ -670,21 +666,17 @@
           btnOpen: "Öffnen",
           btnShare: "Teilen",
 
-          // audit labels
           removedLabel: "Entfernt",
           keptLabel: "Behalten",
 
-          // status / messages
           copied: "Kopiert ✓",
           shareFallback: "Teilen ist nicht verfügbar (oder abgebrochen) — Link wurde kopiert.",
           pasteNote: "iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert Zwischenablage manchmal.",
 
-          // errors
           errPasteLink: "Bitte einen Link einfügen.",
           errNoValidLink: "Kein gültiger Link gefunden (nur Text erkannt).",
           errInvalidUrl: "Das sieht nicht wie eine gültige URL aus.",
 
-          // post-clean
           nudge: "Tipp: Jeden Link kurz hier rein → sauber teilen.",
           targets: "Funktioniert gut mit WhatsApp, Signal, Mail, Slack – einfach nach dem Kopieren einfügen.",
           proTitle: "Mehr Kontrolle?",
@@ -693,7 +685,6 @@
           rememberSummary: "Mach’s zur Gewohnheit",
           rememberBody: "Setze ein Lesezeichen oder füge SafeShare zum Home-Screen hinzu, damit du beim nächsten Mal 1-Tap reinigen kannst.",
 
-          // impact
           impactTitle: "Impact",
           impactSession: "Session (dieser Tab)",
           impactLinks: "Links bereinigt",
@@ -706,9 +697,6 @@
           impactLastPrefix: "Letzter Link:",
           impactLastLineFmt: "Entfernt: {removed} Parameter{adPart}{utmPart}"
         },
-
-        // EN ist hier absichtlich minimal/leer, damit DE nichts kaputt macht.
-        // Wenn du später EN aktivieren willst, füllen wir das einfach auf.
         en: {}
       };
 
@@ -728,7 +716,6 @@
       }
 
       function applyI18N(){
-        // main sections
         setText('i18n_h1', t('h1'));
         setText('i18n_introP', t('introP'));
         setText('i18n_note', t('note'));
@@ -736,7 +723,6 @@
         setText('i18n_cleanerP', t('cleanerP'));
         setText('i18n_resultH2', t('resultH2'));
 
-        // buttons
         setText('btnClean', t('btnClean'));
         setText('btnPaste', t('btnPaste'));
         setText('btnClear', t('btnClear'));
@@ -744,7 +730,6 @@
         setText('btnOpen', t('btnOpen'));
         setText('btnShare', t('btnShare'));
 
-        // post-clean texts
         setText('postCleanNudge', t('nudge'));
         setText('postCleanTargets', t('targets'));
 
@@ -756,7 +741,6 @@
           if (b) b.textContent = t('proTitle');
           if (a) a.textContent = t('proLink');
           if (p && a){
-            // remove existing text nodes and insert fresh body text before link
             [...p.childNodes].forEach(node=>{
               if (node.nodeType === Node.TEXT_NODE) p.removeChild(node);
             });
@@ -772,7 +756,6 @@
           if (rp) rp.textContent = t('rememberBody');
         }
 
-        // impact texts
         setText('i18n_impactTitle', t('impactTitle'));
         setText('i18n_impactSession', t('impactSession'));
         setText('i18n_impactLinks', t('impactLinks'));
@@ -918,14 +901,42 @@
         "srsltid"
       ]);
 
+      // ===== Storage wrapper: sessionStorage if possible, else in-memory fallback (same tab) =====
+      const __SS_MEM = window.__SS_MEM || (window.__SS_MEM = {});
+      let __SS_STORAGE_OK = null;
+
+      function ssStorageOk(){
+        if (__SS_STORAGE_OK !== null) return __SS_STORAGE_OK;
+        try{
+          const k = "__ss_test__";
+          sessionStorage.setItem(k, "1");
+          sessionStorage.removeItem(k);
+          __SS_STORAGE_OK = true;
+        }catch(e){
+          __SS_STORAGE_OK = false;
+        }
+        return __SS_STORAGE_OK;
+      }
+
       function ssStorageGet(k){
-        try{ return sessionStorage.getItem(k); }catch(e){ return null; }
+        try{
+          if (ssStorageOk()) return sessionStorage.getItem(k);
+        }catch(e){}
+        return (k in __SS_MEM) ? __SS_MEM[k] : null;
       }
+
       function ssStorageSet(k,v){
-        try{ sessionStorage.setItem(k,v); }catch(e){}
+        try{
+          if (ssStorageOk()) { sessionStorage.setItem(k, v); return; }
+        }catch(e){}
+        __SS_MEM[k] = String(v);
       }
+
       function ssStorageDel(k){
-        try{ sessionStorage.removeItem(k); }catch(e){}
+        try{
+          if (ssStorageOk()) { sessionStorage.removeItem(k); return; }
+        }catch(e){}
+        delete __SS_MEM[k];
       }
 
       function impactLoad(){
@@ -1064,10 +1075,9 @@
 
           postCleanShow();
 
-          // only count if new in this tab
+          // only count if new in this tab (now robust even if sessionStorage is blocked)
           impactAddIfNew(res.cleaned, res.removed);
 
-          // show impact card if any (already handled in update)
           const card = document.getElementById("ssImpactCard");
           if (card) card.hidden = false;
 
@@ -1083,7 +1093,7 @@
           resultCard.hidden = true;
           postCleanHide();
           showMsg('', '');
-          impactClearLastLine(); // requirement: clear last line when field emptied
+          impactClearLastLine();
         }
       });
 
@@ -1094,7 +1104,7 @@
         resultCard.hidden = true;
         postCleanHide();
         showMsg('', '');
-        impactClearLastLine(); // requirement: clear last line when cleared
+        impactClearLastLine();
         input.focus();
       });
 
@@ -1106,7 +1116,7 @@
             if (tclip && tclip.trim()){
               input.value = tclip.trim();
               input.focus();
-              doClean(); // praxisnaher Default
+              doClean();
               return;
             }
           }
@@ -1156,8 +1166,8 @@
         }
       })();
 
-      applyI18N();     // DE-only safe (setzt nur Texte, Logik bleibt gleich)
-      postCleanHide(); // initial
+      applyI18N();
+      postCleanHide();
       impactInit();
     })();
   </script>
