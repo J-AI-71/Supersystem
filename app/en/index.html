@@ -1,11 +1,14 @@
-<!-- /app/en/index.html (EN) -->
+<!-- =========================
+     app/en/index.html (EN) – komplett
+     Identische Logik wie DE, nur Texte/Locale EN
+     ========================= -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare App – Clean links (local-first)</title>
-  <meta name="description" content="Remove tracking parameters from links (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
+  <meta name="description" content="SafeShare removes tracking parameters from links (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
   <meta name="robots" content="index,follow" />
 
   <link rel="canonical" href="https://safesharepro.com/app/en/" />
@@ -21,7 +24,7 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Open Graph -->
+  <!-- Open Graph / Social Preview -->
   <meta property="og:title" content="SafeShare App – Clean links (local-first)" />
   <meta property="og:description" content="Remove tracking parameters locally in your browser. Paste → Clean → Copy/Share." />
   <meta property="og:type" content="website" />
@@ -92,6 +95,7 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
     .muted{ color: var(--muted); }
     .muted2{ color: var(--muted2); }
 
@@ -148,6 +152,7 @@
     }
     h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    h3{ margin: 14px 0 8px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
@@ -354,10 +359,10 @@
 
     <div class="tabsBar">
       <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="/en/">Home</a>
-        <a class="tab active" href="/app/en/">App</a>
-        <a class="tab" href="/privacy/en/">Privacy</a>
-        <a class="tab" href="/help/en/">Help</a>
+        <a class="tab" data-page="home" href="/en/">Home</a>
+        <a class="tab active" data-page="app" href="/app/en/">App</a>
+        <a class="tab" data-page="privacy" href="/privacy/en/">Privacy</a>
+        <a class="tab" data-page="help" href="/help/en/">Help</a>
         <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">More ▾</button>
       </div>
     </div>
@@ -435,30 +440,34 @@
       </div>
 
       <p class="muted2">
-        Only totals are stored in this session (no URLs, no domains). After reload/tab close it’s gone.
+        Only totals are stored in this session (no URLs, no domains). After reload/tab close, it’s gone.
       </p>
 
       <div class="row">
-        <button class="btn ghost" type="button" id="ssImpactReset">Reset stats</button>
+        <button class="btn ghost" type="button" id="ssImpactReset">Reset session stats</button>
         <span class="muted2">Last: <span id="ssImpactUpdated">—</span></span>
       </div>
     </section>
 
-    <section class="card">
-      <h2>What gets removed?</h2>
-      <ul>
-        <li><b>utm_*</b> (campaign parameters)</li>
-        <li><b>click IDs</b> like <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
-        <li>other common tracking keys (e.g. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>, <span class="mono">srsltid</span>)</li>
-      </ul>
-      <div class="warn">
-        Don’t remove everything blindly: affiliate/partner keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) can be intentional.
-        Pro is for policies + audit + allowlists.
+    <!-- Transparency (generated from code) -->
+    <section class="card" id="transparency">
+      <h2 id="tTitle">Transparency: What gets removed?</h2>
+
+      <p class="muted" id="tIntro">
+        SafeShare removes <b>utm_*</b> plus a fixed list of common tracking keys.
+        This list is generated from the running code.
+      </p>
+
+      <div class="note" id="tUtmLine">
+        <b>Always removed:</b> any parameter starting with <span class="mono">utm_</span>.
       </div>
-      <div class="row">
-        <a class="btn" href="/privacy/en/">Privacy</a>
-        <a class="btn" href="/help/en/">Help</a>
-        <a class="btn ghost" href="/app/">Deutsch</a>
+
+      <h3 style="margin-top:14px" id="tListTitle">Fixed tracking keys (exact)</h3>
+      <div class="resultBox mono" id="tKeyList" style="white-space:pre-wrap;"></div>
+
+      <div class="warn" style="margin-top:12px" id="tWarn">
+        Note: parameters like <span class="mono">ref</span>, <span class="mono">tag</span>, <span class="mono">sku</span>, <span class="mono">id</span>
+        are often functional/intentional and are <b>not</b> removed here on purpose.
       </div>
     </section>
 
@@ -469,10 +478,10 @@
           <div>Local-first: cleaning happens in your browser.</div>
         </div>
         <div class="footLinks">
-          <a href="/en/">Home</a>
-          <a href="/app/en/">App</a>
-          <a href="/privacy/en/">Privacy</a>
-          <a href="/help/en/">Help</a>
+          <a data-page="home" href="/en/">Home</a>
+          <a data-page="app" href="/app/en/">App</a>
+          <a data-page="privacy" href="/privacy/en/">Privacy</a>
+          <a data-page="help" href="/help/en/">Help</a>
           <a href="/app/" title="Deutsch">DE</a>
         </div>
       </div>
@@ -484,10 +493,10 @@
   <div class="moreOverlay" id="moreOverlay" hidden></div>
   <nav class="moreMenu" id="moreMenu" role="menu" aria-label="More" hidden>
     <div class="menuHint">Pages</div>
-    <a href="/en/">Home</a>
-    <a href="/app/en/">App</a>
-    <a href="/privacy/en/">Privacy</a>
-    <a href="/help/en/">Help</a>
+    <a data-page="home" href="/en/">Home</a>
+    <a data-page="app" href="/app/en/">App</a>
+    <a data-page="privacy" href="/privacy/en/">Privacy</a>
+    <a data-page="help" href="/help/en/">Help</a>
 
     <div class="divider"></div>
 
@@ -500,6 +509,22 @@
 
   <script>
     (function(){
+      // ===== Active tab =====
+      function currentKey(){
+        const p = (location.pathname || '/').toLowerCase();
+        if (p === '/en' || p === '/en/' || p === '/en/index.html') return 'home';
+        if (p.startsWith('/app/en')) return 'app';
+        if (p.startsWith('/privacy/en')) return 'privacy';
+        if (p.startsWith('/help/en')) return 'help';
+        return '';
+      }
+      const key = currentKey();
+      if (key){
+        document.querySelectorAll('[data-page]').forEach(el=>{
+          if (el.getAttribute('data-page') === key) el.classList.add('active');
+        });
+      }
+
       // ===== More menu =====
       const moreBtn = document.getElementById('moreBtn');
       const moreMenu = document.getElementById('moreMenu');
@@ -533,7 +558,7 @@
         });
       }
 
-      // ===== App logic =====
+      // ===== App logic (iPad Safari hardened) =====
       const $ = (s)=>document.querySelector(s);
       const input = $('#urlInput');
       const msg = $('#msg');
@@ -571,12 +596,16 @@
         return s;
       }
 
+      // Extract first URL from "text + url"
       function extractFirstUrl(text){
         const s = String(text || "").trim();
         if (!s) return "";
+
         try { return new URL(normalizeUrl(s)).toString(); } catch(e) {}
+
         const m = s.match(/https?:\/\/[^\s<>"']+/i) || s.match(/www\.[^\s<>"']+/i);
         if (!m) return "";
+
         let candidate = m[0].replace(/[)\]\}.,;:!?]+$/g, "");
         try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
       }
@@ -660,11 +689,9 @@
         }
       }
 
-      // ===== Impact (Session + Dedup + Hint Clear) =====
-      const STORE = sessionStorage;
-      const IMPACT_KEY = "ss_impact_v1";
-      const LAST_SIG_KEY = "ss_impact_last_sig_v1";
-
+      // ===== Impact (SESSION + Dedup + Hint clear) =====
+      const IMPACT_SS_KEY = "ss_impact_session_v1";
+      const IMPACT_SIG_KEY = "ss_impact_sig_v1";
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
         "fbclid","msclkid","ttclid","twclid","li_fat_id",
@@ -675,7 +702,7 @@
 
       function impactLoad(){
         try{
-          const raw = STORE.getItem(IMPACT_KEY);
+          const raw = sessionStorage.getItem(IMPACT_SS_KEY);
           const d = raw ? JSON.parse(raw) : null;
           return Object.assign({
             linksCleaned: 0,
@@ -689,7 +716,13 @@
         }
       }
       function impactSave(state){
-        try{ STORE.setItem(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
+        try{ sessionStorage.setItem(IMPACT_SS_KEY, JSON.stringify(state)); }catch(e){}
+      }
+      function impactSigGet(){
+        try{ return sessionStorage.getItem(IMPACT_SIG_KEY) || ""; }catch(e){ return ""; }
+      }
+      function impactSigSet(sig){
+        try{ sessionStorage.setItem(IMPACT_SIG_KEY, sig || ""); }catch(e){}
       }
       function impactFormat(n){
         try{ return new Intl.NumberFormat("en-US").format(n); }catch(e){ return String(n); }
@@ -702,7 +735,7 @@
         const el = document.getElementById(id);
         if (el) el.hidden = !visible;
       }
-      function impactClearHint(){
+      function impactClearHintLine(){
         impactSetText("ssImpactLastLine", "");
         impactSetVisible("ssImpactLastLineWrap", false);
       }
@@ -712,17 +745,24 @@
         impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
         impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
         impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("en-US") : "—");
-
-        const card = document.getElementById("ssImpactCard");
-        if (card){
-          const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
-          card.hidden = !hasAny;
-        }
       }
-      function impactSetHint(removedKeys){
+      function impactShowCardIfAny(state){
+        const card = document.getElementById("ssImpactCard");
+        if (!card) return;
+        const hasAny = !!(state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
+        card.hidden = !hasAny;
+      }
+      function buildSignature(res){
+        const cleaned = String(res.cleaned || "");
+        const removed = Array.from(new Set((res.removed || []).map(k => String(k||"").toLowerCase().trim()).filter(Boolean))).sort();
+        return cleaned + "||" + removed.join(",");
+      }
+      function impactApplyHintLine(removedKeys){
         const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
-        if (!keys.length){ impactClearHint(); return; }
-
+        if (!keys.length){
+          impactClearHintLine();
+          return;
+        }
         const removedCount = keys.length;
         const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
         const ad = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
@@ -735,25 +775,18 @@
         impactSetText("ssImpactLastLine", line);
         impactSetVisible("ssImpactLastLineWrap", true);
       }
-      function impactSignature(cleanedUrl, removedKeys){
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k||"").toLowerCase()).filter(Boolean) : [];
-        keys.sort();
-        return String(cleanedUrl || "") + "|" + keys.join(",");
-      }
-      function impactAddIfNew(cleanedUrl, removedKeys){
-        const sig = impactSignature(cleanedUrl, removedKeys);
-        const lastSig = (STORE.getItem(LAST_SIG_KEY) || "");
+      function impactAddIfNew(res){
+        const sig = buildSignature(res);
+        const last = impactSigGet();
 
-        impactSetHint(removedKeys);
-
-        if (sig && sig === lastSig){
-          impactUpdateUI(impactLoad());
-          return false;
+        if (sig && last && sig === last){
+          impactApplyHintLine(res.removed);
+          return;
         }
 
-        try{ STORE.setItem(LAST_SIG_KEY, sig); }catch(e){}
+        impactSigSet(sig);
 
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
+        const keys = Array.isArray(res.removed) ? res.removed.map(k => String(k || "").trim()).filter(Boolean) : [];
         const state = impactLoad();
 
         state.linksCleaned += 1;
@@ -764,22 +797,46 @@
 
         impactSave(state);
         impactUpdateUI(state);
-        return true;
+        impactShowCardIfAny(state);
+        impactApplyHintLine(keys);
       }
       function impactReset(){
         const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        try{ STORE.setItem(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
-        try{ STORE.removeItem(LAST_SIG_KEY); }catch(e){}
-        impactClearHint();
+        try{
+          sessionStorage.removeItem(IMPACT_SS_KEY);
+          sessionStorage.removeItem(IMPACT_SIG_KEY);
+        }catch(e){}
         impactUpdateUI(state);
+        impactClearHintLine();
+        impactShowCardIfAny(state);
       }
       function impactInit(){
         const state = impactLoad();
-        impactClearHint(); // never show “Removed …” on load
         impactUpdateUI(state);
+        impactClearHintLine();          // never show last run line on page load
+        impactShowCardIfAny(state);
 
         const btn = document.getElementById("ssImpactReset");
         if (btn) btn.addEventListener("click", impactReset);
+      }
+
+      // ===== Transparency: render keys from TRACKING_KEYS =====
+      function renderTransparency(){
+        const box = document.getElementById('tKeyList');
+        if (!box) return;
+        const keys = Array.from(TRACKING_KEYS).map(k => String(k).trim()).filter(Boolean).sort((a,b)=>a.localeCompare(b));
+        box.textContent = keys.join(', ');
+      }
+
+      function clearAllUiOnEmpty(){
+        const v = (input.value || "").trim();
+        if (v) return;
+
+        resultCard.hidden = true;
+        showMsg('', '');
+
+        impactClearHintLine();
+        impactSigSet("");
       }
 
       function doClean(){
@@ -790,7 +847,7 @@
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          impactAddIfNew(res.cleaned, res.removed);
+          impactAddIfNew(res);
 
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
@@ -798,25 +855,18 @@
         }
       }
 
-      function onInputChanged(){
-        const v = (input.value || "").trim();
+      input.addEventListener('input', ()=>{
+        clearAllUiOnEmpty();
         resultCard.hidden = true;
         showMsg('', '');
-        if (!v){
-          impactClearHint();
-        }
-      }
-
-      input.addEventListener('input', onInputChanged);
+      });
 
       document.getElementById('btnClean').addEventListener('click', doClean);
 
       document.getElementById('btnClear').addEventListener('click', ()=>{
         input.value = '';
-        resultCard.hidden = true;
-        showMsg('', '');
-        impactClearHint();
         input.focus();
+        clearAllUiOnEmpty();
       });
 
       document.getElementById('btnPaste').addEventListener('click', async ()=>{
@@ -877,8 +927,9 @@
         }
       })();
 
+      // Init
       impactInit();
-      onInputChanged();
+      renderTransparency();
     })();
   </script>
 </body>
