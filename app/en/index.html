@@ -1,4 +1,4 @@
-<!-- app/en/index.html (EN) – KOMPLETT -->
+<!-- /app/en/index.html (EN) -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,7 +21,7 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
-  <!-- Open Graph / Social Preview -->
+  <!-- Open Graph -->
   <meta property="og:title" content="SafeShare App – Clean links (local-first)" />
   <meta property="og:description" content="Remove tracking parameters locally in your browser. Paste → Clean → Copy/Share." />
   <meta property="og:type" content="website" />
@@ -92,7 +92,6 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
-
     .muted{ color: var(--muted); }
     .muted2{ color: var(--muted2); }
 
@@ -408,7 +407,7 @@
       </div>
     </section>
 
-    <!-- Impact (Session, appears only after first real removal, hides on clear/edit) -->
+    <!-- Impact (Session) -->
     <section class="card" id="ssImpactCard" hidden>
       <h2>Impact (Session)</h2>
 
@@ -436,7 +435,7 @@
       </div>
 
       <p class="muted2">
-        Nothing is stored — session-only in this open tab.
+        Only totals are stored in this session (no URLs, no domains). After reload/tab close it’s gone.
       </p>
 
       <div class="row">
@@ -534,7 +533,7 @@
         });
       }
 
-      // ===== App logic (iPad Safari hardened) =====
+      // ===== App logic =====
       const $ = (s)=>document.querySelector(s);
       const input = $('#urlInput');
       const msg = $('#msg');
@@ -572,7 +571,6 @@
         return s;
       }
 
-      // Extract first URL from "text + url"
       function extractFirstUrl(text){
         const s = String(text || "").trim();
         if (!s) return "";
@@ -662,7 +660,11 @@
         }
       }
 
-      // ===== Impact (Session, in-memory) =====
+      // ===== Impact (Session + Dedup + Hint Clear) =====
+      const STORE = sessionStorage;
+      const IMPACT_KEY = "ss_impact_v1";
+      const LAST_SIG_KEY = "ss_impact_last_sig_v1";
+
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
         "fbclid","msclkid","ttclid","twclid","li_fat_id",
@@ -671,15 +673,24 @@
         "srsltid"
       ]);
 
-      const impactState = {
-        linksCleaned: 0,
-        paramsRemoved: 0,
-        utmRemoved: 0,
-        adIdsRemoved: 0,
-        lastUpdatedISO: "",
-        lastSig: ""
-      };
-
+      function impactLoad(){
+        try{
+          const raw = STORE.getItem(IMPACT_KEY);
+          const d = raw ? JSON.parse(raw) : null;
+          return Object.assign({
+            linksCleaned: 0,
+            paramsRemoved: 0,
+            utmRemoved: 0,
+            adIdsRemoved: 0,
+            lastUpdatedISO: ""
+          }, d || {});
+        }catch(e){
+          return { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
+        }
+      }
+      function impactSave(state){
+        try{ STORE.setItem(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
+      }
       function impactFormat(n){
         try{ return new Intl.NumberFormat("en-US").format(n); }catch(e){ return String(n); }
       }
@@ -691,88 +702,84 @@
         const el = document.getElementById(id);
         if (el) el.hidden = !visible;
       }
-      function impactHideCard(){
-        const card = document.getElementById("ssImpactCard");
-        if (card) card.hidden = true;
-      }
-      function impactShowCard(){
-        const card = document.getElementById("ssImpactCard");
-        if (card) card.hidden = false;
-      }
-      function impactClearHintLine(){
+      function impactClearHint(){
         impactSetText("ssImpactLastLine", "");
         impactSetVisible("ssImpactLastLineWrap", false);
       }
-      function impactUpdateUI(removedKeysForLine){
-        impactSetText("ssImpactLinks", impactFormat(impactState.linksCleaned));
-        impactSetText("ssImpactParams", impactFormat(impactState.paramsRemoved));
-        impactSetText("ssImpactUTM", impactFormat(impactState.utmRemoved));
-        impactSetText("ssImpactAdIds", impactFormat(impactState.adIdsRemoved));
-        impactSetText("ssImpactUpdated", impactState.lastUpdatedISO ? new Date(impactState.lastUpdatedISO).toLocaleString("en-US") : "—");
+      function impactUpdateUI(state){
+        impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
+        impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
+        impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
+        impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
+        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("en-US") : "—");
 
-        if (Array.isArray(removedKeysForLine) && removedKeysForLine.length){
-          const keys = removedKeysForLine.map(k => String(k || "").trim()).filter(Boolean);
-          const removedCount = keys.length;
-          const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-          const ad = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-
-          const line =
-            `Removed: ${removedCount} parameters` +
-            (ad ? ` (${ad} ad IDs)` : "") +
-            (utm ? `, including ${utm} UTM` : "");
-
-          impactSetText("ssImpactLastLine", line);
-          impactSetVisible("ssImpactLastLineWrap", true);
-        } else {
-          impactClearHintLine();
+        const card = document.getElementById("ssImpactCard");
+        if (card){
+          const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
+          card.hidden = !hasAny;
         }
       }
-
-      function makeSig(cleanedUrl, removedKeys){
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k||"").toLowerCase()).sort() : [];
-        return String(cleanedUrl||"") + "||" + keys.join(",");
-      }
-
-      function impactAddOnce(cleanedUrl, removedKeys){
+      function impactSetHint(removedKeys){
         const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
-        const sig = makeSig(cleanedUrl, keys);
-        if (sig && sig === impactState.lastSig) {
-          impactUpdateUI(keys);
-          return;
+        if (!keys.length){ impactClearHint(); return; }
+
+        const removedCount = keys.length;
+        const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        const ad = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+
+        const line =
+          `Removed: ${removedCount} parameters` +
+          (ad ? ` (${ad} ad IDs)` : "") +
+          (utm ? `, including ${utm} UTM` : "");
+
+        impactSetText("ssImpactLastLine", line);
+        impactSetVisible("ssImpactLastLineWrap", true);
+      }
+      function impactSignature(cleanedUrl, removedKeys){
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k||"").toLowerCase()).filter(Boolean) : [];
+        keys.sort();
+        return String(cleanedUrl || "") + "|" + keys.join(",");
+      }
+      function impactAddIfNew(cleanedUrl, removedKeys){
+        const sig = impactSignature(cleanedUrl, removedKeys);
+        const lastSig = (STORE.getItem(LAST_SIG_KEY) || "");
+
+        impactSetHint(removedKeys);
+
+        if (sig && sig === lastSig){
+          impactUpdateUI(impactLoad());
+          return false;
         }
-        impactState.lastSig = sig;
 
-        impactState.linksCleaned += 1;
-        impactState.paramsRemoved += keys.length;
-        impactState.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        impactState.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-        impactState.lastUpdatedISO = new Date().toISOString();
+        try{ STORE.setItem(LAST_SIG_KEY, sig); }catch(e){}
 
-        impactShowCard();
-        impactUpdateUI(keys);
+        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
+        const state = impactLoad();
+
+        state.linksCleaned += 1;
+        state.paramsRemoved += keys.length;
+        state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+        state.lastUpdatedISO = new Date().toISOString();
+
+        impactSave(state);
+        impactUpdateUI(state);
+        return true;
       }
-
       function impactReset(){
-        impactState.linksCleaned = 0;
-        impactState.paramsRemoved = 0;
-        impactState.utmRemoved = 0;
-        impactState.adIdsRemoved = 0;
-        impactState.lastUpdatedISO = "";
-        impactState.lastSig = "";
-        impactUpdateUI([]);
-        impactHideCard();
+        const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
+        try{ STORE.setItem(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
+        try{ STORE.removeItem(LAST_SIG_KEY); }catch(e){}
+        impactClearHint();
+        impactUpdateUI(state);
       }
-
       function impactInit(){
-        impactHideCard();
-        impactClearHintLine();
+        const state = impactLoad();
+        impactClearHint(); // never show “Removed …” on load
+        impactUpdateUI(state);
+
         const btn = document.getElementById("ssImpactReset");
         if (btn) btn.addEventListener("click", impactReset);
-      }
-
-      function hideImpactWhenNoActiveResult(){
-        impactClearHintLine();
-        impactHideCard();
       }
 
       function doClean(){
@@ -783,11 +790,7 @@
           const res = cleanUrl(input.value);
           renderResult(res);
 
-          if (res.removed && res.removed.length){
-            impactAddOnce(res.cleaned, res.removed);
-          } else {
-            hideImpactWhenNoActiveResult();
-          }
+          impactAddIfNew(res.cleaned, res.removed);
 
           setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
@@ -795,17 +798,16 @@
         }
       }
 
-      input.addEventListener('input', ()=>{
+      function onInputChanged(){
+        const v = (input.value || "").trim();
         resultCard.hidden = true;
         showMsg('', '');
-
-        if (!input.value.trim()){
-          hideImpactWhenNoActiveResult();
-          impactState.lastSig = "";
-        } else {
-          hideImpactWhenNoActiveResult();
+        if (!v){
+          impactClearHint();
         }
-      });
+      }
+
+      input.addEventListener('input', onInputChanged);
 
       document.getElementById('btnClean').addEventListener('click', doClean);
 
@@ -813,8 +815,7 @@
         input.value = '';
         resultCard.hidden = true;
         showMsg('', '');
-        hideImpactWhenNoActiveResult();
-        impactState.lastSig = "";
+        impactClearHint();
         input.focus();
       });
 
@@ -876,8 +877,8 @@
         }
       })();
 
-      // Init
       impactInit();
+      onInputChanged();
     })();
   </script>
 </body>
