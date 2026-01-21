@@ -1,3 +1,4 @@
+<!-- /app/en/index.html (EN) -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -723,6 +724,17 @@
         }
       }
 
+      // ---- Safe audit rendering (no innerHTML) ----
+      function auditChip(label, keys){
+        const span = document.createElement('span');
+        span.appendChild(document.createTextNode(label + ': '));
+        const mono = document.createElement('span');
+        mono.className = 'mono';
+        mono.textContent = keys.join(', ');
+        span.appendChild(mono);
+        return span;
+      }
+
       function renderResult(res){
         resultCard.hidden = false;
         outUrl.textContent = res.cleaned;
@@ -734,16 +746,8 @@
 
         if (r.length || k.length){
           auditRow.hidden = false;
-          if (r.length){
-            const el = document.createElement('span');
-            el.innerHTML = 'Removed: <span class="mono">' + r.join(', ') + '</span>';
-            auditRow.appendChild(el);
-          }
-          if (k.length){
-            const el2 = document.createElement('span');
-            el2.innerHTML = 'Kept: <span class="mono">' + k.join(', ') + '</span>';
-            auditRow.appendChild(el2);
-          }
+          if (r.length) auditRow.appendChild(auditChip('Removed', r));
+          if (k.length) auditRow.appendChild(auditChip('Kept', k));
         } else {
           auditRow.hidden = true;
         }
@@ -881,18 +885,25 @@
         impactShowCardIfAny(state);
       }
 
-      function seenLoad(){
+      // ---- Seen: keep in-memory for the whole tab, persist best-effort ----
+      let __SEEN_MEM = { map: Object.create(null) };
+
+      function seenInitOnce(){
         try{
           const raw = ssStorageGet(SEEN_KEY);
-          const d = raw ? JSON.parse(raw) : null;
-          return Object.assign({ map:{} }, d || {});
-        }catch(e){
-          return { map:{} };
-        }
+          if (!raw) return;
+          const d = JSON.parse(raw);
+          if (d && d.map && typeof d.map === "object") {
+            __SEEN_MEM.map = Object.assign(Object.create(null), d.map);
+          }
+        }catch(e){}
       }
-      function seenSave(seen){
-        try{ ssStorageSet(SEEN_KEY, JSON.stringify(seen)); }catch(e){}
+      function seenPersistBestEffort(){
+        try{
+          ssStorageSet(SEEN_KEY, JSON.stringify({ map: __SEEN_MEM.map }));
+        }catch(e){}
       }
+
       function signature(cleanedUrl, removedKeys){
         const r = Array.isArray(removedKeys) ? removedKeys.map(k=>String(k||"").trim().toLowerCase()).filter(Boolean) : [];
         r.sort();
@@ -900,13 +911,19 @@
       }
 
       function impactAddIfNew(cleanedUrl, removedKeys){
-        const sig = signature(cleanedUrl, removedKeys);
-        const seen = seenLoad();
-        if (seen.map[sig]) return false;
-        seen.map[sig] = 1;
-        seenSave(seen);
+        const keys = Array.isArray(removedKeys)
+          ? removedKeys.map(k => String(k || "").trim()).filter(Boolean)
+          : [];
 
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
+        // only count if something was actually removed
+        if (keys.length === 0) return false;
+
+        const sig = signature(cleanedUrl, keys);
+
+        if (__SEEN_MEM.map[sig]) return false;
+        __SEEN_MEM.map[sig] = 1;
+        seenPersistBestEffort();
+
         const state = impactLoad();
 
         state.linksCleaned += 1;
@@ -922,6 +939,7 @@
       }
 
       function impactReset(){
+        __SEEN_MEM = { map: Object.create(null) };
         ssStorageDel(IMPACT_KEY);
         ssStorageDel(SEEN_KEY);
 
@@ -932,6 +950,7 @@
       }
 
       function impactInit(){
+        seenInitOnce();
         const state = impactLoad();
         impactUpdateUI(state);
         impactClearLastLine();
