@@ -47,8 +47,8 @@
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
   <!-- MASTER SHELL -->
-<link rel="stylesheet" href="/css/ss-shell.2026-01-24-04.css">
-<script src="/js/ss-shell.2026-01-24-04.js" defer></script>
+  <link rel="stylesheet" href="/css/ss-shell.2026-01-24-04.css">
+  <script src="/js/ss-shell.2026-01-24-04.js" defer></script>
 
   <style>
     :root{
@@ -99,11 +99,6 @@
 
     .muted{ color: var(--muted); }
     .muted2{ color: var(--muted2); }
-
-    /* NOTE:
-       Alter Header/Tabs/More-Bottomsheet CSS wurde entfernt, weil die Navigation jetzt aus ss-shell.js kommt.
-       Der Rest (App UI) bleibt unverändert.
-    */
 
     .card{
       margin-top: 14px;
@@ -281,8 +276,6 @@
   <div id="ss-shell"></div>
 
   <div class="wrap">
-    <!-- dein App-Content -->
-
     <section class="card">
       <h1 id="i18n_h1">Link bereinigen</h1>
       <p id="i18n_introP">
@@ -320,7 +313,6 @@
         <button class="btn" id="btnShare" type="button" hidden>Teilen</button>
       </div>
 
-      <!-- Post-clean: repeat-use + Pro intent -->
       <p id="postCleanNudge" class="muted" hidden style="margin-top:10px">
         Tipp: Jeden Link kurz hier rein → sauber teilen.
       </p>
@@ -427,13 +419,17 @@
         </div>
       </div>
     </footer>
-
   </div>
 
   <script>
     (function(){
       // ===== App logic (iPad Safari hardened) =====
       const $ = (s)=>document.querySelector(s);
+
+      // SAFE helpers (verhindert Crash wenn ein Element mal fehlt)
+      const byId = (id) => document.getElementById(id);
+      const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
+
       const input = $('#urlInput');
       const msg = $('#msg');
       const resultCard = $('#resultCard');
@@ -445,7 +441,7 @@
       const postCleanTargets = $('#postCleanTargets');
       const postCleanPro = $('#postCleanPro');
       const postCleanRemember = $('#postCleanRemember');
-      const btnShare = document.getElementById('btnShare');
+      const btnShareEl = byId('btnShare');
 
       const TRACKING_KEYS = new Set([
         'gclid','dclid','gbraid','wbraid',
@@ -697,14 +693,14 @@
         if (postCleanTargets) postCleanTargets.hidden = true;
         if (postCleanPro) postCleanPro.hidden = true;
         if (postCleanRemember) postCleanRemember.hidden = true;
-        if (btnShare) btnShare.hidden = true;
+        if (btnShareEl) btnShareEl.hidden = true;
       }
       function postCleanShow(){
         if (postCleanNudge) postCleanNudge.hidden = false;
         if (postCleanTargets) postCleanTargets.hidden = false;
         if (postCleanPro) postCleanPro.hidden = false;
         if (postCleanRemember) postCleanRemember.hidden = false;
-        if (btnShare) btnShare.hidden = !navigator.share; // only show where supported
+        if (btnShareEl) btnShareEl.hidden = !navigator.share; // only show where supported
       }
 
       // ===== Impact (session + no double count) =====
@@ -920,6 +916,7 @@
         }
       }
 
+      // Input listener bleibt (Element existiert hier sicher)
       input.addEventListener('input', ()=>{
         const v = (input.value || "").trim();
         if (!v){
@@ -930,9 +927,10 @@
         }
       });
 
-      document.getElementById('btnClean').addEventListener('click', doClean);
+      // ===== SAFE event bindings (kein Crash wenn Buttons fehlen) =====
+      on(byId("btnClean"), "click", doClean);
 
-      document.getElementById('btnClear').addEventListener('click', ()=>{
+      on(byId("btnClear"), "click", () => {
         input.value = '';
         resultCard.hidden = true;
         postCleanHide();
@@ -941,7 +939,7 @@
         input.focus();
       });
 
-      document.getElementById('btnPaste').addEventListener('click', async ()=>{
+      on(byId("btnPaste"), "click", async () => {
         showMsg('', '');
         try{
           if (navigator.clipboard && navigator.clipboard.readText){
@@ -961,17 +959,17 @@
         }
       });
 
-      document.getElementById('btnCopy').addEventListener('click', async ()=>{
+      on(byId("btnCopy"), "click", async () => {
         const text = (outUrl.textContent || '').trim();
         if(!text) return;
         await copyText(text);
-        const b = document.getElementById('btnCopy');
+        const b = byId('btnCopy');
         const old = b.textContent;
         b.textContent = t('copied');
         setTimeout(()=>b.textContent=old, 1200);
       });
 
-      document.getElementById('btnShare').addEventListener('click', async ()=>{
+      on(btnShareEl, "click", async () => {
         const text = (outUrl.textContent || '').trim();
         if(!text) return;
 
