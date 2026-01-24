@@ -1,17 +1,18 @@
-/* Datei: /js/ss-shell.js */
-/* SafeShare Shell v2026-01-24-04 */
-
+/*! SafeShare Shell v2026-01-24-04 (capsule "Mehr", no emoji, robust active) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  // 1) Locale bestimmen: /en/ oder <html lang="en">
+  // Debug: hilft dir sofort zu sehen, ob die neue Datei wirklich lädt
+  console.log("[SafeShare Shell] v2026-01-24-04 loaded:", location.pathname);
+
+  // 1) Locale bestimmen: /app/en/ oder <html lang="en">
   const path = (location.pathname || "/").toLowerCase();
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
-  // 2) Link-Ziele (DE/EN) — an deine echten Slugs anpassen, falls nötig
+  // 2) Link-Ziele (DE/EN)
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -45,11 +46,11 @@
         pro: "Pro",
         help: "Help",
         more: "More",
-        close: "Close",
         support: "Support",
         privacy: "Privacy",
         imprint: "Imprint",
         terms: "Terms",
+        close: "Close",
       }
     : {
         start: "Start",
@@ -58,20 +59,23 @@
         pro: "Pro",
         help: "Hilfe",
         more: "Mehr",
-        close: "Schließen",
         support: "Support",
         privacy: "Datenschutz",
         imprint: "Impressum",
         terms: "Nutzungsbedingungen",
+        close: "Schließen",
       };
 
-  // 4) Shell-Markup (Logo statt Emoji)
-  const LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
-
+  // 4) Shell-Markup
+  // NOTE: "Mehr" ist innerhalb der ss-nav (Capsule)
   const shellHTML = `
-<header class="ss-header" role="banner">
+<header class="ss-header" role="banner" data-ss-ver="2026-01-24-04">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <img class="ss-brand__logo" src="${LOGO_SRC}" alt="" width="22" height="22" decoding="async">
+    <img class="ss-brand__logo"
+         src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+         alt=""
+         aria-hidden="true"
+         decoding="async">
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -81,10 +85,13 @@
     <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
     <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
     <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
-    <button class="ss-nav__link ss-moreBtn" type="button" id="ssMoreBtn"
-            aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
-      ${T.more}
-    </button>
+
+    <button class="ss-nav__link ss-moreBtn"
+            type="button"
+            id="ssMoreBtn"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="ssMoreOverlay">${T.more}</button>
   </nav>
 </header>
 
@@ -107,32 +114,33 @@
 </div>
   `.trim();
 
-  // 5) Einhängen
+  // 5) Einhängen (Placeholder: #ss-shell)
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 6) Active-State
-  function normalize(p) {
-    // trailing slash normalisieren: "/hilfe" -> "/hilfe/"
-    return (p || "/").replace(/\/+$/, "/");
+  // 6) Active-State robust (auch ohne trailing slash)
+  function norm(p) {
+    p = (p || "/").toLowerCase();
+    if (!p.endsWith("/")) p += "/";
+    return p;
   }
-  function setActive() {
-    const p = normalize(location.pathname.toLowerCase());
 
-    const targets = [
-      { key: "app", match: normalize(LINKS.app) },
-      { key: "school", match: normalize(LINKS.school) },
-      { key: "pro", match: normalize(LINKS.pro) },
-      { key: "help", match: normalize(LINKS.help) },
+  function setActive() {
+    const p = norm(location.pathname);
+
+    const map = [
+      { key: "home", match: [norm(LINKS.home)] },
+      { key: "app", match: [norm(LINKS.app)] },
+      { key: "school", match: [norm(LINKS.school)] },
+      { key: "pro", match: [norm(LINKS.pro)] },
+      { key: "help", match: [norm(LINKS.help)] },
     ];
 
     let activeKey = "home";
-    for (const t of targets) {
-      if (p.startsWith(t.match)) activeKey = t.key;
+    for (const item of map) {
+      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
     }
-    // Home nur wenn wirklich Home
-    if (p === normalize(LINKS.home)) activeKey = "home";
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
       const isActive = a.getAttribute("data-ss-nav") === activeKey;
@@ -143,7 +151,7 @@
   }
   setActive();
 
-  // 7) Mehr-Menü: open/close + Escape + Click-outside + Link-click
+  // 7) Mehr-Menü: open/close + Escape + Click-outside
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
@@ -152,22 +160,22 @@
   }
 
   function openMenu() {
-    if (!overlay || !btn) return;
+    if (!overlay) return;
     overlay.hidden = false;
-    btn.setAttribute("aria-expanded", "true");
+    btn && btn.setAttribute("aria-expanded", "true");
     lockScroll(true);
 
-    // Fokus auf Close (nicht backdrop)
+    // Fokus auf X-Button (du hattest genau danach gefragt)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
 
   function closeMenu() {
-    if (!overlay || !btn) return;
+    if (!overlay) return;
     overlay.hidden = true;
-    btn.setAttribute("aria-expanded", "false");
+    btn && btn.setAttribute("aria-expanded", "false");
     lockScroll(false);
-    btn.focus();
+    btn && btn.focus();
   }
 
   btn && btn.addEventListener("click", () => {
@@ -177,10 +185,7 @@
 
   overlay && overlay.addEventListener("click", (e) => {
     const t = e.target;
-    // backdrop oder close button
-    if (t && t.closest && t.closest("[data-ss-close]")) return closeMenu();
-    // Klick auf Link im Menü
-    if (t && t.closest && t.closest(".ss-moreLink")) return closeMenu();
+    if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
   });
 
   document.addEventListener("keydown", (e) => {
