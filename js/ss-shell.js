@@ -1,11 +1,9 @@
-/*! SafeShare Shell v2026-01-24-04 (capsule "Mehr", no emoji, robust active) */
+/* Datei: /js/ss-shell.2026-01-24-04.js */
+/* SafeShare Shell v2026-01-24-04 (logo img, active tabs, capsule "Mehr", bottom-sheet, iOS hidden fix) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
-
-  // Debug: hilft dir sofort zu sehen, ob die neue Datei wirklich lädt
-  console.log("[SafeShare Shell] v2026-01-24-04 loaded:", location.pathname);
 
   // 1) Locale bestimmen: /app/en/ oder <html lang="en">
   const path = (location.pathname || "/").toLowerCase();
@@ -66,16 +64,11 @@
         close: "Schließen",
       };
 
-  // 4) Shell-Markup
-  // NOTE: "Mehr" ist innerhalb der ss-nav (Capsule)
+  // 4) Shell-Markup (KEIN Emoji: echtes Logo)
   const shellHTML = `
-<header class="ss-header" role="banner" data-ss-ver="2026-01-24-04">
+<header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <img class="ss-brand__logo"
-         src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
-         alt=""
-         aria-hidden="true"
-         decoding="async">
+    <img class="ss-brand__mark" src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09" alt="" aria-hidden="true" decoding="async">
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -85,14 +78,12 @@
     <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
     <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
     <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
-
-    <button class="ss-nav__link ss-moreBtn"
-            type="button"
-            id="ssMoreBtn"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            aria-controls="ssMoreOverlay">${T.more}</button>
   </nav>
+
+  <button class="ss-moreBtn" type="button" id="ssMoreBtn"
+          aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
+    ${T.more}
+  </button>
 </header>
 
 <div class="ss-moreOverlay" id="ssMoreOverlay" hidden>
@@ -119,28 +110,33 @@
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 6) Active-State robust (auch ohne trailing slash)
+  // 6) Active-State anhand Path (robust)
   function norm(p) {
-    p = (p || "/").toLowerCase();
-    if (!p.endsWith("/")) p += "/";
-    return p;
+    // z.B. "/schule" -> "/schule/"
+    if (!p) return "/";
+    p = p.toLowerCase();
+    return p.endsWith("/") ? p : p + "/";
   }
 
   function setActive() {
-    const p = norm(location.pathname);
+    const p = norm(location.pathname || "/");
 
-    const map = [
-      { key: "home", match: [norm(LINKS.home)] },
-      { key: "app", match: [norm(LINKS.app)] },
-      { key: "school", match: [norm(LINKS.school)] },
-      { key: "pro", match: [norm(LINKS.pro)] },
-      { key: "help", match: [norm(LINKS.help)] },
+    // Wichtig: home nur exakt matchen, sonst wird alles "home"
+    let activeKey = "home";
+
+    const rules = [
+      { key: "app", prefix: norm(LINKS.app) },
+      { key: "school", prefix: norm(LINKS.school) },
+      { key: "pro", prefix: norm(LINKS.pro) },
+      { key: "help", prefix: norm(LINKS.help) },
     ];
 
-    let activeKey = "home";
-    for (const item of map) {
-      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
+    for (const r of rules) {
+      if (p.startsWith(r.prefix)) activeKey = r.key;
     }
+
+    // home: nur wenn wirklich home path
+    if (p === norm(LINKS.home)) activeKey = "home";
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
       const isActive = a.getAttribute("data-ss-nav") === activeKey;
@@ -160,27 +156,26 @@
   }
 
   function openMenu() {
-    if (!overlay) return;
+    if (!overlay || !btn) return;
     overlay.hidden = false;
-    btn && btn.setAttribute("aria-expanded", "true");
+    btn.setAttribute("aria-expanded", "true");
     lockScroll(true);
-
-    // Fokus auf X-Button (du hattest genau danach gefragt)
+    // Fokus auf Close (wichtig iOS)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
 
   function closeMenu() {
-    if (!overlay) return;
+    if (!overlay || !btn) return;
     overlay.hidden = true;
-    btn && btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-expanded", "false");
     lockScroll(false);
-    btn && btn.focus();
+    btn.focus();
   }
 
   btn && btn.addEventListener("click", () => {
-    if (overlay.hidden) openMenu();
-    else closeMenu();
+    if (!overlay) return;
+    overlay.hidden ? openMenu() : closeMenu();
   });
 
   overlay && overlay.addEventListener("click", (e) => {
