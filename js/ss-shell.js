@@ -1,6 +1,5 @@
-// Datei: /js/ss-shell.js
-// SafeShare Shell v2026-01-24-01 (active-fix + focus-fix)
-
+/* Datei: /js/ss-shell.js */
+/*! SafeShare Shell v2026-01-24-02 (dark-aware + bottom-sheet + brand logo) */
 (function () {
   "use strict";
 
@@ -65,11 +64,14 @@
         close: "Schließen",
       };
 
-  // 4) Shell-Markup
+  // 4) Assets
+  const BRAND_LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
+
+  // 5) Shell-Markup
   const shellHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <span class="ss-brand__mark" aria-hidden="true">🛡️</span>
+    <img class="ss-brand__logo" src="${BRAND_LOGO_SRC}" alt="" width="22" height="22" decoding="async">
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -82,7 +84,7 @@
   </nav>
 
   <button class="ss-moreBtn" type="button" id="ssMoreBtn"
-          aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreMenu">
+          aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
     ${T.more}
   </button>
 </header>
@@ -106,32 +108,25 @@
 </div>
   `.trim();
 
-  // 5) Einhängen (Placeholder: #ss-shell)
+  // 6) Einhängen (Placeholder: #ss-shell)
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 6) Active-State anhand Path (FIX: home nicht per startsWith("/"))
-  function norm(p) {
-    p = (p || "/").toLowerCase();
-    p = p.replace(/index\.html$/i, "");
-    if (!p.endsWith("/")) p += "/";
-    return p;
-  }
-
+  // 7) Active-State anhand Path
   function setActive() {
-    const p = norm(location.pathname);
+    const p = (location.pathname || "/").replace(/\/+$/, "/"); // normalize trailing slash
+    const map = [
+      { key: "home", match: [LINKS.home] },
+      { key: "app", match: [LINKS.app] },
+      { key: "school", match: [LINKS.school] },
+      { key: "pro", match: [LINKS.pro] },
+      { key: "help", match: [LINKS.help] },
+    ];
 
-    // Spezifisch → unspezifisch prüfen
     let activeKey = "home";
-    if (p.startsWith(norm(LINKS.app))) activeKey = "app";
-    else if (p.startsWith(norm(LINKS.school))) activeKey = "school";
-    else if (p.startsWith(norm(LINKS.pro))) activeKey = "pro";
-    else if (p.startsWith(norm(LINKS.help))) activeKey = "help";
-    else {
-      // Home nur, wenn wirklich Home
-      const home = norm(LINKS.home);
-      if (p === home) activeKey = "home";
+    for (const item of map) {
+      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
@@ -143,16 +138,19 @@
   }
   setActive();
 
-  // 7) Mehr-Menü: open/close + Escape + Click-outside
+  // 8) Mehr-Menü: open/close + Escape + Click-outside
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
+
+  function lockScroll(lock) {
+    document.documentElement.classList.toggle("ss-noScroll", !!lock);
+  }
 
   function openMenu() {
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
-    document.documentElement.classList.add("ss-noScroll");
-
-    // Fokus auf echten Close-Button (FIX)
+    lockScroll(true);
+    // Fokus auf Close-Button (nicht Backdrop)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
@@ -160,16 +158,16 @@
   function closeMenu() {
     overlay.hidden = true;
     btn.setAttribute("aria-expanded", "false");
-    document.documentElement.classList.remove("ss-noScroll");
-    btn.focus();
+    lockScroll(false);
+    btn && btn.focus();
   }
 
-  btn?.addEventListener("click", () => {
+  btn && btn.addEventListener("click", () => {
     if (overlay.hidden) openMenu();
     else closeMenu();
   });
 
-  overlay?.addEventListener("click", (e) => {
+  overlay && overlay.addEventListener("click", (e) => {
     const t = e.target;
     if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
   });
