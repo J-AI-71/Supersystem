@@ -1,4 +1,5 @@
-/*! SafeShare Shell v2026-01-22-01 */
+/* /js/ss-shell.js */
+/* SafeShare Shell v2026-01-24-01 (dark-aware + bottom-sheet) */
 (function () {
   "use strict";
 
@@ -111,13 +112,13 @@
 
   // 6) Active-State anhand Path
   function setActive() {
-    const p = location.pathname.replace(/\/+$/, "/"); // normalize trailing slash
+    const p = (location.pathname || "/").replace(/\/+$/, "/").toLowerCase();
     const map = [
-      { key: "home", match: [LINKS.home] },
-      { key: "app", match: [LINKS.app] },
-      { key: "school", match: [LINKS.school] },
-      { key: "pro", match: [LINKS.pro] },
-      { key: "help", match: [LINKS.help] },
+      { key: "home", match: [LINKS.home.toLowerCase()] },
+      { key: "app", match: [LINKS.app.toLowerCase()] },
+      { key: "school", match: [LINKS.school.toLowerCase()] },
+      { key: "pro", match: [LINKS.pro.toLowerCase()] },
+      { key: "help", match: [LINKS.help.toLowerCase()] },
     ];
 
     let activeKey = "home";
@@ -137,13 +138,15 @@
   // 7) Mehr-Menü: open/close + Escape + Click-outside
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
+  if (!btn || !overlay) return;
 
   function openMenu() {
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
     document.documentElement.classList.add("ss-noScroll");
-    // Fokus auf Close
-    const closeBtn = overlay.querySelector("[data-ss-close]");
+
+    // Fokus auf ✕ Button (nicht auf Backdrop)
+    const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
 
@@ -154,17 +157,17 @@
     btn.focus();
   }
 
-  btn?.addEventListener("click", () => {
+  btn.addEventListener("click", () => {
     if (overlay.hidden) openMenu();
     else closeMenu();
   });
 
-  overlay?.addEventListener("click", (e) => {
+  overlay.addEventListener("click", (e) => {
     const t = e.target;
     if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
+    if (e.key === "Escape" && !overlay.hidden) closeMenu();
   });
 })();
