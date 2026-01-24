@@ -1,216 +1,151 @@
 /* Datei: /js/ss-shell.js */
-/* SafeShare Shell v2026-01-24-04 (logo + capsule nav + bottom-sheet more) */
-(function () {
-  "use strict";
+/* SafeShare Shell v2026-01-24-04 */
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-
-  // 1) Locale bestimmen: /en/ oder <html lang="en">
-  const path = (location.pathname || "/").toLowerCase();
-  const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path.includes("/en/") || htmlLang.startsWith("en");
-
-  // 2) Link-Ziele (DE/EN) – hier nur saubere Root-Pfade
-  const LINKS = isEN
-    ? {
-        home: "/en/",
-        app: "/app/en/",
-        school: "/schule/en/",
-        pro: "/pro/en/",
-        help: "/hilfe/en/",
-        privacy: "/datenschutz/en/",
-        imprint: "/impressum/en/",
-        terms: "/nutzungsbedingungen/en/",
-        support: "mailto:listings@safesharepro.com",
-      }
-    : {
-        home: "/",
-        app: "/app/",
-        school: "/schule/",
-        pro: "/pro/",
-        help: "/hilfe/",
-        privacy: "/datenschutz/",
-        imprint: "/impressum/",
-        terms: "/nutzungsbedingungen/",
-        support: "mailto:listings@safesharepro.com",
-      };
-
-  // 3) Texte (DE/EN)
-  const T = isEN
-    ? {
-        start: "Start",
-        app: "App",
-        school: "School",
-        pro: "Pro",
-        help: "Help",
-        more: "More",
-        close: "Close",
-        support: "Support / Contact",
-        privacy: "Privacy",
-        imprint: "Imprint",
-        terms: "Terms",
-        channels: "Channels",
-        email: "Clean email links",
-        messenger: "Clean messenger links",
-        social: "Clean social links",
-      }
-    : {
-        start: "Start",
-        app: "App",
-        school: "Schule",
-        pro: "Pro",
-        help: "Hilfe",
-        more: "Mehr",
-        close: "Schließen",
-        support: "Support / Kontakt",
-        privacy: "Datenschutz",
-        imprint: "Impressum",
-        terms: "Nutzungsbedingungen",
-        channels: "Kanäle",
-        email: "E-Mail-Links bereinigen",
-        messenger: "Messenger-Links bereinigen",
-        social: "Social-Links bereinigen",
-      };
-
-  // 4) Logo-Asset (kein Emoji)
-  const LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
-
-  // 5) Shell-Markup: Nav + Mehr-Button in EINER Capsule
-  const shellHTML = `
-<header class="ss-header" role="banner">
-  <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <span class="ss-brand__logoWrap" aria-hidden="true">
-      <img class="ss-brand__logo" src="${LOGO_SRC}" alt="" width="22" height="22"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-      <span class="ss-brand__fallback">SS</span>
-    </span>
-    <span class="ss-brand__name">SafeShare</span>
-  </a>
-
-  <nav class="ss-nav" aria-label="Primary">
-    <a class="ss-nav__link" data-ss-nav="home" href="${LINKS.home}">${T.start}</a>
-    <a class="ss-nav__link" data-ss-nav="app" href="${LINKS.app}">${T.app}</a>
-    <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
-    <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
-    <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
-
-    <button class="ss-moreBtn" type="button" id="ssMoreBtn"
-      aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
-      ${T.more} <span class="ss-caret" aria-hidden="true">▾</span>
-    </button>
-  </nav>
-</header>
-
-<div class="ss-moreOverlay" id="ssMoreOverlay" hidden>
-  <div class="ss-moreBackdrop" data-ss-close></div>
-
-  <div class="ss-moreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
-    <div class="ss-moreTop">
-      <div class="ss-moreTitle">${T.more}</div>
-      <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">✕</button>
-    </div>
-
-    <div class="ss-moreList" role="navigation" aria-label="${T.more}">
-      <div class="ss-moreHint">Support</div>
-      <a class="ss-moreLink" href="${LINKS.support}">${T.support}</a>
-
-      <div class="ss-moreDivider"></div>
-
-      <div class="ss-moreHint">${T.channels}</div>
-      <a class="ss-moreLink" href="${isEN ? "/email-links-bereinigen/en/" : "/email-links-bereinigen/"}">${T.email}</a>
-      <a class="ss-moreLink" href="${isEN ? "/messenger-links-bereinigen/en/" : "/messenger-links-bereinigen/"}">${T.messenger}</a>
-      <a class="ss-moreLink" href="${isEN ? "/social-links-bereinigen/en/" : "/social-links-bereinigen/"}">${T.social}</a>
-
-      <div class="ss-moreDivider"></div>
-
-      <div class="ss-moreHint">Rechtliches</div>
-      <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
-      <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
-      <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
-    </div>
-  </div>
-</div>
-`.trim();
-
-  // 6) Mount
-  const mount = $("#ss-shell");
+(() => {
+  const mount = document.getElementById("ss-shell");
   if (!mount) return;
-  mount.innerHTML = shellHTML;
 
-  // 7) Active-State anhand Path
-  function normalize(p) {
-    let s = String(p || "/");
-    if (!s.startsWith("/")) s = "/" + s;
-    // trailing slash normalisieren
-    if (!s.endsWith("/")) s = s + "/";
-    return s.toLowerCase();
-  }
+  const normalizePath = (p) => {
+    if (!p) return "/";
+    // Strip query/hash, ensure trailing slash for folder routes
+    try {
+      const u = new URL(p, location.origin);
+      p = u.pathname || "/";
+    } catch (_) {}
+    if (p !== "/" && !p.endsWith("/")) p += "/";
+    return p;
+  };
 
-  function setActive() {
-    const p = normalize(location.pathname);
+  const current = normalizePath(location.href);
 
-    const map = [
-      { key: "home", match: [normalize(LINKS.home)] },
-      { key: "app", match: [normalize(LINKS.app)] },
-      { key: "school", match: [normalize(LINKS.school)] },
-      { key: "pro", match: [normalize(LINKS.pro)] },
-      { key: "help", match: [normalize(LINKS.help)] },
-    ];
+  // Primary tabs (capsule nav)
+  const TABS = [
+    { key: "start",  label: "Start",  href: "/" },
+    { key: "app",    label: "App",    href: "/app/" },
+    { key: "schule", label: "Schule", href: "/schule/" },
+    { key: "pro",    label: "Pro",    href: "/pro/" },
+    { key: "hilfe",  label: "Hilfe",  href: "/hilfe/" },
+  ];
 
-    let activeKey = "home";
-    for (const item of map) {
-      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
+  // More menu (bottom-sheet)
+  const MORE = [
+    { label: "Datenschutz", href: "/datenschutz/" },
+    { label: "Impressum", href: "/impressum/" },
+    { label: "Nutzungsbedingungen", href: "/nutzungsbedingungen/" },
+    { label: "Support", href: "/support/" }, // falls vorhanden – sonst anpassen/entfernen
+  ];
+
+  const markSVG = `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M12 2l7 4v6c0 5-3.5 9.4-7 10-3.5-.6-7-5-7-10V6l7-4zm0 2.2L7 6v6c0 3.9 2.6 7.6 5 8.4 2.4-.8 5-4.5 5-8.4V6l-5-1.8z"/>
+    </svg>
+  `;
+
+  const el = (tag, attrs = {}, children = []) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === "class") n.className = v;
+      else if (k === "html") n.innerHTML = v;
+      else if (k.startsWith("data-")) n.setAttribute(k, v);
+      else n.setAttribute(k, v);
     }
+    for (const c of children) n.appendChild(c);
+    return n;
+  };
 
-    document.querySelectorAll("[data-ss-nav]").forEach((a) => {
-      const isActive = a.getAttribute("data-ss-nav") === activeKey;
-      a.classList.toggle("is-active", isActive);
-      if (isActive) a.setAttribute("aria-current", "page");
-      else a.removeAttribute("aria-current");
-    });
-  }
-  setActive();
+  const isActive = (href) => {
+    const h = normalizePath(href);
+    if (h === "/") return current === "/";
+    return current.startsWith(h);
+  };
 
-  // 8) Mehr-Menü: open/close + Escape + close on link click
-  const btn = $("#ssMoreBtn");
-  const overlay = $("#ssMoreOverlay");
+  // Build header
+  const header = el("header", { class: "ss-header" });
 
-  function lockScroll(lock) {
-    document.documentElement.classList.toggle("ss-noScroll", !!lock);
-  }
+  const brand = el("a", { class: "ss-brand", href: "/", "aria-label": "SafeShare Start" }, [
+    el("span", { class: "ss-brand__mark", html: markSVG }),
+    el("span", { class: "ss-brand__name" }, []),
+  ]);
+  brand.querySelector(".ss-brand__name").textContent = "SafeShare";
 
-  function openMenu() {
-    if (!overlay || !btn) return;
+  const nav = el("nav", { class: "ss-nav", "aria-label": "SafeShare Navigation" });
+  TABS.forEach(t => {
+    const a = el("a", { class: "ss-nav__link", href: t.href, "data-page": t.key });
+    a.textContent = t.label;
+    if (isActive(t.href)) a.classList.add("is-active");
+    nav.appendChild(a);
+  });
+
+  const moreBtn = el("button", {
+    class: "ss-moreBtn",
+    type: "button",
+    "aria-haspopup": "dialog",
+    "aria-expanded": "false",
+    "aria-controls": "ss-moreOverlay",
+    title: "Mehr"
+  });
+  const dots = el("span", { class: "ss-moreBtn__dots", "aria-hidden": "true" });
+  dots.textContent = "⋯";
+  moreBtn.appendChild(dots);
+
+  header.appendChild(brand);
+  header.appendChild(nav);
+  header.appendChild(moreBtn);
+
+  // Build overlay
+  const overlay = el("div", { class: "ss-moreOverlay", id: "ss-moreOverlay", hidden: "hidden" });
+  const backdrop = el("div", { class: "ss-moreBackdrop" });
+  const menu = el("div", { class: "ss-moreMenu", role: "dialog", "aria-modal": "true", "aria-label": "Mehr Menü" });
+
+  const top = el("div", { class: "ss-moreTop" });
+  const title = el("div", { class: "ss-moreTitle" });
+  title.textContent = "Mehr";
+  const closeBtn = el("button", { class: "ss-moreClose", type: "button", "aria-label": "Schließen" });
+  closeBtn.textContent = "×";
+
+  top.appendChild(title);
+  top.appendChild(closeBtn);
+
+  const list = el("div", { class: "ss-moreList" });
+  MORE.forEach(item => {
+    const a = el("a", { class: "ss-moreLink", href: item.href });
+    a.textContent = item.label;
+    list.appendChild(a);
+  });
+
+  menu.appendChild(top);
+  menu.appendChild(list);
+  overlay.appendChild(backdrop);
+  overlay.appendChild(menu);
+
+  mount.appendChild(header);
+  mount.appendChild(overlay);
+
+  // Open/close logic
+  const lockScroll = (on) => {
+    document.documentElement.classList.toggle("ss-noScroll", !!on);
+  };
+
+  const open = () => {
     overlay.hidden = false;
-    btn.setAttribute("aria-expanded", "true");
+    moreBtn.setAttribute("aria-expanded", "true");
     lockScroll(true);
-    const closeBtn = overlay.querySelector(".ss-moreClose");
-    closeBtn && closeBtn.focus();
-  }
+    // focus close for accessibility
+    setTimeout(() => closeBtn.focus(), 0);
+  };
 
-  function closeMenu() {
-    if (!overlay || !btn) return;
+  const close = () => {
     overlay.hidden = true;
-    btn.setAttribute("aria-expanded", "false");
+    moreBtn.setAttribute("aria-expanded", "false");
     lockScroll(false);
-    btn.focus();
-  }
+    moreBtn.focus();
+  };
 
-  if (btn && overlay) {
-    btn.addEventListener("click", () => {
-      if (overlay.hidden) openMenu();
-      else closeMenu();
-    });
+  moreBtn.addEventListener("click", () => (overlay.hidden ? open() : close()));
+  closeBtn.addEventListener("click", close);
+  backdrop.addEventListener("click", close);
 
-    overlay.addEventListener("click", (e) => {
-      const t = e.target;
-      if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
-      // Klick auf Link im Menü schließt auch
-      if (t && t.closest && t.closest(".ss-moreLink")) closeMenu();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
-    });
-  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !overlay.hidden) close();
+  });
 })();
