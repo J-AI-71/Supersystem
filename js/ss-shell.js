@@ -1,16 +1,14 @@
 /* Datei: /js/ss-shell.js */
-/*! SafeShare Shell v2026-01-24-02 (dark-aware + bottom-sheet + brand logo) */
+/*! SafeShare Shell v2026-01-24-03 (no emoji, brand logo) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  // 1) Locale bestimmen: /app/en/ oder <html lang="en">
   const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
-  // 2) Link-Ziele (DE/EN)
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -35,7 +33,6 @@
         terms: "/nutzungsbedingungen/",
       };
 
-  // 3) Texte (DE/EN)
   const T = isEN
     ? {
         start: "Start",
@@ -64,14 +61,12 @@
         close: "Schließen",
       };
 
-  // 4) Assets
   const BRAND_LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
 
-  // 5) Shell-Markup
   const shellHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <img class="ss-brand__logo" src="${BRAND_LOGO_SRC}" alt="" width="22" height="22" decoding="async">
+    <img class="ss-brand__logo" src="${BRAND_LOGO_SRC}" alt="SafeShare" width="22" height="22" decoding="async">
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -108,14 +103,12 @@
 </div>
   `.trim();
 
-  // 6) Einhängen (Placeholder: #ss-shell)
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 7) Active-State anhand Path
   function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/"); // normalize trailing slash
+    const p = (location.pathname || "/").replace(/\/+$/, "/");
     const map = [
       { key: "home", match: [LINKS.home] },
       { key: "app", match: [LINKS.app] },
@@ -138,7 +131,6 @@
   }
   setActive();
 
-  // 8) Mehr-Menü: open/close + Escape + Click-outside
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
@@ -150,7 +142,6 @@
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
     lockScroll(true);
-    // Fokus auf Close-Button (nicht Backdrop)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
