@@ -1,127 +1,132 @@
-/* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-24-02 (capsule Mehr + bottom-sheet, dark-aware) */
+/* SafeShare Shell v2026-01-24-03 (capsule tabs + matching "Mehr") */
 
 :root{
-  /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
   --ss-muted: var(--muted2, rgba(255,255,255,.60));
-  --ss-hover: rgba(255,255,255,.06);
+  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
+
+  --ss-tab-bg: rgba(255,255,255,.04);
+  --ss-tab-hover: rgba(255,255,255,.04);
   --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
-  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
-  --ss-focus: var(--focus, 0 0 0 3px rgba(47,227,183,.22));
+
+  --ss-tab-radius: 999px;
+  --ss-tab-pad-y: 8px;
+  --ss-tab-pad-x: 12px;
 }
 
+/* Header */
 .ss-header{
-  position: sticky; top: 0; z-index: 50;
-  display:flex; align-items:center; justify-content:space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 12px;
+
   padding: 10px 14px;
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* Brand */
 .ss-brand{
-  display:flex; align-items:center; gap:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
 }
-.ss-brand__mark{ width:18px; height:18px; display:block; flex:0 0 auto; }
+.ss-brand__mark{
+  width: 22px;
+  height: 22px;
+  display:block;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-/* Tabs Capsule */
+/* Capsule Nav */
 .ss-nav{
-  display:flex; gap: 10px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+
   overflow-x:auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
+
   padding: 6px;
   border-radius: 999px;
   border: 1px solid var(--ss-border);
-  background: rgba(255,255,255,.04);
+  background: var(--ss-tab-bg);
   box-shadow: var(--ss-shadow);
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-.ss-nav__link{
+/* Links + "Mehr" button share same look */
+.ss-nav__link,
+.ss-moreBtn{
+  appearance: none;
+  -webkit-appearance: none;
+
   text-decoration:none;
   color: rgba(255,255,255,.72);
-  padding: 8px 12px;
-  border-radius: 999px;
+
+  padding: var(--ss-tab-pad-y) var(--ss-tab-pad-x);
+  border-radius: var(--ss-tab-radius);
   border: 1px solid transparent;
+  background: transparent;
+
   white-space: nowrap;
   flex: 0 0 auto;
+
+  font: inherit;
+  line-height: 1.1;
+
+  cursor: pointer;
 }
+
 @media (prefers-color-scheme: light){
-  .ss-nav__link{ color: rgba(17,24,39,.72); }
+  .ss-nav__link,
+  .ss-moreBtn{
+    color: rgba(17,24,39,.72);
+  }
 }
-.ss-nav__link:hover{
-  background: rgba(255,255,255,.04);
+
+.ss-nav__link:hover,
+.ss-moreBtn:hover{
+  background: var(--ss-tab-hover);
   border-color: var(--ss-border);
   color: var(--ss-text);
 }
+
 .ss-nav__link.is-active{
   background: var(--ss-active);
   border-color: var(--ss-active-border);
   color: var(--ss-text);
 }
 
-/* ===== Mehr Button: gleiche Capsule-Optik wie Tabs ===== */
-.ss-moreBtn{
-  appearance: none;
-  -webkit-appearance: none;
-  border-radius: 999px;
-  border: 1px solid var(--ss-border);
-  background: rgba(255,255,255,.04);
-  box-shadow: var(--ss-shadow);
-  padding: 6px;                 /* wie .ss-nav */
-  color: var(--ss-text);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Innerer „Tab“-Look (Text kommt über data-label) */
-.ss-moreBtn::before{
-  content: attr(data-label);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 12px;            /* wie .ss-nav__link */
-  border-radius: 999px;
-  border: 1px solid transparent;
-  color: rgba(255,255,255,.72);
-  white-space: nowrap;
-}
-@media (prefers-color-scheme: light){
-  .ss-moreBtn::before{ color: rgba(17,24,39,.72); }
-}
-
-.ss-moreBtn:hover::before{
-  background: rgba(255,255,255,.04);
-  border-color: var(--ss-border);
-  color: var(--ss-text);
-}
-.ss-moreBtn[aria-expanded="true"]::before{
+/* Wenn Menü offen ist: "Mehr" wirkt wie active */
+.ss-moreBtn.is-open{
   background: var(--ss-active);
   border-color: var(--ss-active-border);
   color: var(--ss-text);
 }
-.ss-moreBtn:focus-visible{
-  outline: none;
-  box-shadow: var(--ss-focus);
-}
 
-/* Scroll lock (auf html + body) */
+/* Scroll lock */
 html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
@@ -129,34 +134,43 @@ html.ss-noScroll, html.ss-noScroll body{
 
 /* Overlay */
 .ss-moreOverlay{
-  position: fixed; inset: 0; z-index: 9998;
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+
   display: grid;
-  align-items: end;            /* bottom-sheet */
+  align-items: end;
   justify-items: center;
+
   padding: 12px;
 }
 .ss-moreBackdrop{
-  position:absolute; inset:0;
+  position:absolute;
+  inset:0;
   background: rgba(0,0,0,.25);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet Menü */
+/* Bottom-sheet menu */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
   max-height: min(70vh, 520px);
   overflow: auto;
+
   border-radius: 18px;
   background: rgba(10,14,25,.96);
   border: 1px solid rgba(255,255,255,.12);
   box-shadow: var(--ss-shadow);
+
   padding: 10px;
   z-index: 9999;
+
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
+
   color: var(--ss-text);
 }
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
@@ -174,14 +188,16 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: zentriert statt bottom-sheet */
+/* Desktop: centered dialog */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
 }
 
 .ss-moreTop{
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 10px;
   padding: 8px 10px 6px;
 }
@@ -191,7 +207,8 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.03);
   color: inherit;
-  font-size: 18px; line-height: 1;
+  font-size: 18px;
+  line-height: 1;
   padding: 8px 10px;
   border-radius: 12px;
   cursor: pointer;
@@ -199,15 +216,19 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreClose:hover{ background: rgba(255,255,255,.08); }
 
 .ss-moreList{
-  display:flex; flex-direction:column; gap: 8px;
-  padding: 6px 6px 6px;
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+  padding: 6px;
 }
 .ss-moreLink{
   display:block;
   text-decoration:none;
   color: inherit;
+
   padding: 12px 12px;
   border-radius: 14px;
+
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
