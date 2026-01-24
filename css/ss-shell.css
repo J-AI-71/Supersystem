@@ -1,146 +1,108 @@
 /* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-24-04 (capsule nav + logo + bottom-sheet more) */
+/* SafeShare Shell v2026-01-24-04 (dark-aware + bottom-sheet + capsule more-btn) */
 
 :root{
-  /* nutzt deine Seiten-Variablen, sonst Fallback */
+  /* Shell-Fallbacks (nutzt Seiten-Variablen, sonst Default) */
+  --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
-  --ss-text:   var(--text, rgba(255,255,255,.92));
-  --ss-muted:  var(--muted2, rgba(255,255,255,.60));
-  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
-
-  --ss-active:        rgba(47,227,183,.12);
+  --ss-text: var(--text, rgba(255,255,255,.92));
+  --ss-muted: var(--muted2, rgba(255,255,255,.60));
+  --ss-hover: rgba(255,255,255,.06);
+  --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
-
-  --ss-chip-bg: rgba(255,255,255,.04);
-  --ss-chip-bg-hover: rgba(255,255,255,.08);
+  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
 }
 
-@media (prefers-color-scheme: light){
-  :root{
-    --ss-border: rgba(17,24,39,.12);
-    --ss-text:   rgba(17,24,39,.95);
-    --ss-muted:  rgba(17,24,39,.62);
-    --ss-shadow: 0 18px 45px rgba(17,24,39,.12);
-
-    --ss-chip-bg: rgba(17,24,39,.04);
-    --ss-chip-bg-hover: rgba(17,24,39,.08);
-  }
-}
-
-/* Sticky Header */
 .ss-header{
-  position: sticky; top: 0; z-index: 999; /* hoch, damit immer über Cards */
+  position: sticky; top: 0; z-index: 50;
   display:flex; align-items:center; justify-content:space-between;
   gap: 12px;
   padding: 10px 14px;
-
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-@media (prefers-color-scheme: light){
-  .ss-header{
-    background: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,0));
-  }
-}
 
-/* Brand */
 .ss-brand{
   display:flex; align-items:center; gap:10px;
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
 }
-.ss-brand__logoWrap{
-  width: 34px; height: 34px;
+.ss-brand__mark{
+  width: 22px; height: 22px;
+  display:inline-flex;
+  align-items:center; justify-content:center;
   border-radius: 999px;
-  border: 1px solid rgba(47,227,183,.22);
-  background: rgba(47,227,183,.08);
-  box-shadow: 0 10px 26px rgba(0,0,0,.20);
-  display:grid; place-items:center;
-  overflow:hidden;
+  background: rgba(47,227,183,.12);
+  border: 1px solid rgba(47,227,183,.25);
   flex: 0 0 auto;
 }
-.ss-brand__logo{
-  width: 22px; height: 22px;
-  display:block;
-  object-fit: contain;
-}
-.ss-brand__fallback{
-  display:none;
-  font-weight: 900;
-  font-size: 12px;
-  line-height:1;
-  letter-spacing:-.2px;
-  color: rgba(47,227,183,.95);
-}
+.ss-brand__mark svg{ width: 14px; height: 14px; display:block; }
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
-/* Capsule Nav (Links + Mehr in einer Kapsel) */
 .ss-nav{
-  display:flex; align-items:center; gap:10px;
+  display:flex; gap: 10px;
   overflow-x:auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
-
   padding: 6px;
   border-radius: 999px;
   border: 1px solid var(--ss-border);
-  background: var(--ss-chip-bg);
+  background: rgba(255,255,255,.04);
   box-shadow: var(--ss-shadow);
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-.ss-nav__link,
-.ss-moreBtn{
-  appearance:none;
+.ss-nav__link{
   text-decoration:none;
   color: rgba(255,255,255,.72);
-
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid transparent;
-  background: transparent;
-
   white-space: nowrap;
   flex: 0 0 auto;
-  cursor: pointer;
-  font: inherit;
 }
 @media (prefers-color-scheme: light){
-  .ss-nav__link,
-  .ss-moreBtn{ color: rgba(17,24,39,.72); }
+  .ss-nav__link{ color: rgba(17,24,39,.72); }
 }
 
-.ss-nav__link:hover,
-.ss-moreBtn:hover{
+.ss-nav__link:hover{
   background: rgba(255,255,255,.04);
   border-color: var(--ss-border);
   color: var(--ss-text);
 }
-@media (prefers-color-scheme: light){
-  .ss-nav__link:hover,
-  .ss-moreBtn:hover{ background: rgba(17,24,39,.04); }
-}
-
 .ss-nav__link.is-active{
   background: var(--ss-active);
   border-color: var(--ss-active-border);
   color: var(--ss-text);
 }
 
-/* Mehr-Button: gleiches Capsule-Feeling + kleiner Pfeil */
+/* More Button: gleiche Capsule-Optik wie Nav (kein "komischer" Einzelknopf) */
 .ss-moreBtn{
   display:inline-flex;
   align-items:center;
-  gap: 6px;
+  justify-content:center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--ss-border);
+  background: rgba(255,255,255,.04);
+  box-shadow: var(--ss-shadow);
+  color: var(--ss-text);
+  cursor: pointer;
+  flex: 0 0 auto;
 }
-.ss-moreBtn .ss-caret{
-  font-size: 12px;
+.ss-moreBtn:hover{ background: rgba(255,255,255,.08); }
+.ss-moreBtn:active{ transform: translateY(1px); }
+.ss-moreBtn__dots{
+  letter-spacing: 2px;
+  font-weight: 900;
   opacity: .9;
 }
 
@@ -171,19 +133,15 @@ html.ss-noScroll, html.ss-noScroll body{
   width: min(520px, calc(100vw - 24px));
   max-height: min(70vh, 520px);
   overflow: auto;
-
   border-radius: 18px;
   background: rgba(10,14,25,.96);
   border: 1px solid rgba(255,255,255,.12);
   box-shadow: var(--ss-shadow);
-
   padding: 10px;
   z-index: 9999;
-
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
-
   color: var(--ss-text);
 }
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
@@ -196,11 +154,12 @@ html.ss-noScroll, html.ss-noScroll body{
   .ss-moreMenu{
     background: rgba(255,255,255,.98);
     border: 1px solid rgba(17,24,39,.12);
+    box-shadow: 0 18px 45px rgba(17,24,39,.12);
     color: rgba(17,24,39,.95);
   }
 }
 
-/* Desktop: zentriert */
+/* Desktop: zentriert statt bottom-sheet */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
@@ -223,50 +182,18 @@ html.ss-noScroll, html.ss-noScroll body{
   cursor: pointer;
 }
 .ss-moreClose:hover{ background: rgba(255,255,255,.08); }
-@media (prefers-color-scheme: light){
-  .ss-moreClose{
-    border-color: rgba(17,24,39,.12);
-    background: rgba(17,24,39,.03);
-  }
-  .ss-moreClose:hover{ background: rgba(17,24,39,.06); }
-}
 
 .ss-moreList{
   display:flex; flex-direction:column; gap: 8px;
   padding: 6px 6px 6px;
 }
-.ss-moreHint{
-  font-size: 11px;
-  color: var(--ss-muted);
-  padding: 8px 10px 2px;
-}
-.ss-moreDivider{
-  height: 1px;
-  background: rgba(255,255,255,.10);
-  margin: 8px 6px;
-  border-radius: 999px;
-}
-@media (prefers-color-scheme: light){
-  .ss-moreDivider{ background: rgba(17,24,39,.10); }
-}
-
 .ss-moreLink{
   display:block;
   text-decoration:none;
   color: inherit;
-
   padding: 12px 12px;
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
-.ss-moreLink:hover{
-  background: rgba(255,255,255,.08);
-}
-@media (prefers-color-scheme: light){
-  .ss-moreLink{
-    border-color: rgba(17,24,39,.12);
-    background: rgba(17,24,39,.03);
-  }
-  .ss-moreLink:hover{ background: rgba(17,24,39,.06); }
-}
+.ss-moreLink:hover{ background: rgba(255,255,255,.08); }
