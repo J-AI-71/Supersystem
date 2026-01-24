@@ -1,18 +1,18 @@
-/* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-24-04 (dark-aware + bottom-sheet + pill-more) */
+/* SafeShare Shell v2026-01-24-04 (capsule "Mehr", no emoji, iOS hidden fix) */
 
 :root{
+  /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
   --ss-muted: var(--muted2, rgba(255,255,255,.60));
-  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
-
-  --ss-hover: rgba(255,255,255,.04);
+  --ss-hover: rgba(255,255,255,.06);
   --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
+  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
 }
 
+/* Header: sticky + blur wie deine TabsBar */
 .ss-header{
   position: sticky; top: 0; z-index: 50;
   display:flex; align-items:center; justify-content:space-between;
@@ -23,7 +23,7 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* Brand (Logo + Name) */
+/* Brand links */
 .ss-brand{
   display:flex; align-items:center; gap:10px;
   text-decoration:none;
@@ -34,6 +34,7 @@
   width: 22px; height: 22px;
   display:block;
   object-fit: contain;
+  flex: 0 0 auto;
 }
 .ss-brand__name{
   font-weight: 780;
@@ -41,12 +42,13 @@
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
-/* Nav capsule */
+/* Capsule Nav (inkl. Mehr) */
 .ss-nav{
-  display:flex; gap: 10px;
+  display:flex; align-items:center; gap:10px;
   overflow-x:auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
+
   padding: 6px;
   border-radius: 999px;
   border: 1px solid var(--ss-border);
@@ -55,6 +57,7 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
+/* Tabs + Mehr sehen gleich aus */
 .ss-nav__link{
   text-decoration:none;
   color: rgba(255,255,255,.72);
@@ -63,15 +66,15 @@
   border: 1px solid transparent;
   white-space: nowrap;
   flex: 0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+
+  background: transparent;
 }
 @media (prefers-color-scheme: light){
   .ss-nav__link{ color: rgba(17,24,39,.72); }
 }
+
 .ss-nav__link:hover{
-  background: var(--ss-hover);
+  background: rgba(255,255,255,.04);
   border-color: var(--ss-border);
   color: var(--ss-text);
 }
@@ -81,22 +84,10 @@
   color: var(--ss-text);
 }
 
-/* MORE button = exakt wie ein Tab (Pill) */
+/* Mehr ist ein BUTTON, aber optisch wie Tab */
 .ss-moreBtn{
-  appearance:none;
-  -webkit-appearance:none;
-  border: 1px solid transparent;      /* wie ss-nav__link */
-  background: transparent;            /* wie ss-nav__link */
-  color: rgba(255,255,255,.72);
+  appearance: none;
   cursor: pointer;
-}
-@media (prefers-color-scheme: light){
-  .ss-moreBtn{ color: rgba(17,24,39,.72); }
-}
-.ss-moreBtn:hover{
-  background: var(--ss-hover);
-  border-color: var(--ss-border);
-  color: var(--ss-text);
 }
 
 /* Scroll lock (auf html + body) */
@@ -105,21 +96,20 @@ html.ss-noScroll, html.ss-noScroll body{
   touch-action: none;
 }
 
-/* Overlay */
-.ss-moreOverlay{
-  position: fixed; inset: 0; z-index: 9998;
-  display: grid;
-  align-items: end;
-  justify-items: center;
-  padding: 12px;
-}
-
-/* iOS/Safari: hidden MUSS wirklich display:none sein */
+/* iOS/Safari: hidden MUSS display:none sein */
 .ss-moreOverlay[hidden]{
   display: none !important;
   pointer-events: none !important;
 }
 
+/* Overlay */
+.ss-moreOverlay{
+  position: fixed; inset: 0; z-index: 9998;
+  display: grid;
+  align-items: end;            /* bottom-sheet */
+  justify-items: center;
+  padding: 12px;
+}
 .ss-moreBackdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.25);
@@ -139,9 +129,11 @@ html.ss-noScroll, html.ss-noScroll body{
   box-shadow: var(--ss-shadow);
   padding: 10px;
   z-index: 9999;
+
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
+
   color: var(--ss-text);
 }
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
@@ -159,7 +151,7 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: zentriert */
+/* Desktop: zentriert statt bottom-sheet */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
