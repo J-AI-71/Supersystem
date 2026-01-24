@@ -1,12 +1,13 @@
-/* /js/ss-shell.js */
-/* SafeShare Shell v2026-01-24-01 (dark-aware + bottom-sheet) */
+// Datei: /js/ss-shell.js
+// SafeShare Shell v2026-01-24-01 (active-fix + focus-fix)
+
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
   // 1) Locale bestimmen: /app/en/ oder <html lang="en">
-  const path = location.pathname;
+  const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
@@ -110,20 +111,27 @@
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 6) Active-State anhand Path
-  function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/").toLowerCase();
-    const map = [
-      { key: "home", match: [LINKS.home.toLowerCase()] },
-      { key: "app", match: [LINKS.app.toLowerCase()] },
-      { key: "school", match: [LINKS.school.toLowerCase()] },
-      { key: "pro", match: [LINKS.pro.toLowerCase()] },
-      { key: "help", match: [LINKS.help.toLowerCase()] },
-    ];
+  // 6) Active-State anhand Path (FIX: home nicht per startsWith("/"))
+  function norm(p) {
+    p = (p || "/").toLowerCase();
+    p = p.replace(/index\.html$/i, "");
+    if (!p.endsWith("/")) p += "/";
+    return p;
+  }
 
+  function setActive() {
+    const p = norm(location.pathname);
+
+    // Spezifisch → unspezifisch prüfen
     let activeKey = "home";
-    for (const item of map) {
-      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
+    if (p.startsWith(norm(LINKS.app))) activeKey = "app";
+    else if (p.startsWith(norm(LINKS.school))) activeKey = "school";
+    else if (p.startsWith(norm(LINKS.pro))) activeKey = "pro";
+    else if (p.startsWith(norm(LINKS.help))) activeKey = "help";
+    else {
+      // Home nur, wenn wirklich Home
+      const home = norm(LINKS.home);
+      if (p === home) activeKey = "home";
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
@@ -138,14 +146,13 @@
   // 7) Mehr-Menü: open/close + Escape + Click-outside
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
-  if (!btn || !overlay) return;
 
   function openMenu() {
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
     document.documentElement.classList.add("ss-noScroll");
 
-    // Fokus auf ✕ Button (nicht auf Backdrop)
+    // Fokus auf echten Close-Button (FIX)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
@@ -157,17 +164,17 @@
     btn.focus();
   }
 
-  btn.addEventListener("click", () => {
+  btn?.addEventListener("click", () => {
     if (overlay.hidden) openMenu();
     else closeMenu();
   });
 
-  overlay.addEventListener("click", (e) => {
+  overlay?.addEventListener("click", (e) => {
     const t = e.target;
     if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !overlay.hidden) closeMenu();
+    if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
   });
 })();
