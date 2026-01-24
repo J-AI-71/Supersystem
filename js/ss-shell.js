@@ -1,16 +1,13 @@
-/* Datei: /js/ss-shell.js */
-/* SafeShare Shell v2026-01-24-02 (no emoji, logo img, capsule Mehr, iOS-safe close) */
+/* SafeShare Shell v2026-01-24-03 */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  // 1) Locale bestimmen: /app/en/ oder <html lang="en">
-  const path = location.pathname || "/";
+  const path = location.pathname;
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
-  // 2) Link-Ziele (DE/EN)
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -35,7 +32,6 @@
         terms: "/nutzungsbedingungen/",
       };
 
-  // 3) Texte (DE/EN)
   const T = isEN
     ? {
         start: "Start",
@@ -64,16 +60,13 @@
         close: "Schließen",
       };
 
-  // 4) Shell-Markup (Logo als Bild, kein Emoji)
+  // Logo: du kannst hier dein Asset setzen (oder leer lassen -> nur Text)
+  const LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
+
   const shellHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <img class="ss-brand__mark"
-         src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
-         alt=""
-         width="18" height="18"
-         decoding="async"
-         onerror="this.style.display='none'">
+    <img class="ss-brand__mark" src="${LOGO_SRC}" alt="" aria-hidden="true" decoding="async">
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -83,12 +76,12 @@
     <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
     <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
     <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
-  </nav>
 
-  <button class="ss-moreBtn" type="button" id="ssMoreBtn"
-          data-label="${T.more}"
-          aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
-  </button>
+    <button class="ss-moreBtn" type="button" id="ssMoreBtn"
+      aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreMenu">
+      ${T.more}
+    </button>
+  </nav>
 </header>
 
 <div class="ss-moreOverlay" id="ssMoreOverlay" hidden>
@@ -110,27 +103,24 @@
 </div>
   `.trim();
 
-  // 5) Einhängen (Placeholder: #ss-shell)
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 6) Active-State anhand Path (robust)
-  function norm(p){ return (p || "/").replace(/\/+$/, "/"); }
+  // Active state
   function setActive() {
-    const p = norm(location.pathname);
-
+    const p = location.pathname.replace(/\/+$/, "/");
     const map = [
-      { key: "home", match: [norm(LINKS.home)] },
-      { key: "app", match: [norm(LINKS.app)] },
-      { key: "school", match: [norm(LINKS.school)] },
-      { key: "pro", match: [norm(LINKS.pro)] },
-      { key: "help", match: [norm(LINKS.help)] },
+      { key: "home", match: [LINKS.home] },
+      { key: "app", match: [LINKS.app] },
+      { key: "school", match: [LINKS.school] },
+      { key: "pro", match: [LINKS.pro] },
+      { key: "help", match: [LINKS.help] },
     ];
 
     let activeKey = "home";
     for (const item of map) {
-      if (item.match.some((m) => m !== "/" ? p.startsWith(m) : p === "/")) activeKey = item.key;
+      if (item.match.some((m) => m && p.startsWith(m))) activeKey = item.key;
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
@@ -142,29 +132,28 @@
   }
   setActive();
 
-  // 7) Mehr-Menü: open/close + Escape + Click-outside (iOS-safe)
+  // More menu open/close
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
-  function lockScroll(lock){
+  function lockScroll(lock) {
     document.documentElement.classList.toggle("ss-noScroll", !!lock);
   }
 
   function openMenu() {
-    if (!overlay || !btn) return;
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
+    btn.classList.add("is-open");
     lockScroll(true);
 
-    // Fokus auf X (nicht auf Backdrop)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
 
   function closeMenu() {
-    if (!overlay || !btn) return;
     overlay.hidden = true;
     btn.setAttribute("aria-expanded", "false");
+    btn.classList.remove("is-open");
     lockScroll(false);
     btn.focus();
   }
