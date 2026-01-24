@@ -1,4 +1,5 @@
-/* SafeShare Shell v2026-01-24-04 (capsule "Mehr", no emoji, iOS hidden fix) */
+/* Datei: /css/ss-shell.2026-01-24-04.css */
+/* SafeShare Shell v2026-01-24-04 (dark-aware + bottom-sheet + capsule "Mehr") */
 
 :root{
   /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
@@ -10,9 +11,13 @@
   --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
   --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
+  --ss-radius: 999px;
 }
 
-/* Header: sticky + blur wie deine TabsBar */
+/* Mount soll keinen eigenen Abstand machen */
+#ss-shell{ position: relative; z-index: 60; }
+
+/* Header = sticky blur band */
 .ss-header{
   position: sticky; top: 0; z-index: 50;
   display:flex; align-items:center; justify-content:space-between;
@@ -23,18 +28,17 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* Brand links */
+/* Brand */
 .ss-brand{
   display:flex; align-items:center; gap:10px;
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
 }
-.ss-brand__logo{
+.ss-brand__mark{
   width: 22px; height: 22px;
   display:block;
   object-fit: contain;
-  flex: 0 0 auto;
 }
 .ss-brand__name{
   font-weight: 780;
@@ -42,37 +46,32 @@
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
-/* Capsule Nav (inkl. Mehr) */
+/* Nav capsule */
 .ss-nav{
-  display:flex; align-items:center; gap:10px;
+  display:flex; gap: 10px;
   overflow-x:auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
-
   padding: 6px;
-  border-radius: 999px;
+  border-radius: var(--ss-radius);
   border: 1px solid var(--ss-border);
   background: rgba(255,255,255,.04);
   box-shadow: var(--ss-shadow);
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Tabs + Mehr sehen gleich aus */
 .ss-nav__link{
   text-decoration:none;
   color: rgba(255,255,255,.72);
   padding: 8px 12px;
-  border-radius: 999px;
+  border-radius: var(--ss-radius);
   border: 1px solid transparent;
   white-space: nowrap;
   flex: 0 0 auto;
-
-  background: transparent;
 }
 @media (prefers-color-scheme: light){
   .ss-nav__link{ color: rgba(17,24,39,.72); }
 }
-
 .ss-nav__link:hover{
   background: rgba(255,255,255,.04);
   border-color: var(--ss-border);
@@ -84,22 +83,23 @@
   color: var(--ss-text);
 }
 
-/* Mehr ist ein BUTTON, aber optisch wie Tab */
+/* Mehr Button: gleiche Capsule Optik wie Tabs */
 .ss-moreBtn{
-  appearance: none;
+  padding: 8px 12px;
+  border-radius: var(--ss-radius);
+  border: 1px solid var(--ss-border);
+  background: rgba(255,255,255,.04);
+  color: var(--ss-text);
   cursor: pointer;
+  box-shadow: var(--ss-shadow);
+  white-space: nowrap;
 }
+.ss-moreBtn:hover{ background: rgba(255,255,255,.08); }
 
 /* Scroll lock (auf html + body) */
 html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
-}
-
-/* iOS/Safari: hidden MUSS display:none sein */
-.ss-moreOverlay[hidden]{
-  display: none !important;
-  pointer-events: none !important;
 }
 
 /* Overlay */
@@ -129,11 +129,9 @@ html.ss-noScroll, html.ss-noScroll body{
   box-shadow: var(--ss-shadow);
   padding: 10px;
   z-index: 9999;
-
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
-
   color: var(--ss-text);
 }
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
@@ -164,6 +162,7 @@ html.ss-noScroll, html.ss-noScroll body{
 }
 .ss-moreTitle{ font-weight: 800; }
 
+/* Close */
 .ss-moreClose{
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.03);
@@ -188,6 +187,10 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
-.ss-moreLink:hover{
-  background: rgba(255,255,255,.08);
+.ss-moreLink:hover{ background: rgba(255,255,255,.08); }
+
+/* FIX iOS/Safari: hidden MUSS Overlay wirklich ausschalten */
+.ss-moreOverlay[hidden]{
+  display: none !important;
+  pointer-events: none !important;
 }
