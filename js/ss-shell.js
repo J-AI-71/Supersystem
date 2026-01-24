@@ -1,10 +1,10 @@
-/* SafeShare Shell v2026-01-24-03 */
+/* SafeShare Shell v2026-01-24-04 (capsule nav + matching "Mehr") */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  const path = location.pathname;
+  const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
@@ -60,7 +60,7 @@
         close: "Schließen",
       };
 
-  // Logo: du kannst hier dein Asset setzen (oder leer lassen -> nur Text)
+  // Kein Emoji. Logo-Asset.
   const LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
 
   const shellHTML = `
@@ -70,18 +70,20 @@
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
-  <nav class="ss-nav" aria-label="Primary">
-    <a class="ss-nav__link" data-ss-nav="home" href="${LINKS.home}">${T.start}</a>
-    <a class="ss-nav__link" data-ss-nav="app" href="${LINKS.app}">${T.app}</a>
-    <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
-    <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
-    <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
+  <div class="ss-center">
+    <nav class="ss-nav" aria-label="Primary">
+      <a class="ss-nav__link" data-ss-nav="home" href="${LINKS.home}">${T.start}</a>
+      <a class="ss-nav__link" data-ss-nav="app" href="${LINKS.app}">${T.app}</a>
+      <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
+      <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
+      <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
+    </nav>
+  </div>
 
-    <button class="ss-moreBtn" type="button" id="ssMoreBtn"
-      aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreMenu">
-      ${T.more}
-    </button>
-  </nav>
+  <button class="ss-moreBtn" type="button" id="ssMoreBtn"
+    aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreMenu">
+    ${T.more}
+  </button>
 </header>
 
 <div class="ss-moreOverlay" id="ssMoreOverlay" hidden>
@@ -109,7 +111,8 @@
 
   // Active state
   function setActive() {
-    const p = location.pathname.replace(/\/+$/, "/");
+    const p = (location.pathname || "/").replace(/\/+$/, "/");
+
     const map = [
       { key: "home", match: [LINKS.home] },
       { key: "app", match: [LINKS.app] },
