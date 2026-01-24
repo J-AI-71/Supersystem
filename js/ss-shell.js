@@ -18,12 +18,12 @@
     ? {
         home: "/en/",
         app: "/app/en/",
-        school: "/schule/en/",
+        school: "/school/en/",
         pro: "/pro/en/",
-        help: "/hilfe/en/",
-        privacy: "/datenschutz/en/",
+        help: "/help/en/",
+        privacy: "/privacy/en/",
         imprint: "/impressum/en/",
-        terms: "/nutzungsbedingungen/en/",
+        terms: "/terms/en/",
         support: "mailto:listings@safesharepro.com",
       }
     : {
