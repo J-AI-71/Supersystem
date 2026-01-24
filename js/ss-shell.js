@@ -1,13 +1,17 @@
-/* SafeShare Shell v2026-01-24-04 (capsule nav + matching "Mehr") */
+/* Datei: /js/ss-shell.js */
+/* SafeShare Shell v2026-01-24-04 */
+
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  const path = location.pathname || "/";
+  // 1) Locale bestimmen: /en/ oder <html lang="en">
+  const path = (location.pathname || "/").toLowerCase();
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
+  // 2) Link-Ziele (DE/EN) — an deine echten Slugs anpassen, falls nötig
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -32,6 +36,7 @@
         terms: "/nutzungsbedingungen/",
       };
 
+  // 3) Texte (DE/EN)
   const T = isEN
     ? {
         start: "Start",
@@ -40,11 +45,11 @@
         pro: "Pro",
         help: "Help",
         more: "More",
+        close: "Close",
         support: "Support",
         privacy: "Privacy",
         imprint: "Imprint",
         terms: "Terms",
-        close: "Close",
       }
     : {
         start: "Start",
@@ -53,43 +58,40 @@
         pro: "Pro",
         help: "Hilfe",
         more: "Mehr",
+        close: "Schließen",
         support: "Support",
         privacy: "Datenschutz",
         imprint: "Impressum",
         terms: "Nutzungsbedingungen",
-        close: "Schließen",
       };
 
-  // Kein Emoji. Logo-Asset.
+  // 4) Shell-Markup (Logo statt Emoji)
   const LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
 
   const shellHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <img class="ss-brand__mark" src="${LOGO_SRC}" alt="" aria-hidden="true" decoding="async">
+    <img class="ss-brand__logo" src="${LOGO_SRC}" alt="" width="22" height="22" decoding="async">
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
-  <div class="ss-center">
-    <nav class="ss-nav" aria-label="Primary">
-      <a class="ss-nav__link" data-ss-nav="home" href="${LINKS.home}">${T.start}</a>
-      <a class="ss-nav__link" data-ss-nav="app" href="${LINKS.app}">${T.app}</a>
-      <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
-      <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
-      <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
-    </nav>
-  </div>
-
-  <button class="ss-moreBtn" type="button" id="ssMoreBtn"
-    aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreMenu">
-    ${T.more}
-  </button>
+  <nav class="ss-nav" aria-label="Primary">
+    <a class="ss-nav__link" data-ss-nav="home" href="${LINKS.home}">${T.start}</a>
+    <a class="ss-nav__link" data-ss-nav="app" href="${LINKS.app}">${T.app}</a>
+    <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
+    <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
+    <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
+    <button class="ss-nav__link ss-moreBtn" type="button" id="ssMoreBtn"
+            aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
+      ${T.more}
+    </button>
+  </nav>
 </header>
 
 <div class="ss-moreOverlay" id="ssMoreOverlay" hidden>
   <div class="ss-moreBackdrop" data-ss-close></div>
 
-  <div class="ss-moreMenu" id="ssMoreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
+  <div class="ss-moreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
     <div class="ss-moreTop">
       <div class="ss-moreTitle">${T.more}</div>
       <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">✕</button>
@@ -105,26 +107,32 @@
 </div>
   `.trim();
 
+  // 5) Einhängen
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // Active state
+  // 6) Active-State
+  function normalize(p) {
+    // trailing slash normalisieren: "/hilfe" -> "/hilfe/"
+    return (p || "/").replace(/\/+$/, "/");
+  }
   function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/");
+    const p = normalize(location.pathname.toLowerCase());
 
-    const map = [
-      { key: "home", match: [LINKS.home] },
-      { key: "app", match: [LINKS.app] },
-      { key: "school", match: [LINKS.school] },
-      { key: "pro", match: [LINKS.pro] },
-      { key: "help", match: [LINKS.help] },
+    const targets = [
+      { key: "app", match: normalize(LINKS.app) },
+      { key: "school", match: normalize(LINKS.school) },
+      { key: "pro", match: normalize(LINKS.pro) },
+      { key: "help", match: normalize(LINKS.help) },
     ];
 
     let activeKey = "home";
-    for (const item of map) {
-      if (item.match.some((m) => m && p.startsWith(m))) activeKey = item.key;
+    for (const t of targets) {
+      if (p.startsWith(t.match)) activeKey = t.key;
     }
+    // Home nur wenn wirklich Home
+    if (p === normalize(LINKS.home)) activeKey = "home";
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
       const isActive = a.getAttribute("data-ss-nav") === activeKey;
@@ -135,7 +143,7 @@
   }
   setActive();
 
-  // More menu open/close
+  // 7) Mehr-Menü: open/close + Escape + Click-outside + Link-click
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
@@ -144,31 +152,35 @@
   }
 
   function openMenu() {
+    if (!overlay || !btn) return;
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
-    btn.classList.add("is-open");
     lockScroll(true);
 
+    // Fokus auf Close (nicht backdrop)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
 
   function closeMenu() {
+    if (!overlay || !btn) return;
     overlay.hidden = true;
     btn.setAttribute("aria-expanded", "false");
-    btn.classList.remove("is-open");
     lockScroll(false);
     btn.focus();
   }
 
-  btn?.addEventListener("click", () => {
+  btn && btn.addEventListener("click", () => {
     if (overlay.hidden) openMenu();
     else closeMenu();
   });
 
-  overlay?.addEventListener("click", (e) => {
+  overlay && overlay.addEventListener("click", (e) => {
     const t = e.target;
-    if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
+    // backdrop oder close button
+    if (t && t.closest && t.closest("[data-ss-close]")) return closeMenu();
+    // Klick auf Link im Menü
+    if (t && t.closest && t.closest(".ss-moreLink")) return closeMenu();
   });
 
   document.addEventListener("keydown", (e) => {
