@@ -14,31 +14,34 @@
   <!-- Bing Webmaster Tools -->
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
- <meta property="og:title" content="SafeShare – Links sauber teilen" />
-<meta property="og:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – local-first im Browser. Copy → Clean → Share." />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="SafeShare" />
-<meta property="og:locale" content="de_DE" />
-<meta property="og:url" content="https://safesharepro.com/" />
-<meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-<meta property="og:image:alt" content="SafeShare – Links sauber teilen (Vorschau)" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+  <meta property="og:title" content="SafeShare – Links sauber teilen" />
+  <meta property="og:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – local-first im Browser. Copy → Clean → Share." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:url" content="https://safesharepro.com/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta property="og:image:alt" content="SafeShare – Links sauber teilen (Vorschau)" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="SafeShare – Links sauber teilen" />
-<meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – local-first im Browser. Copy → Clean → Share." />
-<meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-<meta name="twitter:image:alt" content="SafeShare – Links sauber teilen (Vorschau)" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare – Links sauber teilen" />
+  <meta name="twitter:description" content="Tracking-Parameter entfernen (utm_*, fbclid, gclid …) – local-first im Browser. Copy → Clean → Share." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta name="twitter:image:alt" content="SafeShare – Links sauber teilen (Vorschau)" />
 
   <!-- Favicons + PWA -->
-<link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
+  <meta name="theme-color" content="#111111">
 
-<link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
-<meta name="theme-color" content="#111111">
+  <!-- STEP 3 (Master-Shell) -->
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-22-01">
+  <script src="/js/ss-shell.js?v=2026-01-22-01" defer></script>
 
   <style>
     :root{
@@ -86,6 +89,13 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    /* NOTE:
+       Der alte Header + TabsBar + Bottom-Sheet-"Mehr" bleibt in dieser Datei drin,
+       ist aber jetzt NICHT MEHR NÖTIG und sollte später gelöscht werden.
+       Für "Schritt 3 einbauen" habe ich ihn hier drin gelassen, aber auskommentiert
+       (sonst hättest du doppelte Navigation).
+    */
 
     header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
     .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
@@ -270,7 +280,7 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
 
-    /* ===== Mehr: Bottom-Sheet ===== */
+    /* ===== Mehr: Bottom-Sheet (ALT, nicht mehr gebraucht) ===== */
     .moreOverlay{
       position: fixed;
       inset: 0;
@@ -320,92 +330,20 @@
     }
     .moreMenu a:last-child{ margin-bottom: 0; }
     .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
+  </style>
+</head>
 
-<style>
-/* === OVERRIDE: Logo randlos, kein Kreis/Badge === */
-.logoWrap{
-  width:auto !important;
-  height:auto !important;
-  border-radius:0 !important;
-  border:0 !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  overflow:visible !important;
-  display:flex !important;
-  align-items:center !important;
-  flex:0 0 auto !important;
-  padding:0 !important;
-}
+<body>
+  <!-- STEP 3 (Master-Shell) -->
+  <div id="ss-shell"></div>
 
-/* Logo im Badge */
-.logoWrap .logoImg{
-  width:28px;
-  height:28px;
-  display:block;
-  object-fit:contain;
-}
+  <div class="wrap">
 
-/* Fallback nur anzeigen, wenn Bild nicht lädt */
-.logoFallback{
-  font-weight:800;
-  color: var(--mint);
-  font-size:14px;
-  line-height:1;
-  display:none;
-}
-
-/* Badge: 1 Ring, clean */
-.logoWrap{
-  width:38px;
-  height:38px;
-  border-radius:999px;
-  border:1px solid rgba(47,227,183,.22);
-  background:rgba(47,227,183,.08);
-  box-shadow:0 10px 26px rgba(0,0,0,.28);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  flex:0 0 auto;
-}
-
-.logoWrap::before{ content:none !important; }
-    
-</style>
-<header>
-  <div class="brand">
-<div class="logoWrap" aria-label="SafeShare Logo">
-  <img
-    class="logoImg"
-    src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
-    alt="SafeShare"
-    width="28"
-    height="28"
-    decoding="async"
-    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
-  >
-  <span id="logoFallback" class="logoFallback">SS</span>
-</div>
-
-    <div class="brandText">
-      <div class="title">SafeShare</div>
-      <div class="sub">Links sauber teilen</div>
-    </div>
-  </div>
-
-  <div class="small">local-first</div>
-</header>
-
-    <!-- MASTER NAV -->
-    <div class="tabsBar">
-      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab active" href="/" data-page="start">Start</a>
-        <a class="tab" href="/app/" data-page="app">App</a>
-        <a class="tab" href="/schule/" data-page="schule">Schule</a>
-        <a class="tab" href="/pro/" data-page="pro">Pro</a>
-        <a class="tab" href="/hilfe/" data-page="hilfe">Hilfe</a>
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
-      </div>
-    </div>
+    <!-- ALT HEADER/NAV:
+         Diese Blöcke sind jetzt durch ss-shell.js ersetzt.
+         Du solltest sie später löschen, damit es nicht doppelt ist.
+         Ich lasse sie hier NICHT mehr drin (sonst wäre es doppelt).
+    -->
 
     <!-- HERO -->
     <section class="card">
@@ -416,15 +354,15 @@
       </p>
 
       <div class="heroImg">
-  <img
-    src="/assets/hero-vorher-nachher.png?v=2025-12-25-01"
-    alt="Vor SafeShare: Link mit Tracking-Ballast. Nach SafeShare: sauberer Link."
-    loading="lazy"
-    decoding="async"
-    width="1200"
-    height="675"
-  />
-</div>
+        <img
+          src="/assets/hero-vorher-nachher.png?v=2025-12-25-01"
+          alt="Vor SafeShare: Link mit Tracking-Ballast. Nach SafeShare: sauberer Link."
+          loading="lazy"
+          decoding="async"
+          width="1200"
+          height="675"
+        />
+      </div>
 
       <div class="row">
         <a class="btn primary" href="/app/">Jetzt bereinigen</a>
@@ -581,137 +519,18 @@
           <div>App: schnell &amp; einfach · Pro: Policies, Allowlist, Audit.</div>
         </div>
         <div class="footLinks">
-          <a href="/" data-page="start">Start</a>
-          <a href="/app/" data-page="app">App</a>
-          <a href="/schule/" data-page="schule">Schule</a>
-          <a href="/pro/" data-page="pro">Pro</a>
-          <a href="/hilfe/" data-page="hilfe">Hilfe</a>
-          <a href="/datenschutz/" data-page="datenschutz">Datenschutz</a>
-          <a href="/impressum/" data-page="impressum">Impressum</a>
-          <a href="/nutzungsbedingungen/" data-page="nutzungsbedingungen">Nutzungsbedingungen</a>
+          <a href="/">Start</a>
+          <a href="/app/">App</a>
+          <a href="/schule/">Schule</a>
+          <a href="/pro/">Pro</a>
+          <a href="/hilfe/">Hilfe</a>
+          <a href="/datenschutz/">Datenschutz</a>
+          <a href="/impressum/">Impressum</a>
+          <a href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
         </div>
       </div>
     </footer>
+
   </div>
-
-  <!-- Mehr (Bottom-Sheet) -->
-  <div class="moreOverlay" id="moreOverlay" hidden></div>
-  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Support</div>
-    <a href="/hilfe/#kontakt" data-page="hilfe">Support / Kontakt</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">Wissen</div>
-    <a href="/schule/" data-page="schule">Schule</a>
-    <a href="/utm-parameter-entfernen/" data-page="utm-parameter-entfernen">UTM</a>
-    <a href="/tracking-parameter/" data-page="tracking-parameter">Tracking</a>
-    <a href="/url-cleaner-tool-vergleich/" data-page="url-cleaner-tool-vergleich">Tool-Vergleich</a>
-    <a href="/lesezeichen/" data-page="lesezeichen">Lesezeichen</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">Rechtliches</div>
-    <a href="/datenschutz/" data-page="datenschutz">Datenschutz</a>
-    <a href="/impressum/" data-page="impressum">Impressum</a>
-    <a href="/nutzungsbedingungen/" data-page="nutzungsbedingungen">Nutzungsbedingungen</a>
-  </nav>
-
-  <script>
-    (function(){
-      // page key from pathname (supports /slug/ AND legacy *.html)
-      const p = (location.pathname || '/').toLowerCase();
-
-      function keyFromPath(path){
-        // normalize
-        let s = path.replace(/\/+$/,''); // remove trailing slash
-        if (s === '' || s === '/') return 'start';
-        if (s === '/index.html') return 'start';
-
-        // folder route: /app, /hilfe, ...
-        const parts = s.split('/').filter(Boolean);
-        const first = parts[0] || 'start';
-
-        // legacy file route: /help.html etc.
-        if (first.endsWith('.html')) {
-          const base = first.replace(/\.html$/,'');
-          const map = {
-            'index': 'start',
-            'app': 'app',
-            'pro': 'pro',
-            'help': 'hilfe',
-            'education': 'schule',
-            'bookmarklets': 'lesezeichen',
-            'terms': 'nutzungsbedingungen',
-            'quickstart': 'kurzstart',
-            'datenschutz': 'datenschutz',
-            'impressum': 'impressum',
-            'tracking-parameter': 'tracking-parameter',
-            'utm-parameter-entfernen': 'utm-parameter-entfernen',
-            'url-cleaner-tool-vergleich': 'url-cleaner-tool-vergleich'
-          };
-          return map[base] || base;
-        }
-
-        // folder map (German slugs)
-        const mapFolder = {
-          'app': 'app',
-          'hilfe': 'hilfe',
-          'schule': 'schule',
-          'pro': 'pro',
-          'lesezeichen': 'lesezeichen',
-          'datenschutz': 'datenschutz',
-          'impressum': 'impressum',
-          'nutzungsbedingungen': 'nutzungsbedingungen',
-          'kurzstart': 'kurzstart',
-          'tracking-parameter': 'tracking-parameter',
-          'utm-parameter-entfernen': 'utm-parameter-entfernen',
-          'url-cleaner-tool-vergleich': 'url-cleaner-tool-vergleich'
-        };
-        return mapFolder[first] || first;
-      }
-
-      const pageKey = keyFromPath(p);
-
-      // mark active (tabs + footer + more)
-      document.querySelectorAll('[data-page]').forEach(el => {
-        if (el.getAttribute('data-page') === pageKey) el.classList.add('active');
-      });
-
-      // more sheet + ESC close + scroll lock
-      const btn = document.getElementById('moreBtn');
-      const menu = document.getElementById('moreMenu');
-      const overlay = document.getElementById('moreOverlay');
-
-      function lockScroll(lock){
-        document.body.style.overflow = lock ? 'hidden' : '';
-        document.body.style.touchAction = lock ? 'none' : '';
-      }
-      function openMenu(){
-        overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
-        btn.setAttribute('aria-expanded','true');
-        lockScroll(true);
-      }
-      function closeMenu(){
-        menu.classList.remove('open');
-        btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
-      }
-
-      if(btn && menu && overlay){
-        btn.addEventListener('click',(e)=>{
-          e.preventDefault();
-          const isOpen = btn.getAttribute('aria-expanded') === 'true';
-          isOpen ? closeMenu() : openMenu();
-        });
-        overlay.addEventListener('click', closeMenu);
-        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
-        });
-      }
-    })();
-  </script>
 </body>
 </html>
