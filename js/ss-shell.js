@@ -1,151 +1,177 @@
 /* Datei: /js/ss-shell.js */
-/* SafeShare Shell v2026-01-24-04 */
+/* SafeShare Shell v2026-01-24-05 (logo + capsule nav + bottom-sheet more, no emoji) */
+(function () {
+  "use strict";
 
-(() => {
-  const mount = document.getElementById("ss-shell");
-  if (!mount) return;
+  const root = document.getElementById("ss-shell");
+  if (!root) return;
 
-  const normalizePath = (p) => {
-    if (!p) return "/";
-    // Strip query/hash, ensure trailing slash for folder routes
-    try {
-      const u = new URL(p, location.origin);
-      p = u.pathname || "/";
-    } catch (_) {}
-    if (p !== "/" && !p.endsWith("/")) p += "/";
-    return p;
-  };
+  const $ = (sel, r = document) => r.querySelector(sel);
 
-  const current = normalizePath(location.href);
+  // Locale bestimmen: /en/ oder <html lang="en">
+  const path = String(location.pathname || "/").toLowerCase();
+  const htmlLang = String(document.documentElement.getAttribute("lang") || "").toLowerCase();
+  const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
-  // Primary tabs (capsule nav)
-  const TABS = [
-    { key: "start",  label: "Start",  href: "/" },
-    { key: "app",    label: "App",    href: "/app/" },
-    { key: "schule", label: "Schule", href: "/schule/" },
-    { key: "pro",    label: "Pro",    href: "/pro/" },
-    { key: "hilfe",  label: "Hilfe",  href: "/hilfe/" },
-  ];
+  // Root-Pfade (DE/EN) – sauber als Ordner-Slashes
+  const LINKS = isEN
+    ? {
+        home: "/en/",
+        app: "/app/en/",
+        school: "/schule/en/",
+        pro: "/pro/en/",
+        help: "/hilfe/en/",
+        privacy: "/datenschutz/en/",
+        imprint: "/impressum/en/",
+        terms: "/nutzungsbedingungen/en/",
+        support: "mailto:listings@safesharepro.com",
+      }
+    : {
+        home: "/",
+        app: "/app/",
+        school: "/schule/",
+        pro: "/pro/",
+        help: "/hilfe/",
+        privacy: "/datenschutz/",
+        imprint: "/impressum/",
+        terms: "/nutzungsbedingungen/",
+        support: "mailto:listings@safesharepro.com",
+      };
 
-  // More menu (bottom-sheet)
-  const MORE = [
-    { label: "Datenschutz", href: "/datenschutz/" },
-    { label: "Impressum", href: "/impressum/" },
-    { label: "Nutzungsbedingungen", href: "/nutzungsbedingungen/" },
-    { label: "Support", href: "/support/" }, // falls vorhanden – sonst anpassen/entfernen
-  ];
+  // Texte (DE/EN)
+  const T = isEN
+    ? {
+        start: "Start",
+        app: "App",
+        school: "School",
+        pro: "Pro",
+        help: "Help",
+        more: "More",
+        close: "Close",
+        support: "Support / Contact",
+        privacy: "Privacy",
+        imprint: "Imprint",
+        terms: "Terms",
+      }
+    : {
+        start: "Start",
+        app: "App",
+        school: "Schule",
+        pro: "Pro",
+        help: "Hilfe",
+        more: "Mehr",
+        close: "Schließen",
+        support: "Support / Kontakt",
+        privacy: "Datenschutz",
+        imprint: "Impressum",
+        terms: "Nutzungsbedingungen",
+      };
 
-  const markSVG = `
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path fill="currentColor" d="M12 2l7 4v6c0 5-3.5 9.4-7 10-3.5-.6-7-5-7-10V6l7-4zm0 2.2L7 6v6c0 3.9 2.6 7.6 5 8.4 2.4-.8 5-4.5 5-8.4V6l-5-1.8z"/>
-    </svg>
+  // Aktive Seite robust erkennen
+  function activeKeyFromPath(p) {
+    const s = String(p || "/").toLowerCase();
+
+    // EN Root
+    if (s === "/en/" || s === "/en") return "home";
+
+    // DE Root
+    if (s === "/" || s === "") return "home";
+
+    if (s.startsWith("/app")) return "app";
+    if (s.startsWith("/schule")) return "school";
+    if (s.startsWith("/pro")) return "pro";
+    if (s.startsWith("/hilfe")) return "help";
+
+    // Fallback: Start
+    return "home";
+  }
+
+  const active = activeKeyFromPath(path);
+
+  // SVG Chevron (statt Emoji/Sonderzeichen)
+  const chevronSvg =
+    '<svg class="ss-nav__chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+    '<path d="M6.7 9.2a1 1 0 0 1 1.4 0L12 13.1l3.9-3.9a1 1 0 1 1 1.4 1.4l-4.6 4.6a1 1 0 0 1-1.4 0L6.7 10.6a1 1 0 0 1 0-1.4z" fill="currentColor"></path>' +
+    "</svg>";
+
+  // Logo: KEIN Emoji. Nutze dein echtes Asset.
+  // Wenn du ein anderes Logo hast: hier den Pfad ändern.
+  const logoSrc = "/assets/fav/favicon.svg?v=2025-12-26-01";
+
+  // HTML bauen
+  root.innerHTML = `
+    <header class="ss-header">
+      <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
+        <img class="ss-brand__mark" src="${logoSrc}" alt="" width="22" height="22" decoding="async" />
+        <span class="ss-brand__name">SafeShare</span>
+      </a>
+
+      <nav class="ss-nav" aria-label="Primary">
+        <a class="ss-nav__link ${active === "home" ? "is-active" : ""}" href="${LINKS.home}">${T.start}</a>
+        <a class="ss-nav__link ${active === "app" ? "is-active" : ""}" href="${LINKS.app}">${T.app}</a>
+        <a class="ss-nav__link ${active === "school" ? "is-active" : ""}" href="${LINKS.school}">${T.school}</a>
+        <a class="ss-nav__link ${active === "pro" ? "is-active" : ""}" href="${LINKS.pro}">${T.pro}</a>
+        <a class="ss-nav__link ${active === "help" ? "is-active" : ""}" href="${LINKS.help}">${T.help}</a>
+
+        <button class="ss-nav__more" type="button" id="ssMoreBtn"
+          aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
+          ${T.more}${chevronSvg}
+        </button>
+      </nav>
+    </header>
+
+    <div class="ss-moreOverlay" id="ssMoreOverlay" hidden>
+      <div class="ss-moreBackdrop" id="ssMoreBackdrop" aria-hidden="true"></div>
+
+      <div class="ss-moreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
+        <div class="ss-moreTop">
+          <div class="ss-moreTitle">${T.more}</div>
+          <button class="ss-moreClose" type="button" id="ssMoreClose" aria-label="${T.close}">×</button>
+        </div>
+
+        <div class="ss-moreList">
+          <a class="ss-moreLink" href="${LINKS.support}">${T.support}</a>
+          <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
+          <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
+          <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
+        </div>
+      </div>
+    </div>
   `;
 
-  const el = (tag, attrs = {}, children = []) => {
-    const n = document.createElement(tag);
-    for (const [k, v] of Object.entries(attrs)) {
-      if (k === "class") n.className = v;
-      else if (k === "html") n.innerHTML = v;
-      else if (k.startsWith("data-")) n.setAttribute(k, v);
-      else n.setAttribute(k, v);
-    }
-    for (const c of children) n.appendChild(c);
-    return n;
-  };
+  const html = document.documentElement;
+  const overlay = $("#ssMoreOverlay", root);
+  const btn = $("#ssMoreBtn", root);
+  const closeBtn = $("#ssMoreClose", root);
+  const backdrop = $("#ssMoreBackdrop", root);
 
-  const isActive = (href) => {
-    const h = normalizePath(href);
-    if (h === "/") return current === "/";
-    return current.startsWith(h);
-  };
-
-  // Build header
-  const header = el("header", { class: "ss-header" });
-
-  const brand = el("a", { class: "ss-brand", href: "/", "aria-label": "SafeShare Start" }, [
-    el("span", { class: "ss-brand__mark", html: markSVG }),
-    el("span", { class: "ss-brand__name" }, []),
-  ]);
-  brand.querySelector(".ss-brand__name").textContent = "SafeShare";
-
-  const nav = el("nav", { class: "ss-nav", "aria-label": "SafeShare Navigation" });
-  TABS.forEach(t => {
-    const a = el("a", { class: "ss-nav__link", href: t.href, "data-page": t.key });
-    a.textContent = t.label;
-    if (isActive(t.href)) a.classList.add("is-active");
-    nav.appendChild(a);
-  });
-
-  const moreBtn = el("button", {
-    class: "ss-moreBtn",
-    type: "button",
-    "aria-haspopup": "dialog",
-    "aria-expanded": "false",
-    "aria-controls": "ss-moreOverlay",
-    title: "Mehr"
-  });
-  const dots = el("span", { class: "ss-moreBtn__dots", "aria-hidden": "true" });
-  dots.textContent = "⋯";
-  moreBtn.appendChild(dots);
-
-  header.appendChild(brand);
-  header.appendChild(nav);
-  header.appendChild(moreBtn);
-
-  // Build overlay
-  const overlay = el("div", { class: "ss-moreOverlay", id: "ss-moreOverlay", hidden: "hidden" });
-  const backdrop = el("div", { class: "ss-moreBackdrop" });
-  const menu = el("div", { class: "ss-moreMenu", role: "dialog", "aria-modal": "true", "aria-label": "Mehr Menü" });
-
-  const top = el("div", { class: "ss-moreTop" });
-  const title = el("div", { class: "ss-moreTitle" });
-  title.textContent = "Mehr";
-  const closeBtn = el("button", { class: "ss-moreClose", type: "button", "aria-label": "Schließen" });
-  closeBtn.textContent = "×";
-
-  top.appendChild(title);
-  top.appendChild(closeBtn);
-
-  const list = el("div", { class: "ss-moreList" });
-  MORE.forEach(item => {
-    const a = el("a", { class: "ss-moreLink", href: item.href });
-    a.textContent = item.label;
-    list.appendChild(a);
-  });
-
-  menu.appendChild(top);
-  menu.appendChild(list);
-  overlay.appendChild(backdrop);
-  overlay.appendChild(menu);
-
-  mount.appendChild(header);
-  mount.appendChild(overlay);
-
-  // Open/close logic
-  const lockScroll = (on) => {
-    document.documentElement.classList.toggle("ss-noScroll", !!on);
-  };
-
-  const open = () => {
+  function openMore() {
     overlay.hidden = false;
-    moreBtn.setAttribute("aria-expanded", "true");
-    lockScroll(true);
-    // focus close for accessibility
-    setTimeout(() => closeBtn.focus(), 0);
-  };
+    btn.setAttribute("aria-expanded", "true");
+    html.classList.add("ss-noScroll");
+    // Fokus aufs Close (iOS freundlich)
+    setTimeout(() => closeBtn && closeBtn.focus(), 0);
+  }
 
-  const close = () => {
+  function closeMore() {
     overlay.hidden = true;
-    moreBtn.setAttribute("aria-expanded", "false");
-    lockScroll(false);
-    moreBtn.focus();
-  };
+    btn.setAttribute("aria-expanded", "false");
+    html.classList.remove("ss-noScroll");
+    // Fokus zurück
+    setTimeout(() => btn && btn.focus(), 0);
+  }
 
-  moreBtn.addEventListener("click", () => (overlay.hidden ? open() : close()));
-  closeBtn.addEventListener("click", close);
-  backdrop.addEventListener("click", close);
+  function toggleMore() {
+    if (overlay.hidden) openMore();
+    else closeMore();
+  }
 
+  btn && btn.addEventListener("click", toggleMore);
+  closeBtn && closeBtn.addEventListener("click", closeMore);
+  backdrop && backdrop.addEventListener("click", closeMore);
+
+  // ESC schließt
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !overlay.hidden) close();
+    if (e.key === "Escape" && overlay && !overlay.hidden) closeMore();
   });
 })();
