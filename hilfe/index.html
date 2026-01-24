@@ -8,31 +8,36 @@
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
 
-<!-- Canonical: Ordner-URL -->
-<link rel="canonical" href="https://safesharepro.com/hilfe/" />
+  <!-- Canonical: Ordner-URL -->
+  <link rel="canonical" href="https://safesharepro.com/hilfe/" />
 
-<!-- Google Search Console -->
-<meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
-<!-- Bing Webmaster Tools -->
-<meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="de" href="https://safesharepro.com/hilfe/" />
+  <link rel="alternate" hreflang="en" href="https://safesharepro.com/help/" />
+  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/help/" />
 
-<!-- Open Graph / Social Preview -->
-<meta property="og:title" content="SafeShare Hilfe – FAQ & Tipps" />
-<meta property="og:description" content="Antworten auf die wichtigsten Fragen zu SafeShare: Was wird entfernt, was bleibt, wie nutzt du es schnell (Copy → Clean → Share) – local-first, ohne Upload." />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="SafeShare" />
-<meta property="og:url" content="https://safesharepro.com/hilfe/" />
-<meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
-<meta property="og:image:alt" content="SafeShare Hilfe – Vorschau" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-  
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="SafeShare Hilfe – FAQ & Tipps" />
-<meta name="twitter:description" content="FAQ & Tipps zu SafeShare: Tracking-Parameter entfernen, Link-Hygiene, local-first – ohne Upload." />
-<meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg" />
-<meta name="twitter:image:alt" content="SafeShare Hilfe – Vorschau" />
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="SafeShare Hilfe – FAQ & Tipps" />
+  <meta property="og:description" content="Antworten auf die wichtigsten Fragen zu SafeShare: Was wird entfernt, was bleibt, wie nutzt du es schnell (Copy → Clean → Share) – local-first, ohne Upload." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://safesharepro.com/hilfe/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.jpg?v=2026-01-21-01" />
+  <meta property="og:image:alt" content="SafeShare Hilfe – Vorschau" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare Hilfe – FAQ & Tipps" />
+  <meta name="twitter:description" content="FAQ & Tipps zu SafeShare: Tracking-Parameter entfernen, Link-Hygiene, local-first – ohne Upload." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.jpg?v=2026-01-21-01" />
+  <meta name="twitter:image:alt" content="SafeShare Hilfe – Vorschau" />
 
   <!-- Favicons + PWA (ABSOLUTE Pfade!) -->
   <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
@@ -41,6 +46,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
   <meta name="theme-color" content="#111111">
+
+  <!-- MASTER SHELL -->
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-22-01">
+  <script src="/js/ss-shell.js?v=2026-01-22-01" defer></script>
 
   <style>
     :root{
@@ -86,48 +95,6 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
-
-    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
-    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .logoWrap{
-      width: 38px; height: 38px; border-radius: 999px;
-      border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(47,227,183,.22), rgba(255,197,84,.10));
-      box-shadow: var(--shadow);
-      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
-    }
-    .logoWrap img{ width:28px; height:28px; display:block; }
-    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
-    .brandText{ min-width:0; }
-    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
-
-    .tabsBar{
-      position: sticky; top:0; z-index: 50;
-      padding: 8px 0 14px;
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
-    }
-    .tabs{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      overflow-x:auto; scrollbar-width:none;
-    }
-    .tabs::-webkit-scrollbar{ display:none; }
-    .tab{
-      font-size: 13px; color: var(--muted);
-      padding: 8px 12px; border-radius: 999px;
-      border: 1px solid transparent;
-      white-space: nowrap; flex: 0 0 auto;
-      background: transparent;
-      cursor: pointer;
-    }
-    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
 
     .card{
       margin-top: 14px;
@@ -215,140 +182,14 @@
       color: var(--muted);
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+  </style>
+</head>
 
-    /* ===== Mehr: Bottom-Sheet ===== */
-    .moreOverlay{
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.25);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      z-index: 9998;
-    }
-    .moreBtn{ appearance:none; cursor:pointer; }
-    .moreMenu{
-      position: fixed;
-      left: 12px; right: 12px;
-      bottom: calc(12px + env(safe-area-inset-bottom));
-      max-height: min(70vh, 520px);
-      overflow: auto;
-      padding: 10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.96);
-      box-shadow: var(--shadow);
-      z-index: 9999;
-      transform: translateY(16px);
-      opacity: 0;
-      transition: transform .16s ease, opacity .16s ease;
-    }
-    .moreMenu.open{ transform: translateY(0); opacity: 1; }
-    @media (prefers-color-scheme: light){
-      .moreOverlay{ background: rgba(17,24,39,.06); }
-      .moreMenu{
-        background: rgba(255,255,255,.98);
-        border: 1px solid rgba(17,24,39,.12);
-        box-shadow: 0 18px 45px rgba(17,24,39,.12);
-      }
-      .box{ border-color: rgba(17,24,39,.12); }
-    }
-    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
-    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
-    .moreMenu a{
-      display:block;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    .moreMenu a:last-child{ margin-bottom: 0; }
-    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
-  <style>
-    
-/* === OVERRIDE: Logo randlos, kein Kreis/Badge === */
-.logoWrap{
-  width:auto !important;
-  height:auto !important;
-  border-radius:0 !important;
-  border:0 !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  overflow:visible !important;
-  display:flex !important;
-  align-items:center !important;
-  flex:0 0 auto !important;
-  padding:0 !important;
-}
+<body>
+  <!-- MASTER NAV PLACEHOLDER -->
+  <div id="ss-shell"></div>
 
-/* Logo im Badge */
-.logoWrap .logoImg{
-  width:28px;
-  height:28px;
-  display:block;
-  object-fit:contain;
-}
-
-/* Fallback nur anzeigen, wenn Bild nicht lädt */
-.logoFallback{
-  font-weight:800;
-  color: var(--mint);
-  font-size:14px;
-  line-height:1;
-  display:none;
-}
-
-/* Badge: 1 Ring, clean */
-.logoWrap{
-  width:38px;
-  height:38px;
-  border-radius:999px;
-  border:1px solid rgba(47,227,183,.22);
-  background:rgba(47,227,183,.08);
-  box-shadow:0 10px 26px rgba(0,0,0,.28);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  flex:0 0 auto;
-}
-
-.logoWrap::before{ content:none !important; }
-    
-</style>
-<header>
-  <div class="brand">
-<div class="logoWrap" aria-label="SafeShare Logo">
-  <img
-    class="logoImg"
-    src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
-    alt="SafeShare"
-    width="28"
-    height="28"
-    decoding="async"
-    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
-  >
-  <span id="logoFallback" class="logoFallback">SS</span>
-</div>
-        
-        <div class="brandText">
-          <div class="title">SafeShare</div>
-          <div class="sub">Hilfe</div>
-        </div>
-      </div>
-      <div class="small">Support & Troubleshooting</div>
-    </header>
-
-    <div class="tabsBar">
-      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" href="/" data-page="/">Start</a>
-        <a class="tab" href="/app/" data-page="/app/">App</a>
-        <a class="tab" href="/schule/" data-page="/schule/">Schule</a>
-        <a class="tab" href="/pro/" data-page="/pro/">Pro</a>
-        <a class="tab" href="/hilfe/" data-page="/hilfe/">Hilfe</a>
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
-      </div>
-    </div>
+  <div class="wrap">
 
     <section class="card">
       <h1>Hilfe</h1>
@@ -513,30 +354,30 @@
       </div>
     </section>
 
-<section class="card" aria-label="Links nach Kanal">
-  <h2>Links nach Kanal bereinigen</h2>
-  <div class="row">
-    <a class="btn" href="/email-links-bereinigen/">E-Mail</a>
-    <a class="btn" href="/messenger-links-bereinigen/">Messenger</a>
-    <a class="btn" href="/social-links-bereinigen/">Social</a>
-  </div>
-</section>
+    <section class="card" aria-label="Links nach Kanal">
+      <h2>Links nach Kanal bereinigen</h2>
+      <div class="row">
+        <a class="btn" href="/email-links-bereinigen/">E-Mail</a>
+        <a class="btn" href="/messenger-links-bereinigen/">Messenger</a>
+        <a class="btn" href="/social-links-bereinigen/">Social</a>
+      </div>
+    </section>
 
-<section class="card" id="ios-shortcuts" aria-label="iOS Share-Sheet Shortcuts">
-  <h2>iOS / iPad: 1-Tap „Clean & Share“</h2>
-  <p class="muted">
-    Wenn du Links oft aus Mail/Messenger/Social teilst: nutze die iOS Share-Sheet Shortcuts.
-    Link teilen → Shortcut → sauberer Link direkt zum Weiterteilen.
-  </p>
-  <div class="actions">
-    <a class="btn primary" href="/shortcuts/">Shortcuts installieren</a>
-    <a class="btn" href="/app.html">Oder: App öffnen</a>
-  </div>
-  <p class="muted small">
-    Hinweis: Shortcuts entfernen URL-Tracking-Parameter. Sie ersetzen kein Blocken von Cookies/Fingerprinting.
-  </p>
-</section>
-  
+    <section class="card" id="ios-shortcuts" aria-label="iOS Share-Sheet Shortcuts">
+      <h2>iOS / iPad: 1-Tap „Clean & Share“</h2>
+      <p class="muted">
+        Wenn du Links oft aus Mail/Messenger/Social teilst: nutze die iOS Share-Sheet Shortcuts.
+        Link teilen → Shortcut → sauberer Link direkt zum Weiterteilen.
+      </p>
+      <div class="row">
+        <a class="btn primary" href="/shortcuts/">Shortcuts installieren</a>
+        <a class="btn" href="/app/">Oder: App öffnen</a>
+      </div>
+      <p class="muted" style="font-size:12px; opacity:.9">
+        Hinweis: Shortcuts entfernen URL-Tracking-Parameter. Sie ersetzen kein Blocken von Cookies/Fingerprinting.
+      </p>
+    </section>
+
     <section class="card" id="kontakt">
       <h2>Support</h2>
       <p>Wenn du einen reproduzierbaren Fehler hast, schick bitte:</p>
@@ -547,7 +388,7 @@
         <li>Optional: Screenshot des Audits (Pro)</li>
       </ul>
       <div class="box">
-        <p style="margin:0"><b>E-Mail:</b> <span class="mono">support.safeshare@proton.me</span></p>
+        <p style="margin:0"><b>E-Mail:</b> <span class="mono">listings@safesharepro.com</span></p>
       </div>
     </section>
 
@@ -558,89 +399,17 @@
           <div>App: schnell & einfach · Pro: Policies, Whitelist, Audit.</div>
         </div>
         <div class="footLinks">
-          <a href="/" data-page="/">Start</a>
-          <a href="/app/" data-page="/app/">App</a>
-          <a href="/schule/" data-page="/schule/">Schule</a>
-          <a href="/pro/" data-page="/pro/">Pro</a>
-          <a href="/hilfe/" data-page="/hilfe/">Hilfe</a>
-          <a href="/datenschutz/" data-page="/datenschutz/">Datenschutz</a>
-          <a href="/impressum/" data-page="/impressum/">Impressum</a>
-          <a href="/nutzungsbedingungen/" data-page="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+          <a href="/">Start</a>
+          <a href="/app/">App</a>
+          <a href="/schule/">Schule</a>
+          <a href="/pro/">Pro</a>
+          <a href="/hilfe/">Hilfe</a>
+          <a href="/datenschutz/">Datenschutz</a>
+          <a href="/impressum/">Impressum</a>
+          <a href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
         </div>
       </div>
     </footer>
   </div>
-
-  <div class="moreOverlay" id="moreOverlay" hidden></div>
-  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Support</div>
-    <a href="/hilfe/#kontakt" data-page="/hilfe/">Support / Kontakt</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">Wissen</div>
-    <a href="/schule/" data-page="/schule/">Schule</a>
-    <a href="/utm-parameter-entfernen/" data-page="/utm-parameter-entfernen/">UTM</a>
-    <a href="/tracking-parameter/" data-page="/tracking-parameter/">Tracking</a>
-    <a href="/url-cleaner-tool-vergleich/" data-page="/url-cleaner-tool-vergleich/">Tool-Vergleich</a>
-    <a href="/lesezeichen/" data-page="/lesezeichen/">Bookmarklets</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">Rechtliches</div>
-    <a href="/datenschutz/" data-page="/datenschutz/">Datenschutz</a>
-    <a href="/impressum/" data-page="/impressum/">Impressum</a>
-    <a href="/nutzungsbedingungen/" data-page="/nutzungsbedingungen/">Nutzungsbedingungen</a>
-  </nav>
-
-  <script>
-    (function(){
-      // Active state: Ordnerpfad normalisieren
-      let p = location.pathname || '/';
-      p = p.replace(/index\.html$/,'');
-      if (!p.endsWith('/')) p += '/';
-      if (p === '//') p = '/';
-
-      document.querySelectorAll('[data-page]').forEach(el => {
-        const key = el.getAttribute('data-page');
-        if (key === p) el.classList.add('active');
-      });
-
-      // Mehr sheet + ESC close + scroll lock
-      const btn = document.getElementById('moreBtn');
-      const menu = document.getElementById('moreMenu');
-      const overlay = document.getElementById('moreOverlay');
-
-      function lockScroll(lock){
-        document.body.style.overflow = lock ? 'hidden' : '';
-        document.body.style.touchAction = lock ? 'none' : '';
-      }
-      function openMenu(){
-        overlay.hidden = false; menu.hidden = false;
-        requestAnimationFrame(() => menu.classList.add('open'));
-        btn.setAttribute('aria-expanded','true');
-        lockScroll(true);
-      }
-      function closeMenu(){
-        menu.classList.remove('open');
-        btn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ menu.hidden=true; overlay.hidden=true; lockScroll(false); },180);
-      }
-
-      if(btn && menu && overlay){
-        btn.addEventListener('click',(e)=>{
-          e.preventDefault();
-          const isOpen = btn.getAttribute('aria-expanded') === 'true';
-          isOpen ? closeMenu() : openMenu();
-        });
-        overlay.addEventListener('click', closeMenu);
-        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
-        });
-      }
-    })();
-  </script>
-
 </body>
 </html>
