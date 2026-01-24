@@ -46,6 +46,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
+  <!-- MASTER SHELL (Step 3) -->
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-22-01">
+  <script src="/js/ss-shell.js?v=2026-01-22-01" defer></script>
+
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
@@ -96,48 +100,10 @@
     .muted{ color: var(--muted); }
     .muted2{ color: var(--muted2); }
 
-    header{ display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 10px 2px 12px; }
-    .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .logoWrap{
-      width:38px; height:38px; border-radius:999px;
-      border:1px solid rgba(47,227,183,.22);
-      background:rgba(47,227,183,.08);
-      box-shadow:0 10px 26px rgba(0,0,0,.28);
-      display:grid; place-items:center; overflow:hidden; flex:0 0 auto;
-    }
-    .logoWrap .logoImg{ width:28px; height:28px; display:block; object-fit:contain; }
-    .logoFallback{ font-weight:800; color: var(--mint); font-size: 14px; line-height:1; display:none; }
-    .brandText{ min-width:0; }
-    .brandText .title{ font-size: 16px; font-weight: 780; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brandText .sub{ font-size: 12px; color: var(--muted2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .small{ font-size: 12px; color: var(--muted2); white-space:nowrap; }
-
-    .tabsBar{
-      position: sticky; top:0; z-index: 50;
-      padding: 8px 0 14px;
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
-    }
-    .tabs{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      overflow-x:auto; scrollbar-width:none;
-    }
-    .tabs::-webkit-scrollbar{ display:none; }
-    .tab{
-      font-size: 13px; color: var(--muted);
-      padding: 8px 12px; border-radius: 999px;
-      border: 1px solid transparent;
-      white-space: nowrap; flex: 0 0 auto;
-      background: transparent;
-      cursor:pointer;
-      display:inline-flex; align-items:center; justify-content:center;
-    }
-    .tab:hover{ border-color: var(--border); background: rgba(255,255,255,.04); color: var(--text); }
-    .tab.active{ color: var(--text); border-color: rgba(47,227,183,.35); background: rgba(47,227,183,.12); }
+    /* NOTE:
+       Alter Header/Tabs/More-Bottomsheet CSS wurde entfernt, weil die Navigation jetzt aus ss-shell.js kommt.
+       Der Rest (App UI) bleibt unverändert.
+    */
 
     .card{
       margin-top: 14px;
@@ -307,97 +273,14 @@
       color: var(--muted);
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
-
-    .moreOverlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.25);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      z-index: 9998;
-    }
-    .moreBtn{ appearance:none; cursor:pointer; }
-    .moreMenu{
-      position: fixed;
-      left: 12px; right: 12px;
-      bottom: calc(12px + env(safe-area-inset-bottom));
-      max-height: min(70vh, 520px);
-      overflow: auto;
-      padding: 10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10,14,25,.96);
-      box-shadow: var(--shadow);
-      z-index: 9999;
-      transform: translateY(16px);
-      opacity: 0;
-      transition: transform .16s ease, opacity .16s ease;
-    }
-    .moreMenu.open{ transform: translateY(0); opacity: 1; }
-    @media (prefers-color-scheme: light){
-      .moreOverlay{ background: rgba(17,24,39,.06); }
-      .moreMenu{
-        background: rgba(255,255,255,.98);
-        border: 1px solid rgba(17,24,39,.12);
-        box-shadow: 0 18px 45px rgba(17,24,39,.12);
-      }
-      .divider{ background: rgba(17,24,39,.12); }
-      .moreMenu a{ border-color: rgba(17,24,39,.12); background: rgba(17,24,39,.03); }
-    }
-    .menuHint{ font-size: 11px; color: var(--muted2); padding: 8px 10px 2px; }
-    .divider{ height: 1px; background: rgba(255,255,255,.10); margin: 8px 6px; border-radius: 999px; }
-    .moreMenu a{
-      display:block;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    .moreMenu a:last-child{ margin-bottom: 0; }
-    .moreMenu a:hover{ color: var(--text); background: rgba(255,255,255,.08); }
   </style>
 </head>
 
 <body>
+  <!-- MASTER NAV PLACEHOLDER -->
+  <div id="ss-shell"></div>
+
   <div class="wrap">
-
-    <header>
-      <div class="brand">
-        <div class="logoWrap" aria-label="SafeShare Logo">
-          <img
-            class="logoImg"
-            src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
-            alt="SafeShare"
-            width="28"
-            height="28"
-            decoding="async"
-            onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-flex';"
-          >
-          <span id="logoFallback" class="logoFallback">SS</span>
-        </div>
-
-        <div class="brandText">
-          <div class="title">SafeShare</div>
-          <div class="sub">Links sauber teilen</div>
-        </div>
-      </div>
-
-      <div class="small">App · local-first</div>
-    </header>
-
-    <div class="tabsBar">
-      <div class="tabs" role="navigation" aria-label="SafeShare Navigation">
-        <a class="tab" data-page="start" href="/">Start</a>
-        <a class="tab active" data-page="app" href="/app/">App</a>
-        <a class="tab" data-page="schule" href="/schule/">Schule</a>
-        <a class="tab" data-page="pro" href="/pro/">Pro</a>
-        <a class="tab" data-page="hilfe" href="/hilfe/">Hilfe</a>
-        <button class="tab moreBtn" id="moreBtn" type="button" aria-haspopup="menu" aria-expanded="false">Mehr ▾</button>
-      </div>
-    </div>
 
     <section class="card">
       <h1 id="i18n_h1">Link bereinigen</h1>
@@ -546,77 +429,8 @@
 
   </div>
 
-  <!-- Mehr (Bottom Sheet) -->
-  <div class="moreOverlay" id="moreOverlay" hidden></div>
-  <nav class="moreMenu" id="moreMenu" role="menu" aria-label="Mehr" hidden>
-    <div class="menuHint">Seiten</div>
-    <a data-page="start" href="/">Start</a>
-    <a data-page="app" href="/app/">App</a>
-    <a data-page="schule" href="/schule/">Schule</a>
-    <a data-page="pro" href="/pro/">Pro</a>
-    <a data-page="hilfe" href="/hilfe/">Hilfe</a>
-
-    <div class="divider"></div>
-
-    <div class="menuHint">English</div>
-    <a href="/en/">Home (EN)</a>
-    <a href="/app/en/">App (EN)</a>
-    <a href="/privacy/en/">Privacy (EN)</a>
-    <a href="/help/en/">Help (EN)</a>
-  </nav>
-
   <script>
     (function(){
-      // ===== Active tab =====
-      function currentKey(){
-        const p = (location.pathname || '/').toLowerCase();
-        if (p === '/' || p === '/index.html') return 'start';
-        if (p.startsWith('/app')) return 'app';
-        if (p.startsWith('/schule')) return 'schule';
-        if (p.startsWith('/pro')) return 'pro';
-        if (p.startsWith('/hilfe')) return 'hilfe';
-        return '';
-      }
-      const key = currentKey();
-      if (key){
-        document.querySelectorAll('[data-page]').forEach(el=>{
-          if (el.getAttribute('data-page') === key) el.classList.add('active');
-        });
-      }
-
-      // ===== More menu =====
-      const moreBtn = document.getElementById('moreBtn');
-      const moreMenu = document.getElementById('moreMenu');
-      const moreOverlay = document.getElementById('moreOverlay');
-
-      function lockScroll(lock){
-        document.body.style.overflow = lock ? 'hidden' : '';
-        document.body.style.touchAction = lock ? 'none' : '';
-      }
-      function openMenu(){
-        moreOverlay.hidden = false; moreMenu.hidden = false;
-        requestAnimationFrame(() => moreMenu.classList.add('open'));
-        moreBtn.setAttribute('aria-expanded','true');
-        lockScroll(true);
-      }
-      function closeMenu(){
-        moreMenu.classList.remove('open');
-        moreBtn.setAttribute('aria-expanded','false');
-        setTimeout(()=>{ moreMenu.hidden=true; moreOverlay.hidden=true; lockScroll(false); },180);
-      }
-      if(moreBtn && moreMenu && moreOverlay){
-        moreBtn.addEventListener('click',(e)=>{
-          e.preventDefault();
-          const isOpen = moreBtn.getAttribute('aria-expanded') === 'true';
-          isOpen ? closeMenu() : openMenu();
-        });
-        moreOverlay.addEventListener('click', closeMenu);
-        moreMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && moreBtn.getAttribute('aria-expanded') === 'true') closeMenu();
-        });
-      }
-
       // ===== App logic (iPad Safari hardened) =====
       const $ = (s)=>document.querySelector(s);
       const input = $('#urlInput');
