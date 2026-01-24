@@ -1,5 +1,5 @@
 /* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-24-01 (dark-aware + bottom-sheet) */
+/* SafeShare Shell v2026-01-24-02 (dark-aware + bottom-sheet) */
 
 :root{
   /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
@@ -174,4 +174,10 @@ html.ss-noScroll, html.ss-noScroll body{
 }
 .ss-moreLink:hover{
   background: rgba(255,255,255,.08);
+}
+
+/* FIX iOS/Safari: hidden MUSS Overlay wirklich ausschalten */
+.ss-moreOverlay[hidden]{
+  display: none !important;
+  pointer-events: none !important;
 }
