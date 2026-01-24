@@ -1,14 +1,16 @@
 /* Datei: /js/ss-shell.js */
-/*! SafeShare Shell v2026-01-24-03 (no emoji, brand logo) */
+/* SafeShare Shell v2026-01-24-02 (no emoji, logo img, capsule Mehr, iOS-safe close) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
+  // 1) Locale bestimmen: /app/en/ oder <html lang="en">
   const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
+  // 2) Link-Ziele (DE/EN)
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -33,6 +35,7 @@
         terms: "/nutzungsbedingungen/",
       };
 
+  // 3) Texte (DE/EN)
   const T = isEN
     ? {
         start: "Start",
@@ -61,12 +64,16 @@
         close: "Schließen",
       };
 
-  const BRAND_LOGO_SRC = "/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09";
-
+  // 4) Shell-Markup (Logo als Bild, kein Emoji)
   const shellHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <img class="ss-brand__logo" src="${BRAND_LOGO_SRC}" alt="SafeShare" width="22" height="22" decoding="async">
+    <img class="ss-brand__mark"
+         src="/assets/brand/logo-glyph-mint-deep-256.png?v=2025-12-26-09"
+         alt=""
+         width="18" height="18"
+         decoding="async"
+         onerror="this.style.display='none'">
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -79,8 +86,8 @@
   </nav>
 
   <button class="ss-moreBtn" type="button" id="ssMoreBtn"
+          data-label="${T.more}"
           aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
-    ${T.more}
   </button>
 </header>
 
@@ -103,23 +110,27 @@
 </div>
   `.trim();
 
+  // 5) Einhängen (Placeholder: #ss-shell)
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
+  // 6) Active-State anhand Path (robust)
+  function norm(p){ return (p || "/").replace(/\/+$/, "/"); }
   function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/");
+    const p = norm(location.pathname);
+
     const map = [
-      { key: "home", match: [LINKS.home] },
-      { key: "app", match: [LINKS.app] },
-      { key: "school", match: [LINKS.school] },
-      { key: "pro", match: [LINKS.pro] },
-      { key: "help", match: [LINKS.help] },
+      { key: "home", match: [norm(LINKS.home)] },
+      { key: "app", match: [norm(LINKS.app)] },
+      { key: "school", match: [norm(LINKS.school)] },
+      { key: "pro", match: [norm(LINKS.pro)] },
+      { key: "help", match: [norm(LINKS.help)] },
     ];
 
     let activeKey = "home";
     for (const item of map) {
-      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
+      if (item.match.some((m) => m !== "/" ? p.startsWith(m) : p === "/")) activeKey = item.key;
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
@@ -131,34 +142,39 @@
   }
   setActive();
 
+  // 7) Mehr-Menü: open/close + Escape + Click-outside (iOS-safe)
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
-  function lockScroll(lock) {
+  function lockScroll(lock){
     document.documentElement.classList.toggle("ss-noScroll", !!lock);
   }
 
   function openMenu() {
+    if (!overlay || !btn) return;
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
     lockScroll(true);
+
+    // Fokus auf X (nicht auf Backdrop)
     const closeBtn = overlay.querySelector(".ss-moreClose");
     closeBtn && closeBtn.focus();
   }
 
   function closeMenu() {
+    if (!overlay || !btn) return;
     overlay.hidden = true;
     btn.setAttribute("aria-expanded", "false");
     lockScroll(false);
-    btn && btn.focus();
+    btn.focus();
   }
 
-  btn && btn.addEventListener("click", () => {
+  btn?.addEventListener("click", () => {
     if (overlay.hidden) openMenu();
     else closeMenu();
   });
 
-  overlay && overlay.addEventListener("click", (e) => {
+  overlay?.addEventListener("click", (e) => {
     const t = e.target;
     if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
   });
