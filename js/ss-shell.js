@@ -22,7 +22,7 @@
         pro: "/pro/en/",
         help: "/help/en/",
         privacy: "/privacy/en/",
-        imprint: "/impressum/en/",
+        imprint: "/imprint/en/",
         terms: "/terms/en/",
         support: "mailto:listings@safesharepro.com",
       }
