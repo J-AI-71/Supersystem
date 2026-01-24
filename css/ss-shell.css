@@ -1,5 +1,5 @@
 /* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-24-02 (dark-aware + bottom-sheet + brand logo) */
+/* SafeShare Shell v2026-01-24-02 (capsule Mehr + bottom-sheet, dark-aware) */
 
 :root{
   /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
@@ -11,6 +11,7 @@
   --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
   --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
+  --ss-focus: var(--focus, 0 0 0 3px rgba(47,227,183,.22));
 }
 
 .ss-header{
@@ -29,21 +30,14 @@
   color: var(--ss-text);
   min-width: 0;
 }
-
-.ss-brand__logo{
-  width:22px;
-  height:22px;
-  display:block;
-  object-fit:contain;
-  flex:0 0 auto;
-}
-
+.ss-brand__mark{ width:18px; height:18px; display:block; flex:0 0 auto; }
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
+/* Tabs Capsule */
 .ss-nav{
   display:flex; gap: 10px;
   overflow-x:auto;
@@ -80,15 +74,52 @@
   color: var(--ss-text);
 }
 
+/* ===== Mehr Button: gleiche Capsule-Optik wie Tabs ===== */
 .ss-moreBtn{
-  padding: 8px 10px;
+  appearance: none;
+  -webkit-appearance: none;
   border-radius: 999px;
   border: 1px solid var(--ss-border);
   background: rgba(255,255,255,.04);
+  box-shadow: var(--ss-shadow);
+  padding: 6px;                 /* wie .ss-nav */
   color: var(--ss-text);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
-.ss-moreBtn:hover{ background: rgba(255,255,255,.08); }
+
+/* Innerer „Tab“-Look (Text kommt über data-label) */
+.ss-moreBtn::before{
+  content: attr(data-label);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;            /* wie .ss-nav__link */
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: rgba(255,255,255,.72);
+  white-space: nowrap;
+}
+@media (prefers-color-scheme: light){
+  .ss-moreBtn::before{ color: rgba(17,24,39,.72); }
+}
+
+.ss-moreBtn:hover::before{
+  background: rgba(255,255,255,.04);
+  border-color: var(--ss-border);
+  color: var(--ss-text);
+}
+.ss-moreBtn[aria-expanded="true"]::before{
+  background: var(--ss-active);
+  border-color: var(--ss-active-border);
+  color: var(--ss-text);
+}
+.ss-moreBtn:focus-visible{
+  outline: none;
+  box-shadow: var(--ss-focus);
+}
 
 /* Scroll lock (auf html + body) */
 html.ss-noScroll, html.ss-noScroll body{
@@ -180,11 +211,9 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
-.ss-moreLink:hover{
-  background: rgba(255,255,255,.08);
-}
+.ss-moreLink:hover{ background: rgba(255,255,255,.08); }
 
-/* FIX iOS/Safari: hidden MUSS Overlay wirklich rausnehmen */
+/* iOS/Safari: hidden muss wirklich weg sein */
 .ss-moreOverlay[hidden]{
   display: none !important;
   pointer-events: none !important;
