@@ -1,12 +1,13 @@
-<!-- File: /en/school/index.html -->
+<!-- /en/school/index.html (EN) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>School – SafeShare</title>
-  <meta name="description" content="Learn what tracking parameters are, why they exist, and how to share links more respectfully. Clear, no panic." />
+  <title>SafeShare School – Understand tracking links (no panic)</title>
+  <meta name="description" content="SafeShare School: understand tracking parameters (like labels on a link), when cleaning makes sense, when not – and how to do it in 10 seconds." />
   <meta name="robots" content="index,follow" />
+
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
 
@@ -16,33 +17,33 @@
   <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="School – SafeShare" />
-  <meta property="og:description" content="What tracking parameters are and how to share cleaner links (local-first)." />
+  <meta property="og:title" content="SafeShare School – Understand tracking links" />
+  <meta property="og:description" content="Why tracking parameters (utm_*, fbclid, gclid …) can leak extra info – and how to share clean links." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/en/school/" />
   <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-  <meta property="og:image:alt" content="SafeShare – Preview" />
+  <meta property="og:image:alt" content="SafeShare School – Preview" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="School – SafeShare" />
-  <meta name="twitter:description" content="What tracking parameters are and how to share cleaner links (local-first)." />
+  <meta name="twitter:title" content="SafeShare School – Understand tracking links" />
+  <meta name="twitter:description" content="Why tracking parameters leak extra info – and how to share clean links." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-  <meta name="twitter:image:alt" content="SafeShare – Preview" />
+  <meta name="twitter:image:alt" content="SafeShare School – Preview" />
 
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
   <!-- MASTER SHELL -->
-  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
-  <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-02">
+  <script src="/js/ss-shell.js?v=2026-01-25-02" defer></script>
 
   <style>
     :root{
@@ -58,6 +59,7 @@
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
       --max: 1120px;
       --focus: 0 0 0 3px rgba(47,227,183,.22);
     }
@@ -72,6 +74,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
         --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
@@ -98,9 +101,9 @@
     }
     h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 6px; font-size: 15px; letter-spacing: -0.1px; }
+    h3{ margin: 0 0 6px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
+    ul,ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -121,7 +124,7 @@
     .btn.ghost{ background: transparent; color: var(--muted); }
     .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
 
-    .note,.warn{
+    .note,.warn,.bad{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
@@ -132,11 +135,12 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
     .example{
       margin-top: 10px;
-      padding: 12px;
+      padding: 12px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
@@ -145,20 +149,21 @@
       line-height: 1.5;
       word-break: break-word;
     }
+
     .grid2{
       display:grid;
       grid-template-columns: 1fr;
       gap: 12px;
       margin-top: 12px;
     }
-    @media(min-width: 920px){
+    @media(min-width: 900px){
       .grid2{ grid-template-columns: 1fr 1fr; }
     }
     .box{
+      padding: 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      border-radius: 14px;
-      padding: 12px;
     }
     .pill{
       display:inline-flex;
@@ -168,8 +173,8 @@
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
+      color: var(--muted);
       font-size: 12px;
-      color: var(--muted2);
       margin-bottom: 8px;
     }
 
@@ -180,19 +185,7 @@
       font-size: 12px;
       line-height: 1.55;
     }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 14px;
-    }
-    @media(min-width: 920px){
-      .footGrid{ grid-template-columns: 1.2fr .8fr; }
-    }
-    .footLinks{
-      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
-    }
+    .footLinks{ display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start; }
     .footLinks a{
       padding: 6px 10px;
       border-radius: 999px;
@@ -208,21 +201,22 @@
   <div id="ss-shell"></div>
 
   <div class="wrap">
+
     <section class="card">
-      <h1>School</h1>
+      <h1>Share links without tracking “labels”</h1>
       <p>
-        Many shared links carry extra information — like labels on a package.
-        These labels help platforms measure campaigns, but they’re often unnecessary when you forward a link.
+        Many links include extra information — like stickers on a package.
+        They help platforms attribute clicks, but when you forward a link they’re often just unnecessary baggage.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="/en/app/">Open App</a>
+        <a class="btn primary" href="/en/app/">Clean a link now</a>
         <a class="btn" href="/en/help/">Help</a>
-        <a class="btn ghost" href="/en/pro/">Pro</a>
+        <a class="btn ghost" href="/en/pro/">Pro for professionals</a>
       </div>
 
       <div class="note">
-        SafeShare removes typical tracking keys locally in your browser. No upload.
+        SafeShare removes common tracking parameters locally in your browser. No upload.
       </div>
     </section>
 
@@ -238,105 +232,99 @@
 
       <div class="grid2">
         <div class="box">
-          <div class="pill"><b>utm_*</b> Campaign tags</div>
-          <p>
-            They describe source/medium/campaign for analytics. Useful for reporting — often unnecessary when you just share a link.
-          </p>
+          <div class="pill"><b>utm_*</b> Campaign params</div>
+          <p>Shows source/medium/campaign. Useful for analytics — often unnecessary when sharing.</p>
         </div>
         <div class="box">
           <div class="pill"><b>gclid / fbclid</b> Click IDs</div>
-          <p>
-            Platform-specific IDs used for attribution. When you forward links, they’re usually just extra baggage.
-          </p>
+          <p>Platform-specific IDs for measurement. When you forward a link they’re usually just baggage.</p>
         </div>
       </div>
     </section>
 
     <section class="card">
-      <h2>Privacy, explained honestly (no panic)</h2>
+      <h2>Privacy — explained honestly (no panic)</h2>
       <p>
-        Removing tracking parameters is not “being invisible”. It’s a concrete hygiene step:
-        you generate and forward less additional data.
+        What cleaning can do (and what it cannot): it reduces the tracking data you forward,
+        but it does not make you invisible on the web.
       </p>
+
       <div class="row">
         <a class="btn" href="/en/privacy/">Privacy</a>
-        <a class="btn ghost" href="/datenschutz-ehrlich-erklaert/">Deutsch version</a>
+        <a class="btn ghost" href="/en/help/">Troubleshooting</a>
       </div>
+
       <div class="note">
-        Realistic expectation: You reduce link-level tracking. Cookies/fingerprinting are separate topics.
+        Privacy here means: generate less data, forward less data, keep more control.
       </div>
     </section>
 
     <section class="card">
       <h2>Why should non-experts care?</h2>
       <ul>
-        <li><b>Respect:</b> You share less extra data that others didn’t choose.</li>
-        <li><b>Cleaner look:</b> Links feel more trustworthy and less “ad-like”.</li>
-        <li><b>Less breakage:</b> Some apps mangle long URLs when forwarding.</li>
+        <li><b>Respect:</b> you forward fewer extra bits of data other people never chose.</li>
+        <li><b>Looks cleaner:</b> short, non-“ad-ish” links feel more trustworthy.</li>
+        <li><b>Less breakage:</b> some apps mangle very long URLs.</li>
       </ul>
+
       <div class="warn">
-        Important: SafeShare is not a “stealth” tool. It’s link hygiene.
+        Important: this is not an “invisibility” promise. It’s a concrete hygiene step when sharing.
       </div>
     </section>
 
     <section class="card">
-      <h2>When you should NOT remove everything blindly</h2>
+      <h2>When you should NOT blindly remove everything</h2>
       <div class="grid2">
         <div class="box">
-          <div class="pill"><b>Affiliate / Partner</b></div>
+          <h3>Affiliate / partner links</h3>
           <p>
-            Some parameters are intentional attribution (e.g. <span class="mono">ref</span>, <span class="mono">tag</span>).
-            Removing them can break commissions or referrals.
+            Some parameters are attribution (e.g. <span class="mono">ref</span>, <span class="mono">tag</span>).
+            Removing them can break attribution/commission.
           </p>
-          <p><b>Pro:</b> allowlists/policies per domain.</p>
+          <p><b>Pro solution:</b> allowlists per domain / policies.</p>
         </div>
         <div class="box">
-          <div class="pill"><b>Functional parameters</b></div>
+          <h3>Functional parameters</h3>
           <p>
-            Some keys are required (language, product/session IDs, filters).
-            Good tools are conservative and don’t remove random keys.
+            Some keys are needed (language, product ID, filters, sessions).
+            Good cleaners are conservative and don’t remove everything.
           </p>
-          <p><b>App:</b> standard tracking. <b>Pro:</b> audit + rules.</p>
+          <p><b>App:</b> common tracking only. <b>Pro:</b> audit + rules.</p>
         </div>
       </div>
     </section>
 
     <section class="card">
       <h2>Do it in 10 seconds</h2>
-      <ol style="color:var(--muted); line-height:1.6; margin: 0 0 0 18px;">
+      <ol>
         <li>Copy a link</li>
         <li>Paste into SafeShare App</li>
         <li>Clean → copy → share</li>
       </ol>
+
       <div class="row">
         <a class="btn primary" href="/en/app/">Open App</a>
-        <a class="btn" href="/en/help/">Troubleshooting</a>
-        <a class="btn ghost" href="/en/">Home</a>
+        <a class="btn ghost" href="/en/help/">Troubleshooting</a>
       </div>
+
       <div class="note">
-        The biggest effect happens when you forward links: clean first, then share.
+        Biggest impact happens at the moment you forward a link: clean first, share second.
       </div>
     </section>
 
     <footer>
-      <div class="footGrid">
-        <div>
-          <div><strong>SafeShare</strong> – share links with less baggage.</div>
-          <div>Local-first: cleaning happens in your browser.</div>
-        </div>
-        <div class="footLinks">
-          <a href="/en/">Home</a>
-          <a href="/en/app/">App</a>
-          <a href="/en/school/">School</a>
-          <a href="/en/pro/">Pro</a>
-          <a href="/en/help/">Help</a>
-          <a href="/en/privacy/">Privacy</a>
-          <a href="/en/imprint/">Imprint</a>
-          <a href="/en/terms/">Terms</a>
-          <a href="/schule/">DE</a>
-        </div>
+      <div class="footLinks">
+        <a href="/en/">Home</a>
+        <a href="/en/app/">App</a>
+        <a href="/en/school/">School</a>
+        <a href="/en/pro/">Pro</a>
+        <a href="/en/help/">Help</a>
+        <a href="/en/privacy/">Privacy</a>
+        <a href="/en/imprint/">Imprint</a>
+        <a href="/en/terms/">Terms</a>
       </div>
     </footer>
+
   </div>
 </body>
 </html>
