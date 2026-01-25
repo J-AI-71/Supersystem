@@ -1,15 +1,16 @@
-/*! SafeShare Shell v2026-01-25-01 (Schema B: EN under /en/<slug>/) */
+/*! SafeShare Shell v2026-01-25-01 (EN under /en/<slug>/) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  // Locale: EN if path starts with /en/ OR <html lang="en">
-  const path = (location.pathname || "/");
+  // Locale bestimmen: EN wenn Path mit /en/ startet ODER <html lang="en">
+  const pathRaw = location.pathname || "/";
+  const path = pathRaw.replace(/\/+$/, "/"); // normalize trailing slash
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path.startsWith("/en/") || path === "/en" || htmlLang.startsWith("en");
+  const isEN = path.startsWith("/en/") || htmlLang.startsWith("en");
 
-  // Links (Schema B)
+  // Link-Ziele (DE normal, EN unter /en/<slug>/)
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -17,11 +18,10 @@
         school: "/en/school/",
         pro: "/en/pro/",
         help: "/en/help/",
-        support: "mailto:listings@safesharepro.com",
         privacy: "/en/privacy/",
         imprint: "/en/imprint/",
         terms: "/en/terms/",
-        switchLang: "/", // DE
+        support: "mailto:listings@safesharepro.com",
       }
     : {
         home: "/",
@@ -29,13 +29,13 @@
         school: "/schule/",
         pro: "/pro/",
         help: "/hilfe/",
-        support: "mailto:listings@safesharepro.com",
         privacy: "/datenschutz/",
         imprint: "/impressum/",
         terms: "/nutzungsbedingungen/",
-        switchLang: "/en/", // EN
+        support: "mailto:listings@safesharepro.com",
       };
 
+  // Texte
   const T = isEN
     ? {
         start: "Start",
@@ -64,7 +64,7 @@
         close: "Schließen",
       };
 
-  // Inline mark (no external file)
+  // Inline Mark (SVG)
   const markSVG = `
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
   <path d="M12 2.6c3.1 2.6 6.3 3.3 8.4 3.6v7.1c0 5.2-3.6 9-8.4 10.9C7.2 22.3 3.6 18.5 3.6 13.3V6.2C5.7 5.9 8.9 5.2 12 2.6Z" stroke="currentColor" stroke-width="1.6" opacity=".95"/>
@@ -98,7 +98,7 @@
   <div class="ss-moreMenu" id="ssMoreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
     <div class="ss-moreTop">
       <div class="ss-moreTitle">${T.more}</div>
-      <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">✕</button>
+      <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">×</button>
     </div>
 
     <div class="ss-moreList" role="navigation" aria-label="${T.more}">
@@ -106,7 +106,6 @@
       <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
       <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
       <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
-      <a class="ss-moreLink" href="${LINKS.switchLang}">${isEN ? "Deutsch" : "English"}</a>
     </div>
   </div>
 </div>
@@ -116,43 +115,39 @@
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // Active state
-  function norm(p) {
-    p = String(p || "/");
-    // handle .../index.html
-    p = p.replace(/index\.html$/i, "");
-    // normalize trailing slash
-    p = p.replace(/\/+$/, "/");
-    if (!p.startsWith("/")) p = "/" + p;
-    return p;
-  }
-
+  // Active-State: Primary + "More" aktiv für Privacy/Imprint/Terms
   function setActive() {
-    const p = norm(location.pathname);
+    const p = (location.pathname || "/").replace(/\/+$/, "/");
 
-    const map = [
+    const primary = [
       { key: "home", match: [LINKS.home] },
       { key: "app", match: [LINKS.app] },
       { key: "school", match: [LINKS.school] },
       { key: "pro", match: [LINKS.pro] },
       { key: "help", match: [LINKS.help] },
-    ].map(x => ({ ...x, match: x.match.map(norm) }));
+    ];
 
-    let activeKey = "home";
-    for (const item of map) {
-      if (item.match.some(m => p.startsWith(m))) activeKey = item.key;
+    let activeKey = null;
+    for (const item of primary) {
+      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
-      const isActive = a.getAttribute("data-ss-nav") === activeKey;
-      a.classList.toggle("is-active", isActive);
+      const isActive = activeKey && a.getAttribute("data-ss-nav") === activeKey;
+      a.classList.toggle("is-active", !!isActive);
       if (isActive) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
+
+    const moreBtn = $("#ssMoreBtn");
+    const isMorePage =
+      p.startsWith(LINKS.privacy) || p.startsWith(LINKS.imprint) || p.startsWith(LINKS.terms);
+
+    if (moreBtn) moreBtn.classList.toggle("is-active", !activeKey && isMorePage);
   }
   setActive();
 
-  // More menu: open/close + Escape + click-outside
+  // More-Menü open/close + Escape
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
@@ -174,16 +169,11 @@
   }
 
   if (btn && overlay) {
-    btn.addEventListener("click", () => {
-      if (overlay.hidden) openMenu();
-      else closeMenu();
-    });
-
+    btn.addEventListener("click", () => (overlay.hidden ? openMenu() : closeMenu()));
     overlay.addEventListener("click", (e) => {
       const t = e.target;
       if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
     });
-
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !overlay.hidden) closeMenu();
     });
