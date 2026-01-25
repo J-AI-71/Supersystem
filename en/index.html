@@ -1,3 +1,4 @@
+<!-- /en/index.html (EN) — same structure as DE index, translated, with hero image + master shell -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,21 +7,23 @@
   <title>SafeShare – Share clean links (local-first)</title>
   <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Copy → Clean → Share. No upload." />
   <meta name="robots" content="index,follow" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#111111" />
 
   <link rel="canonical" href="https://safesharepro.com/en/" />
   <link rel="alternate" hreflang="de" href="https://safesharepro.com/" />
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/" />
   <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
 
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111" />
+
   <!-- Open Graph -->
-  <meta property="og:title" content="SafeShare – Share clean links" />
+  <meta property="og:title" content="SafeShare – Share clean links (local-first)" />
   <meta property="og:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Copy → Clean → Share." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:url" content="https://safesharepro.com/en/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-01" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-02" />
   <meta property="og:image:alt" content="SafeShare – preview" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -28,8 +31,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SafeShare – Share clean links" />
-  <meta name="twitter:description" content="Remove tracking parameters locally. Copy → Clean → Share." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-01" />
+  <meta name="twitter:description" content="Remove tracking parameters locally in your browser. Copy → Clean → Share." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-02" />
   <meta name="twitter:image:alt" content="SafeShare – preview" />
 
   <!-- Favicons + PWA -->
@@ -40,8 +43,8 @@
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
   <!-- MASTER SHELL -->
-  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
-  <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-02">
+  <script src="/js/ss-shell.js?v=2026-01-25-02" defer></script>
 
   <style>
     :root{
@@ -53,10 +56,12 @@
       --muted2: rgba(255,255,255,.60);
       --shadow: 0 18px 45px rgba(0,0,0,.35);
       --radius: 18px;
+      --mint: #2fe3b7;
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
       --max: 1120px;
       --focus: 0 0 0 3px rgba(47,227,183,.22);
     }
@@ -71,6 +76,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
         --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
@@ -95,7 +101,8 @@
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+
+    h1{ margin: 10px 0 8px; font-size: clamp(24px, 4vw, 44px); line-height: 1.08; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
 
@@ -130,27 +137,60 @@
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
+    /* Hero */
     .hero{
       display:grid;
       gap: 14px;
-      align-items:center;
+      grid-template-columns: 1fr;
+      align-items: center;
     }
-    @media(min-width: 980px){
-      .hero{ grid-template-columns: 1.05fr .95fr; gap: 18px; }
+    @media(min-width: 920px){
+      .hero{ grid-template-columns: 1.1fr .9fr; gap: 18px; }
     }
     .heroImg{
+      width: 100%;
       border-radius: 16px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,.03);
       overflow:hidden;
-      box-shadow: var(--shadow);
     }
     .heroImg img{
+      width: 100%;
+      height: auto;
       display:block;
-      width:100%;
-      height:auto;
+    }
+    .heroKicker{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted2);
+      font-size: 12px;
+      width: fit-content;
     }
 
+    /* Feature list */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media(min-width: 920px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+    .mini{
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .mini b{ display:block; margin-bottom: 6px; }
+    .mini p{ margin:0; }
+
+    /* Footer */
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -158,7 +198,19 @@
       font-size: 12px;
       line-height: 1.55;
     }
-    .footLinks{ display:flex; gap: 10px; flex-wrap: wrap; }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+    }
     .footLinks a{
       padding: 6px 10px;
       border-radius: 999px;
@@ -168,69 +220,94 @@
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
   </style>
-
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"SoftwareApplication",
-    "name":"SafeShare",
-    "applicationCategory":"UtilitiesApplication",
-    "operatingSystem":"Web",
-    "description":"Remove tracking parameters from URLs locally in your browser (utm_*, fbclid, gclid …).",
-    "url":"https://safesharepro.com/en/"
-  }
-  </script>
 </head>
 
 <body>
-  <!-- Master-Shell placeholder -->
+  <!-- Master-Shell -->
   <div id="ss-shell"></div>
 
   <div class="wrap">
+
     <section class="card">
       <div class="hero">
         <div>
+          <div class="heroKicker">Local-first • No upload • No logs</div>
           <h1>Share clean links</h1>
-          <p>Many links include extra tracking data — like labels on a package. Useful for analytics, unnecessary when you forward/share.</p>
+          <p>
+            Many links contain extra tracking data — like labels stuck to a package.
+            Useful for analytics, unnecessary when you forward or share.
+          </p>
 
           <div class="row">
             <a class="btn primary" href="/en/app/">Open App</a>
-            <a class="btn" href="/en/school/">Learn (School)</a>
+            <a class="btn" href="/en/help/">Help</a>
             <a class="btn ghost" href="/en/pro/">Pro</a>
           </div>
 
-          <div class="note">SafeShare cleans typical tracking parameters locally in your browser. No upload. No logs.</div>
+          <div class="note">
+            SafeShare removes common tracking parameters locally in your browser. Nothing is uploaded.
+            It doesn’t make you “invisible” — it simply reduces link ballast.
+          </div>
         </div>
 
-        <div class="heroImg" aria-label="Before/After example">
-          <img src="/assets/hero-vorher-nachher.png" alt="Before and after: a long tracking URL becomes a clean link" loading="eager" decoding="async">
+        <div class="heroImg" aria-label="Before/after example">
+          <!-- IMPORTANT: your file is /assets/hero-vorher-nachher.png -->
+          <img src="/assets/hero-vorher-nachher.png" alt="Before and after: a long tracking URL becomes a clean shareable URL">
         </div>
       </div>
     </section>
 
     <section class="card">
-      <h2>When not to remove everything</h2>
-      <p>Some parameters are functional (filters, language, product IDs) or intentional (affiliate/ref). Pro adds audit + allowlists/policies.</p>
+      <h2>What SafeShare does</h2>
+      <div class="grid2">
+        <div class="mini">
+          <b>Removes tracking parameters</b>
+          <p>Examples: <span style="opacity:.9">utm_*</span>, <span style="opacity:.9">gclid</span>, <span style="opacity:.9">fbclid</span>, <span style="opacity:.9">msclkid</span>, <span style="opacity:.9">_ga</span> …</p>
+        </div>
+        <div class="mini">
+          <b>Local-first by design</b>
+          <p>Cleaning happens in your browser. No servers. No logs. No accounts required.</p>
+        </div>
+        <div class="mini">
+          <b>Share workflow</b>
+          <p>Copy a link → clean it → paste/share the clean result (works well with messengers and email).</p>
+        </div>
+        <div class="mini">
+          <b>Pro for control</b>
+          <p>Audit what was removed, allowlists/policies, and more careful rules for edge cases.</p>
+        </div>
+      </div>
+      <div class="warn" style="margin-top:12px">
+        Don’t blindly remove “everything”: affiliate/ref parameters (<span style="opacity:.9">ref</span>, <span style="opacity:.9">tag</span>, …) can be intentional.
+        Use Pro if you need fine control.
+      </div>
+
       <div class="row">
-        <a class="btn" href="/en/help/">Help</a>
+        <a class="btn" href="/en/school/">School</a>
         <a class="btn" href="/en/privacy/">Privacy</a>
         <a class="btn ghost" href="/">Deutsch</a>
       </div>
     </section>
 
     <footer>
-      <div class="footLinks">
-        <a href="/en/">Home</a>
-        <a href="/en/app/">App</a>
-        <a href="/en/school/">School</a>
-        <a href="/en/pro/">Pro</a>
-        <a href="/en/help/">Help</a>
-        <a href="/en/privacy/">Privacy</a>
-        <a href="/en/imprint/">Imprint</a>
-        <a href="/en/terms/">Terms</a>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – share links without ballast.</div>
+          <div>Local-first: cleaning happens in your browser.</div>
+        </div>
+        <div class="footLinks">
+          <a href="/en/">Home</a>
+          <a href="/en/app/">App</a>
+          <a href="/en/school/">School</a>
+          <a href="/en/pro/">Pro</a>
+          <a href="/en/help/">Help</a>
+          <a href="/en/privacy/">Privacy</a>
+          <a href="/en/imprint/">Imprint</a>
+          <a href="/en/terms/">Terms</a>
+        </div>
       </div>
     </footer>
+
   </div>
 </body>
 </html>
