@@ -1,4 +1,4 @@
-/* SafeShare Shell v2026-01-25-01 (dark-aware + bottom-sheet + capsule-consistent) */
+/* SafeShare Shell v2026-01-25-01 */
 
 :root{
   --ss-bg: var(--card, rgba(255,255,255,.06));
@@ -57,6 +57,7 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
+/* Links + More button */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
@@ -66,7 +67,6 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap: 8px;
 
   padding: 8px 12px;
   border-radius: 999px;
@@ -94,7 +94,8 @@
   color: var(--ss-text);
 }
 
-.ss-nav__link.is-active{
+.ss-nav__link.is-active,
+.ss-moreBtn.is-active{
   background: var(--ss-active);
   border-color: var(--ss-active-border);
   color: var(--ss-text);
@@ -105,11 +106,8 @@
   border-color: var(--ss-border);
   color: var(--ss-text);
 }
-.ss-moreBtn:hover{
-  background: var(--ss-pill-bg-hover);
-}
+.ss-moreBtn:hover{ background: var(--ss-pill-bg-hover); }
 
-/* Scroll lock */
 html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
@@ -130,7 +128,7 @@ html.ss-noScroll, html.ss-noScroll body{
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet menu */
+/* Bottom-sheet Menu */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
@@ -162,7 +160,6 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: center */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
@@ -188,7 +185,7 @@ html.ss-noScroll, html.ss-noScroll body{
 
 .ss-moreList{
   display:flex; flex-direction:column; gap: 8px;
-  padding: 6px 6px 6px;
+  padding: 6px;
 }
 .ss-moreLink{
   display:block;
@@ -199,6 +196,4 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
-.ss-moreLink:hover{
-  background: rgba(255,255,255,.08);
-}
+.ss-moreLink:hover{ background: rgba(255,255,255,.08); }
