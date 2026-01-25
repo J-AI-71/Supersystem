@@ -1,28 +1,26 @@
-/*! SafeShare Shell v2026-01-25-01 (Schema A: EN under /<slug>/en/) */
+/*! SafeShare Shell v2026-01-25-01 (Schema B: EN under /en/<slug>/ ) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
   // 1) Locale bestimmen: /en/ anywhere in path OR <html lang="en">
-  const path = location.pathname || "/";
+  const path = (location.pathname || "/").toLowerCase();
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path.includes("/en/") || htmlLang.startsWith("en");
+  const isEN = path.startsWith("/en/") || path === "/en" || htmlLang.startsWith("en");
 
-  // 2) Link-Ziele (Schema A)
-  // DE: /hilfe/ /schule/ /pro/ /datenschutz/ /impressum/ /nutzungsbedingungen/
-  // EN: /help/en/ /school/en/ /pro/en/ /privacy/en/ /imprint/en/ /terms/en/
+  // 2) Link-Ziele (Schema B)
   const LINKS = isEN
     ? {
         home: "/en/",
-        app: "/app/en/",
-        school: "/school/en/",
-        pro: "/pro/en/",
-        help: "/help/en/",
+        app: "/en/app/",
+        school: "/en/school/",
+        pro: "/en/pro/",
+        help: "/en/help/",
         support: "mailto:listings@safesharepro.com",
-        privacy: "/privacy/en/",
-        imprint: "/imprint/en/",
-        terms: "/terms/en/",
+        privacy: "/en/privacy/",
+        imprint: "/en/imprint/",
+        terms: "/en/terms/",
       }
     : {
         home: "/",
@@ -65,7 +63,7 @@
         close: "Schließen",
       };
 
-  // 4) Inline mark (no emoji, no external file)
+  // 4) Inline mark (no external file)
   const markSVG = `
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
   <path d="M12 2.6c3.1 2.6 6.3 3.3 8.4 3.6v7.1c0 5.2-3.6 9-8.4 10.9C7.2 22.3 3.6 18.5 3.6 13.3V6.2C5.7 5.9 8.9 5.2 12 2.6Z" stroke="currentColor" stroke-width="1.6" opacity=".95"/>
@@ -113,20 +111,25 @@
 </div>
   `.trim();
 
-  // 6) Einhängen (Placeholder: #ss-shell)
+  // 6) Mount
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 7) Active-State anhand Path
+  // 7) Active-State
+  function norm(p) {
+    p = (p || "/").toLowerCase();
+    if (!p.endsWith("/")) p += "/";
+    return p.replace(/\/+$/, "/");
+  }
   function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/"); // normalize trailing slash
+    const p = norm(location.pathname || "/");
     const map = [
-      { key: "home", match: [LINKS.home] },
-      { key: "app", match: [LINKS.app] },
-      { key: "school", match: [LINKS.school] },
-      { key: "pro", match: [LINKS.pro] },
-      { key: "help", match: [LINKS.help] },
+      { key: "home", match: [norm(LINKS.home)] },
+      { key: "app", match: [norm(LINKS.app)] },
+      { key: "school", match: [norm(LINKS.school)] },
+      { key: "pro", match: [norm(LINKS.pro)] },
+      { key: "help", match: [norm(LINKS.help)] },
     ];
 
     let activeKey = "home";
@@ -143,7 +146,7 @@
   }
   setActive();
 
-  // 8) Mehr-Menü: open/close + Escape + Click-outside
+  // 8) More menu open/close + Escape + click outside
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
@@ -152,7 +155,6 @@
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
     document.documentElement.classList.add("ss-noScroll");
-    // Fokus auf Close
     const closeBtn = overlay.querySelector(".ss-moreClose");
     if (closeBtn) closeBtn.focus();
   }
@@ -166,10 +168,7 @@
   }
 
   if (btn && overlay) {
-    btn.addEventListener("click", () => {
-      if (overlay.hidden) openMenu();
-      else closeMenu();
-    });
+    btn.addEventListener("click", () => (overlay.hidden ? openMenu() : closeMenu()));
 
     overlay.addEventListener("click", (e) => {
       const t = e.target;
