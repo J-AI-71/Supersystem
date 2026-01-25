@@ -1,26 +1,32 @@
-/* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-25-01 (Schema A: EN under /en/<slug>/) */
-/* dark-aware + bottom-sheet + capsule-consistent + Safari blur fix */
+/* /css/ss-shell.css */
+/* SafeShare Shell v2026-01-25-02 (EN under /en/<slug>/) */
 
 :root{
-  /* Shell-Fallbacks (nutzt Seiten-Variablen, sonst Default) */
+  /* Fallbacks if a page doesn't define variables */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
   --ss-muted: var(--muted2, rgba(255,255,255,.60));
-  --ss-hover: rgba(255,255,255,.06);
-  --ss-active: rgba(47,227,183,.12);
-  --ss-active-border: rgba(47,227,183,.35);
   --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
   --ss-pill-bg: rgba(255,255,255,.04);
   --ss-pill-bg-hover: rgba(255,255,255,.08);
+  --ss-active: rgba(47,227,183,.12);
+  --ss-active-border: rgba(47,227,183,.35);
 }
 
+/* Header */
 .ss-header{
-  position: sticky; top: 0; z-index: 50;
-  display:flex; align-items:center; justify-content:space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 12px;
+
   padding: 10px 14px;
+
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -28,26 +34,40 @@
 
 /* Brand */
 .ss-brand{
-  display:flex; align-items:center; gap:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
 }
 .ss-brand__mark{
-  width: 18px; height: 18px;
-  display:inline-flex; align-items:center; justify-content:center;
+  width: 18px;
+  height: 18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   flex: 0 0 auto;
-  opacity: .95;
+}
+.ss-brand__img{
+  width:18px;
+  height:18px;
+  display:block;
+  object-fit:contain;
 }
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 /* Nav capsule */
 .ss-nav{
-  display:flex; gap: 10px;
+  display:flex;
+  gap: 10px;
   overflow-x:auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
@@ -60,17 +80,15 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Links + More button: exakt gleiche "Capsule" Optik */
+/* Links + More button: same capsule look */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
   text-decoration:none;
-  color: rgba(255,255,255,.72);
 
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap: 8px;
 
   padding: 8px 12px;
   border-radius: 999px;
@@ -82,6 +100,8 @@
   line-height: 1;
   font: inherit;
   cursor: pointer;
+
+  color: rgba(255,255,255,.72);
 }
 
 @media (prefers-color-scheme: light){
@@ -104,7 +124,7 @@
   color: var(--ss-text);
 }
 
-/* More button gets subtle base bg like capsule */
+/* More button base */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -115,49 +135,60 @@
 }
 
 /* Scroll lock */
-html.ss-noScroll, html.ss-noScroll body{
+html.ss-noScroll,
+html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
 }
 
-/* Overlay */
-.ss-moreOverlay{
-  position: fixed; inset: 0; z-index: 9998;
-  display: grid;
-  align-items: end;            /* bottom-sheet */
-  justify-items: center;
-  padding: 12px;
-}
-
-/* SAFARI FIX: wenn hidden, dann wirklich weg (kein Blur "hängen") */
+/* Overlay: make absolutely sure hidden means hidden (prevents "blurred page") */
 .ss-moreOverlay[hidden]{
   display: none !important;
 }
 
+/* Overlay container */
+.ss-moreOverlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+
+  display: grid;
+  align-items: end;      /* bottom-sheet on mobile */
+  justify-items: center;
+
+  padding: 12px;
+}
+
 .ss-moreBackdrop{
-  position:absolute; inset:0;
+  position:absolute;
+  inset:0;
   background: rgba(0,0,0,.25);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet Menü */
+/* Bottom-sheet menu */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
   max-height: min(70vh, 520px);
   overflow: auto;
+
   border-radius: 18px;
   background: rgba(10,14,25,.96);
   border: 1px solid rgba(255,255,255,.12);
   box-shadow: var(--ss-shadow);
+
   padding: 10px;
   z-index: 9999;
+
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
   color: var(--ss-text);
 }
+
+/* when not hidden */
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
   transform: translateY(0);
   opacity: 1;
@@ -173,14 +204,16 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: zentriert statt bottom-sheet */
+/* Desktop: centered modal */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
 }
 
 .ss-moreTop{
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 10px;
   padding: 8px 10px 6px;
 }
@@ -190,7 +223,8 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.03);
   color: inherit;
-  font-size: 18px; line-height: 1;
+  font-size: 18px;
+  line-height: 1;
   padding: 8px 10px;
   border-radius: 12px;
   cursor: pointer;
@@ -198,18 +232,29 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreClose:hover{ background: rgba(255,255,255,.08); }
 
 .ss-moreList{
-  display:flex; flex-direction:column; gap: 8px;
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
   padding: 6px 6px 6px;
 }
+
 .ss-moreLink{
   display:block;
   text-decoration:none;
   color: inherit;
+
   padding: 12px 12px;
   border-radius: 14px;
+
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
 .ss-moreLink:hover{
   background: rgba(255,255,255,.08);
+}
+
+.ss-moreLink--lang{
+  margin-top: 4px;
+  border-style: dashed;
+  opacity: .95;
 }
