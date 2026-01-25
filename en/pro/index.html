@@ -1,48 +1,50 @@
-<!-- File: /en/pro/index.html -->
+<!-- /en/pro/index.html (EN) — Pro page (English, same shell placeholder, schema /en/<slug>/) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Pro – SafeShare</title>
-  <meta name="description" content="SafeShare Pro: audit what was removed, keep selected parameters, and use domain policies/allowlists. Local-first." />
+  <title>SafeShare Pro – Policies, allowlists, audit (local-first)</title>
+  <meta name="description" content="SafeShare Pro adds audit, allowlists/policies, and more control over what is removed or kept — still local-first in your browser." />
   <meta name="robots" content="index,follow" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#111111" />
 
   <link rel="canonical" href="https://safesharepro.com/en/pro/" />
   <link rel="alternate" hreflang="de" href="https://safesharepro.com/pro/" />
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/pro/" />
   <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
 
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111" />
+
   <!-- Open Graph -->
-  <meta property="og:title" content="Pro – SafeShare" />
-  <meta property="og:description" content="Audit + allowlists + policies for clean link sharing (local-first)." />
+  <meta property="og:title" content="SafeShare Pro – Policies, allowlists, audit" />
+  <meta property="og:description" content="Audit what was removed, keep selected parameters, use domain policies/allowlists — local-first." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:url" content="https://safesharepro.com/en/pro/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-  <meta property="og:image:alt" content="SafeShare – Preview" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-pro.png?v=2026-01-25-02" />
+  <meta property="og:image:alt" content="SafeShare Pro – preview" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Pro – SafeShare" />
-  <meta name="twitter:description" content="Audit + allowlists + policies for clean link sharing (local-first)." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-  <meta name="twitter:image:alt" content="SafeShare – Preview" />
+  <meta name="twitter:title" content="SafeShare Pro – Policies, allowlists, audit" />
+  <meta name="twitter:description" content="More control over cleaning — still local-first." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-pro.png?v=2026-01-25-02" />
+  <meta name="twitter:image:alt" content="SafeShare Pro – preview" />
 
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
   <!-- MASTER SHELL -->
-  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
-  <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-02">
+  <script src="/js/ss-shell.js?v=2026-01-25-02" defer></script>
 
   <style>
     :root{
@@ -54,10 +56,12 @@
       --muted2: rgba(255,255,255,.60);
       --shadow: 0 18px 45px rgba(0,0,0,.35);
       --radius: 18px;
+      --mint: #2fe3b7;
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
       --ok: rgba(47,227,183,.16);
+      --bad: rgba(255,84,84,.14);
       --max: 1120px;
       --focus: 0 0 0 3px rgba(47,227,183,.22);
     }
@@ -72,6 +76,7 @@
         --shadow: 0 18px 45px rgba(17,24,39,.10);
         --warn: rgba(255,197,84,.22);
         --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
         --focus: 0 0 0 3px rgba(17,130,98,.22);
       }
     }
@@ -96,9 +101,10 @@
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+
+    h1{ margin: 10px 0 8px; font-size: clamp(24px, 4vw, 44px); line-height: 1.08; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 12px 0 6px; font-size: 15px; letter-spacing: -0.1px; }
+    h3{ margin: 0 0 6px; font-size: 16px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
@@ -143,22 +149,23 @@
       .grid2{ grid-template-columns: 1fr 1fr; }
     }
     .box{
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid var(--border);
       background: rgba(255,255,255,.03);
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 16px;
+      padding: 14px;
     }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
+
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .example{
+      padding: 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      font-size: 12px;
-      color: var(--muted2);
-      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      word-break: break-word;
     }
 
     footer{
@@ -196,80 +203,106 @@
   <div id="ss-shell"></div>
 
   <div class="wrap">
+
     <section class="card">
       <h1>SafeShare Pro</h1>
       <p>
-        Pro is for people who need more control: see what was removed, keep selected parameters, and apply rules per domain.
-        Still local-first.
+        Pro is for people who need <b>control</b>: see what was removed, keep selected parameters,
+        and apply conservative, domain-based rules — still <b>local-first</b>.
       </p>
 
       <div class="row">
         <a class="btn primary" href="/en/app/">Open App</a>
         <a class="btn" href="/en/help/">Help</a>
-        <a class="btn ghost" href="/en/privacy/">Privacy</a>
+        <a class="btn ghost" href="/pro/">Deutsch</a>
       </div>
 
       <div class="note">
-        Pro does not promise invisibility. It helps you share cleaner links with transparent, configurable rules.
+        Pro does not promise “invisibility”. It’s a practical hygiene step: reduce what you share and keep what you actually need.
       </div>
     </section>
 
     <section class="card">
       <h2>Why Pro exists</h2>
-      <p>
-        Standard cleaning is great for typical tracking keys. But in real life, some parameters are intentional or functional.
-        Pro helps you avoid breaking links or attribution you actually want to keep.
-      </p>
-
       <div class="grid2">
         <div class="box">
-          <div class="pill"><b>Audit</b></div>
-          <h3>See what changed</h3>
-          <p>Show removed vs. kept keys, so decisions are transparent and explainable.</p>
+          <h3>Affiliate / partner parameters</h3>
+          <p>
+            Sometimes parameters are intentional attribution (e.g. <span class="mono">ref</span>, <span class="mono">tag</span>).
+            If you remove them blindly, attribution/commission can break.
+          </p>
+          <p><b>Pro:</b> allowlists per domain/policy.</p>
         </div>
         <div class="box">
-          <div class="pill"><b>Policies</b></div>
-          <h3>Rules per domain</h3>
-          <p>Keep or remove specific keys depending on the site (conservative where needed).</p>
-        </div>
-        <div class="box">
-          <div class="pill"><b>Allowlists</b></div>
-          <h3>Keep intentional parameters</h3>
-          <p>Preserve affiliate/ref keys when you want them, while still removing standard tracking.</p>
-        </div>
-        <div class="box">
-          <div class="pill"><b>Advanced attribution</b></div>
-          <h3>Explain + optional re-attach</h3>
-          <p>Understand what the removed parts do and optionally re-attach selected keys (when desired).</p>
+          <h3>Functional parameters</h3>
+          <p>
+            Some keys are required (language, product IDs, filters, sessions).
+            Good tools stay conservative and don’t remove randomly.
+          </p>
+          <p><b>Pro:</b> audit + rules for exceptions.</p>
         </div>
       </div>
-
       <div class="warn">
-        Note: Some parameters are necessary (language, session, filters, product IDs). Pro is about control — not “remove everything”.
+        If a cleaned link fails, it often means a removed parameter was functional. Pro helps you keep exactly those keys.
       </div>
     </section>
 
     <section class="card">
-      <h2>Typical use cases</h2>
-      <ul>
-        <li>Marketing/comms teams who need clean links but must keep certain attribution</li>
-        <li>Journalists/NGOs sharing links while minimizing link-level tracking</li>
-        <li>Support/IT who want predictable, explainable rules</li>
-        <li>Anyone who shares a lot across email, messengers, social posts</li>
-      </ul>
+      <h2>Core Pro features</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Audit</h3>
+          <p>See what was removed vs. kept, per link — so you can understand what happened.</p>
+        </div>
+        <div class="box">
+          <h3>Domain policies</h3>
+          <p>Create conservative rules per site: remove tracking keys, keep functional keys, handle edge cases.</p>
+        </div>
+        <div class="box">
+          <h3>Allowlists</h3>
+          <p>Keep specific parameters for selected domains (e.g. partner attribution), while cleaning everything else.</p>
+        </div>
+        <div class="box">
+          <h3>Advanced attribution (optional)</h3>
+          <p>Explain removed parameters and optionally re-attach selected ones when you need them.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Example: “keep what matters”</h2>
+      <p>Without Pro, you typically remove common tracking keys. With Pro, you can keep intentional or functional keys.</p>
+
+      <div class="grid2">
+        <div class="box">
+          <h3>Incoming (with tracking)</h3>
+          <div class="example mono">https://shop.example.com/product?ref=partner123&utm_source=newsletter&gclid=ABC123</div>
+        </div>
+        <div class="box">
+          <h3>Pro result (policy)</h3>
+          <p style="margin:0 0 10px;color:var(--muted)">
+            Remove <span class="mono">utm_*</span> + <span class="mono">gclid</span>, keep <span class="mono">ref</span>.
+          </p>
+          <div class="example mono">https://shop.example.com/product?ref=partner123</div>
+        </div>
+      </div>
+
+      <div class="note">
+        This is the core idea: fewer unnecessary “labels”, but no accidental breakage.
+      </div>
 
       <div class="row">
-        <a class="btn" href="/en/school/">Learn basics</a>
-        <a class="btn" href="/en/help/">Troubleshooting</a>
-        <a class="btn ghost" href="/pro/">Deutsch</a>
+        <a class="btn" href="/en/privacy/">Privacy</a>
+        <a class="btn" href="/en/terms/">Terms</a>
+        <a class="btn ghost" href="/en/">Home</a>
       </div>
     </section>
 
     <footer>
       <div class="footGrid">
         <div>
-          <div><strong>SafeShare</strong> – share links with less baggage.</div>
-          <div>Local-first: cleaning happens in your browser.</div>
+          <div><strong>SafeShare</strong> – share links without ballast.</div>
+          <div>Pro adds control (audit + policies) while staying local-first.</div>
         </div>
         <div class="footLinks">
           <a href="/en/">Home</a>
@@ -280,10 +313,10 @@
           <a href="/en/privacy/">Privacy</a>
           <a href="/en/imprint/">Imprint</a>
           <a href="/en/terms/">Terms</a>
-          <a href="/pro/">DE</a>
         </div>
       </div>
     </footer>
+
   </div>
 </body>
 </html>
