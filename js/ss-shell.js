@@ -1,23 +1,15 @@
-/*! Datei: /js/ss-shell.js */
-/*! SafeShare Shell v2026-01-25-01 (Schema: EN under /en/<slug>/) */
+/*! SafeShare Shell v2026-01-25-02 (EN under /en/<slug>/) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
-  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts || false);
 
-  // 1) Locale bestimmen: /en/ am Anfang ODER <html lang="en">
+  // Locale: EN if path starts with /en/ OR html lang="en"
   const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path === "/en/" || path.startsWith("/en/") || htmlLang.startsWith("en");
+  const isEN = path.startsWith("/en/") || htmlLang.startsWith("en");
 
-  // 2) Slugs (Schema: /en/<slug>/)
-  // DE:
-  //   / (home), /app/, /schule/, /pro/, /hilfe/
-  //   /datenschutz/, /impressum/, /nutzungsbedingungen/
-  // EN:
-  //   /en/ (home), /en/app/, /en/school/, /en/pro/, /en/help/
-  //   /en/privacy/, /en/imprint/, /en/terms/
+  // Links (Schema: /en/<slug>/)
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -25,13 +17,11 @@
         school: "/en/school/",
         pro: "/en/pro/",
         help: "/en/help/",
-        support: "mailto:listings@safesharepro.com",
         privacy: "/en/privacy/",
         imprint: "/en/imprint/",
         terms: "/en/terms/",
-        // optional language switch
-        langSwitchHref: "/", // EN -> DE home by default
-        langSwitchLabel: "Deutsch",
+        support: "mailto:listings@safesharepro.com",
+        langSwitch: "/", // Deutsch
       }
     : {
         home: "/",
@@ -39,16 +29,14 @@
         school: "/schule/",
         pro: "/pro/",
         help: "/hilfe/",
-        support: "mailto:listings@safesharepro.com",
         privacy: "/datenschutz/",
         imprint: "/impressum/",
         terms: "/nutzungsbedingungen/",
-        // optional language switch
-        langSwitchHref: "/en/",
-        langSwitchLabel: "English",
+        support: "mailto:listings@safesharepro.com",
+        langSwitch: "/en/", // English
       };
 
-  // 3) Texte (DE/EN)
+  // Labels
   const T = isEN
     ? {
         start: "Home",
@@ -62,7 +50,7 @@
         imprint: "Imprint",
         terms: "Terms",
         close: "Close",
-        language: "Language",
+        lang: "Deutsch",
       }
     : {
         start: "Start",
@@ -76,20 +64,16 @@
         imprint: "Impressum",
         terms: "Nutzungsbedingungen",
         close: "Schließen",
-        language: "Sprache",
+        lang: "English",
       };
 
-  // 4) Logo (Datei) – fix: assets/brand/logo-glyph-mint-512.png
+  // Logo (PNG)
   const LOGO_SRC = "/assets/brand/logo-glyph-mint-512.png";
-  const LOGO_ALT = "SafeShare";
 
-  // 5) Shell-Markup
   const shellHTML = `
 <header class="ss-header" role="banner">
-  <a class="ss-brand" href="${LINKS.home}" aria-label="${LOGO_ALT}">
-    <span class="ss-brand__mark">
-      <img class="ss-brand__img" src="${LOGO_SRC}" alt="" aria-hidden="true" width="20" height="20" decoding="async" />
-    </span>
+  <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
+    <img class="ss-brand__logo" src="${LOGO_SRC}" alt="" width="22" height="22" decoding="async" />
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -121,35 +105,37 @@
       <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
       <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
       <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
-      <a class="ss-moreLink" href="${LINKS.langSwitchHref}">${LINKS.langSwitchLabel}</a>
+      <a class="ss-moreLink" href="${LINKS.langSwitch}">${T.lang}</a>
     </div>
   </div>
 </div>
   `.trim();
 
-  // 6) Einhängen (Placeholder: #ss-shell)
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 7) Active-State anhand Path (Schema-aware)
-  function normalize(p) {
-    return String(p || "/").replace(/\/+$/, "/");
-  }
-  function setActive() {
-    const p = normalize(location.pathname || "/");
+  // Safety reset (prevents "stuck blur/overlay")
+  const btn = $("#ssMoreBtn");
+  const overlay = $("#ssMoreOverlay");
+  if (overlay) overlay.hidden = true;
+  if (btn) btn.setAttribute("aria-expanded", "false");
+  document.documentElement.classList.remove("ss-noScroll");
 
-    const routes = [
-      { key: "home", href: LINKS.home },
-      { key: "app", href: LINKS.app },
-      { key: "school", href: LINKS.school },
-      { key: "pro", href: LINKS.pro },
-      { key: "help", href: LINKS.help },
+  // Active state
+  function setActive() {
+    const p = (location.pathname || "/").replace(/\/+$/, "/");
+    const map = [
+      { key: "home", match: [LINKS.home] },
+      { key: "app", match: [LINKS.app] },
+      { key: "school", match: [LINKS.school] },
+      { key: "pro", match: [LINKS.pro] },
+      { key: "help", match: [LINKS.help] },
     ];
 
     let activeKey = "home";
-    for (const r of routes) {
-      if (p === normalize(r.href) || p.startsWith(normalize(r.href))) activeKey = r.key;
+    for (const item of map) {
+      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
@@ -161,16 +147,7 @@
   }
   setActive();
 
-  // 8) Mehr-Menü: open/close + Escape + Click-outside + Hard reset on load
-  const btn = $("#ssMoreBtn");
-  const overlay = $("#ssMoreOverlay");
-
-  function hardClose() {
-    if (overlay) overlay.hidden = true;
-    if (btn) btn.setAttribute("aria-expanded", "false");
-    document.documentElement.classList.remove("ss-noScroll");
-  }
-
+  // More menu open/close
   function openMenu() {
     if (!overlay || !btn) return;
     overlay.hidden = false;
@@ -188,23 +165,19 @@
     btn.focus();
   }
 
-  // Wichtig: falls iOS/Safari aus Cache zurückkommt und Overlay “halb offen” wirkt
-  hardClose();
-  on(window, "pageshow", () => hardClose());
-
   if (btn && overlay) {
-    on(btn, "click", () => {
+    btn.addEventListener("click", () => {
       if (overlay.hidden) openMenu();
       else closeMenu();
     });
 
-    on(overlay, "click", (e) => {
+    overlay.addEventListener("click", (e) => {
       const t = e.target;
       if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
     });
 
-    on(document, "keydown", (e) => {
-      if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !overlay.hidden) closeMenu();
     });
   }
 })();
