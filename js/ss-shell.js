@@ -1,98 +1,23 @@
-/* /js/ss-shell.js */
-/* SafeShare Shell v2026-01-25-02
-   - EN lives under /en/<slug>/  (your repo structure)
-   - Logo = /assets/brand/logo-glyph-mint-256.png + 512.png (srcset)
-   - More menu (bottom-sheet) + Escape + click outside
-   - Active nav highlighting
-   - Injects canonical + hreflang on every page (auto pair DE<->EN)
-*/
+/*! Datei: /js/ss-shell.js */
+/*! SafeShare Shell v2026-01-25-01 (Schema: EN under /en/<slug>/) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts || false);
 
-  // ---------- 1) Locale ----------
-  const rawPath = (location.pathname || "/");
-  const path = rawPath.replace(/\/+$/, "/"); // normalize trailing slash
+  // 1) Locale bestimmen: /en/ am Anfang ODER <html lang="en">
+  const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
   const isEN = path === "/en/" || path.startsWith("/en/") || htmlLang.startsWith("en");
 
-  // ---------- 2) URL helpers ----------
-  function toAbs(urlPath) {
-    // absolute URL for canonical/hreflang
-    const u = new URL(urlPath, location.origin);
-    return u.toString();
-  }
-
-  function dePathFrom(p) {
-    // /en/... -> /...
-    if (p === "/en/") return "/";
-    if (p.startsWith("/en/")) return "/" + p.slice(4);
-    return p;
-  }
-
-  function enPathFrom(p) {
-    // /... -> /en/...
-    if (p === "/") return "/en/";
-    if (p.startsWith("/en/")) return p;
-    return "/en" + (p.startsWith("/") ? p : ("/" + p));
-  }
-
-  function computePair() {
-    const dePath = dePathFrom(path);
-    const enPath = enPathFrom(path);
-    return { de: dePath, en: enPath };
-  }
-
-  function ensureLinkTag(rel, attrs) {
-    const head = document.head;
-    if (!head) return;
-
-    // build a stable selector
-    const keyParts = [`link[rel="${rel}"]`];
-    if (attrs.hreflang) keyParts.push(`[hreflang="${attrs.hreflang}"]`);
-    if (attrs.as) keyParts.push(`[as="${attrs.as}"]`);
-    if (attrs.type) keyParts.push(`[type="${attrs.type}"]`);
-    const sel = keyParts.join("");
-
-    let el = head.querySelector(sel);
-    if (!el) {
-      el = document.createElement("link");
-      el.setAttribute("rel", rel);
-      head.appendChild(el);
-    }
-
-    Object.entries(attrs).forEach(([k, v]) => {
-      if (v === null || typeof v === "undefined") el.removeAttribute(k);
-      else el.setAttribute(k, String(v));
-    });
-  }
-
-  function ensureMetaCanonicalAndHreflang() {
-    const pair = computePair();
-
-    // canonical should match current language path
-    const canonicalPath = isEN ? pair.en : pair.de;
-
-    // canonical
-    let canonical = document.head && document.head.querySelector('link[rel="canonical"]');
-    if (!canonical && document.head) {
-      canonical = document.createElement("link");
-      canonical.setAttribute("rel", "canonical");
-      document.head.appendChild(canonical);
-    }
-    if (canonical) canonical.setAttribute("href", toAbs(canonicalPath));
-
-    // hreflang
-    ensureLinkTag("alternate", { hreflang: "de", href: toAbs(pair.de) });
-    ensureLinkTag("alternate", { hreflang: "en", href: toAbs(pair.en) });
-    // x-default: use EN homepage as default (common choice)
-    ensureLinkTag("alternate", { hreflang: "x-default", href: toAbs("/en/") });
-  }
-
-  ensureMetaCanonicalAndHreflang();
-
-  // ---------- 3) Navigation targets (EN under /en/<slug>/) ----------
+  // 2) Slugs (Schema: /en/<slug>/)
+  // DE:
+  //   / (home), /app/, /schule/, /pro/, /hilfe/
+  //   /datenschutz/, /impressum/, /nutzungsbedingungen/
+  // EN:
+  //   /en/ (home), /en/app/, /en/school/, /en/pro/, /en/help/
+  //   /en/privacy/, /en/imprint/, /en/terms/
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -100,12 +25,13 @@
         school: "/en/school/",
         pro: "/en/pro/",
         help: "/en/help/",
+        support: "mailto:listings@safesharepro.com",
         privacy: "/en/privacy/",
         imprint: "/en/imprint/",
         terms: "/en/terms/",
-        support: "mailto:listings@safesharepro.com",
-        // optional language toggle
-        lang: computePair().de
+        // optional language switch
+        langSwitchHref: "/", // EN -> DE home by default
+        langSwitchLabel: "Deutsch",
       }
     : {
         home: "/",
@@ -113,28 +39,30 @@
         school: "/schule/",
         pro: "/pro/",
         help: "/hilfe/",
+        support: "mailto:listings@safesharepro.com",
         privacy: "/datenschutz/",
         imprint: "/impressum/",
         terms: "/nutzungsbedingungen/",
-        support: "mailto:listings@safesharepro.com",
-        // optional language toggle
-        lang: computePair().en
+        // optional language switch
+        langSwitchHref: "/en/",
+        langSwitchLabel: "English",
       };
 
+  // 3) Texte (DE/EN)
   const T = isEN
     ? {
-        start: "Start",
+        start: "Home",
         app: "App",
         school: "School",
         pro: "Pro",
         help: "Help",
         more: "More",
-        support: "Support / Contact",
+        support: "Support",
         privacy: "Privacy",
         imprint: "Imprint",
         terms: "Terms",
         close: "Close",
-        lang: "Deutsch"
+        language: "Language",
       }
     : {
         start: "Start",
@@ -143,27 +71,25 @@
         pro: "Pro",
         help: "Hilfe",
         more: "Mehr",
-        support: "Support / Kontakt",
+        support: "Support",
         privacy: "Datenschutz",
         imprint: "Impressum",
         terms: "Nutzungsbedingungen",
         close: "Schließen",
-        lang: "English"
+        language: "Sprache",
       };
 
-  // ---------- 4) Logo (your real files) ----------
-  const LOGO_1X = "/assets/brand/logo-glyph-mint-256.png";
-  const LOGO_2X = "/assets/brand/logo-glyph-mint-512.png";
+  // 4) Logo (Datei) – fix: assets/brand/logo-glyph-mint-512.png
+  const LOGO_SRC = "/assets/brand/logo-glyph-mint-512.png";
+  const LOGO_ALT = "SafeShare";
 
-  // ---------- 5) Shell markup ----------
+  // 5) Shell-Markup
   const shellHTML = `
 <header class="ss-header" role="banner">
-  <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <img class="ss-brand__logo"
-         src="${LOGO_1X}"
-         srcset="${LOGO_1X} 1x, ${LOGO_2X} 2x"
-         width="18" height="18"
-         alt="" aria-hidden="true" />
+  <a class="ss-brand" href="${LINKS.home}" aria-label="${LOGO_ALT}">
+    <span class="ss-brand__mark">
+      <img class="ss-brand__img" src="${LOGO_SRC}" alt="" aria-hidden="true" width="20" height="20" decoding="async" />
+    </span>
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -176,7 +102,7 @@
   </nav>
 
   <button class="ss-moreBtn" type="button" id="ssMoreBtn"
-          aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreOverlay">
+          aria-haspopup="dialog" aria-expanded="false" aria-controls="ssMoreMenu">
     ${T.more}
   </button>
 </header>
@@ -184,7 +110,7 @@
 <div class="ss-moreOverlay" id="ssMoreOverlay" hidden>
   <div class="ss-moreBackdrop" data-ss-close></div>
 
-  <div class="ss-moreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
+  <div class="ss-moreMenu" id="ssMoreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
     <div class="ss-moreTop">
       <div class="ss-moreTitle">${T.more}</div>
       <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">✕</button>
@@ -195,33 +121,35 @@
       <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
       <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
       <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
-
-      <!-- optional language switch -->
-      <a class="ss-moreLink ss-moreLink--lang" href="${LINKS.lang}">${T.lang}</a>
+      <a class="ss-moreLink" href="${LINKS.langSwitchHref}">${LINKS.langSwitchLabel}</a>
     </div>
   </div>
 </div>
-`.trim();
+  `.trim();
 
-  // ---------- 6) mount ----------
+  // 6) Einhängen (Placeholder: #ss-shell)
   const mount = $("#ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // ---------- 7) Active state ----------
+  // 7) Active-State anhand Path (Schema-aware)
+  function normalize(p) {
+    return String(p || "/").replace(/\/+$/, "/");
+  }
   function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/");
-    const map = [
-      { key: "home", starts: [LINKS.home] },
-      { key: "app", starts: [LINKS.app] },
-      { key: "school", starts: [LINKS.school] },
-      { key: "pro", starts: [LINKS.pro] },
-      { key: "help", starts: [LINKS.help] }
+    const p = normalize(location.pathname || "/");
+
+    const routes = [
+      { key: "home", href: LINKS.home },
+      { key: "app", href: LINKS.app },
+      { key: "school", href: LINKS.school },
+      { key: "pro", href: LINKS.pro },
+      { key: "help", href: LINKS.help },
     ];
 
     let activeKey = "home";
-    for (const item of map) {
-      if (item.starts.some((s) => p.startsWith(s))) activeKey = item.key;
+    for (const r of routes) {
+      if (p === normalize(r.href) || p.startsWith(normalize(r.href))) activeKey = r.key;
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
@@ -233,12 +161,11 @@
   }
   setActive();
 
-  // ---------- 8) More menu open/close (no blur bugs) ----------
+  // 8) Mehr-Menü: open/close + Escape + Click-outside + Hard reset on load
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
-  function forceClosedState() {
-    // this is the snippet you asked "wo rein?" — it belongs here, at init and in close()
+  function hardClose() {
     if (overlay) overlay.hidden = true;
     if (btn) btn.setAttribute("aria-expanded", "false");
     document.documentElement.classList.remove("ss-noScroll");
@@ -249,31 +176,34 @@
     overlay.hidden = false;
     btn.setAttribute("aria-expanded", "true");
     document.documentElement.classList.add("ss-noScroll");
-    const closeBtn = overlay.querySelector("[data-ss-close]");
+    const closeBtn = overlay.querySelector(".ss-moreClose");
     if (closeBtn) closeBtn.focus();
   }
 
   function closeMenu() {
     if (!overlay || !btn) return;
-    forceClosedState();
+    overlay.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+    document.documentElement.classList.remove("ss-noScroll");
     btn.focus();
   }
 
-  // Ensure clean state on load (prevents “page blurred” / stuck overlay)
-  forceClosedState();
+  // Wichtig: falls iOS/Safari aus Cache zurückkommt und Overlay “halb offen” wirkt
+  hardClose();
+  on(window, "pageshow", () => hardClose());
 
   if (btn && overlay) {
-    btn.addEventListener("click", () => {
+    on(btn, "click", () => {
       if (overlay.hidden) openMenu();
       else closeMenu();
     });
 
-    overlay.addEventListener("click", (e) => {
+    on(overlay, "click", (e) => {
       const t = e.target;
       if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
     });
 
-    document.addEventListener("keydown", (e) => {
+    on(document, "keydown", (e) => {
       if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
     });
   }
