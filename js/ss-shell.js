@@ -4,16 +4,12 @@
 
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  // Prevent double-init (e.g. caching/partials)
-  if (window.__SS_SHELL_INIT__) return;
-  window.__SS_SHELL_INIT__ = true;
-
-  // 1) Locale bestimmen: /en/ am Anfang ODER <html lang="en">
-  const path = (location.pathname || "/");
+  // Locale: EN wenn Pfad mit /en/ beginnt oder <html lang="en">
+  const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path === "/en/" || path.startsWith("/en/") || htmlLang.startsWith("en");
+  const isEN = path.startsWith("/en/") || path === "/en" || htmlLang.startsWith("en");
 
-  // 2) Link-Ziele (Schema: /en/<slug>/)
+  // Link-Schema: EN unter /en/<slug>/
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -38,7 +34,6 @@
         terms: "/nutzungsbedingungen/",
       };
 
-  // 3) Texte
   const T = isEN
     ? {
         start: "Start",
@@ -67,20 +62,24 @@
         close: "Schließen",
       };
 
-  // 4) Inline Mark (no emoji, no external file)
-  const markSVG = `
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <path d="M12 2.6c3.1 2.6 6.3 3.3 8.4 3.6v7.1c0 5.2-3.6 9-8.4 10.9C7.2 22.3 3.6 18.5 3.6 13.3V6.2C5.7 5.9 8.9 5.2 12 2.6Z"
-        stroke="currentColor" stroke-width="1.6" opacity=".95"/>
-  <path d="M8.4 12.2l2.3 2.4 4.9-5.1"
-        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
-</svg>`.trim();
+  // Mount
+  const mount = $("#ss-shell");
+  if (!mount) return;
 
-  // 5) Shell-Markup
+  // Mark = dein echtes Logo (kein Emoji, kein "anderes" SVG)
+  const markHTML = `
+    <img class="ss-brand__img"
+         src="/assets/fav/favicon.svg"
+         alt=""
+         aria-hidden="true"
+         loading="eager"
+         decoding="async">
+  `.trim();
+
   const shellHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
-    <span class="ss-brand__mark">${markSVG}</span>
+    <span class="ss-brand__mark">${markHTML}</span>
     <span class="ss-brand__name">SafeShare</span>
   </a>
 
@@ -117,19 +116,18 @@
 </div>
   `.trim();
 
-  // 6) Mount
-  const mount = $("#ss-shell");
-  if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // 7) Active-State
-  function normalize(p) {
-    return String(p || "/").replace(/\/+$/, "/");
-  }
+  // Always force overlay closed on init (fix "stuck overlay" edge cases)
+  const btn = $("#ssMoreBtn");
+  const overlay = $("#ssMoreOverlay");
+  if (overlay) overlay.hidden = true;
+  if (btn) btn.setAttribute("aria-expanded", "false");
+  document.documentElement.classList.remove("ss-noScroll");
 
+  // Active state
   function setActive() {
-    const p = normalize(location.pathname);
-
+    const p = (location.pathname || "/").replace(/\/+$/, "/");
     const map = [
       { key: "home", match: [LINKS.home] },
       { key: "app", match: [LINKS.app] },
@@ -140,7 +138,7 @@
 
     let activeKey = "home";
     for (const item of map) {
-      if (item.match.some((m) => normalize(p).startsWith(normalize(m)))) activeKey = item.key;
+      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
     }
 
     document.querySelectorAll("[data-ss-nav]").forEach((a) => {
@@ -152,16 +150,7 @@
   }
   setActive();
 
-  // 8) Menu open/close
-  const btn = $("#ssMoreBtn");
-  const overlay = $("#ssMoreOverlay");
-
-  function hardResetShellState() {
-    if (overlay) overlay.hidden = true;
-    if (btn) btn.setAttribute("aria-expanded", "false");
-    document.documentElement.classList.remove("ss-noScroll");
-  }
-
+  // More menu open/close
   function openMenu() {
     if (!overlay || !btn) return;
     overlay.hidden = false;
@@ -179,9 +168,6 @@
     btn.focus();
   }
 
-  // Always reset once after injection (fixes "blurred EN pages" state)
-  hardResetShellState();
-
   if (btn && overlay) {
     btn.addEventListener("click", () => {
       if (overlay.hidden) openMenu();
@@ -195,11 +181,6 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
-    });
-
-    // Safety: if page is restored from BFCache with overlay open
-    window.addEventListener("pageshow", () => {
-      hardResetShellState();
     });
   }
 })();
