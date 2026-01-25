@@ -1,10 +1,11 @@
+<!-- /en/privacy/index.html -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Privacy – SafeShare</title>
-  <meta name="description" content="Privacy information for SafeShare: local-first URL cleaning in your browser (no upload, no server logs from SafeShare)." />
+  <meta name="description" content="SafeShare Privacy: local-first link cleaning, no uploads, minimal data, and clear limits." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
@@ -14,72 +15,232 @@
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/privacy/" />
   <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/privacy/" />
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="Privacy – SafeShare" />
+  <meta property="og:description" content="How SafeShare handles data: local-first link cleaning and transparent limits." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://safesharepro.com/en/privacy/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta property="og:image:alt" content="SafeShare – Preview" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Privacy – SafeShare" />
+  <meta name="twitter:description" content="How SafeShare handles data: local-first link cleaning and transparent limits." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta name="twitter:image:alt" content="SafeShare – Preview" />
+
+  <!-- Favicons + PWA -->
   <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
+  <!-- MASTER SHELL -->
   <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
   <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
 
   <style>
-    :root{--bg0:#070a12;--bg1:#070b14;--bg2:#0b1020;--card:rgba(255,255,255,.06);--border:rgba(255,255,255,.10);--text:rgba(255,255,255,.92);--muted:rgba(255,255,255,.72);--muted2:rgba(255,255,255,.60);--shadow:0 18px 45px rgba(0,0,0,.35);--radius:18px;--mint2:rgba(47,227,183,.18);--mint3:rgba(47,227,183,.28);--warn:rgba(255,197,84,.16);--ok:rgba(47,227,183,.16);--max:1120px;}
-    @media (prefers-color-scheme: light){:root{--bg0:#f6f7fb;--bg1:#fff;--bg2:#f2f6ff;--card:#fff;--border:rgba(17,24,39,.12);--text:rgba(17,24,39,.95);--muted:rgba(17,24,39,.72);--muted2:rgba(17,24,39,.62);--shadow:0 18px 45px rgba(17,24,39,.10);--warn:rgba(255,197,84,.22);--ok:rgba(47,227,183,.18);}}
-    *{box-sizing:border-box;} body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);
-      background:radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
-               radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
-               linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));}
-    a{color:inherit;text-decoration:none;}
-    .wrap{max-width:var(--max);margin:0 auto;padding:12px 16px 44px;}
-    .card{margin-top:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;}
-    h1{margin:10px 0 8px;font-size:clamp(22px,3.8vw,42px);line-height:1.10;letter-spacing:-.2px;}
-    h2{margin:0 0 8px;font-size:18px;letter-spacing:-.1px;}
-    p,li{margin:0 0 12px;color:var(--muted);line-height:1.6;}
-    ul{margin:0 0 12px 18px;}
-    .note,.warn{margin-top:12px;border-left:3px solid rgba(47,227,183,.55);background:var(--ok);padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.45;color:var(--text);}
-    .warn{border-left-color:rgba(255,197,84,.55);background:var(--warn);}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;}
-    .btn{appearance:none;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:var(--text);padding:10px 12px;border-radius:999px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
-    .btn:hover{background:rgba(255,255,255,.10);}
-    .btn.primary{background:var(--mint2);border-color:rgba(47,227,183,.35);}
-    .btn.primary:hover{background:var(--mint3);}
-    .btn.ghost{background:transparent;color:var(--muted);}
-    .btn.ghost:hover{color:var(--text);background:rgba(255,255,255,.04);}
+    :root{
+      --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --ok: rgba(47,227,183,.16);
+      --warn: rgba(255,197,84,.16);
+      --bad: rgba(255,84,84,.14);
+      --max: 1120px;
+      --focus: 0 0 0 3px rgba(47,227,183,.22);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg0:#f6f7fb; --bg1:#ffffff; --bg2:#f2f6ff;
+        --card:#ffffff;
+        --border: rgba(17,24,39,.12);
+        --text: rgba(17,24,39,.95);
+        --muted: rgba(17,24,39,.72);
+        --muted2: rgba(17,24,39,.62);
+        --shadow: 0 18px 45px rgba(17,24,39,.10);
+        --ok: rgba(47,227,183,.18);
+        --warn: rgba(255,197,84,.22);
+        --bad: rgba(255,84,84,.12);
+        --focus: 0 0 0 3px rgba(17,130,98,.22);
+      }
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));
+    }
+    a{ color:inherit; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
+    .card{
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 18px 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    p, li{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+    ul{ margin: 0 0 12px 18px; padding:0; }
+    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .note,.warn,.bad{
+      margin-top: 12px;
+      border-left: 3px solid rgba(47,227,183,.55);
+      background: var(--ok);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
+
+    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex; align-items:center; gap: 8px;
+      text-decoration:none;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footLinks{ display:flex; gap: 10px; flex-wrap: wrap; }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      text-decoration:none;
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+    .meta{ color: var(--muted2); font-size: 12px; margin-top: 6px; }
   </style>
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Privacy – SafeShare",
+    "url":"https://safesharepro.com/en/privacy/",
+    "isPartOf":{"@type":"WebSite","name":"SafeShare","url":"https://safesharepro.com/"}
+  }
+  </script>
 </head>
+
 <body>
   <div id="ss-shell"></div>
 
   <div class="wrap">
     <section class="card">
       <h1>Privacy</h1>
-      <p>SafeShare is local-first: link cleaning runs in your browser.</p>
+      <p class="meta">Last updated: 2026-01-25</p>
 
       <div class="note">
-        SafeShare does not upload your links to a SafeShare server. The destination website may still log IP/time/user-agent when you open a link.
+        SafeShare is built for data minimization. Link cleaning happens locally in your browser (“local-first”).
       </div>
-    </section>
 
-    <section class="card">
-      <h2>What SafeShare does</h2>
+      <h2>1. What SafeShare processes</h2>
       <ul>
-        <li>Removes typical tracking parameters (e.g. utm_*, gclid, fbclid).</li>
-        <li>Does not store your URLs on a server.</li>
+        <li>You paste or share a URL into the SafeShare web app.</li>
+        <li>The app removes typical tracking parameters (e.g., <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>) on your device.</li>
+        <li>The cleaned link is shown to you for copying/sharing.</li>
       </ul>
 
-      <h2>What SafeShare does not do</h2>
+      <h2>2. What SafeShare does not do</h2>
       <ul>
-        <li>No cookie blocking or fingerprinting protection.</li>
-        <li>No anonymity guarantee.</li>
+        <li><b>No uploads:</b> SafeShare does not send your pasted URLs to a SafeShare server for processing.</li>
+        <li><b>No link logging:</b> SafeShare does not intentionally store your URLs on the server side.</li>
+        <li><b>No “invisibility” promise:</b> Cleaning a URL does not prevent tracking on the destination website.</li>
       </ul>
+
+      <div class="warn">
+        Destination sites may still log IP address, user agent, timestamps, set cookies, and run tracking scripts.
+        SafeShare reduces data you share via URL parameters — it does not block tracking on the page you open.
+      </div>
+
+      <h2>3. Cookies and storage</h2>
+      <p>
+        SafeShare aims to work without cookies for tracking. The app may use <code>localStorage</code> / <code>sessionStorage</code>
+        for purely local convenience features (for example UI state). These values stay in your browser.
+      </p>
+
+      <h2>4. Third-party services</h2>
+      <p>
+        This page does not include embedded trackers by design. However, hosting providers and CDNs may process
+        technical request data (e.g., IP address) as part of delivering the website.
+      </p>
+
+      <div class="note">
+        If you later add analytics, keep it opt-in and privacy-friendly. Avoid fingerprinting and cross-site identifiers.
+      </div>
+
+      <h2>5. Your choices</h2>
+      <ul>
+        <li>Use SafeShare before sharing a link to reduce unnecessary URL parameters.</li>
+        <li>For stronger protection on destination sites: use content blockers, hardened browser settings, and avoid being logged-in where not needed.</li>
+        <li>Prefer privacy-respecting platforms and settings.</li>
+      </ul>
+
+      <h2>6. Contact</h2>
+      <p>
+        Privacy questions: <a href="mailto:listings@safesharepro.com">listings@safesharepro.com</a>
+      </p>
 
       <div class="row">
-        <a class="btn primary" href="/en/app/">Open App</a>
-        <a class="btn" href="mailto:listings@safesharepro.com">Contact</a>
-        <a class="btn ghost" href="/datenschutz/">Deutsch</a>
+        <a class="btn" href="/en/help/">Help</a>
+        <a class="btn" href="/en/terms/">Terms</a>
+        <a class="btn" href="/datenschutz/">Deutsch</a>
       </div>
     </section>
+
+    <footer>
+      <div class="footLinks">
+        <a href="/en/">Home</a>
+        <a href="/en/app/">App</a>
+        <a href="/en/school/">School</a>
+        <a href="/en/pro/">Pro</a>
+        <a href="/en/help/">Help</a>
+        <a href="/en/privacy/">Privacy</a>
+        <a href="/en/imprint/">Imprint</a>
+        <a href="/en/terms/">Terms</a>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
