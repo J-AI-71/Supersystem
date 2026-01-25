@@ -1,22 +1,16 @@
-/*! Datei: /js/ss-shell.js */
-/*! SafeShare Shell v2026-01-25-01 (Schema A: EN under /en/<slug>/) */
-/* DE + EN, inline SVG logo, capsule More button, bottom-sheet menu, Safari blur/pageshow hard-fix */
-
+/*! SafeShare Shell v2026-01-25-02 (EN under /en/<slug>/) */
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
-  const byId = (id) => document.getElementById(id);
-  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  // 1) Locale bestimmen: /en/ anywhere in path OR <html lang="en">
-  const path = location.pathname || "/";
+  // ---- Locale ----
+  const path = (location.pathname || "/");
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path.includes("/en/") || htmlLang.startsWith("en");
+  const isEN = path.startsWith("/en/") || htmlLang.startsWith("en");
 
-  // 2) Link-Ziele (Schema A: EN under /en/<slug>/)
-  // DE: /hilfe/ /schule/ /pro/ /datenschutz/ /impressum/ /nutzungsbedingungen/
-  // EN: /en/help/ /en/school/ /en/pro/ /en/privacy/ /en/imprint/ /en/terms/
+  // ---- Routes (Schema: /en/<slug>/) ----
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -24,11 +18,12 @@
         school: "/en/school/",
         pro: "/en/pro/",
         help: "/en/help/",
-        support: "mailto:listings@safesharepro.com",
         privacy: "/en/privacy/",
         imprint: "/en/imprint/",
         terms: "/en/terms/",
-        langSwitch: "/", // optional language switch target
+        support: "mailto:listings@safesharepro.com",
+        langSwitchLabel: "Deutsch",
+        langSwitchHref: "/"
       }
     : {
         home: "/",
@@ -36,54 +31,33 @@
         school: "/schule/",
         pro: "/pro/",
         help: "/hilfe/",
-        support: "mailto:listings@safesharepro.com",
         privacy: "/datenschutz/",
         imprint: "/impressum/",
         terms: "/nutzungsbedingungen/",
-        langSwitch: "/en/", // optional language switch target
+        support: "mailto:listings@safesharepro.com",
+        langSwitchLabel: "English",
+        langSwitchHref: "/en/"
       };
 
-  // 3) Texte (DE/EN)
   const T = isEN
-    ? {
-        start: "Home",
-        app: "App",
-        school: "School",
-        pro: "Pro",
-        help: "Help",
-        more: "More",
-        support: "Support",
-        privacy: "Privacy",
-        imprint: "Imprint",
-        terms: "Terms",
-        close: "Close",
-        language: "Deutsch",
-      }
-    : {
-        start: "Start",
-        app: "App",
-        school: "Schule",
-        pro: "Pro",
-        help: "Hilfe",
-        more: "Mehr",
-        support: "Support",
-        privacy: "Datenschutz",
-        imprint: "Impressum",
-        terms: "Nutzungsbedingungen",
-        close: "Schließen",
-        language: "English",
-      };
+    ? { start:"Home", app:"App", school:"School", pro:"Pro", help:"Help", more:"More", support:"Support", privacy:"Privacy", imprint:"Imprint", terms:"Terms", close:"Close" }
+    : { start:"Start", app:"App", school:"Schule", pro:"Pro", help:"Hilfe", more:"Mehr", support:"Support", privacy:"Datenschutz", imprint:"Impressum", terms:"Nutzungsbedingungen", close:"Schließen" };
 
-  // 4) Inline mark (no emoji, no external file)
+  // ---- Inline mark (no emoji, no external file) ----
   const markSVG = `
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
   <path d="M12 2.6c3.1 2.6 6.3 3.3 8.4 3.6v7.1c0 5.2-3.6 9-8.4 10.9C7.2 22.3 3.6 18.5 3.6 13.3V6.2C5.7 5.9 8.9 5.2 12 2.6Z" stroke="currentColor" stroke-width="1.6" opacity=".95"/>
   <path d="M8.4 12.2l2.3 2.4 4.9-5.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
 </svg>`.trim();
 
-  // 5) Shell-Markup
-  // Language link optional in More menu (as requested). Keep hreflang in <head> of each page.
-  const shellHTML = `
+  // ---- Mount shell ----
+  const mount = $("#ss-shell");
+  if (!mount) return;
+
+  // language switch is OPTIONAL (show in More menu). Set false if you don't want it.
+  const SHOW_LANG_SWITCH_IN_MORE = true;
+
+  mount.innerHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
     <span class="ss-brand__mark">${markSVG}</span>
@@ -110,7 +84,7 @@
   <div class="ss-moreMenu" id="ssMoreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
     <div class="ss-moreTop">
       <div class="ss-moreTitle">${T.more}</div>
-      <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">✕</button>
+      <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">&times;</button>
     </div>
 
     <div class="ss-moreList" role="navigation" aria-label="${T.more}">
@@ -118,26 +92,25 @@
       <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
       <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
       <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
-      <a class="ss-moreLink" href="${LINKS.langSwitch}">${T.language}</a>
+      ${SHOW_LANG_SWITCH_IN_MORE ? `<a class="ss-moreLink" href="${LINKS.langSwitchHref}">${LINKS.langSwitchLabel}</a>` : ``}
     </div>
   </div>
 </div>
   `.trim();
 
-  // 6) Einhängen (Placeholder: #ss-shell)
-  const mount = byId("ss-shell");
-  if (!mount) return;
-  mount.innerHTML = shellHTML;
+  // ---- Active state ----
+  function normalize(p) {
+    return (p || "/").replace(/\/+$/, "/");
+  }
 
-  // 7) Active-State anhand Path
   function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/"); // normalize trailing slash
+    const p = normalize(location.pathname);
     const map = [
-      { key: "home", match: [LINKS.home] },
-      { key: "app", match: [LINKS.app] },
-      { key: "school", match: [LINKS.school] },
-      { key: "pro", match: [LINKS.pro] },
-      { key: "help", match: [LINKS.help] },
+      { key: "home", match: [normalize(LINKS.home)] },
+      { key: "app", match: [normalize(LINKS.app)] },
+      { key: "school", match: [normalize(LINKS.school)] },
+      { key: "pro", match: [normalize(LINKS.pro)] },
+      { key: "help", match: [normalize(LINKS.help)] },
     ];
 
     let activeKey = "home";
@@ -145,7 +118,7 @@
       if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
     }
 
-    document.querySelectorAll("[data-ss-nav]").forEach((a) => {
+    $$("[data-ss-nav]").forEach((a) => {
       const isActive = a.getAttribute("data-ss-nav") === activeKey;
       a.classList.toggle("is-active", isActive);
       if (isActive) a.setAttribute("aria-current", "page");
@@ -154,16 +127,15 @@
   }
   setActive();
 
-  // 8) Mehr-Menü: open/close + Escape + Click-outside + Safari pageshow hard-fix
-  const btn = byId("ssMoreBtn");
-  const overlay = byId("ssMoreOverlay");
+  // ---- More menu open/close ----
+  const btn = $("#ssMoreBtn");
+  const overlay = $("#ssMoreOverlay");
 
-  function hardClose(skipFocus) {
-    if (!overlay || !btn) return;
-    overlay.hidden = true;
-    btn.setAttribute("aria-expanded", "false");
+  function hardCloseMenu() {
+    // the snippet you posted ("wo rein?") belongs exactly here
+    if (overlay) overlay.hidden = true;
+    if (btn) btn.setAttribute("aria-expanded", "false");
     document.documentElement.classList.remove("ss-noScroll");
-    if (!skipFocus) btn.focus();
   }
 
   function openMenu() {
@@ -176,33 +148,95 @@
   }
 
   function closeMenu() {
-    hardClose(false);
+    hardCloseMenu();
+    if (btn) btn.focus();
   }
 
-  // Ensure closed on load (prevents "blur stuck" if BFCache restores weird state)
-  hardClose(true);
-
   if (btn && overlay) {
-    on(btn, "click", () => {
+    btn.addEventListener("click", () => {
       if (overlay.hidden) openMenu();
       else closeMenu();
     });
 
-    on(overlay, "click", (e) => {
+    overlay.addEventListener("click", (e) => {
       const t = e.target;
       if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
     });
 
-    on(document, "keydown", (e) => {
-      if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
+    // close on any click on a menu link (better UX)
+    overlay.addEventListener("click", (e) => {
+      const a = e.target && e.target.closest ? e.target.closest("a") : null;
+      if (a && overlay.contains(a)) hardCloseMenu();
     });
 
-    // iOS/Safari BFCache: when navigating back, overlay/backdrop blur may persist unless we force close
-    on(window, "pageshow", () => hardClose(true));
-
-    // Also close if tab becomes hidden/visible again (reduces stuck blur cases)
-    on(document, "visibilitychange", () => {
-      if (document.hidden) hardClose(true);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !overlay.hidden) closeMenu();
     });
+
+    window.addEventListener("pageshow", hardCloseMenu);
   }
+
+  // ---- hreflang injection (core pages only) ----
+  // If a page already has hreflang tags, we do nothing.
+  function hasHreflang() {
+    return !!document.querySelector('link[rel="alternate"][hreflang]');
+  }
+
+  function injectHreflangCore() {
+    if (hasHreflang()) return;
+
+    const p = normalize(location.pathname);
+
+    // map EN -> DE for core routes (because DE uses /schule/, /hilfe/, /datenschutz/ ...)
+    const mapEnToDe = {
+      "/en/": "/",
+      "/en/app/": "/app/",
+      "/en/school/": "/schule/",
+      "/en/pro/": "/pro/",
+      "/en/help/": "/hilfe/",
+      "/en/privacy/": "/datenschutz/",
+      "/en/imprint/": "/impressum/",
+      "/en/terms/": "/nutzungsbedingungen/",
+    };
+
+    // map DE -> EN for core routes
+    const mapDeToEn = {
+      "/": "/en/",
+      "/app/": "/en/app/",
+      "/schule/": "/en/school/",
+      "/pro/": "/en/pro/",
+      "/hilfe/": "/en/help/",
+      "/datenschutz/": "/en/privacy/",
+      "/impressum/": "/en/imprint/",
+      "/nutzungsbedingungen/": "/en/terms/",
+    };
+
+    const origin = location.origin || "https://safesharepro.com";
+
+    let dePath = "/"; let enPath = "/en/";
+    if (p.startsWith("/en/")) {
+      enPath = p;
+      dePath = mapEnToDe[p] || "/"; // fallback
+    } else {
+      dePath = p;
+      enPath = mapDeToEn[p] || "/en/"; // fallback
+    }
+
+    const head = document.head;
+    if (!head) return;
+
+    const mk = (hreflang, href) => {
+      const l = document.createElement("link");
+      l.setAttribute("rel", "alternate");
+      l.setAttribute("hreflang", hreflang);
+      l.setAttribute("href", href);
+      return l;
+    };
+
+    head.appendChild(mk("de", origin + dePath));
+    head.appendChild(mk("en", origin + enPath));
+    head.appendChild(mk("x-default", origin + enPath));
+  }
+
+  injectHreflangCore();
 })();
