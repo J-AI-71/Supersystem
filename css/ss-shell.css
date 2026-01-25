@@ -1,8 +1,8 @@
 /* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-25-01 (Schema: EN under /en/<slug>/) */
+/* SafeShare Shell v2026-01-25-02 (capsule-consistent + blur-safe overlay) */
 
 :root{
-  /* Shell-Fallbacks (nutzt Seiten-Variablen, sonst Default) */
+  /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
@@ -15,12 +15,18 @@
   --ss-pill-bg-hover: rgba(255,255,255,.08);
 }
 
-/* Header */
+/* Optional: Safari text crisping */
+.ss-header, .ss-moreMenu{
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 .ss-header{
   position: sticky; top: 0; z-index: 50;
   display:flex; align-items:center; justify-content:space-between;
   gap: 12px;
   padding: 10px 14px;
+
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -33,31 +39,18 @@
   color: var(--ss-text);
   min-width: 0;
 }
-.ss-brand__mark{
-  width: 20px; height: 20px;
-  display:inline-flex; align-items:center; justify-content:center;
+.ss-brand__logo{
+  width: 18px;
+  height: 18px;
+  display:inline-block;
   flex: 0 0 auto;
-}
-.ss-brand__img{
-  width: 20px; height: 20px;
-  display:block;
-  /* gegen “verschmiert” auf iOS: kein Filter/Blur, kein transform */
-  image-rendering: auto;
+  border-radius: 6px; /* optional, falls das Glyph eckig wirkt */
 }
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-/* Logo image (crisp, no blur) */
-.ss-brand__logo{
-  width: 22px;
-  height: 22px;
-  display:inline-block;
-  flex: 0 0 auto;
-  border-radius: 6px;   /* optional – wenn du leicht “soft” willst */
-}
-
 
 /* Nav capsule */
 .ss-nav{
@@ -78,14 +71,12 @@
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
-  -webkit-appearance:none;
   text-decoration:none;
   color: rgba(255,255,255,.72);
 
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap: 8px;
 
   padding: 8px 12px;
   border-radius: 999px;
@@ -119,7 +110,7 @@
   color: var(--ss-text);
 }
 
-/* More button gets subtle base bg like capsule */
+/* More button: hat immer Capsule-Grundfläche (wie gewünscht) */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -135,7 +126,7 @@ html.ss-noScroll, html.ss-noScroll body{
   touch-action: none;
 }
 
-/* Overlay */
+/* Overlay (wenn sichtbar: macht Hintergrund weich -> darf NICHT hängen bleiben) */
 .ss-moreOverlay{
   position: fixed; inset: 0; z-index: 9998;
   display: grid;
@@ -166,7 +157,6 @@ html.ss-noScroll, html.ss-noScroll body{
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
-
   color: var(--ss-text);
 }
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
@@ -223,4 +213,20 @@ html.ss-noScroll, html.ss-noScroll body{
 }
 .ss-moreLink:hover{
   background: rgba(255,255,255,.08);
+}
+
+.ss-moreDivider{
+  height: 1px;
+  background: rgba(255,255,255,.10);
+  margin: 6px 4px;
+  border-radius: 999px;
+}
+@media (prefers-color-scheme: light){
+  .ss-moreDivider{ background: rgba(17,24,39,.12); }
+}
+
+.ss-moreMeta{
+  font-size: 12px;
+  color: var(--ss-muted);
+  padding: 2px 6px 0;
 }
