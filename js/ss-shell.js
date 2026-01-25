@@ -68,10 +68,8 @@
         langSwitch: "English",
       };
 
-  // 4) Logo (Bilddatei, keine Emojis)
-  // Du wolltest: assets/brand/logo-glyph-mint-512.png
+  // 4) Logo (Bilddatei)
   const LOGO_SRC = "/assets/brand/logo-glyph-mint-512.png";
-  const LOGO_ALT = "SafeShare";
 
   // 5) Helper: trailing slash normalisieren
   function norm(p) {
@@ -87,7 +85,6 @@
 
     // EN -> DE
     if (isEN) {
-      // /en/<slug>/
       if (p === "/en/") return "/";
       if (p.startsWith("/en/app/")) return "/app/";
       if (p.startsWith("/en/school/")) return "/schule/";
@@ -96,7 +93,6 @@
       if (p.startsWith("/en/privacy/")) return "/datenschutz/";
       if (p.startsWith("/en/imprint/")) return "/impressum/";
       if (p.startsWith("/en/terms/")) return "/nutzungsbedingungen/";
-      // fallback: EN home -> DE home
       return "/";
     }
 
@@ -109,7 +105,6 @@
     if (p.startsWith("/datenschutz/")) return "/en/privacy/";
     if (p.startsWith("/impressum/")) return "/en/imprint/";
     if (p.startsWith("/nutzungsbedingungen/")) return "/en/terms/";
-    // SEO/Artikel bleiben in DE (bewusst) -> schick auf EN home
     return "/en/";
   }
 
@@ -118,7 +113,7 @@
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
     <span class="ss-brand__mark">
-      <img class="ss-brand__img" src="${LOGO_SRC}" alt="${LOGO_ALT}" width="20" height="20" loading="eager" decoding="async">
+      <img class="ss-brand__img" src="${LOGO_SRC}" alt="" aria-hidden="true" width="20" height="20" loading="eager" decoding="async">
     </span>
     <span class="ss-brand__name">SafeShare</span>
   </a>
