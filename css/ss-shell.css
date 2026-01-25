@@ -1,7 +1,6 @@
-/* SafeShare Shell v2026-01-25-01 (EN under /en/<slug>/) */
+/* SafeShare Shell v2026-01-25-01 (dark-aware + bottom-sheet + capsule-consistent) */
 
 :root{
-  --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
   --ss-muted: var(--muted2, rgba(255,255,255,.60));
@@ -13,7 +12,6 @@
   --ss-pill-bg-hover: rgba(255,255,255,.08);
 }
 
-/* Header */
 .ss-header{
   position: sticky; top: 0; z-index: 50;
   display:flex; align-items:center; justify-content:space-between;
@@ -37,7 +35,10 @@
   flex: 0 0 auto;
   opacity: .95;
 }
-.ss-brand__mark svg{ display:block; }
+.ss-brand__img{
+  width: 18px; height: 18px;
+  display:block;
+}
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
@@ -59,12 +60,11 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Links + More button: exakt gleiche Capsule-Optik */
+/* Links + More button: exakt gleich */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
   text-decoration:none;
-  color: rgba(255,255,255,.72);
 
   display:inline-flex;
   align-items:center;
@@ -80,6 +80,8 @@
   line-height: 1;
   font: inherit;
   cursor: pointer;
+
+  color: rgba(255,255,255,.72);
 }
 
 @media (prefers-color-scheme: light){
@@ -102,7 +104,7 @@
   color: var(--ss-text);
 }
 
-/* More button: gleiche Capsule, leicht „gefüllt“ */
+/* More button: gleiche Capsule-Base wie Nav (damit er nicht "komisch" aussieht) */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -112,7 +114,7 @@
   background: var(--ss-pill-bg-hover);
 }
 
-/* Scroll lock (auf html + body) */
+/* Scroll lock */
 html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
@@ -122,7 +124,7 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreOverlay{
   position: fixed; inset: 0; z-index: 9998;
   display: grid;
-  align-items: end;
+  align-items: end;            /* bottom-sheet */
   justify-items: center;
   padding: 12px;
 }
@@ -133,7 +135,7 @@ html.ss-noScroll, html.ss-noScroll body{
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet Menü */
+/* Bottom-sheet menu */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
@@ -165,7 +167,7 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: zentriert statt bottom-sheet */
+/* Desktop: centered instead of bottom-sheet */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
