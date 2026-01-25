@@ -122,37 +122,38 @@ html.ss-noScroll, html.ss-noScroll body{
 }
 
 /* =========================
-   Overlay (FIX für "verschwommen")
+   Overlay (FIX für iOS "verschommen")
    ========================= */
 
-/* Default OFF: wirklich AUS */
+/* Default: wirklich AUS */
 .ss-moreOverlay{
-  display: none;              /* <<< WICHTIG */
+  display: none !important;      /* erzwingt OFF */
   position: fixed; inset: 0; z-index: 9998;
-  align-items: end;            /* bottom-sheet */
+  align-items: end;
   justify-items: center;
   padding: 12px;
 }
 
-/* ON */
+/* ON: nur wenn hidden weg ist */
 .ss-moreOverlay:not([hidden]){
-  display: grid;
+  display: grid !important;
 }
 
-/* Hart aus, wenn hidden */
-.ss-moreOverlay[hidden]{
-  display: none !important;
-}
-
-/* Backdrop */
+/* Backdrop: standardmäßig KEIN blur */
 .ss-moreBackdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.25);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Blur NUR wenn Overlay offen */
+.ss-moreOverlay:not([hidden]) .ss-moreBackdrop{
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet Menü */
+/* Menü wie gehabt */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
@@ -169,6 +170,7 @@ html.ss-noScroll, html.ss-noScroll body{
   transition: transform .16s ease, opacity .16s ease;
   color: var(--ss-text);
 }
+
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
   transform: translateY(0);
   opacity: 1;
