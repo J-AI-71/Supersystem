@@ -151,6 +151,27 @@
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
+// 6) Einhängen (Placeholder: #ss-shell)
+const mount = $("#ss-shell");
+if (!mount) return;
+mount.innerHTML = shellHTML;
+
+// ✅ 6.1) Hard reset: Overlay immer sicher AUS (Safari/Cache/State)
+const btn = document.querySelector("#ssMoreBtn");
+const overlay = document.querySelector("#ssMoreOverlay");
+
+if (overlay) overlay.hidden = true;
+if (btn) btn.setAttribute("aria-expanded", "false");
+document.documentElement.classList.remove("ss-noScroll");
+
+// 7) Active-State anhand Path
+function setActive() { /* ... */ }
+setActive();
+
+// 8) Mehr-Menü: open/close + Escape + Click-outside
+// ... deine Listener ...
+  
+
   function openMenu() {
     if (!overlay || !btn) return;
     overlay.hidden = false;
