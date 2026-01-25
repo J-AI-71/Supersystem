@@ -1,17 +1,31 @@
-/*! SafeShare Shell v2026-01-25-02 (Schema A: EN under /en/<slug>/) */
+/*! SafeShare Shell v2026-01-25-02
+    - Schema A: EN under /en/<slug>/
+    - injects header/nav/more into #ss-shell
+    - sets active tab
+    - optional language switch link in More menu (auto sister URL)
+    - NOTE: hreflang tags are NOT injectable via JS (must be in <head> per page)
+*/
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  // Locale: any /en/ in path OR <html lang="en">
+  // ====== CONFIG ======
+  // Turn language link in "More" menu on/off
+  const ENABLE_LANG_LINK = true;
+
+  // Support/contact
+  const SUPPORT_EMAIL = "listings@safesharepro.com";
+
+  // ====== 1) Locale detection ======
   const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path.includes("/en/") || htmlLang.startsWith("en");
+  const isEN = path.startsWith("/en/") || path.includes("/en/") || htmlLang.startsWith("en");
 
-  // Schema A (EN: /en/<slug>/)
-  // DE: /hilfe/ /schule/ /pro/ /datenschutz/ /impressum/ /nutzungsbedingungen/
-  // EN: /en/help/ /en/school/ /en/pro/ /en/privacy/ /en/imprint/ /en/terms/
+  // ====== 2) Link targets (Schema A) ======
+  // DE slugs: /hilfe/ /schule/ /pro/ /datenschutz/ /impressum/ /nutzungsbedingungen/
+  // EN slugs: /en/help/ /en/school/ /en/pro/ /en/privacy/ /en/imprint/ /en/terms/
   const LINKS = isEN
     ? {
         home: "/en/",
@@ -19,7 +33,7 @@
         school: "/en/school/",
         pro: "/en/pro/",
         help: "/en/help/",
-        contact: "mailto:listings@safesharepro.com",
+        support: `mailto:${SUPPORT_EMAIL}`,
         privacy: "/en/privacy/",
         imprint: "/en/imprint/",
         terms: "/en/terms/",
@@ -30,13 +44,13 @@
         school: "/schule/",
         pro: "/pro/",
         help: "/hilfe/",
-        contact: "mailto:listings@safesharepro.com",
+        support: `mailto:${SUPPORT_EMAIL}`,
         privacy: "/datenschutz/",
         imprint: "/impressum/",
         terms: "/nutzungsbedingungen/",
       };
 
-  // Labels
+  // ====== 3) Texts ======
   const T = isEN
     ? {
         start: "Start",
@@ -45,11 +59,12 @@
         pro: "Pro",
         help: "Help",
         more: "More",
-        contact: "Contact",
+        support: "Support",
         privacy: "Privacy",
         imprint: "Imprint",
         terms: "Terms",
         close: "Close",
+        langSwitch: "Deutsch",
       }
     : {
         start: "Start",
@@ -58,21 +73,62 @@
         pro: "Pro",
         help: "Hilfe",
         more: "Mehr",
-        contact: "Kontakt",
+        support: "Support",
         privacy: "Datenschutz",
         imprint: "Impressum",
         terms: "Nutzungsbedingungen",
         close: "Schließen",
+        langSwitch: "English",
       };
 
-  // Inline logo mark (no emoji, no external file)
+  // ====== 4) Brand mark (inline SVG, no emoji, no external file) ======
   const markSVG = `
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
   <path d="M12 2.6c3.1 2.6 6.3 3.3 8.4 3.6v7.1c0 5.2-3.6 9-8.4 10.9C7.2 22.3 3.6 18.5 3.6 13.3V6.2C5.7 5.9 8.9 5.2 12 2.6Z" stroke="currentColor" stroke-width="1.6" opacity=".95"/>
   <path d="M8.4 12.2l2.3 2.4 4.9-5.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
 </svg>`.trim();
 
-  const shellHTML = `
+  // ====== 5) Sister URL (for optional language link) ======
+  function normalizeSlash(p) {
+    return (p || "/").replace(/\/+$/, "/").replace(/^([^/])/, "/$1");
+  }
+
+  // Mapping between DE and EN pages
+  const MAP_DE_TO_EN = {
+    "/": "/en/",
+    "/app/": "/en/app/",
+    "/hilfe/": "/en/help/",
+    "/schule/": "/en/school/",
+    "/pro/": "/en/pro/",
+    "/datenschutz/": "/en/privacy/",
+    "/impressum/": "/en/imprint/",
+    "/nutzungsbedingungen/": "/en/terms/",
+  };
+
+  const MAP_EN_TO_DE = {
+    "/en/": "/",
+    "/en/app/": "/app/",
+    "/en/help/": "/hilfe/",
+    "/en/school/": "/schule/",
+    "/en/pro/": "/pro/",
+    "/en/privacy/": "/datenschutz/",
+    "/en/imprint/": "/impressum/",
+    "/en/terms/": "/nutzungsbedingungen/",
+  };
+
+  function sisterUrl() {
+    const p = normalizeSlash(location.pathname || "/");
+    if (isEN) return MAP_EN_TO_DE[p] || "/"; // fallback to DE home
+    return MAP_DE_TO_EN[p] || "/en/";        // fallback to EN home
+  }
+
+  // ====== 6) Shell markup ======
+  function buildShellHTML() {
+    const langLinkHTML = ENABLE_LANG_LINK
+      ? `<a class="ss-moreLink" href="${sisterUrl()}">${T.langSwitch}</a>`
+      : "";
+
+    return `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
     <span class="ss-brand__mark">${markSVG}</span>
@@ -103,23 +159,26 @@
     </div>
 
     <div class="ss-moreList" role="navigation" aria-label="${T.more}">
-      <a class="ss-moreLink" href="${LINKS.contact}">${T.contact}</a>
+      ${langLinkHTML}
+      <a class="ss-moreLink" href="${LINKS.support}">${T.support}</a>
       <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
       <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
       <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
     </div>
   </div>
 </div>
-  `.trim();
+    `.trim();
+  }
 
-  // mount
+  // ====== 7) Mount ======
   const mount = $("#ss-shell");
   if (!mount) return;
-  mount.innerHTML = shellHTML;
+  mount.innerHTML = buildShellHTML();
 
-  // active state
+  // ====== 8) Active tab ======
   function setActive() {
-    const p = (location.pathname || "/").replace(/\/+$/, "/");
+    const p = normalizeSlash(location.pathname || "/");
+
     const map = [
       { key: "home", match: [LINKS.home] },
       { key: "app", match: [LINKS.app] },
@@ -130,10 +189,10 @@
 
     let activeKey = "home";
     for (const item of map) {
-      if (item.match.some((m) => p.startsWith(m))) activeKey = item.key;
+      if (item.match.some((m) => p.startsWith(normalizeSlash(m)))) activeKey = item.key;
     }
 
-    document.querySelectorAll("[data-ss-nav]").forEach((a) => {
+    $$("[data-ss-nav]").forEach((a) => {
       const isActive = a.getAttribute("data-ss-nav") === activeKey;
       a.classList.toggle("is-active", isActive);
       if (isActive) a.setAttribute("aria-current", "page");
@@ -142,11 +201,11 @@
   }
   setActive();
 
-  // menu open/close + hard reset helper
+  // ====== 9) More menu open/close ======
   const btn = $("#ssMoreBtn");
   const overlay = $("#ssMoreOverlay");
 
-  function hardResetMenu() {
+  function forceClosedState() {
     if (overlay) overlay.hidden = true;
     if (btn) btn.setAttribute("aria-expanded", "false");
     document.documentElement.classList.remove("ss-noScroll");
@@ -169,9 +228,8 @@
     btn.focus();
   }
 
-  // ensure clean initial state (fixes "stuck overlay" after bfcache)
-  hardResetMenu();
-  window.addEventListener("pageshow", hardResetMenu);
+  // Ensure clean state on load (prevents "stuck blurred" if something cached weirdly)
+  forceClosedState();
 
   if (btn && overlay) {
     btn.addEventListener("click", () => {
@@ -185,7 +243,12 @@
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !overlay.hidden) closeMenu();
+      if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
+    });
+
+    // If tab becomes visible again, guarantee menu is closed (iOS Safari oddities)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") forceClosedState();
     });
   }
 })();
