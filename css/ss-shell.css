@@ -1,32 +1,26 @@
-/* /css/ss-shell.css */
-/* SafeShare Shell v2026-01-25-02 (blur-safe + bottom-sheet + capsule) */
+/* Datei: /css/ss-shell.css */
+/* SafeShare Shell v2026-01-25-01 (Schema: EN under /en/<slug>/) */
 
 :root{
+  /* Shell-Fallbacks (nutzt Seiten-Variablen, sonst Default) */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
   --ss-muted: var(--muted2, rgba(255,255,255,.60));
-  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
-
-  --ss-pill-bg: rgba(255,255,255,.04);
-  --ss-pill-bg-hover: rgba(255,255,255,.08);
-
+  --ss-hover: rgba(255,255,255,.06);
   --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
+  --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
+  --ss-pill-bg: rgba(255,255,255,.04);
+  --ss-pill-bg-hover: rgba(255,255,255,.08);
 }
 
+/* Header */
 .ss-header{
-  position: sticky;
-  top: 0;
-  z-index: 50;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  position: sticky; top: 0; z-index: 50;
+  display:flex; align-items:center; justify-content:space-between;
   gap: 12px;
-
   padding: 10px 14px;
-
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -34,31 +28,31 @@
 
 /* Brand */
 .ss-brand{
-  display:flex;
-  align-items:center;
-  gap: 10px;
+  display:flex; align-items:center; gap:10px;
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
 }
-.ss-brand__logo{
-  width: 18px;
-  height: 18px;
+.ss-brand__mark{
+  width: 20px; height: 20px;
+  display:inline-flex; align-items:center; justify-content:center;
   flex: 0 0 auto;
+}
+.ss-brand__img{
+  width: 20px; height: 20px;
   display:block;
+  /* gegen “verschmiert” auf iOS: kein Filter/Blur, kein transform */
+  image-rendering: auto;
 }
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
 /* Nav capsule */
 .ss-nav{
-  display:flex;
-  gap: 10px;
+  display:flex; gap: 10px;
   overflow-x:auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
@@ -71,9 +65,11 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
+/* Links + More button: exakt gleiche Capsule-Optik */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
+  -webkit-appearance:none;
   text-decoration:none;
   color: rgba(255,255,255,.72);
 
@@ -114,7 +110,7 @@
   color: var(--ss-text);
 }
 
-/* More button capsule */
+/* More button gets subtle base bg like capsule */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -130,49 +126,40 @@ html.ss-noScroll, html.ss-noScroll body{
   touch-action: none;
 }
 
-/* Overlay (BLUR-SAFE): hidden means display:none, guaranteed */
+/* Overlay */
 .ss-moreOverlay{
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
+  position: fixed; inset: 0; z-index: 9998;
   display: grid;
-  align-items: end;
+  align-items: end;            /* bottom-sheet */
   justify-items: center;
   padding: 12px;
 }
-.ss-moreOverlay[hidden]{
-  display: none !important;
-}
-
 .ss-moreBackdrop{
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background: rgba(0,0,0,.25);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet menu */
+/* Bottom-sheet Menü */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
   max-height: min(70vh, 520px);
   overflow: auto;
-
   border-radius: 18px;
   background: rgba(10,14,25,.96);
   border: 1px solid rgba(255,255,255,.12);
   box-shadow: var(--ss-shadow);
-
   padding: 10px;
   z-index: 9999;
 
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
+
   color: var(--ss-text);
 }
-
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
   transform: translateY(0);
   opacity: 1;
@@ -188,15 +175,14 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
+/* Desktop: zentriert statt bottom-sheet */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
 }
 
 .ss-moreTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display:flex; align-items:center; justify-content:space-between;
   gap: 10px;
   padding: 8px 10px 6px;
 }
@@ -206,8 +192,7 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.03);
   color: inherit;
-  font-size: 18px;
-  line-height: 1;
+  font-size: 18px; line-height: 1;
   padding: 8px 10px;
   border-radius: 12px;
   cursor: pointer;
@@ -215,12 +200,9 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreClose:hover{ background: rgba(255,255,255,.08); }
 
 .ss-moreList{
-  display:flex;
-  flex-direction:column;
-  gap: 8px;
-  padding: 6px;
+  display:flex; flex-direction:column; gap: 8px;
+  padding: 6px 6px 6px;
 }
-
 .ss-moreLink{
   display:block;
   text-decoration:none;
@@ -232,9 +214,4 @@ html.ss-noScroll, html.ss-noScroll body{
 }
 .ss-moreLink:hover{
   background: rgba(255,255,255,.08);
-}
-
-.ss-moreLink--lang{
-  border-color: rgba(47,227,183,.22);
-  background: rgba(47,227,183,.10);
 }
