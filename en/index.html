@@ -1,10 +1,11 @@
+<!-- File: /en/index.html -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare – Share clean links (local-first)</title>
-  <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Copy → Clean → Share. No upload." />
+  <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Clean links before you share them. No upload." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
@@ -14,12 +15,30 @@
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/" />
   <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="SafeShare – Share clean links (local-first)" />
+  <meta property="og:description" content="Remove tracking parameters locally in your browser. Clean links before you share them. No upload." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SafeShare" />
+  <meta property="og:url" content="https://safesharepro.com/en/" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta property="og:image:alt" content="SafeShare – Preview" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SafeShare – Share clean links" />
+  <meta name="twitter:description" content="Remove tracking parameters locally in your browser. Clean links before you share them. No upload." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta name="twitter:image:alt" content="SafeShare – Preview" />
+
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
   <!-- MASTER SHELL -->
   <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
@@ -119,7 +138,19 @@
       font-size: 12px;
       line-height: 1.55;
     }
-    .footLinks{ display:flex; gap: 10px; flex-wrap: wrap; }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+    @media(min-width: 920px){
+      .footGrid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .footLinks{
+      display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
+    }
     .footLinks a{
       padding: 6px 10px;
       border-radius: 999px;
@@ -159,15 +190,22 @@
     </section>
 
     <footer>
-      <div class="footLinks">
-        <a href="/en/">Home</a>
-        <a href="/en/app/">App</a>
-        <a href="/en/school/">School</a>
-        <a href="/en/pro/">Pro</a>
-        <a href="/en/help/">Help</a>
-        <a href="/en/privacy/">Privacy</a>
-        <a href="/en/imprint/">Imprint</a>
-        <a href="/en/terms/">Terms</a>
+      <div class="footGrid">
+        <div>
+          <div><strong>SafeShare</strong> – links without ballast.</div>
+          <div>Local-first: cleaning happens in your browser.</div>
+        </div>
+        <div class="footLinks">
+          <a href="/en/">Home</a>
+          <a href="/en/app/">App</a>
+          <a href="/en/school/">School</a>
+          <a href="/en/pro/">Pro</a>
+          <a href="/en/help/">Help</a>
+          <a href="/en/privacy/">Privacy</a>
+          <a href="/en/imprint/">Imprint</a>
+          <a href="/en/terms/">Terms</a>
+          <a href="/">DE</a>
+        </div>
       </div>
     </footer>
   </div>
