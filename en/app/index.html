@@ -1,11 +1,10 @@
-<!-- Datei: /en/app/index.html (EN) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare App – Clean links (local-first)</title>
-  <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
+  <meta name="description" content="SafeShare removes tracking parameters from URLs (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
   <meta name="robots" content="index,follow" />
 
   <link rel="canonical" href="https://safesharepro.com/en/app/" />
@@ -22,28 +21,28 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/en/app/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-21-01" />
-  <meta property="og:image:alt" content="SafeShare App – Preview" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-25-01" />
+  <meta property="og:image:alt" content="SafeShare App – preview" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SafeShare App – Clean links" />
-  <meta name="twitter:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-21-01" />
-  <meta name="twitter:image:alt" content="SafeShare App – Preview" />
+  <meta name="twitter:description" content="Remove tracking parameters locally. Paste → Clean → Copy/Share." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-25-01" />
+  <meta name="twitter:image:alt" content="SafeShare App – preview" />
 
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
   <!-- MASTER SHELL -->
-  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
-  <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-02">
+  <script src="/js/ss-shell.js?v=2026-01-25-02" defer></script>
 
   <style>
     :root{
@@ -152,7 +151,6 @@
     }
     textarea.field{ min-height: 110px; resize: vertical; }
     .field:focus{ box-shadow: var(--focus); border-color: rgba(47,227,183,.35); }
-
     .resultBox{
       margin-top: 10px;
       padding: 12px 12px;
@@ -164,7 +162,6 @@
       line-height: 1.5;
       word-break: break-word;
     }
-
     .kv{
       display:flex; gap:10px; flex-wrap:wrap;
       font-size: 12px; color: var(--muted2);
@@ -176,82 +173,12 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
     }
-
-    /* Impact */
-    .ssImpactGrid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: .75rem;
-      margin: .75rem 0;
-    }
-    .ssImpactItem{
-      padding:.75rem;
-      border:1px solid var(--border);
-      border-radius: .9rem;
-      background: rgba(255,255,255,.03);
-    }
-    @media (prefers-color-scheme: light){
-      .ssImpactItem{ background: rgba(17,24,39,.03); }
-    }
-    .ssImpactNum{
-      font-size: 1.6rem;
-      font-weight: 780;
-      letter-spacing: -0.02em;
-    }
-    .ssImpactLabel{
-      font-size: .9rem;
-      color: var(--muted2);
-    }
-    .ssImpactHeaderRow{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:12px;
-      margin-top:-2px;
-    }
-    .ssImpactSessionLabel{
-      font-size:12px;
-      color:var(--muted2);
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    .ssImpactLast{
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px dashed rgba(255,255,255,.14);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-    .ssImpactLastTitle{
-      color: var(--muted2);
-      margin-right: 6px;
-    }
-    @media (prefers-color-scheme: light){
-      .ssImpactSessionLabel{ background: rgba(17,24,39,.03); border-color: rgba(17,24,39,.12); }
-      .ssImpactLast{ background: rgba(17,24,39,.03); border-color: rgba(17,24,39,.14); }
-    }
-
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
       color: var(--muted2);
       font-size: 12px;
       line-height: 1.55;
-    }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 14px;
-    }
-    @media(min-width: 920px){
-      .footGrid{ grid-template-columns: 1.2fr .8fr; }
     }
     .footLinks{
       display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-start;
@@ -268,24 +195,25 @@
 </head>
 
 <body>
-  <!-- Master-Shell: Header/Nav/More -->
+  <!-- Master-Shell -->
   <div id="ss-shell"></div>
 
   <div class="wrap">
+
     <section class="card">
       <h1 id="i18n_h1">Clean a link</h1>
       <p id="i18n_introP">
-        Tracking parameters are extra data attached to a link — like labels. SafeShare removes common tracking keys locally in your browser.
+        Tracking parameters are extra data on a link — like labels. SafeShare removes common tracking keys locally in your browser.
         Nothing is uploaded.
       </p>
       <div class="note" id="i18n_note">
-        Note: this is not an “invisibility” promise. It’s link hygiene when sharing.
+        Note: This is not an “invisible” promise. It’s link hygiene before sharing.
       </div>
     </section>
 
     <section class="card" id="cleaner">
       <h2 id="i18n_cleanerH2">Paste a URL</h2>
-      <p id="i18n_cleanerP">Paste → Clean → copy/share the result.</p>
+      <p id="i18n_cleanerP">Paste → Clean → Copy/Share the result.</p>
 
       <textarea class="field mono" id="urlInput" placeholder="https://example.com/page?utm_source=...&fbclid=..."></textarea>
 
@@ -309,19 +237,18 @@
         <button class="btn" id="btnShare" type="button" hidden>Share</button>
       </div>
 
-      <!-- Post-clean: repeat-use + Pro intent -->
       <p id="postCleanNudge" class="muted" hidden style="margin-top:10px">
-        Tip: drop any link here → share clean.
+        Tip: Drop every link here → share clean.
       </p>
 
       <p id="postCleanTargets" class="muted2" hidden style="margin-top:-6px">
-        Works well with WhatsApp, Signal, Mail, Slack — just paste after copying.
+        Works well with WhatsApp, Signal, email, Slack — just paste after copying.
       </p>
 
       <div id="postCleanPro" class="card" hidden style="margin-top:12px; padding:12px; background: rgba(255,255,255,.03)">
-        <b>Want more control?</b>
+        <b>Need more control?</b>
         <p class="muted" style="margin:6px 0 0">
-          See exactly what was removed, keep selected parameters, use policies/audit →
+          See what was removed, keep selected parameters, use policies/audit →
           <a href="/en/pro/" rel="nofollow">SafeShare Pro</a>
         </p>
       </div>
@@ -329,56 +256,15 @@
       <details id="postCleanRemember" class="card" hidden style="margin-top:12px; padding:12px; background: rgba(255,255,255,.03)">
         <summary><b>Make it a habit</b></summary>
         <p class="muted" style="margin:8px 0 0">
-          Bookmark SafeShare or add it to your home screen so you can clean with 1 tap next time.
+          Add a bookmark or install to your home screen so you can clean in one tap next time.
         </p>
       </details>
 
       <div class="kv" id="auditRow" hidden></div>
 
       <div class="note" style="margin-top:12px">
-        If the cleaned link breaks: open the original → compare. If only the cleaned link fails,
-        a removed parameter was probably functional. Then clean more conservatively (or Pro: audit/allowlists/policies).
-      </div>
-    </section>
-
-    <!-- Impact (local-first) -->
-    <section class="card" id="ssImpactCard" hidden>
-      <div class="ssImpactHeaderRow">
-        <h2 style="margin:0" id="i18n_impactTitle">Impact</h2>
-        <span class="ssImpactSessionLabel" id="i18n_impactSession">Session (this tab)</span>
-      </div>
-
-      <div class="ssImpactGrid">
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactLinks">0</div>
-          <div class="ssImpactLabel" id="i18n_impactLinks">Links cleaned</div>
-        </div>
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactParams">0</div>
-          <div class="ssImpactLabel" id="i18n_impactParams">Parameters removed</div>
-        </div>
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactAdIds">0</div>
-          <div class="ssImpactLabel" id="i18n_impactAdIds">Ad IDs removed</div>
-        </div>
-        <div class="ssImpactItem">
-          <div class="ssImpactNum" id="ssImpactUTM">0</div>
-          <div class="ssImpactLabel" id="i18n_impactUtm">UTM removed</div>
-        </div>
-      </div>
-
-      <p class="muted2" id="i18n_impactNote">
-        Only totals are stored locally in this tab (no URLs, no domains). (Gone after reload.)
-      </p>
-
-      <div class="row">
-        <button class="btn ghost" type="button" id="ssImpactReset"><span id="i18n_impactReset">Reset stats</span></button>
-        <span class="muted2"><span id="i18n_impactUpdatedPrefix">Last:</span> <span id="ssImpactUpdated">—</span></span>
-      </div>
-
-      <div class="ssImpactLast" id="ssImpactLastLineWrap" hidden>
-        <span class="ssImpactLastTitle" id="i18n_impactLastPrefix">Last link:</span>
-        <span id="ssImpactLastLine"></span>
+        If the cleaned link doesn’t work: open the original → compare. If only the cleaned link fails,
+        a removed parameter was likely functional. Then clean more conservatively (or Pro: audit/allowlist/policies).
       </div>
     </section>
 
@@ -390,31 +276,26 @@
         <li>more common tracking keys (e.g. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>, <span class="mono">srsltid</span>)</li>
       </ul>
       <div class="warn">
-        Don’t blindly remove “everything”: affiliate/ref keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) may be intentional.
+        Don’t blindly remove “everything”: affiliate/ref keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) can be intentional.
         Pro is for policies + audit + allowlists.
       </div>
       <div class="row">
-        <a class="btn" href="/en/help/">Help</a>
-        <a class="btn" href="/en/privacy/">Privacy</a>
+        <a class="btn" href="/en/tracking-parameters/">Tracking explained</a>
+        <a class="btn" href="/en/remove-utm-parameters/">UTM explained</a>
         <a class="btn ghost" href="/app/">Deutsch</a>
       </div>
     </section>
 
     <footer>
-      <div class="footGrid">
-        <div>
-          <div><strong>SafeShare</strong> – share links without ballast.</div>
-          <div>Local-first: cleaning happens in your browser.</div>
-        </div>
-        <div class="footLinks">
-          <a data-page="home" href="/en/">Home</a>
-          <a data-page="app" href="/en/app/">App</a>
-          <a data-page="school" href="/en/school/">School</a>
-          <a data-page="pro" href="/en/pro/">Pro</a>
-          <a data-page="help" href="/en/help/">Help</a>
-          <a data-page="privacy" href="/en/privacy/">Privacy</a>
-          <a href="/app/" title="Deutsch">DE</a>
-        </div>
+      <div class="footLinks">
+        <a href="/en/">Home</a>
+        <a href="/en/app/">App</a>
+        <a href="/en/school/">School</a>
+        <a href="/en/pro/">Pro</a>
+        <a href="/en/help/">Help</a>
+        <a href="/en/privacy/">Privacy</a>
+        <a href="/en/imprint/">Imprint</a>
+        <a href="/en/terms/">Terms</a>
       </div>
     </footer>
 
@@ -423,9 +304,6 @@
   <script>
     (function(){
       const $ = (s)=>document.querySelector(s);
-      const byId = (id)=>document.getElementById(id);
-      const on = (el, ev, fn)=> el && el.addEventListener(ev, fn);
-
       const input = $('#urlInput');
       const msg = $('#msg');
       const resultCard = $('#resultCard');
@@ -437,7 +315,7 @@
       const postCleanTargets = $('#postCleanTargets');
       const postCleanPro = $('#postCleanPro');
       const postCleanRemember = $('#postCleanRemember');
-      const btnShare = byId('btnShare');
+      const btnShare = document.getElementById('btnShare');
 
       const TRACKING_KEYS = new Set([
         'gclid','dclid','gbraid','wbraid',
@@ -451,21 +329,6 @@
         '_fbp','_fbc',
         'obclid','tblci'
       ]);
-
-      const I18N = {
-        en: {
-          removedLabel: "Removed",
-          keptLabel: "Kept",
-          copied: "Copied ✓",
-          shareFallback: "Sharing is not available (or was cancelled) — link was copied.",
-          pasteNote: "iPad/Safari: tap into the field and use “Paste”. The browser may block clipboard access.",
-          errPasteLink: "Please paste a link.",
-          errNoValidLink: "No valid link found (only text detected).",
-          errInvalidUrl: "This doesn’t look like a valid URL.",
-          impactLastLineFmt: "Removed: {removed} params{adPart}{utmPart}"
-        }
-      };
-      const t = (k)=> (I18N.en[k] || "");
 
       function showMsg(type, text){
         msg.hidden = !text;
@@ -495,14 +358,14 @@
 
       function cleanUrl(raw){
         const original = (raw || '').trim();
-        if (!original) throw new Error(t('errPasteLink'));
+        if (!original) throw new Error("Please paste a link.");
 
         const extracted = extractFirstUrl(original);
-        if (!extracted) throw new Error(t('errNoValidLink'));
+        if (!extracted) throw new Error("No valid link found (only text detected).");
 
         let url;
         try{ url = new URL(extracted); }
-        catch(e){ throw new Error(t('errInvalidUrl')); }
+        catch(e){ throw new Error("This doesn’t look like a valid URL."); }
 
         const removed = [];
         const kept = [];
@@ -567,8 +430,8 @@
 
         if (r.length || k.length){
           auditRow.hidden = false;
-          if (r.length) auditRow.appendChild(auditChip(t('removedLabel'), r));
-          if (k.length) auditRow.appendChild(auditChip(t('keptLabel'), k));
+          if (r.length) auditRow.appendChild(auditChip("Removed", r));
+          if (k.length) auditRow.appendChild(auditChip("Kept", k));
         } else {
           auditRow.hidden = true;
         }
@@ -589,182 +452,6 @@
         if (btnShare) btnShare.hidden = !navigator.share;
       }
 
-      // ===== Impact (session + no double count) =====
-      const IMPACT_KEY = "ss_impact_v2";
-      const SEEN_KEY   = "ss_seen_v2";
-
-      const AD_ID_KEYS = new Set([
-        "gclid","dclid","gbraid","wbraid",
-        "fbclid","msclkid","ttclid","twclid","li_fat_id",
-        "igshid","yclid",
-        "mc_cid","mc_eid","mkt_tok",
-        "srsltid"
-      ]);
-
-      const __SS_MEM = window.__SS_MEM || (window.__SS_MEM = {});
-      let __SS_STORAGE_OK = null;
-
-      function ssStorageOk(){
-        if (__SS_STORAGE_OK !== null) return __SS_STORAGE_OK;
-        try{
-          const k = "__ss_test__";
-          sessionStorage.setItem(k, "1");
-          sessionStorage.removeItem(k);
-          __SS_STORAGE_OK = true;
-        }catch(e){
-          __SS_STORAGE_OK = false;
-        }
-        return __SS_STORAGE_OK;
-      }
-      function ssStorageGet(k){
-        try{ if (ssStorageOk()) return sessionStorage.getItem(k); }catch(e){}
-        return (k in __SS_MEM) ? __SS_MEM[k] : null;
-      }
-      function ssStorageSet(k,v){
-        try{ if (ssStorageOk()) { sessionStorage.setItem(k, v); return; } }catch(e){}
-        __SS_MEM[k] = String(v);
-      }
-      function ssStorageDel(k){
-        try{ if (ssStorageOk()) { sessionStorage.removeItem(k); return; } }catch(e){}
-        delete __SS_MEM[k];
-      }
-
-      function impactLoad(){
-        try{
-          const raw = ssStorageGet(IMPACT_KEY);
-          const d = raw ? JSON.parse(raw) : null;
-          return Object.assign({
-            linksCleaned: 0,
-            paramsRemoved: 0,
-            utmRemoved: 0,
-            adIdsRemoved: 0,
-            lastUpdatedISO: ""
-          }, d || {});
-        }catch(e){
-          return { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        }
-      }
-      function impactSave(state){
-        try{ ssStorageSet(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
-      }
-      function impactFormat(n){
-        try{ return new Intl.NumberFormat("en-US").format(n); }catch(e){ return String(n); }
-      }
-      function impactSetText(id, text){
-        const el = byId(id);
-        if (el) el.textContent = text;
-      }
-      function impactShowCardIfAny(state){
-        const card = byId("ssImpactCard");
-        if (!card) return;
-        const hasAny = (state.linksCleaned || state.paramsRemoved || state.adIdsRemoved || state.utmRemoved);
-        card.hidden = !hasAny;
-      }
-      function impactClearLastLine(){
-        const wrap = byId("ssImpactLastLineWrap");
-        const line = byId("ssImpactLastLine");
-        if (line) line.textContent = "";
-        if (wrap) wrap.hidden = true;
-      }
-      function impactWriteLastLine(removedKeys){
-        const wrap = byId("ssImpactLastLineWrap");
-        const lineEl = byId("ssImpactLastLine");
-        if (!wrap || !lineEl) return;
-
-        const keys = Array.isArray(removedKeys) ? removedKeys.map(k => String(k || "").trim()).filter(Boolean) : [];
-        if (!keys.length){ impactClearLastLine(); return; }
-
-        const removedCount = keys.length;
-        const utm = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        const ad  = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-
-        const text = String(t('impactLastLineFmt')).replace(/\{(\w+)\}/g, (_, k) => {
-          if (k === "removed") return String(removedCount);
-          if (k === "adPart") return ad ? ` (${ad} ad IDs)` : "";
-          if (k === "utmPart") return utm ? `, incl. ${utm} UTM` : "";
-          return "";
-        });
-
-        lineEl.textContent = text;
-        wrap.hidden = false;
-      }
-      function impactUpdateUI(state){
-        impactSetText("ssImpactLinks", impactFormat(state.linksCleaned));
-        impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
-        impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
-        impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
-        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString("en-US") : "—");
-        impactShowCardIfAny(state);
-      }
-
-      let __SEEN_MEM = { map: Object.create(null) };
-
-      function seenInitOnce(){
-        try{
-          const raw = ssStorageGet(SEEN_KEY);
-          if (!raw) return;
-          const d = JSON.parse(raw);
-          if (d && d.map && typeof d.map === "object") {
-            __SEEN_MEM.map = Object.assign(Object.create(null), d.map);
-          }
-        }catch(e){}
-      }
-      function seenPersistBestEffort(){
-        try{ ssStorageSet(SEEN_KEY, JSON.stringify({ map: __SEEN_MEM.map })); }catch(e){}
-      }
-
-      function signature(cleanedUrl, removedKeys){
-        const r = Array.isArray(removedKeys) ? removedKeys.map(k=>String(k||"").trim().toLowerCase()).filter(Boolean) : [];
-        r.sort();
-        return String(cleanedUrl || "") + "||" + r.join(",");
-      }
-
-      function impactAddIfNew(cleanedUrl, removedKeys){
-        const keys = Array.isArray(removedKeys)
-          ? removedKeys.map(k => String(k || "").trim()).filter(Boolean)
-          : [];
-
-        if (keys.length === 0) return false;
-
-        const sig = signature(cleanedUrl, keys);
-        if (__SEEN_MEM.map[sig]) return false;
-
-        __SEEN_MEM.map[sig] = 1;
-        seenPersistBestEffort();
-
-        const state = impactLoad();
-        state.linksCleaned += 1;
-        state.paramsRemoved += keys.length;
-        state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
-        state.lastUpdatedISO = new Date().toISOString();
-
-        impactSave(state);
-        impactUpdateUI(state);
-        impactWriteLastLine(keys);
-        return true;
-      }
-
-      function impactReset(){
-        __SEEN_MEM = { map: Object.create(null) };
-        ssStorageDel(IMPACT_KEY);
-        ssStorageDel(SEEN_KEY);
-
-        const state = { linksCleaned:0, paramsRemoved:0, utmRemoved:0, adIdsRemoved:0, lastUpdatedISO:"" };
-        impactSave(state);
-        impactUpdateUI(state);
-        impactClearLastLine();
-      }
-
-      function impactInit(){
-        seenInitOnce();
-        const state = impactLoad();
-        impactUpdateUI(state);
-        impactClearLastLine();
-        const btn = byId("ssImpactReset");
-        if (btn) on(btn, "click", impactReset);
-      }
-
       function doClean(){
         showMsg('', '');
         resultCard.hidden = true;
@@ -773,41 +460,33 @@
         try{
           const res = cleanUrl(input.value);
           renderResult(res);
-
           postCleanShow();
-          impactAddIfNew(res.cleaned, res.removed);
-
-          const card = byId("ssImpactCard");
-          if (card) card.hidden = false;
-
-          setTimeout(()=>byId('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
+          setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'}), 40);
         }catch(e){
           showMsg('warn', e.message || 'Error while cleaning.');
         }
       }
 
-      on(input, "input", ()=>{
+      input.addEventListener('input', ()=>{
         const v = (input.value || "").trim();
         if (!v){
           resultCard.hidden = true;
           postCleanHide();
           showMsg('', '');
-          impactClearLastLine();
         }
       });
 
-      on(byId("btnClean"), "click", doClean);
+      document.getElementById('btnClean').addEventListener('click', doClean);
 
-      on(byId("btnClear"), "click", ()=>{
+      document.getElementById('btnClear').addEventListener('click', ()=>{
         input.value = '';
         resultCard.hidden = true;
         postCleanHide();
         showMsg('', '');
-        impactClearLastLine();
         input.focus();
       });
 
-      on(byId("btnPaste"), "click", async ()=>{
+      document.getElementById('btnPaste').addEventListener('click', async ()=>{
         showMsg('', '');
         try{
           if (navigator.clipboard && navigator.clipboard.readText){
@@ -819,36 +498,39 @@
               return;
             }
           }
-          showMsg('note', t('pasteNote'));
+          showMsg('note', "iPad/Safari: tap the field and use “Paste”. Clipboard can be blocked sometimes.");
           input.focus();
         }catch(e){
-          showMsg('note', t('pasteNote'));
+          showMsg('note', "iPad/Safari: tap the field and use “Paste”. Clipboard can be blocked sometimes.");
           input.focus();
         }
       });
 
-      on(byId("btnCopy"), "click", async ()=>{
+      document.getElementById('btnCopy').addEventListener('click', async ()=>{
         const text = (outUrl.textContent || '').trim();
         if(!text) return;
         await copyText(text);
-        const b = byId('btnCopy');
+        const b = document.getElementById('btnCopy');
         const old = b.textContent;
-        b.textContent = t('copied');
+        b.textContent = "Copied ✓";
         setTimeout(()=>b.textContent=old, 1200);
       });
 
-      on(byId("btnShare"), "click", async ()=>{
+      document.getElementById('btnShare').addEventListener('click', async ()=>{
         const text = (outUrl.textContent || '').trim();
         if(!text) return;
 
         if (navigator.share){
-          try{ await navigator.share({ url: text }); return; }catch(e){}
+          try{
+            await navigator.share({ url: text });
+            return;
+          }catch(e){}
         }
         await copyText(text);
-        showMsg('note', t('shareFallback'));
+        showMsg('note', "Share isn’t available (or was cancelled) — the link was copied.");
       });
 
-      // Optional: Prefill via ?u=...&run=1
+      // Prefill via ?u=...&run=1
       (function(){
         const sp = new URLSearchParams(location.search);
         const u = sp.get('u');
@@ -863,7 +545,6 @@
       })();
 
       postCleanHide();
-      impactInit();
     })();
   </script>
 </body>
