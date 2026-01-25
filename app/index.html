@@ -10,8 +10,8 @@
 
   <link rel="canonical" href="https://safesharepro.com/app/" />
   <link rel="alternate" hreflang="de" href="https://safesharepro.com/app/" />
-  <link rel="alternate" hreflang="en" href="https://safesharepro.com/app/en/" />
-  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/app/en/" />
+  <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/app/" />
+  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/app/" />
 
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
@@ -47,9 +47,9 @@
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
 
   <!-- MASTER SHELL -->
-  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
-<script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
-  
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-03">
+  <script src="/js/ss-shell.js?v=2026-01-25-03" defer></script>
+
   <style>
     :root{
       --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020;
@@ -276,6 +276,7 @@
   <div id="ss-shell"></div>
 
   <div class="wrap">
+
     <section class="card">
       <h1 id="i18n_h1">Link bereinigen</h1>
       <p id="i18n_introP">
@@ -344,7 +345,7 @@
       </div>
     </section>
 
-    <!-- Impact (local-first) -->
+    <!-- Impact (session, last-link counts) -->
     <section class="card" id="ssImpactCard" hidden>
       <div class="ssImpactHeaderRow">
         <h2 style="margin:0" id="i18n_impactTitle">Impact</h2>
@@ -399,7 +400,7 @@
       <div class="row">
         <a class="btn" href="/tracking-parameter/">Tracking erklärt</a>
         <a class="btn" href="/utm-parameter-entfernen/">UTM erklärt</a>
-        <a class="btn ghost" href="/app/en/">English</a>
+        <a class="btn ghost" href="/en/app/">English</a>
       </div>
     </section>
 
@@ -415,21 +416,17 @@
           <a data-page="schule" href="/schule/">Schule</a>
           <a data-page="pro" href="/pro/">Pro</a>
           <a data-page="hilfe" href="/hilfe/">Hilfe</a>
-          <a href="/app/en/" title="English">EN</a>
+          <a href="/en/app/" title="English">EN</a>
         </div>
       </div>
     </footer>
+
   </div>
 
   <script>
     (function(){
       // ===== App logic (iPad Safari hardened) =====
       const $ = (s)=>document.querySelector(s);
-
-      // SAFE helpers (verhindert Crash wenn ein Element mal fehlt)
-      const byId = (id) => document.getElementById(id);
-      const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
-
       const input = $('#urlInput');
       const msg = $('#msg');
       const resultCard = $('#resultCard');
@@ -441,7 +438,7 @@
       const postCleanTargets = $('#postCleanTargets');
       const postCleanPro = $('#postCleanPro');
       const postCleanRemember = $('#postCleanRemember');
-      const btnShareEl = byId('btnShare');
+      const btnShare = document.getElementById('btnShare');
 
       const TRACKING_KEYS = new Set([
         'gclid','dclid','gbraid','wbraid',
@@ -456,7 +453,7 @@
         'obclid','tblci'
       ]);
 
-      // ===== i18n (DE-only safe) =====
+      // ===== i18n (DE) =====
       function getLang(){
         const l = (document.documentElement.getAttribute('lang') || 'de').toLowerCase();
         return l.startsWith('en') ? 'en' : 'de';
@@ -658,7 +655,6 @@
         }
       }
 
-      // ---- Safe audit rendering (no innerHTML) ----
       function auditChip(label, keys){
         const span = document.createElement('span');
         span.appendChild(document.createTextNode(label + ': '));
@@ -687,25 +683,24 @@
         }
       }
 
-      // ===== Post-clean show/hide =====
       function postCleanHide(){
         if (postCleanNudge) postCleanNudge.hidden = true;
         if (postCleanTargets) postCleanTargets.hidden = true;
         if (postCleanPro) postCleanPro.hidden = true;
         if (postCleanRemember) postCleanRemember.hidden = true;
-        if (btnShareEl) btnShareEl.hidden = true;
+        if (btnShare) btnShare.hidden = true;
       }
       function postCleanShow(){
         if (postCleanNudge) postCleanNudge.hidden = false;
         if (postCleanTargets) postCleanTargets.hidden = false;
         if (postCleanPro) postCleanPro.hidden = false;
         if (postCleanRemember) postCleanRemember.hidden = false;
-        if (btnShareEl) btnShareEl.hidden = !navigator.share; // only show where supported
+        if (btnShare) btnShare.hidden = !navigator.share;
       }
 
-      // ===== Impact (session + no double count) =====
-      const IMPACT_KEY = "ss_impact_v2";
-      const SEEN_KEY   = "ss_seen_v2";
+      // ===== Impact (session + no double count of same cleaned+removed set) =====
+      const IMPACT_KEY = "ss_impact_v3";
+      const SEEN_KEY   = "ss_seen_v3";
 
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
@@ -715,7 +710,6 @@
         "srsltid"
       ]);
 
-      // ===== Storage wrapper: sessionStorage if possible, else in-memory fallback (same tab) =====
       const __SS_MEM = window.__SS_MEM || (window.__SS_MEM = {});
       let __SS_STORAGE_OK = null;
 
@@ -731,25 +725,16 @@
         }
         return __SS_STORAGE_OK;
       }
-
       function ssStorageGet(k){
-        try{
-          if (ssStorageOk()) return sessionStorage.getItem(k);
-        }catch(e){}
+        try{ if (ssStorageOk()) return sessionStorage.getItem(k); }catch(e){}
         return (k in __SS_MEM) ? __SS_MEM[k] : null;
       }
-
       function ssStorageSet(k,v){
-        try{
-          if (ssStorageOk()) { sessionStorage.setItem(k, v); return; }
-        }catch(e){}
+        try{ if (ssStorageOk()) { sessionStorage.setItem(k, v); return; } }catch(e){}
         __SS_MEM[k] = String(v);
       }
-
       function ssStorageDel(k){
-        try{
-          if (ssStorageOk()) { sessionStorage.removeItem(k); return; }
-        }catch(e){}
+        try{ if (ssStorageOk()) { sessionStorage.removeItem(k); return; } }catch(e){}
         delete __SS_MEM[k];
       }
 
@@ -758,10 +743,10 @@
           const raw = ssStorageGet(IMPACT_KEY);
           const d = raw ? JSON.parse(raw) : null;
           return Object.assign({
-            linksCleaned: 0,
-            paramsRemoved: 0,
-            utmRemoved: 0,
-            adIdsRemoved: 0,
+            linksCleaned: 0,     // session counter
+            paramsRemoved: 0,    // LAST LINK only
+            utmRemoved: 0,       // LAST LINK only
+            adIdsRemoved: 0,     // LAST LINK only
             lastUpdatedISO: ""
           }, d || {});
         }catch(e){
@@ -820,7 +805,6 @@
         impactShowCardIfAny(state);
       }
 
-      // ---- Seen: keep in-memory for the whole tab, persist best-effort ----
       let __SEEN_MEM = { map: Object.create(null) };
 
       function seenInitOnce(){
@@ -834,11 +818,8 @@
         }catch(e){}
       }
       function seenPersistBestEffort(){
-        try{
-          ssStorageSet(SEEN_KEY, JSON.stringify({ map: __SEEN_MEM.map }));
-        }catch(e){}
+        try{ ssStorageSet(SEEN_KEY, JSON.stringify({ map: __SEEN_MEM.map })); }catch(e){}
       }
-
       function signature(cleanedUrl, removedKeys){
         const r = Array.isArray(removedKeys) ? removedKeys.map(k=>String(k||"").trim().toLowerCase()).filter(Boolean) : [];
         r.sort();
@@ -850,21 +831,23 @@
           ? removedKeys.map(k => String(k || "").trim()).filter(Boolean)
           : [];
 
-        // only count if something was actually removed
         if (keys.length === 0) return false;
 
         const sig = signature(cleanedUrl, keys);
-
         if (__SEEN_MEM.map[sig]) return false;
         __SEEN_MEM.map[sig] = 1;
         seenPersistBestEffort();
 
         const state = impactLoad();
 
+        // session counter (ok to count upward)
         state.linksCleaned += 1;
-        state.paramsRemoved += keys.length;
-        state.utmRemoved += keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
-        state.adIdsRemoved += keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+
+        // LAST LINK only (fix: not cumulative)
+        state.paramsRemoved = keys.length;
+        state.utmRemoved = keys.filter(k => k.toLowerCase().startsWith("utm_")).length;
+        state.adIdsRemoved = keys.filter(k => AD_ID_KEYS.has(k.toLowerCase())).length;
+
         state.lastUpdatedISO = new Date().toISOString();
 
         impactSave(state);
@@ -888,7 +871,7 @@
         seenInitOnce();
         const state = impactLoad();
         impactUpdateUI(state);
-        impactClearLastLine(); // no stale "Last link" on load
+        impactClearLastLine();
         const btn = document.getElementById("ssImpactReset");
         if (btn) btn.addEventListener("click", impactReset);
       }
@@ -901,10 +884,8 @@
         try{
           const res = cleanUrl(input.value);
           renderResult(res);
-
           postCleanShow();
 
-          // only count if new in this tab
           impactAddIfNew(res.cleaned, res.removed);
 
           const card = document.getElementById("ssImpactCard");
@@ -916,7 +897,6 @@
         }
       }
 
-      // Input listener bleibt (Element existiert hier sicher)
       input.addEventListener('input', ()=>{
         const v = (input.value || "").trim();
         if (!v){
@@ -927,10 +907,9 @@
         }
       });
 
-      // ===== SAFE event bindings (kein Crash wenn Buttons fehlen) =====
-      on(byId("btnClean"), "click", doClean);
+      document.getElementById('btnClean').addEventListener('click', doClean);
 
-      on(byId("btnClear"), "click", () => {
+      document.getElementById('btnClear').addEventListener('click', ()=>{
         input.value = '';
         resultCard.hidden = true;
         postCleanHide();
@@ -939,7 +918,7 @@
         input.focus();
       });
 
-      on(byId("btnPaste"), "click", async () => {
+      document.getElementById('btnPaste').addEventListener('click', async ()=>{
         showMsg('', '');
         try{
           if (navigator.clipboard && navigator.clipboard.readText){
@@ -959,25 +938,22 @@
         }
       });
 
-      on(byId("btnCopy"), "click", async () => {
+      document.getElementById('btnCopy').addEventListener('click', async ()=>{
         const text = (outUrl.textContent || '').trim();
         if(!text) return;
         await copyText(text);
-        const b = byId('btnCopy');
+        const b = document.getElementById('btnCopy');
         const old = b.textContent;
         b.textContent = t('copied');
         setTimeout(()=>b.textContent=old, 1200);
       });
 
-      on(btnShareEl, "click", async () => {
+      document.getElementById('btnShare').addEventListener('click', async ()=>{
         const text = (outUrl.textContent || '').trim();
         if(!text) return;
 
         if (navigator.share){
-          try{
-            await navigator.share({ url: text });
-            return;
-          }catch(e){}
+          try{ await navigator.share({ url: text }); return; }catch(e){}
         }
         await copyText(text);
         showMsg('note', t('shareFallback'));
