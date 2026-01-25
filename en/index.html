@@ -1,11 +1,11 @@
-<!-- File: /en/index.html -->
+<!-- /en/index.html (EN) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SafeShare – Share clean links (local-first)</title>
-  <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Clean links before you share them. No upload." />
+  <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Copy → Clean → Share. No upload." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
@@ -15,13 +15,18 @@
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/" />
   <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="SafeShare – Share clean links (local-first)" />
-  <meta property="og:description" content="Remove tracking parameters locally in your browser. Clean links before you share them. No upload." />
+  <!-- Google Search Console -->
+  <meta name="google-site-verification" content="NYTOoCOU2LnM29WvowsEd0KxsgVfIqwOB37zJXBcaJg" />
+  <!-- Bing Webmaster Tools -->
+  <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="SafeShare – Share clean links" />
+  <meta property="og:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Copy → Clean → Share." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/en/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-01" />
   <meta property="og:image:alt" content="SafeShare – Preview" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -29,20 +34,38 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SafeShare – Share clean links" />
-  <meta name="twitter:description" content="Remove tracking parameters locally in your browser. Clean links before you share them. No upload." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <meta name="twitter:description" content="Remove tracking parameters locally in your browser. Copy → Clean → Share." />
+  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-01" />
   <meta name="twitter:image:alt" content="SafeShare – Preview" />
 
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
   <!-- MASTER SHELL -->
   <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
   <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SafeShare",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web",
+    "url": "https://safesharepro.com/en/",
+    "description": "SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Copy → Clean → Share.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    }
+  }
+  </script>
 
   <style>
     :root{
@@ -88,6 +111,9 @@
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
 
+    .muted{ color: var(--muted); }
+    .muted2{ color: var(--muted2); }
+
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -131,6 +157,24 @@
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
 
+    /* Before/After hero image */
+    .heroBA{
+      margin: 10px 0 0;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadow);
+    }
+    @media (prefers-color-scheme: light){
+      .heroBA{ background: rgba(17,24,39,.03); }
+    }
+    .heroBAImg{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
     footer{
       margin-top: 18px;
       padding: 18px 4px 10px;
@@ -163,12 +207,15 @@
 </head>
 
 <body>
+  <!-- Master-Shell placeholder -->
   <div id="ss-shell"></div>
 
   <div class="wrap">
     <section class="card">
       <h1>Share clean links</h1>
-      <p>Many links include extra tracking data — like labels on a package. Useful for analytics, but unnecessary when you forward/share.</p>
+      <p>
+        Many links include extra tracking data — like labels on a package. Useful for analytics, but unnecessary when you forward/share.
+      </p>
 
       <div class="row">
         <a class="btn primary" href="/en/app/">Open App</a>
@@ -176,12 +223,37 @@
         <a class="btn ghost" href="/en/pro/">Pro</a>
       </div>
 
-      <div class="note">SafeShare cleans typical tracking parameters locally in your browser. No upload. No logs.</div>
+      <div class="note">
+        SafeShare cleans typical tracking parameters locally in your browser. No upload. No logs.
+      </div>
+    </section>
+
+    <section class="card" aria-label="Before/after example">
+      <h2>Before / After</h2>
+
+      <figure class="heroBA">
+        <img
+          class="heroBAImg"
+          src="/assetts/hero-vorher-nachher.png?v=2026-01-25-01"
+          width="1200"
+          height="675"
+          alt="Before and after: tracking parameters removed from a shared link"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+
+      <p class="muted" style="margin-top:10px">
+        Example: tracking “labels” removed locally in your browser. No upload.
+      </p>
     </section>
 
     <section class="card">
       <h2>When not to remove everything</h2>
-      <p>Some parameters are functional (filters, language, product IDs) or intentional (affiliate/ref). Pro adds audit + allowlists/policies.</p>
+      <p>
+        Some parameters are functional (filters, language, product IDs) or intentional (affiliate/ref).
+        Pro adds audit + allowlists/policies.
+      </p>
       <div class="row">
         <a class="btn" href="/en/help/">Help</a>
         <a class="btn" href="/en/privacy/">Privacy</a>
@@ -192,7 +264,7 @@
     <footer>
       <div class="footGrid">
         <div>
-          <div><strong>SafeShare</strong> – links without ballast.</div>
+          <div><strong>SafeShare</strong> — share links without ballast.</div>
           <div>Local-first: cleaning happens in your browser.</div>
         </div>
         <div class="footLinks">
@@ -204,7 +276,6 @@
           <a href="/en/privacy/">Privacy</a>
           <a href="/en/imprint/">Imprint</a>
           <a href="/en/terms/">Terms</a>
-          <a href="/">DE</a>
         </div>
       </div>
     </footer>
