@@ -1,23 +1,24 @@
-<!-- /en/terms/index.html -->
+<!-- /en/terms/index.html (EN) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Terms – SafeShare</title>
-  <meta name="description" content="SafeShare Terms: local-first link cleaning, acceptable use, disclaimers, and limitations." />
+  <meta name="description" content="Terms of use for SafeShare (local-first link cleaner). Clear, minimal, and honest." />
   <meta name="robots" content="index,follow" />
+
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
 
   <link rel="canonical" href="https://safesharepro.com/en/terms/" />
   <link rel="alternate" hreflang="de" href="https://safesharepro.com/nutzungsbedingungen/" />
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/terms/" />
-  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/terms/" />
+  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Terms – SafeShare" />
-  <meta property="og:description" content="Terms for using SafeShare (local-first URL cleaning)." />
+  <meta property="og:description" content="Terms of use for SafeShare (local-first link cleaner)." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/en/terms/" />
@@ -29,7 +30,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Terms – SafeShare" />
-  <meta name="twitter:description" content="Terms for using SafeShare (local-first URL cleaning)." />
+  <meta name="twitter:description" content="Terms of use for SafeShare (local-first link cleaner)." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
   <meta name="twitter:image:alt" content="SafeShare – Preview" />
 
@@ -41,8 +42,8 @@
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
   <!-- MASTER SHELL -->
-  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
-  <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
+  <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-02">
+  <script src="/js/ss-shell.js?v=2026-01-25-02" defer></script>
 
   <style>
     :root{
@@ -56,8 +57,8 @@
       --radius: 18px;
       --ok: rgba(47,227,183,.16);
       --warn: rgba(255,197,84,.16);
-      --max: 1120px;
-      --focus: 0 0 0 3px rgba(47,227,183,.22);
+      --bad: rgba(255,84,84,.14);
+      --max: 980px;
     }
     @media (prefers-color-scheme: light){
       :root{
@@ -68,9 +69,9 @@
         --muted: rgba(17,24,39,.72);
         --muted2: rgba(17,24,39,.62);
         --shadow: 0 18px 45px rgba(17,24,39,.10);
-        --ok: rgba(47,227,183,.18);
         --warn: rgba(255,197,84,.22);
-        --focus: 0 0 0 3px rgba(17,130,98,.22);
+        --ok: rgba(47,227,183,.18);
+        --bad: rgba(255,84,84,.12);
       }
     }
     *{ box-sizing:border-box; }
@@ -94,38 +95,35 @@
       box-shadow: var(--shadow);
       padding: 16px;
     }
-    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
-    h2{ margin: 18px 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    p, li{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
-    ul{ margin: 0 0 12px 18px; padding:0; }
-
-    .note,.warn{
+    h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.4vw, 40px); line-height: 1.10; letter-spacing:-.2px; }
+    h2{ margin: 14px 0 8px; font-size: 18px; letter-spacing: -0.1px; }
+    p{ margin: 0 0 12px; color: var(--muted); line-height: 1.65; }
+    ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.65; }
+    .note,.warn,.bad{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
       background: var(--ok);
       padding: 10px 12px;
       border-radius: 12px;
       font-size: 13px;
-      line-height: 1.45;
+      line-height: 1.5;
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+    .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
-    .btn{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      cursor:pointer;
-      user-select:none;
-      display:inline-flex; align-items:center; gap: 8px;
-      text-decoration:none;
+    .meta{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top: 10px;
+      color: var(--muted2);
+      font-size: 12px;
     }
-    .btn:hover{ background: rgba(255,255,255,.10); }
+    .meta span{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
 
     footer{
       margin-top: 18px;
@@ -144,90 +142,97 @@
       text-decoration:none;
     }
     .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
-    .meta{ color: var(--muted2); font-size: 12px; margin-top: 6px; }
   </style>
 
-  <!-- Schema.org -->
+  <!-- Schema.org (Organization) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
-    "@type":"WebPage",
-    "name":"Terms – SafeShare",
-    "url":"https://safesharepro.com/en/terms/",
-    "isPartOf":{"@type":"WebSite","name":"SafeShare","url":"https://safesharepro.com/"}
+    "@type":"Organization",
+    "name":"SafeShare",
+    "url":"https://safesharepro.com/",
+    "contactPoint":[{
+      "@type":"ContactPoint",
+      "contactType":"support",
+      "email":"listings@safesharepro.com"
+    }]
   }
   </script>
 </head>
 
 <body>
-  <!-- Master-Shell placeholder -->
   <div id="ss-shell"></div>
 
   <div class="wrap">
     <section class="card">
-      <h1>Terms</h1>
-      <p class="meta">Last updated: 2026-01-25</p>
+      <h1>Terms of Use</h1>
+
+      <div class="meta">
+        <span>Applies to: SafeShare website &amp; web app</span>
+        <span>Local-first: runs in your browser</span>
+        <span>Last updated: 2026-01-25</span>
+      </div>
 
       <div class="note">
-        SafeShare is a local-first tool. Link cleaning happens in your browser. SafeShare does not “make you invisible”.
+        Plain English summary: SafeShare helps you clean tracking parameters from URLs. You use it at your own risk.
+        We do not guarantee that a cleaned link will always work, because some parameters can be functional.
       </div>
 
-      <h2>1. Scope</h2>
+      <h2>1) Scope</h2>
       <p>
-        These Terms apply to the use of the SafeShare website and its web app (“Service”).
-        By using the Service, you agree to these Terms.
+        These terms apply to the SafeShare website and the SafeShare web app provided under the domain
+        safesharepro.com (collectively “Service”).
       </p>
 
-      <h2>2. What the Service does</h2>
-      <ul>
-        <li>Removes typical tracking parameters (e.g., <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>) from URLs.</li>
-        <li>May simplify URLs to make sharing cleaner and more privacy-respecting.</li>
-        <li>Runs locally in your browser (“local-first”).</li>
-      </ul>
-
+      <h2>2) What SafeShare does</h2>
+      <p>
+        SafeShare removes common tracking parameters (e.g. utm_*, gclid, fbclid) from links and may simplify
+        URL structures. The cleaning happens locally in your browser.
+      </p>
       <div class="warn">
-        Some parameters are functional (language, filters, IDs) or intentional (affiliate/ref). Removing them can break a link or attribution.
+        No “invisibility” promise: cleaning a URL does not prevent websites from collecting data via IP logs, cookies,
+        fingerprinting, account tracking, or server-side redirects.
       </div>
 
-      <h2>3. Acceptable use</h2>
+      <h2>3) No warranty</h2>
+      <p>
+        The Service is provided “as is”. We do not guarantee availability, correctness, or that cleaned URLs will always
+        lead to the same destination as the original. Some parameters are functional (language, product IDs, sessions)
+        or intentional (affiliate attribution).
+      </p>
+
+      <h2>4) Your responsibility</h2>
       <ul>
-        <li>Do not use the Service to harm others, violate laws, or facilitate abusive behavior.</li>
-        <li>Do not attempt to disrupt, overload, or probe the Service or its infrastructure.</li>
-        <li>Do not misrepresent SafeShare as providing anonymity or “invisibility”.</li>
+        <li>You are responsible for checking whether a cleaned link works and whether you want to remove parameters.</li>
+        <li>If you share affiliate/partner links, cleaning may remove attribution parameters.</li>
+        <li>Do not use the Service for unlawful purposes.</li>
       </ul>
 
-      <h2>4. No guarantees</h2>
+      <h2>5) Third-party websites</h2>
       <p>
-        The Service is provided “as is”. We do not guarantee that cleaned links will always work, remain unchanged,
-        or prevent all forms of tracking on destination websites.
+        SafeShare only modifies the link you provide. When you open a link, you interact with third-party websites
+        that have their own terms and privacy practices.
       </p>
 
-      <h2>5. Privacy and local-first processing</h2>
+      <h2>6) Intellectual property</h2>
       <p>
-        SafeShare is designed to minimize data collection. Link processing happens locally in your browser.
-        For details, see the Privacy page.
+        The SafeShare brand, design and content are protected by applicable laws. You may not copy or redistribute
+        the Service’s content beyond what is permitted by law without permission.
       </p>
 
-      <div class="row">
-        <a class="btn" href="/en/privacy/">Privacy</a>
-        <a class="btn" href="/en/help/">Help</a>
+      <h2>7) Changes</h2>
+      <p>
+        We may update these terms to improve clarity or reflect changes. The “Last updated” date will be changed accordingly.
+      </p>
+
+      <h2>8) Contact</h2>
+      <p>
+        Support / contact: <a href="mailto:listings@safesharepro.com">listings@safesharepro.com</a>
+      </p>
+
+      <div class="bad">
+        If you are looking for the German legal text: <a href="/nutzungsbedingungen/">Nutzungsbedingungen (DE)</a>.
       </div>
-
-      <h2>6. External links</h2>
-      <p>
-        The Service may contain links to third-party websites. We are not responsible for third-party content or practices.
-      </p>
-
-      <h2>7. Changes</h2>
-      <p>
-        We may update these Terms to reflect changes to the Service or legal requirements.
-        The “Last updated” date indicates the latest version.
-      </p>
-
-      <h2>8. Contact</h2>
-      <p>
-        Support/contact: <a href="mailto:listings@safesharepro.com">listings@safesharepro.com</a>
-      </p>
     </section>
 
     <footer>
