@@ -1,72 +1,49 @@
-/*! SafeShare Shell v2026-01-25-01 (Schema B: EN under /en/<slug>/) */
+/*! Datei: /js/ss-shell.js */
+/*! SafeShare Shell v2026-01-25-01 (Schema A: EN under /en/<slug>/) */
+/* DE + EN, inline SVG logo, capsule More button, bottom-sheet menu, Safari blur/pageshow hard-fix */
+
 (function () {
   "use strict";
 
   const $ = (sel, root = document) => root.querySelector(sel);
+  const byId = (id) => document.getElementById(id);
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
 
-  // --- Language detection: EN if path starts with /en or html[lang] starts with en
-  const path = (location.pathname || "/");
+  // 1) Locale bestimmen: /en/ anywhere in path OR <html lang="en">
+  const path = location.pathname || "/";
   const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
-  const isEN = path === "/en/" || path.startsWith("/en/") || htmlLang.startsWith("en");
+  const isEN = path.includes("/en/") || htmlLang.startsWith("en");
 
-  // --- Route map (DE base slugs)
-  const DE = {
-    home: "/",
-    app: "/app/",
-    school: "/schule/",
-    pro: "/pro/",
-    help: "/hilfe/",
-    privacy: "/datenschutz/",
-    imprint: "/impressum/",
-    terms: "/nutzungsbedingungen/",
-  };
+  // 2) Link-Ziele (Schema A: EN under /en/<slug>/)
+  // DE: /hilfe/ /schule/ /pro/ /datenschutz/ /impressum/ /nutzungsbedingungen/
+  // EN: /en/help/ /en/school/ /en/pro/ /en/privacy/ /en/imprint/ /en/terms/
+  const LINKS = isEN
+    ? {
+        home: "/en/",
+        app: "/en/app/",
+        school: "/en/school/",
+        pro: "/en/pro/",
+        help: "/en/help/",
+        support: "mailto:listings@safesharepro.com",
+        privacy: "/en/privacy/",
+        imprint: "/en/imprint/",
+        terms: "/en/terms/",
+        langSwitch: "/", // optional language switch target
+      }
+    : {
+        home: "/",
+        app: "/app/",
+        school: "/schule/",
+        pro: "/pro/",
+        help: "/hilfe/",
+        support: "mailto:listings@safesharepro.com",
+        privacy: "/datenschutz/",
+        imprint: "/impressum/",
+        terms: "/nutzungsbedingungen/",
+        langSwitch: "/en/", // optional language switch target
+      };
 
-  // --- EN schema: /en/<slug>/
-  const EN = {
-    home: "/en/",
-    app: "/en/app/",
-    school: "/en/school/",
-    pro: "/en/pro/",
-    help: "/en/help/",
-    privacy: "/en/privacy/",
-    imprint: "/en/imprint/",
-    terms: "/en/terms/",
-  };
-
-  const LINKS = isEN ? EN : DE;
-
-  // --- Optional UI language switch (in More menu)
-  // Map current page to its opposite language URL
-  function getLangSwitchHref() {
-    const p = normalizePath(path);
-
-    // EN -> DE
-    if (isEN) {
-      if (p === normalizePath(EN.home)) return DE.home;
-      if (p.startsWith(normalizePath(EN.app))) return DE.app;
-      if (p.startsWith(normalizePath(EN.school))) return DE.school;
-      if (p.startsWith(normalizePath(EN.pro))) return DE.pro;
-      if (p.startsWith(normalizePath(EN.help))) return DE.help;
-      if (p.startsWith(normalizePath(EN.privacy))) return DE.privacy;
-      if (p.startsWith(normalizePath(EN.imprint))) return DE.imprint;
-      if (p.startsWith(normalizePath(EN.terms))) return DE.terms;
-      return DE.home;
-    }
-
-    // DE -> EN
-    if (p === normalizePath(DE.home)) return EN.home;
-    if (p.startsWith(normalizePath(DE.app))) return EN.app;
-    if (p.startsWith(normalizePath(DE.school))) return EN.school;
-    if (p.startsWith(normalizePath(DE.pro))) return EN.pro;
-    if (p.startsWith(normalizePath(DE.help))) return EN.help;
-    if (p.startsWith(normalizePath(DE.privacy))) return EN.privacy;
-    if (p.startsWith(normalizePath(DE.imprint))) return EN.imprint;
-    if (p.startsWith(normalizePath(DE.terms))) return EN.terms;
-    return EN.home;
-  }
-
-  const SUPPORT_MAIL = "listings@safesharepro.com"; // korrekt (dein Listing/Support-Kontakt)
-
+  // 3) Texte (DE/EN)
   const T = isEN
     ? {
         start: "Home",
@@ -80,7 +57,7 @@
         imprint: "Imprint",
         terms: "Terms",
         close: "Close",
-        lang: "Deutsch",
+        language: "Deutsch",
       }
     : {
         start: "Start",
@@ -94,30 +71,18 @@
         imprint: "Impressum",
         terms: "Nutzungsbedingungen",
         close: "Schließen",
-        lang: "English",
+        language: "English",
       };
 
-  // --- Inline mark (no emoji, no external file)
+  // 4) Inline mark (no emoji, no external file)
   const markSVG = `
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <path d="M12 2.6c3.1 2.6 6.3 3.3 8.4 3.6v7.1c0 5.2-3.6 9-8.4 10.9C7.2 22.3 3.6 18.5 3.6 13.3V6.2C5.7 5.9 8.9 5.2 12 2.6Z"
-        stroke="currentColor" stroke-width="1.6" opacity=".95"/>
-  <path d="M8.4 12.2l2.3 2.4 4.9-5.1"
-        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+  <path d="M12 2.6c3.1 2.6 6.3 3.3 8.4 3.6v7.1c0 5.2-3.6 9-8.4 10.9C7.2 22.3 3.6 18.5 3.6 13.3V6.2C5.7 5.9 8.9 5.2 12 2.6Z" stroke="currentColor" stroke-width="1.6" opacity=".95"/>
+  <path d="M8.4 12.2l2.3 2.4 4.9-5.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
 </svg>`.trim();
 
-  const closeSVG = `
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-</svg>`.trim();
-
-  function normalizePath(p) {
-    return String(p || "/").replace(/\/+$/, "/");
-  }
-
-  // --- Build shell
-  const langSwitchHref = getLangSwitchHref();
-
+  // 5) Shell-Markup
+  // Language link optional in More menu (as requested). Keep hreflang in <head> of each page.
   const shellHTML = `
 <header class="ss-header" role="banner">
   <a class="ss-brand" href="${LINKS.home}" aria-label="SafeShare">
@@ -145,35 +110,34 @@
   <div class="ss-moreMenu" id="ssMoreMenu" role="dialog" aria-modal="true" aria-label="${T.more}">
     <div class="ss-moreTop">
       <div class="ss-moreTitle">${T.more}</div>
-      <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">
-        ${closeSVG}
-      </button>
+      <button class="ss-moreClose" type="button" data-ss-close aria-label="${T.close}">✕</button>
     </div>
 
     <div class="ss-moreList" role="navigation" aria-label="${T.more}">
-      <a class="ss-moreLink" href="mailto:${SUPPORT_MAIL}">${T.support}</a>
+      <a class="ss-moreLink" href="${LINKS.support}">${T.support}</a>
       <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
       <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
       <a class="ss-moreLink" href="${LINKS.terms}">${T.terms}</a>
-      <a class="ss-moreLink" href="${langSwitchHref}" rel="alternate" hreflang="${isEN ? "de" : "en"}">${T.lang}</a>
+      <a class="ss-moreLink" href="${LINKS.langSwitch}">${T.language}</a>
     </div>
   </div>
 </div>
-`.trim();
+  `.trim();
 
-  const mount = $("#ss-shell");
+  // 6) Einhängen (Placeholder: #ss-shell)
+  const mount = byId("ss-shell");
   if (!mount) return;
   mount.innerHTML = shellHTML;
 
-  // --- Active state
+  // 7) Active-State anhand Path
   function setActive() {
-    const p = normalizePath(location.pathname || "/");
+    const p = (location.pathname || "/").replace(/\/+$/, "/"); // normalize trailing slash
     const map = [
-      { key: "home", match: [normalizePath(LINKS.home)] },
-      { key: "app", match: [normalizePath(LINKS.app)] },
-      { key: "school", match: [normalizePath(LINKS.school)] },
-      { key: "pro", match: [normalizePath(LINKS.pro)] },
-      { key: "help", match: [normalizePath(LINKS.help)] },
+      { key: "home", match: [LINKS.home] },
+      { key: "app", match: [LINKS.app] },
+      { key: "school", match: [LINKS.school] },
+      { key: "pro", match: [LINKS.pro] },
+      { key: "help", match: [LINKS.help] },
     ];
 
     let activeKey = "home";
@@ -190,15 +154,16 @@
   }
   setActive();
 
-  // --- Menu open/close (robust, incl. Safari bfcache)
-  const btn = $("#ssMoreBtn");
-  const overlay = $("#ssMoreOverlay");
+  // 8) Mehr-Menü: open/close + Escape + Click-outside + Safari pageshow hard-fix
+  const btn = byId("ssMoreBtn");
+  const overlay = byId("ssMoreOverlay");
 
-  function hardClose(silent) {
-    if (overlay) overlay.hidden = true;
-    if (btn) btn.setAttribute("aria-expanded", "false");
+  function hardClose(skipFocus) {
+    if (!overlay || !btn) return;
+    overlay.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
     document.documentElement.classList.remove("ss-noScroll");
-    if (!silent && btn) btn.focus();
+    if (!skipFocus) btn.focus();
   }
 
   function openMenu() {
@@ -210,32 +175,34 @@
     if (closeBtn) closeBtn.focus();
   }
 
-  function closeMenu(silent) {
-    hardClose(!!silent);
+  function closeMenu() {
+    hardClose(false);
   }
 
-  // Force closed on init (prevents “blur stays”)
+  // Ensure closed on load (prevents "blur stuck" if BFCache restores weird state)
   hardClose(true);
 
   if (btn && overlay) {
-    btn.addEventListener("click", () => {
+    on(btn, "click", () => {
       if (overlay.hidden) openMenu();
-      else closeMenu(false);
+      else closeMenu();
     });
 
-    overlay.addEventListener("click", (e) => {
+    on(overlay, "click", (e) => {
       const t = e.target;
-      if (t && t.closest && t.closest("[data-ss-close]")) closeMenu(false);
+      if (t && t.closest && t.closest("[data-ss-close]")) closeMenu();
     });
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu(false);
+    on(document, "keydown", (e) => {
+      if (e.key === "Escape" && overlay && !overlay.hidden) closeMenu();
     });
 
-    // Safari back/forward cache: ensure closed when returning to page
-    window.addEventListener("pageshow", () => closeMenu(true));
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") closeMenu(true);
+    // iOS/Safari BFCache: when navigating back, overlay/backdrop blur may persist unless we force close
+    on(window, "pageshow", () => hardClose(true));
+
+    // Also close if tab becomes hidden/visible again (reduces stuck blur cases)
+    on(document, "visibilitychange", () => {
+      if (document.hidden) hardClose(true);
     });
   }
 })();
