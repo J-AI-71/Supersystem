@@ -1,5 +1,5 @@
-/* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-24-05 (capsule nav + bottom-sheet more, no emoji) */
+/* Datei: /css/ss-shell.2026-01-25-01.css */
+/* SafeShare Shell v2026-01-25-01 (dark-aware + bottom-sheet + capsule-consistent) */
 
 :root{
   /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
@@ -11,52 +11,42 @@
   --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
   --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
+  --ss-pill-bg: rgba(255,255,255,.04);
+  --ss-pill-bg-hover: rgba(255,255,255,.08);
 }
 
 .ss-header{
-  position: sticky;
-  top: 0;
-  z-index: 50;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  position: sticky; top: 0; z-index: 50;
+  display:flex; align-items:center; justify-content:space-between;
   gap: 12px;
-
   padding: 10px 14px;
-
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* Brand */
 .ss-brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
+  display:flex; align-items:center; gap:10px;
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
 }
 .ss-brand__mark{
-  width: 22px;
-  height: 22px;
+  width: 18px; height: 18px;
+  display:inline-flex; align-items:center; justify-content:center;
   flex: 0 0 auto;
-  display:block;
+  opacity: .95;
 }
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
-/* Capsule-Navigation (inkl. Mehr als gleiches Pill) */
+/* Nav capsule */
 .ss-nav{
-  display:flex;
-  gap: 10px;
-
+  display:flex; gap: 10px;
   overflow-x:auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
@@ -64,37 +54,44 @@
   padding: 6px;
   border-radius: 999px;
   border: 1px solid var(--ss-border);
-  background: rgba(255,255,255,.04);
+  background: var(--ss-pill-bg);
   box-shadow: var(--ss-shadow);
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
+/* Links + More button: exakt gleiche "Capsule" Optik */
 .ss-nav__link,
-.ss-nav__more{
+.ss-moreBtn{
+  appearance:none;
   text-decoration:none;
   color: rgba(255,255,255,.72);
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  flex: 0 0 auto;
-
-  background: transparent;
-  font: inherit;
-  cursor: pointer;
 
   display:inline-flex;
   align-items:center;
+  justify-content:center;
   gap: 8px;
+
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+
+  white-space: nowrap;
+  flex: 0 0 auto;
+  line-height: 1;
+  font: inherit;
+  cursor: pointer;
 }
 
 @media (prefers-color-scheme: light){
   .ss-nav__link,
-  .ss-nav__more{ color: rgba(17,24,39,.72); }
+  .ss-moreBtn{
+    color: rgba(17,24,39,.72);
+  }
 }
 
 .ss-nav__link:hover,
-.ss-nav__more:hover{
+.ss-moreBtn:hover{
   background: rgba(255,255,255,.04);
   border-color: var(--ss-border);
   color: var(--ss-text);
@@ -106,15 +103,14 @@
   color: var(--ss-text);
 }
 
-/* Mehr: Chevron immer sauber (kein Emoji / kein Sonderzeichen-Fallback) */
-.ss-nav__chev{
-  width: 14px;
-  height: 14px;
-  display:block;
-  opacity: .9;
+/* More button gets subtle base bg like capsule */
+.ss-moreBtn{
+  background: var(--ss-pill-bg);
+  border-color: var(--ss-border);
+  color: var(--ss-text);
 }
-.ss-nav__more[aria-expanded="true"] .ss-nav__chev{
-  transform: rotate(180deg);
+.ss-moreBtn:hover{
+  background: var(--ss-pill-bg-hover);
 }
 
 /* Scroll lock (auf html + body) */
@@ -125,19 +121,14 @@ html.ss-noScroll, html.ss-noScroll body{
 
 /* Overlay */
 .ss-moreOverlay{
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-
+  position: fixed; inset: 0; z-index: 9998;
   display: grid;
-  align-items: end;     /* bottom-sheet */
+  align-items: end;            /* bottom-sheet */
   justify-items: center;
-
   padding: 12px;
 }
 .ss-moreBackdrop{
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background: rgba(0,0,0,.25);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
@@ -149,19 +140,15 @@ html.ss-noScroll, html.ss-noScroll body{
   width: min(520px, calc(100vw - 24px));
   max-height: min(70vh, 520px);
   overflow: auto;
-
   border-radius: 18px;
   background: rgba(10,14,25,.96);
   border: 1px solid rgba(255,255,255,.12);
   box-shadow: var(--ss-shadow);
-
   padding: 10px;
   z-index: 9999;
-
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
-
   color: var(--ss-text);
 }
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
@@ -186,9 +173,7 @@ html.ss-noScroll, html.ss-noScroll body{
 }
 
 .ss-moreTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display:flex; align-items:center; justify-content:space-between;
   gap: 10px;
   padding: 8px 10px 6px;
 }
@@ -198,8 +183,7 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.03);
   color: inherit;
-  font-size: 18px;
-  line-height: 1;
+  font-size: 18px; line-height: 1;
   padding: 8px 10px;
   border-radius: 12px;
   cursor: pointer;
@@ -207,9 +191,7 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreClose:hover{ background: rgba(255,255,255,.08); }
 
 .ss-moreList{
-  display:flex;
-  flex-direction:column;
-  gap: 8px;
+  display:flex; flex-direction:column; gap: 8px;
   padding: 6px 6px 6px;
 }
 .ss-moreLink{
@@ -221,10 +203,6 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
-.ss-moreLink:hover{ background: rgba(255,255,255,.08); }
-
-/* iOS/Safari: hidden MUSS Overlay wirklich entfernen */
-.ss-moreOverlay[hidden]{
-  display: none !important;
-  pointer-events: none !important;
+.ss-moreLink:hover{
+  background: rgba(255,255,255,.08);
 }
