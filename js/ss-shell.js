@@ -153,24 +153,31 @@
   const overlay = $("#ssMoreOverlay");
 
   function openMenu() {
-    if (!overlay || !btn) return;
-    overlay.hidden = false;
-    btn.setAttribute("aria-expanded", "true");
-    document.documentElement.classList.add("ss-noScroll");
-    const closeBtn = overlay.querySelector(".ss-moreClose");
-    if (closeBtn) closeBtn.focus();
-  }
+  if (!overlay || !btn) return;
+  overlay.hidden = false;
+  overlay.style.display = "grid";              // iOS-harter Fix
+  btn.setAttribute("aria-expanded", "true");
+  document.documentElement.classList.add("ss-noScroll");
+  const closeBtn = overlay.querySelector(".ss-moreClose");
+  if (closeBtn) closeBtn.focus();
+}
 
-  function closeMenu() {
-    if (!overlay || !btn) return;
-    overlay.hidden = true;
-    btn.setAttribute("aria-expanded", "false");
-    document.documentElement.classList.remove("ss-noScroll");
-  }
+function closeMenu() {
+  if (!overlay || !btn) return;
+  overlay.hidden = true;
+  overlay.style.display = "none";              // iOS-harter Fix
+  btn.setAttribute("aria-expanded", "false");
+  document.documentElement.classList.remove("ss-noScroll");
+}
 
   // Hard reset on load (prevents "blurred page" if CSS is wrong or cached)
   closeMenu();
 
+// Hard reset on load (wichtig für Safari Cache / "stuck blur")
+if (overlay) { overlay.hidden = true; overlay.style.display = "none"; }
+if (btn) btn.setAttribute("aria-expanded", "false");
+document.documentElement.classList.remove("ss-noScroll");
+  
   if (btn && overlay) {
     btn.addEventListener("click", () => {
       if (overlay.hidden) openMenu();
