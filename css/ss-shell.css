@@ -213,6 +213,11 @@ html.ss-noScroll, html.ss-noScroll body{
   background: rgba(255,255,255,.08);
 }
 
-/* --- HARD FIX: verhindert "verschwommen" wenn hidden nicht wirklich hidden ist --- */
+/* HARD FIX: verhindert "verschwommen", wenn hidden nicht wirklich hidden ist */
 #ssMoreOverlay[hidden]{ display:none !important; }
 .ss-moreOverlay[hidden]{ display:none !important; }
+
+/* Optional: weniger Motion */
+@media (prefers-reduced-motion: reduce){
+  .ss-moreMenu{ transition: none; transform:none; opacity:1; }
+}
