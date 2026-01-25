@@ -1,8 +1,6 @@
-/* Datei: /css/ss-shell.2026-01-25-01.css */
 /* SafeShare Shell v2026-01-25-01 (dark-aware + bottom-sheet + capsule-consistent) */
 
 :root{
-  /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
@@ -59,7 +57,6 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Links + More button: exakt gleiche "Capsule" Optik */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
@@ -103,7 +100,6 @@
   color: var(--ss-text);
 }
 
-/* More button gets subtle base bg like capsule */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -113,7 +109,7 @@
   background: var(--ss-pill-bg-hover);
 }
 
-/* Scroll lock (auf html + body) */
+/* Scroll lock */
 html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
@@ -123,7 +119,7 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreOverlay{
   position: fixed; inset: 0; z-index: 9998;
   display: grid;
-  align-items: end;            /* bottom-sheet */
+  align-items: end;
   justify-items: center;
   padding: 12px;
 }
@@ -134,7 +130,7 @@ html.ss-noScroll, html.ss-noScroll body{
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet Menü */
+/* Bottom-sheet menu */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
@@ -166,7 +162,7 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: zentriert statt bottom-sheet */
+/* Desktop: center */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
