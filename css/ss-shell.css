@@ -1,20 +1,20 @@
 /* /css/ss-shell.css */
-/* SafeShare Shell v2026-01-25-02 (EN under /en/<slug>/) */
+/* SafeShare Shell v2026-01-25-02 (blur-safe + bottom-sheet + capsule) */
 
 :root{
-  /* Fallbacks if a page doesn't define variables */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
   --ss-muted: var(--muted2, rgba(255,255,255,.60));
   --ss-shadow: var(--shadow, 0 18px 45px rgba(0,0,0,.35));
+
   --ss-pill-bg: rgba(255,255,255,.04);
   --ss-pill-bg-hover: rgba(255,255,255,.08);
+
   --ss-active: rgba(47,227,183,.12);
   --ss-active-border: rgba(47,227,183,.35);
 }
 
-/* Header */
 .ss-header{
   position: sticky;
   top: 0;
@@ -36,25 +36,16 @@
 .ss-brand{
   display:flex;
   align-items:center;
-  gap:10px;
-
+  gap: 10px;
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
 }
-.ss-brand__mark{
+.ss-brand__logo{
   width: 18px;
   height: 18px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
   flex: 0 0 auto;
-}
-.ss-brand__img{
-  width:18px;
-  height:18px;
   display:block;
-  object-fit:contain;
 }
 .ss-brand__name{
   font-weight: 780;
@@ -62,14 +53,6 @@
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-}
-/* Brand image (from /assets/brand/) */
-.ss-brand__img{
-  width: 18px;
-  height: 18px;
-  display: block;
-  object-fit: contain;
-  image-rendering: auto;
 }
 
 /* Nav capsule */
@@ -88,15 +71,16 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Links + More button: same capsule look */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
   text-decoration:none;
+  color: rgba(255,255,255,.72);
 
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap: 8px;
 
   padding: 8px 12px;
   border-radius: 999px;
@@ -108,8 +92,6 @@
   line-height: 1;
   font: inherit;
   cursor: pointer;
-
-  color: rgba(255,255,255,.72);
 }
 
 @media (prefers-color-scheme: light){
@@ -132,7 +114,7 @@
   color: var(--ss-text);
 }
 
-/* More button base */
+/* More button capsule */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -143,28 +125,23 @@
 }
 
 /* Scroll lock */
-html.ss-noScroll,
-html.ss-noScroll body{
+html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
 }
 
-/* Overlay: make absolutely sure hidden means hidden (prevents "blurred page") */
-.ss-moreOverlay[hidden]{
-  display: none !important;
-}
-
-/* Overlay container */
+/* Overlay (BLUR-SAFE): hidden means display:none, guaranteed */
 .ss-moreOverlay{
   position: fixed;
   inset: 0;
   z-index: 9998;
-
   display: grid;
-  align-items: end;      /* bottom-sheet on mobile */
+  align-items: end;
   justify-items: center;
-
   padding: 12px;
+}
+.ss-moreOverlay[hidden]{
+  display: none !important;
 }
 
 .ss-moreBackdrop{
@@ -196,7 +173,6 @@ html.ss-noScroll body{
   color: var(--ss-text);
 }
 
-/* when not hidden */
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
   transform: translateY(0);
   opacity: 1;
@@ -212,7 +188,6 @@ html.ss-noScroll body{
   }
 }
 
-/* Desktop: centered modal */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
@@ -243,17 +218,15 @@ html.ss-noScroll body{
   display:flex;
   flex-direction:column;
   gap: 8px;
-  padding: 6px 6px 6px;
+  padding: 6px;
 }
 
 .ss-moreLink{
   display:block;
   text-decoration:none;
   color: inherit;
-
   padding: 12px 12px;
   border-radius: 14px;
-
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
 }
@@ -262,7 +235,6 @@ html.ss-noScroll body{
 }
 
 .ss-moreLink--lang{
-  margin-top: 4px;
-  border-style: dashed;
-  opacity: .95;
+  border-color: rgba(47,227,183,.22);
+  background: rgba(47,227,183,.10);
 }
