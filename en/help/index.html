@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Help – SafeShare</title>
-  <meta name="description" content="Troubleshooting for SafeShare: paste/copy/share issues, iOS Safari notes, and what to do if a cleaned link breaks." />
+  <meta name="description" content="Help & troubleshooting for SafeShare: paste links, clean, copy/share. What to do if a cleaned link breaks." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
@@ -17,7 +17,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="Help – SafeShare" />
-  <meta property="og:description" content="Troubleshooting for SafeShare (local-first)." />
+  <meta property="og:description" content="Troubleshooting and safe link-cleaning tips (local-first)." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/en/help/" />
@@ -29,7 +29,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Help – SafeShare" />
-  <meta name="twitter:description" content="Troubleshooting for SafeShare (local-first)." />
+  <meta name="twitter:description" content="Troubleshooting and safe link-cleaning tips (local-first)." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
   <meta name="twitter:image:alt" content="SafeShare – Preview" />
 
@@ -100,7 +100,7 @@
     }
     h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
-    h3{ margin: 14px 0 6px; font-size: 15px; letter-spacing: -0.1px; }
+    h3{ margin: 12px 0 6px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
@@ -136,14 +136,15 @@
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
     .bad{ border-left-color: rgba(255,84,84,.55); background: var(--bad); }
 
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .steps{
+    details{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       border-radius: 14px;
       padding: 12px;
-      margin-top: 10px;
     }
+    details + details{ margin-top: 12px; }
+    summary{ cursor:pointer; font-weight: 750; }
+    summary::-webkit-details-marker{ display:none; }
 
     footer{
       margin-top: 18px;
@@ -181,87 +182,75 @@
 
   <div class="wrap">
     <section class="card">
-      <h1>Help</h1>
-      <p>
-        SafeShare runs local-first in your browser. If something feels “blocked” or “not working”,
-        it’s usually clipboard permissions, a special link format, or a functional parameter that got removed.
-      </p>
+      <h1>Help & troubleshooting</h1>
+      <p>Most issues are not bugs — they come from removing a parameter that was actually functional or intentional.</p>
 
       <div class="row">
         <a class="btn primary" href="/en/app/">Open App</a>
         <a class="btn" href="/en/privacy/">Privacy</a>
-        <a class="btn ghost" href="/en/pro/">Pro</a>
-      </div>
-
-      <div class="note">
-        Tip: Clean first, then share. The biggest effect happens when you forward links.
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Common issues</h2>
-
-      <h3>1) Paste button doesn’t paste (iOS Safari)</h3>
-      <p>
-        iOS Safari may block programmatic clipboard access. Tap into the input field and use the system Paste menu.
-      </p>
-      <div class="steps">
-        <ul>
-          <li>Copy a link in any app</li>
-          <li>Open SafeShare</li>
-          <li>Tap into the input field → tap <b>Paste</b></li>
-          <li>Then press <b>Clean</b></li>
-        </ul>
-      </div>
-
-      <h3>2) Share button missing</h3>
-      <p>
-        Sharing depends on <span class="mono">navigator.share</span>. If not available, SafeShare will still let you copy and paste into WhatsApp/Signal/Mail.
-      </p>
-
-      <h3>3) “No valid link found”</h3>
-      <p>
-        Some apps wrap links or include extra text. Paste the full message — SafeShare tries to extract the first URL.
-      </p>
-
-      <div class="warn">
-        If you paste only “www.example.com/…” without <span class="mono">https://</span>, SafeShare will try to normalize it, but some edge cases still fail.
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>If the cleaned link breaks</h2>
-      <p>
-        Sometimes parameters are functional (language, product/session IDs, filters) or intentional (affiliate/ref).
-      </p>
-
-      <div class="steps">
-        <ul>
-          <li>Open the original link (without cleaning) to confirm it works.</li>
-          <li>Compare original vs cleaned URL.</li>
-          <li>If only the cleaned version fails, a removed key was likely required.</li>
-        </ul>
-      </div>
-
-      <div class="note">
-        SafeShare App removes standard tracking keys (UTM + common click IDs). Pro adds <b>audit</b> and <b>allowlists/policies</b> per domain.
-      </div>
-
-      <div class="row">
-        <a class="btn" href="/en/pro/">Pro: Audit + Policies</a>
-        <a class="btn ghost" href="/en/school/">Learn more</a>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Support</h2>
-      <p>If you need help, include the link (or a screenshot) and what device/browser you use.</p>
-      <div class="row">
-        <a class="btn" href="mailto:listings@safesharepro.com">Contact support</a>
         <a class="btn ghost" href="/hilfe/">Deutsch</a>
       </div>
+
+      <div class="note">
+        SafeShare is a concrete hygiene step (clean before share). It does not block cookies/fingerprinting on the target site.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Quick checklist (90 seconds)</h2>
+
+      <details open>
+        <summary>1) The cleaned link does not work</summary>
+        <p style="margin-top:10px">
+          Open the original link once and compare. If only the cleaned one fails, a removed parameter was likely functional
+          (e.g., language, session, product variant, filters).
+        </p>
+        <div class="warn">
+          Recommendation: clean conservatively. If you need control per domain, use Pro (audit + allowlists/policies).
+        </div>
+      </details>
+
+      <details>
+        <summary>2) The app cannot paste from clipboard (iOS/iPad)</summary>
+        <p style="margin-top:10px">
+          iOS/Safari sometimes blocks clipboard access until you tap into the field. Tap the textarea, then use the iOS “Paste”
+          popup. If the “Paste” button in the UI fails, manual paste still works.
+        </p>
+      </details>
+
+      <details>
+        <summary>3) It looks like nothing changed</summary>
+        <p style="margin-top:10px">
+          Not every link contains tracking parameters. Try a test link with <code>utm_*</code> or <code>gclid</code>/<code>fbclid</code>.
+          If a link has none of those, SafeShare will keep it unchanged.
+        </p>
+      </details>
+
+      <details>
+        <summary>4) The navigation (“Shell”) is missing</summary>
+        <p style="margin-top:10px">
+          Check that both files load without 404:
+        </p>
+        <ul>
+          <li><code>/css/ss-shell.css</code> (or with <code>?v=…</code>)</li>
+          <li><code>/js/ss-shell.js</code> (or with <code>?v=…</code>)</li>
+        </ul>
+        <p>
+          And make sure your page contains <code>&lt;div id="ss-shell"&gt;&lt;/div&gt;</code> in the body.
+        </p>
+        <div class="bad">
+          If the More menu stays open or the page is “locked”, hard reload once. The latest shell version should reset state on load.
+        </div>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>What SafeShare can and cannot do</h2>
+      <div class="note">
+        <b>Can:</b> remove typical tracking parameters from the link itself (utm_*, gclid, fbclid, …) before you share.
+      </div>
       <div class="warn">
-        Please don’t send sensitive personal data. SafeShare itself is local-first, but email is not.
+        <b>Cannot:</b> stop the destination site from tracking you via cookies/fingerprinting once you open the page.
       </div>
     </section>
 
