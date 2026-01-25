@@ -1,5 +1,5 @@
 /* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-25-02 (capsule-consistent + blur-safe overlay) */
+/* SafeShare Shell v2026-01-25-03 (Schema B: EN under /en/<slug>/) */
 
 :root{
   /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
@@ -15,18 +15,12 @@
   --ss-pill-bg-hover: rgba(255,255,255,.08);
 }
 
-/* Optional: Safari text crisping */
-.ss-header, .ss-moreMenu{
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
+/* Header */
 .ss-header{
   position: sticky; top: 0; z-index: 50;
   display:flex; align-items:center; justify-content:space-between;
   gap: 12px;
   padding: 10px 14px;
-
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -39,12 +33,16 @@
   color: var(--ss-text);
   min-width: 0;
 }
-.ss-brand__logo{
-  width: 18px;
-  height: 18px;
-  display:inline-block;
+.ss-brand__mark{
+  width: 20px; height: 20px;
+  display:inline-flex; align-items:center; justify-content:center;
   flex: 0 0 auto;
-  border-radius: 6px; /* optional, falls das Glyph eckig wirkt */
+  border-radius: 6px;
+}
+.ss-brand__img{
+  width: 20px; height: 20px;
+  display:block;
+  border-radius: 6px;
 }
 .ss-brand__name{
   font-weight: 780;
@@ -67,7 +65,7 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Links + More button: exakt gleiche Capsule-Optik */
+/* Links + More button: gleiche Capsule-Optik */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
@@ -77,6 +75,7 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap: 8px;
 
   padding: 8px 12px;
   border-radius: 999px;
@@ -110,7 +109,7 @@
   color: var(--ss-text);
 }
 
-/* More button: hat immer Capsule-Grundfläche (wie gewünscht) */
+/* More button bekommt Basis-Hintergrund wie Capsule */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -120,13 +119,13 @@
   background: var(--ss-pill-bg-hover);
 }
 
-/* Scroll lock */
+/* Scroll lock (auf html + body) */
 html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
 }
 
-/* Overlay (wenn sichtbar: macht Hintergrund weich -> darf NICHT hängen bleiben) */
+/* Overlay */
 .ss-moreOverlay{
   position: fixed; inset: 0; z-index: 9998;
   display: grid;
@@ -153,7 +152,6 @@ html.ss-noScroll, html.ss-noScroll body{
   box-shadow: var(--ss-shadow);
   padding: 10px;
   z-index: 9999;
-
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
@@ -215,18 +213,6 @@ html.ss-noScroll, html.ss-noScroll body{
   background: rgba(255,255,255,.08);
 }
 
-.ss-moreDivider{
-  height: 1px;
-  background: rgba(255,255,255,.10);
-  margin: 6px 4px;
-  border-radius: 999px;
-}
-@media (prefers-color-scheme: light){
-  .ss-moreDivider{ background: rgba(17,24,39,.12); }
-}
-
-.ss-moreMeta{
-  font-size: 12px;
-  color: var(--ss-muted);
-  padding: 2px 6px 0;
-}
+/* --- HARD FIX: verhindert "verschwommen" wenn hidden nicht wirklich hidden ist --- */
+#ssMoreOverlay[hidden]{ display:none !important; }
+.ss-moreOverlay[hidden]{ display:none !important; }
