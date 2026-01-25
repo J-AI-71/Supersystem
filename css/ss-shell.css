@@ -1,6 +1,8 @@
 /* SafeShare Shell v2026-01-25-01 (dark-aware + bottom-sheet + capsule-consistent) */
 
 :root{
+  /* Shell-Fallbacks (nutzt Seiten-Variablen, sonst Default) */
+  --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
   --ss-muted: var(--muted2, rgba(255,255,255,.60));
@@ -12,14 +14,22 @@
   --ss-pill-bg-hover: rgba(255,255,255,.08);
 }
 
+/* Header */
 .ss-header{
   position: sticky; top: 0; z-index: 50;
   display:flex; align-items:center; justify-content:space-between;
   gap: 12px;
   padding: 10px 14px;
-  background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+
+  /* iOS “blur” Probleme: blur nur wenn supported, sonst solide */
+  background: linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,0));
+  -webkit-font-smoothing: antialiased;
+}
+@supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))){
+  .ss-header{
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 /* Brand */
@@ -34,10 +44,6 @@
   display:inline-flex; align-items:center; justify-content:center;
   flex: 0 0 auto;
   opacity: .95;
-}
-.ss-brand__img{
-  width: 18px; height: 18px;
-  display:block;
 }
 .ss-brand__name{
   font-weight: 780;
@@ -60,7 +66,7 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Links + More button: exakt gleich */
+/* Links + More button: exakt gleiche Capsule-Optik */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
@@ -104,7 +110,7 @@
   color: var(--ss-text);
 }
 
-/* More button: gleiche Capsule-Base wie Nav (damit er nicht "komisch" aussieht) */
+/* More Button bekommt Basis-Hintergrund wie Capsule */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -114,7 +120,7 @@
   background: var(--ss-pill-bg-hover);
 }
 
-/* Scroll lock */
+/* Scroll lock (html + body) */
 html.ss-noScroll, html.ss-noScroll body{
   overflow: hidden !important;
   touch-action: none;
@@ -131,29 +137,38 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreBackdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.25);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+}
+@supports ((-webkit-backdrop-filter: blur(2px)) or (backdrop-filter: blur(2px))){
+  .ss-moreBackdrop{
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
 }
 
-/* Bottom-sheet menu */
+/* Bottom-sheet Menü */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
   max-height: min(70vh, 520px);
   overflow: auto;
+
   border-radius: 18px;
   background: rgba(10,14,25,.96);
   border: 1px solid rgba(255,255,255,.12);
   box-shadow: var(--ss-shadow);
   padding: 10px;
   z-index: 9999;
+
+  /* iOS “verschmiert”: transform nur im hidden state, sichtbar = none */
   transform: translateY(16px);
   opacity: 0;
   transition: transform .16s ease, opacity .16s ease;
+
   color: var(--ss-text);
+  -webkit-font-smoothing: antialiased;
 }
 .ss-moreOverlay:not([hidden]) .ss-moreMenu{
-  transform: translateY(0);
+  transform: none;
   opacity: 1;
 }
 
@@ -167,7 +182,7 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: centered instead of bottom-sheet */
+/* Desktop: zentriert */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
