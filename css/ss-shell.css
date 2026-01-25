@@ -1,7 +1,9 @@
 /* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-25-01 (dark-aware + bottom-sheet + capsule-consistent) */
+/* SafeShare Shell v2026-01-25-01 (Schema A: EN under /en/<slug>/) */
+/* dark-aware + bottom-sheet + capsule-consistent + Safari blur fix */
 
 :root{
+  /* Shell-Fallbacks (nutzt Seiten-Variablen, sonst Default) */
   --ss-bg: var(--card, rgba(255,255,255,.06));
   --ss-border: var(--border, rgba(255,255,255,.10));
   --ss-text: var(--text, rgba(255,255,255,.92));
@@ -13,9 +15,6 @@
   --ss-pill-bg: rgba(255,255,255,.04);
   --ss-pill-bg-hover: rgba(255,255,255,.08);
 }
-
-/* Make sure hidden really hides (prevents lingering blur/backdrop on Safari) */
-.ss-moreOverlay[hidden]{ display:none !important; }
 
 .ss-header{
   position: sticky; top: 0; z-index: 50;
@@ -61,7 +60,7 @@
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
 
-/* Links + More button: same capsule feel */
+/* Links + More button: exakt gleiche "Capsule" Optik */
 .ss-nav__link,
 .ss-moreBtn{
   appearance:none;
@@ -105,7 +104,7 @@
   color: var(--ss-text);
 }
 
-/* More button base bg like capsule */
+/* More button gets subtle base bg like capsule */
 .ss-moreBtn{
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
@@ -125,10 +124,16 @@ html.ss-noScroll, html.ss-noScroll body{
 .ss-moreOverlay{
   position: fixed; inset: 0; z-index: 9998;
   display: grid;
-  align-items: end;
+  align-items: end;            /* bottom-sheet */
   justify-items: center;
   padding: 12px;
 }
+
+/* SAFARI FIX: wenn hidden, dann wirklich weg (kein Blur "hängen") */
+.ss-moreOverlay[hidden]{
+  display: none !important;
+}
+
 .ss-moreBackdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.25);
@@ -136,7 +141,7 @@ html.ss-noScroll, html.ss-noScroll body{
   -webkit-backdrop-filter: blur(2px);
 }
 
-/* Bottom-sheet menu */
+/* Bottom-sheet Menü */
 .ss-moreMenu{
   position: relative;
   width: min(520px, calc(100vw - 24px));
@@ -168,7 +173,7 @@ html.ss-noScroll, html.ss-noScroll body{
   }
 }
 
-/* Desktop: centered */
+/* Desktop: zentriert statt bottom-sheet */
 @media (min-width: 980px){
   .ss-moreOverlay{ align-items: center; }
   .ss-moreMenu{ max-height: min(80vh, 560px); }
@@ -185,13 +190,11 @@ html.ss-noScroll, html.ss-noScroll body{
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.03);
   color: inherit;
-  line-height: 1;
+  font-size: 18px; line-height: 1;
   padding: 8px 10px;
   border-radius: 12px;
   cursor: pointer;
-  display:inline-flex; align-items:center; justify-content:center;
 }
-.ss-moreClose svg{ display:block; }
 .ss-moreClose:hover{ background: rgba(255,255,255,.08); }
 
 .ss-moreList{
