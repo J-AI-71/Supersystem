@@ -3,42 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare – Share links without tracking</title>
-  <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
+  <title>SafeShare – Share clean links (local-first)</title>
+  <meta name="description" content="SafeShare removes tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Copy → Clean → Share. No upload." />
   <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#111111" />
 
   <link rel="canonical" href="https://safesharepro.com/en/" />
   <link rel="alternate" hreflang="de" href="https://safesharepro.com/" />
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/" />
   <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
 
-  <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#111111" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="SafeShare – Share links without tracking" />
-  <meta property="og:description" content="Remove tracking parameters locally in your browser. Paste → Clean → Copy/Share." />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:url" content="https://safesharepro.com/en/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-01" />
-  <meta property="og:image:alt" content="SafeShare – Preview" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SafeShare – Share links without tracking" />
-  <meta name="twitter:description" content="Remove tracking parameters locally in your browser. Paste → Clean → Copy/Share." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-25-01" />
-  <meta name="twitter:image:alt" content="SafeShare – Preview" />
-
   <!-- Favicons + PWA -->
-  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-25-01">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-25-01">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-25-01">
-  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-25-01">
+  <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16.png?v=2025-12-26-01">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
+  <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
   <!-- MASTER SHELL -->
   <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
@@ -54,7 +35,6 @@
       --muted2: rgba(255,255,255,.60);
       --shadow: 0 18px 45px rgba(0,0,0,.35);
       --radius: 18px;
-      --mint: #2fe3b7;
       --mint2: rgba(47,227,183,.18);
       --mint3: rgba(47,227,183,.28);
       --warn: rgba(255,197,84,.16);
@@ -88,6 +68,7 @@
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
+
     .card{
       margin-top: 14px;
       background: var(--card);
@@ -99,6 +80,7 @@
     h1{ margin: 10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height: 1.10; letter-spacing:-.2px; }
     h2{ margin: 0 0 8px; font-size: 18px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
+
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
       appearance:none;
@@ -115,6 +97,9 @@
     .btn:hover{ background: rgba(255,255,255,.10); }
     .btn.primary{ background: var(--mint2); border-color: rgba(47,227,183,.35); }
     .btn.primary:hover{ background: var(--mint3); }
+    .btn.ghost{ background: transparent; color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+
     .note,.warn{
       margin-top: 12px;
       border-left: 3px solid rgba(47,227,183,.55);
@@ -126,6 +111,23 @@
       color: var(--text);
     }
     .warn{ border-left-color: rgba(255,197,84,.55); background: var(--warn); }
+
+    footer{
+      margin-top: 18px;
+      padding: 18px 4px 10px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .footLinks{ display:flex; gap: 10px; flex-wrap: wrap; }
+    .footLinks a{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .footLinks a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
   </style>
 </head>
 
@@ -134,25 +136,40 @@
 
   <div class="wrap">
     <section class="card">
-      <h1>Tracking parameters out. Share clean links.</h1>
-      <p>
-        Many links include extra labels (utm_*, fbclid, gclid …). Useful for analytics, but often just ballast when sharing.
-        SafeShare removes common tracking keys locally in your browser.
-      </p>
-      <div class="note">
-        Local-first: cleaning happens in your browser. No upload.
-      </div>
-      <div class="warn">
-        Important: this is not an “invisibility” promise. It’s a practical hygiene step for sharing.
-      </div>
+      <h1>Share clean links</h1>
+      <p>Many links include extra tracking data — like labels on a package. Useful for analytics, but unnecessary when you forward/share.</p>
 
       <div class="row">
-        <a class="btn primary" href="/en/app/">Open the App</a>
+        <a class="btn primary" href="/en/app/">Open App</a>
         <a class="btn" href="/en/school/">Learn (School)</a>
-        <a class="btn" href="/en/pro/">Pro</a>
-        <a class="btn" href="/">DE</a>
+        <a class="btn ghost" href="/en/pro/">Pro</a>
+      </div>
+
+      <div class="note">SafeShare cleans typical tracking parameters locally in your browser. No upload. No logs.</div>
+    </section>
+
+    <section class="card">
+      <h2>When not to remove everything</h2>
+      <p>Some parameters are functional (filters, language, product IDs) or intentional (affiliate/ref). Pro adds audit + allowlists/policies.</p>
+      <div class="row">
+        <a class="btn" href="/en/help/">Help</a>
+        <a class="btn" href="/en/privacy/">Privacy</a>
+        <a class="btn ghost" href="/">Deutsch</a>
       </div>
     </section>
+
+    <footer>
+      <div class="footLinks">
+        <a href="/en/">Home</a>
+        <a href="/en/app/">App</a>
+        <a href="/en/school/">School</a>
+        <a href="/en/pro/">Pro</a>
+        <a href="/en/help/">Help</a>
+        <a href="/en/privacy/">Privacy</a>
+        <a href="/en/imprint/">Imprint</a>
+        <a href="/en/terms/">Terms</a>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
