@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>School – SafeShare</title>
-  <meta name="description" content="Learn what tracking parameters are (UTM, click IDs), why clean links matter, and how to share links with less data." />
+  <meta name="description" content="Learn what tracking parameters are, why they exist, and how to share links more respectfully. Clear, no panic." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
@@ -17,7 +17,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="School – SafeShare" />
-  <meta property="og:description" content="Understand tracking parameters and learn clean-link habits (local-first)." />
+  <meta property="og:description" content="What tracking parameters are and how to share cleaner links (local-first)." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/en/school/" />
@@ -29,7 +29,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="School – SafeShare" />
-  <meta name="twitter:description" content="Understand tracking parameters and learn clean-link habits (local-first)." />
+  <meta name="twitter:description" content="What tracking parameters are and how to share cleaner links (local-first)." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
   <meta name="twitter:image:alt" content="SafeShare – Preview" />
 
@@ -101,7 +101,6 @@
     h3{ margin: 14px 0 6px; font-size: 15px; letter-spacing: -0.1px; }
     p{ margin: 0 0 12px; color: var(--muted); line-height: 1.6; }
     ul{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
-    ol{ margin: 0 0 12px 18px; color: var(--muted); line-height: 1.6; }
 
     .row{ display:flex; gap: 10px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .btn{
@@ -137,7 +136,7 @@
     .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
     .example{
       margin-top: 10px;
-      padding: 12px 12px;
+      padding: 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
@@ -146,14 +145,13 @@
       line-height: 1.5;
       word-break: break-word;
     }
-
     .grid2{
       display:grid;
       grid-template-columns: 1fr;
       gap: 12px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
-    @media (min-width: 860px){
+    @media(min-width: 920px){
       .grid2{ grid-template-columns: 1fr 1fr; }
     }
     .box{
@@ -164,14 +162,14 @@
     }
     .pill{
       display:inline-flex;
-      gap: 8px;
       align-items:center;
+      gap: 8px;
       padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      color: var(--text);
       font-size: 12px;
+      color: var(--muted2);
       margin-bottom: 8px;
     }
 
@@ -213,68 +211,90 @@
     <section class="card">
       <h1>School</h1>
       <p>
-        Tracking parameters are extra bits of data attached to links — like labels on a package.
-        They can be useful for analytics, but when you forward/share, they often become unnecessary baggage.
+        Many shared links carry extra information — like labels on a package.
+        These labels help platforms measure campaigns, but they’re often unnecessary when you forward a link.
       </p>
 
       <div class="row">
-        <a class="btn primary" href="/en/app/">Try SafeShare</a>
+        <a class="btn primary" href="/en/app/">Open App</a>
         <a class="btn" href="/en/help/">Help</a>
         <a class="btn ghost" href="/en/pro/">Pro</a>
       </div>
 
       <div class="note">
-        SafeShare cleans typical tracking keys locally in your browser. No upload. No server logs.
+        SafeShare removes typical tracking keys locally in your browser. No upload.
       </div>
     </section>
 
     <section class="card">
-      <h2>What do “labels” look like?</h2>
+      <h2>What do these “labels” look like?</h2>
 
-      <div class="example mono">https://example.com/article?utm_source=twitter&utm_medium=social&utm_campaign=launch</div>
-      <div class="example mono">https://shop.example.com/product?gclid=ABC123&amp;fbclid=XYZ987</div>
+      <div class="example mono">
+        https://example.com/article?utm_source=twitter&utm_medium=social&utm_campaign=launch
+      </div>
+      <div class="example mono">
+        https://shop.example.com/product?gclid=ABC123&amp;fbclid=XYZ987
+      </div>
 
       <div class="grid2">
         <div class="box">
-          <div class="pill"><b>utm_*</b> campaigns</div>
-          <p>Shows source/medium/campaign. Useful for reports — often unnecessary when sharing.</p>
+          <div class="pill"><b>utm_*</b> Campaign tags</div>
+          <p>
+            They describe source/medium/campaign for analytics. Useful for reporting — often unnecessary when you just share a link.
+          </p>
         </div>
         <div class="box">
-          <div class="pill"><b>gclid / fbclid</b> click IDs</div>
-          <p>Platform-specific IDs used for measurement. Usually baggage when you forward/share.</p>
+          <div class="pill"><b>gclid / fbclid</b> Click IDs</div>
+          <p>
+            Platform-specific IDs used for attribution. When you forward links, they’re usually just extra baggage.
+          </p>
         </div>
       </div>
     </section>
 
     <section class="card">
-      <h2>Why should non-professionals care?</h2>
+      <h2>Privacy, explained honestly (no panic)</h2>
+      <p>
+        Removing tracking parameters is not “being invisible”. It’s a concrete hygiene step:
+        you generate and forward less additional data.
+      </p>
+      <div class="row">
+        <a class="btn" href="/en/privacy/">Privacy</a>
+        <a class="btn ghost" href="/datenschutz-ehrlich-erklaert/">Deutsch version</a>
+      </div>
+      <div class="note">
+        Realistic expectation: You reduce link-level tracking. Cookies/fingerprinting are separate topics.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Why should non-experts care?</h2>
       <ul>
-        <li><b>Respect:</b> You pass along less extra data that others didn’t choose.</li>
-        <li><b>Clarity:</b> Clean links look more trustworthy and less “ad-like”.</li>
-        <li><b>Fewer breaks:</b> Some apps shorten/modify long URLs in ways that can break them.</li>
+        <li><b>Respect:</b> You share less extra data that others didn’t choose.</li>
+        <li><b>Cleaner look:</b> Links feel more trustworthy and less “ad-like”.</li>
+        <li><b>Less breakage:</b> Some apps mangle long URLs when forwarding.</li>
       </ul>
-
       <div class="warn">
-        Important: this is not an “invisible” promise. It’s a concrete hygiene step when sharing links.
+        Important: SafeShare is not a “stealth” tool. It’s link hygiene.
       </div>
     </section>
 
     <section class="card">
-      <h2>When you should NOT remove everything</h2>
+      <h2>When you should NOT remove everything blindly</h2>
       <div class="grid2">
         <div class="box">
-          <h3>Affiliate / partner attribution</h3>
+          <div class="pill"><b>Affiliate / Partner</b></div>
           <p>
             Some parameters are intentional attribution (e.g. <span class="mono">ref</span>, <span class="mono">tag</span>).
-            Removing them can break commission or attribution.
+            Removing them can break commissions or referrals.
           </p>
           <p><b>Pro:</b> allowlists/policies per domain.</p>
         </div>
         <div class="box">
-          <h3>Functional parameters</h3>
+          <div class="pill"><b>Functional parameters</b></div>
           <p>
-            Some keys are required (language, product IDs, sessions, filters).
-            Good tools are conservative and don’t remove everything blindly.
+            Some keys are required (language, product/session IDs, filters).
+            Good tools are conservative and don’t remove random keys.
           </p>
           <p><b>App:</b> standard tracking. <b>Pro:</b> audit + rules.</p>
         </div>
@@ -282,19 +302,19 @@
     </section>
 
     <section class="card">
-      <h2>Clean-before-share in 10 seconds</h2>
-      <ol>
+      <h2>Do it in 10 seconds</h2>
+      <ol style="color:var(--muted); line-height:1.6; margin: 0 0 0 18px;">
         <li>Copy a link</li>
-        <li>Paste it into the SafeShare App</li>
+        <li>Paste into SafeShare App</li>
         <li>Clean → copy → share</li>
       </ol>
       <div class="row">
         <a class="btn primary" href="/en/app/">Open App</a>
-        <a class="btn" href="/en/privacy/">Privacy</a>
-        <a class="btn ghost" href="/en/help/">Troubleshooting</a>
+        <a class="btn" href="/en/help/">Troubleshooting</a>
+        <a class="btn ghost" href="/en/">Home</a>
       </div>
       <div class="note">
-        Biggest effect happens when forwarding: clean first, then share.
+        The biggest effect happens when you forward links: clean first, then share.
       </div>
     </section>
 
