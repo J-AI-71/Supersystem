@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Datenschutz – SafeShare</title>
-  <meta name="description" content="Datenschutzhinweise zu SafeShare (local-first, ohne Upload)." />
+  <meta name="description" content="Datenschutz bei SafeShare: local-first Link-Bereinigung im Browser, ohne Upload." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#111111" />
@@ -12,21 +12,7 @@
   <link rel="canonical" href="https://safesharepro.com/datenschutz/" />
   <link rel="alternate" hreflang="de" href="https://safesharepro.com/datenschutz/" />
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/privacy/" />
-  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/" />
-
-  <meta property="og:title" content="Datenschutz – SafeShare" />
-  <meta property="og:description" content="Datenschutzhinweise zu SafeShare (local-first, ohne Upload)." />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="SafeShare" />
-  <meta property="og:url" content="https://safesharepro.com/datenschutz/" />
-  <meta property="og:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Datenschutz – SafeShare" />
-  <meta name="twitter:description" content="Datenschutzhinweise zu SafeShare (local-first, ohne Upload)." />
-  <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-index.png?v=2026-01-05-02" />
+  <link rel="alternate" hreflang="x-default" href="https://safesharepro.com/en/privacy/" />
 
   <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-26-01">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32.png?v=2025-12-26-01">
@@ -34,75 +20,51 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon-180.png?v=2025-12-26-01">
   <link rel="manifest" href="/manifest.webmanifest?v=2025-12-26-01">
 
-  <!-- MASTER SHELL -->
   <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-01">
   <script src="/js/ss-shell.js?v=2026-01-25-01" defer></script>
 
   <style>
-    :root{ --bg0:#070a12; --bg1:#070b14; --bg2:#0b1020; --card:rgba(255,255,255,.06); --border:rgba(255,255,255,.10); --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.72); --shadow:0 18px 45px rgba(0,0,0,.35); --radius:18px; --max:1120px; }
-    @media (prefers-color-scheme: light){ :root{ --bg0:#f6f7fb; --bg1:#fff; --bg2:#f2f6ff; --card:#fff; --border:rgba(17,24,39,.12); --text:rgba(17,24,39,.95); --muted:rgba(17,24,39,.72); --shadow:0 18px 45px rgba(17,24,39,.10);} }
-    *{ box-sizing:border-box; }
-    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text);
-      background: radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
-                 radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
-                 linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2)); }
-    .wrap{ max-width:var(--max); margin:0 auto; padding: 12px 16px 44px; }
-    .card{ margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; }
-    h1{ margin:10px 0 8px; font-size: clamp(22px, 3.8vw, 42px); line-height:1.1; letter-spacing:-.2px; }
-    h2{ margin:18px 0 8px; font-size:18px; letter-spacing:-.1px; }
-    p, li{ color:var(--muted); line-height:1.6; }
-    ul{ margin:0 0 12px 18px; }
-    .box{ margin-top:12px; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.03); }
-    @media (prefers-color-scheme: light){ .box{ background:rgba(17,24,39,.03); border-color:rgba(17,24,39,.12);} }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    :root{--bg0:#070a12;--bg1:#070b14;--bg2:#0b1020;--card:rgba(255,255,255,.06);--border:rgba(255,255,255,.10);--text:rgba(255,255,255,.92);--muted:rgba(255,255,255,.72);--muted2:rgba(255,255,255,.60);--shadow:0 18px 45px rgba(0,0,0,.35);--radius:18px;--warn:rgba(255,197,84,.16);--ok:rgba(47,227,183,.16);--max:1120px;}
+    @media (prefers-color-scheme: light){:root{--bg0:#f6f7fb;--bg1:#fff;--bg2:#f2f6ff;--card:#fff;--border:rgba(17,24,39,.12);--text:rgba(17,24,39,.95);--muted:rgba(17,24,39,.72);--muted2:rgba(17,24,39,.62);--shadow:0 18px 45px rgba(17,24,39,.10);--warn:rgba(255,197,84,.22);--ok:rgba(47,227,183,.18);}}
+    *{box-sizing:border-box;} body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);
+      background:radial-gradient(1200px 600px at 10% 0%, rgba(47,227,183,.18), transparent 55%),
+               radial-gradient(900px 520px at 85% 10%, rgba(255,197,84,.10), transparent 60%),
+               linear-gradient(180deg, var(--bg1), var(--bg0) 55%, var(--bg2));}
+    .wrap{max-width:var(--max);margin:0 auto;padding:12px 16px 44px;}
+    .card{margin-top:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;}
+    h1{margin:10px 0 8px;font-size:clamp(22px,3.8vw,42px);line-height:1.10;letter-spacing:-.2px;}
+    h2{margin:18px 0 8px;font-size:18px;letter-spacing:-.1px;}
+    p,li{margin:0 0 12px;color:var(--muted);line-height:1.6;}
+    ul{margin:0 0 12px 18px;}
+    .note,.warn{margin-top:12px;border-left:3px solid rgba(47,227,183,.55);background:var(--ok);padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.45;color:var(--text);}
+    .warn{border-left-color:rgba(255,197,84,.55);background:var(--warn);}
   </style>
 </head>
-
 <body>
   <div id="ss-shell"></div>
 
   <div class="wrap">
     <section class="card">
       <h1>Datenschutz</h1>
+      <p>SafeShare ist local-first: Die Link-Bereinigung passiert in deinem Browser.</p>
 
-      <div class="box">
-        <h2>Kurzfassung</h2>
-        <ul>
-          <li><b>Local-first:</b> Die Link-Bereinigung passiert im Browser.</li>
-          <li><b>Kein Upload:</b> Eingegebene Links werden nicht an SafeShare-Server gesendet.</li>
-          <li><b>Keine Profile:</b> SafeShare erstellt keine Nutzerprofile.</li>
-        </ul>
-
-        <h2>Verantwortlicher</h2>
-        <p>{Name/Firma, Anschrift wie im Impressum} – Kontakt: <a href="mailto:listings@safesharepro.com">listings@safesharepro.com</a></p>
-
-        <h2>Welche Daten verarbeitet SafeShare?</h2>
-        <p>
-          SafeShare verarbeitet Links nur lokal zur Bereinigung. Optional werden Summen (z. B. „Parameter entfernt“) im Browser gespeichert
-          (Session/Lokal) – <b>ohne</b> URLs oder Domains zu speichern.
-        </p>
-
-        <h2>Server-Logs / Hosting</h2>
-        <p>
-          Beim Abruf der Website fallen beim Hosting-Anbieter technisch notwendige Zugriffsdaten an (z. B. IP-Adresse, Zeitpunkt, User-Agent).
-          Details/Provider: {Hosting-Anbieter, ggf. Link/AVV}.
-        </p>
-
-        <h2>Cookies / Tracking</h2>
-        <p>
-          SafeShare setzt keine Tracking-Cookies für Marketing/Profiling. (Falls du Analytics nutzt: hier transparent beschreiben oder weglassen.)
-        </p>
-
-        <h2>Kontakt per E-Mail</h2>
-        <p>
-          Wenn du per E-Mail kontaktierst, werden die von dir übermittelten Daten zur Bearbeitung der Anfrage verarbeitet.
-        </p>
-
-        <h2>Rechte</h2>
-        <p>
-          Du hast Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit sowie Widerspruch, soweit anwendbar.
-        </p>
+      <div class="note">
+        SafeShare lädt deine Links nicht zu einem SafeShare-Server hoch. Wenn du einen Link öffnest, kann die Zielseite weiterhin IP/Time/User-Agent protokollieren.
       </div>
+
+      <h2>Was SafeShare macht</h2>
+      <ul>
+        <li>Entfernt typische Tracking-Parameter (utm_*, gclid, fbclid …)</li>
+        <li>Keine Speicherung deiner URLs auf einem SafeShare-Server</li>
+      </ul>
+
+      <h2>Was SafeShare nicht macht</h2>
+      <ul>
+        <li>Kein Cookie-/Fingerprinting-Blocking</li>
+        <li>Kein Anonymitätsversprechen</li>
+      </ul>
+
+      <div class="warn">Ersetze diesen Text durch deine vollständige Datenschutzerklärung (DSGVO).</div>
     </section>
   </div>
 </body>
