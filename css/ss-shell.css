@@ -1,5 +1,5 @@
 /* Datei: /css/ss-shell.css */
-/* SafeShare Shell v2026-01-25-03 (Schema B: EN under /en/<slug>/) */
+/* SafeShare Shell v2026-01-28-01 (Schema B: EN under /en/<slug>/) */
 
 :root{
   /* Shell-Fallbacks (nutzt deine Seiten-Variablen, sonst Default) */
@@ -18,7 +18,8 @@
 /* Header */
 .ss-header{
   position: sticky; top: 0; z-index: 50;
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex; align-items:center;
+  justify-content:flex-start; /* PATCH: statt space-between */
   gap: 12px;
   padding: 10px 14px;
   background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0));
@@ -32,6 +33,7 @@
   text-decoration:none;
   color: var(--ss-text);
   min-width: 0;
+  flex: 0 0 auto; /* PATCH */
 }
 .ss-brand__mark{
   width: 20px; height: 20px;
@@ -47,7 +49,15 @@
 .ss-brand__name{
   font-weight: 780;
   letter-spacing: .2px;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width: 160px; /* PATCH (optional, stabilisiert Ellipsis) */
+}
+
+/* PATCH: sehr schmal → Brand-Text ausblenden (statt "S.") */
+@media (max-width: 390px){
+  .ss-brand__name{ display:none; }
 }
 
 /* Nav capsule */
@@ -62,8 +72,16 @@
   border: 1px solid var(--ss-border);
   background: var(--ss-pill-bg);
   box-shadow: var(--ss-shadow);
+
+  flex: 1 1 auto;  /* PATCH: Nav nimmt Mitte ein */
+  min-width: 0;    /* PATCH: wichtig für Flex */
 }
 .ss-nav::-webkit-scrollbar{ display:none; }
+
+/* PATCH: Mobile → Extra-Tabs im Primary ausblenden (gehen ins Mehr-Menü) */
+@media (max-width: 719.98px){
+  .ss-nav__link--extra{ display:none; }
+}
 
 /* Links + More button: gleiche Capsule-Optik */
 .ss-nav__link,
@@ -114,9 +132,17 @@
   background: var(--ss-pill-bg);
   border-color: var(--ss-border);
   color: var(--ss-text);
+  flex: 0 0 auto; /* PATCH */
 }
 .ss-moreBtn:hover{
   background: var(--ss-pill-bg-hover);
+}
+
+/* PATCH: Mehr-Button active-State (wenn school/pro/help aktiv ist) */
+.ss-moreBtn.is-active{
+  background: var(--ss-active);
+  border-color: var(--ss-active-border);
+  color: var(--ss-text);
 }
 
 /* Scroll lock (auf html + body) */
@@ -200,6 +226,7 @@ html.ss-noScroll, html.ss-noScroll body{
   display:flex; flex-direction:column; gap: 8px;
   padding: 6px 6px 6px;
 }
+
 .ss-moreLink{
   display:block;
   text-decoration:none;
@@ -211,6 +238,17 @@ html.ss-noScroll, html.ss-noScroll body{
 }
 .ss-moreLink:hover{
   background: rgba(255,255,255,.08);
+}
+
+/* PATCH: Separator im Mehr-Menü (wird nur genutzt, wenn Element existiert) */
+.ss-moreSep{
+  height: 1px;
+  margin: 10px 6px;
+  background: rgba(255,255,255,.12);
+  border-radius: 999px;
+}
+@media (prefers-color-scheme: light){
+  .ss-moreSep{ background: rgba(17,24,39,.12); }
 }
 
 /* HARD FIX: verhindert "verschwommen", wenn hidden nicht wirklich hidden ist */
