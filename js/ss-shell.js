@@ -1,5 +1,11 @@
 /*! Datei: /js/ss-shell.js */
-/*! SafeShare Shell v2026-01-25-03 (Schema B: EN under /en/<slug>/) */
+/*! SafeShare Shell v2026-01-28-01 (Schema B: EN under /en/<slug>/) */
+/* Änderungen:
+   A) Schule/Pro/Hilfe sind "extra": bleiben in der Primary-Nav drin, aber können per CSS auf Mobile ausgeblendet werden.
+      Zusätzlich stehen sie IMMER im Mehr-Menü (damit Mobile sie sicher erreicht).
+   B) Mehr-Menü enthält Schule/Pro/Hilfe + Separator vor Support/Legal/Language.
+   C) Wenn aktive Seite school/pro/help ist, bekommt der Mehr-Button is-active + aria-current="page".
+*/
 (function () {
   "use strict";
 
@@ -121,9 +127,11 @@
   <nav class="ss-nav" aria-label="Primary">
     <a class="ss-nav__link" data-ss-nav="home" href="${LINKS.home}">${T.start}</a>
     <a class="ss-nav__link" data-ss-nav="app" href="${LINKS.app}">${T.app}</a>
-    <a class="ss-nav__link" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
-    <a class="ss-nav__link" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
-    <a class="ss-nav__link" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
+
+    <!-- A) extra: per CSS auf Mobile ausblenden -->
+    <a class="ss-nav__link ss-nav__link--extra" data-ss-nav="school" href="${LINKS.school}">${T.school}</a>
+    <a class="ss-nav__link ss-nav__link--extra" data-ss-nav="pro" href="${LINKS.pro}">${T.pro}</a>
+    <a class="ss-nav__link ss-nav__link--extra" data-ss-nav="help" href="${LINKS.help}">${T.help}</a>
   </nav>
 
   <button class="ss-moreBtn" type="button" id="ssMoreBtn"
@@ -142,6 +150,13 @@
     </div>
 
     <div class="ss-moreList" role="navigation" aria-label="${T.more}">
+      <!-- B) Navigation-Links (immer erreichbar) -->
+      <a class="ss-moreLink" href="${LINKS.school}">${T.school}</a>
+      <a class="ss-moreLink" href="${LINKS.pro}">${T.pro}</a>
+      <a class="ss-moreLink" href="${LINKS.help}">${T.help}</a>
+
+      <div class="ss-moreSep" aria-hidden="true"></div>
+
       <a class="ss-moreLink" href="${LINKS.support}">${T.support}</a>
       <a class="ss-moreLink" href="${LINKS.privacy}">${T.privacy}</a>
       <a class="ss-moreLink" href="${LINKS.imprint}">${T.imprint}</a>
@@ -180,6 +195,15 @@
       if (isActive) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
+
+    // C) Mehr-Button als aktiv markieren, wenn aktive Seite im "extra"-Bereich ist
+    const btn = $("#ssMoreBtn");
+    if (btn) {
+      const moreActive = (activeKey === "school" || activeKey === "pro" || activeKey === "help");
+      btn.classList.toggle("is-active", moreActive);
+      if (moreActive) btn.setAttribute("aria-current", "page");
+      else btn.removeAttribute("aria-current");
+    }
   }
   setActive();
 
