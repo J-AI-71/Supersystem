@@ -8,8 +8,6 @@
   <meta name="description" content="URL reinigen: SafeShare entfernt Tracking-Parameter (utm_*, gclid, fbclid …) und entpackt Redirects – 100% lokal im Browser. Clean → Copy → Share.">
   <meta name="robots" content="index,follow" />
 
- 
-
   <link rel="canonical" href="https://safesharepro.com/app/" />
   <link rel="alternate" hreflang="de" href="https://safesharepro.com/app/" />
   <link rel="alternate" hreflang="en" href="https://safesharepro.com/en/app/" />
@@ -1083,18 +1081,31 @@
         showMsg('note', t('shareFallback'));
       });
 
-      // Optional: Prefill via ?u=...&run=1
+      // Prefill via ?url=... (Share) oder ?u=...&run=1 (legacy)
       (function(){
         const sp = new URLSearchParams(location.search);
-        const u = sp.get('u');
-        const run = sp.get('run');
-        if (u && input){
-          try{ input.value = decodeURIComponent(u); }
-          catch(e){ input.value = u; }
+
+        // akzeptiere beide: url (neu) und u (alt)
+        const incoming = sp.get('url') || sp.get('u');
+        const run = sp.get('run'); // optional: nur für alten Flow nötig
+
+        if (!incoming || !input) return;
+
+        // decode best-effort
+        let value = incoming;
+        try { value = decodeURIComponent(incoming); } catch(e) {}
+
+        input.value = value;
+
+        // Auto-run: wenn ?url= gesetzt ist -> immer cleanen
+        // oder wenn alt: ?u=...&run=1
+        const shouldRun = sp.has('url') || run === '1';
+        if (shouldRun){
+          setTimeout(doClean, 80);
         }
-        if (u && run === '1'){
-          setTimeout(doClean, 120);
-        }
+
+        // URL bereinigen, damit Reload nicht erneut triggert / Stats sauber bleiben
+        history.replaceState({}, '', location.pathname);
       })();
 
       applyI18N();
@@ -1103,39 +1114,5 @@
     })();
   </script>
 
-<script>
-(function autoCleanFromQuery(){
-  if (window.__ssAutoCleanDone) return;
-  window.__ssAutoCleanDone = true;
-
-  const qs = new URLSearchParams(location.search);
-  const incoming = qs.get('url');
-  if (!incoming) return;
-
-  const input =
-    document.querySelector('input[type="url"]') ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector('textarea');
-
-  if (input) input.value = incoming;
-
-  // Versuch 1: vorhandene Funktion
-  if (typeof runClean === 'function') { runClean(); }
-  else if (typeof cleanNow === 'function') { cleanNow(); }
-  else {
-    // Versuch 2: Button-Klick
-    const btn =
-      document.querySelector('#cleanBtn') ||
-      document.querySelector('[data-action="clean"]') ||
-      document.querySelector('button');
-
-    if (btn) btn.click();
-  }
-
-  // Query entfernen, damit Refresh nicht erneut triggert
-  history.replaceState({}, '', location.pathname);
-})();
-</script>
-  
 </body>
 </html>
