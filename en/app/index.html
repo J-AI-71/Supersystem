@@ -1,11 +1,11 @@
-<!-- /en/app/index.html (EN) -->
+<!-- /en/app/index.html (EN) — shell-clean (no duplicate nav) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>SafeShare App – Clean links (local-first)</title>
-  <meta name="description" content="Paste a link → clean → copy/share: SafeShare removes tracking parameters and unwraps redirects – local-first in your browser, no upload.">
+  <title>SafeShare App – Clean links & share safely (local-first)</title>
+  <meta name="description" content="Clean URLs: SafeShare removes tracking parameters (utm_*, gclid, fbclid …) and unwraps redirects — 100% local in your browser. Clean → Copy → Share.">
   <meta name="robots" content="index,follow" />
 
   <link rel="canonical" href="https://safesharepro.com/en/app/" />
@@ -22,22 +22,22 @@
   <meta name="msvalidate.01" content="B18ACE18875F9614DAA5CF69EED40ACE" />
 
   <!-- Open Graph / Social Preview -->
-  <meta property="og:title" content="SafeShare App – Clean links (local-first)" />
+  <meta property="og:title" content="SafeShare App – Clean links & share safely (local-first)" />
   <meta property="og:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="SafeShare" />
   <meta property="og:url" content="https://safesharepro.com/en/app/" />
   <meta property="og:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-21-01" />
-  <meta property="og:image:alt" content="SafeShare App – preview" />
+  <meta property="og:image:alt" content="SafeShare App – Preview" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SafeShare App – Clean links" />
+  <meta name="twitter:title" content="SafeShare App – Clean links & share safely" />
   <meta name="twitter:description" content="Remove tracking parameters (utm_*, fbclid, gclid …) locally in your browser. Paste → Clean → Copy/Share." />
   <meta name="twitter:image" content="https://safesharepro.com/assets/og/og-app.png?v=2026-01-21-01" />
-  <meta name="twitter:image:alt" content="SafeShare App – preview" />
+  <meta name="twitter:image:alt" content="SafeShare App – Preview" />
 
   <!-- Favicons + PWA -->
   <link rel="icon" type="image/svg+xml" href="/assets/fav/favicon.svg?v=2025-12-25-01">
@@ -271,8 +271,8 @@
   </style>
 </head>
 
-<body>
-  <!-- Master-Shell: Header/Nav/More -->
+<body data-page="app">
+  <!-- Master-Shell -->
   <div id="ss-shell"></div>
 
   <div class="wrap">
@@ -311,7 +311,6 @@
       <div class="row">
         <button class="btn primary" id="btnCopy" type="button">Copy</button>
         <a class="btn" id="btnOpen" href="#" target="_blank" rel="noopener">Open</a>
-        <!-- Share is ALWAYS visible; falls back to Copy -->
         <button class="btn" id="btnShare" type="button">Share</button>
       </div>
 
@@ -328,7 +327,7 @@
         <b>More control?</b>
         <p class="muted" style="margin:6px 0 0">
           See exactly what was removed, keep selected params, use policies/audit →
-          <a href="/en/pro/" rel="nofollow">SafeShare Pro</a>
+          <a href="/pro/" rel="nofollow">SafeShare Pro</a>
         </p>
       </div>
 
@@ -343,7 +342,7 @@
 
       <div class="note" style="margin-top:12px">
         If the cleaned link doesn’t work: open the original → compare. If only the cleaned link fails,
-        a removed parameter was likely functional. Then clean more conservatively (or Pro: audit/allowlists/policies).
+        a removed parameter was likely functional. Then clean more conservatively (or Pro: audit/allowlist/policies).
       </div>
     </section>
 
@@ -392,43 +391,39 @@
       <h2>What gets removed?</h2>
       <ul>
         <li><b>utm_*</b> (campaign parameters)</li>
-        <li><b>click IDs</b> like <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
+        <li><b>Click IDs</b> like <span class="mono">gclid</span>, <span class="mono">fbclid</span>, <span class="mono">msclkid</span>, <span class="mono">igshid</span></li>
         <li>other common tracking keys (e.g. <span class="mono">_ga</span>, <span class="mono">mc_cid</span>, <span class="mono">mc_eid</span>, <span class="mono">srsltid</span>)</li>
       </ul>
       <div class="warn">
-        Don’t remove “everything” blindly: affiliate/ref params (<span class="mono">ref</span>, <span class="mono">tag</span>, …) can be intentional.
+        Don’t blindly remove everything: affiliate/partner keys (<span class="mono">ref</span>, <span class="mono">tag</span>, …) may be intentional.
         Pro is for policies + audit + allowlists.
-      </div>
-      <div class="row">
-        <a class="btn ghost" href="/app/">Deutsch</a>
       </div>
     </section>
 
+    <!-- Minimal footer (no duplicate Start/App/... nav; shell already has it) -->
     <footer>
       <div class="footGrid">
         <div>
-          <div><strong>SafeShare</strong> – share links without ballast.</div>
+          <div><strong>SafeShare</strong> – share links without baggage.</div>
           <div>Local-first: cleaning happens in your browser.</div>
         </div>
         <div class="footLinks">
-          <a data-page="home" href="/en/">Home</a>
-          <a data-page="app" href="/en/app/">App</a>
-          <a data-page="school" href="/en/school/">School</a>
-          <a data-page="pro" href="/en/pro/">Pro</a>
-          <a data-page="help" href="/en/help/">Help</a>
-          <a href="/app/" title="Deutsch">DE</a>
+          <a href="/privacy/" rel="nofollow">Privacy</a>
+          <a href="/impressum/" rel="nofollow">Imprint</a>
+          <a href="mailto:listings@safesharepro.com">Contact</a>
         </div>
       </div>
     </footer>
 
   </div>
 
-  <!-- Same JS logic as DE (includes redirect-unwrapping + share fallback + post-clean gating + impact session) -->
   <script>
     (function(){
+      // ===== Helpers (null-safe event binding) =====
       const byId = (id) => document.getElementById(id);
       const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
+      // ===== App Elements =====
       const input = byId('urlInput');
       const msg = byId('msg');
       const resultCard = byId('resultCard');
@@ -447,6 +442,7 @@
       const btnCopy = byId('btnCopy');
       const btnShare = byId('btnShare');
 
+      // ===== Tracking Keys =====
       const TRACKING_KEYS = new Set([
         'gclid','dclid','gbraid','wbraid',
         'fbclid','msclkid','igshid',
@@ -460,11 +456,11 @@
         'obclid','tblci'
       ]);
 
+      // ===== i18n (DE + EN; robust) =====
       function getLang(){
         const l = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
         return l.startsWith('de') ? 'de' : 'en';
       }
-
       const I18N = {
         de: {
           h1: "Link bereinigen",
@@ -489,6 +485,10 @@
           shareFallback: "Teilen ist nicht verfügbar (oder abgebrochen) — Link wurde kopiert.",
           pasteNote: "iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert Zwischenablage manchmal.",
           alreadyClean: "Dieser Link sieht schon sauber aus (keine typischen Tracking-Parameter gefunden).",
+
+          errPasteLink: "Bitte einen Link einfügen.",
+          errNoValidLink: "Kein gültiger Link gefunden (nur Text erkannt).",
+          errInvalidUrl: "Das sieht nicht wie eine gültige URL aus.",
 
           nudge: "Tipp: Jeden Link kurz hier rein → sauber teilen.",
           targets: "Funktioniert gut mit WhatsApp, Signal, Mail, Slack – einfach nach dem Kopieren einfügen.",
@@ -534,6 +534,10 @@
           pasteNote: "iPad/Safari: tap the field and use “Paste”. Clipboard access may be blocked sometimes.",
           alreadyClean: "This link already looks clean (no common tracking parameters found).",
 
+          errPasteLink: "Please paste a link.",
+          errNoValidLink: "No valid link found (text only).",
+          errInvalidUrl: "This doesn’t look like a valid URL.",
+
           nudge: "Tip: drop every link here for clean sharing.",
           targets: "Works well with WhatsApp, Signal, Mail, Slack — paste after copying.",
           proTitle: "More control?",
@@ -561,13 +565,16 @@
         const dict = I18N[lang] || I18N.en;
         return (dict && dict[key]) ? dict[key] : (I18N.en[key] || "");
       }
+
       function setText(id, text){
         const el = byId(id);
         if (el && typeof text === 'string' && text.length) el.textContent = text;
       }
+
       function fmt(tpl, vars){
         return String(tpl || "").replace(/\{(\w+)\}/g, (_, k) => (vars && (k in vars)) ? String(vars[k]) : "");
       }
+
       function applyI18N(){
         setText('i18n_h1', t('h1'));
         setText('i18n_introP', t('introP'));
@@ -581,6 +588,7 @@
         if (btnClear) btnClear.textContent = t('btnClear');
         if (btnCopy) btnCopy.textContent = t('btnCopy');
         if (btnOpen) btnOpen.textContent = t('btnOpen');
+
         if (btnShare) btnShare.textContent = navigator.share ? t('btnShare') : t('btnShareFallback');
 
         if (postCleanNudge) postCleanNudge.textContent = t('nudge');
@@ -626,6 +634,7 @@
         msg.textContent = text || '';
       }
 
+      // ===== URL normalize + extract =====
       function normalizeUrl(s){
         s = (s || '').trim();
         if (!s) return '';
@@ -646,6 +655,7 @@
         try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
       }
 
+      // ===== Redirect unwrap (1x–3x, safe) =====
       const WRAP_KEYS = ["url","u","target","redirect","dest","destination"];
       function looksLikeUrl(v){
         const s = String(v || "").trim();
@@ -674,17 +684,19 @@
         return url;
       }
 
+      // ===== Cleaner =====
       function cleanUrl(raw){
         const original = (raw || '').trim();
-        if (!original) throw new Error(t('errPasteLink') || "Please paste a link.");
+        if (!original) throw new Error(t('errPasteLink'));
 
         const extracted = extractFirstUrl(original);
-        if (!extracted) throw new Error(t('errNoValidLink') || "No valid link found.");
+        if (!extracted) throw new Error(t('errNoValidLink'));
 
         let url;
         try{ url = new URL(extracted); }
-        catch(e){ throw new Error(t('errInvalidUrl') || "Invalid URL."); }
+        catch(e){ throw new Error(t('errInvalidUrl')); }
 
+        // unwrap redirects (max 3)
         for (let i=0;i<3;i++){
           const next = unwrapRedirectOnce(url);
           if (next.toString() === url.toString()) break;
@@ -733,6 +745,7 @@
         }
       }
 
+      // ---- Audit rendering (no innerHTML injection) ----
       function auditChip(label, keys){
         const span = document.createElement('span');
         span.appendChild(document.createTextNode(label + ': '));
@@ -763,6 +776,7 @@
         }
       }
 
+      // ===== Post-clean show/hide (only if removed) =====
       function postCleanHide(){
         if (postCleanNudge) postCleanNudge.hidden = true;
         if (postCleanTargets) postCleanTargets.hidden = true;
@@ -776,8 +790,10 @@
         if (postCleanRemember) postCleanRemember.hidden = false;
       }
 
+      // ===== Impact (session + no double count) =====
       const IMPACT_KEY = "ss_impact_v3";
       const SEEN_KEY   = "ss_seen_v3";
+
       const AD_ID_KEYS = new Set([
         "gclid","dclid","gbraid","wbraid",
         "fbclid","msclkid","ttclid","twclid","li_fat_id",
@@ -801,6 +817,7 @@
         }
         return __SS_STORAGE_OK;
       }
+
       function ssStorageGet(k){
         try{ if (ssStorageOk()) return sessionStorage.getItem(k); }catch(e){}
         return (k in __SS_MEM) ? __SS_MEM[k] : null;
@@ -833,7 +850,7 @@
         try{ ssStorageSet(IMPACT_KEY, JSON.stringify(state)); }catch(e){}
       }
       function impactFormat(n){
-        try{ return new Intl.NumberFormat(getLang()==='de' ? "de-DE" : "en-US").format(n); }catch(e){ return String(n); }
+        try{ return new Intl.NumberFormat(getLang()==='en' ? "en-US" : "de-DE").format(n); }catch(e){ return String(n); }
       }
       function impactSetText(id, text){
         const el = byId(id);
@@ -865,8 +882,8 @@
 
         const text = fmt(t('impactLastLineFmt'), {
           removed: removedCount,
-          adPart: ad ? (getLang()==='de' ? ` (${ad} Ad-IDs)` : ` (${ad} Ad IDs)`) : "",
-          utmPart: utm ? (getLang()==='de' ? `, davon ${utm} UTM` : `, incl. ${utm} UTM`) : ""
+          adPart: ad ? (getLang()==='en' ? ` (${ad} Ad IDs)` : ` (${ad} Ad-IDs)`) : "",
+          utmPart: utm ? (getLang()==='en' ? `, incl. ${utm} UTM` : `, davon ${utm} UTM`) : ""
         });
 
         lineEl.textContent = text;
@@ -877,7 +894,7 @@
         impactSetText("ssImpactParams", impactFormat(state.paramsRemoved));
         impactSetText("ssImpactUTM", impactFormat(state.utmRemoved));
         impactSetText("ssImpactAdIds", impactFormat(state.adIdsRemoved));
-        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString(getLang()==='de' ? "de-DE" : "en-US") : "—");
+        impactSetText("ssImpactUpdated", state.lastUpdatedISO ? new Date(state.lastUpdatedISO).toLocaleString(getLang()==='en' ? "en-US" : "de-DE") : "—");
         impactShowCardIfAny(state);
       }
 
@@ -901,10 +918,13 @@
         r.sort();
         return String(cleanedUrl || "") + "||" + r.join(",");
       }
+
       function impactAddIfNew(cleanedUrl, removedKeys){
         const keys = Array.isArray(removedKeys)
           ? removedKeys.map(k => String(k || "").trim()).filter(Boolean)
           : [];
+
+        // count only if something was removed
         if (keys.length === 0) return false;
 
         const sig = signature(cleanedUrl, keys);
@@ -945,6 +965,7 @@
         on(byId("ssImpactReset"), "click", impactReset);
       }
 
+      // ===== Main action =====
       function doClean(){
         showMsg('', '');
         if (resultCard) resultCard.hidden = true;
@@ -976,10 +997,11 @@
             if (rc) rc.scrollIntoView({behavior:'smooth', block:'start'});
           }, 40);
         }catch(e){
-          showMsg('warn', e.message || 'Error while cleaning.');
+          showMsg('warn', e.message || 'Error cleaning link.');
         }
       }
 
+      // ===== Bindings =====
       on(input, 'input', ()=>{
         const v = (input.value || "").trim();
         if (!v){
@@ -1044,17 +1066,25 @@
         showMsg('note', t('shareFallback'));
       });
 
+      // Prefill via ?url=... (Share) or ?u=...&run=1 (legacy)
       (function(){
         const sp = new URLSearchParams(location.search);
-        const u = sp.get('u');
+        const incoming = sp.get('url') || sp.get('u');
         const run = sp.get('run');
-        if (u && input){
-          try{ input.value = decodeURIComponent(u); }
-          catch(e){ input.value = u; }
+
+        if (!incoming || !input) return;
+
+        let value = incoming;
+        try { value = decodeURIComponent(incoming); } catch(e) {}
+
+        input.value = value;
+
+        const shouldRun = sp.has('url') || run === '1';
+        if (shouldRun){
+          setTimeout(doClean, 80);
         }
-        if (u && run === '1'){
-          setTimeout(doClean, 120);
-        }
+
+        history.replaceState({}, '', location.pathname);
       })();
 
       applyI18N();
@@ -1063,39 +1093,5 @@
     })();
   </script>
 
-<script>
-(function autoCleanFromQuery(){
-  if (window.__ssAutoCleanDone) return;
-  window.__ssAutoCleanDone = true;
-
-  const qs = new URLSearchParams(location.search);
-  const incoming = qs.get('url');
-  if (!incoming) return;
-
-  const input =
-    document.querySelector('input[type="url"]') ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector('textarea');
-
-  if (input) input.value = incoming;
-
-  // Versuch 1: vorhandene Funktion
-  if (typeof runClean === 'function') { runClean(); }
-  else if (typeof cleanNow === 'function') { cleanNow(); }
-  else {
-    // Versuch 2: Button-Klick
-    const btn =
-      document.querySelector('#cleanBtn') ||
-      document.querySelector('[data-action="clean"]') ||
-      document.querySelector('button');
-
-    if (btn) btn.click();
-  }
-
-  // Query entfernen, damit Refresh nicht erneut triggert
-  history.replaceState({}, '', location.pathname);
-})();
-</script>
-  
 </body>
 </html>
