@@ -1102,5 +1102,40 @@
       impactInit();
     })();
   </script>
+
+<script>
+(function autoCleanFromQuery(){
+  if (window.__ssAutoCleanDone) return;
+  window.__ssAutoCleanDone = true;
+
+  const qs = new URLSearchParams(location.search);
+  const incoming = qs.get('url');
+  if (!incoming) return;
+
+  const input =
+    document.querySelector('input[type="url"]') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('textarea');
+
+  if (input) input.value = incoming;
+
+  // Versuch 1: vorhandene Funktion
+  if (typeof runClean === 'function') { runClean(); }
+  else if (typeof cleanNow === 'function') { cleanNow(); }
+  else {
+    // Versuch 2: Button-Klick
+    const btn =
+      document.querySelector('#cleanBtn') ||
+      document.querySelector('[data-action="clean"]') ||
+      document.querySelector('button');
+
+    if (btn) btn.click();
+  }
+
+  // Query entfernen, damit Refresh nicht erneut triggert
+  history.replaceState({}, '', location.pathname);
+})();
+</script>
+  
 </body>
 </html>
