@@ -48,7 +48,7 @@
 
   <!-- MASTER SHELL -->
   <link rel="stylesheet" href="/css/ss-shell.css?v=2026-01-25-03">
-  <script src="/js/ss-shell.js?v=2026-01-25-03" defer></script>
+  <script src="/js/ss-shell.js?v=2026-01-28-01" defer></script>
 
   <style>
     :root{
@@ -311,11 +311,9 @@
       <div class="row">
         <button class="btn primary" id="btnCopy" type="button">Kopieren</button>
         <a class="btn" id="btnOpen" href="#" target="_blank" rel="noopener">Öffnen</a>
-        <!-- Share ist IMMER sichtbar; fällt zurück auf Kopieren -->
         <button class="btn" id="btnShare" type="button">Teilen</button>
       </div>
 
-      <!-- Post-clean: wird nur gezeigt, wenn wirklich entfernt wurde -->
       <p id="postCleanNudge" class="muted" hidden style="margin-top:10px">
         Tipp: Jeden Link kurz hier rein → sauber teilen.
       </p>
@@ -406,6 +404,7 @@
       </div>
     </section>
 
+    <!-- Minimal footer (Shell hat Navigation + Language Switch) -->
     <footer>
       <div class="footGrid">
         <div>
@@ -413,12 +412,9 @@
           <div>Local-first: Bereinigung passiert in deinem Browser.</div>
         </div>
         <div class="footLinks">
-          <a data-page="start" href="/">Start</a>
-          <a data-page="app" href="/app/">App</a>
-          <a data-page="schule" href="/schule/">Schule</a>
-          <a data-page="pro" href="/pro/">Pro</a>
-          <a data-page="hilfe" href="/hilfe/">Hilfe</a>
-          <a href="/en/app/" title="English">EN</a>
+          <a href="/datenschutz/" rel="nofollow">Datenschutz</a>
+          <a href="/impressum/" rel="nofollow">Impressum</a>
+          <a href="mailto:listings@safesharepro.com">Kontakt</a>
         </div>
       </div>
     </footer>
@@ -430,7 +426,6 @@
       // ===== Helpers (null-safe event binding) =====
       const byId = (id) => document.getElementById(id);
       const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
-      const $ = (s)=>document.querySelector(s);
 
       // ===== App Elements =====
       const input = byId('urlInput');
@@ -598,7 +593,6 @@
         if (btnCopy) btnCopy.textContent = t('btnCopy');
         if (btnOpen) btnOpen.textContent = t('btnOpen');
 
-        // Share-Label (fallback wird später gesetzt)
         if (btnShare) btnShare.textContent = navigator.share ? t('btnShare') : t('btnShareFallback');
 
         if (postCleanNudge) postCleanNudge.textContent = t('nudge');
@@ -706,7 +700,6 @@
         try{ url = new URL(extracted); }
         catch(e){ throw new Error(t('errInvalidUrl')); }
 
-        // unwrap redirects (max 3)
         for (let i=0;i<3;i++){
           const next = unwrapRedirectOnce(url);
           if (next.toString() === url.toString()) break;
@@ -755,7 +748,6 @@
         }
       }
 
-      // ---- Audit rendering (no innerHTML injection) ----
       function auditChip(label, keys){
         const span = document.createElement('span');
         span.appendChild(document.createTextNode(label + ': '));
@@ -786,7 +778,6 @@
         }
       }
 
-      // ===== Post-clean show/hide (nur wenn entfernt) =====
       function postCleanHide(){
         if (postCleanNudge) postCleanNudge.hidden = true;
         if (postCleanTargets) postCleanTargets.hidden = true;
@@ -934,7 +925,6 @@
           ? removedKeys.map(k => String(k || "").trim()).filter(Boolean)
           : [];
 
-        // count only if something was removed
         if (keys.length === 0) return false;
 
         const sig = signature(cleanedUrl, keys);
@@ -975,7 +965,6 @@
         on(byId("ssImpactReset"), "click", impactReset);
       }
 
-      // ===== Main action =====
       function doClean(){
         showMsg('', '');
         if (resultCard) resultCard.hidden = true;
@@ -985,10 +974,8 @@
           const res = cleanUrl(input ? input.value : "");
           renderResult(res);
 
-          // Share label (fallback)
           if (btnShare) btnShare.textContent = navigator.share ? t('btnShare') : t('btnShareFallback');
 
-          // Only show post-clean blocks if removed something
           if (res.removed && res.removed.length > 0){
             postCleanShow();
           } else {
@@ -996,10 +983,8 @@
             showMsg('note', t('alreadyClean'));
           }
 
-          // Impact only counts when removed and only once per signature
           impactAddIfNew(res.cleaned, res.removed);
 
-          // show impact card if any stats
           const impactCard = byId("ssImpactCard");
           if (impactCard){
             const s = impactLoad();
@@ -1015,7 +1000,6 @@
         }
       }
 
-      // ===== Bindings =====
       on(input, 'input', ()=>{
         const v = (input.value || "").trim();
         if (!v){
@@ -1066,7 +1050,6 @@
         setTimeout(()=>btnCopy.textContent=old, 1200);
       });
 
-      // Share ALWAYS visible; fallback to copy
       on(btnShare, "click", async ()=>{
         const text = (outUrl && outUrl.textContent || '').trim();
         if(!text) return;
@@ -1081,30 +1064,24 @@
         showMsg('note', t('shareFallback'));
       });
 
-      // Prefill via ?url=... (Share) oder ?u=...&run=1 (legacy)
+      /* PATCH: Auto-clean when coming from Share with ?url=...
+         + keep legacy ?u=...&run=1
+         Must be inside this IIFE so doClean() exists. */
       (function(){
         const sp = new URLSearchParams(location.search);
-
-        // akzeptiere beide: url (neu) und u (alt)
         const incoming = sp.get('url') || sp.get('u');
-        const run = sp.get('run'); // optional: nur für alten Flow nötig
+        const run = sp.get('run');
 
         if (!incoming || !input) return;
 
-        // decode best-effort
         let value = incoming;
         try { value = decodeURIComponent(incoming); } catch(e) {}
 
         input.value = value;
 
-        // Auto-run: wenn ?url= gesetzt ist -> immer cleanen
-        // oder wenn alt: ?u=...&run=1
         const shouldRun = sp.has('url') || run === '1';
-        if (shouldRun){
-          setTimeout(doClean, 80);
-        }
+        if (shouldRun) setTimeout(doClean, 80);
 
-        // URL bereinigen, damit Reload nicht erneut triggert / Stats sauber bleiben
         history.replaceState({}, '', location.pathname);
       })();
 
