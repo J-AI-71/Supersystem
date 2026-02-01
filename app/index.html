@@ -404,7 +404,6 @@
       </div>
     </section>
 
-    <!-- Minimal footer (Shell hat Navigation + Language Switch) -->
     <footer>
       <div class="footGrid">
         <div>
@@ -412,9 +411,12 @@
           <div>Local-first: Bereinigung passiert in deinem Browser.</div>
         </div>
         <div class="footLinks">
-          <a href="/datenschutz/" rel="nofollow">Datenschutz</a>
-          <a href="/impressum/" rel="nofollow">Impressum</a>
-          <a href="mailto:listings@safesharepro.com">Kontakt</a>
+          <a data-page="start" href="/">Start</a>
+          <a data-page="app" href="/app/">App</a>
+          <a data-page="schule" href="/schule/">Schule</a>
+          <a data-page="pro" href="/pro/">Pro</a>
+          <a data-page="hilfe" href="/hilfe/">Hilfe</a>
+          <a href="/en/app/" title="English">EN</a>
         </div>
       </div>
     </footer>
@@ -423,11 +425,9 @@
 
   <script>
     (function(){
-      // ===== Helpers (null-safe event binding) =====
       const byId = (id) => document.getElementById(id);
       const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
-      // ===== App Elements =====
       const input = byId('urlInput');
       const msg = byId('msg');
       const resultCard = byId('resultCard');
@@ -446,7 +446,6 @@
       const btnCopy = byId('btnCopy');
       const btnShare = byId('btnShare');
 
-      // ===== Tracking Keys =====
       const TRACKING_KEYS = new Set([
         'gclid','dclid','gbraid','wbraid',
         'fbclid','msclkid','igshid',
@@ -460,11 +459,11 @@
         'obclid','tblci'
       ]);
 
-      // ===== i18n (DE + EN; Datei ist DE, aber robust) =====
       function getLang(){
         const l = (document.documentElement.getAttribute('lang') || 'de').toLowerCase();
         return l.startsWith('en') ? 'en' : 'de';
       }
+
       const I18N = {
         de: {
           h1: "Link bereinigen",
@@ -473,7 +472,6 @@
           cleanerH2: "URL einfügen",
           cleanerP: "Einfügen → Bereinigen → Ergebnis kopieren/teilen.",
           resultH2: "Ergebnis",
-
           btnClean: "Bereinigen",
           btnPaste: "Einfügen",
           btnClear: "Leeren",
@@ -481,19 +479,15 @@
           btnOpen: "Öffnen",
           btnShare: "Teilen",
           btnShareFallback: "Kopieren",
-
           removedLabel: "Entfernt",
           keptLabel: "Behalten",
-
           copied: "Kopiert ✓",
           shareFallback: "Teilen ist nicht verfügbar (oder abgebrochen) — Link wurde kopiert.",
           pasteNote: "iPad/Safari: Tippe ins Feld und nutze „Einfügen“. Der Browser blockiert Zwischenablage manchmal.",
           alreadyClean: "Dieser Link sieht schon sauber aus (keine typischen Tracking-Parameter gefunden).",
-
           errPasteLink: "Bitte einen Link einfügen.",
           errNoValidLink: "Kein gültiger Link gefunden (nur Text erkannt).",
           errInvalidUrl: "Das sieht nicht wie eine gültige URL aus.",
-
           nudge: "Tipp: Jeden Link kurz hier rein → sauber teilen.",
           targets: "Funktioniert gut mit WhatsApp, Signal, Mail, Slack – einfach nach dem Kopieren einfügen.",
           proTitle: "Mehr Kontrolle?",
@@ -501,7 +495,6 @@
           proLink: "SafeShare Pro",
           rememberSummary: "Mach’s zur Gewohnheit",
           rememberBody: "Setze ein Lesezeichen oder füge SafeShare zum Home-Screen hinzu, damit du beim nächsten Mal 1-Tap reinigen kannst.",
-
           impactTitle: "Impact",
           impactSession: "Session (dieser Tab)",
           impactLinks: "Links bereinigt",
@@ -521,7 +514,6 @@
           cleanerH2: "Paste a URL",
           cleanerP: "Paste → Clean → Copy/Share.",
           resultH2: "Result",
-
           btnClean: "Clean",
           btnPaste: "Paste",
           btnClear: "Clear",
@@ -529,19 +521,15 @@
           btnOpen: "Open",
           btnShare: "Share",
           btnShareFallback: "Copy",
-
           removedLabel: "Removed",
           keptLabel: "Kept",
-
           copied: "Copied ✓",
           shareFallback: "Sharing is not available (or was canceled) — link was copied.",
           pasteNote: "iPad/Safari: tap the field and use “Paste”. Clipboard access may be blocked sometimes.",
           alreadyClean: "This link already looks clean (no common tracking parameters found).",
-
           errPasteLink: "Please paste a link.",
           errNoValidLink: "No valid link found (text only).",
           errInvalidUrl: "This doesn’t look like a valid URL.",
-
           nudge: "Tip: drop every link here for clean sharing.",
           targets: "Works well with WhatsApp, Signal, Mail, Slack — paste after copying.",
           proTitle: "More control?",
@@ -549,7 +537,6 @@
           proLink: "SafeShare Pro",
           rememberSummary: "Make it a habit",
           rememberBody: "Bookmark SafeShare or add it to your home screen for 1-tap cleaning next time.",
-
           impactTitle: "Impact",
           impactSession: "Session (this tab)",
           impactLinks: "Links cleaned",
@@ -592,7 +579,6 @@
         if (btnClear) btnClear.textContent = t('btnClear');
         if (btnCopy) btnCopy.textContent = t('btnCopy');
         if (btnOpen) btnOpen.textContent = t('btnOpen');
-
         if (btnShare) btnShare.textContent = navigator.share ? t('btnShare') : t('btnShareFallback');
 
         if (postCleanNudge) postCleanNudge.textContent = t('nudge');
@@ -638,7 +624,6 @@
         msg.textContent = text || '';
       }
 
-      // ===== URL normalize + extract =====
       function normalizeUrl(s){
         s = (s || '').trim();
         if (!s) return '';
@@ -659,7 +644,6 @@
         try { return new URL(normalizeUrl(candidate)).toString(); } catch(e) { return ""; }
       }
 
-      // ===== Redirect unwrap (1x–3x, safe) =====
       const WRAP_KEYS = ["url","u","target","redirect","dest","destination"];
       function looksLikeUrl(v){
         const s = String(v || "").trim();
@@ -681,14 +665,11 @@
           if (!v0) continue;
           const v = tryDecode(v0);
           if (!looksLikeUrl(v)) continue;
-          try{
-            return new URL(normalizeUrl(v));
-          }catch(e){}
+          try{ return new URL(normalizeUrl(v)); }catch(e){}
         }
         return url;
       }
 
-      // ===== Cleaner =====
       function cleanUrl(raw){
         const original = (raw || '').trim();
         if (!original) throw new Error(t('errPasteLink'));
@@ -791,7 +772,6 @@
         if (postCleanRemember) postCleanRemember.hidden = false;
       }
 
-      // ===== Impact (session + no double count) =====
       const IMPACT_KEY = "ss_impact_v3";
       const SEEN_KEY   = "ss_seen_v3";
 
@@ -1063,27 +1043,6 @@
         await copyText(text);
         showMsg('note', t('shareFallback'));
       });
-
-      /* PATCH: Auto-clean when coming from Share with ?url=...
-         + keep legacy ?u=...&run=1
-         Must be inside this IIFE so doClean() exists. */
-      (function(){
-        const sp = new URLSearchParams(location.search);
-        const incoming = sp.get('url') || sp.get('u');
-        const run = sp.get('run');
-
-        if (!incoming || !input) return;
-
-        let value = incoming;
-        try { value = decodeURIComponent(incoming); } catch(e) {}
-
-        input.value = value;
-
-        const shouldRun = sp.has('url') || run === '1';
-        if (shouldRun) setTimeout(doClean, 80);
-
-        history.replaceState({}, '', location.pathname);
-      })();
 
       applyI18N();
       postCleanHide();
