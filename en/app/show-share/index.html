@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>SafeShare – Share</title>
+</head>
+<body>
+<script>
+(function(){
+  const qs = new URLSearchParams(location.search);
+  const url  = qs.get('url')  || '';
+  const text = qs.get('text') || '';
+  const title = qs.get('title') || '';
+
+  let candidate = url || (text.match(/https?:\/\/\S+/)?.[0] || '');
+  candidate = candidate.replace(/[)\],.]+$/, '');
+
+  const target = new URL('/en/app/', location.origin);
+  if (candidate) target.searchParams.set('url', candidate);
+  if (!candidate && (text || title)) target.searchParams.set('text', (text || title));
+
+  location.replace(target.toString());
+})();
+</script>
+</body>
+</html>
